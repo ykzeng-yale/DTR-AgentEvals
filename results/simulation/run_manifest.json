@@ -1,0 +1,44 @@
+{
+  "config": {
+    "seed": 20260918,
+    "n": 1500,
+    "replicates": 400,
+    "folds": 3,
+    "truth_mc_n": 200000,
+    "environment": {
+      "horizon": 3,
+      "cost": 0.06,
+      "overlap": 0.15
+    },
+    "policies": [
+      "always_small",
+      "always_large",
+      "fixed_switch",
+      "failure_escalation",
+      "soft_escalation"
+    ],
+    "specifications": [
+      [
+        "correct",
+        "known"
+      ],
+      [
+        "misspecified",
+        "known"
+      ],
+      [
+        "correct",
+        "misspecified"
+      ],
+      [
+        "misspecified",
+        "misspecified"
+      ]
+    ]
+  },
+  "python": "3.14.4 (main, Apr  7 2026, 13:13:20) [Clang 21.0.0 (clang-2100.0.123.102)]",
+  "numpy": "2.4.1",
+  "platform": "macOS-26.6-arm64-arm-64bit-Mach-O",
+  "elapsed_seconds": 17.195863008499146,
+  "seed_rule": "simulation seed + replicate; truth seed + 100000 + policy index"
+}

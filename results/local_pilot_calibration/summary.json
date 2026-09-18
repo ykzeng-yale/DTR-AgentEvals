@@ -1,0 +1,236 @@
+{
+  "audit": {
+    "issues": [],
+    "events": 480,
+    "episodes": 160,
+    "all_responses_parsed": true,
+    "stage_correct": 1,
+    "logging_task_ids_disjoint_from_evaluation": true,
+    "independent_unique_heldout_tasks": 24
+  },
+  "direct_rollout": [
+    {
+      "regime": "logging",
+      "n": 64,
+      "successes": 1,
+      "success_rate": 0.015625,
+      "success_wilson_95": [
+        0.0027634707504014047,
+        0.08334298900290629
+      ],
+      "mean_utility": -0.0528125,
+      "mean_resource_proxy": 0.0684375,
+      "mean_generated_tokens": 24.890625,
+      "median_wall_seconds": 0.7233737092465162,
+      "switch_trajectories": 45
+    },
+    {
+      "regime": "always_small",
+      "n": 24,
+      "successes": 0,
+      "success_rate": 0.0,
+      "success_wilson_95": [
+        0.0,
+        0.13798057582897535
+      ],
+      "mean_utility": -0.03,
+      "mean_resource_proxy": 0.03,
+      "mean_generated_tokens": 25.625,
+      "median_wall_seconds": 0.6906281462870538,
+      "switch_trajectories": 0
+    },
+    {
+      "regime": "always_large",
+      "n": 24,
+      "successes": 0,
+      "success_rate": 0.0,
+      "success_wilson_95": [
+        0.0,
+        0.13798057582897535
+      ],
+      "mean_utility": -0.09000000000000001,
+      "mean_resource_proxy": 0.09000000000000001,
+      "mean_generated_tokens": 24.416666666666668,
+      "median_wall_seconds": 0.7724728332832456,
+      "switch_trajectories": 0
+    },
+    {
+      "regime": "fixed_switch",
+      "n": 24,
+      "successes": 0,
+      "success_rate": 0.0,
+      "success_wilson_95": [
+        0.0,
+        0.13798057582897535
+      ],
+      "mean_utility": -0.06999999999999999,
+      "mean_resource_proxy": 0.06999999999999999,
+      "mean_generated_tokens": 25.125,
+      "median_wall_seconds": 0.7241468336433172,
+      "switch_trajectories": 24
+    },
+    {
+      "regime": "failure_escalation",
+      "n": 24,
+      "successes": 0,
+      "success_rate": 0.0,
+      "success_wilson_95": [
+        0.0,
+        0.13798057582897535
+      ],
+      "mean_utility": -0.06999999999999999,
+      "mean_resource_proxy": 0.06999999999999999,
+      "mean_generated_tokens": 25.125,
+      "median_wall_seconds": 0.7375006666406989,
+      "switch_trajectories": 24
+    }
+  ],
+  "off_policy": [
+    {
+      "target_regime": "always_small",
+      "n_logging": 64,
+      "ipw_utility": -0.04031250000000001,
+      "nominal_score_se": 0.011308202068754245,
+      "nominal_normal_interval": [
+        -0.06247657605475833,
+        -0.018148423945241687
+      ],
+      "ess_by_stage": [
+        37.0,
+        11.0,
+        3.0
+      ],
+      "max_weight_by_stage": [
+        2.0,
+        8.0,
+        32.0
+      ],
+      "terminal_positive_weights": 3,
+      "support_warning": "Small target-compatible sample; do not use this pilot for policy improvement claims.",
+      "interpretation": "Tiny exploratory sample; nominal intervals may be unreliable. This is not evidence of model or policy superiority."
+    },
+    {
+      "target_regime": "always_large",
+      "n_logging": 64,
+      "ipw_utility": -0.07697916666666665,
+      "nominal_score_se": 0.013156004731026977,
+      "nominal_normal_interval": [
+        -0.10276493593947952,
+        -0.05119339739385378
+      ],
+      "ess_by_stage": [
+        27.0,
+        19.999999999999982,
+        16.00000000000001
+      ],
+      "max_weight_by_stage": [
+        2.0,
+        2.6666666666666665,
+        3.5555555555555554
+      ],
+      "terminal_positive_weights": 16,
+      "support_warning": "Small target-compatible sample; do not use this pilot for policy improvement claims.",
+      "interpretation": "Tiny exploratory sample; nominal intervals may be unreliable. This is not evidence of model or policy superiority."
+    },
+    {
+      "target_regime": "fixed_switch",
+      "n_logging": 64,
+      "ipw_utility": -0.02517361111111112,
+      "nominal_score_se": 0.05481713973975873,
+      "nominal_normal_interval": [
+        -0.13261520500103824,
+        0.08226798277881599
+      ],
+      "ess_by_stage": [
+        37.0,
+        25.99999999999998,
+        22.000000000000014
+      ],
+      "max_weight_by_stage": [
+        2.0,
+        2.6666666666666665,
+        3.5555555555555554
+      ],
+      "terminal_positive_weights": 22,
+      "support_warning": "Small target-compatible sample; do not use this pilot for policy improvement claims.",
+      "interpretation": "Tiny exploratory sample; nominal intervals may be unreliable. This is not evidence of model or policy superiority."
+    },
+    {
+      "target_regime": "failure_escalation",
+      "n_logging": 64,
+      "ipw_utility": -0.02517361111111112,
+      "nominal_score_se": 0.05481713973975873,
+      "nominal_normal_interval": [
+        -0.13261520500103824,
+        0.08226798277881599
+      ],
+      "ess_by_stage": [
+        37.0,
+        25.99999999999998,
+        22.000000000000014
+      ],
+      "max_weight_by_stage": [
+        2.0,
+        2.6666666666666665,
+        3.5555555555555554
+      ],
+      "terminal_positive_weights": 22,
+      "support_warning": "Small target-compatible sample; do not use this pilot for policy improvement claims.",
+      "interpretation": "Tiny exploratory sample; nominal intervals may be unreliable. This is not evidence of model or policy superiority."
+    }
+  ],
+  "paired_comparisons": [
+    {
+      "regime": "always_small",
+      "baseline": "always_small",
+      "tasks": 24,
+      "mean_utility_difference": 0.0,
+      "paired_task_bootstrap_95": [
+        0.0,
+        0.0
+      ],
+      "bootstrap_seed": 20265919,
+      "bootstrap_replicates": 5000,
+      "interpretation": "Exploratory percentile bootstrap, no multiplicity adjustment or guaranteed small-sample coverage."
+    },
+    {
+      "regime": "always_large",
+      "baseline": "always_small",
+      "tasks": 24,
+      "mean_utility_difference": -0.06,
+      "paired_task_bootstrap_95": [
+        -0.06,
+        -0.06
+      ],
+      "bootstrap_seed": 20265919,
+      "bootstrap_replicates": 5000,
+      "interpretation": "Exploratory percentile bootstrap, no multiplicity adjustment or guaranteed small-sample coverage."
+    },
+    {
+      "regime": "fixed_switch",
+      "baseline": "always_small",
+      "tasks": 24,
+      "mean_utility_difference": -0.039999999999999994,
+      "paired_task_bootstrap_95": [
+        -0.039999999999999994,
+        -0.039999999999999994
+      ],
+      "bootstrap_seed": 20265919,
+      "bootstrap_replicates": 5000,
+      "interpretation": "Exploratory percentile bootstrap, no multiplicity adjustment or guaranteed small-sample coverage."
+    },
+    {
+      "regime": "failure_escalation",
+      "baseline": "always_small",
+      "tasks": 24,
+      "mean_utility_difference": -0.039999999999999994,
+      "paired_task_bootstrap_95": [
+        -0.039999999999999994,
+        -0.039999999999999994
+      ],
+      "bootstrap_seed": 20265919,
+      "bootstrap_replicates": 5000,
+      "interpretation": "Exploratory percentile bootstrap, no multiplicity adjustment or guaranteed small-sample coverage."
+    }
+  ]
+}
