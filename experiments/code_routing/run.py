@@ -13,6 +13,9 @@ overwritten; re-running resumes the missing episodes only.
 
 GPU courtesy guard: refuses to start while ANOTHER llama-server on this host is generating
 (a sibling pre-registered experiment measures latency), unless --allow-contention (recorded).
+The same check runs before EVERY episode, so if the sibling (re)starts mid-run this runner
+stops launching new episodes until it is idle again (`yielded_seconds_before_start` per episode).
+Episodes already in flight finish, so a restart can still see up to one episode of overlap.
 """
 from __future__ import annotations
 import argparse, json, os, signal, subprocess, sys, threading, time
@@ -236,7 +239,15 @@ def main():
                 return None
             par, arm = resumes[e['episode_id']]
             return dict(restore_first_failure_prefix(tasks[e['task_uid']], vtests[e['task_uid']], par, cfg), parent_episode_id=par['episode_id'], arm=P_ARMS[arm])
-        futs = [ex.submit(run_episode, tasks[e['task_uid']], vtests[e['task_uid']], e, chooser(e), models, cfg, ep_stamp, on_decision, resume_of(e)) for e in todo]
+        def guarded(e):
+            # yield to a sibling experiment that (re)starts mid-run: no NEW episode begins while a foreign llama-server generates
+            waited = 0
+            while not a.mock and not a.allow_contention and foreign_busy_servers(own):
+                time.sleep(30); waited += 30
+            rec = run_episode(tasks[e['task_uid']], vtests[e['task_uid']], e, chooser(e), models, cfg, ep_stamp, on_decision, resume_of(e))
+            rec['yielded_seconds_before_start'] = waited
+            return rec
+        futs = [ex.submit(guarded, e) for e in todo]
         for fu in as_completed(futs):
             rec = fu.result()
             with lock:

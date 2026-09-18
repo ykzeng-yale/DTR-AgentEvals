@@ -119,7 +119,9 @@ on pilot tasks the pair is still frozen and that fact is reported (size ≠ stre
 
 The harness refuses to start while another llama-server on the host is generating, because
 a sibling pre-registered experiment on the same GPU measures latency; an override is
-recorded in every manifest and episode (`contention_allowed`). Latency from any contended
+recorded in every manifest and episode (`contention_allowed`). The check is repeated before every episode, so a
+sibling run that (re)starts mid-stream pauses this one (`yielded_seconds_before_start`); an episode already in flight
+still finishes, so up to one episode of overlap remains possible. Latency from any contended
 run is labelled as such and excluded from latency claims.
 
 ## 8. What this study cannot show
