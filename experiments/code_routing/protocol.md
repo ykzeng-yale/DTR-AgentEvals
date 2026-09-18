@@ -94,8 +94,9 @@ reported separately and never converted to money or energy.
 - **A4 (branch audit, protocol §5).** 200 first-failure prefixes sampled with known
   probability from CONFIRM logs using the design's audit seed; transcript restored; small
   and large continuations × 2 fresh seeds each (the logged model's arm doubles as the
-  same-model control). Target: mean continuation contrast over that prefix population,
-  compared with the log-based stage-1 Q contrast. Restoration check: recomputed transcript
+  same-model control). The forked model is kept at t=2 ("stay with the forked model").
+  Target: mean stay-large minus stay-small success over that prefix population, compared
+  with the Hájek-IPW estimate of the same contrast from the randomized log (task bootstrap). Restoration check: recomputed transcript
   hash equals the logged hash and the re-validated parent candidate reproduces the logged
   tool result.
 - **Negative controls.** Naive "escalated vs not" comparison (association only) and IPW with

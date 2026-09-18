@@ -22,11 +22,12 @@ import numpy as np
 import requests
 
 from common import RESULTS, ROOT, code_sha256, git_head, load_config, load_tasks, now_iso, resolve, sha256_bytes
-from agent import LlamaServerModel, MockModel, extract_code, run_episode, tests_prompt
+from agent import LlamaServerModel, MockModel, extract_code, restore_first_failure_prefix, run_episode, tests_prompt
 import policies as P
 
 LLAMA_BINS = [os.environ.get('LLAMA_SERVER', ''), str(ROOT / 'work' / 'llama.cpp' / 'build' / 'bin' / 'llama-server')]
 PIDFILE = ROOT / 'work' / 'code_routing_servers.json'
+P_ARMS = ('small', 'large')
 
 
 def foreign_busy_servers(own_ports: set) -> list:
@@ -109,7 +110,7 @@ def gguf_digests(cfg: dict) -> dict:
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--servers', choices=['start', 'stop'])
-    ap.add_argument('--stage', choices=['tests', 'pilot', 'log', 'live'])
+    ap.add_argument('--stage', choices=['tests', 'pilot', 'log', 'live', 'branch'])
     ap.add_argument('--mock', action='store_true')
     ap.add_argument('--limit', type=int)
     ap.add_argument('--pilot-runs', type=int, default=4)
@@ -177,6 +178,22 @@ def main():
         eps = [dict(episode_id='pilot:%s#%d' % (u, r), task_uid=u, run=r, split='pilot', policy='randomized_log',
                     u=rng.random(cfg['horizon']).tolist(), seed=int(rng.integers(1, 2**31 - 1)), run_order=i * a.pilot_runs + r)
                for i, u in enumerate(design['pilot_tasks']) for r in range(a.pilot_runs)]
+    elif a.stage == 'branch':
+        # prefix population: CONFIRM log episodes whose first validation failed; equal-probability sample without replacement
+        parents = sorted((json.loads(l) for l in (base / 'log' / 'episodes.jsonl').read_text().splitlines() if l.strip()), key=lambda e: e['episode_id'])
+        parents = [e for e in parents if not e.get('error') and e['split'] == 'confirm' and e['n_decisions'] >= 2]
+        ba = design['branch_audit']; rng = np.random.default_rng(ba['seed'])
+        pick = sorted(rng.choice(len(parents), size=min(ba['n_prefixes'], len(parents)), replace=False).tolist())
+        resumes, eps = {}, []
+        for i in pick:
+            par = parents[i]
+            for arm in (0, 1):
+                for c in range(ba['continuations_per_arm']):
+                    eid = 'branch:%s:%s#%d' % (par['episode_id'], P_ARMS[arm], c)
+                    eps.append(dict(episode_id=eid, task_uid=par['task_uid'], run=c, split='confirm', policy='branch_stay_' + P_ARMS[arm],
+                                    forced_arm=arm, seed=int(rng.integers(1, 2**31 - 1)), run_order=len(eps),
+                                    sampling_probability=len(pick) / len(parents)))
+                    resumes[eid] = (par, arm)
     else:
         eps = sorted(design['%s_episodes' % a.stage], key=lambda e: e['run_order'])
     learned = None
@@ -203,6 +220,8 @@ def main():
             dec_f.flush(); os.fsync(dec_f.fileno())
 
     def chooser(e):
+        if 'forced_arm' in e:       # branch audit: the forked model is used at t=1 and kept at t=2 ("stay with the forked model")
+            return lambda state: (e['forced_arm'], float(e['forced_arm']), 'branch_forced')
         pol = None if e['policy'] == 'randomized_log' else (learned if e['policy'] == 'learned' else P.PRESPECIFIED[e['policy']])
         def choose(state):
             pl = cfg['p_large'] if pol is None else float(pol(state))
@@ -212,7 +231,12 @@ def main():
     ep_stamp = {k: v for k, v in stamp.items() if k != 'gguf'}
     t0 = time.time(); k = 0
     with ThreadPoolExecutor(cfg['workers']) as ex, open(ep_path, 'a') as f:
-        futs = [ex.submit(run_episode, tasks[e['task_uid']], vtests[e['task_uid']], e, chooser(e), models, cfg, ep_stamp, on_decision) for e in todo]
+        def resume_of(e):
+            if a.stage != 'branch':
+                return None
+            par, arm = resumes[e['episode_id']]
+            return dict(restore_first_failure_prefix(tasks[e['task_uid']], vtests[e['task_uid']], par, cfg), parent_episode_id=par['episode_id'], arm=P_ARMS[arm])
+        futs = [ex.submit(run_episode, tasks[e['task_uid']], vtests[e['task_uid']], e, chooser(e), models, cfg, ep_stamp, on_decision, resume_of(e)) for e in todo]
         for fu in as_completed(futs):
             rec = fu.result()
             with lock:

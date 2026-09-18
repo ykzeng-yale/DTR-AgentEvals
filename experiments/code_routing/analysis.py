@@ -3,6 +3,7 @@
   python analysis.py --learn         fitted-Q greedy routing table from TRAIN-task logs; frozen to learned_policy.json
   python analysis.py --ope           off-policy values of the frozen policy class on CONFIRM-task logs
   python analysis.py --calibration   OPE vs fresh live executions (needs the live stage)
+  python analysis.py --branch        restored-prefix branch audit vs the log-based estimate of the same contrast
   add --mock to analyse a dry run under work/ (labelled; never reported)
 
 All inference is at task level (theory eq. 13). Known behaviour probabilities only.
@@ -35,7 +36,7 @@ def policy_class(base: Path) -> dict:
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--learn', action='store_true'); ap.add_argument('--ope', action='store_true')
-    ap.add_argument('--calibration', action='store_true'); ap.add_argument('--mock', action='store_true')
+    ap.add_argument('--calibration', action='store_true'); ap.add_argument('--branch', action='store_true'); ap.add_argument('--mock', action='store_true')
     a = ap.parse_args()
     cfg = load_config(); K = cfg['horizon']
     base = (ROOT / 'work' / 'code_routing_mock') if a.mock else RESULTS
@@ -111,6 +112,45 @@ def main():
                'Evaluation cost: ONE randomized log of %d model calls supports every policy above; the live arm spent %d calls in total (%d policies).' % (
                    calls_log, int(u['live_model_calls'].sum()), len(u)), '']
         (out / 'report_calibration.md').write_text('\n'.join(rep)); print('\n'.join(rep))
+
+    if a.branch:
+        br, n_err_b = read(base / 'branch' / 'episodes.jsonl')
+        df = pd.DataFrame([dict(parent=e['parent_episode_id'], task=e['task_uid'], arm=e['fork_arm'], run=e['run'], success=e['success'],
+                                hash_ok=e['restoration']['transcript_hash_matches'], tool_ok=e['restoration']['tool_result_reproduced']) for e in br])
+        per = df.pivot_table(index=['task', 'parent'], columns='arm', values='success', aggfunc='mean').reset_index()
+        per['d'] = per['large'] - per['small']
+
+        def cluster_se(x, task):                       # prefixes are the units of the target; tasks are the independent clusters
+            c = pd.Series(x - x.mean()).groupby(task.to_numpy()).sum()
+            return float(np.sqrt((c ** 2).sum()) / len(x))
+        est, se = float(per['d'].mean()), cluster_se(per['d'].to_numpy(), per['task'])
+        runs = df.pivot_table(index=['parent', 'arm'], columns='run', values='success').dropna()
+        disagree = float((runs[0] != runs[1]).mean())   # same state, same model, fresh seed: serving/sampling noise floor
+        # the same contrast from the randomized log: prefix population = confirm episodes whose first validation failed
+        lp = pd.DataFrame([dict(task=e['task_uid'], success=e['success'], a1=e['decisions'][1]['a'],
+                                a2=(e['decisions'][2]['a'] if len(e['decisions']) > 2 else None)) for e in conf if e['n_decisions'] >= 2])
+
+        def log_contrast(x):
+            v = {}
+            for arm in (0, 1):
+                w = (x.a1 == arm) / 0.5 * np.where(x.a2.isna(), 1.0, (x.a2 == arm) / 0.5)
+                v[arm] = float((w * x.success).sum() / w.sum()) if w.sum() > 0 else np.nan
+            return v[1] - v[0]
+        rng = np.random.default_rng(0); groups = [g for _, g in lp.groupby('task')]
+        boot = [log_contrast(pd.concat([groups[i] for i in rng.integers(0, len(groups), len(groups))])) for _ in range(500)]
+        lc, lse = log_contrast(lp), float(np.nanstd(boot, ddof=1))
+        diff, dse = est - lc, float(np.sqrt(se ** 2 + lse ** 2))   # treated as independent: branch outcomes use fresh seeds; conservative if positively dependent through shared prefixes
+        rep = ['# Code-routing: branch audit (restored first-failure prefixes, CONFIRM tasks)', '', tag + 'branch infrastructure errors excluded: %d' % n_err_b, '',
+               '| quantity | value |', '|---|---|',
+               '| prefixes / tasks | %d / %d |' % (len(per), per['task'].nunique()),
+               '| restoration: transcript hash matches | %d / %d |' % (int(df.hash_ok.sum()), len(df)),
+               '| restoration: tool result reproduced | %d / %d |' % (int(df.tool_ok.sum()), len(df)),
+               '| same-state same-model disagreement between two fresh continuations | %.3f |' % disagree,
+               '| branch contrast, stay-large minus stay-small (success) | %.4f (task-cluster SE %.4f) |' % (est, se),
+               '| same contrast from the randomized log (Hajek IPW, task bootstrap SE) | %.4f (SE %.4f) |' % (lc, lse),
+               '| branch minus log | %.4f (SE %.4f), 95%% interval [%.4f, %.4f] |' % (diff, dse, diff - 1.96 * dse, diff + 1.96 * dse), '',
+               'Target: mean continuation effect over the first-failure prefix population reached under the randomized logger. It is NOT the value of any policy that changes how prefixes are reached (protocol section 5).', '']
+        (out / 'report_branch.md').write_text('\n'.join(rep)); print('\n'.join(rep))
 
 
 if __name__ == '__main__':

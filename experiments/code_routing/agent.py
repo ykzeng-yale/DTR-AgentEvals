@@ -173,8 +173,24 @@ def validate(code: str, tests: str, cfg: dict) -> dict:
                 trace='\n'.join(b[1] for b in bad[:3])[:1500], seconds=run['seconds'])
 
 
+# ------------------------------------------------------------------ branch restoration
+def restore_first_failure_prefix(task: dict, tests: str, parent: dict, cfg: dict) -> dict:
+    """Rebuild the exact transcript that preceded the parent's t=1 decision and re-run the tool on the parent's
+    first candidate. Fidelity checks: transcript hash equals the hash logged BEFORE the parent's t=1 call, and the
+    re-validated candidate reproduces the logged tool result."""
+    d0, d1 = parent['decisions'][0], parent['decisions'][1]
+    convo = [dict(role='system', content=SYS_CODE), dict(role='user', content=task_prompt(task)),
+             dict(role='assistant', content=d0['reply']),
+             dict(role='user', content=ASK_REPAIR.format(tests=(tests or '# (no visible tests)').strip(), trace=d0['trace']))]
+    h = hashlib.sha256(json.dumps(convo, sort_keys=True).encode()).hexdigest()
+    val = validate(d0['code'], tests, cfg)
+    same_tool = all(val[k] == d0['validation'][k] for k in ('passed', 'fail_class', 'n_asserts', 'n_fail'))
+    return dict(convo=convo, code=d0['code'], val=val, prev=[d0['a']], t=1,
+                restoration=dict(transcript_hash_matches=(h == d1['transcript_sha256']), tool_result_reproduced=bool(same_tool)))
+
+
 # ------------------------------------------------------------------ episode
-def run_episode(task: dict, tests: str, ep: dict, choose, models: dict, cfg: dict, stamp: dict, on_decision=None) -> dict:
+def run_episode(task: dict, tests: str, ep: dict, choose, models: dict, cfg: dict, stamp: dict, on_decision=None, resume=None) -> dict:
     """choose(state) -> (action_index, prob_of_large, source). Decisions are handed to ``on_decision`` (durably
     logged by the caller) BEFORE the model is invoked."""
     K = cfg['horizon']; mock = isinstance(models['small'], MockModel)
@@ -182,10 +198,13 @@ def run_episode(task: dict, tests: str, ep: dict, choose, models: dict, cfg: dic
                policy=ep.get('policy', 'randomized_log'), seed=ep['seed'], start_utc=time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime()),
                error=None, decisions=[], **stamp)
     convo = [dict(role='system', content=SYS_CODE), dict(role='user', content=task_prompt(task))]
-    code, val, prev = '', None, []
+    code, val, prev, t_start = '', None, [], 0
+    if resume is not None:      # branch audit: continue from a restored prefix; only the NEW decisions are recorded here
+        convo, code, val, prev, t_start = list(resume['convo']), resume['code'], resume['val'], list(resume['prev']), resume['t']
+        rec.update(parent_episode_id=resume['parent_episode_id'], fork_t=t_start, fork_arm=resume['arm'], restoration=resume['restoration'])
     t0 = time.perf_counter()
     try:
-        for t in range(K):
+        for t in range(t_start, K):
             state = dict(t=t, x_humaneval=int(task['benchmark'] == 'humaneval'), fail_class='start' if val is None else val['fail_class'],
                          prev_actions=tuple(prev), frac_fail=0.0 if val is None else val['frac_fail'])
             a, p_large, source = choose(state)
@@ -210,7 +229,7 @@ def run_episode(task: dict, tests: str, ep: dict, choose, models: dict, cfg: dic
                              dict(role='user', content=ASK_REPAIR.format(tests=(tests or '# (no visible tests)').strip(), trace=val['trace']))]
         rec['agent_seconds'] = time.perf_counter() - t0
         v = verify(task, code, timeout_s=cfg['sandbox_timeout_s'], cpu_seconds=cfg['sandbox_cpu_s'])
-        rec.update(final_code=code, n_decisions=len(prev), actions=[ACTIONS[a] for a in prev], stop_reason='validated' if val['passed'] else 'horizon',
+        rec.update(final_code=code, n_decisions=len(prev), n_new_decisions=len(rec['decisions']), actions=[ACTIONS[a] for a in prev], stop_reason='validated' if val['passed'] else 'horizon',
                    success=int(v['success']), verify_timed_out=v['timed_out'], hack_flags=v['hack_flags'], sentinel_seen=v['sentinel_seen'],
                    penalty=sum(d['penalty'] for d in rec['decisions']), completion_tokens=sum(d['completion_tokens'] for d in rec['decisions']),
                    llm_wall_seconds=sum(d['wall_seconds'] for d in rec['decisions']))

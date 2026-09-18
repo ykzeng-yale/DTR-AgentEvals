@@ -12,7 +12,7 @@ agent and are not edited from here. Rules in [`AGENTS.md`](../AGENTS.md) apply.
 | E0 | Design-efficiency simulation: one sequentially randomized experiment vs one arm per scaffold; tailored-regime learning; forking vs randomizing at equal compute | synthetic, known truth | **executed** — 5,000 replicates, `results/sim/` |
 | E1 | Absorbing-horizon tabular IPW / g-computation / cross-fitted DR with task-cluster inference | code + tests | **implemented**, 12 tests pass; reproduces `src/dtr_agent_evals` scores to 1e-10 on its simulator |
 | L1–L3 | Code-routing study on MBPP + HumanEval, Qwen2.5-3B vs 7B, K=3 routing decisions | real open-weight inference | **harness complete, NOT run.** Only deterministic mock dry runs (gitignored). Blocked, see below |
-| A4 | Branch audit (200 restored first-failure prefixes) | real inference | planned; not implemented |
+| A4 | Branch audit: 200 restored first-failure prefixes × {small, large} × 2 fresh continuations, with transcript-hash and tool-result restoration checks | real inference | **implemented, NOT run**; mock dry run restores 800/800 |
 
 Nothing in this directory is a result from a real language model yet.
 
@@ -119,6 +119,8 @@ $PY run.py --stage log                   # 4,488 randomized episodes, resumable
 $PY analysis.py --learn                  # freeze learned_policy.json; COMMIT + PUSH
 $PY run.py --stage live                  # 3,960 fresh target-policy episodes
 $PY analysis.py --calibration
+$PY run.py --stage branch                # 800 continuations from 200 restored prefixes
+$PY analysis.py --branch
 $PY run.py --servers stop
 ```
 
