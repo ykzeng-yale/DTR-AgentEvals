@@ -113,3 +113,15 @@ The test suite checks complete path enumeration for IPW and both DR robustness b
 See [`experiment_handoff.md`](experiment_handoff.md) for runnable commands, metadata interpretation, inference limitations, and concrete publication-scale follow-up. All completed runs are available under [`results`](../results/); none should be labeled a completed external-benchmark study.
 
 An independent final-source rerun repeated all 400 main simulation replicates. The replicate table, summary, exact-truth/on-policy check and diagnostic files were byte-identical to the archived outputs, despite the recorded NumPy versions differing (2.4.1 versus 2.5.3). The [reproduction record](../results/reproduction_check.json) includes output and code hashes. This verifies this run; it is not a guarantee across arbitrary software/hardware changes.
+
+## Experiments workstream: design-efficiency simulation (added 18 September 2026)
+
+*Written by the experiments agent; synthetic evidence only. Full write-up, table, figure and limitations: [`experiments/README.md`](../experiments/README.md). Raw replicates, manifest (seed, arguments, code sha256) and summary: [`results/sim/`](../results/sim/).*
+
+Run: `experiments/sim/run_sim.py --reps 1000 --ci-reps 200 --workers 4` — 5,000 Monte Carlo replicates (1,000 at each of n = 300, 600, 1,200, 2,400, 4,800 episodes), 1,359 s on an Apple M5. The generator is a separate two-stage coding-agent simulator (`experiments/sim/synth_agent.py`) with truth from 400,000-task on-policy rollouts. Three base rates are calibrated to a real 591-task MBPP+HumanEval run; **the treatment-effect mechanism is planted, not observed.**
+
+Observed: (i) IPW and cross-fitted AIPW bias at most 0.0014; task-cluster bootstrap 95% intervals covered 0.925–0.960 over 200 replicates per cell (Monte Carlo SE about 0.015). (ii) At equal total episodes, one sequentially randomized experiment estimated each of 12 embedded scaffolds with 1.67–1.72× lower RMSE than one arm per scaffold, and the scaffold it picked had lower true regret at every n (0.0017 vs 0.0072 at n = 4,800). (iii) A Q-learned tailored regime beat the best fixed scaffold in 41.5% / 62.8% / 81.6% / 91.1% / 94.8% of replicates at the five sample sizes; **at n = 300 it was worse on average.** (iv) At equal compute, forked replay of all feasible rescue arms reduced the variance of a stage-2 contrast by 2.1–2.3×.
+
+Limitations: one mechanism, two stages, no misspecification/drift/weak-overlap cells, exact simulated state restoration. The efficiency factor in (ii) is specific to 12 regimes sharing a 2×2×3 randomization; it is not a general constant. This run does not use `src/dtr_agent_evals/simulator.py` and does not replace the S1 grid in the protocol.
+
+The code-routing study on real open-weight models (ladder L1–L3) is **implemented and dry-run with a mock model only; no real-model result exists.** See the status table in `experiments/README.md`.

@@ -59,3 +59,21 @@ The resource penalty is a **unitless design choice** (0.01 per small-model call;
 8. Apply the theory's honest/simultaneous policy-selection procedures. The current simulation selects a finite menu and evaluates on independent data; it does not certify safe improvement for arbitrary learned routers.
 
 No ongoing experiment is promised beyond the recorded completed runs. A later agent can use these scripts, configurations, raw logs and tests to continue the predeclared study.
+
+## Experiments workstream handoff (added 18 September 2026)
+
+*Written by the experiments agent. Details and exact commands: [`experiments/README.md`](../experiments/README.md); pre-registration draft: [`experiments/code_routing/protocol.md`](../experiments/code_routing/protocol.md).*
+
+Addresses items 1–5 and 8 of "Work required" above for one benchmark family:
+
+- `experiments/code_routing/` — coding agent on MBPP-sanitized + HumanEval (591 externally versioned, hidden-test-scored tasks) inside a macOS Seatbelt sandbox; Qwen2.5-3B vs 7B (GGUF, llama.cpp); K = 3 routing opportunities with absorbing success; P(large) = 0.5; assignments pre-drawn and committed before execution; each decision fsync'ed before its model call; 30 / 231 / 330 task split; frozen policy class (always-small/large, two escalation rules, large-then-small, failure-class tailored, two odds shifts, fitted-Q learned table); fresh live executions for OPE-versus-live calibration.
+- `experiments/code_routing/estimators_absorbing.py` — extends the reference tabular IPW / iterated-Q / cross-fitted DR to absorbing variable horizons and task-mean scores (theory eq. 13) **without editing `src/`**. Tests show identical IPW and DR scores to `src/dtr_agent_evals/estimators.py` on its simulator (1e-10), unbiasedness against on-policy truth under absorption for deterministic, tailored and stochastic targets, and no-op padding equivalence.
+
+**Not run on any real model.** The experiment host's GPU is occupied by a sibling pre-registered study that measures latency; the runner refuses to start under contention unless overridden. The author decides when that constraint lifts.
+
+Requests to the theory agent before the design is frozen (edit `protocol.md` §10 or reply in this file):
+
+1. Is function synthesis in a Seatbelt sandbox acceptable for L1 given no container runtime on the host, or should L1 wait for BrowserGym / mini-swe-agent elsewhere?
+2. Under absorbing success, "fixed switch at turn 1" and "escalate after first failure" are the same policy. Keep absorption (realistic agent; theory §8 lists it as an obligation), or force all three stages to run as in the arithmetic pilot?
+3. Theorem 5 is vacuous at this scale: K = 3, c_t = 2, 330 tasks give M = 48.4 and ε ≈ 18 on a utility of range ≈ 1.1; ε = 0.05 needs about 4×10⁷ tasks. The analysis reports it as such next to CLT/Bonferroni intervals. A variance-adaptive (empirical-Bernstein) certificate would be needed for it to bind.
+4. Visible tests are frozen once per task as part of the environment (written by the large model at T = 0, never seeing a candidate). Alternative: regenerate per episode, which makes tool quality part of the noise. The frozen choice is what makes branch restoration well defined.
