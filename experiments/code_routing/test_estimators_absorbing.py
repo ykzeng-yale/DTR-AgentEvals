@@ -104,3 +104,15 @@ def test_learned_table_and_certificate():
     assert v_learned >= v_small - 0.005
     c = EA.hoeffding_certificate(K_policies=7, n_tasks=330, T=3, r=1.0, c=2.0, alpha=0.05)
     assert c['M'] == pytest.approx(3 + 2 * (2 * 3 + 4 * 2 + 8 * 1))
+
+
+def test_history_compression_breaks_plugin_but_not_dr():
+    """Issue #2: drop benchmark, failure class and previous action from the Q-table state. The plug-in (g-computation)
+    is then biased for a policy that depends on the dropped failure class; DR with KNOWN propensities is not."""
+    pol = P.PRESPECIFIED['class_tailored']; truth = _truth(pol); g, d = [], []
+    for rep in range(100):
+        L = EA.from_episodes(_rollout(400, np.random.default_rng(5000 + rep), runs=2), 3, lambda s: (int(s['t']),))
+        out = EA.evaluate(L, pol, seed=rep); g.append(out['gcomp']['estimate']); d.append(out['dr']['estimate'])
+    g_se, d_se = np.std(g, ddof=1) / 10, np.std(d, ddof=1) / 10
+    assert abs(np.mean(g) - truth) > 6 * g_se and abs(np.mean(g) - truth) > 0.015        # plug-in: clearly biased
+    assert abs(np.mean(d) - truth) < 3.5 * d_se + 0.002                                   # DR: still unbiased

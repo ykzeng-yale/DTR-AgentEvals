@@ -11,19 +11,13 @@ SRC = ROOT / 'results' / 's1_grid'
 
 
 def main():
-    rows, diag = [], []
+    rows = []
     for cell in sorted(p for p in SRC.iterdir() if (p / 'summary.json').exists()):
         m = re.match(r'n(\d+)_T(\d+)_eps(\dp\d+)', cell.name)
         n, T, eps = int(m.group(1)), int(m.group(2)), float(m.group(3).replace('p', '.'))
         for r in json.loads((cell / 'summary.json').read_text()):
             rows.append(dict(n=n, horizon=T, floor=eps, **r))
-        rep = pd.read_csv(cell / 'replicates.csv')
-        keep = [c for c in rep.columns if c in ('policy', 'q_spec', 'behavior', 'zero_weight_fraction', 'ess_terminal', 'max_weight_terminal')]
-        d = json.loads((cell / 'diagnostics.json').read_text())
-        diag.append(dict(n=n, horizon=T, floor=eps, cell=cell.name, diagnostics_keys=','.join(sorted(d[0].keys())) if isinstance(d, list) and d else str(type(d).__name__),
-                         replicate_columns=','.join(rep.columns)))
     long = pd.DataFrame(rows); long.to_csv(SRC / 'grid_summary_long.csv', index=False)
-    pd.DataFrame(diag).to_csv(SRC / 'grid_cells.csv', index=False)
     main_spec = long[(long.q_spec == 'correct') & (long.behavior == 'known')]
     out = ['# S1 crossed grid: n x horizon x overlap floor (reference simulator, 1,000 replicates per cell)', '',
            'Cells found: %d of 27. Known propensities and correctly specified tabular Q unless stated. Coverage Monte Carlo SE is about 0.007 at 0.95.' % long[['n', 'horizon', 'floor']].drop_duplicates().shape[0], '']
@@ -38,6 +32,22 @@ def main():
             (bad[['n', 'horizon', 'floor', 'policy', 'bias', 'rmse', 'coverage_95']].round(4).to_markdown(index=False) if len(bad) else '_none_'), '']
     rob = long[(long.method == 'dr')].groupby(['q_spec', 'behavior', 'horizon'])[['bias', 'coverage_95']].agg(lambda s: float(np.mean(np.abs(s))) if s.name == 'bias' else float(np.mean(s))).round(4)
     out += ['## DR under nuisance misspecification: mean |bias| and mean coverage by horizon (all n, floors, policies)', '', rob.to_markdown(), '']
+    # ---- evaluation cost: one shared randomized log (DR) vs the same n episodes split across the policies, each run on-policy
+    import sys; sys.path.insert(0, str(ROOT / 'src'))
+    from dtr_agent_evals.simulator import Environment, simulate
+    cost = []
+    for (T, eps), g in main_spec[main_spec.method == 'dr'].groupby(['horizon', 'floor']):
+        env = Environment(horizon=int(T), cost=0.06, overlap=float(eps)); pols = sorted(g.policy.unique())
+        sd = {p: float(np.std(simulate(100_000, np.random.default_rng(7), env, p).r.sum(axis=1), ddof=1)) for p in pols}
+        for _, r in g.iterrows():
+            separate = sd[r.policy] / np.sqrt(r.n / len(pols))
+            cost.append(dict(horizon=T, floor=eps, n=r.n, policy=r.policy, dr_rmse_shared_log=r.rmse, onpolicy_rmse_split_budget=separate,
+                             rmse_ratio_separate_over_dr=separate / r.rmse if r.rmse > 0 else np.nan))
+    cost = pd.DataFrame(cost); cost.to_csv(SRC / 'evaluation_cost.csv', index=False)
+    piv = cost.groupby(['horizon', 'floor', 'policy'])['rmse_ratio_separate_over_dr'].mean().round(2).unstack('policy')
+    out += ['## Evaluation cost: RMSE of on-policy evaluation with the budget split across %d policies, divided by DR RMSE from ONE shared randomized log of the same total size' % cost.policy.nunique(), '',
+            'Ratio > 1: the shared randomized log is the cheaper way to evaluate that policy; < 1: running the policy directly is cheaper. Averaged over n. On-policy RMSE is sd(return)/sqrt(n/5) with sd from a 100,000-episode rollout.', '',
+            piv.to_markdown(), '']
     (SRC / 'grid_report.md').write_text('\n'.join(out)); print('\n'.join(out))
 
 

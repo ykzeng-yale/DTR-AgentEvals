@@ -10,11 +10,20 @@ agent and are not edited from here. Rules in [`AGENTS.md`](../AGENTS.md) apply.
 | ID | What | Evidence layer | Status |
 |---|---|---|---|
 | E0 | Design-efficiency simulation: one sequentially randomized experiment vs one arm per scaffold; tailored-regime learning; forking vs randomizing at equal compute | synthetic, known truth | **executed** — 5,000 replicates, `results/sim/` |
+| S1 | Crossed n × horizon × overlap-floor grid on the **reference** simulator and estimators (unchanged), 1,000 replicates × 27 cells × 4 nuisance specifications | synthetic, exact truth | **executed** — `results/s1_grid/`, report in `grid_report.md` |
 | E1 | Absorbing-horizon tabular IPW / g-computation / cross-fitted DR with task-cluster inference | code + tests | **implemented**, 12 tests pass; reproduces `src/dtr_agent_evals` scores to 1e-10 on its simulator |
 | L1–L3 | Code-routing study on MBPP + HumanEval, Qwen2.5-3B vs 7B, K=3 routing decisions | real open-weight inference | **harness complete, NOT run.** Only deterministic mock dry runs (gitignored). Blocked, see below |
 | A4 | Branch audit: 200 restored first-failure prefixes × {small, large} × 2 fresh continuations, with transcript-hash and tool-result restoration checks | real inference | **implemented, NOT run**; mock dry run restores 800/800 |
 
 Nothing in this directory is a result from a real language model yet.
+
+### Mapping to the open GitHub issues
+
+| Issue | Covered here | Still open |
+|---|---|---|
+| #1 competent open-weight benchmark with randomized routing | `code_routing/`: frozen harness, two licensed open-weight artifacts, prospective randomization with the probability and draw persisted before inference, task-level splits, live always-small / always-large / escalation regimes, infrastructure failures retained | **execution** (GPU held, see below); harness is MBPP+HumanEval in a Seatbelt sandbox rather than BrowserGym / mini-swe-agent — acceptance of that deviation is question 1 in `docs/experiment_handoff.md` |
+| #2 real-trace inference | `estimators_absorbing.py`: explicit eligibility and absorption, actual propensities, task identities, known-randomization odds-shift targets, task-level cross-fitting, paired contrasts with task-cluster SEs; tests for padded-vs-unpadded equivalence, target numerator (exact agreement with `src/`), and history-compression failure (plug-in biased by −0.024, DR unbiased) | typed adapter with **missing/censored outcomes**; drift and overlap failure tests against finite truth (the S1 grid below covers overlap/horizon on the reference simulator only); nothing here is sequentially-DR or TMLE and it is not labelled as such |
+| #3 independent confirmatory study | `analysis.py --calibration` (offline vs fresh whole-policy executions, paired by task, ranking agreement, calls spent) and `--branch` (controlled live branches with shared-prefix dependence handled by task-cluster SEs) | a **competitive published sequential-router baseline**; an explicit **static-replay** comparator; false-improvement-decision rates need repeated datasets, which one benchmark cannot supply |
 
 ### Why L1–L3 has not run
 
@@ -85,6 +94,50 @@ uv venv --python 3.12 .venv && uv pip install --python .venv/bin/python numpy pa
 .venv/bin/python experiments/sim/run_sim.py --reps 1000 --ci-reps 200 --workers 4 --out results/replication_sim
 .venv/bin/python experiments/sim/plot_sim.py      # reads results/sim/
 ```
+
+## S1 — crossed grid on the reference simulator (`s1_grid/`)
+
+`docs/experiment_protocol.md` §3.2 asks for n ∈ {250, 1000, 4000} × T ∈ {2, 5, 10} × floor ∈ {0.5, 0.2, 0.05} at 1,000
+replicates per cell, and the handoff notes that the archived stress runs change horizon and overlap together.
+`s1_grid/run_grid.py` writes one config per cell to `configs/s1_grid/` and calls `scripts/run_simulation.py` unchanged;
+27 cells, 0 failures; per-cell runtimes in the manifests sum to 35 minutes (4 cells at a time; slowest cell 229 s). Raw `replicates.csv` / `diagnostics.json` are stored gzip -9;
+`raw_files_sha256.json` holds the sha256 of every uncompressed file so a rerun can be checked. Full tables:
+[`results/s1_grid/grid_report.md`](../results/s1_grid/grid_report.md), long form `grid_summary_long.csv`.
+
+With known propensities and correctly specified tabular Q (coverage Monte Carlo SE ≈ 0.007):
+
+| horizon | logging | DR coverage, mean over 5 policies (n = 250 / 1000 / 4000) | worst single policy | DR mean RMSE (n = 4000) |
+|---:|---|---|---|---:|
+| 2 | confounded (floor 0.05 or 0.2) | 0.939 / 0.951 / 0.944 | 0.908 | 0.014 |
+| 2 | uniform (floor 0.5) | 0.947 / 0.953 / 0.948 | 0.937 | 0.014 |
+| 5 | confounded | 0.92 / 0.93 / 0.93 | 0.895 | 0.050–0.054 |
+| 5 | uniform | 0.934 / 0.945 / 0.948 | 0.918 | 0.037 |
+| 10 | confounded, floor 0.05 | 0.763 / 0.831 / 0.885 | **0.319** | **0.91** |
+| 10 | confounded, floor 0.2 | 0.783 / 0.862 / 0.922 | 0.398 | 1.00 |
+| 10 | uniform | 0.759 / 0.934 / 0.951 | 0.636 | 0.19 |
+
+- **Horizon, not the floor, drives the failure.** At T = 10 under confounded logging DR intervals for `always_small`
+  covered 0.32–0.83 and its RMSE reached 5.7 at n = 1,000 on a return bounded in about [−0.6, 1]: the estimate leaves the
+  feasible range. RMSE *rose* from n = 250 to n = 1,000 before falling, the signature of heavy-tailed weights. Nothing
+  is clipped or dropped; these cells are kept as failures. Uniform logging restores coverage at T = 10 once n ≥ 1,000.
+- **The floor factor barely varies in this simulator.** The logger's raw P(large) lies in [0.250, 0.741] at T = 2,
+  [0.250, 0.858] at T = 5 and [0.250, 0.955] at T = 10, so the smallest raw action probability is 0.250 / 0.142 / 0.045.
+  Floors 0.05 and 0.2 therefore give *identical* cells at T = 2, floor 0.2 binds only mildly at T = 5, and floor 0.05
+  binds only marginally at T = 10. In practice the grid contrasts a confounded logger with a uniform one (floor 0.5). To study overlap separately, the simulator needs a logger whose spread is
+  itself a parameter — a request to the theory agent, not something changed here.
+- **Misspecification.** With one nuisance wrong DR stays near-unbiased at T ≤ 5 (mean |bias| ≤ 0.005); with both wrong
+  mean |bias| is 0.019 / 0.049 / 0.246 at T = 2 / 5 / 10 and mean coverage 0.82 / 0.86 / 0.73, as the theory predicts.
+- **Evaluation cost — the hypothesis in theory §8 holds only at short horizons.** RMSE of on-policy evaluation with n
+  episodes split across the 5 policies, divided by DR RMSE from one shared log of n episodes (uniform logging):
+  **1.13–1.43 at T = 2, 0.41–0.70 at T = 5, 0.07–0.21 at T = 10**, stable in n. Because split-budget RMSE grows like
+  √K, the shared log breaks even at roughly K* = 5 / ratio² candidate policies: **≈ 3.5 at T = 2, ≈ 27 at T = 5,
+  ≈ 780 at T = 10**, close to the 2^T variance inflation of a deterministic target under uniform binary logging
+  (4, 32, 1,024). K* is this document's back-of-envelope reading of the ratios, not a theorem. Stochastic odds-shift
+  targets are consistently cheaper to evaluate (ratio 1.4 / 0.7 / 0.2).
+
+Consequence for the real study: the code-routing design uses T = 3 with absorbing success, so most episodes contain
+one decision and the inflation is far below 2³; the mock dry run put break-even near 4 candidate policies, and the
+frozen class has 9. That is a prediction to be checked against the real OPE-versus-live comparison, not a result.
 
 ## L1–L3 — code-routing study (`code_routing/`)
 

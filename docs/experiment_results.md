@@ -125,3 +125,15 @@ Observed: (i) IPW and cross-fitted AIPW bias at most 0.0014; task-cluster bootst
 Limitations: one mechanism, two stages, no misspecification/drift/weak-overlap cells, exact simulated state restoration. The efficiency factor in (ii) is specific to 12 regimes sharing a 2×2×3 randomization; it is not a general constant. This run does not use `src/dtr_agent_evals/simulator.py` and does not replace the S1 grid in the protocol.
 
 The code-routing study on real open-weight models (ladder L1–L3) is **implemented and dry-run with a mock model only; no real-model result exists.** See the status table in `experiments/README.md`.
+
+## Experiments workstream: S1 crossed grid on the reference simulator (added 18 September 2026)
+
+*Written by the experiments agent; synthetic evidence only. Tables: [`results/s1_grid/grid_report.md`](../results/s1_grid/grid_report.md); interpretation and caveats: [`experiments/README.md`](../experiments/README.md#s1--crossed-grid-on-the-reference-simulator-s1_grid).*
+
+Run: `experiments/s1_grid/run_grid.py --workers 4 --replicates 1000`, which calls the unchanged `scripts/run_simulation.py` once per cell with configs in `configs/s1_grid/` (seed 20260918, n ∈ {250, 1000, 4000} × horizon ∈ {2, 5, 10} × overlap floor ∈ {0.5, 0.2, 0.05}, five policies, four nuisance specifications, 200,000-episode on-policy truth check). 27 of 27 cells completed; no numerical failures; no clipping.
+
+Observed, with known propensities and correct tabular Q: mean DR 95% coverage over policies was 0.94–0.95 at horizon 2, 0.92–0.95 at horizon 5, and 0.76–0.95 at horizon 10; the worst single policy at horizon 10 under confounded logging covered 0.319 (n = 250) to 0.827 (n = 4,000), with DR RMSE up to 5.7 on a return bounded in about [−0.6, 1]. Uniform logging restored horizon-10 coverage to 0.934 / 0.951 at n = 1,000 / 4,000. With both nuisances misspecified mean |bias| was 0.019 / 0.049 / 0.246 at horizons 2 / 5 / 10.
+
+Evaluation cost: on-policy evaluation with the same n episodes split across the five policies had RMSE 1.13–1.43× that of DR from one shared uniform log at horizon 2, but only 0.41–0.70× at horizon 5 and 0.07–0.21× at horizon 10. **The "lower evaluation cost" hypothesis of theory §8 is supported at horizon 2 and contradicted at horizons 5 and 10 for a five-policy class.**
+
+Limitations: one transition law; floors 0.05 and 0.2 are nearly the same logger in this simulator because the clip rarely binds (identical cells at horizon 2), so overlap is effectively varied only as confounded-versus-uniform; non-Markov, censoring, drift and estimated-propensity cells of protocol §3.2 are not run.
