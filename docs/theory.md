@@ -1,12 +1,14 @@
 # Theory: causal evaluation and improvement of dynamic agent regimes
 
-**Status, 18 September 2026:** a self-contained theoretical foundation and research specification. The identification, influence-function, double-robustness, dynamic-programming, and concentration arguments below adapt established longitudinal causal inference and off-policy evaluation (OPE). They are not claimed as new general statistical theorems. The proposed research contribution is their careful operationalization for model-switching agents, a prospective evaluation design, support-aware intervention choices, and empirical calibration against independently executed trajectories. This document does not establish empirical performance of a language-model agent.
+**Status, updated 19 September 2026:** a self-contained theoretical foundation and research specification. The identification, influence-function, double-robustness, dynamic-programming, and concentration arguments below adapt established longitudinal causal inference and off-policy evaluation (OPE). They are not claimed as new general statistical theorems. The proposed research contribution is their careful operationalization for model-switching agents, a prospective evaluation design, support-aware intervention choices, and empirical calibration against independently executed trajectories. This document does not establish empirical performance of a language-model agent.
 
 The substantive estimand is the expected quality and resource use if tasks from a specified population were run under a specified history-dependent model-routing policy, with model versions, generation settings, tools, and the execution harness fixed. Evaluating a learned policy on fresh tasks is distinct from estimating the value of an unknown population-optimal policy.
 
 ## 1. Statistical experiment and intervention boundary
 
 ### 1.1 Unit, timeline, and full history
+
+All history and observation spaces are standard Borel; policies and kernels are measurable; action sets are finite; and regular conditional laws exist. Optimization ties use a fixed measurable rule. Conditional regressions are defined on target-relevant support, with arbitrary measurable versions elsewhere.
 
 Initially suppose episodes are independent and identically distributed. An episode starts with task features and context $H_1=X$, then generates
 
@@ -56,7 +58,7 @@ The following assumptions identify a causal value, rather than merely an observe
 
 1. **Well-defined intervention, consistency, and no interference.** Executing a routing history produces the potential observations for that same history and configuration. Separate episodes do not affect one another through shared writable memory, changing external systems, or shared resource contention unless those mechanisms are explicitly part of the design and estimand.
 2. **Sequential exchangeability.** Conditional on the recorded pre-routing $H_t$, the choice $A_t$ is independent of the relevant future potential outcomes under supported continuations. Prospective routing randomization with correctly logged probabilities supplies this condition by design. Observational routing requires that all common causes of routing and future outcomes be captured. A human operator's unrecorded assessment or a hidden router feature can violate it.
-3. **Sequential support.** At histories with positive probability under the target law, $\pi_t(a\mid h)>0$ implies $b_t(a\mid h)>0$. This is a population statement, not a claim that every long text history must repeat in a finite sample. Practical near-positivity remains a serious estimation problem.
+3. **Sequential support.** For $P^{\pi}_{H_t}$-almost every history $h$, $\pi_t(a\mid h)>0$ implies $b_t(a\mid h)>0$. This is a population statement, not a claim that every long text history must repeat in a finite sample. Practical near-positivity remains a serious estimation problem.
 4. **Stable task and transition law.** The evaluation target uses the same initial task distribution and conditional execution kernels as the logged experiment, or a separately justified transport model. Model updates, workload changes, judge drift, and a new task mix are not repaired merely by adjusting routing propensities.
 5. **Outcome observation and integrability.** Rewards are observed as defined, and expectations exist. For later finite-sample results assume $|R_t|\le r$, and for efficiency assume the influence function is square integrable.
 
@@ -206,7 +208,7 @@ For comparison, include the empirical mean in directly randomized target-policy 
 
 ### Theorem 4: cross-fitted asymptotic normality
 
-Suppose $T$ and the number of folds are fixed, evaluation episodes are i.i.d., $\pi$ is fixed, $0<\sigma_\pi^2=E[(D^{\pi})^2]<\infty$, and for every fold:
+Suppose $T$ and the number of folds are fixed, every fold size divided by $n$ tends to a strictly positive constant, evaluation episodes are i.i.d., $\pi$ is fixed, $0<\sigma_\pi^2=E[(D^{\pi})^2]<\infty$, and for every fold:
 
 - the fitted score converges to $\phi^{\pi}(O;Q,b)$ in $L_2(P)$;
 - its population drift in (10) is $o_p(n^{-1/2})$, for example by (11) and the corresponding product-rate conditions;
@@ -235,14 +237,14 @@ Estimate variance with the sample variance of held-out scores, and use $\widehat
 
 If each task is run with several seeds, branches, or models, the independent unit is usually the **task cluster**. Randomly assigning episodes from one task to both training and evaluation leaks task information and can understate uncertainty. Split by task and, where appropriate, by related task family or source repository.
 
-For $J$ independent task clusters with a fixed number $m$ of runs per task, define the task-weighted estimator as the average of cluster mean scores. The cluster influence contribution is
+For $J$ independent and identically distributed task clusters with a fixed number $m$ of valid root-to-terminal runs per task, assume each run has the specified behavior-law marginal and fit nuisances outside the entire held-out cluster. Define the task-weighted estimator as the average of cluster mean scores. Under the corresponding cluster-scale score-convergence, negligible-drift, and variance-consistency conditions, the cluster influence contribution is
 
 $$
 D_j^{\mathrm{cluster}}=m^{-1}\sum_{r=1}^{m}D^{\pi}(O_{jr}).
 \tag{13}
 $$
 
-Use the empirical variance of cluster scores divided by $J$, not an episode-level variance divided by $Jm$. Dependence from paired random seeds or branches is allowed within a cluster. Unequal or outcome-dependent numbers of runs require explicitly defining task versus episode weighting and rederiving the corresponding ratio or weighted estimator. A task-weighted average and an episode-weighted average need not estimate the same population.
+Use the empirical variance of cluster scores divided by $J$, not an episode-level variance divided by $Jm$. Dependence from paired random seeds is allowed within a cluster. Selected continuation branches do not automatically have the root-episode marginal; clustering alone cannot repair that sampling bias. Their continuation estimand and sampling weights must be derived separately before a valid task-level contribution is averaged. Unequal or outcome-dependent numbers of runs require explicitly defining task versus episode weighting and rederiving the corresponding ratio or weighted estimator. A task-weighted average and an episode-weighted average need not estimate the same population.
 
 For a fixed benchmark with repeated seeds, uncertainty over random execution seeds is conditional on that benchmark; it is not automatically uncertainty over a wider task population. If the behavior router learns from outcomes of previous episodes, the data may require martingale or adaptive-experiment theory. The i.i.d. theorem is not a justification for that setting.
 
@@ -293,7 +295,7 @@ Practical policy training can use Q-learning, policy search, or existing routing
 
 ### Theorem 5: held-out finite-class improvement certificate
 
-Condition on a training dataset that yields $K$ candidate policies, a baseline $\pi_0$, and fitted outcome regressions for all of them. Evaluate on $n$ fresh i.i.d. episodes generated under **known** $b$. Suppose for every candidate and the baseline:
+Condition on a training dataset that yields $K$ candidate policies, a baseline $\pi_0$, and fitted outcome regressions for all of them. Evaluate on $n$ fresh i.i.d. episodes generated under **known** $b$, and require sequential target support for every candidate and baseline. Suppose for every candidate and the baseline:
 
 $$
 |R_t|\le r,\quad
@@ -445,7 +447,9 @@ A useful primary empirical hypothesis is that sequentially randomized macro-mode
 
 **Proposed project contribution:** a precisely versioned macro-routing intervention; an evaluation design that randomizes routing opportunities and records assignment probabilities; a support-aware set of meaningful switching policies; a task-cluster analysis; and a reproducible comparison of OPE predictions with actual policy executions and valid branches. Novelty must be assessed against current agent-routing and OPE work, and publication claims should focus on whichever methodological or empirical advance survives that comparison.
 
-**Not solved by the results above:** causal identification under unmeasured human/router information; arbitrary model and harness updates; transport to changing task populations; optimal allocation of a fixed branching budget; generally efficient nonparametric estimation from unrestricted long text histories at feasible sample sizes; unbounded horizons; interference through shared environments; policy-dependent missing outcomes; nonregular inference for an unrestricted optimal policy; uniform inference over unrestricted policy classes; or an unknown-behavior adaptive-incremental estimator with all rates and implementation verified. Each would require additional assumptions, theory, and experiments.
+**Not solved by the results above:** causal identification under unmeasured human/router information; arbitrary model and harness updates; transport to changing task populations; globally optimal sequential allocation of root-generation and branching budgets; generally efficient nonparametric estimation from unrestricted long text histories at feasible sample sizes; unbounded horizons; interference through shared environments; policy-dependent missing outcomes; nonregular inference for an unrestricted optimal policy; uniform inference over unrestricted policy classes; or an unknown-behavior adaptive-incremental estimator with all rates and implementation verified. Each would require additional assumptions, theory, and experiments.
+
+The [theory extensions](theory_extensions.md) now prove a narrower oracle allocation for a fixed prefix population, fixed prefix count, frozen regression, and known independent branch selection, alongside eligible-opportunity reduction and a conditional execution-kernel sensitivity bound. These do not solve general optimal sequential exploration or identify unrestricted deployment drift. See the [full manuscript](../manuscript/README.md) and [independent internal review](theory_review_20260919.md).
 
 ## Primary theoretical references
 

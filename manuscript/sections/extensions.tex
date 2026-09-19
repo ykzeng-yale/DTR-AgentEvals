@@ -1,0 +1,199 @@
+\section{Prospective routing opportunities, branch validation, and execution drift}
+\label{sec:extensions}
+
+This section makes three design choices explicit: when routing is allowed, which prefix population a branch experiment represents, and which changes to an execution system an evaluation tolerates. The arguments specialize familiar change-of-measure, missing-data, allocation, and coupling ideas. We do not claim that stopping-time factorization, Neyman allocation, or a simulation-lemma bound is new. The contribution is the precise contract needed to apply them to model-switching agents.
+
+\subsection{Reduction to prospectively eligible routing opportunities}
+\label{sec:eligible}
+
+An agent may generate many tokens and tool events while changing its model at only a few opportunities. Let $s=1,\ldots,N$ index a bounded fine-time trace, and let $\mathcal F_s$ contain the complete trace immediately before a possible routing decision at fine time $s$. Terminal traces are padded. A binary eligibility indicator $E_s$ is $\mathcal F_s$-measurable and determined by a common, prespecified rule. At an eligible time a router chooses a model configuration; at an ineligible time the same prespecified continuation mechanism is used under both routers. The fine-time execution kernel, conditional on the complete history and the selected configuration, is also common. Model generation, tool execution, and memory updates belong to this kernel.
+
+For simplicity the initial model choice is eligible at $s=1$. A policy-invariant initial block before the first opportunity can instead be integrated into the initial history and reward. Let $\sigma_k$ be the $k$th eligible time, and suppose the protocol enforces at most $K$ opportunities on every feasible trace. Missing opportunities are padded at $N+1$, with an absorbing no-op. Put $\sigma_{K+1}=N+1$. At opportunity $k$, retain the complete pre-choice history $H_k$, select $A_k$, and record the complete block $B_k$ from $\sigma_k$ up to, but not including, the choice at $\sigma_{k+1}$. The block includes its duration, observations, and accumulated reward. Thus the skeleton and its blocks reconstruct the fine-time trace. The times $\sigma_k$ can depend on previous model choices through the observed history; they need not be fixed in advance.
+
+\begin{theorem}[Exact eligible-opportunity reduction]
+\label{thm:eligible}
+Assume the common eligibility and execution contract above, and sequential routing support. There are policy-invariant block kernels $\mathcal K_k(dB_k\mid H_k,A_k)$ such that, for a router $r$,
+\begin{equation}
+ dP^r=dP_1(H_1)\prod_{k=1}^{K}r_k(A_k\mid H_k)
+        \mathcal K_k(dB_k\mid H_k,A_k).
+ \label{eq:blocklaw}
+\end{equation}
+Generating blocks from \eqref{eq:blocklaw} and reconstructing the trace has the same distribution as fine-time execution under $r$. In particular, for target $\pi$ and behavior $b$,
+\begin{equation}
+ \frac{dP^\pi}{dP^b}
+ =W_K=\prod_{k=1}^{K}\frac{\pi_k(A_k\mid H_k)}{b_k(A_k\mid H_k)}.
+ \label{eq:eligible-ratio}
+\end{equation}
+If $\pi_k/b_k\le c$ on support for a constant $c\ge1$, then $W_K\le c^K$ and $\E_b W_K^2\le c^K$. Consequently, for $|G|\le B$ and $n$ independent complete traces,
+\begin{equation}
+ \Var_b\left\{n^{-1}\sum_{i=1}^nW_{K,i}G_i\right\}
+ \le B^2c^K/n.
+ \label{eq:eligible-variance}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Condition on the complete history and choice at $\sigma_k$. Until the next eligible time, all routing choices are fixed by the common continuation mechanism. The distribution of the intervening fine-time events is therefore determined solely by the common execution kernels and the common eligibility rule. Stopping immediately before the next choice defines a conditional block distribution $\mathcal K_k$ independent of which router will make that next choice. Finite horizons ensure that this block is well defined. Sequential conditioning yields \eqref{eq:blocklaw}. Conversely, concatenating draws from these conditional distributions and making the specified boundary choices gives the same conditional distribution at every fine-time event, hence the same joint trace law by finite induction. Because full block contents are retained, the reconstruction preserves every measurable trace payoff.
+
+In the ratio of the two factorizations, the initial law and all block kernels cancel. Sequential support justifies the ratio and gives \eqref{eq:eligible-ratio}; padded factors are one. Its expectation is one. Since $0\le W_K\le c^K$, $W_K^2\le c^KW_K$, and therefore $\E_bW_K^2\le c^K$. Independence and the bound on $G$ give \eqref{eq:eligible-variance}.
+\end{proof}
+
+The exponent is the number of eligible randomizations, not the number of tokens, tool calls, or observed model switches. A decision to keep the current model still contributes a likelihood ratio when its probability differs between routers. An error already observed before a decision can define eligibility; eventual failure, subsequent divergence, or whether a switch ultimately helped cannot retrospectively define it. Nor may a target silently introduce extra opportunities or a different between-opportunity controller. The theorem does not justify discarding history needed by the common block kernel. It is a finite factorization argument, not an unbounded optional-stopping result. The causal and OPE foundations are inherited from \citet{robins1986new,jiang2016dr}; the opportunity structure is a prospective experimental-design choice, related to sequential and micro-randomized designs \citep{murphy2005smart,klasnja2015mrt}.
+
+\subsection{What a live branch experiment identifies}
+\label{sec:branches}
+
+Fix one opportunity index $k$. Draw one padded pre-choice prefix $H=H_k$ from each independent root episode under a reference prefix router $b$. Let its law be $P_B$. A target prefix router $q$ induces a probability law $P_Q$, including absorbed prefixes, on this same space. Under Theorem~\ref{thm:eligible},
+\begin{equation}
+ w(H)=\frac{dP_Q}{dP_B}(H)
+ =\prod_{j<k}\frac{q_j(A_j\mid H_j)}{b_j(A_j\mid H_j)},
+ \qquad \E_Bw=1.
+ \label{eq:prefixratio}
+\end{equation}
+The histories are complete, so the prefix product is measurable in $H$. We assume these probabilities are known from the prospective design. Selection probabilities for branches alone do not identify this occupancy ratio. A pool containing only surviving, failed, or convenient prefixes has a different law and cannot use \eqref{eq:prefixratio} unchanged. For example, conditional on a prefix-measurable event $F$ of positive probability under both laws, the ratio becomes $w(H)P_B(F)/P_Q(F)$ on $F$. The target normalization $P_Q(F)$ need not be known even when all routing probabilities are known. Keeping one padded prefix from every root avoids this additional ratio-parameter problem.
+
+From a faithfully restored prefix, execute two frozen continuation policies $\nu_+$ and $\nu_-$. Their remaining returns are $G_+$ and $G_-$, and $D=G_+-G_-$. Coupling their random seeds is permitted if each marginal remains a valid live continuation. Define
+\begin{equation}
+ \mu(H)=\E(D\mid H),\qquad v(H)=\Var(D\mid H),\qquad
+ \theta=\E_Q\mu(H)=\E_B\{w(H)\mu(H)\}.
+ \label{eq:branch-target}
+\end{equation}
+For absorbed prefixes set both remaining returns to zero. If two complete policies share prefix router $q$ and differ only in these continuations, $\theta$ is their complete-policy value contrast: their common prefix reward cancels. Otherwise it is a transported continuation contrast, not the difference between two arbitrary root policies. No claim about both continuations holding simultaneously in one physical run is needed; $\mu$ is the difference of two well-defined marginal continuation means.
+
+To reduce branch cost, draw $S\mid H\sim\operatorname{Bernoulli}\{e(H)\}$ and observe the pair only when $S=1$. Conditional on $H$, this selection is independent of the potential branch pair. The randomization occurs before running the pair. Condition throughout on an independent training sample that fixes a regression $m(H)$ and the design $e(H)$. Assume $e>0$ wherever $w>0$ and the second moments below are finite. On $\{w=0\}$ define all weighted scores, corrections, and variance integrands involving division by $e$ to be zero, including when $e=0$. Independent root episodes use independent branch randomization and execution randomness; within-pair coupling is unrestricted subject to the correct marginals.
+
+\begin{theorem}[Selected-branch augmentation and its exact variance]
+\label{thm:branch}
+For $n$ reference prefixes, including those not selected for branching, define
+\begin{equation}
+ U_i=w(H_i)\left[m(H_i)+\frac{S_i}{e(H_i)}\{D_i-m(H_i)\}\right],
+ \qquad \widehat\theta=n^{-1}\sum_iU_i,
+ \label{eq:branchscore}
+\end{equation}
+where the second term is zero for $S_i=0$. Then, conditional on training,
+\begin{equation}
+ \E(\widehat\theta)=\theta,
+ \label{eq:branchunbiased}
+\end{equation}
+and
+\begin{equation}
+ n\Var(\widehat\theta)
+ =\Var_B(w\mu)+\E_B\left[w^2\left\{
+ \frac{v}{e}+\left(\frac1e-1\right)(\mu-m)^2
+ \right\}\right].
+ \label{eq:branchvariance}
+\end{equation}
+These are exact statements for fixed $w,m,e$, not claims of semiparametric efficiency.
+\end{theorem}
+
+\begin{proof}
+On $\{w>0\}$, conditional independence implies $\E\{S(D-m)/e\mid H\}=\mu-m$, so $\E(U\mid H)=w\mu$. Its conditional second moment calculation uses
+\[
+ \E\{(S/e)^2(D-m)^2\mid H\}
+ =\{v+(\mu-m)^2\}/e.
+\]
+Subtracting the squared conditional mean of the correction yields
+\[
+ \Var(U\mid H)=w^2\{v/e+(1/e-1)(\mu-m)^2\}.
+\]
+On $\{w=0\}$ the weighted identities hold trivially by the zero convention. Iterated expectation proves unbiasedness, the law of total variance gives \eqref{eq:branchvariance}, and independence divides the single-prefix variance by $n$.
+\end{proof}
+
+With finite nonzero variance, the usual i.i.d. central limit theorem and the empirical variance of the $U_i$ provide an asymptotic interval for this fixed design. Pairing can reduce or increase $v$ through its covariance but does not change $\mu$. Replacing live continuations by frozen future observations changes $D$ and its estimand. Recording only selected prefixes also omits the denominator population of \eqref{eq:branchscore}. Multiple prefixes from one root require an explicitly weighted target and cluster analysis; merely treating them as independent observations does not prove \eqref{eq:branchvariance}.
+
+\begin{corollary}[Independent target-prefix sample]
+\label{cor:two-sample-branch}
+Suppose an additional independent sample $H_1^Q,\ldots,H_N^Q\sim P_Q$ is available. Then
+\begin{equation}
+ \widehat\theta_{\mathrm{two}}
+ =N^{-1}\sum_{i=1}^Nm(H_i^Q)
+ +n^{-1}\sum_{j=1}^n\frac{w(H_j)S_j}{e(H_j)}\{D_j-m(H_j)\}
+ \label{eq:two-sample-branch}
+\end{equation}
+is unbiased, and, writing $d=\mu-m$, its conditional variance is
+\begin{equation}
+ \frac{\Var_Q(m)}{N}
+ +\frac{\Var_B(wd)}{n}
+ +\frac1n\E_B\left[w^2\left\{\frac{v}{e}+
+                \left(\frac1e-1\right)d^2\right\}\right].
+ \label{eq:two-sample-variance}
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+The expectation of the first sample mean is $\E_Qm$, while the expectation of the second is $\E_B\{w(\mu-m)\}=\E_Q(\mu-m)$. The samples are independent. The first variance is $\Var_Q(m)/N$. For a summand in the second mean, its conditional mean is $wd$ and its conditional variance is the final integrand in \eqref{eq:two-sample-variance}. Total variance completes the proof.
+\end{proof}
+
+This corollary is useful only when target prefixes can actually be collected or validly transported. It does not conjure a target prefix distribution from unsupported logs. Generating target prefixes also has a cost, which must be included in any comparison of designs. We make no global efficiency claim for either estimator: known prefix ratios constrain the statistical model, and more information may be available in the source trajectories.
+
+\begin{proposition}[Cost-constrained branch selection]
+\label{prop:branch-allocation}
+Keep the reference-prefix distribution, prefix sample size, and frozen $m$ fixed. Let $c(H)>0$ be the expected incremental cost of executing the branch pair, with $0<\E_Bc<\infty$. Require $\ell\le e(H)\le1$ for a fixed $0<\ell<1$ and impose $\E_B\{ce\}\le\kappa$, where $\ell\E_Bc\le\kappa\le\E_Bc$. Put
+\begin{equation}
+ a(H)=w(H)^2\{v(H)+(\mu(H)-m(H))^2\},\qquad \E_Ba<\infty.
+ \label{eq:branch-a}
+\end{equation}
+For any $\lambda>0$ such that the budget is attained, the design
+\begin{equation}
+ e_\lambda(H)=\min\left[1,\max\left\{\ell,
+       \sqrt{\frac{a(H)}{\lambda c(H)}}\right\}\right]
+ \label{eq:branch-allocation}
+\end{equation}
+minimizes both \eqref{eq:branchvariance} and, with fixed sample sizes, \eqref{eq:two-sample-variance}. If $a>0$ almost surely and the budget is strictly between its endpoints, such a $\lambda$ exists. If $a=0$ on a set, use $e=\ell$ there. Define
+\[
+ \kappa_{\mathrm{sat}}=\E_B[c\{\ind(a>0)+\ell\ind(a=0)\}].
+\]
+For $\ell\E_Bc<\kappa<\kappa_{\mathrm{sat}}$, a positive multiplier exists; for $\kappa\ge\kappa_{\mathrm{sat}}$, $e=1$ on $a>0$ and $e=\ell$ elsewhere is optimal, with any unused budget optional. At the lower budget endpoint $e=\ell$ is optimal. When $m=\mu$, the unconstrained interior allocation is proportional to $|w|\sqrt{v/c}$.
+\end{proposition}
+
+\begin{proof}
+The only term depending on $e$ in either variance is $\E_B(a/e)$. For fixed $H$ and $\lambda>0$, minimize $a/e+\lambda ce$ over $[\ell,1]$. Its derivative is $-a/e^2+\lambda c$ and its second derivative is $2a/e^3\ge0$. The clipped stationary point is \eqref{eq:branch-allocation}; when $a=0$, its minimum is at $\ell$. Thus for any feasible $e$,
+\[
+ \E_B(a/e_\lambda)+\lambda\E_B(ce_\lambda)
+ \le\E_B(a/e)+\lambda\E_B(ce).
+\]
+If $\E_B(ce_\lambda)=\kappa$ and $\E_B(ce)\le\kappa$, rearrangement proves optimality. By dominated convergence, $\lambda\mapsto\E_B(ce_\lambda)$ is continuous, tending to $\ell\E_Bc$ as $\lambda\to\infty$ and to $\kappa_{\mathrm{sat}}$ as $\lambda\downarrow0$. The intermediate value theorem proves existence for an interior feasible budget. Above saturation, every informative prefix already has $e=1$, which minimizes $a/e$ pointwise; spending on $a=0$ cannot lower the variance. The lower endpoint is immediate from $c>0$ and $e\ge\ell$.
+\end{proof}
+
+This is a Neyman-type allocation calculation for the specified branch-estimation problem, not a new general theory of optimal exploration \citep{neyman1934representative,li2023allocation}. The general design depends on residual second moment, not conditional variance alone: a poor frozen continuation predictor makes under-sampled histories costly even if their branch outcomes have little intrinsic variance. The optimum is oracle because $\mu$ and $v$ are unknown. An independent pilot can estimate them and freeze an approximate allocation; unbiasedness survives any such fixed design with positive selection probabilities, while oracle optimality does not follow automatically. The optimization also holds the prefix-generation design and cost fixed and does not optimize how many root tasks to generate or how to train $m$.
+
+\subsection{Sensitivity to changed model or harness kernels}
+\label{sec:kernel-drift}
+
+Routing OPE presumes invariant execution kernels. The following bound states a limited alternative when that contract is only approximately satisfied. Let $\mathcal K_k$ and $\widetilde{\mathcal K}_k$ be two block-kernel systems on a common trace space, with the same initial law, eligible-opportunity contract, and frozen router $\pi$. Let total variation mean $\operatorname{TV}(P,Q)=\sup_A|P(A)-Q(A)|$. Assume standard Borel spaces so conditional couplings can be chosen measurably. A common measurable payoff $G$ takes values in $[g_-,g_+]$, with range $L=g_+-g_-$. Thus a signed payoff bounded in absolute value by $B$ has range at most $2B$, not $B$.
+
+\begin{theorem}[Bounded execution-kernel sensitivity]
+\label{thm:kernel-drift}
+Suppose that for every opportunity $k$ and every relevant shared complete history and action,
+\begin{equation}
+ \operatorname{TV}\{\mathcal K_k(\cdot\mid h,a),
+                   \widetilde{\mathcal K}_k(\cdot\mid h,a)\}
+ \le\varepsilon_k,\qquad 0\le\varepsilon_k\le1.
+ \label{eq:kernel-tv}
+\end{equation}
+Then
+\begin{equation}
+ |v_{\mathcal K}^{\pi}-v_{\widetilde{\mathcal K}}^{\pi}|
+ \le L\left\{1-\prod_{k=1}^{K}(1-\varepsilon_k)\right\}
+ \le L\sum_{k=1}^{K}\varepsilon_k.
+ \label{eq:kernel-bound}
+\end{equation}
+If the initial laws instead differ by at most $\varepsilon_0$ in total variation, the first product can include the factor $(1-\varepsilon_0)$.
+\end{theorem}
+
+\begin{proof}
+Couple equal initial states identically. While histories agree, couple routing actions identically using their common $\pi$. Conditional on a shared history and action, maximally couple the two next blocks; their probability of disagreement is at most $\varepsilon_k$. Let $C_k$ be the event that the complete histories and blocks have agreed through opportunity $k$. Then $\P(C_k\mid C_{k-1})\ge1-\varepsilon_k$ whenever the conditioning event has positive probability, so $\P(C_K)\ge\prod_k(1-\varepsilon_k)$. On $C_K$ the full traces, and hence their common payoffs, agree; otherwise their payoff difference is at most $L$. Taking expectations gives the first bound. The elementary union-product inequality gives the second. If initial laws differ, first use a maximal initial coupling whose equality probability is at least $1-\varepsilon_0$ and repeat the argument.
+\end{proof}
+
+This is a finite full-history coupling bound in the classical simulation-lemma family, not an improved general simulation lemma \citep{kearns2002near,lobel2024simulation}. It requires control of kernels at the same shared histories, including generated content, tools, rewards, and restoration state. Similarity of model names, token distributions at unrelated prompts, or a small empirical divergence rate does not establish \eqref{eq:kernel-tv}. A changed judge can be covered by including its output in the block trace and retaining the same payoff extraction function. Otherwise an additional bound on the change in the payoff itself is needed.
+
+For two policies, let $B(\pi)$ denote the first bound in \eqref{eq:kernel-bound} for that policy. Their improvement contrast obeys
+\begin{equation}
+ \Delta_{\widetilde{\mathcal K}}(\pi,\pi_0)
+ \ge\Delta_{\mathcal K}(\pi,\pi_0)-B(\pi)-B(\pi_0).
+ \label{eq:robust-improvement}
+\end{equation}
+This follows by applying the value bound once to each policy and subtracting. A valid lower confidence bound for the old-system contrast can therefore be reduced by these two deterministic sensitivity allowances. A positive result certifies improvement only under the assumed kernel bounds; estimating those bounds from finite agent traces requires another uncertainty argument. In particular, the theorem supplies a sensitivity analysis rather than a data-free guarantee for an updated model.
+
+\paragraph{Scope of the extensions.}
+The three results fit together without changing their targets. Prospective eligibility defines a finite routing experiment. Branch sampling validates or estimates specific continuations under an explicitly transported prefix law. Kernel sensitivity states what must additionally be controlled to carry a value comparison to a changed execution system. None removes hidden routing confounding, identifies unsupported target prefixes, or licenses using selected branches as ordinary root episodes. Their applicability is a property of the evaluation design and recorded execution state, not of the terminology used to describe the agent.

@@ -1,0 +1,35 @@
+\section{Improvement claims under a changed execution system}
+\label{sec:deployment-certificate}
+
+A confidence interval for a policy value in the logging system is not, by itself, a confidence interval for its value after a checkpoint, context processor, or tool environment changes. The kernel-drift bounds above supply one way to keep these questions separate. The following elementary consequence combines an evaluation certificate with an explicit allowance for that change.
+
+Let $v_k$ denote the value of candidate policy $k$ in the logging system, and let $\widetilde v_k$ denote its value in a deployment system. Include the baseline as $k=0$. Suppose an evaluation procedure supplies simultaneous lower bounds $L_k$ satisfying
+\begin{equation}
+ \P\{v_k-v_0\ge L_k\text{ for all }k=1,\ldots,K\}\ge1-\alpha.
+ \label{eq:simultaneous-deployment-input}
+\end{equation}
+The finite-class result above is one such procedure. Alternatively, a separately justified simultaneous inference method may be used. Assume deterministic, externally justified bounds $B_k\ge0$ such that
+$|\widetilde v_k-v_k|\le B_k$ for every candidate and the baseline. For a common bounded return and specified total-variation kernel allowances, the preceding coupling result provides such $B_k$; it does not estimate them from ordinary routing logs.
+
+\begin{corollary}[Deployment-adjusted improvement certificate]
+\label{cor:deployment}
+Under these conditions, with probability at least $1-\alpha$, simultaneously for all candidates,
+\begin{equation}
+ \widetilde v_k-\widetilde v_0\ge L_k-B_k-B_0.
+ \label{eq:deployment-certificate}
+\end{equation}
+Consequently, select a candidate only when $L_k>B_k+B_0$, and retain the baseline otherwise. On the simultaneous coverage event, every resulting selection improves expected utility in the specified deployment system.
+\end{corollary}
+\begin{proof}
+For each candidate,
+\[
+ \widetilde v_k-\widetilde v_0
+ =(v_k-v_0)+(\widetilde v_k-v_k)-(\widetilde v_0-v_0)
+ \ge(v_k-v_0)-B_k-B_0.
+\]
+Apply this inequality on the event in \eqref{eq:simultaneous-deployment-input}. Because the inequality holds for every candidate on the same event, selection among those candidates does not invalidate it.
+\end{proof}
+
+This corollary is a combination of existing concentration and perturbation arguments, not a new general safety principle. Its purpose is to make the evidentiary contract explicit: statistical precision cannot compensate for an uncontrolled change in the system being evaluated. A nominal improvement smaller than the allowed kernel drift is inconclusive for deployment. If the drift allowances themselves are estimated with simultaneous confidence $1-\beta$, the same argument gives a joint statement with probability at least $1-\alpha-\beta$ by a union bound; valid construction of those allowances is an additional task.
+
+The guarantee concerns expected utility. It does not imply improved performance on every task, absence of harmful actions, or satisfaction of a hard resource cap. A hard cap must be built into the feasible-action and termination rules; separate outcome constraints require their own simultaneous bounds. A policy that abstains or preserves the baseline is an admissible outcome of the procedure, including when no improvement can be supported.

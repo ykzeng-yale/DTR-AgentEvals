@@ -8,12 +8,18 @@ $$V(\pi)=E[Y^{\pi}],\qquad \Delta(\pi,\pi_0)=E[Y^{\pi}]-E[Y^{\pi_0}].$$
 
 The proposed contribution is a sequentially randomized evaluation design with versioned model interventions, explicit support diagnostics, honest policy evaluation, and live validation. The underlying DTR and off-policy evaluation theory is established; this repository does **not** claim that renaming routing as a DTR creates a new estimator.
 
+## Current priority: theory and paper
+
+**19 September 2026:** the [full theory-first manuscript](manuscript/README.md) develops the mathematical results and proofs, with empirical methods specified for later completion. [Read the paper PDF](manuscript/DTR_Agent_Regimes_Theory_Draft.pdf) or [edit the LaTeX source](manuscript/main.tex). New GPU/model experiments and manuscript empirical results are deferred. Existing experiment archives are preserved and are not presented as evidence in this draft.
+
+The new [extension proofs](docs/theory_extensions.md) cover prospective routing opportunities, selectively measured branch contrasts, oracle allocation of branch costs, and execution-kernel sensitivity. The [independent internal review](docs/theory_review_20260919.md) records conditions, corrections, and exact checks; the [claim map](docs/paper_positioning.md) separates inherited theory from the project-specific formulation.
+
 ## Research package
 
 | Start here | Contents |
 |---|---|
 | [Research proposal](docs/research_proposal.md) | Scientific question, contribution boundary, target trial, aims, hypotheses and manuscript abstract |
-| [Literature audit](docs/literature.md) | 22 primary references, nearest-work comparisons, corrected source claims, search log and availability audit |
+| [Literature audit](docs/literature.md) | Original 22-source audit plus a [five-source theory supplement](docs/paper_positioning.md), nearest-work comparisons, corrected source claims, search log and availability audit |
 | [Theory and proofs](docs/theory.md) | Identification, policy-ratio IPW, fixed-policy EIF, exact DR remainder, inference, clusters, Bellman recursion, finite-class improvement and incremental routing |
 | [Experiment protocol](docs/experiment_protocol.md) | Simulation grid, open-model benchmark design, splits, sample-size planning, logging and success criteria |
 | [Executed results](docs/experiment_results.md) | What actually ran, numerical results, failed pilot attempts and limitations |
@@ -21,9 +27,11 @@ The proposed contribution is a sequentially randomized evaluation design with ve
 | [External data audit](docs/external_data_audit.md) | Direct inspection of 896 released Replay Gap records spanning 56 distinct tasks |
 | [Bibliography](references/references.bib) | Verified reference metadata |
 
-## Current evidence
+## Archived evidence
 
-As of 18 September 2026:
+The following is the original 18 September 2026 baseline, retained as development history. Later experiment records are listed in [executed results](docs/experiment_results.md); this theory-paper update does not rerun or independently validate those newer experimental results. Current manuscript validation is recorded in [the paper status](manuscript/STATUS.md).
+
+Original baseline:
 
 - **Derived and numerically checked:** the core fixed-policy theory, the exact DR drift, and the additional derivative term for an unknown-behavior incremental target. The tests compare influence-function derivatives with finite differences over a fully enumerated history-dependent environment.
 - **Executed synthetic experiments:** 400 main Monte Carlo replicates, three 200-replicate stress runs, and a 300-replicate finite-policy selection study. Exact dynamic-programming truth is available. These are synthetic results.

@@ -1,0 +1,69 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype}
+\usepackage{booktabs,tabularx,longtable,array}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage[authoryear,round]{natbib}
+\usepackage{url}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,allcolors=blue!45!black]{hyperref}
+\hypersetup{pdftitle={Dynamic Agent Regimes: Causal Evaluation, Experimental Design, and Policy Improvement},pdfauthor={DTR-AgentEvals working manuscript}}
+\newcommand{\E}{\mathbb{E}}
+\renewcommand{\P}{\mathbb{P}}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\Cov}{Cov}
+\DeclareMathOperator{\TV}{TV}
+\newcommand{\ind}{\mathbf{1}}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\abs}[1]{\left\lvert#1\right\rvert}
+\providecommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{definition}
+\newtheorem{assumption}{Assumption}
+\newtheorem{definition}{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+\setlist{itemsep=3pt,topsep=5pt}
+\setlength{\parskip}{3pt}
+\setlength{\emergencystretch}{2em}
+\allowdisplaybreaks[2]
+\pagestyle{plain}
+\title{Dynamic Agent Regimes:\\Causal Evaluation, Experimental Design, and Policy Improvement for Model-Switching Agents}
+\author{Working manuscript\\\small Author list and affiliations to be finalized}
+\date{September 19, 2026}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+Choosing a language model inside an agent changes the history on which later choices depend. Evaluation of a switching policy therefore requires an intervention on the joint trajectory distribution, rather than substitution of model outputs into an unchanged trace. We formulate model routing as a dynamic regime over versioned model and harness configurations. Under sequential exchangeability, support, and stable execution kernels, model-choice probabilities identify policy values without requiring likelihood ratios between generated token sequences. We develop a full-history doubly robust evaluation framework, give its exact drift and inference conditions, and distinguish evaluation of frozen policies from behavior-adaptive incremental interventions. We then formalize prospective routing opportunities, showing when the likelihood ratio depends on eligible decisions rather than all underlying execution steps. For selected live branches, we derive an augmented estimator of a target-prefix continuation contrast, its variance, and an oracle cost-constrained sampling allocation. A coupling bound quantifies how changes in the execution kernels limit transfer of an estimated value, and a finite-policy certificate combines sampling uncertainty with a specified drift allowance. These results adapt longitudinal causal inference, off-policy evaluation, two-phase sampling, and model-misspecification arguments to an explicit agent experiment. They do not establish novelty of those general techniques or guarantee useful estimation at long horizons. A prospective empirical protocol is specified; empirical performance results are deferred.
+\end{abstract}
+\noindent\textbf{Keywords:} dynamic treatment regimes; agent evaluation; model routing; off-policy evaluation; sequential randomization; branch sampling.
+
+\input{sections/introduction}
+\input{sections/foundations}
+\input{sections/extensions}
+\input{sections/deployment_certificate}
+\input{sections/empirical_plan}
+\input{sections/discussion}
+
+\section*{Data, software, and manuscript status}
+The editable source and supporting theoretical checks are available at
+\url{https://github.com/ykzeng-yale/DTR-AgentEvals}.
+This draft develops the theory and prespecifies the role of future experiments.
+Previously archived development runs are not presented as empirical evidence in this manuscript.
+The theorem statements are proved under the conditions given here and have received internal mathematical review; this does not constitute external peer review or proof-assistant certification.
+
+\bibliographystyle{plainnat}
+\begingroup
+\raggedright
+\bibliography{references}
+\endgroup
+\end{document}

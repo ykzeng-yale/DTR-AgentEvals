@@ -1,6 +1,6 @@
 # Dynamic Agent Regimes: causal evaluation and improvement of model-switching agents
 
-**Research specification, 18 September 2026.** This is a proposed research program with a mathematical foundation and a runnable pilot. It is not a claim of a new doubly robust estimator, established empirical superiority, or an exhaustive novelty search. See [the literature audit](literature.md), [theory and proofs](theory.md), and [the experiment protocol](experiment_protocol.md).
+**Research specification, updated 19 September 2026.** This is a proposed research program with a mathematical foundation and a runnable pilot. It is not a claim of a new doubly robust estimator, established empirical superiority, or an exhaustive novelty search. See [the literature audit](literature.md), [theory and proofs](theory.md), and [the experiment protocol](experiment_protocol.md).
 
 ## 1. Scientific question
 
@@ -22,7 +22,7 @@ Our proposed contribution is an **evaluation design and evidence package** that 
 4. **An overlap-aware improvement path.** Begin with small odds shifts or mixtures around a frozen reference router, then validate selected policies independently. A supported intervention answers a narrower question than an unrestricted optimal router.
 5. **A branching audit.** Use restored environments, same-model controls, and task-level inference to diagnose when static replay, context compression, serving changes, or hidden router inputs invalidate an evaluation.
 
-None of these points alone establishes a novel theorem. The potential publishable advance is demonstrating when this combined design yields trustworthy, resource-efficient evaluation, and identifying its limits. A stronger methods paper would require a new result beyond the inherited proofs, such as an efficiency-optimal sequential exploration design under a specified resource model. That extension is currently an open problem, not a delivered claim.
+None of these points alone establishes a novel theorem. The potential publishable advance is demonstrating when this combined design yields trustworthy, resource-efficient evaluation, and identifying its limits. A stronger methods paper would require a new result beyond the inherited proofs, such as an efficiency-optimal sequential exploration design under a specified resource model. Global optimal sequential exploration remains open. The theory-first manuscript now derives a narrower oracle cost allocation for a fixed reference-prefix population and independently selected paired continuations. It also proves an eligible-opportunity reduction and an execution-kernel sensitivity bound; these specialize established principles rather than establish novelty of the general methods. See [the theory extensions](theory_extensions.md) and [paper positioning](paper_positioning.md).
 
 ## 3. Target trial
 
@@ -98,7 +98,11 @@ Start with a locally runnable tool-use microbenchmark for end-to-end logging and
 - Fresh-policy execution supports or contradicts the causal estimates; trajectory divergence alone is not evidence of policy-value accuracy.
 - The proposed routing method is compared to competent existing sequential routers and simple heuristics, not just always-small.
 
-## 8. Proposed manuscript
+## 8. Manuscript status
+
+The current priority is the [complete theory-first working manuscript](../manuscript/README.md), including proofs, references, and a prospective empirical section. New GPU/model experiments and manuscript empirical results are deferred at the author's request. The source and compiled draft are available in `manuscript/`. The original shorter concept below is retained as development history; the assembled manuscript is authoritative for current paper wording.
+
+### Original manuscript concept
 
 **Working title:** Dynamic Agent Regimes: Causal Evaluation of Model-Switching Policies in LLM Agents.
 

@@ -14,3 +14,7 @@ This repository studies causal evaluation of dynamic model routing. Read README.
 - Add tests when changing estimators, randomization, task validation or inference. Run the documented test suite and a small deterministic simulation.
 - Update docs/experiment_results.md with the exact run, observed results and limitations. Update docs/experiment_handoff.md with reproducible next steps.
 - A proposed extension is not an implemented experiment. Keep the status table current.
+
+## Current phase (19 September 2026)
+
+The author has prioritized completing the theory and full manuscript while GPU capacity is limited. Defer new model inference, GPU jobs, Monte Carlo sweeps, and manuscript empirical results until that work is resumed. Deterministic CPU algebra checks and manuscript compilation are in scope. Preserve existing experiments unchanged. Read `manuscript/README.md`, `docs/theory_extensions.md`, and the internal theory review when continuing the paper. This phase instruction overrides the general request above to run a small simulation for a paper-only change.
