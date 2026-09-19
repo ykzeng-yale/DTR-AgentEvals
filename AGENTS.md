@@ -2,6 +2,12 @@
 
 This repository studies causal evaluation of dynamic model routing. Read README.md, docs/research_proposal.md, docs/theory.md and docs/experiment_protocol.md before changing scientific claims.
 
+## Publication workflow: direct updates to main
+
+The author explicitly requested direct integration into `main`, without pull requests. All project agents and the recurring monitor must validate their changes, synchronize with the latest remote `main`, preserve concurrent work, and commit/push directly to `main`. Do not create a PR, draft PR, or PR-based handoff unless the author later changes this instruction. If an isolated branch is needed for local work, integrate its reviewed changes locally and publish to `main` directly. Never force-push or overwrite another agent's work. Continue mathematical/code review and appropriate checks before publishing; direct publication does not remove validation requirements. Use issues and committed handoff files for coordination.
+
+## Research rules
+
 - Preserve raw run artifacts and immutable configurations. Never overwrite a completed experiment; use a new run directory.
 - Distinguish synthetic simulation, real model inference, pilot evidence, confirmatory results and planned experiments.
 - Do not call known DTR/OPE theory novel. Attach assumptions and primary citations to mathematical claims.
