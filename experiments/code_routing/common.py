@@ -32,7 +32,8 @@ def resolve(path_glob: str) -> str:
 
 
 def load_tasks(cfg: dict) -> list:
-    raw = Path(resolve(cfg['tasks_path'])).read_bytes()
+    tp = cfg['tasks_path']
+    raw = Path(resolve(tp if tp.startswith(('/', '~')) else str(ROOT / tp))).read_bytes()
     got = sha256_bytes(raw)
     tasks = json.loads(raw)
     for t in tasks:

@@ -20,6 +20,8 @@ LIVE_POLICIES = ['always_small', 'always_large', 'escalate_after_first_failure',
 def build(cfg: dict, tasks: list) -> dict:
     rng = np.random.default_rng(cfg['design_seed'])
     K, m, pl = cfg['horizon'], cfg['runs_per_task'], cfg['p_large']
+    if pl != 0.5:
+        raise SystemExit('the permuted-block a_0 has true marginal 0.5 whatever p_large is; p_large must be 0.5 (or drop the block)')
     uids = sorted(t['uid'] for t in tasks); bench = {t['uid']: t['benchmark'] for t in tasks}
     perm = [uids[i] for i in rng.permutation(len(uids))]
     pilot, rest = sorted(perm[:cfg['n_pilot_tasks']]), perm[cfg['n_pilot_tasks']:]

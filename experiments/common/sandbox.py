@@ -1,6 +1,7 @@
 # Adapted from ykzeng-yale/ICLR-WinRatioAgentEval experiments/local_stream/sandbox.py
 # (same author; audited Seatbelt sandbox + sentinel verifier). Changes: sandbox
-# base dir renamed to dtr_sbx; sentinel prefix renamed; nothing else.
+# base dir renamed to dtr_sbx; sentinel prefix renamed; per-run read isolation inside the
+# shared base dir (a run may read and write only its own temp dir).
 """Restricted execution of candidate programs.
 
 Guards (binding):
@@ -80,7 +81,7 @@ def sandbox_base_dir() -> str:
     return d
 
 
-def seatbelt_profile(python: str, base_dir: str) -> str:
+def seatbelt_profile(python: str, base_dir: str, run_dir: str | None = None) -> str:
     home = os.path.realpath(str(Path.home()))
     prefix = os.path.dirname(os.path.dirname(os.path.realpath(python)))
     tmp_real = os.path.realpath(tempfile.gettempdir())
@@ -90,7 +91,9 @@ def seatbelt_profile(python: str, base_dir: str) -> str:
              '(allow file-read* (subpath "%s"))' % prefix,
              '(deny file-write* (subpath "%s"))' % home,
              '(deny file-write* %s)' % ' '.join('(subpath "%s")' % p for p in write_deny),
-             '(allow file-write* (subpath "%s"))' % base_dir,
+             '(deny file-read* (subpath "%s"))' % base_dir,             # concurrent runs must not read each other's programs
+             '(allow file-read* (subpath "%s"))' % (run_dir or base_dir),
+             '(allow file-write* (subpath "%s"))' % (run_dir or base_dir),
              '(allow file-write* (literal "/dev/null"))',
              '(deny process-exec %s)' % ' '.join('(subpath "%s")' % p for p in EXEC_DENY_DIRS)]
     return '\n'.join(lines) + '\n'
@@ -162,7 +165,7 @@ def run_program(source: str, timeout_s: float = 10.0, mem_bytes: int = 2 << 30, 
     env = {'PATH': os.environ.get('PATH', '/usr/bin:/bin'), 'PYTHONIOENCODING': 'utf-8'}
     cmd = [python, '-I', '-S', prog]
     if info['kind'] == 'seatbelt':
-        cmd = ['/usr/bin/sandbox-exec', '-p', info['profile']] + cmd
+        cmd = ['/usr/bin/sandbox-exec', '-p', seatbelt_profile(python, info['base_dir'], tmp)] + cmd   # profile_sha256 stays that of the template
     t0 = time.perf_counter()
     timed_out = False
     proc = subprocess.Popen(cmd, cwd=tmp, env=env, stdin=subprocess.DEVNULL, stdout=subprocess.PIPE, stderr=subprocess.PIPE,

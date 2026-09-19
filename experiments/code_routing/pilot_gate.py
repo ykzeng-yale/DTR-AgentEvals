@@ -12,7 +12,7 @@ def main():
     ap = argparse.ArgumentParser(); ap.add_argument('--mock', action='store_true'); a = ap.parse_args()
     cfg = load_config(); base = (ROOT / 'work' / 'code_routing_mock') if a.mock else RESULTS
     rows = [json.loads(l) for l in (base / 'pilot' / 'episodes.jsonl').read_text().splitlines() if l.strip()]
-    ok = [r for r in rows if not r.get('error')]
+    ok = list({r['episode_id']: r for r in rows if not r.get('error')}.values())
     out = ['# Pilot gate' + (' **[MOCK: meaningless numbers]**' if a.mock else ''), '',
            'episodes %d, tasks %d, infrastructure errors %d' % (len(rows), len({r['task_uid'] for r in rows}), len(rows) - len(ok)), '',
            '| first model | n | validated at t=0 | first candidate passes HIDDEN tests | final success | mean completion tokens at t=0 |', '|---|---:|---:|---:|---:|---:|']
@@ -27,7 +27,7 @@ def main():
     nd = Counter(r['n_decisions'] for r in ok); failed0 = [r for r in ok if r['n_decisions'] > 1]; passed0 = [r for r in ok if r['n_decisions'] == 1]
     calls = sum(r['n_decisions'] for r in ok); toks = sum(r['completion_tokens'] for r in ok); secs = sum(r['agent_seconds'] for r in ok)
     trunc = np.mean([d['finish'] == 'length' for r in ok for d in r['decisions']])
-    vt = sum(1 for r in ok for d in r['decisions'] if d['validation'].get('err') == 'Timeout')
+    vt = sum(r.get('validation_timeouts', 0) for r in ok)
     out += ['', 'decisions per episode: %s  ->  P(t=1 eligible) = %.3f, P(t=2 eligible) = %.3f' % (dict(sorted(nd.items())), 1 - nd[1] / len(ok), nd[3] / len(ok)),
             'visible-test FALSE ALARM rate, P(first candidate hidden-correct | failed validation) = %.3f (n=%d)' % (np.mean([r['success_first_candidate'] for r in failed0]) if failed0 else float('nan'), len(failed0)),
             'visible-test FALSE PASS rate, P(hidden-wrong | validated at t=0) = %.3f (n=%d)' % (1 - np.mean([r['success'] for r in passed0]) if passed0 else float('nan'), len(passed0)),

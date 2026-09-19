@@ -23,12 +23,24 @@ agent loop, routing opportunities, logging contract and analyses follow the prot
   (defeats early `exit(0)`). Hidden tests never enter any prompt.
 - **Sandbox.** `/usr/bin/sandbox-exec`: no network, no reads or writes under `$HOME` except
   the interpreter prefix, writes only in a private temp cwd, no exec of system binaries;
-  RLIMIT_CPU/NPROC; process-group SIGKILL at 10 s. Containment is unit-tested on the host.
-- **Tool.** "Run the visible tests." Visible tests are written **once per task** by the
-  large model at temperature 0 in a context that never contains a candidate solution, then
-  frozen (`visible_tests.json`, sha256 stamped on every episode). They are part of the
-  environment, not of the treatment. They are imperfect by construction: a candidate can
-  fail them and still be correct (false alarm) or pass them and be wrong.
+  RLIMIT_CPU 10 s / NPROC; process-group SIGKILL at 20 s wall clock (deliberately twice the CPU limit so host contention
+  cannot turn a pass into a timeout); each run may read and write only its own temp directory, so concurrent runs cannot
+  read one another's programs. Containment is checked on the host.
+- **Tool.** "Run the visible checks." For every task the large model, at temperature 0 and in a context that never
+  contains a candidate solution, proposes 3–5 test cases. They are canonicalised deterministically (top-level asserts;
+  pytest-style `def test_*` bodies flattened; any redefinition of the entry point dropped; truncated replies
+  salvaged) and then **certified against the benchmark's reference implementation: a check the reference fails is
+  dropped.** The model contributes the *inputs*; the reference certifies the expected values — the way a benchmark's
+  public examples are made. Hidden tests are not consulted and the reference is never shown to a model. The result
+  is frozen in `visible_tests.json` (raw replies, canonical form, certified checks; sha256 stamped on every episode)
+  and is self-contained: no reference is consulted at run time. The text shown to a model in a repair prompt is
+  exactly the text the tool executes. *Why certified:* an uncertified first version rejected the **correct
+  reference solution in 336 of 588 tasks (57%)**, almost always through a wrong expected value; a tool that calls
+  correct code wrong more often than not is not a competent environment. The certified tool has no false alarms on
+  reference-equivalent code but keeps real **false passes** (incomplete coverage), like ordinary unit tests. The
+  superseded file is kept locally and its statistics are reported; it was never frozen or used for an episode.
+  Candidate stdout is silenced during validation, and the visible-test tool and the hidden-test verifier share one
+  prelude (HumanEval prompt helpers/imports with a stub body; MBPP harness imports) so they agree on what is in scope.
 - **Models.** small = Qwen2.5-3B-Instruct Q4_K_M, large = Qwen2.5-7B-Instruct Q4_K_M
   (Qwen licence / Apache-2.0 respectively; GGUF sha256 recorded in the run manifest), served
   by llama.cpp `llama-server`; T = 0.7, top-p 0.95, ≤1024 new tokens, per-call seed logged.
@@ -43,7 +55,8 @@ validated candidate is submitted immediately; after t=2 the latest candidate is 
 The action is binary — which model — and nothing else varies.
 
 Pre-action state: t, benchmark indicator, failure class of the last validation
-(`assertion` = only AssertionErrors; `exception` = anything else incl. crash/timeout/empty),
+(`assertion` = only AssertionErrors, i.e. the code ran but returned a wrong value on a certified check; `exception` =
+anything else incl. crash/timeout/empty reply),
 previous actions, fraction of visible asserts failing. Tabular key: (t, benchmark, failure
 class, previous action).
 
@@ -56,10 +69,15 @@ Behaviour: P(large) = 0.5 at every eligible decision (floor 0.5 ≥ 0.2; largest
 trajectory weight 8). All uniforms that decide actions are **pre-drawn in `design.json`**
 and committed before execution; a_0 is permuted-block within task (4 small, 4 large;
 marginal 0.5). Each decision record (state, P(large), draw source, action, transcript hash)
-is appended and fsync'ed to `decisions.jsonl` **before** the model is invoked. No fallback
-model exists: an HTTP/connection failure ends the episode with `error` set, it is kept in
-the raw log, excluded from estimation and counted; >1% triggers a same-seed rerun of those
-episodes only.
+is appended to the episode record and fsync'ed to `decisions.jsonl` **before** the model is invoked, tagged with
+the invocation id and attempt number. No fallback model exists. **Infrastructure failures** (HTTP/connection/timeouts,
+runner exceptions) end the attempt with `error` set; every attempt is kept in the raw log. A failed episode is not
+"done": re-running the stage retries it with the SAME pre-drawn uniforms and seed, up to 3 attempts. Analysis uses the
+last successful attempt; an episode whose 3 attempts all failed is scored **intention-to-treat** (success 0, penalties
+of the decisions that were assigned) rather than dropped, because failures are more likely on the slower large model
+and dropping them would select on the realised action and break the 4–4 block. Counts of retried and ITT-scored
+episodes are reported for every stage; a sensitivity analysis drops whole tasks containing an ITT episode. A stage
+stops itself if more than half of its episodes are erroring (a dead server), rather than burning the design.
 
 ## 4. Task partitions and sample sizes
 

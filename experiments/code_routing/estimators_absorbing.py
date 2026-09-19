@@ -49,7 +49,8 @@ def from_episodes(episodes: list, K: int, state_key, outcome: str = 'utility') -
             state[i, t] = s; key[i, t] = state_key(s)
             if outcome == 'utility':
                 r[i, t] -= d['penalty']
-        r[i, ds[-1]['t']] += e['success']
+        if ds:
+            r[i, ds[-1]['t']] += e['success']      # an ITT-scored episode with no decision contributes 0 with weight 1 under every policy
     return Logs(np.array([e['task_uid'] for e in episodes], object), elig, a, b, key, state, r)
 
 

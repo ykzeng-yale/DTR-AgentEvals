@@ -19,7 +19,7 @@ Pre-action state handed to a policy at decision t:
        prev_actions tuple, frac_fail of the last validation)
 """
 from __future__ import annotations
-import ast, hashlib, json, re, secrets, time, warnings
+import ast, hashlib, json, os, re, secrets, time, warnings
 
 import requests
 
@@ -35,8 +35,9 @@ ASK_TESTS = ('Write 3 to 5 `assert` statements that test a correct implementatio
 ASK_REPAIR = ('Running the latest solution together with the tests below failed. Fix the implementation. Reply with the '
               'complete corrected solution in a single ```python code block (imports included, no tests).\n\nTests:\n```python\n'
               '{tests}\n```\n\nFailure output:\n```\n{trace}\n```')
-_CODE_BLOCK = re.compile(r'```(?:python|py|python3)?[ \t]*\n(.*?)```', re.S)
+_FENCE = re.compile(r'```[ \t]*(?:python3?|py)?[ \t]*\r?\n(.*?)(?:```|\Z)', re.S | re.I)   # closing fence optional: truncated replies
 _SPECIAL = re.compile(r'<\|(?:im_end|im_start|endoftext|end_of_text|eot_id)\|>')
+_DEF = re.compile(r'^\s*(?:async\s+)?(?:def|class)\s', re.M)
 ACTIONS = ('small', 'large')
 
 
@@ -68,13 +69,21 @@ def tests_prompt(task: dict) -> list:
 
 
 def extract_code(text: str) -> str:
+    """The LAST fenced block that defines something (a repair reply often quotes the old code first and gives the
+    fix last); else the last fenced block; else the raw text. Fences are case-insensitive and may be unclosed."""
     if not text:
         return ''
-    blocks = _CODE_BLOCK.findall(text)
+    blocks = [b for b in _FENCE.findall(_SPECIAL.sub('', text)) if b.strip()]
     if blocks:
-        pick = next((b for b in blocks if re.search(r'^\s*(?:async\s+)?def\s', b, re.M)), blocks[0])
-        return pick.strip('\n') + '\n'
+        defs = [b for b in blocks if _DEF.search(b)]
+        return (defs[-1] if defs else blocks[-1]).strip('\n') + '\n'
     return _SPECIAL.sub('', text).strip() + '\n'
+
+
+def extract_tests_text(text: str) -> str:
+    """For the test writer: every fenced block concatenated (asserts may be split across blocks); else raw text."""
+    blocks = [b for b in _FENCE.findall(_SPECIAL.sub('', text or '')) if b.strip()]
+    return ('\n'.join(b.strip('\n') for b in blocks) if blocks else _SPECIAL.sub('', text or '').strip()) + '\n'
 
 
 # ------------------------------------------------------------------ models
@@ -115,6 +124,8 @@ class MockModel:
     def chat(self, messages, seed, task_uid=None, kind='code', **_):
         t = self.tasks[task_uid]; ep = t.get('entry_point') or 'solution'
         h = int(hashlib.sha256(('%s|%s|%s|%d' % (self.alias, task_uid, kind, seed)).encode()).hexdigest(), 16)
+        if os.environ.get('MOCK_INJECT_ERRORS') and kind == 'code' and (h // 7) % 40 == 0:
+            raise ConnectionError('mock injected infrastructure failure')     # exercises retry and intention-to-treat paths
         u, v = (h % 1000) / 1000.0, (h // 1000 % 1000) / 1000.0
         if kind == 'tests':
             body = 'assert callable(%s)\nassert %s.__doc__ is None or isinstance(%s.__doc__, str)\n' % (ep, ep, ep)
@@ -132,71 +143,152 @@ class MockModel:
 
 
 # ------------------------------------------------------------------ visible-test tool
-def validation_program(code: str, tests: str, nonce: str):
-    try:
-        with warnings.catch_warnings():
-            warnings.simplefilter('ignore', SyntaxWarning)
-            tree = ast.parse(tests or '')
-    except SyntaxError:
-        tree = ast.parse('')
-    setup = [n for n in tree.body if isinstance(n, (ast.Import, ast.ImportFrom))]
-    asserts = [n for n in tree.body if isinstance(n, ast.Assert)]
-    lines = [code.rstrip(), '', 'import json as __json', '__res = []'] + [ast.unparse(s) for s in setup]
-    for a in asserts:
-        src = ast.unparse(a)
-        lines += ['try:', '    ' + src, "    __res.append(['ok', ''])", 'except BaseException as __e:',
-                  '    __res.append([type(__e).__name__, (%r + " -> " + repr(__e))[:300]])' % src[:200]]
-    lines.append('print(%r + __json.dumps(__res), flush=True)' % ('__VALID_%s__' % nonce))
-    return '\n'.join(lines) + '\n', len(asserts)
+MAX_CHECKS = 10
 
 
-def validate(code: str, tests: str, cfg: dict) -> dict:
-    """Tool result. passed iff the candidate loads and no visible assert fails (zero asserts = load check only)."""
+def canonical_tests(raw: str, entry_point: str) -> dict:
+    """Deterministic canonical form of the writer's reply: guarded imports + independent checks.
+
+    Top-level asserts are checks. A top-level ``def test*`` whose body is only asserts is flattened into checks;
+    otherwise it becomes one check that defines and calls it (if it takes no arguments). Everything else is dropped
+    - in particular any definition of the entry point itself, which would otherwise shadow the candidate. A reply
+    truncated mid-line is salvaged by dropping trailing lines until it parses. The SAME text is executed by the tool
+    and shown to the model in repair prompts."""
+    lines = (raw or '').splitlines(); tree = None; dropped = 0
+    for dropped in range(0, min(len(lines), 40) + 1):
+        try:
+            with warnings.catch_warnings():
+                warnings.simplefilter('ignore', SyntaxWarning)
+                tree = ast.parse('\n'.join(lines[:len(lines) - dropped]))
+            break
+        except SyntaxError:
+            tree = None
+    setup, checks = [], []
+    for n in (tree.body if tree is not None else []):
+        if isinstance(n, (ast.Import, ast.ImportFrom)):
+            setup.append(ast.unparse(n))
+        elif isinstance(n, ast.Assert):
+            checks.append(ast.unparse(n))
+        elif isinstance(n, ast.FunctionDef) and n.name.lower().startswith('test') and n.name != entry_point:
+            body = [b for b in n.body if not (isinstance(b, ast.Expr) and isinstance(getattr(b, 'value', None), ast.Constant))]
+            if body and all(isinstance(b, ast.Assert) for b in body):
+                checks += [ast.unparse(b) for b in body]
+            elif not (n.args.args or n.args.posonlyargs or n.args.kwonlyargs):
+                checks.append(ast.unparse(n) + '\n' + n.name + '()')
+    if not checks:      # last resort: any single line that is by itself a complete assert (e.g. after a bogus `import assert`)
+        for l in lines:
+            l = l.strip()
+            if l.startswith('assert ') or l.startswith('assert('):
+                try:
+                    checks.append(ast.unparse(ast.parse(l).body[0]))
+                except (SyntaxError, IndexError):
+                    pass
+        setup = [x for x in setup if x not in ('import assert',)]
+    checks = checks[:MAX_CHECKS]
+    text = '\n'.join(setup + checks)
+    return dict(setup=setup, checks=checks, text=text, n_checks=len(checks), parsed=tree is not None, salvage_lines_dropped=dropped if tree is not None else None)
+
+
+def certified_tests(task: dict, canon: dict, cfg: dict) -> dict:
+    """Environment construction only. Keep the writer's INPUTS but certify every check against the reference
+    implementation, dropping checks the reference fails (wrong expected values, wrong call conventions). This is how a
+    benchmark's public examples are made. Result: a tool with no false alarms on correct code but real false passes
+    (incomplete coverage). Hidden tests are not consulted; the reference is never shown to any model."""
+    v = validate(task, task['reference'], canon, cfg)
+    keep = [c for c, r in zip(canon['checks'], v.get('per_check', [])) if r == 'ok'] if v.get('per_check') else []
+    return dict(setup=canon['setup'] if keep else [], checks=keep, text='\n'.join((canon['setup'] if keep else []) + keep), n_checks=len(keep),
+                n_written=canon['n_checks'], n_dropped_by_reference=canon['n_checks'] - len(keep), reference_loaded=v.get('per_check') is not None)
+
+
+def _hoist_future(code: str):
+    fut = [l for l in code.splitlines() if re.match(r'\s*from\s+__future__\s+import\s', l)]
+    rest = '\n'.join(l for l in code.splitlines() if l not in fut)
+    return fut, rest
+
+
+def prelude(task: dict) -> str:
+    """Names a correct solution may rely on without defining them: HumanEval helpers/imports that exist only in the
+    prompt (the prompt plus a stub body, later shadowed by the candidate) and MBPP's harness imports. Used identically
+    by the visible-test tool and the hidden-test verifier so the two never disagree about what is in scope."""
+    if task['benchmark'] == 'humaneval':
+        return task['prompt'].rstrip() + '\n    pass\n'
+    return '\n'.join(task.get('test_imports') or [])
+
+
+def validation_program(task: dict, code: str, tests: dict, nonce: str) -> str:
+    fut, body = _hoist_future(code)
+    lines = fut + ['import sys as __vs, os as __vo, json as __vj', '__vreal = __vs.stdout', "__vs.stdout = open(__vo.devnull, 'w')",
+                   '__vres = []', prelude(task), body.rstrip(), '']
+    for imp in tests['setup']:
+        lines += ['try:', '    ' + imp, 'except Exception:', '    pass']
+    for src in tests['checks']:
+        lines += ['try:'] + ['    ' + l for l in src.splitlines()] + ["    __vres.append(['ok', ''])", 'except BaseException as __ve:',
+                  '    __vres.append([type(__ve).__name__, (%r + " -> " + repr(__ve))[:300]])' % src.splitlines()[0][:200]]
+    lines += ['__vs.stdout = __vreal', "print(%r + __vj.dumps(__vres), flush=True)" % ('\n__VALID_%s__' % nonce)]
+    return '\n'.join(lines) + '\n'
+
+
+def validate(task: dict, code: str, tests: dict, cfg: dict) -> dict:
+    """Tool result. passed iff the candidate loads and no visible check fails (zero checks = load check only).
+    Candidate stdout is silenced while it runs, so the result line cannot be lost in or spoofed by its output."""
+    n = tests['n_checks']
     if not code.strip():
-        return dict(passed=False, fail_class='exception', err='EmptyReply', n_asserts=0, n_fail=0, frac_fail=1.0,
-                    trace='The reply contained no code.', seconds=0.0)
-    nonce = secrets.token_hex(6)
-    prog, n = validation_program(code, tests, nonce)
-    run = run_program(prog, timeout_s=cfg['sandbox_timeout_s'], cpu_seconds=cfg['sandbox_cpu_s'])
-    marker = '__VALID_%s__' % nonce
+        return dict(passed=False, fail_class='exception', err='EmptyReply', n_asserts=n, n_fail=n, frac_fail=1.0,
+                    trace='The reply contained no code.', seconds=0.0, timed_out=False)
+    nonce = secrets.token_hex(6); marker = '__VALID_%s__' % nonce
+    run = run_program(validation_program(task, code, tests, nonce), timeout_s=cfg['sandbox_timeout_s'], cpu_seconds=cfg['sandbox_cpu_s'])
     line = next((l for l in reversed(run['stdout'].splitlines()) if l.startswith(marker)), None)
-    if line is None:
+    res = None
+    if line is not None:
+        try:
+            res = json.loads(line[len(marker):])
+        except ValueError:
+            res = None
+    if res is None:
         tail = (run['stderr'] or '').strip().splitlines()
         err = 'Timeout' if run['timed_out'] else (tail[-1].split(':')[0].strip()[:40] if tail else 'Crash')
         return dict(passed=False, fail_class='exception', err=err, n_asserts=n, n_fail=n, frac_fail=1.0,
-                    trace='\n'.join(tail[-8:])[:1500], seconds=run['seconds'])
-    res = json.loads(line[len(marker):])
+                    trace='\n'.join(tail[-8:])[:1500], seconds=run['seconds'], timed_out=bool(run['timed_out']))
     bad = [r for r in res if r[0] != 'ok']
     only_assert = all(b[0] == 'AssertionError' for b in bad)
     return dict(passed=not bad, fail_class=('none' if not bad else ('assertion' if only_assert else 'exception')),
                 err=('none' if not bad else bad[0][0][:40]), n_asserts=n, n_fail=len(bad), frac_fail=len(bad) / max(n, 1),
-                trace='\n'.join(b[1] for b in bad[:3])[:1500], seconds=run['seconds'])
+                trace='\n'.join(b[1] for b in bad[:3])[:1500], seconds=run['seconds'], timed_out=False, per_check=[r[0] for r in res])
+
+
+def verify_hidden(task: dict, code: str, cfg: dict) -> dict:
+    fut, body = _hoist_future(code)
+    return verify(task, '\n'.join(fut + [prelude(task), body]) if code.strip() else code, timeout_s=cfg['sandbox_timeout_s'], cpu_seconds=cfg['sandbox_cpu_s'])
+
+
+def repair_message(tests: dict, trace: str) -> str:
+    return ASK_REPAIR.format(tests=tests['text'] or '# (no visible tests; the solution failed to load)', trace=trace)
 
 
 # ------------------------------------------------------------------ branch restoration
-def restore_first_failure_prefix(task: dict, tests: str, parent: dict, cfg: dict) -> dict:
+def restore_first_failure_prefix(task: dict, tests: dict, parent: dict, cfg: dict) -> dict:
     """Rebuild the exact transcript that preceded the parent's t=1 decision and re-run the tool on the parent's
     first candidate. Fidelity checks: transcript hash equals the hash logged BEFORE the parent's t=1 call, and the
     re-validated candidate reproduces the logged tool result."""
     d0, d1 = parent['decisions'][0], parent['decisions'][1]
     convo = [dict(role='system', content=SYS_CODE), dict(role='user', content=task_prompt(task)),
-             dict(role='assistant', content=d0['reply']),
-             dict(role='user', content=ASK_REPAIR.format(tests=(tests or '# (no visible tests)').strip(), trace=d0['trace']))]
+             dict(role='assistant', content=d0['reply']), dict(role='user', content=repair_message(tests, d0['trace']))]
     h = hashlib.sha256(json.dumps(convo, sort_keys=True).encode()).hexdigest()
-    val = validate(d0['code'], tests, cfg)
+    val = validate(task, d0['code'], tests, cfg)
     same_tool = all(val[k] == d0['validation'][k] for k in ('passed', 'fail_class', 'n_asserts', 'n_fail'))
     return dict(convo=convo, code=d0['code'], val=val, prev=[d0['a']], t=1,
                 restoration=dict(transcript_hash_matches=(h == d1['transcript_sha256']), tool_result_reproduced=bool(same_tool)))
 
 
 # ------------------------------------------------------------------ episode
-def run_episode(task: dict, tests: str, ep: dict, choose, models: dict, cfg: dict, stamp: dict, on_decision=None, resume=None) -> dict:
-    """choose(state) -> (action_index, prob_of_large, source). Decisions are handed to ``on_decision`` (durably
-    logged by the caller) BEFORE the model is invoked."""
+def run_episode(task: dict, tests: dict, ep: dict, choose, models: dict, cfg: dict, stamp: dict, on_decision=None, resume=None) -> dict:
+    """choose(state) -> (action_index, prob_of_large, source, draw). Every decision is appended to the record AND handed to
+    ``on_decision`` (durably logged by the caller) BEFORE the model is invoked, so an episode that dies mid-call still
+    carries the action that was assigned (needed for intention-to-treat scoring of unresolved episodes)."""
     K = cfg['horizon']; mock = isinstance(models['small'], MockModel)
     rec = dict(episode_id=ep['episode_id'], task_uid=task['uid'], benchmark=task['benchmark'], split=ep.get('split'), run=ep.get('run'),
                policy=ep.get('policy', 'randomized_log'), seed=ep['seed'], start_utc=time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime()),
-               error=None, decisions=[], **stamp)
+               error=None, decisions=[], n_visible_checks=tests['n_checks'], **stamp)
     convo = [dict(role='system', content=SYS_CODE), dict(role='user', content=task_prompt(task))]
     code, val, prev, t_start = '', None, [], 0
     if resume is not None:      # branch audit: continue from a restored prefix; only the NEW decisions are recorded here
@@ -207,41 +299,40 @@ def run_episode(task: dict, tests: str, ep: dict, choose, models: dict, cfg: dic
         for t in range(t_start, K):
             state = dict(t=t, x_humaneval=int(task['benchmark'] == 'humaneval'), fail_class='start' if val is None else val['fail_class'],
                          prev_actions=tuple(prev), frac_fail=0.0 if val is None else val['frac_fail'])
-            a, p_large, source = choose(state)
-            dec = dict(t=t, eligible=True, state=dict(state, prev_actions=list(prev)), action=ACTIONS[a], a=a, p_large=p_large,
-                       b_obs=p_large if a == 1 else 1 - p_large, source=source,
-                       transcript_sha256=hashlib.sha256(json.dumps(convo, sort_keys=True).encode()).hexdigest())
+            a, p_large, source, draw = choose(state)
+            dec = dict(t=t, eligible=True, available_actions=list(ACTIONS), state=dict(state, prev_actions=list(prev)), action=ACTIONS[a], a=a,
+                       p_large=p_large, b_obs=p_large if a == 1 else 1 - p_large, source=source, draw=draw, penalty=cfg['call_penalty'][ACTIONS[a]],
+                       completed=False, transcript_sha256=hashlib.sha256(json.dumps(convo, sort_keys=True).encode()).hexdigest())
+            rec['decisions'].append(dec); prev.append(a)
             if on_decision:
                 on_decision(rec['episode_id'], dec)                       # persisted before invocation
             m = models[ACTIONS[a]]
             kw = dict(task_uid=task['uid'], kind='code') if mock else {}
             out = m.chat(convo, ep['seed'] + 101 * t, **kw)
             code = extract_code(out['text'])
-            val = validate(code, tests, cfg)
-            dec.update(model_alias=m.alias, response_model=out['response_model'], finish=out['finish'], prompt_tokens=out['prompt_tokens'],
+            val = validate(task, code, tests, cfg)
+            dec.update(completed=True, model_alias=m.alias, response_model=out['response_model'], finish=out['finish'], prompt_tokens=out['prompt_tokens'],
                        completion_tokens=out['completion_tokens'], wall_seconds=out['wall_seconds'], server_gen_ms=out['server_gen_ms'],
-                       server_prompt_ms=out['server_prompt_ms'], reply=out['text'], code=code, validation={k: val[k] for k in val if k != 'trace'},
-                       trace=val['trace'], penalty=cfg['call_penalty'][ACTIONS[a]])
-            rec['decisions'].append(dec); prev.append(a)
+                       server_prompt_ms=out['server_prompt_ms'], reply=out['text'], code=code, validation={k: val[k] for k in val if k not in ('trace', 'per_check')},
+                       trace=val['trace'])
             if val['passed']:
                 break
-            convo = convo + [dict(role='assistant', content=out['text']),
-                             dict(role='user', content=ASK_REPAIR.format(tests=(tests or '# (no visible tests)').strip(), trace=val['trace']))]
+            convo = convo + [dict(role='assistant', content=out['text']), dict(role='user', content=repair_message(tests, val['trace']))]
         rec['agent_seconds'] = time.perf_counter() - t0
-        v = verify(task, code, timeout_s=cfg['sandbox_timeout_s'], cpu_seconds=cfg['sandbox_cpu_s'])
+        v = verify_hidden(task, code, cfg)
         rec.update(final_code=code, n_decisions=len(prev), n_new_decisions=len(rec['decisions']), actions=[ACTIONS[a] for a in prev], stop_reason='validated' if val['passed'] else 'horizon',
                    success=int(v['success']), verify_timed_out=v['timed_out'], hack_flags=v['hack_flags'], sentinel_seen=v['sentinel_seen'],
+                   validation_timeouts=sum(bool(d['validation'].get('timed_out')) for d in rec['decisions']),
                    penalty=sum(d['penalty'] for d in rec['decisions']), completion_tokens=sum(d['completion_tokens'] for d in rec['decisions']),
                    llm_wall_seconds=sum(d['wall_seconds'] for d in rec['decisions']))
         rec['utility'] = rec['success'] - rec['penalty']
         if resume is None and len(rec['decisions']) > 1:
             # mechanism only, computed AFTER the episode has ended and never shown to any model: was the first candidate
             # already correct on the hidden tests although the visible tests rejected it (a false alarm)?
-            v0 = verify(task, rec['decisions'][0]['code'], timeout_s=cfg['sandbox_timeout_s'], cpu_seconds=cfg['sandbox_cpu_s'])
-            rec['success_first_candidate'] = int(v0['success'])
+            rec['success_first_candidate'] = int(verify_hidden(task, rec['decisions'][0]['code'], cfg)['success'])
         elif resume is None:
             rec['success_first_candidate'] = rec['success']
     except Exception as e:                                                # infrastructure failure: recorded, never dropped
         rec['error'] = repr(e)[:500]
-        rec['n_decisions_before_error'] = len(prev)
+        rec['n_decisions_before_error'] = sum(bool(d.get('completed')) for d in rec['decisions'])
     return rec

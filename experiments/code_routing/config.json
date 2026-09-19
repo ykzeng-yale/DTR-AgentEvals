@@ -1,6 +1,6 @@
 {
   "experiment": "code_routing_v1",
-  "tasks_path": "~/ICLR-WinRatioAgentEvals/work/local_stream/data/tasks.json",
+  "tasks_path": "work/code_routing_data/tasks.json",
   "models": {
     "small": {
       "alias": "qwen2.5-3b-instruct",
@@ -13,24 +13,45 @@
       "port": 8191
     }
   },
-  "llama_server_flags": ["-ngl", "99", "-np", "4", "-c", "32768", "--jinja", "--host", "127.0.0.1"],
+  "llama_server_flags": [
+    "-ngl",
+    "99",
+    "-np",
+    "4",
+    "-c",
+    "32768",
+    "--jinja",
+    "--host",
+    "127.0.0.1"
+  ],
   "llama_server_flags_note": "32768 / 4 slots = 8192 tokens per slot; a t=2 repair transcript can reach ~4.7k tokens, so 4096 per slot would overflow on exactly the hardest episodes",
   "temperature": 0.7,
   "top_p": 0.95,
   "max_tokens": 1024,
   "request_timeout_s": 600,
   "workers": 4,
-  "sandbox_timeout_s": 10.0,
+  "sandbox_timeout_s": 20.0,
   "sandbox_cpu_s": 10,
   "horizon": 3,
   "p_large": 0.5,
-  "visible_tests": {"writer": "large", "temperature": 0.0, "seed": 20260918, "max_tokens": 512},
+  "visible_tests": {
+    "writer": "large",
+    "temperature": 0.0,
+    "seed": 20260918,
+    "max_tokens": 1024
+  },
   "design_seed": 20260918,
   "n_pilot_tasks": 30,
   "n_train_tasks": 231,
   "runs_per_task": 8,
   "live_runs_per_task": 2,
-  "call_penalty": {"small": 0.01, "large": 0.03},
+  "call_penalty": {
+    "small": 0.01,
+    "large": 0.03
+  },
   "call_penalty_note": "unitless design choice, same convention as the L0 arithmetic pilot; NOT dollars, energy or a token price",
-  "alpha": 0.05
+  "alpha": 0.05,
+  "sandbox_note": "wall-clock limit 20 s is deliberately twice RLIMIT_CPU (10 s): under host contention a CPU-bound program must hit the CPU limit, not the wall clock",
+  "max_attempts_per_episode": 3,
+  "tasks_note": "local pinned copy (gitignored; not redistributed) of the 591-task file built from the public MBPP-sanitized and HumanEval downloads; its sha256 is frozen in design.json and checked at every run"
 }
