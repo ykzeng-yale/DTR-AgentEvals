@@ -3,6 +3,32 @@
 Pushed about every two hours while experiments run. Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-19 16:20 EDT — randomized log 44% done, no errors
+
+**Stage:** `log` (frozen design `cb9481d`). **1,974 of 4,488 episodes**, **0 infrastructure errors**, 0 episodes
+owing a retry. 2.26 s per episode; ETA about 96 min (finish ≈ 17:55 EDT). 555 of 561 tasks touched so far;
+train 804 / confirm 1,170 episodes.
+
+**Operational only — no outcomes by arm are looked at before the stage completes.**
+
+| quantity | value |
+|---|---:|
+| model calls / completion tokens | 2,661 / 225,049 |
+| decisions per episode (1 / 2 / 3) | 1,590 / 81 / 303 → P(t=1 eligible) 0.195, P(t=2) 0.153 (pilot: 0.225 / 0.133) |
+| truncated generations, validation timeouts, hidden-test timeouts, hack flags | 0, 0, 0, 0 |
+| episodes begun under foreign GPU load / failed contention checks | 0 of 1,974 / 0 |
+| mean call latency (uncontended, so interpretable) | small 4.26 s, large 8.90 s |
+| assignment balance at t=0 (design check, not an outcome) | 0.508 large vs 0.500 by design |
+
+**GPU sharing:** still sole occupant. The sibling ICLR project has committed only documents today and has not
+started inference; it did finish downloading a coder model, so contention may begin at any time. Every episode
+carries `foreign_gpu_load_at_start`, and the runner pauses before an episode while another server is generating.
+(Note for anyone reading process lists: this project's two servers run the llama-server *binary* from the sibling's
+scratchpad directory, so they look like sibling processes; ownership is by port — 8191 and 8193 are this project's.)
+
+**Problems:** none. **Next:** on completion — `analysis.py --learn`, freeze and push `learned_policy.json`, then
+the live stage (3,960 episodes, ≈2.5 h), calibration, branch audit (≈0.5 h).
+
 ## 2026-09-19 15:10 EDT — design FROZEN (`cb9481d`); randomized log running
 
 **Stage:** `log` — 4,488 pre-drawn episodes on 561 train + confirm tasks. 50 done at the time of writing, 0 errors,
