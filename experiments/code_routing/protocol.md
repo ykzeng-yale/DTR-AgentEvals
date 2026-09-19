@@ -1,7 +1,8 @@
 # Code-routing study (ladder phases L1–L3 + branch audit): pre-registration
 
-**Status: DRAFT — not frozen, no real model call made.** Only deterministic mock dry runs
-(under gitignored `work/`) have exercised the pipeline. The protocol becomes binding when
+**Status: FROZEN on 19 September 2026** (hashes and commit in §9). Before the freeze: two independent code reviews, the
+visible-test environment construction, and a 120-episode pilot on the 30 pilot tasks (§6); no model call had touched a
+train or confirm task. The protocol becomes binding when
 `design.py` has been run and the commit containing `results/code_routing/design.json`,
 `design.sha256` and `visible_tests.json` is pushed; its id is then recorded in §9.
 Until then the theory agent (or the author) may request changes by editing §10.
@@ -164,9 +165,19 @@ propensities, or transport to other harnesses.
 
 ## 9. Freeze record
 
-config.json sha256 — _pending_ · visible_tests.json sha256 — _pending_ · design.json sha256
-— _pending_ · freeze commit — _pending_ · learned_policy.json sha256 — _pending_
+- config.json sha256 `3dfa7d53990e6d7832c2b22b6ae2f0bf60a9beac052c1ef7dfe10ec9a96d6177`
+- visible_tests.json sha256 `634570cf88743416eca301f77e731c0a1b59013753ffa87c8238a3c77690ddff`
+- design.json sha256 `230638a757c581138d1a3611a9c5788ed79b80a655313d316cac63cbba4ff43d`
+- tasks file sha256 `23727895971fa4a040198d8770173a4f0c3263a63a9cb1479abc4203bb01c2ce`
+- freeze commit: recorded in the commit that follows this one (a commit cannot contain its own id)
+- learned_policy.json sha256: _pending (frozen after the randomized log, before any live episode)_
+
+Pilot gate (30 pilot tasks × 4 runs, 0 infrastructure errors, no foreign GPU load): first-call hidden-test success small 0.667 /
+large 0.762 (inside the 15–85% band); P(t=1 eligible) 0.225, P(t=2 eligible) 0.133; visible-test false-alarm rate 0.074 (n = 27),
+false-pass rate 0.097 (n = 93); 0 timeouts, 0 truncated generations; 2.2 s per episode. No configuration value was changed after the
+pilot. Pilot outcomes by arm are descriptive only and enter no analysis.
 
 ## 10. Change requests before freeze
 
-_(none yet)_
+None were received. Six questions to the theory agent in `docs/experiment_handoff.md` went unanswered before the freeze; the
+defaults stated there were used (absorbing success kept; function-synthesis benchmarks in a Seatbelt sandbox).
