@@ -1,0 +1,103 @@
+{
+  "ref": "035d245f6fa10450f7cf89420bc1947d4c54aebc",
+  "scope": "Artifact consistency only; no candidate execution, model calls, Monte Carlo, policy ranking, or outcome-based scientific analysis.",
+  "counts": {
+    "episodes": 4488,
+    "tasks": 561,
+    "decisions": 6063,
+    "episodes_by_split": {
+      "confirm": 2640,
+      "train": 1848
+    },
+    "tasks_by_split": {
+      "pilot": 30,
+      "train": 231,
+      "confirm": 330
+    },
+    "decisions_by_stage": {
+      "0": 4488,
+      "1": 881,
+      "2": 694
+    },
+    "decisions_by_stage_action": {
+      "0:large": 2244,
+      "0:small": 2244,
+      "1:large": 461,
+      "1:small": 420,
+      "2:large": 333,
+      "2:small": 361
+    },
+    "episodes_by_number_decisions": {
+      "1": 3607,
+      "2": 187,
+      "3": 694
+    },
+    "stop_reasons": {
+      "horizon": 586,
+      "validated": 3902
+    },
+    "attempts": {
+      "1": 4488
+    },
+    "errors": 0,
+    "mock_episodes": 0,
+    "incomplete_decisions": 0,
+    "validation_timeouts": 0,
+    "hidden_verifier_timeouts": 0,
+    "finish_reasons": {
+      "stop": 6063
+    },
+    "contention_flags": 0,
+    "contention_check_failures": 0
+  },
+  "hashes": {
+    "results/code_routing/design.json": "230638a757c581138d1a3611a9c5788ed79b80a655313d316cac63cbba4ff43d",
+    "results/code_routing/visible_tests.json": "634570cf88743416eca301f77e731c0a1b59013753ffa87c8238a3c77690ddff",
+    "results/code_routing/learned_policy.json": "4f22e7b4f8ffc63c7d3fff7a828fffc81d0471db0ce5eb843876ebbf5e89768e",
+    "results/code_routing/log/episodes.jsonl": "e643ee44c7ef658fff65efb5e17763ee78c990d21184d060f5823025a100414e",
+    "results/code_routing/log/decisions.jsonl": "7ef183d9c75794e9803f5849af7cbd9c860d1fee9eb344bcf8de7ac4a54d4cfd",
+    "experiments/code_routing/config.json": "3dfa7d53990e6d7832c2b22b6ae2f0bf60a9beac052c1ef7dfe10ec9a96d6177"
+  },
+  "code_digest": {
+    "reconstructed_current": "b697d39065697358ff9a33b59f9aa51b4cbfcb3eed3347f05443a79658d24c26",
+    "reconstructed_recorded_head": "b697d39065697358ff9a33b59f9aa51b4cbfcb3eed3347f05443a79658d24c26",
+    "n_python_files": 12
+  },
+  "chronology": {
+    "manifest_start": "2026-09-19T19:04:44Z",
+    "first_start": "2026-09-19T19:04:44Z",
+    "last_start": "2026-09-19T21:54:58Z",
+    "first_durable_decision": "2026-09-19T19:04:44Z",
+    "last_durable_decision": "2026-09-19T21:55:00Z",
+    "policy_created": "2026-09-19T21:55:25Z"
+  },
+  "checks": {
+    "distinct_checks": 75,
+    "individual_checks": 226735,
+    "failures": {}
+  },
+  "redactions": [
+    {
+      "file": "results/code_routing/log/episodes.jsonl",
+      "episodes_affected": [
+        "log:humaneval/1#7"
+      ],
+      "split": "train",
+      "occurrences_masked": 4,
+      "placeholder": "<HOME>",
+      "sha256_before": "1a470c4c4fcd46b8299033ce0d6eb62e3c5df62338cdca1201d8b4440f9d13c8",
+      "sha256_after": "e643ee44c7ef658fff65efb5e17763ee78c990d21184d060f5823025a100414e",
+      "reason": "a candidate program raised RecursionError inside the standard library; the traceback the sandbox returned, and which was shown to the model in the repair prompt, contained the interpreter path under the researcher home directory",
+      "note": "only the host prefix is masked; the tool result text is otherwise unchanged and no numeric field is touched. The episode is in the TRAIN split, so no branch-audit restoration hash depends on it."
+    }
+  ],
+  "limitations": [
+    "Task file is not in this checkout or committed; its claimed input hash and full prompt/transcript hashes cannot be reconstructed here.",
+    "Pre-redaction file is absent. The before-hash and four original strings are declarations, not independently revalidated. All published pre-action hashes remain original hashes, so a redacted repair history will not reconstruct them.",
+    "Pinned GGUF hashes and server/runtime facts are recorded, but this audit does not reread original model files or prove which server binary/model executed.",
+    "No completion timestamps or raw HTTP request records: decision timestamps precede learned-policy timestamp but completion-before-fit is supported by recorded counts/code rather than independently measured end timestamps.",
+    "Learning artifact records counts/objective/table but no input-log/source/config digest; train-only filtering was inspected in source, not independently refit or runtime-proven.",
+    "Four workers imply completion order need not match randomized dispatch order; order checks use timestamps and design identities.",
+    "Operational consistency does not independently validate hidden rewards, sandbox execution, model quality, causal estimates, uncertainty intervals, or robustness."
+  ]
+}

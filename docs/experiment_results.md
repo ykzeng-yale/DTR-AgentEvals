@@ -1,6 +1,12 @@
 # Completed experiments and their interpretation
 
-All results below were actually generated on 2026-09-18. Synthetic results, real open-weight model observations, and remaining publication work are separated. The tests establish implementation identities and numerical correctness; they do not replace statistical assumptions or benchmark validation.
+The original result sections below were generated on 2026-09-18; later checkpoints are dated explicitly. Synthetic results, real open-weight model observations, and remaining publication work are separated. The tests establish implementation identities and numerical correctness; they do not replace statistical assumptions or benchmark validation.
+
+## Coding-study checkpoint: 19 September 2026, 22:00 UTC review cycle
+
+At commit `035d245`, two independent internal reviewers inspected the committed randomized log: **4,488 unique episodes, 561 tasks, eight episodes per task, and 6,063 durable decision records**. TRAIN has 231 tasks / 1,848 episodes; CONFIRM has 330 tasks / 2,640 episodes, with no task overlap. Episode assignments agree with the frozen design, and no infrastructure-error episode is recorded. The learned-policy artifact is frozen and its source code uses TRAIN only. These are independently checked artifact and source-code properties, not fresh execution or independently rescored hidden-test results.
+
+No completed live-policy or branch results are committed at this checkpoint. The subsequent workstream note at `f3aa436` reports live collection running; that stage is not independently validated here. No new model run, simulation sweep, performance ranking or fitted policy-effect estimate was produced by this review. One TRAIN episode has documented path redaction; the task source is absent from this checkout, so original transcript reconstruction and restoration remain unverified here. See the [theory feedback and analysis gates](theory_feedback_20260919.md) for the finite-certificate, completeness, restoration and shared-prefix variance issues that must be resolved before final interpretation. Earlier mock-only statements below describe their dated historical stage.
 
 ## Synthetic longitudinal evaluation
 
@@ -124,7 +130,7 @@ Observed: (i) IPW and cross-fitted AIPW bias at most 0.0014; task-cluster bootst
 
 Limitations: one mechanism, two stages, no misspecification/drift/weak-overlap cells, exact simulated state restoration. The efficiency factor in (ii) is specific to 12 regimes sharing a 2×2×3 randomization; it is not a general constant. This run does not use `src/dtr_agent_evals/simulator.py` and does not replace the S1 grid in the protocol.
 
-The code-routing study on real open-weight models (ladder L1–L3) is **implemented and dry-run with a mock model only; no real-model result exists.** See the status table in `experiments/README.md`.
+As of this **18 September** entry, the code-routing study on real open-weight models (ladder L1–L3) was **implemented and dry-run with a mock model only**. The dated 19 September checkpoint above supersedes that execution status; it does not convert these synthetic results into real-agent evidence.
 
 ## Experiments workstream: S1 crossed grid on the reference simulator (added 18 September 2026)
 

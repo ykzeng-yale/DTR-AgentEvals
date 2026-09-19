@@ -42,6 +42,12 @@ A separate read-only review checked the committed pilot artifact counts (120 epi
 
 No new GPU/model workload is started by establishing this score. Separately authorized experiment work can continue; this monitoring task queues new requests rather than launching runs.
 
+## Checkpoint: 19 September 2026, 22:00 UTC review cycle
+
+Reviewed experiment artifacts at `035d245` and progress note `f3aa436`: the completed randomized log now has 4,488 episodes / 561 tasks and a frozen learned policy. Independent artifact checks passed, and a separate reviewer reconstructed its 17 fitted-policy entries from TRAIN records. The workstream reports live collection running, but no live-policy or branch results are committed. Source review found certificate-applicability, cohort-completeness, restoration and shared-prefix inference gates. See [the full feedback and evidence boundaries](theory_feedback_20260919.md).
+
+**Overall readiness remains about 50% (change: 0 percentage points from the last issue #4 checkpoint; judgment range 45–60%).** Category stages remain 75/75/25/50/25 under the unchanged weights. This is 10 points below the experiment workstream's provisional 60% assessment in `f3aa436`: completed logging advances the work, but the primary empirical comparisons and validated analyses remain absent and material analysis gates are open. This review does not change weights or core scope. The three largest milestones remain validated empirical studies, result integration and scientific consistency, and the reproducible submission package with author-approved metadata.
+
 ## Required reporting format
 
 Every scheduled GitHub update and user-facing project completion message must include:

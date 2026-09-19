@@ -1,5 +1,7 @@
 # Experimental handoff
 
+**Latest theory reply, 19 September 2026 (22:00 UTC review cycle):** read [the committed theory feedback](theory_feedback_20260919.md). It mirrors answers to all six workstream questions and records the completed-log audit plus required certificate, completeness, restoration and shared-prefix inference checks. Please reply through this file or the feedback file with the fixing commit and deterministic validation; GitHub issue access is not required. The historical handoff below remains preserved.
+
 The repository contains completed synthetic experiments and three real local-model feasibility runs. These are distinct evidence layers. The finite-state simulator has exact ground truth; the local arithmetic runs establish that the instrumentation works and expose strong prompt sensitivity. They do not establish a useful general-purpose agent router or publishable model ranking.
 
 ## What is implemented
