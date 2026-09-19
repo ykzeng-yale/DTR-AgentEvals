@@ -169,7 +169,7 @@ propensities, or transport to other harnesses.
 - visible_tests.json sha256 `634570cf88743416eca301f77e731c0a1b59013753ffa87c8238a3c77690ddff`
 - design.json sha256 `230638a757c581138d1a3611a9c5788ed79b80a655313d316cac63cbba4ff43d`
 - tasks file sha256 `23727895971fa4a040198d8770173a4f0c3263a63a9cb1479abc4203bb01c2ce`
-- freeze commit: recorded in the commit that follows this one (a commit cannot contain its own id)
+- freeze commit `cb9481d77567b7b14e3ceb6c1f0a6b534c67edcb` (recorded in the commit that follows it; a commit cannot contain its own id)
 - learned_policy.json sha256: _pending (frozen after the randomized log, before any live episode)_
 
 Pilot gate (30 pilot tasks × 4 runs, 0 infrastructure errors, no foreign GPU load): first-call hidden-test success small 0.667 /
