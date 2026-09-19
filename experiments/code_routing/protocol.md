@@ -170,7 +170,7 @@ propensities, or transport to other harnesses.
 - design.json sha256 `230638a757c581138d1a3611a9c5788ed79b80a655313d316cac63cbba4ff43d`
 - tasks file sha256 `23727895971fa4a040198d8770173a4f0c3263a63a9cb1479abc4203bb01c2ce`
 - freeze commit `cb9481d77567b7b14e3ceb6c1f0a6b534c67edcb` (recorded in the commit that follows it; a commit cannot contain its own id)
-- learned_policy.json sha256: _pending (frozen after the randomized log, before any live episode)_
+- learned_policy.json sha256 `4f22e7b4f8ffc63c7d3fff7a828fffc81d0471db0ce5eb843876ebbf5e89768e` (fitted-Q greedy table, learned on the 231 TRAIN tasks only and frozen before any live episode; the randomized log completed 4,488/4,488 with 0 infrastructure errors, 0 timeouts, 0 truncated generations)
 
 Pilot gate (30 pilot tasks × 4 runs, 0 infrastructure errors, no foreign GPU load): first-call hidden-test success small 0.667 /
 large 0.762 (inside the 15–85% band); P(t=1 eligible) 0.225, P(t=2 eligible) 0.133; visible-test false-alarm rate 0.074 (n = 27),

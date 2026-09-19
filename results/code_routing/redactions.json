@@ -1,0 +1,15 @@
+[
+ {
+  "file": "results/code_routing/log/episodes.jsonl",
+  "episodes_affected": [
+   "log:humaneval/1#7"
+  ],
+  "split": "train",
+  "occurrences_masked": 4,
+  "placeholder": "<HOME>",
+  "sha256_before": "1a470c4c4fcd46b8299033ce0d6eb62e3c5df62338cdca1201d8b4440f9d13c8",
+  "sha256_after": "e643ee44c7ef658fff65efb5e17763ee78c990d21184d060f5823025a100414e",
+  "reason": "a candidate program raised RecursionError inside the standard library; the traceback the sandbox returned, and which was shown to the model in the repair prompt, contained the interpreter path under the researcher home directory",
+  "note": "only the host prefix is masked; the tool result text is otherwise unchanged and no numeric field is touched. The episode is in the TRAIN split, so no branch-audit restoration hash depends on it."
+ }
+]
