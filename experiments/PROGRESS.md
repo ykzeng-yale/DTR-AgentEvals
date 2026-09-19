@@ -3,6 +3,31 @@
 Pushed about every two hours while experiments run. Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-19 15:10 EDT — design FROZEN (`cb9481d`); randomized log running
+
+**Stage:** `log` — 4,488 pre-drawn episodes on 561 train + confirm tasks. 50 done at the time of writing, 0 errors,
+2.8 s per episode, ETA about 3.4 h. No foreign GPU load observed.
+
+**Second independent review** (27 agents) of the first round of fixes: 23 findings, **22 confirmed, none critical,
+5 major**, all fixed before the freeze. The one that mattered scientifically: after certification, a visible check
+whose *input* coincides with a hidden-test input is a hidden assert with its answer, and it was pasted into repair
+prompts. The 7B writer has memorised benchmark examples — **514 of 2,977 written checks used a hidden input (43% of
+HumanEval checks, 7% of MBPP)**. They are now removed at environment construction together with vacuous checks; the
+protocol sentence "hidden tests never enter any prompt" was restated to say exactly where hidden tests are consulted
+(once, to remove coinciding checks). Also fixed: a torn final line became fatal on the second resume; analysis could
+freeze a learned policy on a log that still owed retries; episodes in flight at an abort were discarded.
+
+**Environment as frozen:** 2,977 written checks → 38 vacuous, 514 hidden-input overlaps, 798 failed by the
+reference → **1,627 certified checks**; 94 of 591 tasks fall back to a load check.
+
+**Pilot gate (30 disjoint tasks × 4 runs; descriptive, enters no analysis):** first-call hidden-test success small
+0.667 / large 0.762 (inside 15–85%; the 7B is the stronger model here); P(t=1 eligible) 0.225, P(t=2) 0.133;
+visible-test false-alarm rate **0.074** (was 0.57 before certification), false-pass rate 0.097; 0 infrastructure
+errors, 0 timeouts, 0 truncations. No configuration value was changed after the pilot.
+
+**Next:** when the log completes — `analysis.py --learn` (freeze and push the learned routing table), then the live
+stage (3,960 fresh target-policy episodes, ≈2.4 h), OPE-vs-live calibration, branch audit (≈0.5 h).
+
 ## 2026-09-19 14:45 EDT — real execution started; harness hardened before any freeze
 
 **Stage:** environment construction (visible tests), second pass running on the GPU; pilot next. No design task has
