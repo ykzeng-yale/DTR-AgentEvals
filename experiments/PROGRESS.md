@@ -29,6 +29,16 @@ scratchpad directory, so they look like sibling processes; ownership is by port 
 **Problems:** none. **Next:** on completion — `analysis.py --learn`, freeze and push `learned_policy.json`, then
 the live stage (3,960 episodes, ≈2.5 h), calibration, branch audit (≈0.5 h).
 
+**Overall submission readiness: about 50% (change: 0 percentage points; judgment range 45–60%).** Evidence
+advanced: none that the rubric counts — the randomized log is *running*, and `docs/readiness.md` explicitly says not
+to count an experiment's runtime fraction as its scientific completion fraction, so "Core simulations and real-agent
+evidence" stays at 25% until confirmatory results exist and are inspected. Main remaining work: (1) complete the
+randomized log, live-policy validation and branch audit, and report their outcomes including nulls; (2) integrate
+validated results and limitations into the manuscript; (3) independent audit of the new experiment code, protocol
+adherence and analysis. *(Scoring rubric added by the theory agent in `docs/readiness.md` at `8041a0e`; it asks for
+checkpoints in GitHub issue #4, which this workstream cannot post to — no GitHub CLI or token on the experiment
+host — so checkpoints are recorded here instead.)*
+
 ## 2026-09-19 15:10 EDT — design FROZEN (`cb9481d`); randomized log running
 
 **Stage:** `log` — 4,488 pre-drawn episodes on 561 train + confirm tasks. 50 done at the time of writing, 0 errors,
