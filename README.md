@@ -14,6 +14,8 @@ The proposed contribution is a sequentially randomized evaluation design with ve
 
 The new [extension proofs](docs/theory_extensions.md) cover prospective routing opportunities, selectively measured branch contrasts, oracle allocation of branch costs, and execution-kernel sensitivity. The [independent internal review](docs/theory_review_20260919.md) records conditions, corrections, and exact checks; the [claim map](docs/paper_positioning.md) separates inherited theory from the project-specific formulation.
 
+[Full-project readiness](docs/readiness.md) is reported after each update using a stable milestone rubric. The initial 19 September estimate is **about 50%** (judgment range 45–60%); subsequent checkpoints and remaining work are recorded in [the coordination issue](https://github.com/ykzeng-yale/DTR-AgentEvals/issues/4).
+
 ## Research package
 
 | Start here | Contents |
