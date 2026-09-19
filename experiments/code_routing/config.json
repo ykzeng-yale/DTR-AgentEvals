@@ -13,7 +13,8 @@
       "port": 8191
     }
   },
-  "llama_server_flags": ["-ngl", "99", "-np", "4", "-c", "16384", "--jinja", "--host", "127.0.0.1"],
+  "llama_server_flags": ["-ngl", "99", "-np", "4", "-c", "32768", "--jinja", "--host", "127.0.0.1"],
+  "llama_server_flags_note": "32768 / 4 slots = 8192 tokens per slot; a t=2 repair transcript can reach ~4.7k tokens, so 4096 per slot would overflow on exactly the hardest episodes",
   "temperature": 0.7,
   "top_p": 0.95,
   "max_tokens": 1024,

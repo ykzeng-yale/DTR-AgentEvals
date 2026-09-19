@@ -234,6 +234,13 @@ def run_episode(task: dict, tests: str, ep: dict, choose, models: dict, cfg: dic
                    penalty=sum(d['penalty'] for d in rec['decisions']), completion_tokens=sum(d['completion_tokens'] for d in rec['decisions']),
                    llm_wall_seconds=sum(d['wall_seconds'] for d in rec['decisions']))
         rec['utility'] = rec['success'] - rec['penalty']
+        if resume is None and len(rec['decisions']) > 1:
+            # mechanism only, computed AFTER the episode has ended and never shown to any model: was the first candidate
+            # already correct on the hidden tests although the visible tests rejected it (a false alarm)?
+            v0 = verify(task, rec['decisions'][0]['code'], timeout_s=cfg['sandbox_timeout_s'], cpu_seconds=cfg['sandbox_cpu_s'])
+            rec['success_first_candidate'] = int(v0['success'])
+        elif resume is None:
+            rec['success_first_candidate'] = rec['success']
     except Exception as e:                                                # infrastructure failure: recorded, never dropped
         rec['error'] = repr(e)[:500]
         rec['n_decisions_before_error'] = len(prev)

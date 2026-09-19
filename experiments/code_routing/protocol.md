@@ -115,14 +115,16 @@ runs per task, worker count, token cap and server flags. It may not change the p
 class, state definition or analyses. If the large model is not better than the small one
 on pilot tasks the pair is still frozen and that fact is reported (size ≠ strength).
 
-## 7. Host constraint
+## 7. Shared GPU
 
-The harness refuses to start while another llama-server on the host is generating, because
-a sibling pre-registered experiment on the same GPU measures latency; an override is
-recorded in every manifest and episode (`contention_allowed`). The check is repeated before every episode, so a
-sibling run that (re)starts mid-stream pauses this one (`yielded_seconds_before_start`); an episode already in flight
-still finishes, so up to one episode of overlap remains possible. Latency from any contended
-run is labelled as such and excluded from latency claims.
+The host GPU is shared with a sibling project whose local coding experiments include latency as an outcome tier
+(its tau2-bench stream does not). By default the runner refuses to start, and yields before every episode, while
+another llama-server is generating. The author asked on 19 September for the two projects to co-run, so this study
+is executed with `--allow-contention`: the flag is stamped on every manifest and episode, and each episode records
+whether foreign GPU load was actually present when it began (`foreign_gpu_load_at_start`). Success, penalties and
+token counts are speed-independent; latency is reported for uncontended episodes only; sandbox timeouts, the one
+timing-dependent path into an outcome, are tabulated by contention status. The slowdown this study imposes on the
+sibling is measured and reported to the author rather than assumed.
 
 ## 8. What this study cannot show
 

@@ -12,7 +12,7 @@ agent and are not edited from here. Rules in [`AGENTS.md`](../AGENTS.md) apply.
 | E0 | Design-efficiency simulation: one sequentially randomized experiment vs one arm per scaffold; tailored-regime learning; forking vs randomizing at equal compute | synthetic, known truth | **executed** — 5,000 replicates, `results/sim/` |
 | S1 | Crossed n × horizon × overlap-floor grid on the **reference** simulator and estimators (unchanged), 1,000 replicates × 27 cells × 4 nuisance specifications | synthetic, exact truth | **executed** — `results/s1_grid/`, report in `grid_report.md` |
 | E1 | Absorbing-horizon tabular IPW / g-computation / cross-fitted DR with task-cluster inference | code + tests | **implemented**, 12 tests pass; reproduces `src/dtr_agent_evals` scores to 1e-10 on its simulator |
-| L1–L3 | Code-routing study on MBPP + HumanEval, Qwen2.5-3B vs 7B, K=3 routing decisions | real open-weight inference | **harness complete, NOT run.** Only deterministic mock dry runs (gitignored). Blocked, see below |
+| L1–L3 | Code-routing study on MBPP + HumanEval, Qwen2.5-3B vs 7B, K=3 routing decisions | real open-weight inference | **running from 19 September** (environment construction, then pilot); no result yet |
 | A4 | Branch audit: 200 restored first-failure prefixes × {small, large} × 2 fresh continuations, with transcript-hash and tool-result restoration checks | real inference | **implemented, NOT run**; mock dry run restores 800/800 |
 
 Nothing in this directory is a result from a real language model yet.
@@ -21,19 +21,27 @@ Nothing in this directory is a result from a real language model yet.
 
 | Issue | Covered here | Still open |
 |---|---|---|
-| #1 competent open-weight benchmark with randomized routing | `code_routing/`: frozen harness, two licensed open-weight artifacts, prospective randomization with the probability and draw persisted before inference, task-level splits, live always-small / always-large / escalation regimes, infrastructure failures retained | **execution** (GPU held, see below); harness is MBPP+HumanEval in a Seatbelt sandbox rather than BrowserGym / mini-swe-agent — acceptance of that deviation is question 1 in `docs/experiment_handoff.md` |
+| #1 competent open-weight benchmark with randomized routing | `code_routing/`: frozen harness, two licensed open-weight artifacts, prospective randomization with the probability and draw persisted before inference, task-level splits, live always-small / always-large / escalation regimes, infrastructure failures retained | **execution in progress from 19 September**; harness is MBPP+HumanEval in a Seatbelt sandbox rather than BrowserGym / mini-swe-agent — acceptance of that deviation is question 1 in `docs/experiment_handoff.md` |
 | #2 real-trace inference | `estimators_absorbing.py`: explicit eligibility and absorption, actual propensities, task identities, known-randomization odds-shift targets, task-level cross-fitting, paired contrasts with task-cluster SEs; tests for padded-vs-unpadded equivalence, target numerator (exact agreement with `src/`), and history-compression failure (plug-in biased by −0.024, DR unbiased) | typed adapter with **missing/censored outcomes**; drift and overlap failure tests against finite truth (the S1 grid below covers overlap/horizon on the reference simulator only); nothing here is sequentially-DR or TMLE and it is not labelled as such |
 | #3 independent confirmatory study | `analysis.py --calibration` (offline vs fresh whole-policy executions, paired by task, ranking agreement, calls spent) and `--branch` (controlled live branches with shared-prefix dependence handled by task-cluster SEs) | a **competitive published sequential-router baseline**; an explicit **static-replay** comparator; false-improvement-decision rates need repeated datasets, which one benchmark cannot supply |
 
-### Why L1–L3 has not run
+### GPU sharing on the experiment host (updated 19 September 2026)
 
-The experiment host (Apple M5, 32 GB, one GPU) is running a sibling project's
-pre-registered tau2-bench stream on the same GPU, and that study uses latency as an
-outcome tier. Starting inference here would contaminate it. At the time of writing that
-run had finished 5 of 98 units of its first of two arms in about 85 minutes, which
-extrapolates to roughly two days. `run.py` refuses to start while a foreign llama-server is
-generating; overriding is possible and is recorded in every manifest. **This is a
-scheduling decision for the author**, not something the harness should decide silently.
+The host (Apple M5, 32 GB, one GPU) is shared with a sibling project. On 18 September this workstream held back
+all inference while that project's tau2-bench stream ran, on the stated ground that the stream "uses latency as an
+outcome tier". **That ground was wrong for tau2**: its frozen hierarchy is success, agent completion tokens, tool-call
+count. The latency tier belongs to the sibling's *other* (local coding) experiment and was generalised without
+checking. The caution cost about a day; nothing was run and nothing was contaminated. The tau2 stream finished on
+19 September 01:52 EDT.
+
+From 19 September the author asked for both projects to share the GPU. Measured on this host with nothing else
+running: Qwen2.5-3B 50.6 tok/s single-stream and 116 tok/s over 4 slots; Qwen2.5-7B 23.8 and 67 tok/s; both
+servers resident at 9.4 GB, which leaves room for a second 7B-class server under the default Metal wired limit.
+Real runs are started with `--allow-contention`; every manifest records that, and every episode records whether
+another llama-server was **actually** generating when it began (`foreign_gpu_load_at_start`). This study's primary
+outcomes (hidden-test success, call-count penalty, tokens) do not depend on speed; its latency fields do and are
+reported only for uncontended episodes. Sandbox wall-clock limits (10 s) are the one timing-dependent path into an
+outcome, so validation/verification timeouts are counted by contention status.
 
 ## E0 — design-efficiency simulation (`sim/`, `dtr/`)
 

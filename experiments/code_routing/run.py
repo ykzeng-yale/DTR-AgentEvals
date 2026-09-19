@@ -12,7 +12,7 @@ decisions.jsonl BEFORE the model is invoked (protocol section 6). Completed runs
 overwritten; re-running resumes the missing episodes only.
 
 GPU courtesy guard: refuses to start while ANOTHER llama-server on this host is generating
-(a sibling pre-registered experiment measures latency), unless --allow-contention (recorded).
+(a sibling project's local coding experiments use latency as an outcome), unless --allow-contention (recorded).
 The same check runs before EVERY episode, so if the sibling (re)starts mid-run this runner
 stops launching new episodes until it is idle again (`yielded_seconds_before_start` per episode).
 Episodes already in flight finish, so a restart can still see up to one episode of overlap.
@@ -125,7 +125,7 @@ def main():
         busy = foreign_busy_servers(own)
         if busy and not a.allow_contention:
             raise SystemExit("REFUSING: another llama-server is generating on port(s) %s; running now would contaminate that "
-                             "experiment's latency outcomes. Retry later or pass --allow-contention (it is recorded)." % busy)
+                             "experiment's timing. Retry later or pass --allow-contention (it is recorded)." % busy)
     if a.servers:
         return servers(a.servers, cfg)
     if not a.stage:
@@ -244,8 +244,11 @@ def main():
             waited = 0
             while not a.mock and not a.allow_contention and foreign_busy_servers(own):
                 time.sleep(30); waited += 30
+            # under --allow-contention record whether another experiment was ACTUALLY generating when this episode began
+            busy_at_start = bool(foreign_busy_servers(own)) if (a.allow_contention and not a.mock) else False
             rec = run_episode(tasks[e['task_uid']], vtests[e['task_uid']], e, chooser(e), models, cfg, ep_stamp, on_decision, resume_of(e))
             rec['yielded_seconds_before_start'] = waited
+            rec['foreign_gpu_load_at_start'] = busy_at_start
             return rec
         futs = [ex.submit(guarded, e) for e in todo]
         for fu in as_completed(futs):
