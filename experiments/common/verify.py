@@ -1,6 +1,7 @@
 # Adapted from ykzeng-yale/ICLR-WinRatioAgentEval experiments/local_stream/verify.py
 # (same author; audited Seatbelt sandbox + sentinel verifier). Changes: sandbox
-# base dir renamed to dtr_sbx; sentinel prefix renamed; nothing else.
+# base dir renamed to dtr_sbx; sentinel prefix renamed; `from __future__` lines of the candidate are
+# hoisted above the harness imports (otherwise a valid candidate is a SyntaxError here only).
 """Hidden-test verification of a candidate program.
 
 MBPP: test_imports + candidate code + EVERY assert in test_list (+ challenge
@@ -42,12 +43,15 @@ def hack_flags(code: str) -> list:
 
 def build_program(task: dict, code: str, sentinel: str | None = None) -> str:
     """Candidate + hidden tests (+ sentinel print when given)."""
+    fut = [l for l in code.splitlines() if re.match(r'\s*from\s+__future__\s+import\s', l)]
+    if fut:
+        code = '\n'.join(l for l in code.splitlines() if l not in fut)
     if task['benchmark'] == 'mbpp':
-        parts = list(task.get('test_imports') or []) + [code, '']
+        parts = fut + list(task.get('test_imports') or []) + [code, '']
         parts += list(task['test_list']) + list(task.get('challenge_test_list') or [])
         prog = '\n'.join(parts) + '\n'
     elif task['benchmark'] == 'humaneval':
-        prog = code.rstrip() + '\n\n' + task['test'].rstrip() + '\n\ncheck(%s)\n' % task['entry_point']
+        prog = '\n'.join(fut + [code.rstrip()]) + '\n\n' + task['test'].rstrip() + '\n\ncheck(%s)\n' % task['entry_point']
     else:
         raise ValueError(task['benchmark'])
     if sentinel:

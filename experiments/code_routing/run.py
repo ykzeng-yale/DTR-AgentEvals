@@ -27,7 +27,8 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 import numpy as np
 import requests
 
-from common import RESULTS, ROOT, code_sha256, git_head, load_config, load_tasks, now_iso, resolve, sha256_bytes
+from common import (RESULTS, ROOT, code_sha256, cut_torn_tail, git_head, load_config, load_tasks, now_iso, read_jsonl, resolve,
+                    resolve_episodes, sha256_bytes)
 from agent import (LlamaServerModel, MockModel, canonical_tests, certified_tests, extract_tests_text, restore_first_failure_prefix, run_episode,
                    tests_prompt)
 import policies as P
@@ -35,22 +36,6 @@ import policies as P
 LLAMA_BINS = [os.environ.get('LLAMA_SERVER', ''), str(ROOT / 'work' / 'llama.cpp' / 'build' / 'bin' / 'llama-server')]
 PIDFILE = ROOT / 'work' / 'code_routing_servers.json'
 P_ARMS = ('small', 'large')
-
-
-def read_jsonl(path) -> tuple:
-    """(records, n_torn). A final line that does not parse is a torn append; anything else unparsable is fatal."""
-    if not path.exists():
-        return [], 0
-    lines = [l for l in path.read_text().splitlines() if l.strip()]
-    out = []
-    for i, l in enumerate(lines):
-        try:
-            out.append(json.loads(l))
-        except ValueError:
-            if i == len(lines) - 1:
-                return out, 1
-            raise SystemExit('%s: unparsable line %d (not the last line) - refusing to guess' % (path, i + 1))
-    return out, 0
 
 
 def foreign_busy_servers(own_ports: set):
@@ -151,18 +136,6 @@ def server_facts(cfg: dict) -> dict:
     return out
 
 
-def resolved_ids(path, max_attempts: int):
-    """episode ids that are finished: a non-error record exists, or max_attempts error records exist (unresolved, ITT)."""
-    recs, torn = read_jsonl(path)
-    ok = {r['episode_id'] for r in recs if not r.get('error')}
-    n_err = {}
-    for r in recs:
-        if r.get('error'):
-            n_err[r['episode_id']] = n_err.get(r['episode_id'], 0) + 1
-    exhausted = {e for e, k in n_err.items() if k >= max_attempts and e not in ok}
-    return ok, exhausted, n_err, torn
-
-
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--servers', choices=['start', 'stop'])
@@ -171,7 +144,8 @@ def main():
     ap.add_argument('--limit', type=int, help='cap the number of episodes started by THIS invocation (never allowed for --stage tests)')
     ap.add_argument('--pilot-runs', type=int, default=4)
     ap.add_argument('--allow-contention', action='store_true')
-    ap.add_argument('--allow-code-change', action='store_true', help='resume although code_sha256 differs from earlier invocations (recorded)')
+    ap.add_argument('--allow-code-change', action='store_true', help='resume although code_sha256 differs from the previous invocation (recorded)')
+    ap.add_argument('--recertify', action='store_true', help='tests stage, before the design freeze only: recompute the certified checks from the STORED raw replies (no model call)')
     a = ap.parse_args()
     cfg = load_config()
     own = {m['port'] for m in cfg['models'].values()}
@@ -219,17 +193,22 @@ def main():
     # ------------------------------------------------------------- stage: frozen visible tests
     vt_path = base / 'visible_tests.json'
     if a.stage == 'tests':
-        if vt_path.exists():
-            raise SystemExit('%s exists; visible tests are part of the frozen environment' % vt_path)
         w = cfg['visible_tests']; writer = models[w['writer']]; out = {}
+        if a.recertify:
+            if (base / 'design.json').exists():
+                raise SystemExit('the design is frozen; the environment can no longer be re-certified')
+            old_file = json.loads(vt_path.read_text()); out = old_file['tests']
+        elif vt_path.exists():
+            raise SystemExit('%s exists; visible tests are part of the frozen environment' % vt_path)
 
         def one(uid):
             kw = dict(task_uid=uid, kind='tests') if a.mock else {}
             r = writer.chat(tests_prompt(tasks[uid]), w['seed'], temperature=w['temperature'], max_tokens=w['max_tokens'], **kw)
             return uid, dict(raw_reply=r['text'], tests=extract_tests_text(r['text']), completion_tokens=r['completion_tokens'], finish=r['finish'])
-        with ThreadPoolExecutor(cfg['workers']) as ex:
-            for uid, rec in ex.map(one, sorted(tasks)):      # any failed request aborts BEFORE anything is written
-                out[uid] = rec
+        if not a.recertify:
+            with ThreadPoolExecutor(cfg['workers']) as ex:
+                for uid, rec in ex.map(one, sorted(tasks)):      # any failed request aborts BEFORE anything is written
+                    out[uid] = rec
         if set(out) != set(tasks):
             raise SystemExit('visible tests incomplete: %d of %d' % (len(out), len(tasks)))
 
@@ -238,11 +217,15 @@ def main():
         with ThreadPoolExecutor(cfg['workers']) as ex:
             for uid, cert in ex.map(certify, sorted(tasks)):
                 out[uid]['certified'] = cert
-        vt_path.write_text(json.dumps(dict(writer=writer.alias, settings=w, created_utc=now_iso(), **stamp, tests=out), indent=0))
-        nw = sum(r['certified']['n_written'] for r in out.values()); nk = sum(r['certified']['n_checks'] for r in out.values())
-        print('visible tests for %d tasks -> %s (sha256 %s)' % (len(out), vt_path, sha256_bytes(vt_path.read_bytes())))
-        print('checks written %d, certified by the reference %d (%.1f%%); tasks with zero certified checks: %d' % (
-            nw, nk, 100.0 * nk / max(nw, 1), sum(r['certified']['n_checks'] == 0 for r in out.values())))
+        C = [r['certified'] for r in out.values()]
+        summary = dict(tasks=len(out), checks_written=sum(c['n_written'] for c in C), dropped_vacuous=sum(c['n_dropped_vacuous'] for c in C),
+                       dropped_hidden_input_overlap=sum(c['n_dropped_hidden_overlap'] for c in C), dropped_failed_by_reference=sum(c['n_dropped_by_reference'] for c in C),
+                       checks_certified=sum(c['n_checks'] for c in C), tasks_with_any_hidden_overlap_removed=sum(c['n_dropped_hidden_overlap'] > 0 for c in C),
+                       tasks_with_zero_certified_checks=sum(c['n_checks'] == 0 for c in C), truncated_writer_replies=sum(r.get('finish') == 'length' for r in out.values()))
+        gen = dict(writer=writer.alias, settings=w, created_utc=now_iso()) if not a.recertify else {k: old_file[k] for k in ('writer', 'settings', 'created_utc')}
+        vt_path.write_text(json.dumps(dict(**gen, certified_utc=now_iso(), certification=summary, **stamp, tests=out), indent=0))
+        print('visible tests -> %s (sha256 %s)' % (vt_path, sha256_bytes(vt_path.read_bytes())))
+        print(json.dumps(summary))
         return
     if not vt_path.exists():
         raise SystemExit('run --stage tests first')
@@ -265,8 +248,8 @@ def main():
 
     # ------------------------------------------------------------- upstream completeness + episodes for this stage
     def complete(stage_name, wanted_ids):
-        ok, exhausted, _, _ = resolved_ids(base / stage_name / 'episodes.jsonl', cfg['max_attempts_per_episode'])
-        return [e for e in wanted_ids if e not in ok and e not in exhausted]
+        r_ = resolve_episodes(base / stage_name / 'episodes.jsonl', cfg['max_attempts_per_episode'])
+        return [e for e in wanted_ids if e not in r_['good'] and e not in r_['exhausted']]
     learned = None
     if a.stage == 'pilot':
         rng = np.random.default_rng(cfg['design_seed'] + 1)
@@ -314,24 +297,23 @@ def main():
     if lacking:
         raise SystemExit('%d design tasks have no visible tests (e.g. %s); refusing to drop them silently' % (len(lacking), lacking[:3]))
 
-    ok, exhausted, n_err, torn = resolved_ids(ep_path, cfg['max_attempts_per_episode'])
+    torn_bytes = cut_torn_tail(ep_path, invocation) + cut_torn_tail(dec_path, invocation) + cut_torn_tail(out_dir / 'run_manifest.jsonl', invocation)
+    res_ = resolve_episodes(ep_path, cfg['max_attempts_per_episode'])
+    ok, exhausted, n_err, torn = set(res_['good']), set(res_['exhausted']), res_['n_err'], int(torn_bytes > 0)
     todo = [e for e in eps if e['episode_id'] not in ok and e['episode_id'] not in exhausted][: a.limit]
     prev_inv, _ = read_jsonl(out_dir / 'run_manifest.jsonl')
-    for key in ('config_sha256', 'visible_tests_sha256', 'tasks_sha256'):
+    for key in ('config_sha256', 'visible_tests_sha256', 'tasks_sha256', 'learned_policy_sha256'):
         if any(m.get(key) not in (None, stamp.get(key)) for m in prev_inv):
             raise SystemExit('%s differs from an earlier invocation of stage %s; this stage cannot be resumed with changed inputs' % (key, a.stage))
-    code_changed = any(m.get('code_sha256') != stamp['code_sha256'] for m in prev_inv)
+    code_changed = bool(prev_inv) and prev_inv[-1].get('code_sha256') != stamp['code_sha256']      # vs the PREVIOUS invocation, so the flag is not sticky
     if code_changed and not a.allow_code_change:
-        raise SystemExit('code_sha256 differs from an earlier invocation of stage %s; pass --allow-code-change to resume (it is recorded)' % a.stage)
+        raise SystemExit('code_sha256 differs from the previous invocation of stage %s; pass --allow-code-change to resume (it is recorded)' % a.stage)
     if not a.mock:
         stamp['gguf'] = gguf_digests(cfg); stamp['server_facts'] = server_facts(cfg)
     with open(out_dir / 'run_manifest.jsonl', 'a') as mf:
         mf.write(json.dumps(dict(started_utc=now_iso(), argv=sys.argv[1:], n_todo=len(todo), n_ok_before=len(ok), n_exhausted_before=len(exhausted),
-                                 n_retries_in_todo=sum(1 for e in todo if e['episode_id'] in n_err), torn_lines_seen=torn, code_changed_since_first_invocation=code_changed,
+                                 n_retries_in_todo=sum(1 for e in todo if e['episode_id'] in n_err), torn_bytes_cut=torn_bytes, code_changed_since_previous_invocation=code_changed,
                                  design_sha256=(RESULTS / 'design.sha256').read_text().strip() if (not a.mock and (RESULTS / 'design.sha256').exists()) else None, **stamp)) + '\n')
-    if torn:      # never append after a torn line: terminate it so the next record starts on its own line
-        with open(ep_path, 'a') as f:
-            f.write('\n')
     lock = threading.Lock(); dec_f = open(dec_path, 'a')
 
     def on_decision(eid, attempt):
@@ -385,19 +367,32 @@ def main():
     t0 = time.time(); k = 0; errs = 0
     with ThreadPoolExecutor(cfg['workers']) as ex, open(ep_path, 'a') as f:
         futs = [ex.submit(guarded, e) for e in todo]
+
+        def write(rec):
+            nonlocal k, errs
+            with lock:
+                f.write(json.dumps(rec) + '\n'); f.flush(); os.fsync(f.fileno()); k += 1; errs += bool(rec.get('error'))
+        consumed = set()
         try:
             for fu in as_completed(futs):
-                rec = fu.result()
-                with lock:
-                    f.write(json.dumps(rec) + '\n'); f.flush(); os.fsync(f.fileno()); k += 1; errs += bool(rec.get('error'))
-                    if k % 50 == 0 or k == len(todo):
-                        el = time.time() - t0
-                        print('%d/%d episodes  %.2fs/ep  errors %d  eta %.0f min' % (k, len(todo), el / k, errs, (len(todo) - k) * el / k / 60), flush=True)
-                    if errs >= 25 and errs > 0.5 * k:
-                        raise SystemExit('more than half of %d episodes errored - a server is probably down; stopping instead of burning the design' % k)
-        finally:
+                write(fu.result()); consumed.add(id(fu))
+                if k % 50 == 0 or k == len(todo):
+                    el = time.time() - t0
+                    print('%d/%d episodes  %.2fs/ep  errors %d  eta %.0f min' % (k, len(todo), el / k, errs, (len(todo) - k) * el / k / 60), flush=True)
+                if errs >= 25 and errs > 0.5 * k:
+                    raise SystemExit('more than half of %d episodes errored - a server is probably down; stopping instead of burning the design' % k)
+        except BaseException:
+            # abort (Ctrl-C, SystemExit, anything): drop what has not started, but WRITE every episode already in flight -
+            # its decisions are already in decisions.jsonl and its model calls are already paid for
             for fu in futs:
-                fu.cancel()      # queued work is dropped on abort; in-flight episodes still finish and are NOT lost on the next resume
+                fu.cancel()                  # only queued futures can be cancelled; running ones finish
+            for fu in futs:
+                if not fu.cancelled() and id(fu) not in consumed:
+                    try:
+                        write(fu.result())
+                    except BaseException:
+                        pass
+            raise
     print('done ->', ep_path, '| errors this invocation:', errs)
 
 

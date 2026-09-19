@@ -20,7 +20,8 @@ agent loop, routing opportunities, logging contract and analyses follow the prot
   Licences: MBPP CC-BY-4.0, HumanEval MIT. Task data are not redistributed here.
 - **Scoring.** Benchmark hidden tests, run once on the submitted program, success only if
   the process exits 0 **and** a per-run nonce sentinel printed after the tests is seen
-  (defeats early `exit(0)`). Hidden tests never enter any prompt.
+  (defeats early `exit(0)`). No hidden test text or expected value enters any prompt; hidden tests are consulted once,
+  at environment construction, only to REMOVE visible checks that coincide with them (see Tool).
 - **Sandbox.** `/usr/bin/sandbox-exec`: no network, no reads or writes under `$HOME` except
   the interpreter prefix, writes only in a private temp cwd, no exec of system binaries;
   RLIMIT_CPU 10 s / NPROC; process-group SIGKILL at 20 s wall clock (deliberately twice the CPU limit so host contention
@@ -31,7 +32,12 @@ agent loop, routing opportunities, logging contract and analyses follow the prot
   pytest-style `def test_*` bodies flattened; any redefinition of the entry point dropped; truncated replies
   salvaged) and then **certified against the benchmark's reference implementation: a check the reference fails is
   dropped.** The model contributes the *inputs*; the reference certifies the expected values — the way a benchmark's
-  public examples are made. Hidden tests are not consulted and the reference is never shown to a model. The result
+  public examples are made. Two further filters apply before certification: a check that never calls the entry point
+  is vacuous and is dropped; and a check whose entry-point arguments equal those of a hidden test is dropped, because
+  after certification it would BE a hidden assert with its answer, pasted into every repair prompt (the writer model
+  has evidently memorised benchmark examples: in the uncertified first pass about 8% of MBPP checks and, excluding
+  docstring examples, about a third of HumanEval checks used a hidden input). The counts removed by each filter are
+  stored in `visible_tests.json`. The reference is never shown to a model. The result
   is frozen in `visible_tests.json` (raw replies, canonical form, certified checks; sha256 stamped on every episode)
   and is self-contained: no reference is consulted at run time. The text shown to a model in a repair prompt is
   exactly the text the tool executes. *Why certified:* an uncertified first version rejected the **correct
@@ -145,6 +151,12 @@ timing-dependent path into an outcome, are tabulated by contention status. The s
 sibling is measured and reported to the author rather than assumed.
 
 ## 8. What this study cannot show
+
+Certified checks compare with the reference's exact output. On the minority of tasks whose hidden tests accept several
+outputs (order-insensitive collections, numeric tolerance) a correct solution that differs from the reference can
+still fail a visible check, so "no false alarms" holds for reference-equivalent code, not for every correct program;
+`success_first_candidate` measures how often that happens. Visible-test generation itself is not contention-tagged
+(it is deterministic at temperature 0 and precedes every episode).
 
 One benchmark family and one model pair; function synthesis rather than long-horizon tool
 use; K = 3; a tabular state. It does not validate unrestricted per-turn routing, estimated

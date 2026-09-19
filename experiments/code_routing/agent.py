@@ -35,9 +35,9 @@ ASK_TESTS = ('Write 3 to 5 `assert` statements that test a correct implementatio
 ASK_REPAIR = ('Running the latest solution together with the tests below failed. Fix the implementation. Reply with the '
               'complete corrected solution in a single ```python code block (imports included, no tests).\n\nTests:\n```python\n'
               '{tests}\n```\n\nFailure output:\n```\n{trace}\n```')
-_FENCE = re.compile(r'```[ \t]*(?:python3?|py)?[ \t]*\r?\n(.*?)(?:```|\Z)', re.S | re.I)   # closing fence optional: truncated replies
 _SPECIAL = re.compile(r'<\|(?:im_end|im_start|endoftext|end_of_text|eot_id)\|>')
 _DEF = re.compile(r'^\s*(?:async\s+)?(?:def|class)\s', re.M)
+_PY_TAGS = ('', 'python', 'python3', 'py')
 ACTIONS = ('small', 'large')
 
 
@@ -68,21 +68,48 @@ def tests_prompt(task: dict) -> list:
             dict(role='user', content=task_prompt(task) + '\n\n' + ASK_TESTS.format(ep=task.get('entry_point') or 'the function'))]
 
 
-def extract_code(text: str) -> str:
-    """The LAST fenced block that defines something (a repair reply often quotes the old code first and gives the
-    fix last); else the last fenced block; else the raw text. Fences are case-insensitive and may be unclosed."""
+def fenced_blocks(text: str) -> list:
+    """(language_tag, body) for every fenced block, by scanning fence LINES (so a ```bash block cannot mis-pair with the
+    python block after it). A block left open by a truncated reply is closed at the end of the text."""
+    out, tag, buf = [], None, []
+    for line in _SPECIAL.sub('', text or '').splitlines():
+        st = line.strip()
+        if st.startswith('```'):
+            if tag is None:
+                tag, buf = st[3:].strip().lower(), []
+            else:
+                out.append((tag, '\n'.join(buf))); tag = None
+                rest = st[3:].strip()
+                if rest:                       # "```python" used as a closing+opening fence on one line is not valid markdown; ignore
+                    pass
+        elif tag is not None:
+            buf.append(line)
+    if tag is not None:
+        out.append((tag, '\n'.join(buf)))
+    return [(t, b) for t, b in out if b.strip()]
+
+
+def extract_code(text: str, entry_point: str | None = None) -> str:
+    """The solution in a reply. Among python (or untagged) fenced blocks: the LAST one that defines the entry point (a
+    repair reply often quotes the old code first and gives the fix last; a trailing usage/test block that merely defines
+    helpers must not win); else the last block that defines anything; else the last block; else the raw text."""
     if not text:
         return ''
-    blocks = [b for b in _FENCE.findall(_SPECIAL.sub('', text)) if b.strip()]
+    blocks = [b for t, b in fenced_blocks(text) if t in _PY_TAGS]
     if blocks:
+        if entry_point:
+            ep = re.compile(r'^\s*(?:async\s+)?def\s+%s\s*\(' % re.escape(entry_point), re.M)
+            hit = [b for b in blocks if ep.search(b)]
+            if hit:
+                return hit[-1].strip('\n') + '\n'
         defs = [b for b in blocks if _DEF.search(b)]
         return (defs[-1] if defs else blocks[-1]).strip('\n') + '\n'
     return _SPECIAL.sub('', text).strip() + '\n'
 
 
 def extract_tests_text(text: str) -> str:
-    """For the test writer: every fenced block concatenated (asserts may be split across blocks); else raw text."""
-    blocks = [b for b in _FENCE.findall(_SPECIAL.sub('', text or '')) if b.strip()]
+    """For the test writer: every python/untagged fenced block concatenated (asserts may be split across blocks)."""
+    blocks = [b for t, b in fenced_blocks(text) if t in _PY_TAGS]
     return ('\n'.join(b.strip('\n') for b in blocks) if blocks else _SPECIAL.sub('', text or '').strip()) + '\n'
 
 
@@ -189,15 +216,48 @@ def canonical_tests(raw: str, entry_point: str) -> dict:
     return dict(setup=setup, checks=checks, text=text, n_checks=len(checks), parsed=tree is not None, salvage_lines_dropped=dropped if tree is not None else None)
 
 
+def _call_keys(src: str, names: set) -> set:
+    """ast.dump of (args, keywords) for every call to one of ``names`` inside ``src`` (quote style / spacing insensitive)."""
+    try:
+        with warnings.catch_warnings():
+            warnings.simplefilter('ignore', SyntaxWarning)
+            tree = ast.parse(src)
+    except SyntaxError:
+        return set()
+    return {ast.dump(ast.Tuple(elts=list(n.args), ctx=ast.Load())) + '|' + ','.join(sorted(ast.dump(k) for k in n.keywords))
+            for n in ast.walk(tree) if isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id in names}
+
+
+def hidden_input_keys(task: dict) -> set:
+    ep = task.get('entry_point') or ''
+    src = '\n'.join(list(task.get('test_list') or []) + list(task.get('challenge_test_list') or [])) if task['benchmark'] == 'mbpp' else (task.get('test') or '')
+    return _call_keys(src, {ep, 'candidate'})
+
+
 def certified_tests(task: dict, canon: dict, cfg: dict) -> dict:
-    """Environment construction only. Keep the writer's INPUTS but certify every check against the reference
-    implementation, dropping checks the reference fails (wrong expected values, wrong call conventions). This is how a
-    benchmark's public examples are made. Result: a tool with no false alarms on correct code but real false passes
-    (incomplete coverage). Hidden tests are not consulted; the reference is never shown to any model."""
-    v = validate(task, task['reference'], canon, cfg)
-    keep = [c for c, r in zip(canon['checks'], v.get('per_check', [])) if r == 'ok'] if v.get('per_check') else []
-    return dict(setup=canon['setup'] if keep else [], checks=keep, text='\n'.join((canon['setup'] if keep else []) + keep), n_checks=len(keep),
-                n_written=canon['n_checks'], n_dropped_by_reference=canon['n_checks'] - len(keep), reference_loaded=v.get('per_check') is not None)
+    """Environment construction only; no model is involved. From the writer's canonical checks keep those that
+      1. actually call the entry point (a check that never calls it is vacuous),
+      2. do NOT use an input that a hidden test uses - after certification such a check would BE a hidden assert with
+         its answer, and it is pasted into repair prompts (the writer has evidently memorised benchmark examples).
+         Hidden tests are consulted here once, only to REMOVE coinciding checks; no hidden text reaches any prompt,
+      3. the reference implementation passes (wrong expected values, wrong call conventions are dropped).
+    Result: no false alarms on reference-equivalent code, real false passes (incomplete coverage), no hidden answers."""
+    ep = task.get('entry_point') or ''
+    hidden = hidden_input_keys(task)
+    calls = [_call_keys(c, {ep}) for c in canon['checks']]
+    step1 = [(c, k) for c, k in zip(canon['checks'], calls) if k]
+    step2 = [c for c, k in step1 if not (k & hidden)]
+
+    def run(checks):
+        return validate(task, task['reference'], dict(setup=canon['setup'], checks=checks, n_checks=len(checks)), cfg).get('per_check')
+    res = run(step2) if step2 else []
+    if res is None:                      # one check crashed / hung the reference: certify each check on its own
+        res = [(run([c]) or ['fail'])[0] for c in step2]
+    keep = [c for c, r in zip(step2, res) if r == 'ok']
+    setup = canon['setup'] if keep else []
+    return dict(setup=setup, checks=keep, text='\n'.join(setup + keep), n_checks=len(keep), n_written=canon['n_checks'],
+                n_dropped_vacuous=canon['n_checks'] - len(step1), n_dropped_hidden_overlap=len(step1) - len(step2),
+                n_dropped_by_reference=len(step2) - len(keep))
 
 
 def _hoist_future(code: str):
@@ -309,7 +369,7 @@ def run_episode(task: dict, tests: dict, ep: dict, choose, models: dict, cfg: di
             m = models[ACTIONS[a]]
             kw = dict(task_uid=task['uid'], kind='code') if mock else {}
             out = m.chat(convo, ep['seed'] + 101 * t, **kw)
-            code = extract_code(out['text'])
+            code = extract_code(out['text'], task.get('entry_point'))
             val = validate(task, code, tests, cfg)
             dec.update(completed=True, model_alias=m.alias, response_model=out['response_model'], finish=out['finish'], prompt_tokens=out['prompt_tokens'],
                        completion_tokens=out['completion_tokens'], wall_seconds=out['wall_seconds'], server_gen_ms=out['server_gen_ms'],

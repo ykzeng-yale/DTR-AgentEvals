@@ -16,37 +16,25 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from common import RESULTS, ROOT, load_config, now_iso, sha256_bytes
+from common import RESULTS, ROOT, load_config, now_iso, resolve_episodes, sha256_bytes
 import estimators_absorbing as EA
 import policies as P
 
 
-def read(path: Path, cfg: dict) -> tuple:
-    """One record per episode id: the LAST attempt without an infrastructure error; if every attempt errored the episode
-    is scored intention-to-treat (success 0, penalties of the decisions that were assigned) so that every task keeps its
-    full set of runs and the randomization is not selected on. Returns (records, info)."""
-    rows, torn = [], 0
-    lines = [l for l in path.read_text().splitlines() if l.strip()]
-    for k, l in enumerate(lines):
-        try:
-            rows.append(json.loads(l))
-        except ValueError:
-            if k == len(lines) - 1:
-                torn = 1
-            else:
-                raise
-    good, bad = {}, {}
-    for r in rows:
-        (bad if r.get('error') else good)[r['episode_id']] = r
-    out = list(good.values()); itt = 0
-    for eid, r in bad.items():
-        if eid in good:
-            continue
-        ds = [d for d in r.get('decisions', [])]
-        pen = sum(d.get('penalty', 0.0) for d in ds)
-        out.append(dict(r, success=0, penalty=pen, utility=-pen, n_decisions=len(ds), decisions=ds, itt_scored=True)); itt += 1
-    info = dict(n_records=len(rows), n_episodes=len(out), n_error_attempts=sum(1 for r in rows if r.get('error')), n_itt_scored=itt,
-                n_torn_lines=torn, n_foreign_gpu_load=sum(bool(r.get('foreign_gpu_load_at_start')) for r in out))
+def read(path: Path, cfg: dict, allow_pending: bool = False) -> tuple:
+    """One record per episode id, using the SAME resolution rule as the runner (common.resolve_episodes): the last attempt
+    without an infrastructure error; an episode whose max_attempts attempts all errored is scored intention-to-treat
+    (success 0, penalties of the decisions that were assigned) so every task keeps its runs and the randomization is not
+    selected on. Episodes that still have retries left are PENDING: the stage is not finished and must not be analysed."""
+    res = resolve_episodes(path, cfg['max_attempts_per_episode'])
+    if res['pending'] and not allow_pending:
+        raise SystemExit('%s: %d episodes still have retries left (e.g. %s); re-run the stage before analysing it' % (path, len(res['pending']), res['pending'][:2]))
+    out = list(res['good'].values())
+    for eid, r in res['exhausted'].items():
+        ds = list(r.get('decisions', [])); pen = sum(d.get('penalty', 0.0) for d in ds)
+        out.append(dict(r, success=0, penalty=pen, utility=-pen, n_decisions=len(ds), decisions=ds, itt_scored=True))
+    info = dict(n_records=res['n_records'], n_episodes=len(out), n_error_attempts=sum(res['n_err'].values()), n_itt_scored=len(res['exhausted']),
+                n_pending=len(res['pending']), n_torn_lines=res['torn'], n_foreign_gpu_load=sum(bool(r.get('foreign_gpu_load_at_start')) for r in out))
     return out, info
 
 
@@ -67,8 +55,13 @@ def main():
     base = (ROOT / 'work' / 'code_routing_mock') if a.mock else RESULTS
     out = base / 'analysis'; out.mkdir(exist_ok=True)
     tag = '**[MOCK DRY RUN: numbers are meaningless]** ' if a.mock else ''
-    eps, log_info = read(base / 'log' / 'episodes.jsonl', cfg); n_err = log_info['n_itt_scored']
-    train = [e for e in eps if e['split'] == 'train']; conf = [e for e in eps if e['split'] == 'confirm']
+    eps, train, conf, n_err = [], [], [], 0
+    if a.learn or a.ope or a.calibration or a.branch:
+        eps, log_info = read(base / 'log' / 'episodes.jsonl', cfg); n_err = log_info['n_itt_scored']
+        train = [e for e in eps if e['split'] == 'train']; conf = [e for e in eps if e['split'] == 'confirm']
+        want_c = (561 - cfg['n_train_tasks']) * cfg['runs_per_task']
+        if (a.ope or a.calibration or a.branch) and len(conf) != want_c and not a.mock:
+            raise SystemExit('the confirm log is incomplete: %d of %d episodes' % (len(conf), want_c))
 
     if a.learn:
         lp = base / 'learned_policy.json'
@@ -128,7 +121,7 @@ def main():
             Lw = EA.from_episodes(conf, K, P.state_key, 'success'); Lw.b = np.where(Lw.elig, np.where(Lw.a == 1, 0.8, 0.2), 1.0)
             W = EA.weights(Lw, cls[nm]); wrong.append((nm, float(np.sum(W * Lw.r, axis=1).mean()), float(scores[('success', nm)]['ipw'].mean())))
         rep += ['## Negative controls', '',
-                '- association, NOT a policy value: success of episodes that reached a second decision minus those that validated at once = %.4f (escalation is triggered by failure, so "escalated" episodes are the hard ones)' % esc_vs_not,
+                '- association, NOT a policy value: success of episodes with a second ASSIGNED decision minus those with only one (includes any intention-to-treat episodes) = %.4f (a second decision is triggered by failure, so those episodes are the hard ones)' % esc_vs_not,
                 '- randomized stage-1 contrast among episodes that reached it (large minus small at t=1; valid because assignment there is a coin flip): %.4f' % naive,
                 '- IPW with a deliberately WRONG constant propensity (0.8 for large) vs the recorded 0.5: ' + '; '.join('%s %.4f vs %.4f' % w for w in wrong), '']
         (out / 'report_ope.md').write_text('\n'.join(rep)); print('\n'.join(rep))
@@ -177,7 +170,7 @@ def main():
             pth = base / stage / 'episodes.jsonl'
             if not pth.exists():
                 continue
-            recs, info = read(pth, cfg)
+            recs, info = read(pth, cfg, allow_pending=True)
             for busy in (False, True):
                 g = [r for r in recs if bool(r.get('foreign_gpu_load_at_start')) == busy and not r.get('itt_scored')]
                 if not g:
@@ -194,8 +187,11 @@ def main():
 
     if a.branch:
         br, br_info = read(base / 'branch' / 'episodes.jsonl', cfg); n_err_b = br_info['n_itt_scored']
-        df = pd.DataFrame([dict(parent=e['parent_episode_id'], task=e['task_uid'], arm=e['fork_arm'], run=e['run'], success=e['success'],
-                                hash_ok=e['restoration']['transcript_hash_matches'], tool_ok=e['restoration']['tool_result_reproduced']) for e in br])
+        plan = {p_['episode_id']: p_ for p_ in json.loads((base / 'branch' / 'branch_plan.json').read_text())['episodes']}
+        arm_of = lambda e: e.get('fork_arm') or ('large' if plan[e['episode_id']]['forced_arm'] else 'small')
+        df = pd.DataFrame([dict(parent=e.get('parent_episode_id') or plan[e['episode_id']]['parent_episode_id'], task=e['task_uid'], arm=arm_of(e), run=e['run'],
+                                success=e['success'], hash_ok=(e.get('restoration') or {}).get('transcript_hash_matches'),
+                                tool_ok=(e.get('restoration') or {}).get('tool_result_reproduced')) for e in br])
         per = df.pivot_table(index=['task', 'parent'], columns='arm', values='success', aggfunc='mean').reset_index()
         n_pref = len(per); per = per.dropna(subset=['large', 'small']).reset_index(drop=True); n_incomplete = n_pref - len(per)
         per['d'] = per['large'] - per['small']
@@ -220,11 +216,11 @@ def main():
         boot = [log_contrast(pd.concat([groups[i] for i in rng.integers(0, len(groups), len(groups))])) for _ in range(500)]
         lc, lse = log_contrast(lp), float(np.nanstd(boot, ddof=1))
         diff, dse = est - lc, float(np.sqrt(se ** 2 + lse ** 2))   # treated as independent: branch outcomes use fresh seeds; conservative if positively dependent through shared prefixes
-        rep = ['# Code-routing: branch audit (restored first-failure prefixes, CONFIRM tasks)', '', tag + 'branch infrastructure errors excluded: %d' % n_err_b, '',
+        rep = ['# Code-routing: branch audit (restored first-failure prefixes, CONFIRM tasks)', '', tag + 'branch continuations scored intention-to-treat (success 0) after exhausting retries: %d' % n_err_b, '',
                '| quantity | value |', '|---|---|',
                '| prefixes with both arms / tasks (prefixes dropped for a missing arm: %d) | %d / %d |' % (n_incomplete, len(per), per['task'].nunique()),
-               '| restoration: transcript hash matches | %d / %d |' % (int(df.hash_ok.sum()), len(df)),
-               '| restoration: tool result reproduced | %d / %d |' % (int(df.tool_ok.sum()), len(df)),
+               '| restoration: transcript hash matches | %d / %d |' % (int(df.hash_ok.fillna(False).sum()), int(df.hash_ok.notna().sum())),
+               '| restoration: tool result reproduced | %d / %d |' % (int(df.tool_ok.fillna(False).sum()), int(df.tool_ok.notna().sum())),
                '| same-state same-model disagreement between two fresh continuations | %.3f |' % disagree,
                '| branch contrast, stay-large minus stay-small (success) | %.4f (task-cluster SE %.4f) |' % (est, se),
                '| same contrast from the randomized log (Hajek IPW, task bootstrap SE) | %.4f (SE %.4f) |' % (lc, lse),

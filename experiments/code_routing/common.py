@@ -60,3 +60,62 @@ def now_iso() -> str:
 def code_sha256() -> str:
     files = sorted(HERE.glob('*.py')) + sorted((HERE.parent / 'common').glob('*.py'))
     return sha256_bytes(b''.join(f.read_bytes() for f in files))
+
+
+def read_jsonl(path) -> tuple:
+    """(records, n_torn). Only a FINAL unparsable line is tolerated (a torn append); the runner cuts such a fragment
+    off into a sidecar before appending, so an unparsable line can never legitimately be non-final."""
+    path = Path(path)
+    if not path.exists():
+        return [], 0
+    lines = [l for l in path.read_text().splitlines() if l.strip()]
+    out = []
+    for i, l in enumerate(lines):
+        try:
+            out.append(json.loads(l))
+        except ValueError:
+            if i == len(lines) - 1:
+                return out, 1
+            raise SystemExit('%s: unparsable line %d that is not the last line - refusing to guess' % (path, i + 1))
+    return out, 0
+
+
+def cut_torn_tail(path, invocation: str) -> int:
+    """If the file does not end in a complete JSON line, move the fragment to <name>.torn.<invocation> and truncate.
+    Returns the number of bytes removed."""
+    path = Path(path)
+    if not path.exists():
+        return 0
+    raw = path.read_bytes()
+    if not raw:
+        return 0
+    body = raw.rstrip(b'\r\n'); cut = body.rfind(b'\n') + 1; last = body[cut:]
+    try:
+        json.loads(last.decode('utf-8', errors='strict')); ok = True
+    except ValueError:
+        ok = False
+    if ok:
+        if not raw.endswith(b'\n'):
+            with open(path, 'ab') as f:
+                f.write(b'\n')
+        return 0
+    path.with_name(path.name + '.torn.' + invocation).write_bytes(raw[cut:])
+    with open(path, 'r+b') as f:
+        f.truncate(cut); f.flush(); os.fsync(f.fileno())
+    return len(raw) - cut
+
+
+def resolve_episodes(path, max_attempts: int) -> dict:
+    """good: last record without an infrastructure error, per episode id. exhausted: ids whose max_attempts attempts all
+    errored (scored intention-to-treat by analysis). pending: ids with only error records and attempts left - NOT done,
+    NOT analysable. n_err: error attempts per id."""
+    recs, torn = read_jsonl(path)
+    good, last_bad, n_err = {}, {}, {}
+    for r in recs:
+        if r.get('error'):
+            n_err[r['episode_id']] = n_err.get(r['episode_id'], 0) + 1; last_bad[r['episode_id']] = r
+        else:
+            good[r['episode_id']] = r
+    exhausted = {e: last_bad[e] for e, k in n_err.items() if k >= max_attempts and e not in good}
+    pending = sorted(e for e, k in n_err.items() if k < max_attempts and e not in good)
+    return dict(good=good, exhausted=exhausted, pending=pending, n_err=n_err, torn=torn, n_records=len(recs))

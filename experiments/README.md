@@ -40,8 +40,9 @@ servers resident at 9.4 GB, which leaves room for a second 7B-class server under
 Real runs are started with `--allow-contention`; every manifest records that, and every episode records whether
 another llama-server was **actually** generating when it began (`foreign_gpu_load_at_start`). This study's primary
 outcomes (hidden-test success, call-count penalty, tokens) do not depend on speed; its latency fields do and are
-reported only for uncontended episodes. Sandbox wall-clock limits (10 s) are the one timing-dependent path into an
-outcome, so validation/verification timeouts are counted by contention status.
+reported only for uncontended episodes (`analysis.py --ops`). Sandbox limits are the one timing-dependent path into an
+outcome (CPU 10 s; wall clock 20 s, deliberately twice the CPU limit), so validation and hidden-test timeouts are
+counted by contention status.
 
 ## E0 — design-efficiency simulation (`sim/`, `dtr/`)
 
@@ -173,7 +174,7 @@ Run order once the GPU is free (each stage refuses to overwrite):
 cd experiments/code_routing && PY=../../.venv/bin/python
 $PY -m pytest -q test_estimators_absorbing.py
 $PY run.py --servers start
-$PY run.py --stage tests                 # frozen visible tests (environment construction)
+$PY run.py --stage tests                 # visible tests: model-written inputs, certified against the reference, hidden-input overlaps removed
 $PY run.py --stage pilot                 # 30 disjoint tasks: gate in protocol §6; may adjust config.json ONLY as §6 allows
 $PY design.py                            # freeze config + design; COMMIT + PUSH before any design-task model call
 $PY run.py --stage log                   # 4,488 randomized episodes, resumable

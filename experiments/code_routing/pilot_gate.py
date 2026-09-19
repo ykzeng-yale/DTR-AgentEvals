@@ -12,7 +12,7 @@ def main():
     ap = argparse.ArgumentParser(); ap.add_argument('--mock', action='store_true'); a = ap.parse_args()
     cfg = load_config(); base = (ROOT / 'work' / 'code_routing_mock') if a.mock else RESULTS
     rows = [json.loads(l) for l in (base / 'pilot' / 'episodes.jsonl').read_text().splitlines() if l.strip()]
-    ok = list({r['episode_id']: r for r in rows if not r.get('error')}.values())
+    ok = list({r['episode_id']: r for r in rows if not r.get('error')}.values())      # last successful attempt per episode; failed attempts are counted below
     out = ['# Pilot gate' + (' **[MOCK: meaningless numbers]**' if a.mock else ''), '',
            'episodes %d, tasks %d, infrastructure errors %d' % (len(rows), len({r['task_uid'] for r in rows}), len(rows) - len(ok)), '',
            '| first model | n | validated at t=0 | first candidate passes HIDDEN tests | final success | mean completion tokens at t=0 |', '|---|---:|---:|---:|---:|---:|']
