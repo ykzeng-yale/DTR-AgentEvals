@@ -3,6 +3,51 @@
 Pushed about every two hours while experiments run. Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-19 18:00 EDT — randomized log COMPLETE; policy frozen; live stage running
+
+**Stage `log`: finished, 4,488 of 4,488 episodes.** 0 infrastructure errors, 0 episodes owing a retry, 0
+intention-to-treat scorings, 0 validation or hidden-test timeouts, 0 truncated generations, 0 sandbox hack flags,
+0 episodes begun under foreign GPU load. 6,063 model calls, 517,326 completion tokens, 2.28 s per episode, 11.2
+agent-hours over 4 workers. All 561 train+confirm tasks covered. Assignment balance at t=0 was 0.508 large against
+0.500 by design. Committed at `035d245`.
+
+**Learned policy frozen** (`learned_policy.json`, sha256 `4f22e7b4…`, recorded in protocol §9), fitted-Q on the 231
+TRAIN tasks only, pushed **before** any live episode. It is genuinely tailored rather than a fixed scaffold:
+
+| pre-action state | action |
+|---|---|
+| first attempt | large |
+| after an **assertion** failure by the **small** model | escalate to large |
+| after an **assertion** failure by the **large** model | fall back to small |
+| after an **exception** failure at t=1 | small |
+
+i.e. it alternates rather than repeating the model that just failed. Whether that helps is exactly what the
+confirmatory analysis will decide; **no outcome by arm has been inspected.**
+
+**Stage `live`: running.** 3,960 fresh executions of six frozen policies (always-small, always-large,
+escalate-after-first-failure, class-tailored, soft-escalation δ=2, learned) on the 330 confirm tasks, 2 runs each.
+2.45 s per episode, ETA ≈ 160 min (finish ≈ 20:45 EDT). 0 errors so far.
+
+**Housekeeping:** one TRAIN episode's traceback contained the host interpreter path (a `RecursionError` inside the
+standard library). The host prefix is masked as `<HOME>` — 4 occurrences, one episode, no numeric field touched —
+and recorded in `results/code_routing/redactions.json`. The tool refuses confirm-split episodes, whose stored traces
+the branch audit rehashes, and lives outside the directories hashed into `code_sha256`.
+
+**Problems:** none. **Next:** `analysis.py --calibration` (offline vs live, paired by task), then the branch audit
+(800 continuations, ≈0.5 h), then `--ope`, `--branch`, `--ops` and the write-up.
+
+**Overall submission readiness: about 60% (change: +10 percentage points; judgment range 50–60%).** Evidence
+advanced, and *inspectable* rather than merely started: the randomized log is complete with its raw episode and
+pre-action decision records committed, and the learned policy is frozen and published before the validation it will
+be judged by. Scoring "Core simulations and real-agent evidence" 25→50: two of its three components now exist
+(known-truth operating characteristics from `results/sim` and `results/s1_grid`; the real-agent randomized log),
+while fresh-policy validation and the branch audit are outstanding and **no outcome has been analysed**. Weighted:
+0.25×75 + 0.20×75 + 0.30×50 + 0.15×50 + 0.10×25 = 58.75 → 60%. Main remaining work: (1) complete live-policy
+validation and the branch audit and report their outcomes including nulls; (2) integrate validated results and
+limitations into the manuscript; (3) independent audit of the new experiment code, protocol adherence and analysis.
+*This is the experiments workstream scoring its own category; the theory agent owns `docs/readiness.md` and may
+re-score. Checkpoints are recorded here because this host has no GitHub CLI or token for issue #4.*
+
 ## 2026-09-19 16:20 EDT — randomized log 44% done, no errors
 
 **Stage:** `log` (frozen design `cb9481d`). **1,974 of 4,488 episodes**, **0 infrastructure errors**, 0 episodes
