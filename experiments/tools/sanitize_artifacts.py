@@ -4,9 +4,10 @@ A candidate program that crashes deep inside the standard library produces a tra
 absolute path, which on this host sits under the researcher's home directory. That text is a genuine tool result and
 was shown to the model, so it is not deleted - only the host prefix is masked.
 
-IMPORTANT: the branch audit rebuilds a confirm episode's transcript from its stored `trace` and compares the hash with
-the one logged before the model call. Masking a CONFIRM episode's trace would therefore turn a faithful restoration
-into a reported mismatch. This tool refuses confirm-split episodes unless --after-branch is given.
+IMPORTANT: the branch audit rebuilds a transcript from the stored `trace` of a LOG-stage confirm episode and compares
+the hash with the one logged before that model call. Masking those would turn a faithful restoration into a reported
+mismatch, so they are refused until --after-branch. Live- and branch-stage records are never rehashed (the branch
+audit's restoration verdicts are booleans computed at run time), so they are always safe to mask.
 
 This file lives outside experiments/code_routing and experiments/common on purpose: those directories are hashed into
 every episode's `code_sha256`, and publishing housekeeping must not change the experiment's code identity.
@@ -44,6 +45,7 @@ def main():
     for sp in a.paths:
         path = Path(sp).resolve()
         raw = path.read_text()
+        is_log_stage = path.parent.name == 'log'      # only these traces are re-hashed by the branch audit
         before = scan(raw)
         if not before:
             report.append(dict(file=rel(path), occurrences=0, action='clean'))
@@ -53,7 +55,7 @@ def main():
         for line in lines:
             if not line.strip():
                 out.append(line); continue
-            if scan(line) and not a.after_branch:
+            if scan(line) and is_log_stage and not a.after_branch:
                 try:
                     rec = json.loads(line)
                 except ValueError:
@@ -65,7 +67,7 @@ def main():
                 new = re.sub(p, repl, new)
             masked += scan(line); out.append(new)
         if blocked:
-            print('REFUSED to mask %d confirm-split episode(s) in %s (would break branch-audit restoration hashes): %s'
+            print('REFUSED to mask %d confirm-split LOG episode(s) in %s (the branch audit re-hashes their traces): %s'
                   % (len(blocked), path, blocked[:5]))
         if not a.check and masked:
             sha_before = hashlib.sha256(raw.encode()).hexdigest()

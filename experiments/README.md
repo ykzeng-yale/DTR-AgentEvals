@@ -12,10 +12,10 @@ agent and are not edited from here. Rules in [`AGENTS.md`](../AGENTS.md) apply.
 | E0 | Design-efficiency simulation: one sequentially randomized experiment vs one arm per scaffold; tailored-regime learning; forking vs randomizing at equal compute | synthetic, known truth | **executed** — 5,000 replicates, `results/sim/` |
 | S1 | Crossed n × horizon × overlap-floor grid on the **reference** simulator and estimators (unchanged), 1,000 replicates × 27 cells × 4 nuisance specifications | synthetic, exact truth | **executed** — `results/s1_grid/`, report in `grid_report.md` |
 | E1 | Absorbing-horizon tabular IPW / g-computation / cross-fitted DR with task-cluster inference | code + tests | **implemented**, 12 tests pass; reproduces `src/dtr_agent_evals` scores to 1e-10 on its simulator |
-| L1–L3 | Code-routing study on MBPP + HumanEval, Qwen2.5-3B vs 7B, K=3 routing decisions | real open-weight inference | **running from 19 September** (environment construction, then pilot); no result yet |
-| A4 | Branch audit: 200 restored first-failure prefixes × {small, large} × 2 fresh continuations, with transcript-hash and tool-result restoration checks | real inference | **implemented, NOT run**; mock dry run restores 800/800 |
+| L1–L3 | Code-routing study on MBPP + HumanEval, Qwen2.5-3B vs 7B, K=3 routing decisions | real open-weight inference | **executed 19 September** — 4,488 randomized + 3,960 live episodes, 0 errors. Estimator calibrated (5/6); tailoring does **not** beat always-large |
+| A4 | Branch audit: 200 restored first-failure prefixes × {small, large} × 2 fresh continuations, with transcript-hash and tool-result restoration checks | real inference | **running 19 September** |
 
-Nothing in this directory is a result from a real language model yet.
+The L1–L3 study below is executed on real open-weight models; E0 and S1 remain synthetic.
 
 ### Mapping to the open GitHub issues
 
@@ -147,6 +147,89 @@ With known propensities and correctly specified tabular Q (coverage Monte Carlo 
 Consequence for the real study: the code-routing design uses T = 3 with absorbing success, so most episodes contain
 one decision and the inflation is far below 2³; the mock dry run put break-even near 4 candidate policies, and the
 frozen class has 9. That is a prediction to be checked against the real OPE-versus-live comparison, not a result.
+
+## L1–L3 results — code-routing study on real open-weight models (19 September 2026)
+
+Design frozen at [`cb9481d`](https://github.com/ykzeng-yale/DTR-AgentEvals/commit/cb9481d); nothing below was
+inspected before the stage that produced it was complete. Raw episode and pre-action decision records, manifests and
+analysis CSVs are under `results/code_routing/`.
+
+**Executed:** 4,488 randomized-log episodes (561 train+confirm tasks × 8) and 3,960 live episodes (6 frozen policies
+× 330 confirm tasks × 2). **0 infrastructure errors, 0 retries, 0 intention-to-treat scorings** in either stage;
+1 validation timeout and 3 truncated generations across 11,567 model calls; 0 episodes under foreign GPU load.
+
+![calibration and frontier](../results/code_routing/analysis/figures/calibration_and_frontier.png)
+
+### A1 — does the offline estimator predict what actually happens? Mostly yes
+
+Paired by task, DR value from the shared randomized log minus the value measured by *running* each policy:
+
+| policy | OPE (DR) | live | OPE − live | 95% CI | covers 0 |
+|---|---:|---:|---:|---|:--:|
+| always_large | 0.6719 | 0.6777 | −0.006 | [−0.029, +0.017] | yes |
+| always_small | 0.5799 | 0.5956 | −0.016 | [−0.049, +0.018] | yes |
+| learned | 0.6894 | 0.6727 | +0.017 | [−0.012, +0.045] | yes |
+| soft_escalation_d2 | 0.6400 | 0.6464 | −0.006 | [−0.030, +0.017] | yes |
+| escalate_after_first_failure | 0.6079 | 0.6245 | −0.017 | [−0.052, +0.019] | yes |
+| **class_tailored** | 0.5947 | 0.6319 | **−0.037** | **[−0.070, −0.005]** | **no** |
+
+Five of six agree within noise; Spearman rank agreement of policy utilities is **0.886**. One policy is
+**miscalibrated**: `class_tailored` is under-estimated by 3.7 utility points. It is the policy whose action depends on
+the failure *class*, the tailoring variable with the coarsest tabular cells, which is where a fitted-Q cell is
+thinnest — reported as a failure of the method in this cell, not smoothed away.
+
+Precision per unit of compute: the OPE/live standard-error ratio is 0.91–1.07, i.e. the shared log estimates each
+policy about as precisely as dedicated live runs — while **one log of 3,662 model calls supports all nine frozen
+policies**, against 5,504 calls to run just six of them live.
+
+### A2 — does any regime beat the baseline? Yes. Does tailoring beat "always use the big model"? **No**
+
+Pre-registered rule: claim improvement over `always_small` only if the Bonferroni-simultaneous OPE interval excludes
+0 **and** the live contrast agrees in sign. Claimed for `always_large` (+0.092 utility), `learned` (+0.110),
+`soft_escalation_d2/d4` (+0.060) and `large_then_small`. **Not** claimed for `class_tailored` or
+`escalate_after_first_failure` — their simultaneous intervals include 0 although their live contrasts are positive.
+
+The comparison that matters was **not** pre-registered and is reported as secondary: **learned vs always_large**.
+
+| | OPE | live |
+|---|---|---|
+| utility | +0.018 [−0.016, +0.051] | **−0.005 [−0.027, +0.017]** |
+| success | +0.015 [−0.018, +0.047] | **−0.008 [−0.029, +0.014]** |
+
+**The learned tailored regime does not beat always-large.** Both intervals cover zero and the live point estimate is
+slightly negative. The right-hand panel shows why: on this benchmark and model pair, success is close to a monotone
+function of how much large-model compute is spent (0.611 at 0 large calls per episode → 0.717 at 1.30), and every
+frozen policy lands near that line. The learned regime reaches 0.709 success with **1.15 large calls per episode
+against 1.30 (−11%)** — the same quality slightly cheaper, but not enough to win on the frozen utility, and not a
+statistically distinguishable improvement on either outcome.
+
+This is a negative result for the *improvement* half of the DTR hypothesis in this setting, and it is the honest
+headline. It does not bear on the *evaluation* half, which A1 supports.
+
+### A3 — support diagnostics
+
+IPW, cross-fitted DR and g-computation agree to ≤0.016 for every policy, with 0 missing Q cells. Deterministic
+targets have the worst-case trajectory weight 8 = 2³ by design, stage-3 effective sample size 771–903 of 2,640
+episodes, and 317–330 of 330 tasks contributing. The **stochastic** odds-shift targets are far cheaper to evaluate —
+ESS 2,286–2,528 and maximum weight 1.78–2.56 — reproducing the prediction from the synthetic grid that supported
+stochastic targets cost less to evaluate than deterministic ones.
+
+### Negative controls — what the design buys
+
+- **Naive association**: success of episodes that got a second decision minus those that stopped at one = **−0.484**.
+  A second decision is *triggered by failure*, so the naive contrast is catastrophically misleading about the effect
+  of escalating.
+- **Wrong propensity**: IPW with a deliberately wrong constant 0.8 (instead of the recorded 0.5) gives
+  **2.015** for `always_small` — outside the attainable range of the utility — and 0.433 for `always_large` against a
+  correct 0.714.
+
+### Theorem 5 at realistic scale
+
+With K = 3, weight bound c = 2 and 330 confirm tasks, the finite-class certificate gives M = 48.4 and a half-width
+of **ε ≈ 18.1** on a utility of range ≈ 1.1: **vacuous**. Reaching ε = 0.05 would need ≈4×10⁷ tasks. The
+improvement decisions above therefore rest on the CLT/Bonferroni intervals, with the certificate reported as
+uninformative rather than omitted. A variance-adaptive (empirical-Bernstein) version is the obvious next step for
+the theory workstream.
 
 ## L1–L3 — code-routing study (`code_routing/`)
 
