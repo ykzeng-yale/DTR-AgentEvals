@@ -108,7 +108,7 @@ def main():
 
     # ---- panel 3: two independent routes to the same causal quantity
     br = json.loads((SRC / 'branch_summary.json').read_text())
-    lk = json.loads((SRC / 'branch_vs_log_linked.json').read_text())
+    lk = json.loads((SRC / 'branch_vs_log_linearized.json').read_text())
     style(ax[2], 'Two routes to the same causal number: compatible', '', 'effect of continuing with the large model\n(success, after a first failure)')
     labels = ['off-policy estimate\nfrom the randomized log', 'forked replay of both\nmodels from the same state']
     vals = [br['log_estimate'], br['branch_estimate']]; ses = [br['log_se'], br['branch_se']]
@@ -120,10 +120,9 @@ def main():
     ax[2].axhline(0, color=MUTED, linewidth=1, linestyle=(0, (4, 3)))
     ax[2].set_xticks([0, 1]); ax[2].set_xticklabels(labels, fontsize=8.5, color=INK2)
     ax[2].set_xlim(-0.45, 1.6); ax[2].set_ylim(-0.02, 0.30)
-    ax[2].annotate('compatible, not shown equal: unpaired difference %.3f\n[%.3f, %.3f]; the two share tasks (r=%.2f), and on the\n%d tasks where both are estimable the PAIRED difference\nis %.3f [%.3f, %.3f] - wide, and covering zero.\n\n%d/%d restorations reproduced the saved state exactly;\ntwo fresh continuations of the SAME state differ %.0f%% of\nthe time. Forking spent %.0f%% of the confirm-log calls.'
-                   % (br['difference'], br['diff_lower'], br['diff_upper'], lk['correlation'], lk['n_tasks_linked'],
-                      lk['paired_difference'], lk['paired_lower'], lk['paired_upper'],
-                      br['restored_ok'], br['n_continuations'], 100 * br['noise_floor'], 100 * br['compute_ratio']),
+    ax[2].annotate('compatible, not shown equal. Difference of the two plotted\nestimates: %.3f, first-order task-clustered 95%% interval\n[%.3f, %.3f] (shared source tasks handled; NOT a\ndesign-aware interval - prefix sampling and replication\nare not accounted for).\n\n%d/%d restorations reproduced the recorded transcript\nhash and tool-result fields; two fresh continuations of the\nsame state differed in %.0f%% of %d pairs (a sample\nstatistic, not a noise bound).'
+                   % (lk['difference'], lk['lower'], lk['upper'], br['restored_ok'], br['n_continuations'],
+                      100 * br['noise_floor'], 400),
                    (-0.40, 0.292), fontsize=8.0, color=INK2, va='top')
 
     fig.suptitle('Code-routing study · Qwen2.5 3B vs 7B · MBPP + HumanEval · 330 held-out tasks · 4,488 randomized + 3,960 live + 800 forked episodes',

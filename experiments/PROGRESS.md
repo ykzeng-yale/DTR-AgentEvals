@@ -3,6 +3,58 @@
 Pushed about every two hours while experiments run. Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-20 00:45 EDT — scheduled check: second review round; my own "fix" was wrong and is repaired
+
+**Stage status: nothing to advance.** All stages complete and verified: pilot 120, log **4,488/4,488**, live
+**3,960/3,960**, branch **800/800**; 0 unresolved, 0 intention-to-treat, 0 torn records. No runner alive, both
+llama-servers healthy on 8191/8193, **no foreign llama-server generating** — contention stayed 0 for the whole study.
+Calls attached to retained completions: **13,001** (log + live + branch), **13,164** including the pilot; both
+exclude the executions lost in the publishing incident and environment-construction calls, so neither is the total
+physical cost.
+
+**The theory workstream reviewed my previous correction and it was itself wrong.** Its new
+`docs/theory_feedback_20260920_branch.md` shows that my "linkage fix" **changed the estimand** rather than the
+variance: restricting to 42 tasks and re-weighting them equally moved the difference from −0.0147 to −0.0914, and it
+decomposes the shift (pooled −0.0147 → original weighting on 42 tasks −0.0567 → equal-task weighting −0.0914). A
+variance correction must leave the difference alone. Accepted in full.
+
+**Target-preserving repair implemented** (`experiments/tools/branch_linkage_linearized.py`): pooled estimators and
+**all 330 source tasks** retained, so the difference stays **−0.014654**; the influence identity supplied in the
+review is used for its uncertainty and verified numerically by central differences over every source-task multiplier
+(Σ U_g = 7×10⁻¹⁸, max error 3.8×10⁻¹¹). Result: SE **0.0484**, interval **[−0.109, +0.080]** — *tighter* than the
+0.0572 independence implies, because the linkage is positive. Labelled a first-order approximation: it does not
+account for without-replacement sampling of 200 of 564 prefixes, within-prefix replication, or cross-task selection
+dependence. The 42-task version is retained and marked exploratory.
+
+**Other accepted corrections:** ESS now described as overlap, not cost; the 2.19 precision ratio no longer presented
+as equal-compute or as replication of the synthetic result, and stated to exclude prefix acquisition and lost-run
+overhead; the 8% figure is a sample statistic over 400 pairs, not a noise bound; restoration described as evidence
+about recorded hash and tool-result fields, not universal replayability; the third figure panel now annotates the
+difference of the two estimates it actually plots, with the previous version preserved as
+`calibration_and_frontier_v2_20260920.png`; protocol §11 no longer asserts the incident "could not affect inference"
+and instead states the loss/recovery and execution-stability assumptions, and records the 1,439 durable branch rows
+(1,434 retained + 5 orphans, `attempt=1` reused across invocations).
+
+**Gate hardened.** `verify_stage.py` now **fails** rather than prints on a torn tail, duplicate completed rows,
+frozen-metadata drift, a restoration flag claimed without a recorded parent, durable decisions lacking an invocation
+id, and orphan decisions. Nine fixtures in `experiments/tools/test_verify_stage.py` prove each check fails on its
+defect and that the three real stages still pass. **Not done:** refusing publication from a checkout that cannot
+attest the writer's liveness on the actual host.
+
+**Problems:** the substantive one is above — I published a correction that silently re-targeted an estimand, and it
+took an external review to catch it. That is the second time this cycle that review caught an error of mine, which is
+an argument for the independent-audit item remaining open rather than closed by self-assessment.
+
+**Overall submission readiness: about 60% (change: −5 percentage points; judgment range 50–65%).** Evidence advanced:
+none new; this tick repaired analysis. I am **lowering** my own score and adopting the theory workstream's 60%:
+"Core simulations and real-agent evidence" goes back from 75 to 50 because a published inference correction was
+itself defective and the branch comparison still lacks a design-aware interval, so the category is not "most
+delivered with only integration left". Categories 75/75/50/50/25, weighted 58.75 → 60%. Main remaining work:
+(1) design-aware branch variance and the missing comparators (competitive router baseline, static replay);
+(2) independent reproduction of numerical summaries from immutable inputs; (3) manuscript integration and packaging.
+*This workstream cannot post to GitHub issue #4 (no GitHub CLI or token on the experiment host), so the checkpoint is
+recorded here.*
+
 ## 2026-09-20 00:10 EDT — scheduled check: pipeline complete, review corrections applied
 
 **Stage status: nothing to advance.** All stages of the frozen pipeline are finished and verified against the frozen

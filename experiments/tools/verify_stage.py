@@ -45,6 +45,50 @@ def expected_ids(stage: str, design: dict, base: Path) -> set:
     return set()
 
 
+def check_records(ep_path, d, stage, res, design, cfg) -> list:
+    """Integrity checks the resolver cannot make: duplicate completed rows, frozen-metadata drift, restoration flags
+    that are recorded as true without the evidence, and durable decisions that no completed episode accounts for."""
+    problems = []
+    rows, _ = common.read_jsonl(ep_path)
+    seen = {}
+    for r in rows:
+        if not r.get('error'):
+            seen[r['episode_id']] = seen.get(r['episode_id'], 0) + 1
+    dups = sorted(e for e, k in seen.items() if k > 1)      # the resolver silently keeps the last one
+    if dups:
+        problems.append('%d episode id(s) have more than one completed row, e.g. %s' % (len(dups), dups[:2]))
+    frozen = dict(config_sha256=cfg['_config_sha256'], tasks_sha256=design['tasks_sha256'])
+    vt = base_vt_sha()
+    if vt:
+        frozen['visible_tests_sha256'] = vt
+    for key, want in frozen.items():
+        got = {r.get(key) for r in rows if r.get(key) is not None}
+        if got and got != {want}:
+            problems.append('%s in episodes does not match the frozen value (%s)' % (key, sorted(got)[:2]))
+    if stage == 'branch':
+        bad = [r['episode_id'] for r in rows if not r.get('error') and r.get('restoration')
+               and (r['restoration'].get('transcript_hash_matches') is True) and not r.get('parent_episode_id')]
+        if bad:
+            problems.append('%d branch row(s) claim a matching transcript hash with no parent recorded' % len(bad))
+    dec = ep_path.parent / 'decisions.jsonl'
+    if dec.exists():
+        drows, dtorn = common.read_jsonl(dec)
+        if dtorn:
+            problems.append('decisions.jsonl has a torn final line')
+        if any('invocation' not in x for x in drows):
+            problems.append('durable decisions without an invocation id (attempt numbers are reused across invocations)')
+        orphan = {x['episode_id'] for x in drows} - set(res['good']) - set(res['exhausted'])
+        if orphan:
+            problems.append('%d episode id(s) have durable decisions but no resolved episode, e.g. %s'
+                            % (len(orphan), sorted(orphan)[:2]))
+    return problems
+
+
+def base_vt_sha():
+    p = common.RESULTS / 'visible_tests.json'
+    return common.sha256_bytes(p.read_bytes()) if p.exists() else None
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument('stages', nargs='+')
@@ -74,12 +118,17 @@ def main() -> int:
         want = expected_ids(stage, design, base)
         have = set(res['good']) | set(res['exhausted'])
         missing, extra = want - have, have - want
-        status = 'OK' if (want and not missing and not extra and not res['pending']) else 'FAILED'
+        problems = check_records(ep, d, stage, res, design, cfg)
+        if res['torn']:
+            problems.append('torn final line (%d)' % res['torn'])      # a printed count is not a gate; this fails
+        status = 'OK' if (want and not missing and not extra and not res['pending'] and not problems) else 'FAILED'
         print('%-7s %-8s on disk %d/%d  (good %d, intention-to-treat %d, retries owed %d, missing %d, unexpected %d, torn %d)'
               % (stage, status, len(have), len(want), len(res['good']), len(res['exhausted']), len(res['pending']),
                  len(missing), len(extra), res['torn']))
         if missing:
             print('         e.g. missing: %s' % sorted(missing)[:3])
+        for pr in problems:
+            print('         PROBLEM: %s' % pr)
         if status != 'OK':
             bad += 1
     print('\n%s' % ('ALL STAGES VERIFIED - safe to commit' if not bad else '%d stage(s) NOT safe to commit' % bad))

@@ -111,3 +111,33 @@ Still open and **not** claimed: a competitive published sequential-router baseli
 comparator, independent reproduction of the numerical summaries from immutable inputs, and manuscript integration.
 The nominal calibration discrepancy for `class_tailored` is reported as a failure cell; no revised method has been
 selected on the CONFIRM data.
+
+## Reply to theory_feedback_20260920_branch (experiments workstream, 20 September 2026)
+
+**Accepted: our "linkage correction" changed the target.** Restricting to 42 tasks and re-weighting them equally was a
+re-targeting, not a variance repair, and the review's decomposition is reproduced exactly here. The repair is
+implemented in `experiments/tools/branch_linkage_linearized.py`: pooled estimators and **all 330 source tasks** are
+kept, so the difference stays **−0.014654**, and the supplied influence identity is used for its uncertainty. We
+verified the identity numerically by central differences over every source-task multiplier (Σ U_g = 7×10⁻¹⁸, maximum
+error 3.8×10⁻¹¹) and obtain SE **0.0484**, interval **[−0.109, +0.080]** — tighter than the independence-based 0.0572
+because the linkage is positive. It is labelled a first-order approximation that does not account for the
+without-replacement sampling of 200 of 564 prefixes, within-prefix replication, or cross-task selection dependence;
+no design-aware interval is claimed. The 42-task result is retained and labelled exploratory.
+
+**Accepted on reporting.** ESS claims now describe overlap rather than cost; the 2.19 precision ratio is no longer
+presented as an equal-compute result or as replication of the synthetic finding, and is stated to exclude prefix
+acquisition and the lost-run overhead; the 8% figure is a sample statistic over 400 pairs, not a noise bound;
+restoration is stated as evidence about the recorded hash and tool-result fields, not universal replayability; the
+third-panel annotation now reports the difference of the two plotted estimates, and the previous figure is preserved
+as `calibration_and_frontier_v2_20260920.png`. Call totals are given as 13,001 (log + live + retained branch) and
+13,164 including the pilot, with both stated to exclude unrecovered executions and environment-construction calls.
+Protocol §11 no longer asserts that the incident could not affect inference; it now states the loss/recovery and
+execution-stability assumptions and records the 1,439 durable rows (1,434 + 5 orphans, `attempt=1` reused).
+
+**Partially done: publication and recovery checks.** `verify_stage.py` now fails (rather than prints) on a torn tail,
+duplicate completed ids, frozen-metadata mismatch and a false restoration flag, and checks invocation-linked durable
+decisions; fixtures covering each failure mode are in `experiments/tools/test_verify_stage.py`. Not done: refusing
+publication from a checkout that cannot attest the writer's liveness on the actual host.
+
+**Still not claimed:** competitive published router baseline, static-replay comparator, design-aware branch variance,
+independent reproduction from immutable inputs, manuscript integration.

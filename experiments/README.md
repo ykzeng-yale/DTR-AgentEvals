@@ -220,9 +220,10 @@ headline. It does not bear on the *evaluation* half, which A1 supports.
 IPW, cross-fitted DR and g-computation agree closely for every policy — the largest disagreement is below 0.016 on
 utility and 0.0167 on success — with 0 missing Q cells. Deterministic
 targets have the worst-case trajectory weight 8 = 2³ by design, stage-3 effective sample size 771–903 of 2,640
-episodes, and 317–330 of 330 tasks contributing. The **stochastic** odds-shift targets are far cheaper to evaluate —
-ESS 2,286–2,528 and maximum weight 1.78–2.56 — reproducing the prediction from the synthetic grid that supported
-stochastic targets cost less to evaluate than deterministic ones.
+episodes, and 317–330 of 330 tasks contributing. The **stochastic** odds-shift targets overlap the logger far better — ESS
+2,286–2,528 and maximum weight 1.78–2.56. These are weighted-episode diagnostics, not independent task counts, and
+better overlap on its own does not establish cheaper evaluation; the realised standard errors (0.0215 against
+0.0245–0.0262) are the quantity that speaks to precision.
 
 ### Negative controls — what the design buys
 
@@ -252,29 +253,34 @@ continuations over 103 tasks.
 
 | quantity | value |
 |---|---|
-| restoration: recomputed transcript hash equals the hash logged before the parent's call | **800 / 800** |
-| restoration: re-validated parent candidate reproduces the logged tool result | **800 / 800** |
-| same state, same model, two fresh seeds: outcome disagreement (the serving-noise floor) | **0.080** |
+| recorded transcript hash equals the hash logged before the parent's call | **800 / 800** |
+| re-validated parent candidate reproduces the recorded tool-result fields | **800 / 800** |
+| same state, same model, two fresh seeds: outcome disagreement over 400 pairs (sample statistic) | **0.080** |
 | effect of continuing with the large model, from forked replay | 0.1200 (task-cluster SE 0.0320) |
-| the same quantity from the randomized log (Hájek IPW, task bootstrap SE) | 0.1347 (SE 0.0474) |
-| forked minus log | **−0.015, 95% CI [−0.127, +0.098]** |
+| the same quantity from the randomized log (pooled Hájek IPW) | 0.1347 (SE 0.0474) |
+| forked minus log (pooled targets; first-order task-clustered) | **−0.0147, [−0.109, +0.080]** |
 
-The two estimates are **compatible, which is weaker than agreement**. Their unpaired difference is −0.015
-[−0.127, +0.098], but they are not independent: branch prefixes are sampled from the very log episodes the other
-estimate uses, and the per-task estimates correlate at r = 0.54. Recomputing the comparison as a paired, task-clustered
-difference on the 42 tasks where both quantities are estimable gives **−0.091, 95% CI [−0.208, +0.025]** — still
-covering zero, but wide and with a larger point discrepancy than the unpaired figure suggests. Neither version
-establishes that the two routes measure the same number; they fail to detect a difference at this sample size.
-Restoration, by contrast, is exact: every one of the 800 rebuilt transcripts hashed identically to what was logged
-before the original call, and every re-validated parent candidate reproduced its logged tool result, so the
-environment really is replayable. The 8% same-state/same-model disagreement is the irreducible sampling noise of the
-server at T = 0.7 and bounds how sharp any single-episode counterfactual claim can be.
+The two estimates are **compatible, which is weaker than agreement**. Their difference is **−0.0147**, and the
+sources are not independent: branch prefixes are drawn from the very log episodes the other estimate uses. Keeping
+the pooled estimators and all 330 source tasks, the first-order task-cluster influence contribution of that
+difference (identity supplied by the theory workstream, verified here by central differences over every source task,
+maximum error 4×10⁻¹¹) gives SE **0.0484** and interval **[−0.109, +0.080]** — tighter than the 0.0572 an
+independence assumption implies, because the linkage is positive. This is a first-order approximation that does
+**not** account for the without-replacement sampling of 200 of 564 prefixes, replication of continuations within a
+prefix, or cross-task selection dependence, so it is not yet a design-aware interval. An earlier attempt of ours
+restricted to 42 tasks and re-weighted them equally, giving −0.091; that changed the *estimand* rather than the
+variance and is retained only as exploratory (`branch_vs_log_linked.json`).
 
-On precision per call, forking did well: **SE 0.0320 against 0.0474 for 39% of the calls** (1,434 new calls versus
-the 3,662 confirm-log calls; variance × compute 1.47 versus 8.23). This compares one contrast estimated two ways and
-is not a general claim about evaluation cost. The synthetic study E0 predicted a
-2.1–2.3× variance reduction from forking at equal compute; the real open-weight system delivered 2.19×. That
-prediction transferring from a planted simulator to real models is the most transportable finding here.
+On restoration, all 800 rebuilt transcripts matched the recorded pre-call hash and all 800 re-validated parents
+reproduced the recorded tool-result fields. That is evidence about those recorded checks, not a demonstration that
+the whole environment is replayable. Two fresh continuations of the same state under the same model differed in 8%
+of 400 pairs — a sample statistic for two seeds, not an irreducible noise bound.
+
+On precision, the forked estimate has SE 0.0320 against 0.0474 for the log route, obtained from 1,434 retained
+branch calls against the 3,662 confirm-log calls. That ratio is **not an equal-compute comparison and not a
+replication of the synthetic finding**: it excludes the cost of acquiring the prefixes (the randomized log itself,
+without which no prefix exists) and the 665 continuations executed and lost in the publishing incident. Read as
+"this contrast was estimated more precisely per retained branch call", not as a general evaluation-cost result.
 
 The caveat is the estimand, not the precision: this is the mean continuation effect over the prefix population that
 the *randomized logger* reached. It is **not** the value of a policy that changes how those prefixes are reached, and
@@ -283,8 +289,10 @@ it cannot replace the whole-policy comparison in A2.
 ### Contention and timing
 
 Every stage ran with **zero foreign GPU load**, so latency is interpretable throughout: median call 3.1–4.2 s (small)
-and 6.3–11.0 s (large). Across 13,001 model calls in all four stages there was **1 validation timeout, 0 hidden-test
-timeouts and 3 truncated generations**. Timeouts are the only timing-dependent path into an outcome, and at this rate
+and 6.3–11.0 s (large). Across the **13,001** calls attached to retained log, live and branch completions — **13,164** including the pilot —
+there was **1 validation timeout, 0 hidden-test timeouts and 3 truncated generations**. Both totals exclude the
+executions lost in the publishing incident and the environment-construction calls, so they are not the total
+physical cost of the study. Timeouts are the only timing-dependent path into an outcome, and at this rate
 they cannot have moved a result.
 
 ## L1–L3 — code-routing study (`code_routing/`)

@@ -194,12 +194,17 @@ files with new inodes, and the runner's handles continued writing to the old, un
 inode succeed, so nothing failed visibly. This was an operator error in publishing, not a fault of the design, the
 harness or the models.
 
-Scientific impact: none that can bias a result. The lost outcomes were never observed by anyone — they went to a
-deleted file and were unreadable — so no selection on outcome was possible. The missing 665 episodes were re-run
+Scientific impact: the lost outcomes were written to a deleted file and are not recoverable, so they cannot be
+compared with the re-run. The claim that no selection on outcome occurred rests on **operator-reported facts that the
+committed data cannot verify**: that the lost rows were never read, and that re-execution under the same frozen IDs
+and seeds is stable. Identical seeds do not by themselves establish identical outcomes on this stack. The incident is
+therefore retained as a limitation of the branch cohort rather than dismissed. The missing 665 episodes were re-run
 under invocation `8c343c83afdc` from the same frozen `branch_plan.json`, with the same per-episode seeds, the same
-`code_sha256` and the same frozen environment; the 135 survivors were kept and not re-run. Decision records from the
-lost invocation remain in `decisions.jsonl` and stay distinguishable by their `invocation` field; 4 episodes have
-decision rows from the lost invocation and a result only from the re-run.
+`code_sha256` and the same frozen environment; the 135 survivors were kept and not re-run. Decision records from the lost invocation are retained: `decisions.jsonl` holds **1,439** durable rows, of which
+1,434 belong to retained completed episodes and 5 belong to the earlier invocation for 4 recovered episode ids. They
+are distinguishable only by `invocation`, because `attempt=1` is reused in the recovery run; they are not additional
+completed calls and must not be counted as such. A count of zero infrastructure-error retries does not mean no
+execution was repeated.
 
 Controls added: `run.lock` is now git-ignored, and `experiments/tools/verify_stage.py` must pass before any stage is
 committed. It refuses a stage whose lock is held by a live process or whose episodes file was modified in the last
