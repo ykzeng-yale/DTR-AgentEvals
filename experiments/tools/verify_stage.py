@@ -46,13 +46,17 @@ def expected_ids(stage: str, design: dict, base: Path) -> set:
 
 
 def _design_seeds(design, stage, base):
+    """(seed_by_episode, task_by_episode) from the frozen design or branch plan."""
+    src = None
     if stage in ('log', 'live'):
-        return {e['episode_id']: e['seed'] for e in design['%s_episodes' % stage]}
-    if stage == 'branch':
+        src = design['%s_episodes' % stage]
+    elif stage == 'branch':
         pl = base / 'branch' / 'branch_plan.json'
         if pl.exists():
-            return {e['episode_id']: e['seed'] for e in json.loads(pl.read_text())['episodes']}
-    return {}
+            src = json.loads(pl.read_text())['episodes']
+    if src is None:
+        return {}, {}
+    return ({e['episode_id']: e['seed'] for e in src}, {e['episode_id']: e['task_uid'] for e in src})
 
 
 def check_records(ep_path, d, stage, res, design, cfg) -> list:
@@ -81,18 +85,23 @@ def check_records(ep_path, d, stage, res, design, cfg) -> list:
         if wrong:
             problems.append('%s does not match the frozen value on some rows (%s)' % (key, [str(w)[:12] for w in wrong[:2]]))
 
-    seeds = _design_seeds(design, stage, ep_path.parent.parent)
+    seeds, task_of = _design_seeds(design, stage, ep_path.parent.parent)
     if seeds:
         bad = [r['episode_id'] for r in completed if r['episode_id'] in seeds and r.get('seed') != seeds[r['episode_id']]]
         if bad:
             problems.append('%d row(s) carry a seed that differs from the frozen design, e.g. %s' % (len(bad), bad[:2]))
+        wrongtask = [r['episode_id'] for r in completed
+                     if r['episode_id'] in task_of and r.get('task_uid') != task_of[r['episode_id']]]
+        if wrongtask:
+            problems.append('%d row(s) are attached to a different task than the frozen design, e.g. %s' % (len(wrongtask), wrongtask[:2]))
 
     if stage == 'branch':
-        parents = set()
         lg = ep_path.parent.parent / 'log' / 'episodes.jsonl'
-        if lg.exists():
-            lrows, _ = common.read_jsonl(lg)
-            parents = {r['episode_id'] for r in lrows if not r.get('error')}
+        if not lg.exists():
+            problems.append('branch stage cannot be verified: the reference log episodes.jsonl is missing')
+            return problems                      # refuse rather than skip the membership check
+        lrows, _ = common.read_jsonl(lg)
+        parents = {r['episode_id'] for r in lrows if not r.get('error')}
         for r in completed:
             rest = r.get('restoration')
             if not isinstance(rest, dict):
@@ -134,13 +143,42 @@ def check_records(ep_path, d, stage, res, design, cfg) -> list:
     orphan = {x['episode_id'] for x in drows} - set(res['good']) - set(res['exhausted'])
     if orphan:
         problems.append('%d episode id(s) have durable decisions but no resolved episode, e.g. %s' % (len(orphan), sorted(orphan)[:2]))
-    # the action recorded BEFORE the call must equal the action the completed episode reports for that stage
-    nested = {(r['episode_id'], dd['t']): dd.get('a') for r in completed for dd in r.get('decisions', []) if dd.get('completed', True)}
-    mism = [(k, v) for k, v in ((( x['episode_id'], x.get('t')), x.get('a')) for x in drows)
-            if k in nested and nested[k] != v]
+
+    # every retained completed decision is matched on episode + invocation + attempt + stage; rows that match no
+    # retained completion are historical and must be declared in the recovery ledger, not silently accepted
+    retained = {(r['episode_id'], r.get('invocation'), r.get('attempt')) for r in completed}
+    nested = {(r['episode_id'], r.get('invocation'), r.get('attempt'), dd['t']): dd.get('a')
+              for r in completed for dd in r.get('decisions', []) if dd.get('completed', True)}
+    declared = _ledger_keys(ep_path.parent.parent, stage)
+    unmatched, mism = set(), []
+    for x in drows:
+        k3 = (x['episode_id'], x.get('invocation'), x.get('attempt'))
+        k4 = k3 + (x.get('t'),)
+        if k3 not in retained:
+            if k3 not in declared:
+                unmatched.add(k3)
+            continue
+        if k4 in nested and nested[k4] != x.get('a'):
+            mism.append(k4)
+    if unmatched:
+        problems.append('%d durable decision key(s) match no retained completion and are not in the recovery ledger, e.g. %s'
+                        % (len(unmatched), sorted(unmatched, key=str)[:2]))
     if mism:
         problems.append('%d durable decision(s) disagree with the episode record on the action taken, e.g. %s' % (len(mism), mism[:2]))
+    missing_nested = [k for k in nested if k not in {(x['episode_id'], x.get('invocation'), x.get('attempt'), x.get('t')) for x in drows}]
+    if missing_nested:
+        problems.append('%d completed decision(s) have no durable pre-invocation record, e.g. %s' % (len(missing_nested), missing_nested[:2]))
     return problems
+
+
+def _ledger_keys(base, stage) -> set:
+    led = base / 'recovery_ledger.json'
+    if not led.exists():
+        return set()
+    doc = json.loads(led.read_text())
+    if doc.get('stage') != stage:
+        return set()
+    return {(r['episode_id'], r['invocation'], r['attempt']) for r in doc.get('rows', [])}
 
 
 def base_vt_sha():

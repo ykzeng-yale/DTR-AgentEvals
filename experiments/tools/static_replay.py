@@ -1,12 +1,12 @@
-"""Static log stitching: a DELIBERATELY INVALID comparator, and what it costs.
+"""Static log replay on archived records: outcome copying and prefix-matched donor replay.
 
 `docs/experiment_protocol.md` section 3.3 asks for "a fully specified static-replay rule" as a failure control, and
 `docs/theory.md` section 7.1 gives the counterexample to holding the future history fixed. This implements two exact
 rules on the frozen randomized log and scores them against the live executions of the same policies.
 
-RULE A - hold-the-future-fixed. Take each confirm episode's recorded outcome as the outcome under any target policy.
-Formally the future history is held fixed while the action is relabelled. It is policy-independent by construction,
-so it is reported to show it has zero discriminating power, not as a serious competitor.
+RULE A - OUTCOME COPYING. Take each confirm episode's recorded outcome as the outcome under any target policy; the
+recorded future is copied while the action is relabelled. It is policy-independent by construction, so it is reported
+to show it carries no policy-specific signal.
 
 DECLARED POST-HOC SPECIFICATION (frozen 20 September 2026; this analysis was NOT pre-registered).
   Cohort: the 330 CONFIRM tasks; the five live targets the rule can represent (deterministic). A stochastic target is
@@ -18,16 +18,16 @@ DECLARED POST-HOC SPECIFICATION (frozen 20 September 2026; this analysis was NOT
   Fallback: if no donor matches the extended prefix, the previous donor's eventual outcome is used; if none exists at
   stage 0, the task contributes nothing. Fallback counts are reported per target and are NOT zero.
 
-RULE B - prefix-matched donor stitching (the realistic mistake). For each task and target policy, walk t = 0, 1, 2.
+RULE B - PREFIX-MATCHED DONOR REPLAY. For each task and target policy, walk t = 0, 1, 2.
 At stage t the policy's action a_t is taken; a DONOR is a logged episode of the SAME task whose recorded action
 sequence starts with (a_0..a_t). Deterministic choice: the donor with the smallest run index. The donor's stage-t
 recorded validation result decides whether the episode stops (validated -> its recorded hidden-test success is the
-outcome) or continues. If no donor matches the prefix, the last matching donor's outcome is used. This is exactly the
-"the future depends only on the action sequence" fallacy: the intermediate STATE - which candidate code exists, and
-why it failed - is taken from an episode that may have reached that stage for quite different reasons.
+outcome) or continues. If no donor matches the prefix, the last matching donor's outcome is used. The substitution it makes is explicit: the intermediate STATE - which candidate
+code exists, and why it failed - is taken from an episode that may have reached that stage for different reasons.
 
-Neither rule uses randomization probabilities. Both are offline, use only the log, and are compared with the
-cross-fitted DR estimate and with the live executions.
+Neither rule uses randomization probabilities. Both are offline, use only the log, and are compared descriptively
+with the cross-fitted DR estimate and with the finite live executions. `rule_b` REQUIRES its donor list sorted by run
+index; the `by_task` caller supplies that order.
 
 Post-hoc reporting only; outside the directories hashed into code_sha256; changes no frozen record.
 """
@@ -54,7 +54,8 @@ def by_task(episodes):
 
 
 def rule_b(task_eps, pol) -> float | None:
-    """Stitch a trajectory for `pol` out of logged episodes of one task. Returns the stitched success, or None."""
+    """Replay a trajectory for `pol` from logged episodes of one task. `task_eps` MUST be sorted by run index, because
+    donor selection takes the first match. Returns the replayed success, or None when no initial donor exists."""
     prefix, last = [], None
     for t in range(3):
         state = dict(t=t, x_humaneval=task_eps[0]['benchmark'] == 'humaneval' and 1 or 0,
@@ -139,13 +140,13 @@ def main():
         d = b_paired - l_paired
         rows.append(dict(policy=nm, live_success=float(live_s.mean()), dr_success=dr['estimate'], dr_se=dr['se'],
                          static_A=rule_a, static_B=float(ok.mean()), static_B_tasks=int(len(ok)), no_donor_tasks=int(n_nodonor),
-                         B_minus_live=float(d.mean()), B_minus_live_se=float(d.std(ddof=1) / np.sqrt(len(d))),
-                         A_minus_live=rule_a - float(live_s.mean()), DR_minus_live=dr['estimate'] - float(live_s.mean())))
+                         B_minus_live_discrepancy=float(d.mean()), B_minus_live_discrepancy_se=float(d.std(ddof=1) / np.sqrt(len(d))),
+                         A_minus_live_discrepancy=rule_a - float(live_s.mean()), DR_minus_live_discrepancy=dr['estimate'] - float(live_s.mean())))
     df = pd.DataFrame(rows)
     stochastic = {'soft_escalation_d2', 'soft_escalation_d4'}
     df['rule_can_represent'] = ~df.policy.isin(stochastic)
     det = df[df.rule_can_represent]
-    engaged = float(np.mean([e['n_decisions'] > 1 for e in conf]))
+    engaged = float(np.mean([e['n_decisions'] > 1 for e in conf]))   # logger continuation, NOT replay continuation
     out = common.RESULTS / 'analysis'
     df.to_csv(out / 'static_replay_comparison.csv', index=False)
     diag = {nm: diagnostics(tasks, cls[nm]) for nm in det.policy}
@@ -154,18 +155,18 @@ def main():
                    cohort='330 CONFIRM tasks; 5 deterministic live targets; hidden-test success; live task means as comparator',
                    spearman_static_B_vs_live_cohort=float(det.static_B.corr(det.live_success, method='spearman')),
                    spearman_DR_vs_live_cohort=float(det.dr_success.corr(det.live_success, method='spearman')),
-                   mean_abs_discrepancy_A_cohort=float(det.A_minus_live.abs().mean()),
-                   stitching_engages_in_share_of_episodes=engaged,
+                   mean_abs_discrepancy_A_cohort=float(det.A_minus_live_discrepancy.abs().mean()),
+                   logger_continuation_share_of_confirm_episodes=engaged,
                    deterministic_policies=int(len(det)),
-                   mean_abs_bias_static_B_deterministic=float(det.B_minus_live.abs().mean()),
-                   mean_abs_bias_DR_deterministic=float(det.DR_minus_live.abs().mean()),
+                   mean_abs_discrepancy_B_cohort5=float(det.B_minus_live_discrepancy.abs().mean()),
+                   mean_abs_discrepancy_DR_cohort5=float(det.DR_minus_live_discrepancy.abs().mean()),
                    note_stochastic='rule B reads the policy deterministically, so stochastic targets collapse to their '
                                    'modal action; their rows are reported but excluded from the aggregate',
-                   mean_abs_bias_static_B_all6=float(df.B_minus_live.abs().mean()),
-                   mean_abs_bias_static_A_all6=float(df.A_minus_live.abs().mean()),
-                   mean_abs_bias_DR_all6=float(df.DR_minus_live.abs().mean()),
-                   max_abs_bias_static_B=float(df.B_minus_live.abs().max()),
-                   max_abs_bias_DR=float(df.DR_minus_live.abs().max()),
+                   mean_abs_discrepancy_B_all6_mixed_cohort=float(df.B_minus_live_discrepancy.abs().mean()),
+                   mean_abs_discrepancy_A_all6_mixed_cohort=float(df.A_minus_live_discrepancy.abs().mean()),
+                   mean_abs_discrepancy_DR_all6_mixed_cohort=float(df.DR_minus_live_discrepancy.abs().mean()),
+                   max_abs_discrepancy_B_all6_mixed_cohort=float(df.B_minus_live_discrepancy.abs().max()),
+                   max_abs_discrepancy_DR_all6_mixed_cohort=float(df.DR_minus_live_discrepancy.abs().max()),
                    n_policies=len(df))
     (out / 'static_replay_summary.json').write_text(json.dumps(summary, indent=1))
     pd.set_option('display.width', 200)

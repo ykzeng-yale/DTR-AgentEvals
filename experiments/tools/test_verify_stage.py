@@ -23,12 +23,12 @@ DESIGN = json.loads((common.RESULTS / 'design.json').read_text())
 VT = V.base_vt_sha()
 META = dict(config_sha256=CFG['_config_sha256'], tasks_sha256=DESIGN['tasks_sha256'], visible_tests_sha256=VT)
 EP = dict(episode_id='e1', task_uid='t1', split='confirm', error=None, seed=None,
-          decisions=[dict(t=0, a=1, completed=True)], **META)
-DEC = dict(episode_id='e1', invocation='inv1', t=0, a=1)
+          invocation='inv1', attempt=1, decisions=[dict(t=0, a=1, completed=True)], **META)
+DEC = dict(episode_id='e1', invocation='inv1', attempt=1, t=0, a=1)
 MAN = dict(invocation='inv1', started_utc='2026-09-20T00:00:00Z')
 
 
-def build(tmp, stage='log', episodes=(EP,), decisions=(DEC,), manifest=(MAN,), torn=False, log_parents=None):
+def build(tmp, stage='log', episodes=(EP,), decisions=(DEC,), manifest=(MAN,), torn=False, log_parents=None, ledger=None):
     d = tmp / stage; d.mkdir(parents=True, exist_ok=True)
     body = ''.join(json.dumps(e) + '\n' for e in episodes)
     if torn:
@@ -38,6 +38,8 @@ def build(tmp, stage='log', episodes=(EP,), decisions=(DEC,), manifest=(MAN,), t
         (d / 'decisions.jsonl').write_text(''.join(json.dumps(x) + '\n' for x in decisions))
     if manifest is not None:
         (d / 'run_manifest.jsonl').write_text(''.join(json.dumps(x) + '\n' for x in manifest))
+    if ledger is not None:
+        (tmp / 'recovery_ledger.json').write_text(json.dumps(ledger))
     if log_parents is not None:
         lg = tmp / 'log'; lg.mkdir(parents=True, exist_ok=True)
         (lg / 'episodes.jsonl').write_text(''.join(json.dumps(x) + '\n' for x in log_parents))
@@ -131,6 +133,61 @@ def test_orphan_decisions_fail(tmp_path):
 
 def test_durable_action_disagreeing_with_episode_fails(tmp_path):
     assert_flags(build(tmp_path, decisions=(dict(DEC, a=0),)), 'disagree with the episode record')
+
+
+def test_historical_rows_without_a_ledger_fail(tmp_path):
+    """A durable row from an invocation whose episode result was lost must not be silently accepted."""
+    hist = dict(DEC, invocation='lost_inv')
+    man = (MAN, dict(MAN, invocation='lost_inv'))
+    assert_flags(build(tmp_path, decisions=(DEC, hist), manifest=man), 'not in the recovery ledger')
+
+
+def test_positive_recovery_fixture_passes_with_a_ledger(tmp_path):
+    """The historical row is accepted once it is declared in the recovery ledger AND its invocation is a real one
+    that wrote a manifest entry - the retained 135-survivor / 665-recovery pattern, where the lost invocation did
+    write a manifest row. It is NOT required to match a later invocation."""
+    hist = dict(DEC, invocation='lost_inv')
+    led = dict(stage='log', rows=[dict(episode_id='e1', invocation='lost_inv', attempt=1, durable_decision_rows=1)])
+    man = (MAN, dict(MAN, invocation='lost_inv'))
+    assert probs(build(tmp_path, decisions=(DEC, hist), manifest=man, ledger=led)) == []
+
+
+def test_ledger_cannot_launder_an_invocation_absent_from_the_manifest(tmp_path):
+    """Declaring a row in the ledger does not excuse an invocation that never wrote a manifest entry."""
+    hist = dict(DEC, invocation='never_ran')
+    led = dict(stage='log', rows=[dict(episode_id='e1', invocation='never_ran', attempt=1, durable_decision_rows=1)])
+    assert_flags(build(tmp_path, decisions=(DEC, hist), ledger=led), 'absent from the manifest')
+
+
+def test_ledger_for_another_stage_does_not_excuse_rows(tmp_path):
+    hist = dict(DEC, invocation='lost_inv')
+    led = dict(stage='branch', rows=[dict(episode_id='e1', invocation='lost_inv', attempt=1, durable_decision_rows=1)])
+    man = (MAN, dict(MAN, invocation='lost_inv'))
+    assert_flags(build(tmp_path, decisions=(DEC, hist), manifest=man, ledger=led), 'not in the recovery ledger')
+
+
+def test_decision_attempt_mismatch_is_not_matched(tmp_path):
+    """Matching is on episode + invocation + attempt: a row with a different attempt is historical, not a match."""
+    assert_flags(build(tmp_path, decisions=(DEC, dict(DEC, attempt=2))), 'not in the recovery ledger')
+
+
+def test_completed_decision_without_a_durable_record_fails(tmp_path):
+    """Every retained completed decision must have its pre-invocation row."""
+    two = dict(EP, decisions=[dict(t=0, a=1, completed=True), dict(t=1, a=0, completed=True)])
+    assert_flags(build(tmp_path, episodes=(two,), decisions=(DEC,)), 'no durable pre-invocation record')
+
+
+def test_task_identity_differing_from_design_fails(tmp_path):
+    real = DESIGN['log_episodes'][0]
+    ep = build(tmp_path, episodes=(dict(EP, episode_id=real['episode_id'], seed=real['seed'], task_uid='not-the-frozen-task'),),
+               decisions=(dict(DEC, episode_id=real['episode_id']),))
+    assert_flags(ep, 'different task than the frozen design')
+
+
+def test_branch_without_reference_log_is_refused(tmp_path):
+    bad = dict(EP, parent_episode_id='p1', restoration=dict(transcript_hash_matches=True, tool_result_reproduced=True))
+    ep = build(tmp_path, stage='branch', episodes=(bad,), decisions=(DEC,))
+    assert_flags(ep, 'reference log episodes.jsonl is missing', stage='branch')
 
 
 def test_real_stages_still_pass():

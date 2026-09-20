@@ -1,0 +1,37 @@
+{
+ "schema": 1,
+ "note": "Durable pre-invocation decision rows retained from an invocation whose episode results were lost. They are historical evidence of executions that happened; they are NOT additional completed calls and must not be counted as such, nor required to match a later invocation. Recorded so the publication gate can reconcile them instead of rejecting them.",
+ "incident": "protocol section 11: 665 of 800 branch continuations lost when the stage directory was committed and rebased while the runner held its files open; re-run from the frozen plan with the same seeds.",
+ "stage": "branch",
+ "lost_invocation": "0445024c72d2",
+ "recovery_invocation": "8c343c83afdc",
+ "attempt_number_reused": true,
+ "rows": [
+  {
+   "episode_id": "branch:log:humaneval/4#3:large#0",
+   "invocation": "0445024c72d2",
+   "attempt": 1,
+   "durable_decision_rows": 1
+  },
+  {
+   "episode_id": "branch:log:humaneval/4#3:large#1",
+   "invocation": "0445024c72d2",
+   "attempt": 1,
+   "durable_decision_rows": 1
+  },
+  {
+   "episode_id": "branch:log:humaneval/46#3:large#0",
+   "invocation": "0445024c72d2",
+   "attempt": 1,
+   "durable_decision_rows": 1
+  },
+  {
+   "episode_id": "branch:log:humaneval/46#3:small#1",
+   "invocation": "0445024c72d2",
+   "attempt": 1,
+   "durable_decision_rows": 2
+  }
+ ],
+ "total_rows": 5,
+ "total_episode_ids": 4
+}

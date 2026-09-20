@@ -3,6 +3,56 @@
 Pushed about every two hours while experiments run. Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-20 08:50 EDT — scheduled check: recovery ledger, gate matching on full keys, terminology
+
+**Stage status: nothing to advance.** All stages complete and verified: pilot 120, log **4,488/4,488**, live
+**3,960/3,960**, branch **800/800**; 0 unresolved, 0 intention-to-treat, 0 torn. No runner alive, both llama-servers
+healthy on 8191/8193, no foreign llama-server generating at any episode start.
+
+**Gate acceptance items from the integration review, implemented and shown to bite:**
+
+- **Missing reference data is now refused, not skipped.** Verifying `branch` without the reference log previously
+  left the parent-membership check silently empty; it now fails.
+- **Frozen task identity is checked alongside the seed**, so a row attached to a different task than the design
+  fails even when its seed matches.
+- **Durable decisions are matched on episode + invocation + attempt + stage**, not episode + stage. Two consequences:
+  a row with a different attempt is no longer silently treated as a match, and **every retained completed decision
+  must have its pre-invocation durable record** (a missing one now fails).
+- **Recovery ledger added** (`results/code_routing/recovery_ledger.json`). The branch stage carries **5 durable rows
+  across 4 episode ids from the lost invocation `0445024c72d2`**, whose results were destroyed in the publishing
+  incident and re-run under `8c343c83afdc`. They are historical evidence of executions that happened, are **not**
+  additional completed calls, and are **not** required to match a later invocation. The ledger declares them so the
+  gate reconciles rather than rejects them. **Verified load-bearing:** removing the ledger makes the branch stage
+  fail with the 4 unmatched keys named.
+- The ledger cannot launder anything: a declared row whose invocation never wrote a manifest entry still fails, and
+  a ledger for a different stage does not excuse rows.
+
+Fixtures went from 22 to **30**, including the required positive recovery fixture. Writing it exposed that my first
+version was unrealistic — it omitted the lost invocation from the manifest, which the gate rightly rejected; the real
+branch manifest does contain both invocations, so the fixture was corrected rather than the check weakened.
+
+**Terminology corrected** in `static_replay.py` per the review: "DELIBERATELY INVALID" and "hold-the-future-fixed"
+are replaced by the specified operation names (**outcome copying**, **prefix-matched donor replay**); JSON fields are
+renamed from `bias` to `discrepancy`, `stitching_engages…` to `logger_continuation_share_of_confirm_episodes`; and
+all-six summaries are explicitly suffixed `_all6_mixed_cohort` so they cannot be confused with the five-target
+headline. The docstring now states that `rule_b` requires donors sorted by run index, which `by_task` supplies.
+
+**Problems:** none new. **73 → 81 tests pass** (30 gate fixtures, 8 replay controls, 27 root, 16 estimator); all
+three stages verify unchanged under the stricter gate.
+
+**Next, in the monitor's stated priority order:** the joint branch/log sampling model and source-frame variance
+contribution; remaining publication-gate items (parent-hash recomputation, actual-host writer exclusion, atomic
+publication snapshot); then — explicitly deferred by the monitor for now — the competitive-router comparison and
+repeated-dataset operating characteristics; then independent reproduction and manuscript integration.
+
+**Overall submission readiness: about 60% (change: 0 percentage points; judgment range 50–65%).** Evidence advanced:
+none that the rubric counts. This tick strengthened provenance checks and corrected terminology — it protects and
+clarifies existing evidence rather than adding any. Categories unchanged at 75/75/50/50/25, weighted 58.75 → 60%,
+matching the monitor's checkpoint. Main remaining work: (1) joint inference under a stated sampling model, plus the
+deferred competitive-router comparison; (2) independent reproduction of final analyses from immutable inputs;
+(3) manuscript integration, author metadata and the submission package. *This workstream cannot post to GitHub issue
+#4 (no GitHub CLI or token on the experiment host), so the checkpoint is recorded here.*
+
 ## 2026-09-20 06:50 EDT — scheduled check: A5 corrected; my "null" claim withdrawn
 
 **Stage status: nothing to advance.** All stages complete and verified: pilot 120, log **4,488/4,488**, live
