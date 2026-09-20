@@ -1,0 +1,83 @@
+{
+ "status": "POST-HOC diagnosis, not pre-registered; uses the frozen log only, after all stages completed",
+ "A_design": {
+  "confirm_episodes": 2640,
+  "reach_second_decision": 564,
+  "reach_third": 458,
+  "share_decided_by_first_action_alone": 0.7863636363636364,
+  "oracle_tailoring_ceiling_over_always_large_t1": 0.00027776606510372735,
+  "oracle_tailoring_ceiling_over_always_large_t2": 0.0,
+  "study_policy_value_se_approx": 0.024,
+  "reading": "an oracle that knew every cell sign could beat always-large by at most this much; compare with the study SE. In-sample and therefore optimistic."
+ },
+ "B_metric": {
+  "frozen_large_call_penalty": 0.03,
+  "live_success_difference": -0.007575757575757569,
+  "large_calls_learned": 1.1545454545454543,
+  "large_calls_always_large": 1.3,
+  "flip_point_large_call_penalty": 0.08823529411764676,
+  "flip_multiple_of_frozen": 2.9411764705882253,
+  "reading": "the tailored regime buys fewer large calls at a small success cost; whether that is a net gain is decided entirely by a cost weighting fixed before any data, with no sensitivity analysis pre-registered or run"
+ },
+ "C_theory": {
+  "effect_at_t1": {
+   "effect": 0.030647092180706992,
+   "se": 0.03799180657974984,
+   "n": 564
+  },
+  "effect_at_t2": {
+   "effect": 0.11625992917982582,
+   "se": 0.034715486292937414,
+   "n": 458
+  },
+  "cells_t1": {
+   "assertion|prev=L": {
+    "effect": -0.0039424860853432275,
+    "se": 0.06276987176875047,
+    "n": 186
+   },
+   "exception|prev=L": {
+    "effect": 0.0076923076923077205,
+    "se": 0.1399047591689395,
+    "n": 46
+   },
+   "assertion|prev=S": {
+    "effect": 0.03908196721311474,
+    "se": 0.05705330259950213,
+    "n": 247
+   },
+   "exception|prev=S": {
+    "effect": 0.06746031746031744,
+    "se": 0.10813765105042719,
+    "n": 85
+   }
+  },
+  "cells_t2": {
+   "exception|prev=L": {
+    "effect": 0.09541062801932368,
+    "se": 0.06588841458964535,
+    "n": 82
+   },
+   "assertion|prev=S": {
+    "effect": 0.18026315789473685,
+    "se": 0.05760240866453918,
+    "n": 199
+   },
+   "assertion|prev=L": {
+    "effect": 0.01492537313432836,
+    "se": 0.05792238309958777,
+    "n": 134
+   },
+   "exception|prev=S": {
+    "effect": 0.17873303167420815,
+    "se": 0.13060864742963688,
+    "n": 43
+   }
+  },
+  "stage_gradient": {
+   "difference": 0.08561283699911883,
+   "se": 0.05146399086495575
+  },
+  "reading": "tailoring can only help where the effect VARIES with the state. Within a stage the cells are mutually indistinguishable; across stages there is a suggestive gradient."
+ }
+}
