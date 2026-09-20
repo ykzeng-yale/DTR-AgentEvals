@@ -3,6 +3,59 @@
 Pushed about every two hours while experiments run. Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-20 14:55 EDT — scheduled check: task file made independently regenerable
+
+**Stage status: nothing to advance.** All stages complete and verified: pilot 120, log **4,488/4,488**, live
+**3,960/3,960**, branch **800/800**; 0 unresolved, 0 intention-to-treat, 0 torn. No runner alive, both llama-servers
+healthy on 8191/8193, no foreign llama-server generating at any episode start.
+
+**The reproducibility blocker is cleared.** The reviews have repeatedly noted that full transcript reconstruction
+was only *workstream-reported*, because the 591-task file is not redistributed here (MBPP is CC-BY-4.0, HumanEval
+MIT). `experiments/tools/regenerate_tasks.py` now downloads both public sources, applies the exact canonicalisation
+and **exits non-zero unless the rebuild matches `tasks_sha256` in the frozen design**. It reproduces the frozen file
+byte-for-byte, so an independent party can now reconstruct every transcript without receiving the data from me.
+
+Getting there required finding a real discrepancy: my first rebuild produced identical *records* but a different
+hash. The cause was serialisation — the canonical form uses `ensure_ascii=False`, and `ensure_ascii=True` yields a
+different byte stream. That is now documented as load-bearing in the script and the README, because anyone
+reproducing this would otherwise hit the same wall and wrongly conclude the archive was inconsistent.
+
+**Restoration report now binds its remaining inputs**, as requested: it records the sha256 of the task file, both
+durable decision files, and a **prompt/helper revision** digest over the exact system and repair prompt text that
+determines a transcript's bytes — alongside the branch/log/visible-test hashes and covered-ID digest it already
+carried. The gate re-derives the task and decision-file hashes too.
+
+**Residual wordings repaired**, closing items the review has raised more than once: the summary line no longer says
+"0 episodes under foreign GPU load" (now "no foreign GPU load recorded at any episode start — a per-episode check,
+not continuous observation"); the 11,567-call figure is scoped to retained log and live completions; and **replicate
+accounting** is stated explicitly — the branch stage has **800 continuations, not 800 independent units**, being 2
+replicates × 2 arms within each of 200 prefixes from 103 tasks, with replicates averaged within a prefix and
+clustering on the task.
+
+**A robustness bug of mine, found and fixed by writing the fixtures:** the new binding check read the reference
+decision files unconditionally and **crashed** with `FileNotFoundError` when one was absent, instead of failing
+closed. A gate that raises instead of reporting is a gate that can be bypassed by deleting a file. It now reports
+`restoration binding cannot be checked: missing …` and refuses, with a fixture covering it.
+
+**Problems:** the above. **101 tests pass**; all three stages verify unchanged.
+
+**Next, in the monitor's order:** declare the inferential target before using the new source model — either
+source-log randomisation and branch-selection/execution variance for the existing conditional-on-benchmark target,
+or a separate task-population claim with its sampling law justified without discarding zero-prefix/zero-arm tasks —
+and neither route may promote the exploratory band by algebra alone; the two remaining publication items
+(actual-host writer exclusion, atomic publication snapshot); then the deferred competitive-router and
+operating-characteristic studies; then manuscript integration and packaging.
+
+**Overall submission readiness: about 60% (change: 0 percentage points; judgment range 50–65%).** Evidence advanced:
+none that the rubric counts, but this tick removes a genuine barrier to the *independent reproduction* milestone —
+a third party can now regenerate the exact inputs and check them against the frozen design hash. I am not raising
+"Independent validation" for it, because the reproduction itself has not been performed by anyone else, and this
+workstream should not score its own auditability. Categories unchanged at 75/75/50/50/25, weighted 58.75 → 60%.
+Main remaining work: (1) the declared inferential target and source-model derivation, plus the deferred
+competitive-router comparison; (2) independent reproduction of final analyses from immutable inputs;
+(3) manuscript integration, author metadata and the submission package. *This workstream cannot post to GitHub
+issue #4 (no GitHub CLI or token on the experiment host), so the checkpoint is recorded here.*
+
 ## 2026-09-20 12:55 EDT — scheduled check: three provenance gaps closed and demonstrated
 
 **Stage status: nothing to advance.** All stages complete and verified: pilot 120, log **4,488/4,488**, live

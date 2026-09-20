@@ -117,11 +117,22 @@ def check_records(ep_path, d, stage, res, design, cfg) -> list:
         else:
             doc = json.loads(rc.read_text())
             sb = doc.get('source_binding') or {}
+            need = {'log/episodes.jsonl': ep_path.parent.parent / 'log' / 'episodes.jsonl',
+                    'log/decisions.jsonl': ep_path.parent.parent / 'log' / 'decisions.jsonl',
+                    'branch/decisions.jsonl': ep_path.parent / 'decisions.jsonl',
+                    'visible_tests.json': ep_path.parent.parent / 'visible_tests.json'}
+            absent = sorted(k for k, v in need.items() if not v.exists())
+            if absent:      # fail closed: a binding cannot be checked against files that are not there
+                problems.append('restoration binding cannot be checked: missing %s' % ', '.join(absent))
+                return problems
             want = dict(branch_episodes_sha256=common.sha256_bytes(ep_path.read_bytes()),
-                        log_episodes_sha256=common.sha256_bytes((ep_path.parent.parent / 'log' / 'episodes.jsonl').read_bytes()),
-                        visible_tests_sha256=common.sha256_bytes((ep_path.parent.parent / 'visible_tests.json').read_bytes()),
+                        log_episodes_sha256=common.sha256_bytes(need['log/episodes.jsonl'].read_bytes()),
+                        visible_tests_sha256=common.sha256_bytes(need['visible_tests.json'].read_bytes()),
                         covered_episode_ids_sha256=__import__('hashlib').sha256(
-                            '\n'.join(sorted(r['episode_id'] for r in completed)).encode()).hexdigest())
+                            '\n'.join(sorted(r['episode_id'] for r in completed)).encode()).hexdigest(),
+                        tasks_sha256=design['tasks_sha256'],
+                        branch_decisions_sha256=common.sha256_bytes(need['branch/decisions.jsonl'].read_bytes()),
+                        log_decisions_sha256=common.sha256_bytes(need['log/decisions.jsonl'].read_bytes()))
             for k, v in want.items():
                 if sb.get(k) != v:
                     problems.append('restoration recheck is not bound to the current records: %s differs' % k)

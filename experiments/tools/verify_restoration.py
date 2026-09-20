@@ -29,6 +29,10 @@ def main() -> int:
     tasks = {t['uid']: t for t in common.load_tasks(cfg)}
     vt = json.loads((common.RESULTS / 'visible_tests.json').read_bytes())['tests']
     vtests = {u: r['certified'] for u, r in vt.items()}
+    tasks_sha = hashlib.sha256(Path(common.resolve(cfg['tasks_path'] if cfg['tasks_path'].startswith(('/', '~'))
+                                                   else str(common.ROOT / cfg['tasks_path']))).read_bytes()).hexdigest()
+    # the exact prompt/helper text that determines a transcript's bytes
+    prompt_rev = hashlib.sha256(''.join([AG.SYS_CODE, AG.ASK_REPAIR, AG.SYS_TEST, AG.ASK_TESTS]).encode()).hexdigest()
     log, _ = A.read(common.RESULTS / 'log' / 'episodes.jsonl', cfg)
     parents = {e['episode_id']: e for e in log if not e.get('error')}
     br, _ = A.read(common.RESULTS / 'branch' / 'episodes.jsonl', cfg)
@@ -74,6 +78,12 @@ def main() -> int:
                source_binding=dict(branch_episodes_sha256=fsha(common.RESULTS / 'branch' / 'episodes.jsonl'),
                                    log_episodes_sha256=fsha(common.RESULTS / 'log' / 'episodes.jsonl'),
                                    visible_tests_sha256=fsha(common.RESULTS / 'visible_tests.json'),
+                                   # the task file is not redistributed; it is regenerable from public sources by
+                                   # experiments/tools/regenerate_tasks.py, which verifies this same hash
+                                   tasks_sha256=tasks_sha,
+                                   branch_decisions_sha256=fsha(common.RESULTS / 'branch' / 'decisions.jsonl'),
+                                   log_decisions_sha256=fsha(common.RESULTS / 'log' / 'decisions.jsonl'),
+                                   prompt_helper_revision=prompt_rev,
                                    covered_episode_ids_sha256=hashlib.sha256('\n'.join(sorted(covered)).encode()).hexdigest(),
                                    n_covered=len(covered)),
                recomputed_transcript_hash_matches=recomputed_true,

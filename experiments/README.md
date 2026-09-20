@@ -157,7 +157,9 @@ analysis CSVs are under `results/code_routing/`.
 
 **Executed:** 4,488 randomized-log episodes (561 train+confirm tasks × 8) and 3,960 live episodes (6 frozen policies
 × 330 confirm tasks × 2). **0 infrastructure errors, 0 retries, 0 intention-to-treat scorings** in either stage;
-1 validation timeout and 3 truncated generations across 11,567 model calls; 0 episodes under foreign GPU load.
+1 validation timeout and 3 truncated generations across the 11,567 calls attached to retained log and live
+completions. No foreign GPU load was recorded at any episode start — a per-episode check, not continuous
+observation of the host.
 
 ![calibration and frontier](../results/code_routing/analysis/figures/calibration_and_frontier.png)
 
@@ -253,8 +255,9 @@ justified foldwise construction, is needed before any finite-sample certificate 
 ### A4 — branch audit: restored prefixes, and a second estimate of one contrast
 
 200 first-failure prefixes were sampled with known probability (0.355) from the completed confirm log, their
-transcripts restored, and both models continued from the identical saved state with 2 fresh seeds each — 800
-continuations over 103 tasks.
+transcripts restored, and both models continued from the identical saved state with 2 fresh seeds each. That is
+**800 continuations, not 800 independent units**: they are 2 replicates × 2 arms within each of 200 prefixes, drawn
+from 103 tasks, and every estimate below averages replicates within a prefix and clusters on the task.
 
 | quantity | value |
 |---|---|
@@ -382,6 +385,10 @@ $PY run.py --servers stop
 Dry run without any model: append `--mock` to every `run.py` / `analysis.py` call; output goes
 to gitignored `work/` and is labelled meaningless.
 
-Host-specific inputs (not in the repository): the 591-task file built by the sibling
-project's `data.py` from the public MBPP/HumanEval URLs, GGUF weights in the Hugging Face
+Third-party task data is not redistributed here (MBPP is CC-BY-4.0, HumanEval MIT). The 591-task file is
+**regenerable and verifiable**: `experiments/tools/regenerate_tasks.py` downloads both public sources, applies the
+exact canonicalisation (MBPP by numeric task_id then HumanEval by numeric index; `json.dumps(sort_keys=True,
+separators=(",",":"), ensure_ascii=False)` — the `ensure_ascii` setting is load-bearing) and exits non-zero unless
+the result matches `tasks_sha256` in the frozen design. Verified to reproduce it byte-for-byte. Other host-specific
+inputs, GGUF weights in the Hugging Face
 cache, and a locally built `llama-server` (set `LLAMA_SERVER`).

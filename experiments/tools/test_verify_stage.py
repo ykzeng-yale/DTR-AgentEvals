@@ -46,6 +46,7 @@ def build(tmp, stage='log', episodes=(EP,), decisions=(DEC,), manifest=(MAN,), t
     if log_parents is not None:
         lg = tmp / 'log'; lg.mkdir(parents=True, exist_ok=True)
         (lg / 'episodes.jsonl').write_text(''.join(json.dumps(x) + '\n' for x in log_parents))
+        (lg / 'decisions.jsonl').write_text(json.dumps(dict(episode_id='p1', invocation='inv1', attempt=1, t=0, a=1)) + '\n')
     return d / 'episodes.jsonl'
 
 
@@ -262,6 +263,9 @@ def branch_case(tmp_path, report_overrides=None, episodes=(BR,)):
                                    log_episodes_sha256=common.sha256_bytes((tmp_path / 'log' / 'episodes.jsonl').read_bytes()),
                                    visible_tests_sha256=common.sha256_bytes((tmp_path / 'visible_tests.json').read_bytes()),
                                    covered_episode_ids_sha256=hashlib.sha256('\n'.join(ids).encode()).hexdigest(),
+                                   tasks_sha256=DESIGN['tasks_sha256'],
+                                   branch_decisions_sha256=common.sha256_bytes((tmp_path / 'branch' / 'decisions.jsonl').read_bytes()),
+                                   log_decisions_sha256=common.sha256_bytes((tmp_path / 'log' / 'decisions.jsonl').read_bytes()),
                                    n_covered=len(ids)))
     rep.update(report_overrides or {})
     (ana / 'restoration_recheck.json').write_text(json.dumps(rep))
@@ -270,6 +274,12 @@ def branch_case(tmp_path, report_overrides=None, episodes=(BR,)):
 
 def test_bound_restoration_report_passes(tmp_path):
     assert probs(branch_case(tmp_path), 'branch') == []
+
+
+def test_restoration_binding_fails_closed_when_a_source_file_is_absent(tmp_path):
+    d = branch_case(tmp_path)
+    (tmp_path / 'log' / 'decisions.jsonl').unlink()
+    assert_flags(d, 'binding cannot be checked: missing', stage='branch')
 
 
 def test_restoration_report_not_bound_to_current_branch_records_fails(tmp_path):
