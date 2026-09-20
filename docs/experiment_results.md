@@ -230,3 +230,13 @@ can reject valid historical recovery rows. The [review](theory_feedback_20260920
 scope and remaining contradictory README/figure text. All 19 non-analysis artifacts remain unchanged. The conditional
 sampling proof is now in the manuscript; this advances the theory paper without validating the empirical joint band
 or inserting empirical results into the PDF.
+
+### Static-replay comparator (added 20 September 2026)
+
+Implements the failure control required by `docs/experiment_protocol.md` §3.3 and the counterexample framing of `docs/theory.md` §7.1, on the frozen confirm log, scored against the live executions. Two exactly specified rules: **A**, hold-the-future-fixed (relabel the action, keep the recorded outcome), and **B**, prefix-matched donor stitching (at each stage take the target's action and splice the continuation from the same task's logged episode sharing that action prefix, smallest run index winning).
+
+Rule A is policy-independent by construction, value 0.664, mean absolute error against live 0.032, and has no discriminating power. **Rule B had mean absolute error 0.0161 against live across the five deterministic live policies, against 0.0182 for cross-fitted DR, with Spearman 0.880 versus 0.886.** Static stitching was therefore *not* detectably worse than the doubly robust estimator in this study — a null for the expectation that a replay control fails, reported as such.
+
+Two features of the design bound that finding: success is absorbing and 78.6% of episodes stop after a single decision, so stitching engages for only about a fifth of episodes; and with eight episodes per task covering all action prefixes, a well-matched same-task donor always existed (zero tasks lacked one). Replay would be expected to fail with longer horizons, sharper state divergence after a switch, or donors borrowed across tasks, none of which this study exercises. The result does not license static replay in general; it shows the control did not fail here, which cautions against treating replay's invalidity as automatic in short-horizon, densely-replicated designs.
+
+Rule B reads the target deterministically, so stochastic targets collapse to their modal action; `soft_escalation_d2` is misrepresented (error +0.036) and excluded from the aggregate while its row is retained.

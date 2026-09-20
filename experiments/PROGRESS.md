@@ -3,6 +3,56 @@
 Pushed about every two hours while experiments run. Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-20 04:50 EDT — scheduled check: static-replay comparator closed, and it is a null
+
+**Stage status: nothing to advance.** All stages complete and verified: pilot 120, log **4,488/4,488**, live
+**3,960/3,960**, branch **800/800**; 0 unresolved, 0 intention-to-treat, 0 torn. No runner alive, both llama-servers
+healthy on 8191/8193, no foreign llama-server generating at any episode start.
+
+**Closed a comparator that had been open for four ticks** (`experiments/tools/static_replay.py`), CPU-only on the
+frozen log — the failure control required by `docs/experiment_protocol.md` §3.3 and framed by `docs/theory.md` §7.1.
+Two exactly specified rules: **A** hold-the-future-fixed (relabel the action, keep the recorded outcome) and **B**
+prefix-matched donor stitching (take the target's action, splice the continuation from the same task's logged episode
+sharing that action prefix, smallest run index winning).
+
+| estimator | mean abs. error vs live (5 deterministic policies) | Spearman vs live |
+|---|---:|---:|
+| Rule A, hold-the-future-fixed | 0.032 | constant, undefined |
+| Rule B, prefix-matched stitching | **0.0161** | 0.880 |
+| Cross-fitted DR | **0.0182** | 0.886 |
+
+**The failure control did not fail.** Static stitching was not detectably worse than doubly robust estimation here —
+nominally slightly better. That is a null against the expectation the protocol sets up, and it is reported straight.
+Two design features explain it and bound how far it travels: success is absorbing and **78.6% of episodes stop after
+one decision**, so stitching engages for only about a fifth of them and there is little future to get wrong; and with
+8 episodes per task covering all action prefixes, a well-matched same-task donor always existed (0 tasks lacked one).
+Replay should still be expected to fail with longer horizons, sharper post-switch state divergence, or cross-task
+donors — regimes this study does not exercise. So this does not license replay in general; it cautions against
+citing its invalidity as automatic in short-horizon, densely-replicated designs.
+
+**A limitation of my own rule, stated rather than hidden:** Rule B reads the target deterministically, so a
+stochastic target collapses to its modal action. `soft_escalation_d2` is misrepresented by it (error +0.036, the
+largest in the table) and is excluded from the aggregate with its row retained.
+
+**Problems:** none in the data. 62 tests pass; all three stages verify unchanged.
+
+**Next:** the joint-inference derivation under a stated target/source-frame model using the new fixed-frame sampling
+proposition; the competitive published router baseline; the remaining gate items (reject missing reference data
+rather than skipping the membership check, match retained decisions on episode+invocation+attempt+stage, a recovery
+ledger with a positive recovery fixture, parent-hash recomputation, host-writer exclusion, atomic snapshot);
+independent reproduction from immutable inputs; manuscript integration.
+
+**Overall submission readiness: about 60% (change: 0 percentage points; judgment range 50–65%).** Evidence advanced:
+one required comparator is now executed and reported, which is genuine new analysis of existing records rather than
+new collection — but it closes a *control*, not a milestone, and its result is a null that narrows rather than
+extends what the study can claim. Categories unchanged at 75/75/50/50/25, weighted 58.75 → 60%. I am not raising
+"core evidence" on the strength of a comparator whose main contribution is to qualify an expectation, while the
+competitive-router baseline, joint inference and independent reproduction all remain open. Main remaining work:
+(1) joint branch/log inference under a stated sampling model, and the competitive-router baseline;
+(2) independent reproduction of numerical summaries from immutable inputs; (3) manuscript integration and packaging.
+*This workstream cannot post to GitHub issue #4 (no GitHub CLI or token on the experiment host), so the checkpoint is
+recorded here.*
+
 ## 2026-09-20 02:50 EDT — scheduled check: third review round; claims aligned, gate widened
 
 **Stage status: nothing to advance.** All stages complete and verified: pilot 120, log **4,488/4,488**, live

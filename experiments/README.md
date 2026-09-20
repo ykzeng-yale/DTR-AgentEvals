@@ -13,6 +13,7 @@ agent and are not edited from here. Rules in [`AGENTS.md`](../AGENTS.md) apply.
 | S1 | Crossed n × horizon × overlap-floor grid on the **reference** simulator and estimators (unchanged), 1,000 replicates × 27 cells × 4 nuisance specifications | synthetic, exact truth | **executed** — `results/s1_grid/`, report in `grid_report.md` |
 | E1 | Absorbing-horizon tabular IPW / g-computation / cross-fitted DR with task-cluster inference | code + tests | **implemented**, 12 tests pass; reproduces `src/dtr_agent_evals` scores to 1e-10 on its simulator |
 | L1–L3 | Code-routing study on MBPP + HumanEval, Qwen2.5-3B vs 7B, K=3 routing decisions | real open-weight inference | **executed 19 September** — 4,488 randomized + 3,960 live episodes, 0 errors. Offline estimates pointwise compatible with live values for 5 of 6 policies; tailoring does **not** beat always-large |
+| A5 | Static-replay comparator (protocol §3.3 failure control), CPU-only on the frozen log | analysis of real records | **executed 20 September** — stitching **not** detectably worse than DR here (0.0161 vs 0.0182 mean abs. error); a null that the study's short horizon explains |
 | A4 | Branch audit: 200 restored first-failure prefixes × {small, large} × 2 fresh continuations | real inference | **executed 19 September** — 800/800 recorded restoration checks reproduced; the forked and log estimates of one contrast are pointwise compatible, uncertainty provisional |
 
 The L1–L3 study below is executed on real open-weight models; E0 and S1 remain synthetic.
@@ -286,6 +287,40 @@ without which no prefix exists) and the 665 continuations executed and lost in t
 The estimand is narrow and the uncertainty is provisional: this is the mean continuation effect over the prefix
 population that the *randomized logger* reached, it is **not** the value of a policy that changes how those prefixes
 are reached, and the interval above is an exploratory algebraic band pending a stated sampling model.
+
+### A5 — static-replay comparator: a null that qualifies the theory's expectation
+
+`docs/experiment_protocol.md` §3.3 asks for a fully specified static-replay rule as a *failure control*, and
+`docs/theory.md` §7.1 gives the counterexample to holding the future history fixed. Both are implemented on the
+frozen confirm log in `experiments/tools/static_replay.py` and scored against the live executions.
+
+- **Rule A, hold-the-future-fixed:** take each episode's recorded outcome and relabel the action. Policy-independent
+  by construction; value 0.664 for every target. Mean absolute error against live **0.032**. It has, as expected,
+  zero discriminating power.
+- **Rule B, prefix-matched donor stitching:** at stage *t* the target's action is taken and the continuation is
+  spliced from the same task's logged episode whose recorded action sequence shares the prefix (smallest run index
+  wins). This is the realistic mistake — treating the future as a function of the action sequence while ignoring the
+  intermediate state.
+
+| estimator | mean abs. error vs live (5 deterministic policies) | Spearman vs live (6) |
+|---|---:|---:|
+| Rule A, hold-the-future-fixed | 0.032 | undefined (constant) |
+| **Rule B, prefix-matched stitching** | **0.0161** | 0.880 |
+| **Cross-fitted DR** | **0.0182** | 0.886 |
+
+**Static stitching was not detectably worse than doubly robust estimation here — it was nominally slightly better.**
+That is a null for the expectation that replay fails as a comparator, and it is reported as such rather than buried.
+Two features of this study explain it and bound how far it travels: success is absorbing and **78.6% of episodes stop
+after one decision**, so stitching only engages for about a fifth of episodes and there is very little "future" to get
+wrong; and the design puts 8 episodes on every task covering all action prefixes, so a well-matched same-task donor
+almost always exists (0 tasks lacked one). Replay would be expected to fail where trajectories are long, where states
+diverge sharply after a switch, or where donors must be borrowed across tasks. This study cannot speak to those
+regimes, so it does not license replay in general — it shows the failure control did not fail *here*, which is itself
+a caution against citing replay's invalidity as if it were automatic.
+
+A limitation of Rule B as specified: it reads the target policy deterministically, so a **stochastic** target
+collapses to its modal action. `soft_escalation_d2` is therefore misrepresented (error +0.036, the largest in the
+table) and is excluded from the aggregate; its row is kept for transparency.
 
 ### Contention and timing
 
