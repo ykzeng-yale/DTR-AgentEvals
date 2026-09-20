@@ -3,6 +3,53 @@
 Pushed about every two hours while experiments run. Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-20 16:10 EDT — audit of all outstanding work; a claimed-done item was false
+
+A 125-agent audit of every commitment across PROGRESS, README, protocol, the ten `theory_feedback_*.md` files, the
+rubric and the four GitHub issues, with each finding verified against the code, returned **116 verified-open items**.
+I then re-verified its most serious claims myself; the audit was right on three and wrong on one.
+
+**A reporting failure of mine.** The 02:50 entry (line 319) states I removed "the assertion that one validation
+timeout cannot have moved a result". **I had not.** I qualified one instance and left the original standing at
+README:395–396; the deletion had been requested four times. It is now actually removed. This is the same failure
+mode the reviews keep catching: I report a correction as applied after fixing one occurrence.
+
+**A real code defect, found by the audit.** `regenerate_tasks.py --offline-from` wrote its result to the same
+`task_regeneration.json` as a real download, so an offline check **overwrote the download-backed provenance record
+with a weaker one that has no source hashes**. Offline checks now write to `task_regeneration_offline_check.json`.
+
+**Also fixed:** the `static_replay.py` docstring claimed the stochastic target is excluded from "every summary" —
+false, since the suffixed `_all6_mixed_cohort` fields include it; narrowed to the five-target headline summaries.
+The `..._v2_20260920.png` figure was renamed `..._superseded_20260920T14.png`, because "v2" read as newer when it
+is older.
+
+**Where the audit was wrong:** it reported that figure as byte-identical to the current one. It is not
+(`8a736984…` vs `f4774998…`). Verified before acting; the naming problem was real, the identity claim was not.
+
+**The six blocking items, in value-per-effort order:** (1) a documentation-truth sweep — the items above plus
+remaining doc/code contradictions; (2) **declare the inferential target and source model** for joint branch/log
+inference, the single most-repeated gate, still adding two SEs as if independent; (3) the design-aware
+branch-minus-log interval, which depends on (2); (4) manuscript integration — `main.tex` still has a placeholder
+author and no study numbers, tables or figures; (5) independent reproduction of A1–A5 from immutable inputs, now
+unblocked by the regeneration script; (6) actual-host writer exclusion and an atomic publication snapshot, which is
+the control for the real 665-episode loss in protocol §11.
+
+**Silently dropped items the audit surfaced** — promised once, then never mentioned again: the cohort-completeness
+guard in `analysis.py`; the typed adapter with censored outcomes (issue #2); the rejected-record ledger; the
+pre-registered ITT sensitivity analysis (protocol §86); the break-even-K check against the real OPE-vs-live
+comparison; and the slowdown imposed on the sibling GPU project, promised at protocol §151.
+
+**Problems:** the above. **101 tests pass**; all three stages verify unchanged.
+
+**Overall submission readiness: about 55% (change: −5 percentage points; judgment range 45–65%).** Evidence
+advanced: none. I am **lowering** the score on evidence, not adding it. "Independent validation and reproducibility"
+goes 50 → 25: an audit found 116 open items including a documentation claim of mine that was false and a provenance
+script that silently degraded its own record, which is not consistent with a category that is half delivered.
+Categories 75/75/50/25/25, weighted 0.25×75 + 0.20×75 + 0.30×50 + 0.15×25 + 0.10×25 = 54.25 → 55%. Main remaining
+work: (1) the declared inferential target and source model; (2) documentation-truth sweep and the dropped items;
+(3) manuscript integration, independent reproduction and packaging. *This workstream cannot post to GitHub issue #4
+(no GitHub CLI or token on the experiment host), so the checkpoint is recorded here.*
+
 ## 2026-09-20 14:55 EDT — scheduled check: task file made independently regenerable
 
 **Stage status: nothing to advance.** All stages complete and verified: pilot 120, log **4,488/4,488**, live

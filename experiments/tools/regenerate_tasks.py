@@ -85,7 +85,10 @@ def main() -> int:
                   downloads=dl, licences=LICENCES,
                   canonicalisation='MBPP by numeric task_id then HumanEval by numeric index; json.dumps(sort_keys=True, separators=(",",":"), ensure_ascii=False)',
                   note='third-party task data is not redistributed here; this procedure regenerates it from the public sources')
-    Path('results/code_routing/analysis/task_regeneration.json').write_text(json.dumps(report, indent=1))
+    # offline verification must not overwrite the download-backed provenance record with a weaker one
+    dest = Path('results/code_routing/analysis/%s' % ('task_regeneration_offline_check.json' if a.offline_from
+                                                      else 'task_regeneration.json'))
+    dest.write_text(json.dumps(report, indent=1))
     print(json.dumps({k: report[k] for k in ('matches_frozen_design', 'rebuilt_sha256', 'frozen_tasks_sha256', 'n_tasks')}, indent=1))
     return 0 if ok else 1
 

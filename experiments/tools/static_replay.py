@@ -10,7 +10,8 @@ to show it carries no policy-specific signal.
 
 DECLARED POST-HOC SPECIFICATION (frozen 20 September 2026; this analysis was NOT pre-registered).
   Cohort: the 330 CONFIRM tasks; the five live targets the rule can represent (deterministic). A stochastic target is
-  thresholded by the rule to a different policy and is therefore excluded from every summary, its row retained.
+  thresholded by the rule to a different policy and is therefore excluded from every FIVE-TARGET headline summary,
+  its row retained; the explicitly suffixed *_all6_mixed_cohort fields do include it and are not headline figures.
   Outcome: hidden-test success. Comparator truth: the finite live-policy task means, themselves noisy estimates.
   Donor ordering: smallest run index among episodes of the SAME task whose recorded action sequence shares the prefix.
   Stopping: the donor's stage-t recorded VISIBLE-VALIDATOR result (absorption is at validator pass, not hidden-test

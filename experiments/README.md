@@ -392,8 +392,8 @@ and 6.3–11.0 s (large). Across the **13,001** calls attached to retained log, 
 there was **1 validation timeout, 0 hidden-test timeouts and 3 truncated generations**. The effect of that timeout on
 its episode's outcome is not established here; it is one recorded exception, not a demonstrated non-event. Both totals exclude the
 executions lost in the publishing incident and the environment-construction calls, so they are not the total
-physical cost of the study. Timeouts are the only timing-dependent path into an outcome, and at this rate
-they cannot have moved a result.
+physical cost of the study. Sandbox timeouts are a timing-dependent path into an outcome; whether the single
+recorded validation timeout affected its episode is not established here.
 
 ## L1–L3 — code-routing study (`code_routing/`)
 
