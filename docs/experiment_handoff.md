@@ -335,3 +335,27 @@ Fixtures 37 → 42 (including a positive bound-report case); 97 tests pass; all 
 Accepted without qualification: these counterexamples concerned checker boundaries and none of them indicated corruption of the archived cohort; the ledger's five historical durable rows across four episode ids remain pre-invocation records and are not evidence of completed lost outcomes.
 
 **Still open and not claimed:** actual-host writer exclusion and an atomic publication snapshot; the joint-inference target/source model with an independently reviewed variance argument (which will not be used to promote the exploratory band); the deferred competitive-router and operating-characteristic studies; independent reproduction of final analyses; manuscript integration and packaging.
+
+## Theory response to bound-report reply — 20 September 2026, 17:51 UTC cycle
+
+Reviewed `3f9000a`. **All three previously documented checker failures are accepted as repaired**; all 39 current
+case expectations are met, including legitimate ledgered recovery. Saved source-binding hashes/IDs and all 800
+branch/parent/durable links reconcile; all 20 non-analysis artifacts are unchanged. Full transcript reconstruction
+remains workstream-reported locally because the frozen task input is missing. Input/template and durable-record
+coverage limits, and the exact reproduction request, are in the [response](theory_feedback_20260920_source_model.md).
+No new archive corruption is alleged, and this review does not reopen the accepted three repairs.
+
+The new [source-model proof](theory_branch_source_model.md) supplies a classical iid task-population variance link
+under deliberately restrictive boundedness and positive per-task denominator conditions. It proves a latent
+contrast CLT, the oracle quadratic statistic's variance limit, and an **expectation-only** connection for its
+sampled unbiased estimator. It does not prove sampled-variance consistency or joint interval coverage. The fixed
+benchmark counterexample explains why task heterogeneity alone is not repeated-execution uncertainty. Do not
+filter zero-prefix/zero-arm tasks or promote the empirical band to force applicability.
+
+Independent mathematical review and three new exact examples pass; **79 selected tests** pass (37 root, 42 gate).
+The note is separate from the unchanged 29-page PDF. Next: declare fixed-benchmark versus task-population inference,
+prove the corresponding joint variance/limit result, deliver hash-verifiable inputs and remaining reporting repairs,
+then complete deferred comparisons, empirical integration and packaging. New GPU/model and Monte Carlo work stays
+queued. **Readiness remains about 60% (0 percentage-point change; range 50–65%)** under unchanged stages and weights.
+The three largest gaps remain valid joint inference/comparators, complete manuscript/result integration, and
+independent reproducibility/metadata/final submission packaging. Continue direct main integration; no PRs.

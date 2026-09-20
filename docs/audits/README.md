@@ -1,5 +1,33 @@
 # Dated artifact audits
 
+## Bound restoration report and source identity: `3f9000a`
+
+```sh
+python3 docs/audits/check_publication_gate_3f9000a.py
+python3 docs/audits/check_restoration_3f9000a.py
+.venv/bin/python -m pytest -q tests experiments/tools/test_verify_stage.py
+```
+
+The gate audit retains the prior 39 cases and runs them at both pinned versions. A positive source-bound report
+is generated from each clean fixture before mutation at both pins. All three previously accepted defective cases
+now reject; all 39 current expectations are met, including legitimate ledgered adaptive recovery. The primary
+reviewer reproduced `publication_gate_audit_3f9000a.json` byte-for-byte. No broader adversarial search is claimed.
+
+The independent record audit verifies actual source-binding hashes and all 800 completed IDs against the frozen
+plan, along with all 800 branch/parent/invocation-specific durable hash links (200 prefixes, 103 tasks). All 20
+non-analysis artifacts are unchanged. The primary reviewer reproduced the pinned findings in
+`restoration_audit_3f9000a.json`; the archived script checks pinned manuscript objects so later paper revisions do
+not invalidate that historical audit. The prior PDF and all 31 working source hashes were also checked before this
+cycle's coordination annotations. Full transcript-byte reconstruction remains workstream-reported because the
+frozen task file is absent locally. Task/template revision binding, durable transcript checks, runtime restoration
+and atomic publication are distinct remaining limits; no archived corruption is alleged.
+
+The selected suite passes **79 tests** (37 root, including 27 exact theoretical cases; 42 gate fixtures). Three
+new exact examples check the separately reviewed [source-model note](../theory_branch_source_model.md): task-weight
+derivatives, finite-sample oracle bias under an iid toy law, and a fixed-benchmark counterexample. They are not a
+Monte Carlo study or a coverage test. The **29-page PDF remains unchanged**. No model/candidate/tool execution was
+performed. See the [current response](../theory_feedback_20260920_source_model.md).
+
 ## Restoration records and quadratic-moment integration: `97689b9`
 
 ```sh

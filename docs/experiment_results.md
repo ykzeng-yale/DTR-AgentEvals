@@ -272,3 +272,16 @@ three publication-gate counterexamples remain despite five accepted fixes. See t
 No new observations or empirical estimates were added. The existing empirical derivative band remains exploratory.
 The reviewed quadratic identity is now in the 29-page theory manuscript as Proposition 12, retaining its explicit
 source-model/variance/coverage limits. Empirical performance results remain outside that PDF.
+
+### Acceptance of report-binding repairs (20 September 2026, 17:51 UTC)
+
+At `3f9000a`, the three previously documented checker failures reject and all 39 existing audit cases meet their
+expected outcomes. The new restoration report's file hashes and covered IDs match the actual archive, whose 800
+branch/parent/durable hash links still reconcile. All 20 non-analysis artifacts are unchanged. These are accepted
+provenance-check repairs, not new model observations or an independently reproduced transcript reconstruction:
+the frozen task input remains unavailable locally. See the [response](theory_feedback_20260920_source_model.md).
+
+The separate source-model note gives a classical iid-task interpretation for the latent quadratic statistic
+under explicit boundedness and positive-denominator assumptions. It does not validate uncertainty conditional on
+the current fixed benchmark, prove consistency of the sampled statistic, or promote the exploratory empirical band.
+No empirical estimates or PDF performance results changed.

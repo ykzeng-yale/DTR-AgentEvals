@@ -1,16 +1,16 @@
 {
-  "generated_utc": "2026-09-20T16:19:32.583238+00:00",
-  "reviewed_repository_base": "97689b94ce8f49bf6b12ff6d77ec35573b495493",
-  "scope": "Theory-first manuscript revision integrating the reviewed conditional quadratic-moment identity as Section 9.4, Proposition 12; no empirical performance results added, model inference, candidate-code execution or Monte Carlo sweep",
+  "generated_utc": "2026-09-20T18:02:24.198368+00:00",
+  "reviewed_repository_base": "3f9000a99653e92207545df5c29d6406cf634205",
+  "scope": "Unchanged 29-page theory PDF with coordination annotations and a separately reviewed iid source-model companion note; that new note is not yet integrated in the PDF. No empirical performance results, model/candidate execution or Monte Carlo added.",
   "pdf": {
     "path": "manuscript/DTR_Agent_Regimes_Theory_Draft.pdf",
     "pages": 29,
     "sha256": "c7aaf73dfc4626a45dba022c56e78c7fd8d696ac42b87b6a10f1a00ab9b86543"
   },
   "checks": {
-    "selected_pytest": "71 passed in 10.48s: 34 root tests and 37 published gate fixtures",
-    "exact_theory_subset_tests": 24,
-    "new_exact_tests": 0,
+    "selected_pytest": "79 passed in 10.53s: 37 root tests and 42 published gate fixtures",
+    "exact_theory_subset_tests": 27,
+    "new_exact_tests": 3,
     "quadratic_tests_integrated": 4,
     "numbered_mathematical_statements": 14,
     "cited_references": 21,
@@ -18,30 +18,37 @@
     "symbolic_references": 61,
     "unresolved_references": [],
     "latex_warnings": [],
-    "visual_review": "All 29 pages rendered. Primary reviewer inspected pages 1-20 and new pages 21-22 individually; independent reviewer inspected pages 21-29 and the new section. No blocking visual defects.",
-    "mathematical_review": "Separate reviewer approved preservation of the independently reviewed quadratic identity, application coefficients, ordered-pair normalization, noise subtraction and inference limits in Section 9.4.",
-    "independent_gate_audit": "39 CLI fixtures at each of bd1ace8 and 97689b9; five of six prior defects repaired, one stale-summary hash mismatch and two additional source-hash binding defects still accepted. Positive ledgered recovery remains accepted. Root reproduced independent reviewer results.",
-    "independent_restoration_audit": "All 800 branch/parent/invocation-specific durable hash links and task IDs match, representing 200 prefixes and 103 tasks. All 20 non-analysis artifacts unchanged. Full transcript-byte reconstruction not independently reproduced: configured frozen task file absent locally.",
-    "experiment_dependency_boundary": "Only the root and published gate fixture suites were run this cycle; the broader experiment dependency suite and model/tool execution were not rerun. Historical replay checks remain in dated audit reports."
+    "visual_review": "Historical review at the 2026-09-20 16:08 UTC cycle: All 29 pages rendered. Primary reviewer inspected pages 1-20 and new pages 21-22 individually; independent reviewer inspected pages 21-29 and the new section. No blocking visual defects. PDF unchanged and hash reverified this cycle; no rerender or new visual review.",
+    "mathematical_review": "Historical Section 9.4 proof-preservation review remains valid for unchanged manuscript source. New separate iid source-model note reviewed independently: bounded-Hessian/fourth-moment L2 remainder, oracle L1 limit, expectation-only sampled-quadratic corollary and fixed-benchmark counterexample. Added explicit unconditional second moment for the total-variance identity per review.",
+    "independent_gate_audit": "All 39 existing case expectations met at 3f9000a, across 78 pinned CLI runs. Three prior bypasses repaired; positive ledgered recovery passes. Report reproduced byte-for-byte by primary reviewer. This is bounded case coverage, not complete checker certification.",
+    "independent_restoration_audit": "Report bindings/covered IDs match pinned files and all 800 branch-parent-durable hash links reconcile (200 prefixes, 103 tasks). All 20 non-analysis artifacts unchanged. Full transcript-byte reconstruction not independently reproduced: frozen task file absent locally.",
+    "experiment_dependency_boundary": "Only the root and published gate fixture suites were run this cycle; the broader experiment dependency suite and model/tool execution were not rerun. Historical replay checks remain in dated audit reports.",
+    "source_model_companion_tests": 3
   },
   "build": "sh manuscript/build.sh",
-  "tests": ".venv/bin/python -m pytest -q tests experiments/tools/test_verify_stage.py; python3 docs/audits/check_restoration_97689b9.py; python3 docs/audits/check_publication_gate_97689b9.py",
+  "tests": ".venv/bin/python -m pytest -q tests experiments/tools/test_verify_stage.py; python3 docs/audits/check_restoration_3f9000a.py; python3 docs/audits/check_publication_gate_3f9000a.py",
   "files_sha256": {
+    "docs/audits/check_publication_gate_3f9000a.py": "e4e41e3754cc75e046fc66e4481a2260087ea1ccdfffac73bc59114b45f00483",
     "docs/audits/check_publication_gate_97689b9.py": "01dfd06390ff6b295f3f1023c79dfb6e8342c05075c241362b299a7cb073f2ff",
     "docs/audits/check_replay_controls_8ab7fb5.py": "ea371abacfe30580de120412f910a4b051becd9020fc33dbc83156045711f565",
+    "docs/audits/check_restoration_3f9000a.py": "835ceb12da204471e73091183f45a165ad87033db58a056d056fcbc23e056c83",
     "docs/audits/check_restoration_97689b9.py": "dda30371e14c88256340e0d9d338ba8708dff634d5800bc018b8eade7deb50bd",
+    "docs/audits/publication_gate_audit_3f9000a.json": "ac423ef1c951a6350e4a001566703274cec7f57c988d665b772a176e103fe712",
     "docs/audits/publication_gate_audit_97689b9.json": "7ea5a65e398ac8abdf16dd9b494afbde48987dde9df13170a4f94092afa68297",
     "docs/audits/replay_controls_audit_8ab7fb5.json": "fb1599cb5cc2c5f23a46ba198375681b25531a62c9f484b497be028b4f2cd90e",
+    "docs/audits/restoration_audit_3f9000a.json": "a25c1a6ca8a674ac26a34423b944abb476bcb85bc8d756df38f835aa9e5dc917",
     "docs/audits/restoration_audit_97689b9.json": "fd639c739c05c640087193e91ea54cde1809f7ed0d6b9c0dff28c851ddc130dd",
     "docs/theory_branch_quadratic.md": "7c9ba83aee9c8e14db25fd0063873309cd25ec6e8e652cdf6f5ed332d8f0ccd0",
     "docs/theory_branch_sampling.md": "8d5a13ff4cc1d5008f6c77bbc0ee0fa8ec226ea85ab4a87df65c0dee1890a17b",
+    "docs/theory_branch_source_model.md": "20beff3a77e42846a278d437294a97188c18af0238e503c8a7ea9f984f5dc708",
     "docs/theory_feedback_20260920_integration.md": "9b603947e08d6a8bd53198ec9d813ce7dc03447000b53310cc0be79a23335db0",
     "docs/theory_feedback_20260920_replay_integration.md": "839e9b26777b0e67099b5838195d1368c6ffbe0aca24086c5f049f51f9260f73",
     "docs/theory_feedback_20260920_restoration.md": "c17534f03e4c4d448b72d540ffb8102593d80c9ff7cf2bb4143d337c35f4ea49",
+    "docs/theory_feedback_20260920_source_model.md": "917d2f88b306e24d26b396b7fefc59d44b95c62fabf1b5e69fd6aa5c2236bc27",
     "docs/theory_replay_boundaries.md": "bca7efad86bceb1d3e74a42d991941438d709322f8f1673b9ec246a7968602cc",
     "docs/theory_review_20260919.md": "07db06ae567be32e9a78e8b44eb78c44913c1bd0481059e335bb8e6b4d146930",
-    "manuscript/README.md": "d552da034a35b2f80dbb79fb22c249171e90249720c2a498a99f7129e0d797c6",
-    "manuscript/STATUS.md": "7f6482b25118df50b2c3c9ec0aba029c03578cab4bbd99423b3f96295ed16c04",
+    "manuscript/README.md": "fab831649c09d32a5a9e6648145a5e0e127ec4b07871fe6885684ff2d87f33bc",
+    "manuscript/STATUS.md": "7d00b79f3e6302d05aa2dbbb0782afc4fb51c0a32aedaa06e4c0c15ba43c8c74",
     "manuscript/build.sh": "40b9f9842fbb814f28a159a13e075c3d0edc3b8e7cd40575ec0a2ba2c5d0eace",
     "manuscript/main.tex": "3171b03ad0ec124fb915e2de7a2d4803e12d0e55d59c4987305a69c4c815bfe0",
     "manuscript/prepare_bibliography.py": "874f7f486b8442138b8f7326eef3880b5c2a18b118bcb8aacf92f8b7dde0275f",
@@ -55,6 +62,7 @@
     "references/references.bib": "59656ee96c86058989c4c1e45f47c45ccc12469013f478b3583767da8b091038",
     "tests/test_branch_quadratic.py": "a1125ef80c3d7efcff4ab010ff6c58f60e282e70f93aec601749c2153e3517cd",
     "tests/test_branch_sampling.py": "147a858519992ed4b98be1a5beed1834fb892e99224525c62f5ef7554d9dbfc5",
+    "tests/test_branch_source_model.py": "05af8c3881c73324858cc84cb7e6962b93b98ac0f23cf4a0da8b72e20faa275b",
     "tests/test_paper_theory.py": "b88b9fa7c97ff73b0e1499a40340375fa6c70822b74f3bf8a98e1732e5d5491c",
     "tests/test_replay_boundaries.py": "fe47ae5e6608ccc6b201c62d9215b1f4b61bbfcab5f7b8d0d01ad60759f72731",
     "tests/test_theory_identities.py": "06b9526c4282fdb6dce462da68b9387b19603a9dc90a7c275c10ea908ca08693"
@@ -65,11 +73,12 @@
     "The quadratic identity reconstructs a latent full-frame statistic; it does not establish the source-frame variance link, consistency or interval coverage.",
     "Conditional sampling variance does not validate the full empirical branch-minus-log uncertainty or normal coverage.",
     "Empirical performance results remain deferred in this manuscript; no superiority, efficiency advantage or submission readiness is established.",
-    "Hash linkage verifies stored records, not fresh execution or independent reconstruction of transcript bytes without frozen inputs."
+    "Hash linkage verifies stored records, not fresh execution or independent reconstruction of transcript bytes without frozen inputs.",
+    "The companion iid source-model proof uses uniformly positive per-task denominators; it does not justify the fixed-benchmark sampling law, sampled-quadratic concentration, or the combined branch/log interval."
   ],
   "prior_delivery": {
-    "validation_at_commit": "a02ffb01b62726e21f1b5206ca4bf0a1097f9170",
-    "pdf_sha256": "63a683e4b30d6aab4a0196e9e5d17f05c4d338cf826e7d75d65064d8209300d0",
-    "pages": 28
+    "validation_at_commit": "7826c0c63862d6e309ec549c41695ea8331876cd",
+    "pdf_sha256": "c7aaf73dfc4626a45dba022c56e78c7fd8d696ac42b87b6a10f1a00ab9b86543",
+    "pages": 29
   }
 }

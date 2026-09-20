@@ -147,6 +147,21 @@ advance the work within current categories. The three largest remaining mileston
 required comparators; complete manuscript/result integration; and independent reproducibility, author metadata
 and the final submission package. Weights and scope are unchanged.
 
+## Checkpoint: 20 September 2026, 17:51 UTC review cycle
+
+Reviewed `3f9000a`: all three previously documented publication-check failures are repaired, and all 39 bounded
+case expectations are met. The restoration report's hashes/IDs and actual stored hash links independently reconcile;
+all 20 non-analysis artifacts remain unchanged. Full transcript reconstruction remains unreplicated locally because
+the frozen task input is missing. The separately reviewed [source-model note](theory_branch_source_model.md) adds an
+explicit sufficient iid task-population variance link and fixed-benchmark counterexample. It does not establish
+sampled-variance consistency or joint coverage; the 29-page PDF is unchanged. The selected suite passes 79 tests.
+See the [response](theory_feedback_20260920_source_model.md).
+
+**Overall readiness remains about 60% (change: 0 percentage points; judgment range 50–65%).** Stages remain
+**75/75/50/50/25**, weighted **58.75** before rounding, with unchanged weights and intended empirical scope.
+The verified repairs and scoped proof advance existing milestones; the three largest gaps remain valid joint
+inference/comparators, complete manuscript/result integration, and independent reproducibility/metadata/final packaging.
+
 ## Required reporting format
 
 Every scheduled GitHub update and user-facing project completion message must include:

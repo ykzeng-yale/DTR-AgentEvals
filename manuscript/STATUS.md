@@ -26,8 +26,8 @@ There are 14 numbered theorem/proposition/corollary statements, plus additional 
 
 - A separate agent reviewed the theory and assembled manuscript. The [full review](../docs/theory_review_20260919.md) records findings and resolutions. A second agent checked source positioning and the rendered latter half of the paper.
 - Corrections made during review: valid root marginals for cluster inference; explicit sequential support for every candidate; almost-everywhere support wording; proportional fold sizes; target-null conventions for branch scores; residual-second-moment allocation; complete kernel/payoff conditions; and manuscript conversion/cross-reference repairs.
-- The selected suite passes **71 tests**: **34 root tests**, including **24 exact theoretical cases**, and **37 publication-gate fixtures**. The broader experiment dependency suite was not rerun; earlier replay-fixture checks remain documented in their dated audit. Independent CLI counterexamples still expose three accepted defective gate cases; passing the published fixtures does not close those gaps.
-- The compiled PDF has **29 pages** and **14 numbered results**. All pages were rendered and visually reviewed: the primary reviewer inspected pages 1–20 and page 21 individually; a separate reviewer checked pages 21–29 and the new Section 9.4. Independent mathematical review approved proof preservation and the stated inference boundary. The final LaTeX log has no warnings, undefined citations/references or overfull boxes.
+- The selected suite passes **79 tests**: **37 root tests**, including **27 exact theoretical cases**, and **42 publication-gate fixtures**. The broader experiment dependency suite was not rerun. All 39 pinned audit cases now meet expectations at `3f9000a`; this accepts the three previous checker fixes without certifying every provenance or runtime condition. Three root checks accompany the separate source-model note, which is not yet integrated into this PDF.
+- The compiled PDF remains unchanged at **29 pages** and **14 numbered results**. In the 16:08 UTC cycle, all pages were rendered and visually reviewed: the primary reviewer inspected pages 1–20 and page 21 individually; a separate reviewer checked pages 21–29 and the new Section 9.4. Independent mathematical review approved proof preservation and the stated inference boundary. The final LaTeX log has no warnings, undefined citations/references or overfull boxes.
 - The paper build uses the canonical bibliography with audit-only notes removed for display. Source-level audit annotations remain in the canonical file.
 - `validation.json` records the PDF/source hashes and reproducibility details. Build intermediates are ignored by Git.
 
@@ -36,6 +36,17 @@ There are 14 numbered theorem/proposition/corollary statements, plus additional 
 This manuscript builds on the original theory package at `40da0d42422611f61f49fdec23dbf2f76a40eb6d`. Its initial publication followed repository checkpoint `66b7488`; the current paper revision follows `97689b9` and integrates the reviewed quadratic-moment note from `a02ffb0`, alongside the previously integrated replay and conditional sampling results. Later experiment audits are recorded below, but no empirical performance numbers are inserted into this theory-first PDF. The update changes no archived experimental outputs and launches no model workload. The prior PDF/source and validation record remain available in Git history.
 
 ## Later author and empirical work
+
+**20 September, 17:51 UTC coordination review:** all three prior checker repairs at `3f9000a` are accepted;
+actual report bindings and 800 stored parent/branch/durable links reconcile, with all 20 non-analysis artifacts
+unchanged. Full transcript reconstruction still needs the missing frozen task input. The new
+[source-model note](../docs/theory_branch_source_model.md) proves a sufficient iid task-population variance link
+and expectation-only sampled-quadratic corollary, with independent review and three exact examples. It does not
+validate the fixed-benchmark band or prove sampled-variance concentration/joint coverage. The note is not yet
+integrated into the unchanged 29-page PDF. The selected suite passes 79 tests; see the
+[response](../docs/theory_feedback_20260920_source_model.md). Readiness stays **about 60% (0 percentage-point change;
+range 50–65%)**. Valid joint inference/comparators, complete manuscript/result integration, and independent
+reproducibility/metadata/final packaging remain the three largest gaps.
 
 **20 September, 16:08 UTC coordination review:** the [response](../docs/theory_feedback_20260920_restoration.md)
 accepts five of six prior checker repairs at `97689b9`, documents remaining report/source binding failures, and

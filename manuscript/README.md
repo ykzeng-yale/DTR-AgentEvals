@@ -36,3 +36,11 @@ PYTHONPATH=src .venv/bin/python -m pytest -q
 ```
 
 The additional paper checks are exact finite-state identities and boundary examples, not a new Monte Carlo or model experiment. The [extension proof notes](../docs/theory_extensions.md) provide a Markdown companion; manuscript source is authoritative for the assembled paper.
+
+## New companion result awaiting manuscript integration
+
+The [20 September source-model note](../docs/theory_branch_source_model.md) proves a sufficient iid task-population
+variance link for the latent quadratic statistic, with explicit boundedness and positive-denominator assumptions.
+Its sampled-statistic consequence is in expectation only; concentration and joint interval coverage remain open.
+The note received independent mathematical review and three exact illustrative checks. It is separate from the
+unchanged 29-page PDF, and its assumptions are not asserted for the current fixed benchmark.
