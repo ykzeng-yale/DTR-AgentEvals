@@ -1,0 +1,173 @@
+{
+  "ref": "ac3ca8368e0b1b05990f1ef108fe1cc4bfb1251a",
+  "scope": "New live/branch artifact consistency only; no candidate execution, model calls, outcome comparisons, model fitting, or Monte Carlo. Prior log read only as parent sampling population and input hash.",
+  "numpy_version": "2.5.3",
+  "hashes": {
+    "results/code_routing/design.json": "230638a757c581138d1a3611a9c5788ed79b80a655313d316cac63cbba4ff43d",
+    "results/code_routing/visible_tests.json": "634570cf88743416eca301f77e731c0a1b59013753ffa87c8238a3c77690ddff",
+    "results/code_routing/learned_policy.json": "4f22e7b4f8ffc63c7d3fff7a828fffc81d0471db0ce5eb843876ebbf5e89768e",
+    "results/code_routing/branch/branch_plan.json": "59a384ac66c2b8d2e5e42c9828d7cc48757f802be9f4fa050eb22dac34367b35",
+    "results/code_routing/live/episodes.jsonl": "fb1b2603c51fda020915f7647a0d29478ebf064a0f21cec850ba5bd4abcc616b",
+    "results/code_routing/live/decisions.jsonl": "434d5b2672b1780c79f912d362197b5a339880a3c453bf555e99d82060bbf0c8",
+    "results/code_routing/live/run_manifest.jsonl": "8149fa48eb979c61ff7006acd758906c5bf15a905abe12cc611d1edc00ec3430",
+    "results/code_routing/branch/episodes.jsonl": "57d0e639eb4758a493579c10b870c0e99377d52d3ebe838ca7e6aa40541b5768",
+    "results/code_routing/branch/decisions.jsonl": "bd2599c0369ef8ed2659a3fb152b238afa658e4f0352323b8035a83361114fda",
+    "results/code_routing/branch/run_manifest.jsonl": "371cf00d7deacd974a61cd8f78ad78bfef34b0b602194b82c22e24335e7ccabb",
+    "results/code_routing/redactions.json": "44eb6126f4af06e7a5ec7b888577b5bf63ad997084ca7c4f91af1a73769d249b",
+    "experiments/code_routing/config.json": "3dfa7d53990e6d7832c2b22b6ae2f0bf60a9beac052c1ef7dfe10ec9a96d6177"
+  },
+  "code_digest": {
+    "sha256": "b697d39065697358ff9a33b59f9aa51b4cbfcb3eed3347f05443a79658d24c26",
+    "n_files": 12
+  },
+  "branch_plan": {
+    "expected_continuations": 800,
+    "eligible_prefixes": 564,
+    "sampled_prefixes": 200,
+    "distinct_sampled_tasks": 103,
+    "sampling_probability": 0.3546099290780142,
+    "seed": 1008219474,
+    "sampling_and_seed_reconstruction": "exact"
+  },
+  "stages": {
+    "live": {
+      "expected_episodes": 3960,
+      "published_episodes": 3960,
+      "published_tasks": 330,
+      "published_parent_prefixes": null,
+      "episode_counts_by_policy": {
+        "always_large": 660,
+        "always_small": 660,
+        "class_tailored": 660,
+        "escalate_after_first_failure": 660,
+        "learned": 660,
+        "soft_escalation_d2": 660
+      },
+      "durable_decisions": 5504,
+      "nested_decisions": 5504,
+      "decisions_by_stage": {
+        "0": 3960,
+        "1": 887,
+        "2": 657
+      },
+      "episodes_by_new_calls": {
+        "1": 3073,
+        "2": 230,
+        "3": 657
+      },
+      "stop_reasons": {
+        "horizon": 592,
+        "validated": 3368
+      },
+      "errors": 0,
+      "retries": 0,
+      "validation_timeouts": 1,
+      "hidden_timeouts": 0,
+      "finish_reasons": {
+        "length": 3,
+        "stop": 5501
+      },
+      "hack_flagged_episodes": 0,
+      "foreign_gpu_load_episodes": 0,
+      "contention_check_failures": 0,
+      "unmatched_durable_decisions": [],
+      "unstarted_planned_episodes": 0,
+      "chronology": {
+        "manifest_start": "2026-09-19T21:58:08Z",
+        "first_episode_start": "2026-09-19T21:58:08Z",
+        "last_episode_start": "2026-09-20T01:10:49Z",
+        "last_durable_decision": "2026-09-20T01:11:17Z"
+      },
+      "redaction_affected": [
+        {
+          "episode_id": "live:always_large:mbpp/401#0",
+          "fields": [
+            "decision[0].trace"
+          ]
+        }
+      ]
+    },
+    "branch": {
+      "expected_episodes": 800,
+      "published_episodes": 135,
+      "published_tasks": 23,
+      "published_parent_prefixes": 35,
+      "episode_counts_by_policy": {
+        "branch_stay_large": 66,
+        "branch_stay_small": 69
+      },
+      "durable_decisions": 243,
+      "nested_decisions": 238,
+      "decisions_by_stage": {
+        "1": 139,
+        "2": 104
+      },
+      "episodes_by_new_calls": {
+        "1": 32,
+        "2": 103
+      },
+      "stop_reasons": {
+        "horizon": 100,
+        "validated": 35
+      },
+      "errors": 0,
+      "retries": 0,
+      "validation_timeouts": 0,
+      "hidden_timeouts": 0,
+      "finish_reasons": {
+        "stop": 238
+      },
+      "hack_flagged_episodes": 0,
+      "foreign_gpu_load_episodes": 0,
+      "contention_check_failures": 0,
+      "unmatched_durable_decisions": [
+        {
+          "episode_id": "branch:log:humaneval/4#3:large#0",
+          "t": 1,
+          "logged_utc": "2026-09-20T01:26:50Z"
+        },
+        {
+          "episode_id": "branch:log:humaneval/4#3:large#1",
+          "t": 1,
+          "logged_utc": "2026-09-20T01:26:51Z"
+        },
+        {
+          "episode_id": "branch:log:humaneval/46#3:small#1",
+          "t": 1,
+          "logged_utc": "2026-09-20T01:26:57Z"
+        },
+        {
+          "episode_id": "branch:log:humaneval/46#3:small#1",
+          "t": 2,
+          "logged_utc": "2026-09-20T01:27:02Z"
+        },
+        {
+          "episode_id": "branch:log:humaneval/46#3:large#0",
+          "t": 1,
+          "logged_utc": "2026-09-20T01:27:04Z"
+        }
+      ],
+      "unstarted_planned_episodes": 661,
+      "chronology": {
+        "manifest_start": "2026-09-20T01:11:55Z",
+        "first_episode_start": "2026-09-20T01:11:55Z",
+        "last_episode_start": "2026-09-20T01:26:55Z",
+        "last_durable_decision": "2026-09-20T01:27:04Z"
+      },
+      "redaction_affected": []
+    }
+  },
+  "checks": {
+    "distinct": 140,
+    "individual": 199436,
+    "failures": {}
+  },
+  "limitations": [
+    "Full task source is absent in this checkout: initial prompt hashes cannot be reconstructed; branch first-decision hash equality to its parent is independently checked, while tool reproduction itself is a recorded flag and was not reexecuted.",
+    "Original model files, server binaries, and remote runtime are not independently inspected; manifest consistency does not prove physical execution identity.",
+    "Live log has one redacted first-stage trace. Pre-redaction bytes are absent; the later transcript hash remains the original hash and cannot be reconstructed from the sanitized trace.",
+    "Branch file is a partial concurrent snapshot: unmatched durable decisions are started episodes without a completed episode row, not verified completed executions; the committed run.lock does not establish current remote liveness.",
+    "No episode-completion timestamps: observed decision/start times establish chronology only as recorded, not an independent wall-clock execution attestation.",
+    "No hidden reward recomputation, model-performance comparison, causal estimation, interval validation, or branch-result analysis was performed."
+  ]
+}

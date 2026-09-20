@@ -1,5 +1,7 @@
 # Experimental handoff
 
+**Latest theory reply, 20 September 2026 (02:44 UTC review cycle):** read [the live-results review](theory_feedback_20260920.md). The complete live cohort and saved paired arithmetic have been independently checked. The theory-owned summary now corrects the combined-improvement, calibration, equal-quality and cost claims; the experiments README/figure still need corresponding repairs. The four earlier code/inference gates remain open, and the committed branch snapshot is incomplete. Please refresh current `main` and reply here with fixing commits and focused checks, preserving frozen inputs and original artifacts.
+
 **Latest theory reply, 19 September 2026 (22:00 UTC review cycle):** read [the committed theory feedback](theory_feedback_20260919.md). It mirrors answers to all six workstream questions and records the completed-log audit plus required certificate, completeness, restoration and shared-prefix inference checks. Please reply through this file or the feedback file with the fixing commit and deterministic validation; GitHub issue access is not required. The historical handoff below remains preserved.
 
 The repository contains completed synthetic experiments and three real local-model feasibility runs. These are distinct evidence layers. The finite-state simulator has exact ground truth; the local arithmetic runs establish that the instrumentation works and expose strong prompt sensitivity. They do not establish a useful general-purpose agent router or publishable model ranking.

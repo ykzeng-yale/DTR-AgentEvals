@@ -48,6 +48,14 @@ Reviewed experiment artifacts at `035d245` and progress note `f3aa436`: the comp
 
 **Overall readiness remains about 50% (change: 0 percentage points from the last issue #4 checkpoint; judgment range 45–60%).** Category stages remain 75/75/25/50/25 under the unchanged weights. This is 10 points below the experiment workstream's provisional 60% assessment in `f3aa436`: completed logging advances the work, but the primary empirical comparisons and validated analyses remain absent and material analysis gates are open. This review does not change weights or core scope. The three largest milestones remain validated empirical studies, result integration and scientific consistency, and the reproducible submission package with author-approved metadata.
 
+## Checkpoint: 20 September 2026, 02:44 UTC review cycle
+
+Reviewed new experiment commit `ac3ca83`. All 3,960 planned live-policy episodes and their 5,504 decisions are now published; independent checks reconcile exact frozen identities, assignments and provenance. Independent numerical reconstruction reproduces the saved task-paired calibration summaries and the secondary learned-versus-large contrast. The branch plan reconstructs, but only 135/800 completed continuations are published. See [the current review](theory_feedback_20260920.md) for evidence boundaries and required reporting/inference corrections.
+
+**Overall readiness: about 60% (change: +10 percentage points from the prior issue #4 checkpoint; judgment range 50–65%).** The empirical category advances from 25 to 50 because completed fresh-policy comparisons and reproducible numerical summaries now join the randomized log and prior simulations. Null or inconclusive results count as completed evidence; the score does not depend on demonstrating a routing advantage. Category stages are now **75/75/50/50/25**, giving a weighted score of **58.75** before rounding. Weights and intended scope are unchanged.
+
+This is partial delivery, not final empirical validation. The finite-certificate applicability issue, general cohort guards, branch-restoration enforcement/shared-prefix inference, figure/claim corrections, additional required comparisons and independent execution checks remain open. The PDF still lacks integrated results. Top remaining milestones: (1) resolve those empirical and analysis gates, including the complete branch study; (2) integrate reviewed results, figures and appropriately scoped claims into the manuscript; (3) finish reproducibility, author-approved metadata and the final submission package.
+
 ## Required reporting format
 
 Every scheduled GitHub update and user-facing project completion message must include:
