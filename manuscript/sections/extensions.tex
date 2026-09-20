@@ -227,6 +227,54 @@ This concerns uncertainty around a frame-specific difference, whose target is no
 \end{equation}
 The second term contains source-task variability and its linkage to the log estimate; Proposition~\ref{prop:fixed-frame-branches} does not supply it. Random frame sizes and multiple prefixes per task belong in that source model. Fixed-size selection can still permit a valid unconditional task-population sandwich under suitable assumptions: selection dependence alone neither proves nor disproves its validity, and replicate averages already contribute to task-score variation. Full comparison therefore requires a justified sampling argument for the declared target, rather than a mechanical correction factor applied to squared task derivatives. These conditional identities do not validate an empirical branch-minus-log interval or imply a new efficiency guarantee.
 
+\subsection{Recovering a latent full-frame quadratic statistic}
+\label{sec:frame-quadratic}
+
+An intermediate step toward the second term of \eqref{eq:frame-total-gap} is to recover quadratic functions of the unobserved prefix means. Pair inclusion probabilities supply an exact conditional identity. The identity reconstructs a statistic; a source-frame model is still needed to interpret that statistic as an estimate of population variance.
+
+\begin{proposition}[Conditional recovery of a quadratic moment]
+\label{prop:frame-quadratic}
+Under the fixed-frame sampling and independent-execution assumptions of Proposition~\ref{prop:fixed-frame-branches}, write $Z_i=\widehat d_i$ and assume an integrable $\widehat v_i$ with conditional mean $v_i$ at each selected prefix. Let $C$ be a finite symmetric matrix, $b$ a vector and $c$ a scalar, known from $\mathcal F$ or from external information included in the conditioning set, without using the selected fresh outcomes. Put
+\[
+ Q(d)=d^\top Cd+2b^\top d+c,\qquad
+ p_1=m/N,\qquad p_2=\frac{m(m-1)}{N(N-1)},\qquad I_i=\ind\{i\in S\}.
+\]
+Then the sum over ordered distinct pairs in
+\begin{equation}
+ \widehat Q=
+ \sum_i\frac{I_i}{p_1}C_{ii}(Z_i^2-\widehat v_i)
+ +\sum_{i\ne j}\frac{I_iI_j}{p_2}C_{ij}Z_iZ_j
+ +2\sum_i\frac{I_i}{p_1}b_iZ_i+c
+ \label{eq:frame-quadratic-estimator}
+\end{equation}
+satisfies $\E(\widehat Q\mid\mathcal F)=Q(d)$.
+\end{proposition}
+
+\begin{proof}
+Conditional on selecting prefix $i$, $\E(Z_i^2-\widehat v_i\mid\mathcal F,I_i=1)=d_i^2$. Conditional independence across prefixes and selection-invariant execution laws give $\E(Z_iZ_j\mid\mathcal F,I_iI_j=1)=d_id_j$ for $i\ne j$. Multiplication by the respective inclusion probabilities $p_1$ and $p_2$ cancels the denominators in \eqref{eq:frame-quadratic-estimator}. The linear terms average to $2b^\top d$, proving the result. Independence between $Z_i$ and $\widehat v_i$ within a prefix is not required.
+\end{proof}
+
+This is an elementary inclusion-probability identity. The same argument applies to a different sampling design with its positive known individual and pair inclusion probabilities and corresponding execution assumptions. A zero pair-inclusion probability cannot be repaired by this formula. At a census it reduces to $Q(Z)-\sum_iC_{ii}\widehat v_i$, so fresh execution noise still needs correction. Even if $Q(d)\ge0$, its unbiased estimate can be negative; clipping changes its expectation.
+
+\paragraph{Application to the pooled branch-minus-log contrast.}
+Retain all $J$ source tasks with unequal eligible-prefix counts $M_g$, $N=\sum_gM_g$, and let $g(i)$ be prefix $i$'s task. For the pooled log arm ratios, write $\widehat\nu_a=\sum_gN_{ga}/D_a$, where $D_a=\sum_gD_{ga}>0$ and $N_{ga},D_{ga}$ are the recorded weighted outcome and weight totals. The task derivative of their contrast is
+\[
+ \ell_g=\frac{N_{g1}-\widehat\nu_1D_{g1}}{D_1}
+ -\frac{N_{g0}-\widehat\nu_0D_{g0}}{D_0}.
+\]
+If all latent prefix means were known, perturbing task $g$'s weight would give the full-frame contrast derivative
+\begin{equation}
+ \begin{split}
+ u_g(d)&=\frac{\sum_{i:g(i)=g}d_i-(M_g/N)\sum_i d_i}{N}-\ell_g
+       =\sum_i A_{gi}d_i-\ell_g,\\
+ A_{gi}&=\frac{\ind\{g(i)=g\}-M_g/N}{N}.
+ \end{split}
+ \label{eq:frame-quadratic-derivative}
+\end{equation}
+Consequently $Q(d)=\sum_g u_g(d)^2$ has $C=A^\top A$, $b=-A^\top\ell$ and $c=\ell^\top\ell$, all known from the recorded frame. Expanding the unknown centering mean linearly avoids substituting an anchor fitted on selected fresh outcomes. No task or prefix is discarded, and the pooled target is not replaced by an equal-task target. A specified finite-sample multiplier can be absorbed into $C,b,c$; it cannot supply a missing sampling justification.
+
+This recovers a latent squared-derivative statistic, not exactly $\Var\{\mu_{\mathcal F}-L(\mathcal F)\}$. Fixed benchmark tasks with repeated randomized executions are not automatically iid draws from a task population. The scientific target and source-frame model, moment and denominator conditions, variance consistency and an appropriate limit theorem remain to be specified for full inference. Shared execution shocks or selection associated with recovering lost outcomes may also invalidate the conditional execution assumptions. Simply adding \eqref{eq:frame-quadratic-estimator} to \eqref{eq:frame-variance-estimator} and reporting a normal interval is not justified by these identities alone.
+
 \subsection{Sensitivity to changed model or harness kernels}
 \label{sec:kernel-drift}
 

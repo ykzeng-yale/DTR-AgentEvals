@@ -14,27 +14,37 @@
 | Eligible-opportunity reduction | Exact block factorization and likelihood ratio proved; second-moment bound depends on eligible opportunities, not realized switches. |
 | Branch validation and allocation | Prefix transport, exact augmented-score mean/variance, independent two-sample corollary, and clipped oracle cost allocation proved. Global optimal exploration is not claimed. |
 | Fixed-size prefix sampling | Conditional fixed-frame variance and an unbiased estimator with replicated continuations proved; the additional source-frame/log variance term for a full joint comparison remains unresolved. |
+| Full-frame quadratic moments | Conditional unbiased reconstruction using pair inclusion and continuation-noise subtraction proved; applying the identity to task derivatives does not establish source-frame variance or coverage. |
 | Execution drift | Full-history coupling bound and deployment-adjusted improvement certificate proved for externally justified kernel allowances and a common payoff. The allowances are not estimated from ordinary logs. |
 | Replay limits | Outcome copying distinguished from frozen-state reward recomputation; adaptive donor failure and a narrow positive control proved in Section 8.2. |
 | Empirical sections | Prospective methods and reporting targets written. New simulations, GPU/model execution, and empirical results deferred. |
 | Discussion and reproducibility | Written, with practical limitations, open questions, build instructions, and this audit record. |
 
-There are 13 numbered theorem/proposition/corollary statements, plus additional derived identities and explicitly scoped corollaries in the prose. All proofs concern their written assumptions; no claim is made that realistic agent systems already satisfy those assumptions.
+There are 14 numbered theorem/proposition/corollary statements, plus additional derived identities and explicitly scoped corollaries in the prose. All proofs concern their written assumptions; no claim is made that realistic agent systems already satisfy those assumptions.
 
 ## Review and validation
 
 - A separate agent reviewed the theory and assembled manuscript. The [full review](../docs/theory_review_20260919.md) records findings and resolutions. A second agent checked source positioning and the rendered latter half of the paper.
 - Corrections made during review: valid root marginals for cluster inference; explicit sequential support for every candidate; almost-everywhere support wording; proportional fold sizes; target-null conventions for branch scores; residual-second-moment allocation; complete kernel/payoff conditions; and manuscript conversion/cross-reference repairs.
-- The repository root suite passes **30 tests**, including **20 exact theoretical checks** across four theory test files. Eight additional workstream replay fixtures were independently checked in an environment supplying their experiment dependencies; the minimal root environment alone lacks pandas. The workstream's reported 73-test run is separate. The pinned audit supplies exact production-function controls without requiring those imports.
-- The compiled PDF has **28 pages**. All pages were rendered and visually reviewed: the primary reviewer inspected pages 1–12, and a separate reviewer checked pages 13–28, including the new Section 8.2 and prospective controls paragraph. Only page 14 changed under the final donor-order clarification and was rechecked by the primary reviewer. Independent mathematical review confirms proof preservation. The final LaTeX log has no warnings, undefined citations/references or overfull boxes. A trailing Discussion line on page 26 and one bibliography entry on page 28 are minor pagination choices, not missing content.
+- The selected suite passes **71 tests**: **34 root tests**, including **24 exact theoretical cases**, and **37 publication-gate fixtures**. The broader experiment dependency suite was not rerun; earlier replay-fixture checks remain documented in their dated audit. Independent CLI counterexamples still expose three accepted defective gate cases; passing the published fixtures does not close those gaps.
+- The compiled PDF has **29 pages** and **14 numbered results**. All pages were rendered and visually reviewed: the primary reviewer inspected pages 1–20 and page 21 individually; a separate reviewer checked pages 21–29 and the new Section 9.4. Independent mathematical review approved proof preservation and the stated inference boundary. The final LaTeX log has no warnings, undefined citations/references or overfull boxes.
 - The paper build uses the canonical bibliography with audit-only notes removed for display. Source-level audit annotations remain in the canonical file.
 - `validation.json` records the PDF/source hashes and reproducibility details. Build intermediates are ignored by Git.
 
 ## Integration boundary
 
-This manuscript builds on the original theory package at `40da0d42422611f61f49fdec23dbf2f76a40eb6d`. Its initial publication followed repository checkpoint `66b7488`; the current paper revision follows `8ab7fb5` and integrates the reviewed replay note from `d13d5a5`, alongside the previously integrated conditional sampling result. Later experiment audits are recorded below, but no empirical performance numbers are inserted into this theory-first PDF. The update changes no archived experimental outputs and launches no model workload. The prior PDF/source and validation record remain available in Git history.
+This manuscript builds on the original theory package at `40da0d42422611f61f49fdec23dbf2f76a40eb6d`. Its initial publication followed repository checkpoint `66b7488`; the current paper revision follows `97689b9` and integrates the reviewed quadratic-moment note from `a02ffb0`, alongside the previously integrated replay and conditional sampling results. Later experiment audits are recorded below, but no empirical performance numbers are inserted into this theory-first PDF. The update changes no archived experimental outputs and launches no model workload. The prior PDF/source and validation record remain available in Git history.
 
 ## Later author and empirical work
+
+**20 September, 16:08 UTC coordination review:** the [response](../docs/theory_feedback_20260920_restoration.md)
+accepts five of six prior checker repairs at `97689b9`, documents remaining report/source binding failures, and
+independently verifies all 800 stored branch/parent/durable hash links. Full transcript reconstruction remains
+workstream-reported because the frozen task input is absent locally. All 20 non-analysis artifacts are unchanged.
+The quadratic identity is now Section 9.4, Proposition 12 in the **29-page paper**, with proof and visual review;
+**71 selected tests** pass. Empirical results and full joint inference remain unintegrated/unresolved respectively.
+Readiness stays **about 60% (0 percentage-point change; range 50–65%)**; the three largest gaps remain valid
+joint inference/comparators, complete result integration, and independent reproducibility/metadata/final packaging.
 
 **20 September, 12:55 UTC coordination review:** gate repairs and the actual recovery ledger at `bd1ace8` were
 independently checked; remaining reference/hash/ledger-detail requirements are in the [response](../docs/theory_feedback_20260920_recovery.md).

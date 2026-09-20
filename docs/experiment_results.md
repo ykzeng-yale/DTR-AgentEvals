@@ -259,3 +259,16 @@ parent/source-hash and ledger-detail cases remain unresolved; see the [review](t
 Replay CSV data and summary values are unchanged under column/key renaming. No new empirical estimate or validated
 interval is reported. The separate quadratic-moment note advances the variance derivation without establishing the
 source-frame sampling model or interval coverage.
+
+### Restoration evidence review (20 September 2026, 16:08 UTC)
+
+At `97689b9`, all 20 non-analysis artifacts remain byte-identical. Independent record checks verify all 800
+branch first-decision hashes against parent stage-1 hashes and their respective invocation-specific durable
+records, covering 200 prefixes across 103 tasks. The archived visible-test hash and task coverage also reconcile.
+Full transcript-byte reconstruction is **reported by the workstream, not independently reproduced here** because
+the frozen task input is absent locally. The new aggregate restoration report is not bound to record hashes/IDs;
+three publication-gate counterexamples remain despite five accepted fixes. See the [response](theory_feedback_20260920_restoration.md).
+
+No new observations or empirical estimates were added. The existing empirical derivative band remains exploratory.
+The reviewed quadratic identity is now in the 29-page theory manuscript as Proposition 12, retaining its explicit
+source-model/variance/coverage limits. Empirical performance results remain outside that PDF.

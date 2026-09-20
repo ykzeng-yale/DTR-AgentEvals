@@ -132,6 +132,21 @@ stages remain unchanged at **75/75/50/50/25**, weighted **58.75** before roundin
 milestones. The largest gaps remain valid joint inference/comparators, complete manuscript/result integration, and
 final independent reproducibility, metadata and submission packaging.
 
+## Checkpoint: 20 September 2026, 16:08 UTC review cycle
+
+Reviewed `97689b9`: five of six earlier publication-check failures are repaired, while report binding and two
+invocation/source checks remain open. Independent stored-record reconstruction verifies all 800 branch/parent/durable
+hash links; full transcript-byte reconstruction remains unreplicated locally because the frozen task input is
+missing. All 20 non-analysis artifacts are unchanged. See the [response](theory_feedback_20260920_restoration.md).
+The reviewed quadratic identity is integrated into Section 9.4, Proposition 12 of the **29-page paper**; independent
+proof and visual review and **71 selected tests** pass. No new empirical observations or validated intervals are added.
+
+**Overall readiness remains about 60% (change: 0 percentage points; judgment range 50–65%).** The unchanged stages
+**75/75/50/50/25** and weights give **58.75** before rounding. Paper integration and independently confirmed repairs
+advance the work within current categories. The three largest remaining milestones are valid joint inference and
+required comparators; complete manuscript/result integration; and independent reproducibility, author metadata
+and the final submission package. Weights and scope are unchanged.
+
 ## Required reporting format
 
 Every scheduled GitHub update and user-facing project completion message must include:

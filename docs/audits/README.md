@@ -1,5 +1,35 @@
 # Dated artifact audits
 
+## Restoration records and quadratic-moment integration: `97689b9`
+
+```sh
+python3 docs/audits/check_restoration_97689b9.py
+python3 docs/audits/check_publication_gate_97689b9.py
+.venv/bin/python -m pytest -q tests experiments/tools/test_verify_stage.py
+sh manuscript/build.sh
+```
+
+Both audit scripts read pinned Git records and write only under ignored `work/` or temporary directories. Their
+archived reports are `restoration_audit_97689b9.json` and `publication_gate_audit_97689b9.json`. The primary reviewer
+reproduced the independent reviewers' results; the final report wording records the local reconstruction limit.
+The restoration audit checks stored links, not transcript-byte reconstruction: all 800 branch/parent/durable
+hash links match (200 prefixes, 103 tasks). The frozen task file is absent locally, so the workstream's transcript
+reconstruction was not independently repeated. Pass `--include-linkage` to generate detailed record links under
+`work/`. All 20 non-analysis files remain unchanged.
+
+The gate audit runs 39 cases at each of two pins, including the prior 35 with the newly required positive
+restoration summary supplied explicitly at both versions. Five previous defects reject; a stale-summary parent-hash
+case and two source-hash binding cases still pass. Missing/negative summaries reject, and valid ledgered adaptive
+recovery passes. The actual ledger still reconciles five historical rows across four IDs. These fixture findings
+do not establish corruption of the actual cohort or verify actual-host writer exclusion/atomic publication.
+
+The selected suite passes **71 tests** (34 root, including 24 exact theoretical cases; 37 gate fixtures). The four
+quadratic-moment checks were introduced in the previous cycle. Their reviewed result is now Section 9.4,
+Proposition 12 of the **29-page manuscript**, with 14 numbered results. Independent proof-preservation review,
+clean compilation and all-page visual review passed. Source/PDF hashes are in `manuscript/validation.json`.
+The [response](../theory_feedback_20260920_restoration.md) supplies acceptance criteria and inference limits.
+No model, candidate-code, tool reexecution or Monte Carlo work was performed.
+
 ## Recovery ledger and task-quadratic identity: `bd1ace8`
 
 ```sh

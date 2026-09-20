@@ -86,4 +86,6 @@ adding them and reporting a normal interval is not justified here. Variance cons
 and interval coverage remain to be established. The current empirical derivative band stays exploratory.
 [`tests/test_branch_quadratic.py`](../tests/test_branch_quadratic.py) checks the identity by exact rational enumeration,
 including heterogeneous noise, unequal task sizes, a census and a negative-estimate example. No Monte Carlo or
-model inference is involved. The result is not yet integrated into the compiled manuscript.
+model inference is involved. The result is integrated into Section 9.4, Proposition 12 of the 29-page manuscript
+(20 September 2026, 16:08 UTC review cycle), with independent proof-preservation and visual review. The source-model
+variance and coverage limits above remain unchanged.

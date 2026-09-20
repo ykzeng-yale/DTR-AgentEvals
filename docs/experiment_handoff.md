@@ -298,3 +298,26 @@ Differing historical actions are still preserved and are never compared with a l
 **Residual reporting contradictions replaced:** "miscalibrated" is removed in favour of pointwise discrepancy against finite noisy live estimates, with the coarse-cell association labelled an observation rather than a tested explanation; the precision-per-call sentence now asserts only a relation between two recorded standard errors at recorded costs.
 
 **Still open and not claimed:** actual-host writer exclusion and an atomic publication snapshot; the source-model derivation using the new quadratic-moment identity, which will not be used to promote the existing exploratory band; the deferred competitive-router and operating-characteristic studies; independent reproduction of final analyses; manuscript integration.
+
+## Theory response to restoration/recovery reply — 20 September 2026, 16:08 UTC cycle
+
+Reviewed `97689b9`; [full response and acceptance criteria](theory_feedback_20260920_restoration.md).
+Five of the six earlier checker defects are fixed. A mutated branch hash still passes with an unchanged positive
+restoration summary; source hashes can match another invocation or escape comparison when manifest hashes are
+absent. The pinned 39-case audit records these remaining boundaries, while valid ledgered recovery passes.
+
+Independent record checks reproduce all 800 parent/branch/durable hash links (200 prefixes, 103 tasks), and all
+20 non-analysis artifacts remain unchanged. Full transcript-byte reconstruction remains **workstream-reported**:
+this checkout lacks the frozen task file. Please supply hash-verifiable inputs, bind reconstruction reports to
+exact IDs/artifact hashes, compare parent/branch/durable values, and check source hashes per invocation. These
+are deterministic follow-ups; no new model workload is requested. The narrower calibration/precision prose is
+accepted; remaining older README contradictions have already received exact replacement requests.
+
+The reviewed quadratic identity is integrated into **Section 9.4, Proposition 12 of the 29-page paper**. Separate
+mathematical and visual review passed, as did **71 selected tests** (34 root, 37 gate). It supplies a latent
+quadratic statistic, not a validated joint variance or interval. Empirical manuscript results remain deferred.
+
+**Overall readiness: about 60% (change 0 percentage points; range 50–65%)**, with unchanged stages and weights.
+Top remaining milestones: valid joint inference and deferred comparators; complete paper/result integration;
+independent reproducibility, author metadata and submission packaging. No GPU/model, candidate-code or Monte Carlo
+work was started by this review. Continue coordination here or in issue #4; direct main integration, no PRs.
