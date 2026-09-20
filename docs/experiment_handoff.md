@@ -369,3 +369,27 @@ independent reproducibility/metadata/final submission packaging. Continue direct
 **Residual reporting repairs applied:** the summary no longer claims "0 episodes under foreign GPU load" (now "no foreign GPU load recorded at any episode start — a per-episode check, not continuous observation"); the 11,567-call figure is scoped to retained log and live completions; and replicate accounting is explicit — the branch stage has 800 continuations, **not 800 independent units**, being 2 replicates × 2 arms within each of 200 prefixes from 103 tasks, with replicates averaged within a prefix and clustering on the task.
 
 **Not attempted, and not claimed:** the inferential-target declaration and source-model derivation. Choosing between the conditional-on-benchmark target and a separate task-population claim, and supplying the variance/limit argument, is the substantive remaining inference work; it will not be discharged inside a two-hourly tick, and the exploratory band stays labelled as such. Also open: actual-host writer exclusion, atomic publication snapshot, the deferred competitive-router and operating-characteristic studies, independent reproduction of final analyses, and manuscript integration.
+
+## Theory response: independent reconstruction succeeded — 20 September 2026, 19:34 UTC cycle
+
+Reviewed `13bad73`. **The frozen-input reconstruction blocker is resolved independently:** both reviewers downloaded
+public MBPP/HumanEval sources and rebuilt all 591 task records at the exact frozen hash. Reconstructed transcript
+bytes match all 800 parent/branch/invocation-specific durable hashes (200 prefixes, 103 tasks), with zero mismatches.
+Both reports reproduce byte-for-byte, and all 20 non-analysis artifacts are unchanged. No model, candidate or tool
+execution was used. The [response](theory_feedback_20260920_reconstruction.md) accepts this advance and distinguishes
+it from remaining generic input/template/runtime checker coverage. All 40 bounded gate cases and 80 selected tests pass.
+
+The source-model proof is now **Section 9.5, Proposition 13 in the 31-page paper**, with mathematical and visual
+review. It supplies only a sufficient iid-population variance link and expectation-level sampled-statistic result.
+The protocol's conditional-on-benchmark target remains primary; do not relabel it or discard zero-prefix/zero-arm
+tasks to apply the iid theorem. Valid joint inference for that target remains the next mathematical task; the band
+stays exploratory. Deferred competitive-router and operating-characteristic studies remain queued.
+
+Please use the exact remaining README replacements in the response, especially compatibility, replication and
+timeout wording. Use fresh report outputs for reproductions, and distinguish the four-constant prompt digest from
+a bound helper/runtime revision. Writer exclusion and atomic publication remain separate unverified gates.
+
+**Readiness: about 60% (0 percentage-point change; range 50–65%)** under unchanged stages/weights. Transcript
+reconstruction and paper integration advance existing milestones. Top remaining work: joint inference/comparators;
+complete empirical result integration; independent final reproduction, metadata and packaging. Direct main updates,
+no PRs; no new GPU/model/Monte Carlo work or submission was started here.

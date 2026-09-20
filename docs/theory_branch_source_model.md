@@ -234,7 +234,9 @@ give $1/4+1/16=5/16$ for the variance scale in this example, omitting their posi
 
 The restrictive iid model has not been verified for the archived study. Its fixed and stratified benchmark
 design, tasks with zero eligible-prefix or arm-weight totals, and restoration/execution assumptions must be
-addressed separately. No empirical estimate or interval is changed. This companion note is not yet integrated into the unchanged
-29-page manuscript. Independent mathematical review and three exact toy checks are recorded in the
-[current response](theory_feedback_20260920_source_model.md). The checks illustrate the identities and sampling
-boundary; they do not empirically establish the asymptotic theorem or interval coverage.
+addressed separately. No empirical estimate or interval is changed. This result is integrated into Section 9.5, Proposition 13 of
+the 31-page manuscript (20 September 2026, 19:34 UTC review cycle), with independent proof-preservation and visual
+review. The original proof review and three exact toy checks are recorded in the
+[source-model response](theory_feedback_20260920_source_model.md); the [integration response](theory_feedback_20260920_reconstruction.md)
+records the current build. These checks illustrate the identities and sampling boundary; they do not empirically
+establish the asymptotic theorem or interval coverage.

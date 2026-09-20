@@ -6,7 +6,7 @@
 
 | Component | Status and boundary |
 |---|---|
-| Introduction and closest work | Written; 21 cited primary references, with inherited methods explicitly attributed. The canonical repository bibliography includes additional background references. |
+| Introduction and closest work | Written; 22 cited references (primary papers and an explicitly attributed classical asymptotics text), with inherited methods explicitly attributed. The canonical repository bibliography includes additional background references. |
 | Observation model and identification | Written and proved for versioned macro actions, bounded horizons, sequential support, exchangeability, and stable kernels. |
 | Fixed-policy estimation | EIF, exact drift, sufficient cross-fitting conditions, and finite-class improvement guarantee proved. Point consistency is distinguished from valid intervals. |
 | Sampling and resources | Root task clusters, paired contrasts, and resource outcomes specified. Arbitrary selected branches are not treated as root episodes. |
@@ -15,27 +15,37 @@
 | Branch validation and allocation | Prefix transport, exact augmented-score mean/variance, independent two-sample corollary, and clipped oracle cost allocation proved. Global optimal exploration is not claimed. |
 | Fixed-size prefix sampling | Conditional fixed-frame variance and an unbiased estimator with replicated continuations proved; the additional source-frame/log variance term for a full joint comparison remains unresolved. |
 | Full-frame quadratic moments | Conditional unbiased reconstruction using pair inclusion and continuation-noise subtraction proved; applying the identity to task derivatives does not establish source-frame variance or coverage. |
+| Source-population variance link | A bounded iid task-population CLT, oracle variance link and expectation-only sampled-quadratic corollary are proved; fixed-benchmark inference, sampled-variance concentration and joint coverage remain open. |
 | Execution drift | Full-history coupling bound and deployment-adjusted improvement certificate proved for externally justified kernel allowances and a common payoff. The allowances are not estimated from ordinary logs. |
 | Replay limits | Outcome copying distinguished from frozen-state reward recomputation; adaptive donor failure and a narrow positive control proved in Section 8.2. |
 | Empirical sections | Prospective methods and reporting targets written. New simulations, GPU/model execution, and empirical results deferred. |
 | Discussion and reproducibility | Written, with practical limitations, open questions, build instructions, and this audit record. |
 
-There are 14 numbered theorem/proposition/corollary statements, plus additional derived identities and explicitly scoped corollaries in the prose. All proofs concern their written assumptions; no claim is made that realistic agent systems already satisfy those assumptions.
+There are 15 numbered theorem/proposition/corollary statements, plus additional derived identities and explicitly scoped corollaries in the prose. All proofs concern their written assumptions; no claim is made that realistic agent systems already satisfy those assumptions.
 
 ## Review and validation
 
 - A separate agent reviewed the theory and assembled manuscript. The [full review](../docs/theory_review_20260919.md) records findings and resolutions. A second agent checked source positioning and the rendered latter half of the paper.
 - Corrections made during review: valid root marginals for cluster inference; explicit sequential support for every candidate; almost-everywhere support wording; proportional fold sizes; target-null conventions for branch scores; residual-second-moment allocation; complete kernel/payoff conditions; and manuscript conversion/cross-reference repairs.
-- The selected suite passes **79 tests**: **37 root tests**, including **27 exact theoretical cases**, and **42 publication-gate fixtures**. The broader experiment dependency suite was not rerun. All 39 pinned audit cases now meet expectations at `3f9000a`; this accepts the three previous checker fixes without certifying every provenance or runtime condition. Three root checks accompany the separate source-model note, which is not yet integrated into this PDF.
-- The compiled PDF remains unchanged at **29 pages** and **14 numbered results**. In the 16:08 UTC cycle, all pages were rendered and visually reviewed: the primary reviewer inspected pages 1–20 and page 21 individually; a separate reviewer checked pages 21–29 and the new Section 9.4. Independent mathematical review approved proof preservation and the stated inference boundary. The final LaTeX log has no warnings, undefined citations/references or overfull boxes.
+- The selected suite passes **80 tests**: **37 root tests**, including **27 exact theoretical cases**, and **43 publication-gate fixtures**. The broader experiment dependency suite was not rerun. All 40 pinned audit case expectations are met at `13bad73`; the transcript reconstruction audit additionally reproduces all frozen task bytes and all 800 parent/branch/durable hashes without executing models or tools.
+- The compiled PDF has **31 pages** and **15 numbered results**. All pages were rendered and visually reviewed in this cycle: the primary reviewer inspected pages 1–20; an independent reviewer inspected pages 21–31 individually, including Section 9.5 and both bibliography pages. Independent mathematical review approved preservation of the source-model proof, expectation-only boundary, moment condition and fixed-benchmark counterexample. The final LaTeX log has no warnings, undefined citations/references or overfull boxes.
 - The paper build uses the canonical bibliography with audit-only notes removed for display. Source-level audit annotations remain in the canonical file.
 - `validation.json` records the PDF/source hashes and reproducibility details. Build intermediates are ignored by Git.
 
 ## Integration boundary
 
-This manuscript builds on the original theory package at `40da0d42422611f61f49fdec23dbf2f76a40eb6d`. Its initial publication followed repository checkpoint `66b7488`; the current paper revision follows `97689b9` and integrates the reviewed quadratic-moment note from `a02ffb0`, alongside the previously integrated replay and conditional sampling results. Later experiment audits are recorded below, but no empirical performance numbers are inserted into this theory-first PDF. The update changes no archived experimental outputs and launches no model workload. The prior PDF/source and validation record remain available in Git history.
+This manuscript builds on the original theory package at `40da0d42422611f61f49fdec23dbf2f76a40eb6d`. Its initial publication followed repository checkpoint `66b7488`; the current paper revision follows `13bad73` and integrates the reviewed source-model note from `35eda5c`, alongside the previously integrated quadratic-moment, replay and conditional sampling results. Later experiment audits are recorded below, but no empirical performance numbers are inserted into this theory-first PDF. The update changes no archived experimental outputs and launches no model workload. The prior PDF/source and validation record remain available in Git history.
 
 ## Later author and empirical work
+
+**20 September, 19:34 UTC coordination review:** the source-model result is now Section 9.5, Proposition 13 of
+the **31-page paper**, with separate mathematical review and all-page visual QA. Independent public-source task
+regeneration reproduces all 591 frozen records, and transcript reconstruction matches all 800 parent/branch/durable
+hashes. The prior missing-input blocker is resolved; model/tool execution and final inferential validation are
+still separate gates. All 20 non-analysis artifacts remain unchanged. All 40 bounded gate cases meet expectations,
+and 80 selected tests pass. See the [response](../docs/theory_feedback_20260920_reconstruction.md). Readiness remains
+**about 60% (0 percentage-point change; range 50–65%)**. The three largest gaps are valid joint inference/comparators,
+complete empirical manuscript integration, and independent reproducibility/metadata/final packaging.
 
 **20 September, 17:51 UTC coordination review:** all three prior checker repairs at `3f9000a` are accepted;
 actual report bindings and 800 stored parent/branch/durable links reconcile, with all 20 non-analysis artifacts

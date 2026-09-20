@@ -162,6 +162,21 @@ See the [response](theory_feedback_20260920_source_model.md).
 The verified repairs and scoped proof advance existing milestones; the three largest gaps remain valid joint
 inference/comparators, complete manuscript/result integration, and independent reproducibility/metadata/final packaging.
 
+## Checkpoint: 20 September 2026, 19:34 UTC review cycle
+
+Reviewed `13bad73`. Independent public-source regeneration reproduces all 591 frozen task records, and full
+transcript-byte reconstruction matches all 800 parent/branch/durable hashes. The previous input blocker is resolved;
+all 20 non-analysis artifacts are unchanged. All 40 bounded gate cases and 80 selected tests pass. The reviewed
+source-model result is integrated into Section 9.5, Proposition 13 of the **31-page paper**, with proof-preservation
+and all-page visual review. See the [response](theory_feedback_20260920_reconstruction.md).
+
+**Overall readiness remains about 60% (change: 0 percentage points; judgment range 50–65%).** Stages remain
+**75/75/50/50/25**, weighted **58.75** before rounding under unchanged weights and scope. These are substantive
+within-category advances, but independent validation still lacks final inferential/analysis reproduction and the
+complete package. The three largest gaps remain valid joint inference/comparators, complete manuscript/result
+integration, and final independent reproduction, metadata and packaging. Successful transcript reconstruction
+alone does not validate runtime restoration, empirical interval coverage or overall submission readiness.
+
 ## Required reporting format
 
 Every scheduled GitHub update and user-facing project completion message must include:

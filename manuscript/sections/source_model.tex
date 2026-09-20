@@ -1,0 +1,114 @@
+\subsection{A source-population variance link under iid task sampling}
+\label{sec:source-population}
+
+The statistic in Section~\ref{sec:frame-quadratic} has a variance interpretation under a specified source model. We give one deliberately restrictive sufficient model, using the classical iid limit laws and smooth-function delta method \citep{vandervaart1998asymptotic}. It is separate from inference conditional on a fixed benchmark and is not a new general sampling or efficiency theorem.
+
+Condition on external policy-training information and keep it and all policies fixed. Under the resulting fixed population law, suppose task payloads
+\[
+ X_g=(M_g,T_g,N_{g1},D_{g1},N_{g0},D_{g0}),\qquad g=1,2,\ldots,
+\]
+are iid, with $T_g=\sum_{i:g(i)=g}d_i$ and the prefix counts and log totals defined in Section~\ref{sec:frame-quadratic}. Dependence among coordinates within a task is unrestricted; it carries the branch/log covariance. Require constants, independent of the task and sample size, such that almost surely
+\begin{equation}
+ 1\le m_-\le M_g\le m_+<\infty,\qquad
+ 0<d_-\le D_{ga}\le d_+<\infty,\qquad
+ |T_g|,|N_{ga}|\le K<\infty.
+ \label{eq:source-bounds}
+\end{equation}
+Counts $M_g$ are integers. These assumptions require every task to contribute eligible prefixes and positive weight to both arms. Tasks with zero prefix counts or zero arm weights fall outside this sufficient model; discarding them to force the assumptions would change the target. Shared source shocks or policy fitting across evaluation tasks do not automatically yield iid payloads.
+
+Write $\mu_M=\E M_g$, $\mu_{Da}=\E D_{ga}$, $\beta=\E T_g/\mu_M$ and $\nu_a=\E N_{ga}/\mu_{Da}$. The statistical task-population contrast is $r=\beta-\nu_1+\nu_0$. It retains prefix weighting through a ratio of expected totals and counts. The model does not imply $r=0$ or causal agreement of the two procedures. For $J$ tasks let
+\begin{equation}
+ \begin{gathered}
+ N_J=\sum_g M_g,\qquad D_{a,J}=\sum_g D_{ga},\qquad
+ \widehat\beta_J=\frac{\sum_g T_g}{N_J},\qquad
+ \widehat\nu_{a,J}=\frac{\sum_g N_{ga}}{D_{a,J}},\\
+ r_J=\widehat\beta_J-\widehat\nu_{1,J}+\widehat\nu_{0,J}
+     =\mu_{\mathcal F_J}-L(\mathcal F_J).
+ \end{gathered}
+ \label{eq:source-ratio}
+\end{equation}
+All ratios are defined under \eqref{eq:source-bounds}; the full-frame branch term remains latent.
+
+\begin{proposition}[Variance link for a bounded iid task-population model]
+\label{prop:source-population}
+Under the iid model and \eqref{eq:source-bounds}, define
+\begin{equation}
+ \psi_g=\frac{T_g-\beta M_g}{\mu_M}
+ -\frac{N_{g1}-\nu_1D_{g1}}{\mu_{D1}}
+ +\frac{N_{g0}-\nu_0D_{g0}}{\mu_{D0}},\qquad
+ \sigma^2=\E\psi_g^2.
+ \label{eq:source-influence}
+\end{equation}
+Then $\E\psi_g=0$ and
+\begin{equation}
+ \sqrt J(r_J-r)\ \Rightarrow\ N(0,\sigma^2),\qquad
+ J\Var(r_J)\longrightarrow\sigma^2.
+ \label{eq:source-limit}
+\end{equation}
+The first limit is degenerate if $\sigma^2=0$. For the exact task-weight derivatives
+\begin{equation}
+ \begin{split}
+ u_{g,J}&=\frac{T_g-\widehat\beta_J M_g}{N_J}
+ -\frac{N_{g1}-\widehat\nu_{1,J}D_{g1}}{D_{1,J}}
+ +\frac{N_{g0}-\widehat\nu_{0,J}D_{g0}}{D_{0,J}},\\
+ Q_J&=\sum_g u_{g,J}^2,
+ \end{split}
+ \label{eq:source-oracle}
+\end{equation}
+one has $\sum_g u_{g,J}=0$ and $JQ_J\to\sigma^2$ almost surely and in $L^1$.
+\end{proposition}
+
+\begin{proof}
+Let $\mu=\E X_g$, $\overline X_J=J^{-1}\sum_gX_g$, and $f(m,t,n_1,d_1,n_0,d_0)=t/m-n_1/d_1+n_0/d_0$. The population mean and every sample mean lie in a compact convex set with denominators bounded away from zero. A bounded Hessian and Taylor's theorem give
+\begin{equation}
+ r_J-r=\frac1J\sum_g\psi_g+R_J,\qquad
+ |R_J|\le C\norm{\overline X_J-\mu}^2.
+ \label{eq:source-expansion}
+\end{equation}
+For a centered bounded iid scalar coordinate $Z_g$,
+\[
+ \E\left(\frac1J\sum_g Z_g\right)^4
+ =\frac{J\E Z_g^4+3J(J-1)(\E Z_g^2)^2}{J^4}=O(J^{-2}).
+\]
+Applying this to six coordinates and using $(\sum_{k=1}^6z_k^2)^2\le6\sum_{k=1}^6z_k^4$ yields $\E R_J^2=O(J^{-2})$. Hence $\sqrt J R_J\to0$ in $L^2$, and the scalar iid CLT for $\psi_g$ proves the distributional limit. Moreover,
+\[
+ \left|\Var(r_J)-\frac{\sigma^2}{J}\right|
+ \le \E R_J^2+2\sqrt{\frac{\sigma^2}{J}\E R_J^2}
+ =O(J^{-2})+O(J^{-3/2}),
+\]
+which proves the variance limit, including the degenerate case.
+
+Set $\widehat\psi_{g,J}=Ju_{g,J}$, obtained by replacing population means and ratios in \eqref{eq:source-influence} by their empirical counterparts. Bounded payloads and uniformly positive denominators give a deterministic bound on all scores and
+\[
+ \max_{g\le J}|\widehat\psi_{g,J}-\psi_g|
+ \le C'\norm{\overline X_J-\mu}.
+\]
+The strong law therefore gives $JQ_J=J^{-1}\sum_g\widehat\psi_{g,J}^2=J^{-1}\sum_g\psi_g^2+o(1)\to\sigma^2$ almost surely. A fixed bound on $JQ_J$ gives $L^1$ convergence by dominated convergence. Differentiating \eqref{eq:source-ratio} when all of task $g$'s totals receive weight $1+\varepsilon$ gives \eqref{eq:source-oracle}; summing the centered numerators gives zero. These are the derivatives in \eqref{eq:frame-quadratic-derivative}, with their covariance terms retained.
+\end{proof}
+
+\paragraph{Consequence for the sampled quadratic statistic.}
+For every $J\ge2$, additionally assume the full frame satisfies Proposition~\ref{prop:frame-quadratic}, with $2\le m_J\le N_J$ sampled prefixes and coefficients corresponding exactly to \eqref{eq:source-oracle}. Let its estimator be $\widehat Q_J$ and require $\E|\widehat Q_J|<\infty$ for each $J$. Bounded fresh outcomes and bounded variance estimates suffice in this bounded-count model. Conditional unbiasedness and the tower property imply
+\begin{equation}
+ \E(\widehat Q_J\mid\mathcal F_J)=Q_J,\qquad
+ J\E\widehat Q_J\longrightarrow\sigma^2,\qquad
+ J\{\E\widehat Q_J-\Var(r_J)\}\longrightarrow0.
+ \label{eq:source-expectation}
+\end{equation}
+This is asymptotic agreement in expectation for the source-frame component, not exact finite-sample variance unbiasedness or convergence of $J\widehat Q_J$ in probability. Even $m_J=2$ permits the expectation identity; no concentration follows from it. Negative realized estimates remain possible.
+
+For $\widehat\Delta_J=\widehat B_J-L(\mathcal F_J)$, provided $\E\widehat B_J^2<\infty$, equation~\eqref{eq:frame-total-gap} separates its variance into the expected conditional branch variance and $\Var(r_J)$. Proposition~\ref{prop:source-population} addresses the latter under its explicit source model. A joint limit theorem for $\widehat\Delta_J$, consistency of both estimated variance components and valid studentization remain unproved here. They require a compatible source/selection/execution design and appropriate growth, moment and inclusion-weight control. Adding the two components and reporting a normal interval is not justified by \eqref{eq:source-expectation}.
+
+\paragraph{A fixed-benchmark counterexample.}
+For an even number $J$ of fixed deterministic task types, let half have $y_g=0$ and half $y_g=1$. Set $M_g=D_{g1}=D_{g0}=1$, $T_g=y_g$, $N_{g1}=y_g/2$ and $N_{g0}=0$. With a complete prefix census and deterministic fresh continuations,
+\begin{equation}
+ r_J=\frac14,\qquad \Var_{\mathrm{repeat}}(r_J)=0,\qquad
+ u_{g,J}=\frac{y_g-1/2}{2J},\qquad JQ_J=\frac1{16}>0.
+ \label{eq:source-fixed-counterexample}
+\end{equation}
+These abstract payloads illustrate a sampling-model distinction without additional causal identification claims. Task heterogeneity can yield positive squared derivatives even when repeated execution of the fixed benchmark has zero variance. Iid task sampling, rather than the bounds alone, does substantive work in Proposition~\ref{prop:source-population}.
+
+Under the iid law $Y_g\sim\operatorname{Bernoulli}(1/2)$ with the same payload map, $r_J=\overline Y_J/2$, and exactly
+\[
+ \sigma^2=J\Var(r_J)=\frac1{16},\qquad J\E Q_J=\frac{J-1}{16J}.
+\]
+Thus the variance link is asymptotic, not an exact finite-$J$ identity. Dropping branch/log covariance would incorrectly give variance scale $1/4+1/16=5/16$. Neither this illustration nor the sufficient model verifies the sampling law of an archived fixed or stratified benchmark. Such a design, zero-prefix or zero-arm tasks, and restoration/execution conditions require their own argument.

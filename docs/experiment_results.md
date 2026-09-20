@@ -285,3 +285,17 @@ The separate source-model note gives a classical iid-task interpretation for the
 under explicit boundedness and positive-denominator assumptions. It does not validate uncertainty conditional on
 the current fixed benchmark, prove consistency of the sampled statistic, or promote the exploratory empirical band.
 No empirical estimates or PDF performance results changed.
+
+### Independently reproduced task inputs and transcripts (20 September 2026, 19:34 UTC)
+
+At `13bad73`, independent public-source regeneration reproduces the exact frozen 591-task bytes. Independently
+implemented transcript reconstruction matches all 800 parent/branch/invocation-specific durable hashes, covering
+200 unique prefixes across 103 tasks. The primary reviewer repeated downloads and reconstruction and reproduced
+the audit report byte-for-byte. The prior local input blocker is resolved; the evidence is now independently
+reconstructed transcript bytes, not only recorded hash linkage or workstream-reported success.
+
+All 20 non-analysis artifacts and all empirical estimates are unchanged. No model, generated program or tool was
+executed; hidden-test outcomes and runtime-state restoration are not independently revalidated by this procedure.
+The [response](theory_feedback_20260920_reconstruction.md) records accepted reporting/checker changes and remaining
+scope. The sufficient iid source-model result is now in the 31-page paper as Proposition 13, without empirical
+performance results or validation of the exploratory joint band.

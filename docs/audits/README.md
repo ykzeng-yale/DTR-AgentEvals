@@ -1,5 +1,36 @@
 # Dated artifact audits
 
+## Independent task/transcript reconstruction and paper integration: `13bad73`
+
+```sh
+python3 docs/audits/check_reconstruction_13bad73.py
+python3 docs/audits/check_publication_gate_13bad73.py
+.venv/bin/python -m pytest -q tests experiments/tools/test_verify_stage.py
+sh manuscript/build.sh
+```
+
+The reconstruction script downloads the public source bytes into ignored `work/restoration_reconstruction_13bad73`,
+rebuilds all 591 task records and verifies the frozen task hash. Pass `--offline` to reuse that directory's downloaded
+sources, whose hashes are still checked; `--output-dir` selects another fresh directory. No experiment modules,
+reference programs or generated code are executed. Prompt equivalents are independently written, with constants
+read as literals from pinned source. All 800 reconstructed parent/branch/durable hash links match, representing
+200 prefixes and 103 tasks. All binding fields and 20 unchanged non-analysis artifacts reconcile. The primary
+reviewer repeated the downloads and reconstruction and reproduced `reconstruction_audit_13bad73.json` byte-for-byte.
+Downloaded data stays ignored; the audit does not rerun models, tools or hidden tests.
+
+The gate script retains the prior 39 cases plus a missing-parent-durable-source case at both pins. New required
+bindings and reference files are added to clean fixtures at both versions before mutation. All 40 current outcomes
+meet expectations, with legitimate recovery accepted. The primary reviewer reproduced
+`publication_gate_audit_13bad73.json` byte-for-byte. This is 80 pinned CLI runs, separate from the selected pytest
+suite's **80 tests** (37 root, including 27 exact theory cases; 43 gate fixtures). Task/helper/runtime and semantic
+record coverage limits are stated in the [response](../theory_feedback_20260920_reconstruction.md).
+
+The reviewed source-model result is now Section 9.5, Proposition 13 of the **31-page, 15-result paper**. Independent
+mathematical review and all-page visual QA passed, with clean compilation and 22 cited references. The result
+remains expectation-only for the sampled quadratic statistic and does not validate joint coverage for the fixed
+benchmark. Source/PDF provenance is recorded in `manuscript/validation.json`. No new empirical estimates, model
+workloads or Monte Carlo sweeps were run.
+
 ## Bound restoration report and source identity: `3f9000a`
 
 ```sh
