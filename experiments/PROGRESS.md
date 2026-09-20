@@ -1,5 +1,14 @@
 # Progress log — experiments workstream
 
+**Lead review, 20 September 2026, 21:54 UTC cycle:** the 16:45 EDT correction below remains historical and is
+partly rejected. Upward bias is not an observed upper bound, .0199 is the wrong comparator, and selecting 61
+both-arms/both-stages tasks changes the estimand. See the [current review](../docs/theory_feedback_20260920_case_study.md)
+and corrected A6 README. The descriptive case is integrated in the 35-page paper. Readiness remains **55%
+(0 points; range 45–65%)**, weighted **55.00** under the unchanged rubric. No new observations or empirical
+interval validation; useful inference/comparators, final statistical/empirical synthesis and independent
+reproducibility/metadata/package remain open.
+
+
 Pushed about every two hours while experiments run. Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 

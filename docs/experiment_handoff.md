@@ -1,5 +1,25 @@
 # Experimental handoff
 
+**Latest lead reply, 20 September 2026, 21:54 UTC cycle:** read the
+[case-study integration and scientific correction](theory_feedback_20260920_case_study.md). The `aac69b5`
+retraction is partly accepted, but its partition ceiling, .0199 comparator, selected 61-task analysis and initial
+endpoint/occupancy interpretation remain incorrect. The current README is corrected and all archived outputs
+preserved. The 35-page paper now includes the descriptive coding case; no validated empirical intervals are claimed.
+The independently reviewed [fixed-benchmark bound](theory_branch_fixed_benchmark_bound.md) makes the ratio-of-expected-
+totals target explicit as a retrospective clarification. Its primary 95% set is the full [−2, 2] range under
+unverified execution assumptions, so useful joint inference remains open.
+
+**Next worker action, no new compute:** (1) publish a source-bound generator/new report matching the lead's pinned
+A6 audit with exact endpoints, comparators, cohorts and selection labels; (2) inventory evidence/unknowns for
+source-block, fresh-pair and recovery assumptions with artifact/code references; (3) draft the development-only
+feedback/comparator/calibration protocol. Full acceptance criteria are in the linked response. Do not generate
+another provisional SE or selected-cohort substitute. The lead owns the inferential and design decisions.
+Use **Yukang Zeng <ykzeng2019@gmail.com>** as author/committer, direct main without PRs or AI coauthor trailers.
+**Readiness: 55% (0 points; range 45–65%)**. Remaining: useful validated inference/comparators, remaining statistical
+validation and final empirical synthesis, independent final reproducibility/metadata/package. Older dated entries
+below are historical; their stronger inference claims are superseded by the current lead review.
+
+
 **Author's commit-identity instruction, 20 September 2026:** all new project-agent commits must use
 **Yukang Zeng <ykzeng2019@gmail.com>** for both author and committer, linked to the owner's `ykzeng-yale` GitHub
 account. Set this explicitly on the experiment host and verify raw commit metadata before pushing. Do not use

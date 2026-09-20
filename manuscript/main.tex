@@ -43,7 +43,7 @@
 \begin{document}
 \maketitle
 \begin{abstract}
-Choosing a language model inside an agent changes the history on which later choices depend. Evaluation of a switching policy therefore requires an intervention on the joint trajectory distribution, rather than substitution of model outputs into an unchanged trace. We formulate model routing as a dynamic regime over versioned model and harness configurations. Under sequential exchangeability, support, and stable execution kernels, model-choice probabilities identify policy values without requiring likelihood ratios between generated token sequences. We develop a full-history doubly robust evaluation framework, give its exact drift and inference conditions, and distinguish evaluation of frozen policies from behavior-adaptive incremental interventions. We then formalize prospective routing opportunities, showing when the likelihood ratio depends on eligible decisions rather than all underlying execution steps. For selected live branches, we derive an augmented estimator of a target-prefix continuation contrast, its variance, and an oracle cost-constrained sampling allocation. A coupling bound quantifies how changes in the execution kernels limit transfer of an estimated value, and a finite-policy certificate combines sampling uncertainty with a specified drift allowance. These results adapt longitudinal causal inference, off-policy evaluation, two-phase sampling, and model-misspecification arguments to an explicit agent experiment. They do not establish novelty of those general techniques or guarantee useful estimation at long horizons. A prospective empirical protocol is specified; empirical performance results are deferred.
+Choosing a language model inside an agent changes the history on which later choices depend. Evaluation of a switching policy therefore requires an intervention on the joint trajectory distribution. We formulate routing as a dynamic regime over versioned model and harness configurations. Under sequential exchangeability, support and stable execution kernels, model-choice probabilities identify policy values without token-level likelihood ratios. We give a full-history doubly robust construction, its exact drift and inference conditions, and distinguish frozen-policy from behavior-adaptive targets. Further results connect prospective routing opportunities, selection-aware branch validation, cost-constrained allocation and execution-kernel sensitivity. These specialize established longitudinal inference, off-policy evaluation and sampling arguments; they do not guarantee useful precision or policy improvement. A descriptive open-weight coding study includes 2,640 randomized evaluation episodes and 3,960 fresh policy executions on 330 fixed tasks. Its learned router reduces to a fixed repair schedule, while limited visible feedback suppresses many repair opportunities. An offline/live discrepancy persists without an identified mismatch in the inspected assignment or estimation calculations. The branch comparison retains unresolved joint inference under the fixed-benchmark design. These findings narrow the current empirical contribution to an auditable evaluation case study. New model experiments and the remaining statistical validation are deferred.
 \end{abstract}
 \noindent\textbf{Keywords:} dynamic treatment regimes; agent evaluation; model routing; off-policy evaluation; sequential randomization; branch sampling.
 
@@ -51,14 +51,18 @@ Choosing a language model inside an agent changes the history on which later cho
 \input{sections/foundations}
 \input{sections/extensions}
 \input{sections/deployment_certificate}
+\input{sections/coding_case_study}
 \input{sections/empirical_plan}
 \input{sections/discussion}
 
 \section*{Data, software, and manuscript status}
 The editable source and supporting theoretical checks are available at
 \url{https://github.com/ykzeng-yale/DTR-AgentEvals}.
-This draft develops the theory and prespecifies the role of future experiments.
-Previously archived development runs are not presented as empirical evidence in this manuscript.
+This draft develops the theory, reports a descriptive coding-agent case study from archived records,
+and specifies the role of future validation. Case-study outputs, pinned reconstruction scripts and their
+evidence boundaries are recorded in the repository; independent reconstruction did not repeat model or
+hidden-verifier execution. Previously archived synthetic and pilot runs do not replace the planned final
+operating-characteristic studies. No new outcome collection was performed for this manuscript revision.
 The theorem statements are proved under the conditions given here and have received internal mathematical review; this does not constitute external peer review or proof-assistant certification.
 
 \bibliographystyle{plainnat}

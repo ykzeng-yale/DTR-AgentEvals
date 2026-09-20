@@ -37,9 +37,9 @@ and their scientific provenance links under the existing no-force-push instructi
 - Update docs/experiment_results.md with the exact run, observed results and limitations. Update docs/experiment_handoff.md with reproducible next steps.
 - A proposed extension is not an implemented experiment. Keep the status table current.
 
-## Current phase (19 September 2026)
+## Current phase (updated 20 September 2026)
 
-The author has prioritized completing the theory and full manuscript while GPU capacity is limited. Defer new model inference, GPU jobs, Monte Carlo sweeps, and manuscript empirical results until that work is resumed. Deterministic CPU algebra checks and manuscript compilation are in scope. Preserve existing experiments unchanged. Read `manuscript/README.md`, `docs/theory_extensions.md`, and the internal theory review when continuing the paper. This phase instruction overrides the general request above to run a small simulation for a paper-only change.
+The author has prioritized completing the theory and full manuscript while GPU capacity is limited. Defer new model inference, GPU jobs and Monte Carlo sweeps. The later author instruction explicitly prioritizes critical retrospective diagnosis and paper integration: bounded deterministic analysis of archived results and a descriptive manuscript case study are now in scope, with unresolved inference and validation stated. Deterministic CPU algebra checks and manuscript compilation are also in scope. Preserve archived experiments unchanged; integrating their observed results does not make them confirmatory or authorize fresh execution. Read `manuscript/README.md`, `docs/theory_extensions.md`, and the internal theory review when continuing the paper. This phase instruction overrides the general request above to run a small simulation for a paper-only change.
 
 ## Progress reporting
 

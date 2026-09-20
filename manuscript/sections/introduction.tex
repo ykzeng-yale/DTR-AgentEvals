@@ -19,4 +19,11 @@ We then address two design issues that arise when validating agent policies. Fir
 
 Second, a policy may be evaluated under one execution contract and deployed under another. We provide a finite-horizon sensitivity bound for bounded complete-trace returns when the initial distribution and routing policy agree and stagewise execution kernels differ by declared uniform total-variation bounds. This is a full-history adaptation of simulation-lemma and coupling arguments \citep{kearns2002near,lobel2024simulation}. It quantifies the implication of specified kernel discrepancies; it does not infer those discrepancies from limited logs or identify the value of an unsupported model update.
 
-The paper's contribution is thus a unified, explicitly scoped evaluation design, with mathematical results connecting prospective routing opportunities, selection-aware branch validation, and execution-contract sensitivity. The general identification and influence-function machinery is inherited; the branch allocation and drift arguments specialize established principles. We provide the theoretical analysis and a prospective validation protocol. Whether the resulting evaluation is sufficiently precise, less costly than direct execution, or useful for improving capable open-weight agents remains an empirical question. Those claims require the planned simulations and independent live-policy comparisons, and are not assumed in the development below.
+The paper's contribution is thus an explicitly scoped evaluation design, with mathematical results connecting
+prospective routing opportunities, selection-aware branch validation and execution-contract sensitivity.
+The general identification and influence-function machinery is inherited; the branch allocation and drift
+arguments specialize established principles. A descriptive open-weight coding study exposes a learned fixed
+repair schedule, restricted decision opportunities and an unresolved offline/live discrepancy. It does not
+demonstrate history-adaptive improvement, estimator superiority or calibrated uncertainty. The theoretical
+analysis, this case study and a prospective validation protocol together identify what remains necessary to
+determine whether the design provides useful precision or a resource advantage over direct execution.

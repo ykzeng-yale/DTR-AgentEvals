@@ -334,52 +334,41 @@ hidden-test success. No comparative uncertainty test for the methods' absolute d
 paired standard errors do not provide one, and discrepancies against noisy live estimates are not repeated-sampling
 bias. The executed result is retained whatever its ordering turns out to be under further correction.
 
-### A6 — why the tailored regime did not win (post-hoc; **corrected 20 Sep after review**)
+### A6 — retrospective diagnosis of the learned-policy comparison
 
-Not pre-registered. The first version of this section over-claimed in three ways and those claims are **retracted**;
-the original script and its output are preserved unchanged at `experiments/tools/why_null.py` and
-`results/code_routing/analysis/why_null.json` for auditability, with the corrected quantities in
-`why_null_corrected.json`. Corrections follow an independent review (`docs/scientific_diagnosis_20260920.md`).
+**Lead review, 20 September 2026, 21:54 UTC cycle.** The original diagnosis and its first correction remain
+archived in `why_null.json` and `why_null_corrected.json`; neither is accepted as an oracle bound or a power
+analysis. [The current scientific review](../docs/theory_feedback_20260920_case_study.md) and
+[reproducible audit](../docs/audits/check_why_null_aac69b5.py) supersede their interpretation. No observations,
+primary endpoints or original cohorts have been changed.
 
-**Retracted.** (i) "No tailoring rule, however good, could have produced a detectable gain" — the ceiling I computed
-is **specific to the cell partition used** (failure class × previous action) and omitted benchmark identity, which
-the learner can use. A ceiling over one partition is not an upper bound over all routers. (ii) The comparison used
-the **marginal** policy-value SE (≈0.024); the relevant precision is the **paired** contrast SE (**0.0199**).
-(iii) "Theory not implicated / the correct answer for this environment" — undetected heterogeneity is not proof that
-none exists, and does not vindicate the framework's assumptions.
+- **Learned behavior:** all 660 live paths follow large → small → large at eligible stages; only 118 reach the
+  first repair. This fixed schedule is not evidence of history-adaptive action selection on its own trajectories.
+  The logger's 78.6% first-call stopping rate is a realized occupancy statistic, not a policy-invariant design constant.
+- **Feedback:** 60/330 evaluation tasks have no surviving visible checks. Across learned episodes, 104 first-call
+  submissions pass visible validation but fail hidden tests. Better deployable feedback is a legitimate prospective
+  design change; held-out hidden outcomes must not drive stopping. These data do not show that further calls would
+  repair those failures.
+- **Initial action endpoint:** the new HumanEval +.145604 and MBPP +.072176 values compare **final hidden success
+  after randomized initial assignment and subsequent logger continuation**. They are not first-candidate effects,
+  whole-policy contrasts, utility gains or evidence of uniform model dominance.
+- **No oracle ceiling:** a positive-part estimate can be upward biased in expectation while its realized value
+  is below the true gain. Restricting the partition does not repair this error. The original assertion/previous-large
+  cell even has a small negative large-minus-small point contrast (−.003942). None of these noisy cells establishes
+  absence of useful heterogeneity or validates the theory's execution assumptions.
+- **Metric:** learned-minus-large utility remains −.005000 at the original penalties, with five fewer successes,
+  96 fewer large calls and 118 more small calls. Its descriptive crossing is large penalty .064375 when small
+  remains .01, or .088235/.029412 when both original penalties scale together. This is sensitivity of two frozen
+  policies, not a changed endpoint or an optimized frontier.
+- **Precision and selection:** the corrected JSON's .0199 matches the archived learned-minus-**always-small success**
+  standard error; it is not the learned-minus-large precision. The latter saved task-paired arithmetic is .011039
+  for success and .011278 for utility, with fixed-benchmark interval validity still unresolved. The new 61-task
+  stage comparison selects tasks with both observed actions at both later stages; 134 tasks merely reach both.
+  It changes the cohort and weighting, rather than repairing covariance for the original pooled contrast.
 
-**What survives, stated within its scope.** Adding benchmark identity does not open a gap: at t = 0 — the decision
-that covers **every** episode, which the first version never examined — the large model is better in **both**
-strata (**humaneval +0.146 ± 0.038, mbpp +0.072 ± 0.021**, task-clustered). Since no examined stratum at any stage
-favours the small model, the oracle gain against always-large is ≈0 over the partitions examined (pooled and
-benchmark at t = 0; failure-class × previous-action at t ≥ 1). Because the statistic takes positive parts of noisy
-cell estimates it is biased *upward*, so the true value over these partitions is no larger. **This is a
-partition-scoped statement, not a universal bound**: a partition on features not recorded here could differ.
-
-**Design.** 78.6% of confirm episodes are decided by the first action alone, so a dynamic regime differs from a
-static one on about a fifth of episodes. That constrains how large any tailoring gain could be, and it is a fixed
-property of the design (K = 3, absorption at validator pass).
-
-**Metric.** The tailored regime buys 1.155 large calls per episode against 1.300 at a success cost of −0.0076. It
-overtakes always-large at a large-call penalty of **0.088 when both penalties scale at 1:3** (small 0.029), or
-**0.064 with the small penalty fixed at 0.01**. Both are reported because the crossing depends on the convention.
-No cost-sensitivity analysis was pre-registered in this protocol or run — an omission on our side. The review's
-framing is accepted: this is a **trade-off**, not a metric bug.
-
-**Stage gradient, corrected.** The first version compared t = 1 and t = 2 effects using independent SEs across
-*different logger-selected populations*. Paired on the 61 tasks contributing to both stages, the difference is
-**+0.094 (SE 0.059), 1.6 SE** — suggestive, not established, and still not a contrast at common histories.
-
-**A remedy withdrawn.** The first version suggested absorbing on hidden-test success instead of the validator pass.
-That is **not deployable**: it would leak held-out verification into the agent's eligibility, making an oracle-only
-environment. Legitimate routes to a longer effective horizon are harder tasks, weaker first attempts, or more
-routing opportunities — not a stronger stopping signal.
-
-**Reading the learned policy.** Traced through reachable states it runs large → small → large and selects small at
-t = 2 in **0%** of live episodes. An earlier reading of the table row by row suggested the opposite; policy tables
-must be read against reachability.
-
-**Label correction.** The generator is described as log-only but its cost section also reads the live frontier.
+These retrospective findings support a critical descriptive case study, now integrated in the manuscript.
+They establish neither practical adaptive benefit nor its impossibility. The generator for the worker's corrected
+JSON is still missing; the independent audit identifies its quantities without endorsing its original conclusions.
 
 ### Contention and timing
 

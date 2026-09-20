@@ -1,0 +1,150 @@
+\section{A descriptive coding-agent case study}
+\label{sec:coding-case-study}
+
+\subsection{Design, data and evidence status}
+We examine an archived coding-agent experiment to assess which parts of the evaluation contract were implemented
+and which scientific questions remain unresolved. The environment uses 427 sanitized MBPP tasks and 164 HumanEval
+tasks \citep{austin2021program,chen2021code}. These are public function-synthesis benchmarks, not a sample of all
+agent tasks. A frozen split assigns 30 tasks to the pilot, 231 to training and 330 to evaluation; the evaluation
+partition contains 239 MBPP and 91 HumanEval tasks. The intended primary inference is conditional on these fixed
+benchmark tasks. This section reports observed comparisons and retrospective diagnostics, not independently
+validated coverage or a completed confirmatory test of the final research claims.
+
+The two configurations are Qwen2.5-3B-Instruct and Qwen2.5-7B-Instruct, both Q4\_K\_M, with decoding temperature
+0.7, top-$p$ 0.95 and a 1,024-token output cap per call. We denote them small and large. The first model call
+generates a candidate function. A second or third call is eligible only after failure of visible validation;
+passing that validation causes immediate submission. Hidden benchmark tests score the submitted candidate but
+do not govern deployed stopping. The visible checks were generated and certified against reference solutions
+before collection, with duplicate hidden-test inputs removed. Configurations, task partitions, routing draws,
+visible checks and policy definitions are frozen in the repository protocol and manifests.
+
+The randomized log contains 4,488 episodes, eight per training or evaluation task. Within each task, the initial
+assignment is blocked to four small and four large calls; later eligible assignments have probability $1/2$ per
+model. The evaluation log contains 2,640 episodes. A policy learned on training tasks is frozen before the
+3,960 fresh target-policy executions, comprising six policies with two runs on each of the same 330 evaluation
+tasks. These repeated runs are not 3,960 independent tasks. The archived live outcomes and utility identities
+have been independently reconstructed; the independent review did not rerun models or hidden-test verification.
+
+\subsection{Observed success and resource use}
+We retain the original utility $U=Y-0.01N_S-0.03N_L$, where $Y$ is hidden-test success and $N_S,N_L$ count model
+calls. These unitless penalties are a declared preference, not measured money or energy. Table~\ref{tab:coding-live}
+reports all six evaluated policies, without selecting a favorable subset. First-failure escalation starts small
+and uses large at subsequent eligible calls. Class-tailored starts small and uses large after an assertion failure,
+small after other failures. Soft escalation selects large with probability $1/2$ initially and $2/3$ subsequently. The learned
+policy is discussed below. All policies share the same stopping rule and maximum of three model calls.
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{lrrrr}
+\toprule
+Policy & Success & Utility & Large calls & All calls \\
+\midrule
+Always small & .6106 & .5956 & .0000 & 1.5000 \\
+Always large & .7167 & .6777 & 1.3000 & 1.3000 \\
+First-failure escalation & .6470 & .6245 & .4152 & 1.4152 \\
+Class-tailored & .6515 & .6319 & .2742 & 1.4152 \\
+Soft escalation ($\delta=2$) & .6758 & .6464 & .7818 & 1.3758 \\
+Learned fixed repair schedule & .7091 & .6727 & 1.1545 & 1.3333 \\
+\bottomrule
+\end{tabular}
+\caption{Observed evaluation-cohort means, 660 episodes on 330 tasks per policy. Call counts are per episode.
+These are descriptive success/resource comparisons, not an optimized frontier or a demonstration of equal quality,
+policy superiority or deployment savings.}
+\label{tab:coding-live}
+\end{table}
+
+The learned policy has five fewer successes than always-large among 660 executions per policy, a difference of
+$-0.007576$ in success and $-0.005000$ in utility. It uses 96 fewer large calls but 118 more small calls,
+or 22 more total calls. These realized differences do not establish equivalence or a positive advantage.
+For the two frozen policies, revaluing the observed outcomes at penalties $c_S,c_L$ gives
+\[
+\widehat\Delta_U(c_S,c_L)=\frac{-5+96c_L-118c_S}{660}.
+\]
+The empirical crossing is $c_L=0.064375$ if $c_S=0.01$ remains fixed. If both original penalties are scaled
+together, the crossing multiplier is $50/17$, giving $c_L\simeq0.088235$ and $c_S\simeq0.029412$.
+This retrospective sensitivity neither changes the original endpoint nor identifies what a newly trained policy
+would do at different penalties. A separate training-only refit without call penalties leaves the reachable
+learned schedule unchanged.
+
+\subsection{What the learned policy and stopping rule permit}
+Independent backward-regression reconstruction reproduces all 17 frozen policy entries. On reachable states,
+however, the deployed rule is simply large, then small after a failure, then large after a further failure.
+All 660 live paths follow this fixed schedule at eligible stages: 542 stop after large, 16 after large/small and
+102 reach large/small/large. Off-path differences in the policy table do not establish history-dependent action
+selection on the policy's own trajectories. Its initial key uses only benchmark identity, preventing initial
+routing by task difficulty within either benchmark. An improvement over always-small would therefore not isolate
+the value of adapting to the evolving failure history.
+
+Feedback quality further restricts the available decisions. After certification, 60 of the 330 evaluation tasks
+have no surviving visible checks. On those tasks, all 120 learned and 120 always-large executions stop after
+the first call, although respectively 61 and 65 fail hidden tests. Across the learned cohort, 104 first-call
+submissions pass visible validation but fail hidden tests, accounting for 54.2\% of its 192 final failures.
+Only 118 of 660 episodes reach a first repair. These observations identify an eligibility limitation, not the
+counterfactual claim that additional calls would correct those failures. A different feedback or stopping rule
+would define a new harness and require a prospective evaluation; hidden verification cannot become a deployed
+stopping signal. The present data are retained in full, including zero-check tasks.
+
+\subsection{Offline/live discrepancies and their unresolved interpretation}
+Table~\ref{tab:coding-calibration} retains every live policy in the offline/live comparison. Offline entries are
+the archived three-fold task-split DR estimates; the class-tailored estimate and its original fitting procedure
+were independently reconstructed, while the other DR entries are transcribed from the pinned analysis summaries.
+This distinction matters: a common table is not evidence that every estimator was independently reimplemented.
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{lrrr}
+\toprule
+Policy & Offline DR & Fresh live & DR minus live \\
+\midrule
+Always small & .5946 & .6106 & $-.0160$ \\
+Always large & .7114 & .7167 & $-.0052$ \\
+First-failure escalation & .6306 & .6470 & $-.0164$ \\
+Class-tailored & .6149 & .6515 & $-.0366$ \\
+Soft escalation ($\delta=2$) & .6689 & .6758 & $-.0069$ \\
+Learned fixed repair schedule & .7260 & .7091 & $+.0169$ \\
+\bottomrule
+\end{tabular}
+\caption{Hidden-test success estimates on the same 330 evaluation tasks. Live means have execution variability;
+these differences are not bias estimates against known truth. No validated-coverage claim or ranking of estimator
+accuracy follows from this single dataset.}
+\label{tab:coding-calibration}
+\end{table}
+
+Class-tailored IPW success is .610606, DR is .614871 and live success is .651515. Thus the DR adjustment narrows
+the discrepancy with live outcomes. Independent checks reproduce the recorded policy actions, assignment draws,
+probabilities and calculations; they find no mismatch in those inspected components. A first-candidate diagnostic,
+before adaptive repair, already differs between initial-small log and class-tailored live executions (.565152
+versus .590909). This localization is retrospective and does not identify the cause. Finite execution variation,
+differences in the execution mechanism and shortcomings in inference remain distinct possibilities. Selecting a
+new estimator because it agrees with these live means would not resolve the calibration question.
+
+The prior common-five replay comparison has mean absolute discrepancies .016061 for donor replay and .018235
+for DR against noisy live means. It does not demonstrate DR superiority. Four of those deterministic targets
+reduce to fixed eligible-stage schedules, and donor fallback remains present. The exact adaptive replay
+counterexample in Section~\ref{adaptive-donor-replay} establishes a possible failure mechanism, not its empirical
+importance in this particular dataset.
+
+\subsection{Branch target, remaining inference and implications}
+The archived branch experiment samples 200 of 564 logger-reached first-failure prefixes, spanning 103 sampled
+tasks, and records two fresh continuations per model per prefix: 800 continuations in total. Each assigned model
+is used throughout the remaining eligible stages. The branch contrast is .120000 and the pooled log contrast
+is .134654 for stay-large minus stay-small. This is a local continuation comparison on the logger's prefix
+distribution, not the learned small/large continuation, class-tailored behavior, or a whole-policy value.
+Recovery after an archive-loss incident further requires an observation-process justification: retained records
+and reconstructed transcript bytes do not prove that lost outcomes or execution state were exchangeable.
+
+The primary fixed-benchmark source/selection/execution inference is not yet validated. Conditioning on the
+entire observed prefix frame yields the conditional result in Section~\ref{sec:fixed-frame-branches}, but changes
+the conditioning set and treats the realized log comparator as fixed. The separate iid source-population result
+does not automatically apply to tasks with zero eligible prefixes or zero arm contributions. Neither the existing
+derivative scale nor a variance estimate alone supplies the missing coverage argument. We consequently report
+the branch points without presenting the exploratory band as a validated confidence interval.
+
+The case study supports a narrower contribution than demonstrated adaptive improvement: a prospective routing
+archive that makes design and interpretation failures inspectable. Informative deployable feedback, competitive
+fixed-schedule and learned-router controls, an explicit success/resource criterion, and inference for the declared
+sampling design remain necessary. Future choices will be developed outside this evaluation cohort and tested
+on fresh data. A null or unfavorable comparison is retained as evidence; it is not repaired by changing the
+endpoint or treating noisy estimated subgroup gains as an oracle upper bound.

@@ -10,7 +10,7 @@ The proposed contribution is a sequentially randomized evaluation design with ve
 
 ## Current priority: theory and paper
 
-**19 September 2026:** the [full theory-first manuscript](manuscript/README.md) develops the mathematical results and proofs, with empirical methods specified for later completion. [Read the paper PDF](manuscript/DTR_Agent_Regimes_Theory_Draft.pdf) or [edit the LaTeX source](manuscript/main.tex). New GPU/model experiments and manuscript empirical results are deferred. Existing experiment archives are preserved and are not presented as evidence in this draft.
+**20 September 2026:** the [35-page manuscript](manuscript/README.md) now combines the scoped theory and proofs with a critical descriptive coding-agent case study, including unfavorable results and unresolved inference. [Read the paper PDF](manuscript/DTR_Agent_Regimes_Theory_Draft.pdf) or [edit the LaTeX source](manuscript/main.tex). New model/GPU and Monte Carlo studies remain deferred. Archived observations are preserved; descriptive integration does not establish confirmatory validation or adaptive improvement.
 
 The new [extension proofs](docs/theory_extensions.md) cover prospective routing opportunities, selectively measured branch contrasts, oracle allocation of branch costs, and execution-kernel sensitivity. The [independent internal review](docs/theory_review_20260919.md) records conditions, corrections, and exact checks; the [claim map](docs/paper_positioning.md) separates inherited theory from the project-specific formulation.
 

@@ -217,3 +217,21 @@ The latest source fixes and unchanged-byte figure rename are integrated and insp
 and 116-item inventory remain workstream-reported in this turn. Largest remaining milestones: valid inference
 and scientifically adequate comparisons; full empirical manuscript integration; independent final reproduction,
 author-approved metadata and submission packaging. Submission remains unperformed.
+
+
+## Checkpoint: 20 September 2026, 21:54 UTC review cycle
+
+Reviewed `aac69b5` since `7085c77`. Independent reconstruction accepts several retractions and both penalty
+conventions, but rejects the remaining partition ceiling, wrong-comparator SE and selected-cohort stage inference.
+The original archive is preserved. The 35-page paper now integrates a reviewed critical coding case study with
+all six policy comparisons and explicit evidence boundaries; this closes the absence of a descriptive empirical
+section but not the final empirical-validation/synthesis milestone. The separately reviewed fixed-benchmark
+concentration note provides a sufficient construction under explicit unverified assumptions, currently yielding
+the entire [−2, 2] range. It supplies no useful empirical precision. See the [review](theory_feedback_20260920_case_study.md).
+
+**Readiness remains about 55% (change: 0 percentage points; judgment range 45–65%).** Category stages remain
+**75/75/50/25/25**, weighted **55.00** under unchanged weights and intended scope. Actual progress is paper
+integration, corrected interpretation and an explicit sufficient inferential construction, without new outcomes
+or validated intervals. Top three remaining milestones: useful validated inference and adequate comparisons;
+remaining statistical validation and final empirical synthesis; independent final reproducibility, author-approved
+metadata and submission packaging. New GPU/model and Monte Carlo requests remain deferred. Nothing submitted.

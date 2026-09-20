@@ -2,7 +2,10 @@
 \label{sec:empirical-plan}
 
 \paragraph{Status.}
-Empirical estimation and performance comparisons are deferred in this draft. This section specifies the questions future experiments must answer and the corresponding reporting structure. It contains no fitted numerical effects, benchmark rankings, or unperformed-analysis claims. Existing repository development runs are retained for provenance but will not substitute for a prespecified evaluation of the final method.
+Section~\ref{sec:coding-case-study} now reports a descriptive analysis of the existing coding-study archive.
+The broader known-truth validation and a new prospective agent evaluation remain deferred. This section specifies
+their questions and reporting structure. The archived comparisons and retrospective diagnoses do not substitute
+for prespecified validation of the final method, nor authorize new model or Monte Carlo runs.
 
 \subsection{Known-truth evaluation of the statistical claims}
 Finite sequential environments will vary prior-treatment-induced confounding, sample size, eligible-decision count, policy divergence, and outcome sparsity. Exact enumeration or dynamic programming will determine policy truth. Separate cells will omit a relevant historical variable, misspecify either nuisance family, alter the execution kernels, or introduce missing terminal outcomes. A factorial design should vary horizon and overlap separately; combined stress tests will be labeled accordingly.
@@ -14,7 +17,7 @@ The replay implementation will first be checked against both positive and adapti
 The primary statistical outputs will be bias, root mean squared error, confidence-interval coverage and length, false improvement declarations, and computation. Weight tails, zero-match rates, stage-specific effective sample sizes, empty nuisance-fit cells, and numerical failures will be retained. Monte Carlo uncertainty will accompany performance summaries. An interval that fails under misspecification will be reported as a failure under the relevant assumptions rather than hidden by selective reporting or undeclared truncation.
 
 \subsection{Prospective open-weight agent experiment}
-The empirical agent study will fix a model pool, prompts, decoding settings, tool interface, execution environment, stopping rules, and objective verifier. Development tasks will establish a feasible configuration and a nondegenerate outcome distribution. After that choice, all evaluation tasks will be newly drawn or held out at the task-family level. Model weights and framework software will have separately documented licenses and immutable version identifiers.
+The empirical agent study will fix a model pool, prompts, decoding settings, tool interface, execution environment, stopping rules, and objective verifier. Development tasks will establish a feasible configuration and a nondegenerate outcome distribution. Before collection, the protocol will also set adequacy thresholds for visible-feedback informativeness, consequential routing opportunities and per-action support, with checks on development tasks. Handling of tasks with zero usable visible checks will be specified prospectively; the archived evaluation cohort will not be filtered retrospectively. After that choice, all evaluation tasks will be newly drawn or held out at the task-family level. Model weights and framework software will have separately documented licenses and immutable version identifiers.
 
 Routing opportunities will be defined prospectively. Known assignment probabilities will be persisted before generation, including availability and budget restrictions. Candidate policies will include always-small, always-large, an observable fixed-time switch, error-triggered escalation, a supported stochastic policy, and a competitive learned router. Each rule will specify its behavior when a trigger never occurs or an action becomes infeasible. A successful episode, a budget-limited failure, and an infrastructure loss of the outcome will remain distinct statuses.
 
@@ -23,4 +26,10 @@ Randomized logs will supply the offline estimates. Independent root-to-terminal 
 \subsection{Policy selection, resource use, and reporting}
 Training, selection, and final evaluation will be separated by task or task family. The final sample size will be chosen for a prespecified precision or power target using development estimates of task-level contrast variance; it will not be justified by the number of model calls alone. Candidate classes, cost units, primary contrasts, and multiplicity handling will be frozen before confirmatory outcomes are viewed. Local token counts, elapsed time, billed cost, and energy are distinct measurements.
 
-The final manuscript will add three empirical components: a table of statistical operating characteristics against known truth; a comparison of offline values with fresh-policy execution values; and a success--resource frontier with independent policy-improvement contrasts. Each component will report failures and uncertainty. A single live benchmark comparison cannot establish repeated-sampling coverage, and a ranking correlation cannot establish calibrated causal value estimates. If the available computation cannot support the planned precision, the study will report the attainable precision and narrow its claim.
+The completed empirical package requires statistical operating characteristics against known truth, validated
+offline/live comparisons, and a success--resource analysis with independently evaluated policy-improvement
+contrasts. The descriptive tables in Section~\ref{sec:coding-case-study} fill part of this reporting structure;
+they do not complete its inferential or comparative requirements. Each component will retain failures and
+uncertainty. A single live benchmark comparison cannot establish repeated-sampling coverage, and a ranking
+correlation cannot establish calibrated causal value estimates. If available computation cannot support the
+planned precision, the study will report the attainable precision and narrow its claim.

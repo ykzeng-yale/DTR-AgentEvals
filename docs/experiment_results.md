@@ -6,7 +6,9 @@ The original result sections below were generated on 2026-09-18; later checkpoin
 independently reconstructs the learned fixed large/small/large schedule, limited repair opportunities and
 zero-check stopping, the unresolved class-tailored calibration discrepancy, and descriptive utility sensitivity.
 These retrospective analyses narrow the empirical claims; no original outcomes, objectives or cohorts changed.
-The primary fixed-benchmark joint inference and complete empirical manuscript integration remain open.
+The descriptive case study is now integrated into the 35-page manuscript; useful fixed-benchmark joint inference,
+remaining statistical validation and final empirical synthesis remain open. The [21:54 UTC review](theory_feedback_20260920_case_study.md)
+corrects the worker's revised A6 interpretation and gives a separately reviewed, currently vacuous fixed-benchmark bound.
 
 **Earlier review, 20 September 2026, 04:24 UTC cycle:** all 800 branch completions are now published at `d4997c6` and independently reconciled as saved records. The new 42-task analysis changes the population and weights, so uncertainty for the original full-prefix contrast remains unresolved. See [the completed-branch review](theory_feedback_20260920_branch.md). The earlier live-policy review at `ac3ca83` remains valid within its stated limits; historical snapshots below are dated explicitly.
 

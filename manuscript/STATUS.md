@@ -1,12 +1,12 @@
 # Theory-first manuscript status
 
-**Updated 20 September 2026.** This is a complete working draft of the scoped theory paper, with empirical methods prespecified and empirical performance results deliberately deferred. It is not a submission-ready claim, a novelty certification, or external peer review.
+**Updated 20 September 2026.** This is a working draft of the scoped theory paper, now with an archived descriptive coding case study and a prospective validation plan. New model/Monte Carlo work remains deferred. It is not a submission-ready claim, a novelty certification, or external peer review.
 
 ## Delivered scope
 
 | Component | Status and boundary |
 |---|---|
-| Introduction and closest work | Written; 22 cited references (primary papers and an explicitly attributed classical asymptotics text), with inherited methods explicitly attributed. The canonical repository bibliography includes additional background references. |
+| Introduction and closest work | Written; 24 cited references (primary papers and an explicitly attributed classical asymptotics text), with inherited methods explicitly attributed. The canonical repository bibliography includes additional background references. |
 | Observation model and identification | Written and proved for versioned macro actions, bounded horizons, sequential support, exchangeability, and stable kernels. |
 | Fixed-policy estimation | EIF, exact drift, sufficient cross-fitting conditions, and finite-class improvement guarantee proved. Point consistency is distinguished from valid intervals. |
 | Sampling and resources | Root task clusters, paired contrasts, and resource outcomes specified. Arbitrary selected branches are not treated as root episodes. |
@@ -18,7 +18,7 @@
 | Source-population variance link | A bounded iid task-population CLT, oracle variance link and expectation-only sampled-quadratic corollary are proved; fixed-benchmark inference, sampled-variance concentration and joint coverage remain open. |
 | Execution drift | Full-history coupling bound and deployment-adjusted improvement certificate proved for externally justified kernel allowances and a common payoff. The allowances are not estimated from ordinary logs. |
 | Replay limits | Outcome copying distinguished from frozen-state reward recomputation; adaptive donor failure and a narrow positive control proved in Section 8.2. |
-| Empirical sections | Prospective methods and reporting targets written. New simulations, GPU/model execution, and empirical results deferred. |
+| Empirical sections | Descriptive coding case integrated, with all six policies and unfavorable/unresolved comparisons; numeric and narrative review complete. Prospective design includes feedback/opportunity thresholds. New simulations and GPU/model execution remain deferred. |
 | Discussion and reproducibility | Written, with practical limitations, open questions, build instructions, and this audit record. |
 
 There are 15 numbered theorem/proposition/corollary statements, plus additional derived identities and explicitly scoped corollaries in the prose. All proofs concern their written assumptions; no claim is made that realistic agent systems already satisfy those assumptions.
@@ -27,16 +27,27 @@ There are 15 numbered theorem/proposition/corollary statements, plus additional 
 
 - A separate agent reviewed the theory and assembled manuscript. The [full review](../docs/theory_review_20260919.md) records findings and resolutions. A second agent checked source positioning and the rendered latter half of the paper.
 - Corrections made during review: valid root marginals for cluster inference; explicit sequential support for every candidate; almost-everywhere support wording; proportional fold sizes; target-null conventions for branch scores; residual-second-moment allocation; complete kernel/payoff conditions; and manuscript conversion/cross-reference repairs.
-- The selected suite passes **80 tests**: **37 root tests**, including **27 exact theoretical cases**, and **43 publication-gate fixtures**. The broader experiment dependency suite was not rerun. All 40 pinned audit case expectations are met at `13bad73`; the transcript reconstruction audit additionally reproduces all frozen task bytes and all 800 parent/branch/durable hashes without executing models or tools.
-- The compiled PDF has **31 pages** and **15 numbered results**. All pages were rendered and visually reviewed in this cycle: the primary reviewer inspected pages 1–20; an independent reviewer inspected pages 21–31 individually, including Section 9.5 and both bibliography pages. Independent mathematical review approved preservation of the source-model proof, expectation-only boundary, moment condition and fixed-benchmark counterexample. The final LaTeX log has no warnings, undefined citations/references or overfull boxes.
+- **Prior test checkpoint (`13bad73`):** 80 selected tests passed (37 root, including 27 exact theoretical cases, and 43 publication-gate fixtures). That suite and the broader experiment dependency suite were not rerun for this prose-only paper revision. Prior transcript reconstruction remains completed evidence, not fresh outcome verification.
+- **Current deterministic checks:** the lead reproduced the pinned A6 audit and fixed-benchmark bound constants/finite-population checks. An independent reviewer checked the new tables against archived values and reviewed the separate bound's proof; no validated empirical confidence interval follows.
+- The compiled PDF has **35 pages** and **15 numbered results**. All pages were rendered: the primary reviewer inspected pages 1–20 in contact sheets and an independent reviewer inspected pages 21–35 individually, including both new case-study tables and the bibliography. No clipping, overlaps or missing glyphs were found. All original formal-theory section files are byte-unchanged. The final LaTeX log has no warnings, undefined references/citations or overfull boxes.
 - The paper build uses the canonical bibliography with audit-only notes removed for display. Source-level audit annotations remain in the canonical file.
 - `validation.json` records the PDF/source hashes and reproducibility details. Build intermediates are ignored by Git.
 
 ## Integration boundary
 
-This manuscript builds on the original theory package at `40da0d42422611f61f49fdec23dbf2f76a40eb6d`. Its initial publication followed repository checkpoint `66b7488`; the current paper revision follows `13bad73` and integrates the reviewed source-model note from `35eda5c`, alongside the previously integrated quadratic-moment, replay and conditional sampling results. Later experiment audits are recorded below, but no empirical performance numbers are inserted into this theory-first PDF. The update changes no archived experimental outputs and launches no model workload. The prior PDF/source and validation record remain available in Git history.
+This manuscript builds on the original theory package at `40da0d42422611f61f49fdec23dbf2f76a40eb6d`. The current
+revision follows `aac69b5`, integrating reviewed archived findings as a descriptive case study in Section 11 and
+aligning the abstract, introduction, future methods and discussion. The independent [A6 correction and paper review](../docs/theory_feedback_20260920_case_study.md)
+rejects the worker's remaining bound/precision/selection claims. All original experiment archives are preserved.
+No new models, candidate code, verifiers or Monte Carlo workloads were executed. The prior 31-page PDF and its
+validation record remain in Git history. The separate fixed-benchmark bound is reviewed but unintegrated; useful
+inference and execution/recovery assumptions are still unresolved.
 
-## Later author and empirical work
+**Current readiness: about 55% (0 percentage-point change; judgment range 45–65%).** Remaining milestones:
+useful validated inference and adequate comparisons; remaining statistical validation and final empirical synthesis;
+independent reproducibility, author-approved metadata and submission packaging. This is not submission-ready.
+
+## Earlier checkpoints (historical evidence status)
 
 **20 September, author-requested scientific diagnosis:** three independently reconstructed diagnostics identify
 the learned policy as a fixed large/small/large repair schedule, document zero visible checks on 60/330 evaluation

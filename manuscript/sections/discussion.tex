@@ -13,4 +13,19 @@ The execution-drift bound has a different role from identification. It propagate
 
 Several practical conditions also remain outside the current model. The analysis assumes independent task units, with repeated executions and branches handled within task. Shared mutable environments, caches, or resource contention can introduce interference beyond that structure. Outcomes must correspond to the declared verifier and horizon; policy-dependent missing verification requires additional observation assumptions. A fixed benchmark supports conclusions conditional on its tasks unless a task-sampling argument is supplied. Even when policy-value inference is valid, it does not identify which model is best for each individual task or justify unrestricted search over policies using the same evaluation outcomes.
 
-The next empirical step is to compare offline estimates with independently executed, frozen policies under a common contract. Known-truth simulations should separate algebraic correctness from coverage, support failure, and nuisance misspecification. Live studies should use models capable of nondegenerate task performance, record actual routing probabilities, and distinguish task sampling from repeated-seed variability. Restored same-model controls are needed to assess branch reproducibility. Both null improvement and cases in which direct policy execution is cheaper or more precise than off-policy evaluation are scientifically informative. The present theoretical development does not establish empirical superiority or deployment savings; the planned studies are required to determine when this evaluation design is useful.
+The coding case study makes these boundaries concrete. Reconstructing the learned policy reveals a fixed
+eligible-stage schedule rather than task-specific failure adaptation. Reference-certified checks can remain
+uninformative for stopping, and some hidden failures never become eligible for repair. Independent reconstruction
+of recorded actions and estimates narrows the calibration investigation, but does not establish invariant
+execution kernels or correct repeated-sampling uncertainty. These are design and inference questions that a
+feasibility gate without prespecified adequacy thresholds for informative feedback and consequential routing
+opportunities can miss.
+
+The next empirical design should establish informative deployable feedback on development tasks, compare
+competent fixed schedules and routers, and freeze the success/resource criterion and attainable precision before
+fresh evaluation. Known-truth studies should separate algebraic correctness from coverage, support failure and
+nuisance misspecification. The original fixed-benchmark joint inference and recovery assumptions require their
+own justification; an iid task-population result cannot silently replace them. Both null improvement and cases
+where direct execution is cheaper or more precise remain scientifically informative. The current results do
+not establish empirical superiority or deployment savings; they provide a reproducible account of the evidence
+and limitations that the next study must address.
