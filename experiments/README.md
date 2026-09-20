@@ -13,7 +13,7 @@ agent and are not edited from here. Rules in [`AGENTS.md`](../AGENTS.md) apply.
 | S1 | Crossed n × horizon × overlap-floor grid on the **reference** simulator and estimators (unchanged), 1,000 replicates × 27 cells × 4 nuisance specifications | synthetic, exact truth | **executed** — `results/s1_grid/`, report in `grid_report.md` |
 | E1 | Absorbing-horizon tabular IPW / g-computation / cross-fitted DR with task-cluster inference | code + tests | **implemented**, 12 tests pass; reproduces `src/dtr_agent_evals` scores to 1e-10 on its simulator |
 | L1–L3 | Code-routing study on MBPP + HumanEval, Qwen2.5-3B vs 7B, K=3 routing decisions | real open-weight inference | **executed 19 September** — 4,488 randomized + 3,960 live episodes, 0 errors. Estimator calibrated (5/6); tailoring does **not** beat always-large |
-| A4 | Branch audit: 200 restored first-failure prefixes × {small, large} × 2 fresh continuations, with transcript-hash and tool-result restoration checks | real inference | **running 19 September** |
+| A4 | Branch audit: 200 restored first-failure prefixes × {small, large} × 2 fresh continuations | real inference | **executed 19 September** — 800/800 restorations exact; forked replay agrees with the log and is 2.19× more precise at 39% of the calls |
 
 The L1–L3 study below is executed on real open-weight models; E0 and S1 remain synthetic.
 
@@ -208,7 +208,8 @@ headline. It does not bear on the *evaluation* half, which A1 supports.
 
 ### A3 — support diagnostics
 
-IPW, cross-fitted DR and g-computation agree to ≤0.016 for every policy, with 0 missing Q cells. Deterministic
+IPW, cross-fitted DR and g-computation agree closely for every policy — the largest disagreement is below 0.016 on
+utility and 0.0167 on success — with 0 missing Q cells. Deterministic
 targets have the worst-case trajectory weight 8 = 2³ by design, stage-3 effective sample size 771–903 of 2,640
 episodes, and 317–330 of 330 tasks contributing. The **stochastic** odds-shift targets are far cheaper to evaluate —
 ESS 2,286–2,528 and maximum weight 1.78–2.56 — reproducing the prediction from the synthetic grid that supported
@@ -220,16 +221,56 @@ stochastic targets cost less to evaluate than deterministic ones.
   A second decision is *triggered by failure*, so the naive contrast is catastrophically misleading about the effect
   of escalating.
 - **Wrong propensity**: IPW with a deliberately wrong constant 0.8 (instead of the recorded 0.5) gives
-  **2.015** for `always_small` — outside the attainable range of the utility — and 0.433 for `always_large` against a
-  correct 0.714.
+  **2.015** for `always_small` on the **success** outcome — outside the attainable range [0, 1] — and 0.433 for
+  `always_large` against a correct 0.714.
 
-### Theorem 5 at realistic scale
+### Theorem 5 is not applicable as computed, and would be vacuous anyway
 
-With K = 3, weight bound c = 2 and 330 confirm tasks, the finite-class certificate gives M = 48.4 and a half-width
-of **ε ≈ 18.1** on a utility of range ≈ 1.1: **vacuous**. Reaching ε = 0.05 would need ≈4×10⁷ tasks. The
-improvement decisions above therefore rest on the CLT/Bonferroni intervals, with the certificate reported as
-uninformative rather than omitted. A variance-adaptive (empirical-Bernstein) version is the obvious next step for
-the theory workstream.
+With K = 3, weight bound c = 2 and 330 confirm tasks the finite-class certificate gives M = 48.4 and a half-width of
+ε ≈ 18.1 on a utility of range ≈ 1.1, so it would be **vacuous**; ε = 0.05 would need ≈4×10⁷ tasks. An independent
+review by the theory workstream raised the prior objection that **applicability fails before usefulness does**: the
+theorem assumes outcome regressions fitted on data independent of the evaluation sample, and cross-fitting *within*
+CONFIRM does not supply that. The number is therefore reported as a scale calculation, not as a certificate for the
+scores here. The improvement decisions rest on the asymptotic Bonferroni intervals. A TRAIN-only nuisance fit, or a
+justified foldwise construction, is needed before any finite-sample certificate is claimed; a variance-adaptive
+(empirical-Bernstein) replacement needs further theory.
+
+### A4 — branch audit: forked replay agrees with the log, and is cheaper
+
+200 first-failure prefixes were sampled with known probability (0.355) from the completed confirm log, their
+transcripts restored, and both models continued from the identical saved state with 2 fresh seeds each — 800
+continuations over 103 tasks.
+
+| quantity | value |
+|---|---|
+| restoration: recomputed transcript hash equals the hash logged before the parent's call | **800 / 800** |
+| restoration: re-validated parent candidate reproduces the logged tool result | **800 / 800** |
+| same state, same model, two fresh seeds: outcome disagreement (the serving-noise floor) | **0.080** |
+| effect of continuing with the large model, from forked replay | 0.1200 (task-cluster SE 0.0320) |
+| the same quantity from the randomized log (Hájek IPW, task bootstrap SE) | 0.1347 (SE 0.0474) |
+| forked minus log | **−0.015, 95% CI [−0.127, +0.098]** |
+
+Two independent routes to the same causal quantity agree. Restoration is exact: every one of the 800 rebuilt
+transcripts hashed identically to what was logged before the original call, and every re-validated parent candidate
+reproduced its logged tool result — so the environment really is replayable, which is the assumption the whole branch
+estimand rests on. The 8% same-state/same-model disagreement is the irreducible sampling noise of the server at
+T = 0.7 and bounds how sharp any single-episode counterfactual claim can be.
+
+**Forking was 2.19× more precise using 39% of the model calls** (1,434 new calls versus 3,662 in the confirm log;
+variance × compute 1.47 versus 8.23, a 5.6× efficiency gain for this contrast). The synthetic study E0 predicted a
+2.1–2.3× variance reduction from forking at equal compute; the real open-weight system delivered 2.19×. That
+prediction transferring from a planted simulator to real models is the most transportable finding here.
+
+The caveat is the estimand, not the precision: this is the mean continuation effect over the prefix population that
+the *randomized logger* reached. It is **not** the value of a policy that changes how those prefixes are reached, and
+it cannot replace the whole-policy comparison in A2.
+
+### Contention and timing
+
+Every stage ran with **zero foreign GPU load**, so latency is interpretable throughout: median call 3.1–4.2 s (small)
+and 6.3–11.0 s (large). Across 13,001 model calls in all four stages there was **1 validation timeout, 0 hidden-test
+timeouts and 3 truncated generations**. Timeouts are the only timing-dependent path into an outcome, and at this rate
+they cannot have moved a result.
 
 ## L1–L3 — code-routing study (`code_routing/`)
 

@@ -181,3 +181,29 @@ pilot. Pilot outcomes by arm are descriptive only and enter no analysis.
 
 None were received. Six questions to the theory agent in `docs/experiment_handoff.md` went unanswered before the freeze; the
 defaults stated there were used (absorbing success kept; function-synthesis benchmarks in a Seatbelt sandbox).
+
+## 11. Execution incidents
+
+Recorded here rather than silently repaired, because the protocol promises that failures are retained.
+
+**19 September 2026, branch audit — 665 completed continuations lost to a publishing error, re-run.** The first
+branch-audit invocation (`0445024c72d2`) executed all 800 planned continuations and exited reporting zero errors.
+Only 135 were on disk. Cause: `results/code_routing/branch/` was `git add`-ed, committed and rebased onto upstream
+**while that runner still held `episodes.jsonl` and `decisions.jsonl` open for appending**; the rebase replaced both
+files with new inodes, and the runner's handles continued writing to the old, unlinked ones. Writes to an unlinked
+inode succeed, so nothing failed visibly. This was an operator error in publishing, not a fault of the design, the
+harness or the models.
+
+Scientific impact: none that can bias a result. The lost outcomes were never observed by anyone — they went to a
+deleted file and were unreadable — so no selection on outcome was possible. The missing 665 episodes were re-run
+under invocation `8c343c83afdc` from the same frozen `branch_plan.json`, with the same per-episode seeds, the same
+`code_sha256` and the same frozen environment; the 135 survivors were kept and not re-run. Decision records from the
+lost invocation remain in `decisions.jsonl` and stay distinguishable by their `invocation` field; 4 episodes have
+decision rows from the lost invocation and a result only from the re-run.
+
+Controls added: `run.lock` is now git-ignored, and `experiments/tools/verify_stage.py` must pass before any stage is
+committed. It refuses a stage whose lock is held by a live process or whose episodes file was modified in the last
+two minutes, and it checks the episodes on disk against the frozen design or branch plan rather than trusting the
+runner's progress counter. Verified retrospectively: the `log` (4,488) and `live` (3,960) stages were complete and
+idle before they were committed and are intact.
+

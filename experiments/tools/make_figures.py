@@ -65,8 +65,8 @@ def frontier() -> pd.DataFrame:
 def main():
     cal = pd.read_csv(SRC / 'calibration_ope_vs_live.csv'); cal = cal[cal.outcome == 'utility']
     fr = frontier(); fr.to_csv(SRC / 'frontier_live.csv', index=False)
-    fig, ax = plt.subplots(1, 2, figsize=(12.6, 5.0), facecolor=SURFACE)
-    fig.subplots_adjust(left=0.07, right=0.97, wspace=0.28, top=0.80, bottom=0.14)
+    fig, ax = plt.subplots(1, 3, figsize=(17.4, 5.0), facecolor=SURFACE)
+    fig.subplots_adjust(left=0.05, right=0.985, wspace=0.26, top=0.80, bottom=0.14)
 
     # ---- panel 1: does the offline estimate match what actually happens?
     style(ax[0], 'Offline estimate vs. what the policy actually did', 'off-policy estimate from ONE shared randomized log',
@@ -104,8 +104,26 @@ def main():
     ax[1].annotate('the learned regime buys the same success with 11% fewer\nlarge-model calls, but does not beat always-large\n(live difference -0.005, 95% CI -0.027 to +0.017)',
                    (1.60, 0.564), fontsize=8.3, color=INK2, va='bottom', ha='right')
 
-    fig.suptitle('Code-routing study · Qwen2.5 3B vs 7B · MBPP + HumanEval · 330 held-out tasks · 4,488 randomized + 3,960 live episodes',
-                 x=0.07, ha='left', fontsize=9.5, color=INK2, y=0.955)
+    # ---- panel 3: two independent routes to the same causal quantity
+    br = json.loads((SRC / 'branch_summary.json').read_text())
+    style(ax[2], 'Two routes to the same causal number', '', 'effect of continuing with the large model\n(success, after a first failure)')
+    labels = ['off-policy estimate\nfrom the randomized log', 'forked replay of both\nmodels from the same state']
+    vals = [br['log_estimate'], br['branch_estimate']]; ses = [br['log_se'], br['branch_se']]
+    cols = [YELLOW, BLUE]
+    for i, (v, se, c) in enumerate(zip(vals, ses, cols)):
+        ax[2].errorbar(i, v, yerr=1.96 * se, fmt='o', color=c, markersize=9, markeredgecolor=SURFACE,
+                       markeredgewidth=1.5, elinewidth=1.6, capsize=0, zorder=3)
+        ax[2].annotate('%.3f' % v, (i, v), xytext=(11, -3), textcoords='offset points', fontsize=9, color=INK)
+    ax[2].axhline(0, color=MUTED, linewidth=1, linestyle=(0, (4, 3)))
+    ax[2].set_xticks([0, 1]); ax[2].set_xticklabels(labels, fontsize=8.5, color=INK2)
+    ax[2].set_xlim(-0.45, 1.6); ax[2].set_ylim(-0.02, 0.245)
+    ax[2].annotate('they agree: difference %.3f, 95%% CI [%.3f, %.3f]\n\nforking is %.1fx more precise using %.0f%% of the\nmodel calls; %d/%d restorations reproduced the\nsaved state exactly; two fresh continuations of\nthe SAME state disagree %.0f%% of the time'
+                   % (br['difference'], br['diff_lower'], br['diff_upper'], br['variance_ratio'], 100 * br['compute_ratio'],
+                      br['restored_ok'], br['n_continuations'], 100 * br['noise_floor']),
+                   (-0.40, 0.232), fontsize=8.3, color=INK2, va='top')
+
+    fig.suptitle('Code-routing study · Qwen2.5 3B vs 7B · MBPP + HumanEval · 330 held-out tasks · 4,488 randomized + 3,960 live + 800 forked episodes',
+                 x=0.05, ha='left', fontsize=9.5, color=INK2, y=0.955)
     out = SRC / 'figures'; out.mkdir(exist_ok=True)
     fig.savefig(out / 'calibration_and_frontier.png', dpi=170, facecolor=SURFACE)
     fig.savefig(out / 'calibration_and_frontier.svg', facecolor=SURFACE)

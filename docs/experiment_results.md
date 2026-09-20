@@ -165,3 +165,28 @@ The published design and manifests describe Qwen2.5-3B-Instruct and Qwen2.5-7B-I
 **The Theorem 5 output is a hypothetical scale calculation, not a valid certificate for the reported cross-fitted scores.** The values M = 48.41 and half-width approximately 18.1 use an independent-evaluation argument whose external-fit condition is not supplied by fitting Q on other CONFIRM folds. This applicability issue precedes whether the bound is useful. The asymptotic primary rule is separate. A separately evaluated TRAIN-only nuisance fit or a justified foldwise construction is needed before presenting a finite-sample certificate; a variance-adaptive replacement would require further theory.
 
 **Branch and integration status.** Only 135 of 800 planned branch continuations are committed in this snapshot. Their stored fidelity flags are true, but this review does not independently restore the source states; partial records do not establish a branch contrast. The earlier restoration enforcement, parent-source verification, completeness and shared-prefix variance requirements remain open. Other limitations include one coding-benchmark family, one model pair, K = 3 with absorption on **visible-validator pass**, compressed tabular states, benchmark-adapted visible tests and unknown model memorization. Reference-solution certification does not establish validity for every correct candidate. One live trace is redacted; original task inputs, original unredacted bytes and host execution are not independently verified here. Results are not yet integrated into the manuscript PDF.
+
+*(Experiments workstream, 19 September 2026, responding to the review above.)* The three corrections are accepted.
+The wrong-propensity control value 2.015 is for **success**, not utility, and the IPW/DR/g-computation disagreement
+reaches 0.0167 on success rather than staying below 0.016; both are fixed in `experiments/README.md`. On Theorem 5,
+the review is right that applicability precedes usefulness: the reported M = 48.4 and half-width 18.1 assume
+nuisances fitted on data independent of the evaluation sample, which cross-fitting **within** CONFIRM does not
+supply, so the number is a scale calculation and not a certificate for the scores reported here. It is retained only
+as an indication of magnitude, and the improvement decisions rest on the asymptotic Bonferroni rule. The branch
+finding was also correct at the time it was written: that snapshot did contain only 135 of 800 continuations. The
+cause was an operator error in publishing, not a partial run, and it is documented in protocol section 11; the
+completed audit follows.
+
+Limitations: one benchmark family, one model pair, K = 3 with absorbing success, a tabular state, and visible checks certified against reference solutions (so "no false alarms" holds for reference-equivalent code, not for every correct program). The branch audit of restored prefixes was still executing when this section was written and is reported separately.
+
+### Branch audit (added 19 September 2026, completing the section above)
+
+200 first-failure prefixes sampled with known probability (0.355) from the completed confirm log, transcripts restored, both models continued from the identical saved state with two fresh seeds each: 800 continuations over 103 tasks, 0 infrastructure errors.
+
+Restoration was exact: **800 of 800** rebuilt transcripts hashed identically to the hash logged before the parent's call, and **800 of 800** re-validated parent candidates reproduced their logged tool result. Two fresh continuations of the *same* state under the *same* model disagree 8.0% of the time, which is the serving-noise floor for single-episode counterfactual claims at temperature 0.7.
+
+The forked estimate of the effect of continuing with the large model after a first failure is 0.1200 (task-cluster SE 0.0320); the same quantity estimated from the randomized log by Hájek IPW is 0.1347 (SE 0.0474); their difference is −0.015 with 95% CI [−0.127, +0.098]. Two independent routes to the same causal quantity agree. Forking reached that agreement **2.19× more precisely using 39% of the model calls** (variance × compute 1.47 against 8.23). The synthetic study reported above predicted a 2.1–2.3× variance reduction from forking at equal compute, and the real open-weight system delivered 2.19× — the clearest instance in this project of a synthetic prediction transferring to real models. The estimand caveat stands: this is the continuation effect over the prefix population the randomized logger reached, not the value of a policy that changes how prefixes are reached.
+
+Every stage ran with zero foreign GPU load; across 13,001 model calls there was 1 validation timeout, 0 hidden-test timeouts and 3 truncated generations.
+
+An execution incident is recorded in protocol section 11: 665 of the first 800 branch continuations were lost when the stage directory was committed and rebased while the runner still held its files open, and were re-run from the frozen plan with the same seeds. The lost outcomes were never observed, so no selection on outcome was possible. `experiments/tools/verify_stage.py` now gates publication of any stage against the frozen design and refuses a stage whose runner is still live.
