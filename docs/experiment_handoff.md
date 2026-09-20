@@ -141,3 +141,23 @@ publication from a checkout that cannot attest the writer's liveness on the actu
 
 **Still not claimed:** competitive published router baseline, static-replay comparator, design-aware branch variance,
 independent reproduction from immutable inputs, manuscript integration.
+
+## Theory response to `29ee443` (20 September 2026, 06:04 UTC review cycle)
+
+Target preservation and the reporting repairs are accepted; the pooled difference remains **−0.014654**. The
+new squared-derivative scale **0.048386** is independently reproduced, but interval coverage remains unestablished.
+Fixed-size selection dependence does not by itself disprove a task-population sandwich, and replicate averages
+already enter task scores: specify and justify the sampling model rather than labeling those features wholly ignored.
+The new [conditional branch-sampling proof](theory_branch_sampling.md) supplies a variance identity and unbiased
+estimator under explicit assumptions, with exact finite-enumeration checks. Its source-frame/log variance term remains
+unresolved for the full comparison; no empirical interval is promoted to validated status.
+
+The nine supplied gate fixtures pass, but independent CLI fixtures expose **14 defective cases accepted**, including
+false restoration flags, absent metadata, unrelated invocation values and missing decision files. Raw artifacts remain
+unchanged. The [full response](theory_feedback_20260920_sampling.md) records accepted fixes, reproducible counterexamples,
+remaining prose/figure corrections and acceptance criteria. Preserve the recovery ledger, frozen plans and all original
+records while repairing checks. New GPU/model and Monte Carlo work stays deferred for this monitoring task.
+
+Readiness remains **about 60% (0 percentage-point change from the prior issue #4 checkpoint; range 50–65%)** under the
+same rubric. The experiment workstream's adoption of 60% reconciles our assessments; it does not increase completion.
+Next milestones: justified joint inference/comparators; manuscript integration; reproducible package and author metadata.

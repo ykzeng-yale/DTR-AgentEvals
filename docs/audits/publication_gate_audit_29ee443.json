@@ -1,0 +1,265 @@
+{
+  "ref": "29ee443cc3ba1d00bb7f37e90f8a8915e2a9357c",
+  "prior_ref": "d4997c68ca93a4d5835bcc578470af472be311b2",
+  "scope": "Tiny synthetic CLI fixtures only; no models, candidate execution, Monte Carlo, or remote process-liveness inference.",
+  "python": "3.14.4",
+  "gate_sha256": "af6c44eda103a53e134cd779e61a5d9fc6d6cf47e856971b9d99c1e3e0670e53",
+  "helper_sha256": "d2d0ca4c7d69ccda7bb58f30d9a87eae624d5a52f330da2cab08dfe07a45ae2f",
+  "published_fixtures": {
+    "command": ".venv/bin/python -m pytest -q experiments/tools/test_verify_stage.py",
+    "result": "9 passed in 0.56s",
+    "note": "Executed separately at the pinned clean checkout. The supplied torn-tail fixture checks the resolver only; this audit also checks the CLI exit status."
+  },
+  "archive_inventory": {
+    "changed_result_paths": [
+      "results/code_routing/analysis/branch_vs_log_linearized.json",
+      "results/code_routing/analysis/figures/calibration_and_frontier.png",
+      "results/code_routing/analysis/figures/calibration_and_frontier.svg",
+      "results/code_routing/analysis/figures/calibration_and_frontier_v2_20260920.png"
+    ],
+    "raw_artifact_paths_compared": 19,
+    "all_raw_artifacts_byte_identical": true
+  },
+  "counterexamples": [
+    {
+      "name": "clean_log",
+      "stage": "log",
+      "expect_reject": false,
+      "returncode": 0,
+      "defect_accepted": false,
+      "stdout": "log     OK       on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n\nALL STAGES VERIFIED - safe to commit",
+      "stderr": ""
+    },
+    {
+      "name": "clean_branch",
+      "stage": "branch",
+      "expect_reject": false,
+      "returncode": 0,
+      "defect_accepted": false,
+      "stdout": "branch  OK       on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n\nALL STAGES VERIFIED - safe to commit",
+      "stderr": ""
+    },
+    {
+      "name": "torn_episode_tail",
+      "stage": "log",
+      "expect_reject": true,
+      "returncode": 1,
+      "defect_accepted": false,
+      "stdout": "log     FAILED   on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 1)\n         PROBLEM: torn final line (1)\n\n1 stage(s) NOT safe to commit",
+      "stderr": ""
+    },
+    {
+      "name": "torn_decision_tail",
+      "stage": "log",
+      "expect_reject": true,
+      "returncode": 1,
+      "defect_accepted": false,
+      "stdout": "log     FAILED   on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n         PROBLEM: decisions.jsonl has a torn final line\n\n1 stage(s) NOT safe to commit",
+      "stderr": ""
+    },
+    {
+      "name": "duplicate_completed_episode",
+      "stage": "log",
+      "expect_reject": true,
+      "returncode": 1,
+      "defect_accepted": false,
+      "stdout": "log     FAILED   on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n         PROBLEM: 1 episode id(s) have more than one completed row, e.g. ['e1']\n\n1 stage(s) NOT safe to commit",
+      "stderr": ""
+    },
+    {
+      "name": "wrong_config_hash",
+      "stage": "log",
+      "expect_reject": true,
+      "returncode": 1,
+      "defect_accepted": false,
+      "stdout": "log     FAILED   on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n         PROBLEM: config_sha256 in episodes does not match the frozen value (['9999999999999999999999999999999999999999999999999999999999999999'])\n\n1 stage(s) NOT safe to commit",
+      "stderr": ""
+    },
+    {
+      "name": "wrong_tasks_hash",
+      "stage": "log",
+      "expect_reject": true,
+      "returncode": 1,
+      "defect_accepted": false,
+      "stdout": "log     FAILED   on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n         PROBLEM: tasks_sha256 in episodes does not match the frozen value (['9999999999999999999999999999999999999999999999999999999999999999'])\n\n1 stage(s) NOT safe to commit",
+      "stderr": ""
+    },
+    {
+      "name": "wrong_visible_hash",
+      "stage": "log",
+      "expect_reject": true,
+      "returncode": 1,
+      "defect_accepted": false,
+      "stdout": "log     FAILED   on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n         PROBLEM: visible_tests_sha256 in episodes does not match the frozen value (['9999999999999999999999999999999999999999999999999999999999999999'])\n\n1 stage(s) NOT safe to commit",
+      "stderr": ""
+    },
+    {
+      "name": "missing_invocation_key",
+      "stage": "log",
+      "expect_reject": true,
+      "returncode": 1,
+      "defect_accepted": false,
+      "stdout": "log     FAILED   on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n         PROBLEM: durable decisions without an invocation id (attempt numbers are reused across invocations)\n\n1 stage(s) NOT safe to commit",
+      "stderr": ""
+    },
+    {
+      "name": "orphan_episode_id",
+      "stage": "log",
+      "expect_reject": true,
+      "returncode": 1,
+      "defect_accepted": false,
+      "stdout": "log     FAILED   on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n         PROBLEM: 1 episode id(s) have durable decisions but no resolved episode, e.g. ['ghost']\n\n1 stage(s) NOT safe to commit",
+      "stderr": ""
+    },
+    {
+      "name": "claimed_restoration_missing_parent",
+      "stage": "branch",
+      "expect_reject": true,
+      "returncode": 1,
+      "defect_accepted": false,
+      "stdout": "branch  FAILED   on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n         PROBLEM: 1 branch row(s) claim a matching transcript hash with no parent recorded\n\n1 stage(s) NOT safe to commit",
+      "stderr": ""
+    },
+    {
+      "name": "false_restoration_flags",
+      "stage": "branch",
+      "expect_reject": true,
+      "returncode": 0,
+      "defect_accepted": true,
+      "stdout": "branch  OK       on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n\nALL STAGES VERIFIED - safe to commit",
+      "stderr": ""
+    },
+    {
+      "name": "missing_restoration",
+      "stage": "branch",
+      "expect_reject": true,
+      "returncode": 0,
+      "defect_accepted": true,
+      "stdout": "branch  OK       on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n\nALL STAGES VERIFIED - safe to commit",
+      "stderr": ""
+    },
+    {
+      "name": "true_flags_nonexistent_parent",
+      "stage": "branch",
+      "expect_reject": true,
+      "returncode": 0,
+      "defect_accepted": true,
+      "stdout": "branch  OK       on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n\nALL STAGES VERIFIED - safe to commit",
+      "stderr": ""
+    },
+    {
+      "name": "true_flags_parent_hash_mismatch",
+      "stage": "branch",
+      "expect_reject": true,
+      "returncode": 0,
+      "defect_accepted": true,
+      "stdout": "branch  OK       on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n\nALL STAGES VERIFIED - safe to commit",
+      "stderr": ""
+    },
+    {
+      "name": "missing_required_metadata",
+      "stage": "log",
+      "expect_reject": true,
+      "returncode": 0,
+      "defect_accepted": true,
+      "stdout": "log     OK       on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n\nALL STAGES VERIFIED - safe to commit",
+      "stderr": ""
+    },
+    {
+      "name": "null_required_metadata",
+      "stage": "log",
+      "expect_reject": true,
+      "returncode": 0,
+      "defect_accepted": true,
+      "stdout": "log     OK       on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n\nALL STAGES VERIFIED - safe to commit",
+      "stderr": ""
+    },
+    {
+      "name": "wrong_source_hash",
+      "stage": "log",
+      "expect_reject": true,
+      "returncode": 0,
+      "defect_accepted": true,
+      "stdout": "log     OK       on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n\nALL STAGES VERIFIED - safe to commit",
+      "stderr": ""
+    },
+    {
+      "name": "wrong_frozen_task_and_seed",
+      "stage": "log",
+      "expect_reject": true,
+      "returncode": 0,
+      "defect_accepted": true,
+      "stdout": "log     OK       on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n\nALL STAGES VERIFIED - safe to commit",
+      "stderr": ""
+    },
+    {
+      "name": "null_invocation_value",
+      "stage": "log",
+      "expect_reject": true,
+      "returncode": 0,
+      "defect_accepted": true,
+      "stdout": "log     OK       on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n\nALL STAGES VERIFIED - safe to commit",
+      "stderr": ""
+    },
+    {
+      "name": "mismatched_invocation",
+      "stage": "log",
+      "expect_reject": true,
+      "returncode": 0,
+      "defect_accepted": true,
+      "stdout": "log     OK       on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n\nALL STAGES VERIFIED - safe to commit",
+      "stderr": ""
+    },
+    {
+      "name": "missing_decisions_file",
+      "stage": "log",
+      "expect_reject": true,
+      "returncode": 0,
+      "defect_accepted": true,
+      "stdout": "log     OK       on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n\nALL STAGES VERIFIED - safe to commit",
+      "stderr": ""
+    },
+    {
+      "name": "empty_decisions_file",
+      "stage": "log",
+      "expect_reject": true,
+      "returncode": 0,
+      "defect_accepted": true,
+      "stdout": "log     OK       on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n\nALL STAGES VERIFIED - safe to commit",
+      "stderr": ""
+    },
+    {
+      "name": "nested_durable_action_mismatch",
+      "stage": "log",
+      "expect_reject": true,
+      "returncode": 0,
+      "defect_accepted": true,
+      "stdout": "log     OK       on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n\nALL STAGES VERIFIED - safe to commit",
+      "stderr": ""
+    },
+    {
+      "name": "missing_run_manifest",
+      "stage": "log",
+      "expect_reject": true,
+      "returncode": 0,
+      "defect_accepted": true,
+      "stdout": "log     OK       on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n\nALL STAGES VERIFIED - safe to commit",
+      "stderr": ""
+    }
+  ],
+  "summary": {
+    "total": 25,
+    "clean_cases_accepted": 2,
+    "defects_rejected": 9,
+    "defects_accepted": 14
+  },
+  "interpretation": [
+    "Accepted fixes: torn episode/decision tails, duplicate completed IDs, present incorrect config/tasks/visible hashes, absent invocation key, wholly orphan episode IDs, true transcript flag without parent ID.",
+    "Restoration verification is only a narrow presence check: false or absent flags, a nonexistent parent, and a parent-hash mismatch pass. No fresh restoration execution is requested or performed.",
+    "Metadata validation ignores absent/null fields; source hashes and plan task/seed identity are not checked.",
+    "Invocation validation checks key existence only: null or unrelated values pass, and durable/nested decisions need not match.",
+    "Missing or empty decisions files and absent run manifests pass. The checker does not ensure every completed decision has an invocation-linked durable record.",
+    "A passing gate and nine passing fixtures therefore do not establish complete publication integrity; the prior independent raw-artifact audit remains a separate evidence layer.",
+    "TOCTOU and actual-host liveness remain unresolved by these fixtures; no local PID result is interpreted as remote liveness."
+  ]
+}

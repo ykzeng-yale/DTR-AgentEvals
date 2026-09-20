@@ -13,6 +13,28 @@ The primary agent reran both and reproduced the archived JSON reports byte-for-b
 
 The linkage audit reconstructs the original and selected-task comparisons independently of the experiment analysis code. It checks all 330 common-task ratio derivatives by deterministic finite differences (maximum error below `7e-12`) and a two-task reweighting counterexample. It asserts **no standard error or confidence interval**. The algebra received an independent mathematical review; design-specific uncertainty remains open. Neither check executes candidate programs, model inference, Monte Carlo or runtime restoration. See [the review](../theory_feedback_20260920_branch.md) for interpretations and acceptance criteria.
 
+## Target-preserving repair and publication gate: `29ee443`
+
+Reproduce the current independent checks using pinned Git objects:
+
+```sh
+.venv/bin/python docs/audits/check_branch_linearization_29ee443.py
+.venv/bin/python docs/audits/check_publication_gate_29ee443.py
+.venv/bin/python -m pytest -q tests experiments/tools/test_verify_stage.py
+```
+
+The first two commands write only under ignored `work/` or temporary directories. Their archived reports are
+`branch_linearization_audit_29ee443.json` and `publication_gate_audit_29ee443.json`. The primary reviewer reproduced
+the saved numerical results: pooled difference −0.014654, squared-derivative scale 0.048386, and 25 gate fixtures
+(two controls accepted, nine defects rejected, 14 defects still accepted). All 19 non-analysis code-study artifacts
+are unchanged. The reports distinguish algebra from valid inference and gate counterexamples from archive corruption.
+
+The test command passes **36 tests**: 27 root tests, including four new exact finite-enumeration checks for the
+[conditional sampling proof](../theory_branch_sampling.md), and nine workstream gate fixtures. The proof and its
+scope received separate mathematical review. No model, candidate-code execution, Monte Carlo sweep, runtime
+restoration, or remote liveness check is performed. The [feedback](../theory_feedback_20260920_sampling.md) gives
+the remaining inference, record-integrity and reporting requirements.
+
 ## Live-policy and partial-branch snapshot: `ac3ca83`
 
 `code_routing_live_branch_audit_ac3ca83.json` records the 20 September 2026 independent artifact review. Reproduce it with the repository environment:

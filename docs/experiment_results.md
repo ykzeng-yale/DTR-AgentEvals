@@ -205,3 +205,18 @@ Applied after the review in [`theory_feedback_20260920.md`](theory_feedback_2026
 6. **Theorem 5** remains reported as a scale calculation, not a certificate, for the applicability reason given in the earlier review.
 
 The complete 800-continuation cohort now permits independent record reconciliation. All stored restoration flags are true; those recorded checks should remain distinct from independent runtime restoration or a claim of universal replayability.
+
+### Target-preserving repair reviewed at `29ee443` (06:04 UTC cycle)
+
+The new analysis correctly preserves the full pooled difference **−0.014654**. Independent reconstruction reproduces
+its squared-derivative scale **0.048386**, but neither this algebra nor a derivative check validates the displayed band
+as a 95% interval. The earlier 42-task result remains exploratory. The [current review](theory_feedback_20260920_sampling.md)
+distinguishes the fixed-frame and population targets, checks the covariance explanation using a common calculation,
+and lists remaining reporting contradictions. A new [conditional sampling proof](theory_branch_sampling.md) supplies
+only the branch component of variance under explicit execution assumptions; the full source-frame/log component
+remains open. No new empirical observations or model executions were added.
+
+The publication gate now rejects several earlier defects, including torn tails and duplicate completions. However,
+independent fixtures show that false/missing restoration evidence, missing metadata and incomplete invocation/decision
+linkage can still pass. These are checker gaps, not new defects found in the actual saved cohort. All 19 non-analysis
+code-study artifacts are byte-identical to `d4997c6`; the independent cohort audit remains a separate evidence layer.

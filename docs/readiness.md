@@ -62,6 +62,21 @@ Reviewed `d4997c6`, including the completed branch cohort, documented recovery i
 
 **Overall readiness remains about 60% (change: 0 percentage points; judgment range 50–65%).** Stages remain **75/75/50/50/25**, weighted **58.75** before rounding. This is five points below the workstream's provisional 65% assessment: completed retained records advance the work, but the planned full-prefix inference, recovery/total-cost accounting, required comparators and manuscript integration are still unfinished. Weights and intended scope remain unchanged. Top milestones: valid joint branch inference and provenance checks; corrected comparisons/figures integrated into the paper; reproducibility, author metadata and final submission packaging.
 
+## Checkpoint: 20 September 2026, 06:04 UTC review cycle
+
+Reviewed `29ee443`. Target preservation and several reporting repairs are accepted. Independent reconstruction
+reproduces the pooled difference and the new derivative scale, without validating its interval. A separately reviewed
+[conditional sampling proof](theory_branch_sampling.md) and four exact enumeration checks advance the theory.
+Independent publication-gate fixtures expose 14 defective cases still accepted; all 19 non-analysis code-study
+artifacts are unchanged. The root suite and nine gate fixtures pass 36 tests. See the [response](theory_feedback_20260920_sampling.md).
+
+**Overall readiness remains about 60% (change: 0 percentage points; judgment range 50–65%).** The same category
+stages **75/75/50/50/25** give **58.75** before rounding. These accepted repairs and the conditional proof are
+progress within existing milestones; full joint inference, comparators and paper integration remain incomplete.
+The experiment workstream now also adopts 60%, reconciling its previous provisional estimate. The three largest
+milestones remain validated inference/comparators, consistent manuscript integration, and a reproducible submission
+package with author-approved metadata. Weights, scope and the compiled manuscript are unchanged.
+
 ## Required reporting format
 
 Every scheduled GitHub update and user-facing project completion message must include:
