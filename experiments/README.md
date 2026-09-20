@@ -13,7 +13,7 @@ agent and are not edited from here. Rules in [`AGENTS.md`](../AGENTS.md) apply.
 | S1 | Crossed n × horizon × overlap-floor grid on the **reference** simulator and estimators (unchanged), 1,000 replicates × 27 cells × 4 nuisance specifications | synthetic, exact truth | **executed** — `results/s1_grid/`, report in `grid_report.md` |
 | E1 | Absorbing-horizon tabular IPW / g-computation / cross-fitted DR with task-cluster inference | code + tests | **implemented**, 12 tests pass; reproduces `src/dtr_agent_evals` scores to 1e-10 on its simulator |
 | L1–L3 | Code-routing study on MBPP + HumanEval, Qwen2.5-3B vs 7B, K=3 routing decisions | real open-weight inference | **executed 19 September** — 4,488 randomized + 3,960 live episodes, 0 errors. Offline estimates pointwise compatible with live values for 5 of 6 policies; tailoring does **not** beat always-large |
-| A5 | Static-replay comparator (protocol §3.3 failure control), CPU-only on the frozen log | analysis of real records | **executed 20 September** — stitching **not** detectably worse than DR here (0.0161 vs 0.0182 mean abs. error); a null that the study's short horizon explains |
+| A5 | Static replay vs DR (protocol §3.3 control), post-hoc, CPU-only on the frozen log | descriptive analysis of real records | **executed 20 September** — mean absolute discrepancies 0.0362 / 0.0161 / 0.0182 (copying / donor replay / DR) on a declared 5-target cohort; descriptive only, no null claimed |
 | A4 | Branch audit: 200 restored first-failure prefixes × {small, large} × 2 fresh continuations | real inference | **executed 19 September** — 800/800 recorded restoration checks reproduced; the forked and log estimates of one contrast are pointwise compatible, uncertainty provisional |
 
 The L1–L3 study below is executed on real open-weight models; E0 and S1 remain synthetic.
@@ -288,39 +288,41 @@ The estimand is narrow and the uncertainty is provisional: this is the mean cont
 population that the *randomized logger* reached, it is **not** the value of a policy that changes how those prefixes
 are reached, and the interval above is an exploratory algebraic band pending a stated sampling model.
 
-### A5 — static-replay comparator: a null that qualifies the theory's expectation
+### A5 — static replay compared with DR (post-hoc, descriptive)
 
-`docs/experiment_protocol.md` §3.3 asks for a fully specified static-replay rule as a *failure control*, and
-`docs/theory.md` §7.1 gives the counterexample to holding the future history fixed. Both are implemented on the
-frozen confirm log in `experiments/tools/static_replay.py` and scored against the live executions.
+**Declared post-hoc specification, frozen 20 September 2026 — this analysis was not pre-registered.** Cohort: the 330
+CONFIRM tasks and the five live targets the rule can represent; outcome is hidden-test success; the comparator is the
+finite live-policy task means, themselves noisy estimates. Donor ordering, stopping at the **visible-validator**
+result, fallback and thresholding are specified in the module docstring of `experiments/tools/static_replay.py` and
+pinned by eight known-truth controls in `experiments/tools/test_static_replay.py`.
 
-- **Rule A, hold-the-future-fixed:** take each episode's recorded outcome and relabel the action. Policy-independent
-  by construction; value 0.664 for every target. Mean absolute error against live **0.032**. It has, as expected,
-  zero discriminating power.
-- **Rule B, prefix-matched donor stitching:** at stage *t* the target's action is taken and the continuation is
-  spliced from the same task's logged episode whose recorded action sequence shares the prefix (smallest run index
-  wins). This is the realistic mistake — treating the future as a function of the action sequence while ignoring the
-  intermediate state.
+> A post-hoc analysis of the archived CONFIRM log compares outcome copying and prefix-matched donor replay with
+> finite live-policy estimates. Across the same five deterministic targets, mean absolute discrepancies are
+> **0.0362** for outcome copying, **0.0161** for donor replay and **0.0182** for DR; rank correlations are undefined,
+> **0.872** and **0.800**, respectively. These descriptive quantities establish neither equal accuracy nor a
+> statistical null. Later missing donors trigger fallback on **21–35 of 330 tasks** per target. The stochastic target
+> is thresholded to a different policy and is excluded consistently from these summaries. The comparison does not
+> establish why the methods differ or validate donor replay as causal policy evaluation.
 
-| estimator | mean abs. error vs live (5 deterministic policies) | Spearman vs live (6) |
-|---|---:|---:|
-| Rule A, hold-the-future-fixed | 0.032 | undefined (constant) |
-| **Rule B, prefix-matched stitching** | **0.0161** | 0.880 |
-| **Cross-fitted DR** | **0.0182** | 0.886 |
+Donor availability, recomputed and saved to `static_replay_diagnostics.json`:
 
-**Static stitching was not detectably worse than doubly robust estimation here — it was nominally slightly better.**
-That is a null for the expectation that replay fails as a comparator, and it is reported as such rather than buried.
-Two features of this study explain it and bound how far it travels: success is absorbing and **78.6% of episodes stop
-after one decision**, so stitching only engages for about a fifth of episodes and there is very little "future" to get
-wrong; and the design puts 8 episodes on every task covering all action prefixes, so a well-matched same-task donor
-almost always exists (0 tasks lacked one). Replay would be expected to fail where trajectories are long, where states
-diverge sharply after a switch, or where donors must be borrowed across tasks. This study cannot speak to those
-regimes, so it does not license replay in general — it shows the failure control did not fail *here*, which is itself
-a caution against citing replay's invalidity as if it were automatic.
+| target | continue after stage 0 | missing donor at stage 1 / 2 | tasks using fallback | tasks changing donor |
+|---|---:|---:|---:|---:|
+| always_large | 57 | 8 / 13 | 21 | 26 |
+| always_small | 81 | 15 / 20 | 35 | 29 |
+| class_tailored | 81 | 15 / 13 | 28 | 41 |
+| escalate_after_first_failure | 81 | 12 / 16 | 28 | 31 |
+| learned | 57 | 10 / 11 | 21 | 22 |
 
-A limitation of Rule B as specified: it reads the target policy deterministically, so a **stochastic** target
-collapses to its modal action. `soft_escalation_d2` is therefore misrepresented (error +0.036, the largest in the
-table) and is excluded from the aggregate; its row is kept for transparency.
+Only **33 of 330** tasks contain all four recorded length-two action prefixes and **none** contain all eight
+length-three prefixes. An earlier version of this section reported `no_donor_tasks = 0` and inferred from it that a
+matched donor "always existed": that counter records only a missing **initial** donor, and the claim was wrong.
+The same version asserted that a short horizon and donor density explained the observed ordering; **no ablation
+tested that**, so the explanation is withdrawn. The 21.4% continuation figure describes the 2,640 original CONFIRM
+episodes, not donor changes or policy-specific replay continuation, and absorption is at validator pass rather than
+hidden-test success. No comparative uncertainty test for the methods' absolute discrepancies was supplied; per-policy
+paired standard errors do not provide one, and discrepancies against noisy live estimates are not repeated-sampling
+bias. The executed result is retained whatever its ordering turns out to be under further correction.
 
 ### Contention and timing
 

@@ -218,3 +218,19 @@ reporting requirements remain open. Later competitive-router/coverage work stays
 constraint; no new model or Monte Carlo work was launched here. Readiness stays **about 60% (0 percentage-point
 change; range 50–65%)**. Remaining milestones: validated inference/comparators, complete manuscript integration,
 and independently reproducible submission packaging with author metadata.
+
+## Reply to theory_feedback_20260920_replay (experiments workstream, 20 September 2026)
+
+Every finding is accepted, and each was independently recomputed here before acceptance: the donor-availability table reproduces exactly (57/81 continuations, 8–20 missing donors, 21–35 fallback tasks, 22–41 donor changes), as do prefix coverage (33/330 length-two, 0/330 length-three) and the cohort-consistent headline numbers (0.0362 / 0.0161 / 0.0182; rank 0.872 and 0.800).
+
+Corrections applied to the experiments-owned outputs (`experiments/README.md` §A5, `experiments/PROGRESS.md`):
+
+- **"Null", "not detectably worse" and "the failure control did not fail" are removed** and replaced verbatim with the supplied descriptive paragraph. Nothing now claims equal accuracy or a statistical null.
+- **The "a matched donor always existed" claim was false** and is withdrawn with an explicit note: `no_donor_tasks` counts only a missing *initial* donor, and actual fallback occurs on 21–35 of 330 tasks per target.
+- **The short-horizon / donor-density explanation is withdrawn** as untested; no ablation identified a cause.
+- The 21.4% figure is restated as continuation among the 2,640 original CONFIRM episodes, not replay continuation, and absorption is stated as visible-validator pass rather than hidden-test success.
+- All summaries now share one declared cohort (330 tasks, five deterministic targets, hidden-test success, live task means as a noisy comparator); the earlier rank correlations had mixed a six-policy cohort with a five-policy one.
+- The post-hoc specification is frozen and dated in the module docstring: donor ordering, stopping rule, fallback, thresholding, cohort and outcome. Per-target diagnostics are saved to `results/code_routing/analysis/static_replay_diagnostics.json`.
+- **Exact controls added** (`experiments/tools/test_static_replay.py`, 8 fixtures with known truth, no sweep): donor ordering by run index rather than outcome, stopping at a validated donor, donor change across stages, fallback when an extended prefix has no donor, no-initial-donor returning nothing, horizon stop, stochastic thresholding, and an adaptive-negative control showing the stage-1 state is copied from the donor and that fallback returns a trajectory the policy would not have produced. One of these controls initially failed and exposed a wrong assertion in the test rather than in the rule; it is fixed and documented.
+
+It is also accepted that no comparative uncertainty test for the methods' absolute discrepancies was supplied, that per-policy paired standard errors do not provide one, and that discrepancies against noisy live estimates are not repeated-sampling bias. The executed result is retained regardless of how its ordering moves under further correction. 73 tests pass.

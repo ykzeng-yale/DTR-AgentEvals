@@ -3,6 +3,55 @@
 Pushed about every two hours while experiments run. Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-20 06:50 EDT — scheduled check: A5 corrected; my "null" claim withdrawn
+
+**Stage status: nothing to advance.** All stages complete and verified: pilot 120, log **4,488/4,488**, live
+**3,960/3,960**, branch **800/800**; 0 unresolved, 0 intention-to-treat, 0 torn. No runner alive, both llama-servers
+healthy on 8191/8193, no foreign llama-server generating at any episode start.
+
+**Two hours ago I reported the static-replay control as a null. That reporting was wrong and is withdrawn.** The
+review in `docs/theory_feedback_20260920_replay.md` checked it and I recomputed every figure here before accepting:
+
+- My `no_donor_tasks = 0` counted only a missing **initial** donor. Actual fallback occurs on **21–35 of 330 tasks**
+  per target. My claim that "a well-matched same-task donor always existed" was **false**.
+- Only **33 of 330** tasks contain all four recorded length-two action prefixes, and **none** contain all eight
+  length-three prefixes — not the full prefix coverage I asserted.
+- My short-horizon / donor-density explanation was **untested**; no ablation identified a cause. Withdrawn.
+- The 21.4% figure describes continuation among the 2,640 original CONFIRM episodes, not replay continuation, and
+  absorption is at **visible-validator pass**, not hidden-test success.
+- My rank correlations mixed cohorts (six policies vs five). On one declared cohort they are **0.872** (donor replay)
+  and **0.800** (DR), not the 0.880/0.886 I published.
+
+My independent recomputation reproduced the reviewer's table exactly, including the per-target donor diagnostics.
+A5 is now stated descriptively, with the supplied wording: mean absolute discrepancies **0.0362 / 0.0161 / 0.0182**
+for outcome copying / donor replay / DR on the declared five-target cohort; these establish neither equal accuracy
+nor a statistical null, and the comparison does not validate donor replay as causal policy evaluation.
+
+**Specification frozen and controls added.** The post-hoc specification — donor ordering, stopping at the validator
+result, fallback, thresholding, cohort, outcome — is dated in the module docstring, per-target diagnostics are saved
+to `static_replay_diagnostics.json`, and **8 known-truth controls** now pin the mechanism
+(`experiments/tools/test_static_replay.py`). One control failed on first run and exposed a wrong assertion in my
+test rather than a fault in the rule; fixed and documented. **73 tests pass**; all three stages verify unchanged.
+
+**Problems:** the substantive one is above. This is the fourth consecutive review round to find an error in my
+reporting, and the second where I published an interpretation that the data did not support. The collection and the
+frozen records have held up throughout; my summaries of them have needed outside correction every time. I am
+treating that as a standing reason not to self-certify the independent-validation category.
+
+**Next:** joint branch/log inference under a stated target/source-frame model using Proposition 11; the competitive
+published router baseline; remaining gate items (reject missing reference data rather than skipping the membership
+check, match retained decisions on episode+invocation+attempt+stage, recovery ledger with a positive fixture,
+parent-hash recomputation, host-writer exclusion, atomic snapshot); independent reproduction from immutable inputs;
+manuscript integration.
+
+**Overall submission readiness: about 60% (change: 0 percentage points; judgment range 50–65%).** Evidence advanced:
+none that the rubric counts. This tick corrected a published interpretation, froze a post-hoc specification and added
+mechanism controls — it removed an unsupported claim rather than adding evidence. Categories unchanged at
+75/75/50/50/25, weighted 58.75 → 60%. Main remaining work: (1) joint inference under a stated sampling model and the
+competitive-router baseline; (2) independent reproduction from immutable inputs; (3) manuscript integration and the
+submission package. *This workstream cannot post to GitHub issue #4 (no GitHub CLI or token on the experiment host),
+so the checkpoint is recorded here.*
+
 ## 2026-09-20 04:50 EDT — scheduled check: static-replay comparator closed, and it is a null
 
 **Stage status: nothing to advance.** All stages complete and verified: pilot 120, log **4,488/4,488**, live
