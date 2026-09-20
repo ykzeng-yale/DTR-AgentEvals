@@ -1,8 +1,11 @@
-"""Fixtures proving each publication-gate check FAILS on a defect.
+"""Fixtures proving each publication-gate check FAILS on its defect.
 
-Required by docs/theory_feedback_20260920_branch.md: "Add fixtures that fail for a torn tail, duplicate success row,
-metadata mismatch and false restoration flag. Check invocation-linked decisions."
-A gate that only ever passes is not evidence.  Run: .venv/bin/python -m pytest -q experiments/tools/test_verify_stage.py
+A gate that only ever passes is not evidence. An external audit of an earlier version found 14 defective cases still
+accepted (docs/theory_feedback_20260920_sampling.md), and correctly noted that the test then named
+`test_false_restoration_flag_fails` actually tested a MISSING PARENT with true flags. Both the check and the fixture
+are fixed here: `test_restoration_flag_false_fails` sets the flag to False, and the missing-parent case is separate.
+
+Run: .venv/bin/python -m pytest -q experiments/tools/test_verify_stage.py
 """
 import json, sys
 from pathlib import Path
@@ -10,83 +13,127 @@ from pathlib import Path
 import pytest
 
 ROOT = Path(__file__).resolve().parents[2]
-sys.path.insert(0, str(ROOT / 'experiments' / 'tools'))
-sys.path.insert(0, str(ROOT / 'experiments' / 'code_routing'))
-sys.path.insert(0, str(ROOT / 'experiments' / 'common'))
+for sub in ('tools', 'code_routing', 'common'):
+    sys.path.insert(0, str(ROOT / 'experiments' / sub))
 import common  # noqa: E402
 import verify_stage as V  # noqa: E402
 
 CFG = common.load_config()
 DESIGN = json.loads((common.RESULTS / 'design.json').read_text())
-GOOD = dict(episode_id='e1', task_uid='t1', split='confirm', error=None,
-            config_sha256=CFG['_config_sha256'], tasks_sha256=DESIGN['tasks_sha256'],
-            visible_tests_sha256=V.base_vt_sha(), decisions=[])
+VT = V.base_vt_sha()
+META = dict(config_sha256=CFG['_config_sha256'], tasks_sha256=DESIGN['tasks_sha256'], visible_tests_sha256=VT)
+EP = dict(episode_id='e1', task_uid='t1', split='confirm', error=None, seed=None,
+          decisions=[dict(t=0, a=1, completed=True)], **META)
+DEC = dict(episode_id='e1', invocation='inv1', t=0, a=1)
+MAN = dict(invocation='inv1', started_utc='2026-09-20T00:00:00Z')
 
 
-def write(tmp, episodes, decisions=None, torn=False):
-    d = tmp / 'log'; d.mkdir(parents=True, exist_ok=True)
+def build(tmp, stage='log', episodes=(EP,), decisions=(DEC,), manifest=(MAN,), torn=False, log_parents=None):
+    d = tmp / stage; d.mkdir(parents=True, exist_ok=True)
     body = ''.join(json.dumps(e) + '\n' for e in episodes)
     if torn:
-        body += '{"episode_id": "e2", "tru'
+        body += '{"episode_id": "e9", "tru'
     (d / 'episodes.jsonl').write_text(body)
     if decisions is not None:
         (d / 'decisions.jsonl').write_text(''.join(json.dumps(x) + '\n' for x in decisions))
+    if manifest is not None:
+        (d / 'run_manifest.jsonl').write_text(''.join(json.dumps(x) + '\n' for x in manifest))
+    if log_parents is not None:
+        lg = tmp / 'log'; lg.mkdir(parents=True, exist_ok=True)
+        (lg / 'episodes.jsonl').write_text(''.join(json.dumps(x) + '\n' for x in log_parents))
     return d / 'episodes.jsonl'
 
 
-def res_of(ep):
-    return common.resolve_episodes(ep, CFG['max_attempts_per_episode'])
+def probs(ep, stage='log'):
+    return V.check_records(ep, ep.parent, stage, common.resolve_episodes(ep, CFG['max_attempts_per_episode']), DESIGN, CFG)
 
 
-def test_clean_fixture_has_no_problems(tmp_path):
-    ep = write(tmp_path, [GOOD], decisions=[dict(episode_id='e1', invocation='abc', t=0)])
-    assert V.check_records(ep, ep.parent, 'log', res_of(ep), DESIGN, CFG) == []
+def assert_flags(ep, needle, stage='log'):
+    p = probs(ep, stage)
+    assert any(needle in x for x in p), (needle, p)
+
+
+def test_clean_fixture_passes(tmp_path):
+    assert probs(build(tmp_path)) == []
 
 
 def test_torn_tail_is_detected(tmp_path):
-    ep = write(tmp_path, [GOOD], torn=True)
-    assert res_of(ep)['torn'] == 1          # main() turns this into a FAILED status, not a printed note
+    ep = build(tmp_path, torn=True)
+    assert common.resolve_episodes(ep, CFG['max_attempts_per_episode'])['torn'] == 1
 
 
 def test_duplicate_completed_row_fails(tmp_path):
-    ep = write(tmp_path, [GOOD, dict(GOOD)])
-    probs = V.check_records(ep, ep.parent, 'log', res_of(ep), DESIGN, CFG)
-    assert any('more than one completed row' in p for p in probs), probs
+    assert_flags(build(tmp_path, episodes=(EP, dict(EP))), 'more than one completed row')
 
 
-def test_frozen_metadata_mismatch_fails(tmp_path):
-    ep = write(tmp_path, [dict(GOOD, config_sha256='0' * 64)])
-    probs = V.check_records(ep, ep.parent, 'log', res_of(ep), DESIGN, CFG)
-    assert any('config_sha256' in p for p in probs), probs
+@pytest.mark.parametrize('key', ['config_sha256', 'tasks_sha256', 'visible_tests_sha256'])
+def test_absent_required_hash_fails(tmp_path, key):
+    assert_flags(build(tmp_path, episodes=(dict(EP, **{key: None}),)), 'missing %s' % key)
 
 
-def test_tasks_sha_mismatch_fails(tmp_path):
-    ep = write(tmp_path, [dict(GOOD, tasks_sha256='1' * 64)])
-    probs = V.check_records(ep, ep.parent, 'log', res_of(ep), DESIGN, CFG)
-    assert any('tasks_sha256' in p for p in probs), probs
+@pytest.mark.parametrize('key', ['config_sha256', 'tasks_sha256', 'visible_tests_sha256'])
+def test_wrong_required_hash_fails(tmp_path, key):
+    assert_flags(build(tmp_path, episodes=(dict(EP, **{key: '0' * 64}),)), '%s does not match' % key)
 
 
-def test_false_restoration_flag_fails(tmp_path):
-    bad = dict(GOOD, restoration=dict(transcript_hash_matches=True, tool_result_reproduced=True))
-    bad.pop('parent_episode_id', None)
-    ep = write(tmp_path, [bad])
-    probs = V.check_records(ep, ep.parent, 'branch', res_of(ep), DESIGN, CFG)
-    assert any('matching transcript hash with no parent' in p for p in probs), probs
+def test_seed_differing_from_design_fails(tmp_path):
+    real = DESIGN['log_episodes'][0]
+    ep = build(tmp_path, episodes=(dict(EP, episode_id=real['episode_id'], seed=real['seed'] + 1),))
+    assert_flags(ep, 'seed that differs from the frozen design')
 
 
-def test_decisions_without_invocation_fail(tmp_path):
-    ep = write(tmp_path, [GOOD], decisions=[dict(episode_id='e1', t=0)])
-    probs = V.check_records(ep, ep.parent, 'log', res_of(ep), DESIGN, CFG)
-    assert any('without an invocation id' in p for p in probs), probs
+def test_restoration_flag_false_fails(tmp_path):
+    bad = dict(EP, parent_episode_id='p1', restoration=dict(transcript_hash_matches=False, tool_result_reproduced=True))
+    assert_flags(build(tmp_path, stage='branch', episodes=(bad,), log_parents=[dict(episode_id='p1', error=None)]),
+                 'false/absent restoration flag', stage='branch')
+
+
+def test_restoration_absent_fails(tmp_path):
+    bad = dict(EP, parent_episode_id='p1')
+    assert_flags(build(tmp_path, stage='branch', episodes=(bad,), log_parents=[dict(episode_id='p1', error=None)]),
+                 'no restoration evidence', stage='branch')
+
+
+def test_missing_parent_id_fails(tmp_path):
+    bad = dict(EP, restoration=dict(transcript_hash_matches=True, tool_result_reproduced=True))
+    assert_flags(build(tmp_path, stage='branch', episodes=(bad,), log_parents=[]), 'record no parent', stage='branch')
+
+
+def test_nonexistent_parent_fails(tmp_path):
+    bad = dict(EP, parent_episode_id='ghost', restoration=dict(transcript_hash_matches=True, tool_result_reproduced=True))
+    assert_flags(build(tmp_path, stage='branch', episodes=(bad,), log_parents=[dict(episode_id='p1', error=None)]),
+                 'not a completed log episode', stage='branch')
+
+
+def test_missing_decisions_file_fails(tmp_path):
+    assert_flags(build(tmp_path, decisions=None), 'decisions.jsonl is missing or empty')
+
+
+def test_empty_decisions_file_fails(tmp_path):
+    assert_flags(build(tmp_path, decisions=()), 'decisions.jsonl is missing or empty')
+
+
+def test_missing_manifest_fails(tmp_path):
+    assert_flags(build(tmp_path, manifest=None), 'run_manifest.jsonl is missing or empty')
+
+
+def test_null_invocation_fails(tmp_path):
+    assert_flags(build(tmp_path, decisions=(dict(DEC, invocation=None),)), 'null/absent invocation id')
+
+
+def test_invocation_not_in_manifest_fails(tmp_path):
+    assert_flags(build(tmp_path, decisions=(dict(DEC, invocation='unrelated'),)), 'absent from the manifest')
 
 
 def test_orphan_decisions_fail(tmp_path):
-    ep = write(tmp_path, [GOOD], decisions=[dict(episode_id='ghost', invocation='abc', t=0)])
-    probs = V.check_records(ep, ep.parent, 'log', res_of(ep), DESIGN, CFG)
-    assert any('durable decisions but no resolved episode' in p for p in probs), probs
+    assert_flags(build(tmp_path, decisions=(DEC, dict(DEC, episode_id='ghost'))), 'no resolved episode')
+
+
+def test_durable_action_disagreeing_with_episode_fails(tmp_path):
+    assert_flags(build(tmp_path, decisions=(dict(DEC, a=0),)), 'disagree with the episode record')
 
 
 def test_real_stages_still_pass():
     for stage in ('log', 'live', 'branch'):
         ep = common.RESULTS / stage / 'episodes.jsonl'
-        assert V.check_records(ep, ep.parent, stage, res_of(ep), DESIGN, CFG) == []
+        assert probs(ep, stage) == [], stage

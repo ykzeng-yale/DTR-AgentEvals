@@ -3,6 +3,57 @@
 Pushed about every two hours while experiments run. Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-20 02:50 EDT — scheduled check: third review round; claims aligned, gate widened
+
+**Stage status: nothing to advance.** All stages complete and verified: pilot 120, log **4,488/4,488**, live
+**3,960/3,960**, branch **800/800**; 0 unresolved, 0 intention-to-treat, 0 torn records. No runner alive, both
+llama-servers healthy on 8191/8193, no foreign llama-server generating. Contention is reported as **a per-episode
+check at each episode's start, not continuous observation of the host** — a wording correction, since the earlier
+"zero foreign GPU load" phrasing claimed more than the records support.
+
+**A factual error of mine, corrected.** The deterministic targets' positive-support range is **317–325**, not the
+317–330 I published: the two stochastic targets reach all 330 and I had folded them into the deterministic range.
+
+**Claims aligned to evidence** after `docs/theory_feedback_20260920_sampling.md`. Removed: headings saying the two
+routes "agree" or that evaluation is "cheaper"; the assertion that one validation timeout cannot have moved a result;
+"miscalibrated"/"calibrated" framing in favour of pointwise compatibility at this sample size, which is neither a
+coverage nor an equivalence statement. The branch band [−0.109, +0.080] is now labelled an **exploratory algebraic
+band pending a sampling justification**, and nothing is inferred from its including zero. The cross-product point is
+accepted too: the archived 0.0572 is a marginal bootstrap quantity, so the like-for-like comparison inside the same
+linearization is **0.0484 against 0.0587**. Figure titles are descriptive and the branch annotation now sits clear of
+the error bars; the previous version is preserved.
+
+**Publication gate widened.** An independent audit of the previous gate found **14 defect classes still accepted**,
+and correctly noted that my `test_false_restoration_flag_fails` actually tested a *missing parent with true flags*.
+Both fixed. The gate now also fails on: false **or absent** restoration evidence on an analysed branch row; a branch
+row with no parent or naming a parent that is not a completed log episode; required frozen hashes absent or null as
+well as wrong; a seed differing from the frozen design/plan; missing or empty `decisions.jsonl`; missing, empty or
+torn `run_manifest.jsonl`; durable decisions with a null/absent invocation or one absent from the manifest; and
+durable decisions whose recorded action disagrees with the episode's own record. Fixtures went from 9 to **22**,
+including a genuinely False restoration flag with the missing-parent case kept separate. **62 tests pass** and the
+three real stages still verify unchanged.
+
+**Deliberately not attempted:** the design-aware branch variance. `docs/theory_branch_sampling.md` (the conditional
+proof I had asked for) landed in the same commit as this review; using it properly means stating the finite-frame
+versus population target, the source-frame model and the continuation assumptions, then deriving and checking the
+combined variance. Rushing that in a scheduled tick is how the previous two errors happened, so it is deferred and
+the band stays labelled exploratory. Also still open: actual-host writer exclusion (a clone cannot attest remote
+process liveness), an atomic publication snapshot, parent transcript-hash recomputation, a rejected-record ledger,
+and the competitive-router and static-replay comparators.
+
+**Problems:** none new in the data. The pattern worth naming is that three consecutive review rounds each found real
+errors in my reporting — a factual range, an estimand substitution, and an overstated gate. The data collection has
+held up; the claims about it needed external checking, which is an argument for keeping independent validation open.
+
+**Overall submission readiness: about 60% (change: 0 percentage points; judgment range 50–65%).** Evidence advanced:
+none that the rubric counts — no new episodes, no new estimand, no closed comparator. This tick corrected published
+claims and widened an integrity gate, which protects evidence rather than adding it. Categories unchanged at
+75/75/50/50/25, weighted 58.75 → 60%, matching the theory workstream's checkpoint. Main remaining work:
+(1) design-aware branch variance from the new sampling note, plus the competitive-router and static-replay
+comparators; (2) independent reproduction of numerical summaries from immutable inputs; (3) manuscript integration
+and the submission package. *This workstream cannot post to GitHub issue #4 (no GitHub CLI or token on the
+experiment host), so the checkpoint is recorded here.*
+
 ## 2026-09-20 00:45 EDT — scheduled check: second review round; my own "fix" was wrong and is repaired
 
 **Stage status: nothing to advance.** All stages complete and verified: pilot 120, log **4,488/4,488**, live

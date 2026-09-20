@@ -12,8 +12,8 @@ agent and are not edited from here. Rules in [`AGENTS.md`](../AGENTS.md) apply.
 | E0 | Design-efficiency simulation: one sequentially randomized experiment vs one arm per scaffold; tailored-regime learning; forking vs randomizing at equal compute | synthetic, known truth | **executed** — 5,000 replicates, `results/sim/` |
 | S1 | Crossed n × horizon × overlap-floor grid on the **reference** simulator and estimators (unchanged), 1,000 replicates × 27 cells × 4 nuisance specifications | synthetic, exact truth | **executed** — `results/s1_grid/`, report in `grid_report.md` |
 | E1 | Absorbing-horizon tabular IPW / g-computation / cross-fitted DR with task-cluster inference | code + tests | **implemented**, 12 tests pass; reproduces `src/dtr_agent_evals` scores to 1e-10 on its simulator |
-| L1–L3 | Code-routing study on MBPP + HumanEval, Qwen2.5-3B vs 7B, K=3 routing decisions | real open-weight inference | **executed 19 September** — 4,488 randomized + 3,960 live episodes, 0 errors. Estimator calibrated (5/6); tailoring does **not** beat always-large |
-| A4 | Branch audit: 200 restored first-failure prefixes × {small, large} × 2 fresh continuations | real inference | **executed 19 September** — 800/800 restorations exact; forked replay agrees with the log and is 2.19× more precise at 39% of the calls |
+| L1–L3 | Code-routing study on MBPP + HumanEval, Qwen2.5-3B vs 7B, K=3 routing decisions | real open-weight inference | **executed 19 September** — 4,488 randomized + 3,960 live episodes, 0 errors. Offline estimates pointwise compatible with live values for 5 of 6 policies; tailoring does **not** beat always-large |
+| A4 | Branch audit: 200 restored first-failure prefixes × {small, large} × 2 fresh continuations | real inference | **executed 19 September** — 800/800 recorded restoration checks reproduced; the forked and log estimates of one contrast are pointwise compatible, uncertainty provisional |
 
 The L1–L3 study below is executed on real open-weight models; E0 and S1 remain synthetic.
 
@@ -160,7 +160,7 @@ analysis CSVs are under `results/code_routing/`.
 
 ![calibration and frontier](../results/code_routing/analysis/figures/calibration_and_frontier.png)
 
-### A1 — does the offline estimator predict what actually happens? Mostly yes
+### A1 — offline estimates against what the policies actually did
 
 Paired by task, DR value from the shared randomized log minus the value measured by *running* each policy:
 
@@ -173,7 +173,7 @@ Paired by task, DR value from the shared randomized log minus the value measured
 | escalate_after_first_failure | 0.6079 | 0.6245 | −0.017 | [−0.052, +0.019] | yes |
 | **class_tailored** | 0.5947 | 0.6319 | **−0.037** | **[−0.070, −0.005]** | **no** |
 
-Five of six agree within noise; Spearman rank agreement of policy utilities is **0.886**. One policy is
+Five of six paired intervals include zero, which is pointwise compatibility at this sample size and not a coverage or equivalence statement; the Spearman rank correlation of policy utilities is **0.886**. One policy is
 **miscalibrated**: `class_tailored` is under-estimated by 3.7 utility points. It is the policy whose action depends on
 the failure *class*, the tailoring variable with the coarsest tabular cells, which is where a fitted-Q cell is
 thinnest — reported as a failure of the method in this cell, not smoothed away.
@@ -220,7 +220,7 @@ headline. It does not bear on the *evaluation* half, which A1 supports.
 IPW, cross-fitted DR and g-computation agree closely for every policy — the largest disagreement is below 0.016 on
 utility and 0.0167 on success — with 0 missing Q cells. Deterministic
 targets have the worst-case trajectory weight 8 = 2³ by design, stage-3 effective sample size 771–903 of 2,640
-episodes, and 317–330 of 330 tasks contributing. The **stochastic** odds-shift targets overlap the logger far better — ESS
+episodes, and 317–325 of 330 tasks contributing (the two stochastic targets reach all 330). The **stochastic** odds-shift targets overlap the logger far better — ESS
 2,286–2,528 and maximum weight 1.78–2.56. These are weighted-episode diagnostics, not independent task counts, and
 better overlap on its own does not establish cheaper evaluation; the realised standard errors (0.0215 against
 0.0245–0.0262) are the quantity that speaks to precision.
@@ -245,7 +245,7 @@ scores here. The improvement decisions rest on the asymptotic Bonferroni interva
 justified foldwise construction, is needed before any finite-sample certificate is claimed; a variance-adaptive
 (empirical-Bernstein) replacement needs further theory.
 
-### A4 — branch audit: forked replay agrees with the log, and is cheaper
+### A4 — branch audit: restored prefixes, and a second estimate of one contrast
 
 200 first-failure prefixes were sampled with known probability (0.355) from the completed confirm log, their
 transcripts restored, and both models continued from the identical saved state with 2 fresh seeds each — 800
@@ -264,8 +264,9 @@ The two estimates are **compatible, which is weaker than agreement**. Their diff
 sources are not independent: branch prefixes are drawn from the very log episodes the other estimate uses. Keeping
 the pooled estimators and all 330 source tasks, the first-order task-cluster influence contribution of that
 difference (identity supplied by the theory workstream, verified here by central differences over every source task,
-maximum error 4×10⁻¹¹) gives SE **0.0484** and interval **[−0.109, +0.080]** — tighter than the 0.0572 an
-independence assumption implies, because the linkage is positive. This is a first-order approximation that does
+maximum error 4×10⁻¹¹) gives scale **0.0484** and band **[−0.109, +0.080]** — an exploratory algebraic band, not a calibrated interval — tighter than the **0.0587** obtained by removing the
+cross-product within the same linearization. (The archived 0.0572 comes from marginal bootstrap quantities, so
+comparing it with a derivative scale would mix calculations.) This is a first-order approximation that does
 **not** account for the without-replacement sampling of 200 of 564 prefixes, replication of continuations within a
 prefix, or cross-task selection dependence, so it is not yet a design-aware interval. An earlier attempt of ours
 restricted to 42 tasks and re-weighted them equally, giving −0.091; that changed the *estimand* rather than the
@@ -282,15 +283,17 @@ replication of the synthetic finding**: it excludes the cost of acquiring the pr
 without which no prefix exists) and the 665 continuations executed and lost in the publishing incident. Read as
 "this contrast was estimated more precisely per retained branch call", not as a general evaluation-cost result.
 
-The caveat is the estimand, not the precision: this is the mean continuation effect over the prefix population that
-the *randomized logger* reached. It is **not** the value of a policy that changes how those prefixes are reached, and
-it cannot replace the whole-policy comparison in A2.
+The estimand is narrow and the uncertainty is provisional: this is the mean continuation effect over the prefix
+population that the *randomized logger* reached, it is **not** the value of a policy that changes how those prefixes
+are reached, and the interval above is an exploratory algebraic band pending a stated sampling model.
 
 ### Contention and timing
 
-Every stage ran with **zero foreign GPU load**, so latency is interpretable throughout: median call 3.1–4.2 s (small)
+Every episode recorded no foreign GPU load **at the moment it began** — a per-episode check, not continuous
+observation of the host — so latency is reported on that basis: median call 3.1–4.2 s (small)
 and 6.3–11.0 s (large). Across the **13,001** calls attached to retained log, live and branch completions — **13,164** including the pilot —
-there was **1 validation timeout, 0 hidden-test timeouts and 3 truncated generations**. Both totals exclude the
+there was **1 validation timeout, 0 hidden-test timeouts and 3 truncated generations**. The effect of that timeout on
+its episode's outcome is not established here; it is one recorded exception, not a demonstrated non-event. Both totals exclude the
 executions lost in the publishing incident and the environment-construction calls, so they are not the total
 physical cost of the study. Timeouts are the only timing-dependent path into an outcome, and at this rate
 they cannot have moved a result.

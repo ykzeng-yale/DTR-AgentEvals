@@ -69,7 +69,7 @@ def main():
     fig.subplots_adjust(left=0.05, right=0.985, wspace=0.26, top=0.80, bottom=0.14)
 
     # ---- panel 1: does the offline estimate match what actually happens?
-    style(ax[0], 'Offline estimate vs. what the policy actually did', 'off-policy estimate from ONE shared randomized log',
+    style(ax[0], 'Offline estimate vs. the value measured by running it', 'off-policy estimate from ONE shared randomized log',
           'value measured by running the policy')
     allv = np.concatenate([cal.ope_dr - 1.96 * cal.ope_se, cal.ope_dr + 1.96 * cal.ope_se,
                            cal.live - 1.96 * cal.live_se, cal.live + 1.96 * cal.live_se])
@@ -86,11 +86,11 @@ def main():
         ax[0].annotate(SHORT.get(r.policy, r.policy) + ('' if r.covers_zero else '  (x)'), (r.ope_dr, r.live),
                        xytext=(dx, dy), textcoords='offset points', fontsize=8.5, color=INK, ha=ha)
     ax[0].set_xlim(lo, hi); ax[0].set_ylim(lo, hi)
-    ax[0].annotate('(x) = paired difference excludes 0\n1 of 6 policies miscalibrated', (lo + 0.003, hi - 0.003), fontsize=8, color=INK2,
+    ax[0].annotate('(x) = paired difference excludes 0\n(1 of 6; the others are pointwise compatible)', (lo + 0.003, hi - 0.003), fontsize=8, color=INK2,
                    va='top', ha='left')
 
     # ---- panel 2: the frontier that explains the null
-    style(ax[1], 'Success is bought with large-model calls', 'large-model calls per episode (live runs)', 'hidden-test success rate')
+    style(ax[1], 'Success and large-model calls move together', 'large-model calls per episode (live runs)', 'hidden-test success rate')
     fr = fr.sort_values('large_calls_per_episode')
     ax[1].plot(fr.large_calls_per_episode, fr.success, color=MUTED, linewidth=1.2, linestyle=(0, (4, 3)), zorder=1)
     OFF2 = {'always_small': (10, -4, 'left'), 'class_tailored': (-2, 10, 'center'), 'escalate_after_first_failure': (8, -14, 'left'),
@@ -109,8 +109,8 @@ def main():
     # ---- panel 3: two independent routes to the same causal quantity
     br = json.loads((SRC / 'branch_summary.json').read_text())
     lk = json.loads((SRC / 'branch_vs_log_linearized.json').read_text())
-    style(ax[2], 'Two routes to the same causal number: compatible', '', 'effect of continuing with the large model\n(success, after a first failure)')
-    labels = ['off-policy estimate\nfrom the randomized log', 'forked replay of both\nmodels from the same state']
+    style(ax[2], 'One contrast, estimated two ways', '', 'effect of continuing with the large model\n(success, after a first failure)')
+    labels = ['randomized log\n(off-policy)', 'forked replay\n(same state)']
     vals = [br['log_estimate'], br['branch_estimate']]; ses = [br['log_se'], br['branch_se']]
     cols = [YELLOW, BLUE]
     for i, (v, se, c) in enumerate(zip(vals, ses, cols)):
@@ -119,11 +119,11 @@ def main():
         ax[2].annotate('%.3f' % v, (i, v), xytext=(11, -3), textcoords='offset points', fontsize=9, color=INK)
     ax[2].axhline(0, color=MUTED, linewidth=1, linestyle=(0, (4, 3)))
     ax[2].set_xticks([0, 1]); ax[2].set_xticklabels(labels, fontsize=8.5, color=INK2)
-    ax[2].set_xlim(-0.45, 1.6); ax[2].set_ylim(-0.02, 0.30)
-    ax[2].annotate('compatible, not shown equal. Difference of the two plotted\nestimates: %.3f, first-order task-clustered 95%% interval\n[%.3f, %.3f] (shared source tasks handled; NOT a\ndesign-aware interval - prefix sampling and replication\nare not accounted for).\n\n%d/%d restorations reproduced the recorded transcript\nhash and tool-result fields; two fresh continuations of the\nsame state differed in %.0f%% of %d pairs (a sample\nstatistic, not a noise bound).'
+    ax[2].set_xlim(-0.5, 2.85); ax[2].set_ylim(-0.02, 0.30)
+    ax[2].annotate('Compatible, not shown equal.\nDifference %.3f, exploratory 95%% band\n[%.3f, %.3f]: shared source tasks are\nhandled, but prefix sampling is not, so\nthis is not a design-aware interval.\n%d/%d recorded restoration checks\nreproduced; two fresh continuations of\nthe same state differed in %.0f%% of %d\npairs (a sample statistic).'
                    % (lk['difference'], lk['lower'], lk['upper'], br['restored_ok'], br['n_continuations'],
                       100 * br['noise_floor'], 400),
-                   (-0.40, 0.292), fontsize=8.0, color=INK2, va='top')
+                   (1.30, 0.297), fontsize=7.6, color=INK2, va='top', ha='left')
 
     fig.suptitle('Code-routing study · Qwen2.5 3B vs 7B · MBPP + HumanEval · 330 held-out tasks · 4,488 randomized + 3,960 live + 800 forked episodes',
                  x=0.05, ha='left', fontsize=9.5, color=INK2, y=0.955)
