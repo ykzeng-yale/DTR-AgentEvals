@@ -36,6 +36,14 @@ This manuscript builds on the original theory package at `40da0d42422611f61f49fd
 
 ## Later author and empirical work
 
+**20 September, 12:55 UTC coordination review:** gate repairs and the actual recovery ledger at `bd1ace8` were
+independently checked; remaining reference/hash/ledger-detail requirements are in the [response](../docs/theory_feedback_20260920_recovery.md).
+The new [quadratic-moment note](../docs/theory_branch_quadratic.md) supplies a reviewed conditional identity for
+recovering the latent full-frame squared-derivative statistic, preserving the pooled target. Four new exact checks
+pass; the selected suite passes 64 tests (34 root, 30 gate). The source-model variance link and coverage remain open.
+This note is not yet integrated into the unchanged 28-page PDF; its prior validation hashes still match. Readiness
+remains **about 60% (0 percentage-point change; range 50–65%)**.
+
 **20 September, 11:15 UTC coordination review:** accepted the A5 reporting repairs and checked the new replay
 mechanics fixtures at `8ab7fb5`. The reviewed replay counterexample and positive control are now integrated into
 Section 8.2 of the **28-page paper**, with proof review, a clean build and document-wide visual review. A pinned

@@ -1,0 +1,1216 @@
+{
+  "ref": "bd1ace89da2c3b93e437154f03f8eb12b6c0ed63",
+  "prior_ref": "6f9202613a6e5c38ad4d7e733912495d3f138ea2",
+  "scope": "Prior 32 CLI cases plus one positive and two negative recovery-ledger cases in temporary fixtures; pinned actual ledger reconciliation. No models/candidate execution/Monte Carlo/remote PID inference.",
+  "source_hashes": {
+    "6f9202613a6e5c38ad4d7e733912495d3f138ea2": {
+      "gate": "2b2ca98cc9bcad85a716c59eff956ce2bc9181123d0312e2d4866a5ee8c5aa2a",
+      "common": "d2d0ca4c7d69ccda7bb58f30d9a87eae624d5a52f330da2cab08dfe07a45ae2f"
+    },
+    "bd1ace89da2c3b93e437154f03f8eb12b6c0ed63": {
+      "gate": "8332481b1a62f0fa3517701b998a11b919df50639e80aba12fa88d480803865f",
+      "common": "d2d0ca4c7d69ccda7bb58f30d9a87eae624d5a52f330da2cab08dfe07a45ae2f"
+    }
+  },
+  "published_tests": {
+    "command": ".venv/bin/python -m pytest -q experiments/tools/test_verify_stage.py",
+    "observed_result": "30 passed in 9.17s",
+    "note": "Executed separately in the clean pinned checkout; not rerun by this audit script."
+  },
+  "archive_inventory": {
+    "prior_non_analysis_files": 19,
+    "current_non_analysis_files": 20,
+    "all_prior_files_byte_identical": true,
+    "new_files": [
+      "results/code_routing/recovery_ledger.json"
+    ]
+  },
+  "actual_ledger": {
+    "sha256": "75075ffffc462658e041c132f5800f187985d8dfbc2a818daa072dcc257e879b",
+    "checks": {
+      "stage": true,
+      "four_unique_declared_keys": true,
+      "declared_counts_match_actual": true,
+      "total_rows": true,
+      "total_episode_ids": true,
+      "old_invocation": true,
+      "recovery_invocation": true,
+      "attempt_reused": true,
+      "all_other_decisions_match_completion_key": true
+    },
+    "observed_rows": [
+      {
+        "episode_id": "branch:log:humaneval/4#3:large#0",
+        "invocation": "0445024c72d2",
+        "attempt": 1,
+        "durable_decision_rows": 1
+      },
+      {
+        "episode_id": "branch:log:humaneval/4#3:large#1",
+        "invocation": "0445024c72d2",
+        "attempt": 1,
+        "durable_decision_rows": 1
+      },
+      {
+        "episode_id": "branch:log:humaneval/46#3:large#0",
+        "invocation": "0445024c72d2",
+        "attempt": 1,
+        "durable_decision_rows": 1
+      },
+      {
+        "episode_id": "branch:log:humaneval/46#3:small#1",
+        "invocation": "0445024c72d2",
+        "attempt": 1,
+        "durable_decision_rows": 2
+      }
+    ],
+    "nested_completion_decisions": 1434,
+    "all_durable_decisions": 1439
+  },
+  "prior_eight_bypasses": {
+    "fixed": [
+      "branch_missing_parent_log",
+      "wrong_task_correct_seed",
+      "wrong_invocation_present_in_manifest",
+      "missing_specific_durable_decision"
+    ],
+    "remaining": [
+      "true_flags_parent_hash_mismatch",
+      "wrong_source_hash",
+      "branch_empty_parent_log",
+      "manifest_without_invocation_ids"
+    ]
+  },
+  "comparison": [
+    {
+      "name": "clean_log",
+      "old_returncode": 0,
+      "new_returncode": 0,
+      "new_expected_returncode": 0,
+      "new_defect_accepted": false,
+      "new_valid_case_rejected": false
+    },
+    {
+      "name": "clean_branch",
+      "old_returncode": 0,
+      "new_returncode": 0,
+      "new_expected_returncode": 0,
+      "new_defect_accepted": false,
+      "new_valid_case_rejected": false
+    },
+    {
+      "name": "torn_episode_tail",
+      "old_returncode": 1,
+      "new_returncode": 1,
+      "new_expected_returncode": 1,
+      "new_defect_accepted": false,
+      "new_valid_case_rejected": false
+    },
+    {
+      "name": "torn_decision_tail",
+      "old_returncode": 1,
+      "new_returncode": 1,
+      "new_expected_returncode": 1,
+      "new_defect_accepted": false,
+      "new_valid_case_rejected": false
+    },
+    {
+      "name": "duplicate_completed_episode",
+      "old_returncode": 1,
+      "new_returncode": 1,
+      "new_expected_returncode": 1,
+      "new_defect_accepted": false,
+      "new_valid_case_rejected": false
+    },
+    {
+      "name": "wrong_config_hash",
+      "old_returncode": 1,
+      "new_returncode": 1,
+      "new_expected_returncode": 1,
+      "new_defect_accepted": false,
+      "new_valid_case_rejected": false
+    },
+    {
+      "name": "wrong_tasks_hash",
+      "old_returncode": 1,
+      "new_returncode": 1,
+      "new_expected_returncode": 1,
+      "new_defect_accepted": false,
+      "new_valid_case_rejected": false
+    },
+    {
+      "name": "wrong_visible_hash",
+      "old_returncode": 1,
+      "new_returncode": 1,
+      "new_expected_returncode": 1,
+      "new_defect_accepted": false,
+      "new_valid_case_rejected": false
+    },
+    {
+      "name": "missing_invocation_key",
+      "old_returncode": 1,
+      "new_returncode": 1,
+      "new_expected_returncode": 1,
+      "new_defect_accepted": false,
+      "new_valid_case_rejected": false
+    },
+    {
+      "name": "orphan_episode_id",
+      "old_returncode": 1,
+      "new_returncode": 1,
+      "new_expected_returncode": 1,
+      "new_defect_accepted": false,
+      "new_valid_case_rejected": false
+    },
+    {
+      "name": "claimed_restoration_missing_parent",
+      "old_returncode": 1,
+      "new_returncode": 1,
+      "new_expected_returncode": 1,
+      "new_defect_accepted": false,
+      "new_valid_case_rejected": false
+    },
+    {
+      "name": "false_restoration_flags",
+      "old_returncode": 1,
+      "new_returncode": 1,
+      "new_expected_returncode": 1,
+      "new_defect_accepted": false,
+      "new_valid_case_rejected": false
+    },
+    {
+      "name": "missing_restoration",
+      "old_returncode": 1,
+      "new_returncode": 1,
+      "new_expected_returncode": 1,
+      "new_defect_accepted": false,
+      "new_valid_case_rejected": false
+    },
+    {
+      "name": "true_flags_nonexistent_parent",
+      "old_returncode": 1,
+      "new_returncode": 1,
+      "new_expected_returncode": 1,
+      "new_defect_accepted": false,
+      "new_valid_case_rejected": false
+    },
+    {
+      "name": "true_flags_parent_hash_mismatch",
+      "old_returncode": 0,
+      "new_returncode": 0,
+      "new_expected_returncode": 1,
+      "new_defect_accepted": true,
+      "new_valid_case_rejected": false
+    },
+    {
+      "name": "missing_required_metadata",
+      "old_returncode": 1,
+      "new_returncode": 1,
+      "new_expected_returncode": 1,
+      "new_defect_accepted": false,
+      "new_valid_case_rejected": false
+    },
+    {
+      "name": "null_required_metadata",
+      "old_returncode": 1,
+      "new_returncode": 1,
+      "new_expected_returncode": 1,
+      "new_defect_accepted": false,
+      "new_valid_case_rejected": false
+    },
+    {
+      "name": "wrong_source_hash",
+      "old_returncode": 0,
+      "new_returncode": 0,
+      "new_expected_returncode": 1,
+      "new_defect_accepted": true,
+      "new_valid_case_rejected": false
+    },
+    {
+      "name": "wrong_frozen_task_and_seed",
+      "old_returncode": 1,
+      "new_returncode": 1,
+      "new_expected_returncode": 1,
+      "new_defect_accepted": false,
+      "new_valid_case_rejected": false
+    },
+    {
+      "name": "null_invocation_value",
+      "old_returncode": 1,
+      "new_returncode": 1,
+      "new_expected_returncode": 1,
+      "new_defect_accepted": false,
+      "new_valid_case_rejected": false
+    },
+    {
+      "name": "mismatched_invocation",
+      "old_returncode": 1,
+      "new_returncode": 1,
+      "new_expected_returncode": 1,
+      "new_defect_accepted": false,
+      "new_valid_case_rejected": false
+    },
+    {
+      "name": "missing_decisions_file",
+      "old_returncode": 1,
+      "new_returncode": 1,
+      "new_expected_returncode": 1,
+      "new_defect_accepted": false,
+      "new_valid_case_rejected": false
+    },
+    {
+      "name": "empty_decisions_file",
+      "old_returncode": 1,
+      "new_returncode": 1,
+      "new_expected_returncode": 1,
+      "new_defect_accepted": false,
+      "new_valid_case_rejected": false
+    },
+    {
+      "name": "nested_durable_action_mismatch",
+      "old_returncode": 1,
+      "new_returncode": 1,
+      "new_expected_returncode": 1,
+      "new_defect_accepted": false,
+      "new_valid_case_rejected": false
+    },
+    {
+      "name": "missing_run_manifest",
+      "old_returncode": 1,
+      "new_returncode": 1,
+      "new_expected_returncode": 1,
+      "new_defect_accepted": false,
+      "new_valid_case_rejected": false
+    },
+    {
+      "name": "branch_missing_parent_log",
+      "old_returncode": 0,
+      "new_returncode": 1,
+      "new_expected_returncode": 1,
+      "new_defect_accepted": false,
+      "new_valid_case_rejected": false
+    },
+    {
+      "name": "branch_empty_parent_log",
+      "old_returncode": 0,
+      "new_returncode": 0,
+      "new_expected_returncode": 1,
+      "new_defect_accepted": true,
+      "new_valid_case_rejected": false
+    },
+    {
+      "name": "manifest_without_invocation_ids",
+      "old_returncode": 0,
+      "new_returncode": 0,
+      "new_expected_returncode": 1,
+      "new_defect_accepted": true,
+      "new_valid_case_rejected": false
+    },
+    {
+      "name": "wrong_task_correct_seed",
+      "old_returncode": 0,
+      "new_returncode": 1,
+      "new_expected_returncode": 1,
+      "new_defect_accepted": false,
+      "new_valid_case_rejected": false
+    },
+    {
+      "name": "wrong_invocation_present_in_manifest",
+      "old_returncode": 0,
+      "new_returncode": 1,
+      "new_expected_returncode": 1,
+      "new_defect_accepted": false,
+      "new_valid_case_rejected": false
+    },
+    {
+      "name": "missing_specific_durable_decision",
+      "old_returncode": 0,
+      "new_returncode": 1,
+      "new_expected_returncode": 1,
+      "new_defect_accepted": false,
+      "new_valid_case_rejected": false
+    },
+    {
+      "name": "preserved_recovery_old_action_differs",
+      "old_returncode": 1,
+      "new_returncode": 1,
+      "new_expected_returncode": 1,
+      "new_defect_accepted": false,
+      "new_valid_case_rejected": false
+    },
+    {
+      "name": "recovery_ledger_allows_different_old_action",
+      "old_returncode": 1,
+      "new_returncode": 0,
+      "new_expected_returncode": 0,
+      "new_defect_accepted": false,
+      "new_valid_case_rejected": false
+    },
+    {
+      "name": "ledger_wrong_declared_row_count",
+      "old_returncode": 0,
+      "new_returncode": 0,
+      "new_expected_returncode": 1,
+      "new_defect_accepted": true,
+      "new_valid_case_rejected": false
+    },
+    {
+      "name": "ledger_extra_historical_stage",
+      "old_returncode": 0,
+      "new_returncode": 0,
+      "new_expected_returncode": 1,
+      "new_defect_accepted": true,
+      "new_valid_case_rejected": false
+    }
+  ],
+  "counterexamples": [
+    {
+      "ref": "6f9202613a6e5c38ad4d7e733912495d3f138ea2",
+      "name": "clean_log",
+      "stage": "log",
+      "expected_returncode": 0,
+      "returncode": 0,
+      "defect_accepted": false,
+      "valid_case_rejected": false,
+      "fixture_note": null,
+      "stdout": "log     OK       on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n\nALL STAGES VERIFIED - safe to commit",
+      "stderr": ""
+    },
+    {
+      "ref": "6f9202613a6e5c38ad4d7e733912495d3f138ea2",
+      "name": "clean_branch",
+      "stage": "branch",
+      "expected_returncode": 0,
+      "returncode": 0,
+      "defect_accepted": false,
+      "valid_case_rejected": false,
+      "fixture_note": null,
+      "stdout": "branch  OK       on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n\nALL STAGES VERIFIED - safe to commit",
+      "stderr": ""
+    },
+    {
+      "ref": "6f9202613a6e5c38ad4d7e733912495d3f138ea2",
+      "name": "torn_episode_tail",
+      "stage": "log",
+      "expected_returncode": 1,
+      "returncode": 1,
+      "defect_accepted": false,
+      "valid_case_rejected": false,
+      "fixture_note": null,
+      "stdout": "log     FAILED   on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 1)\n         PROBLEM: torn final line (1)\n\n1 stage(s) NOT safe to commit",
+      "stderr": ""
+    },
+    {
+      "ref": "6f9202613a6e5c38ad4d7e733912495d3f138ea2",
+      "name": "torn_decision_tail",
+      "stage": "log",
+      "expected_returncode": 1,
+      "returncode": 1,
+      "defect_accepted": false,
+      "valid_case_rejected": false,
+      "fixture_note": null,
+      "stdout": "log     FAILED   on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n         PROBLEM: decisions.jsonl has a torn final line\n\n1 stage(s) NOT safe to commit",
+      "stderr": ""
+    },
+    {
+      "ref": "6f9202613a6e5c38ad4d7e733912495d3f138ea2",
+      "name": "duplicate_completed_episode",
+      "stage": "log",
+      "expected_returncode": 1,
+      "returncode": 1,
+      "defect_accepted": false,
+      "valid_case_rejected": false,
+      "fixture_note": null,
+      "stdout": "log     FAILED   on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n         PROBLEM: 1 episode id(s) have more than one completed row, e.g. ['e1']\n\n1 stage(s) NOT safe to commit",
+      "stderr": ""
+    },
+    {
+      "ref": "6f9202613a6e5c38ad4d7e733912495d3f138ea2",
+      "name": "wrong_config_hash",
+      "stage": "log",
+      "expected_returncode": 1,
+      "returncode": 1,
+      "defect_accepted": false,
+      "valid_case_rejected": false,
+      "fixture_note": null,
+      "stdout": "log     FAILED   on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n         PROBLEM: config_sha256 does not match the frozen value on some rows (['999999999999'])\n\n1 stage(s) NOT safe to commit",
+      "stderr": ""
+    },
+    {
+      "ref": "6f9202613a6e5c38ad4d7e733912495d3f138ea2",
+      "name": "wrong_tasks_hash",
+      "stage": "log",
+      "expected_returncode": 1,
+      "returncode": 1,
+      "defect_accepted": false,
+      "valid_case_rejected": false,
+      "fixture_note": null,
+      "stdout": "log     FAILED   on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n         PROBLEM: tasks_sha256 does not match the frozen value on some rows (['999999999999'])\n\n1 stage(s) NOT safe to commit",
+      "stderr": ""
+    },
+    {
+      "ref": "6f9202613a6e5c38ad4d7e733912495d3f138ea2",
+      "name": "wrong_visible_hash",
+      "stage": "log",
+      "expected_returncode": 1,
+      "returncode": 1,
+      "defect_accepted": false,
+      "valid_case_rejected": false,
+      "fixture_note": null,
+      "stdout": "log     FAILED   on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n         PROBLEM: visible_tests_sha256 does not match the frozen value on some rows (['999999999999'])\n\n1 stage(s) NOT safe to commit",
+      "stderr": ""
+    },
+    {
+      "ref": "6f9202613a6e5c38ad4d7e733912495d3f138ea2",
+      "name": "missing_invocation_key",
+      "stage": "log",
+      "expected_returncode": 1,
+      "returncode": 1,
+      "defect_accepted": false,
+      "valid_case_rejected": false,
+      "fixture_note": null,
+      "stdout": "log     FAILED   on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n         PROBLEM: 1 durable decision row(s) have a null/absent invocation id\n\n1 stage(s) NOT safe to commit",
+      "stderr": ""
+    },
+    {
+      "ref": "6f9202613a6e5c38ad4d7e733912495d3f138ea2",
+      "name": "orphan_episode_id",
+      "stage": "log",
+      "expected_returncode": 1,
+      "returncode": 1,
+      "defect_accepted": false,
+      "valid_case_rejected": false,
+      "fixture_note": null,
+      "stdout": "log     FAILED   on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n         PROBLEM: 1 episode id(s) have durable decisions but no resolved episode, e.g. ['ghost']\n\n1 stage(s) NOT safe to commit",
+      "stderr": ""
+    },
+    {
+      "ref": "6f9202613a6e5c38ad4d7e733912495d3f138ea2",
+      "name": "claimed_restoration_missing_parent",
+      "stage": "branch",
+      "expected_returncode": 1,
+      "returncode": 1,
+      "defect_accepted": false,
+      "valid_case_rejected": false,
+      "fixture_note": null,
+      "stdout": "branch  FAILED   on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n         PROBLEM: 1 completed branch row(s) record no parent, e.g. ['e1']\n\n1 stage(s) NOT safe to commit",
+      "stderr": ""
+    },
+    {
+      "ref": "6f9202613a6e5c38ad4d7e733912495d3f138ea2",
+      "name": "false_restoration_flags",
+      "stage": "branch",
+      "expected_returncode": 1,
+      "returncode": 1,
+      "defect_accepted": false,
+      "valid_case_rejected": false,
+      "fixture_note": null,
+      "stdout": "branch  FAILED   on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n         PROBLEM: completed branch row e1 is analysed despite a false/absent restoration flag\n\n1 stage(s) NOT safe to commit",
+      "stderr": ""
+    },
+    {
+      "ref": "6f9202613a6e5c38ad4d7e733912495d3f138ea2",
+      "name": "missing_restoration",
+      "stage": "branch",
+      "expected_returncode": 1,
+      "returncode": 1,
+      "defect_accepted": false,
+      "valid_case_rejected": false,
+      "fixture_note": null,
+      "stdout": "branch  FAILED   on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n         PROBLEM: completed branch row e1 has no restoration evidence\n\n1 stage(s) NOT safe to commit",
+      "stderr": ""
+    },
+    {
+      "ref": "6f9202613a6e5c38ad4d7e733912495d3f138ea2",
+      "name": "true_flags_nonexistent_parent",
+      "stage": "branch",
+      "expected_returncode": 1,
+      "returncode": 1,
+      "defect_accepted": false,
+      "valid_case_rejected": false,
+      "fixture_note": null,
+      "stdout": "branch  FAILED   on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n         PROBLEM: 1 branch row(s) name a parent that is not a completed log episode, e.g. ['nonexistent-parent']\n\n1 stage(s) NOT safe to commit",
+      "stderr": ""
+    },
+    {
+      "ref": "6f9202613a6e5c38ad4d7e733912495d3f138ea2",
+      "name": "true_flags_parent_hash_mismatch",
+      "stage": "branch",
+      "expected_returncode": 1,
+      "returncode": 0,
+      "defect_accepted": true,
+      "valid_case_rejected": false,
+      "fixture_note": null,
+      "stdout": "branch  OK       on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n\nALL STAGES VERIFIED - safe to commit",
+      "stderr": ""
+    },
+    {
+      "ref": "6f9202613a6e5c38ad4d7e733912495d3f138ea2",
+      "name": "missing_required_metadata",
+      "stage": "log",
+      "expected_returncode": 1,
+      "returncode": 1,
+      "defect_accepted": false,
+      "valid_case_rejected": false,
+      "fixture_note": null,
+      "stdout": "log     FAILED   on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n         PROBLEM: 1 completed row(s) are missing config_sha256, e.g. ['e1']\n         PROBLEM: 1 completed row(s) are missing tasks_sha256, e.g. ['e1']\n         PROBLEM: 1 completed row(s) are missing visible_tests_sha256, e.g. ['e1']\n\n1 stage(s) NOT safe to commit",
+      "stderr": ""
+    },
+    {
+      "ref": "6f9202613a6e5c38ad4d7e733912495d3f138ea2",
+      "name": "null_required_metadata",
+      "stage": "log",
+      "expected_returncode": 1,
+      "returncode": 1,
+      "defect_accepted": false,
+      "valid_case_rejected": false,
+      "fixture_note": null,
+      "stdout": "log     FAILED   on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n         PROBLEM: 1 completed row(s) are missing config_sha256, e.g. ['e1']\n         PROBLEM: 1 completed row(s) are missing tasks_sha256, e.g. ['e1']\n         PROBLEM: 1 completed row(s) are missing visible_tests_sha256, e.g. ['e1']\n\n1 stage(s) NOT safe to commit",
+      "stderr": ""
+    },
+    {
+      "ref": "6f9202613a6e5c38ad4d7e733912495d3f138ea2",
+      "name": "wrong_source_hash",
+      "stage": "log",
+      "expected_returncode": 1,
+      "returncode": 0,
+      "defect_accepted": true,
+      "valid_case_rejected": false,
+      "fixture_note": null,
+      "stdout": "log     OK       on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n\nALL STAGES VERIFIED - safe to commit",
+      "stderr": ""
+    },
+    {
+      "ref": "6f9202613a6e5c38ad4d7e733912495d3f138ea2",
+      "name": "wrong_frozen_task_and_seed",
+      "stage": "log",
+      "expected_returncode": 1,
+      "returncode": 1,
+      "defect_accepted": false,
+      "valid_case_rejected": false,
+      "fixture_note": null,
+      "stdout": "log     FAILED   on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n         PROBLEM: 1 row(s) carry a seed that differs from the frozen design, e.g. ['e1']\n\n1 stage(s) NOT safe to commit",
+      "stderr": ""
+    },
+    {
+      "ref": "6f9202613a6e5c38ad4d7e733912495d3f138ea2",
+      "name": "null_invocation_value",
+      "stage": "log",
+      "expected_returncode": 1,
+      "returncode": 1,
+      "defect_accepted": false,
+      "valid_case_rejected": false,
+      "fixture_note": null,
+      "stdout": "log     FAILED   on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n         PROBLEM: 1 durable decision row(s) have a null/absent invocation id\n\n1 stage(s) NOT safe to commit",
+      "stderr": ""
+    },
+    {
+      "ref": "6f9202613a6e5c38ad4d7e733912495d3f138ea2",
+      "name": "mismatched_invocation",
+      "stage": "log",
+      "expected_returncode": 1,
+      "returncode": 1,
+      "defect_accepted": false,
+      "valid_case_rejected": false,
+      "fixture_note": null,
+      "stdout": "log     FAILED   on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n         PROBLEM: 1 durable decision row(s) carry an invocation absent from the manifest, e.g. ['inv-NOT-IN-EPISODE-OR-MANIFEST']\n\n1 stage(s) NOT safe to commit",
+      "stderr": ""
+    },
+    {
+      "ref": "6f9202613a6e5c38ad4d7e733912495d3f138ea2",
+      "name": "missing_decisions_file",
+      "stage": "log",
+      "expected_returncode": 1,
+      "returncode": 1,
+      "defect_accepted": false,
+      "valid_case_rejected": false,
+      "fixture_note": null,
+      "stdout": "log     FAILED   on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n         PROBLEM: decisions.jsonl is missing or empty\n\n1 stage(s) NOT safe to commit",
+      "stderr": ""
+    },
+    {
+      "ref": "6f9202613a6e5c38ad4d7e733912495d3f138ea2",
+      "name": "empty_decisions_file",
+      "stage": "log",
+      "expected_returncode": 1,
+      "returncode": 1,
+      "defect_accepted": false,
+      "valid_case_rejected": false,
+      "fixture_note": null,
+      "stdout": "log     FAILED   on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n         PROBLEM: decisions.jsonl is missing or empty\n\n1 stage(s) NOT safe to commit",
+      "stderr": ""
+    },
+    {
+      "ref": "6f9202613a6e5c38ad4d7e733912495d3f138ea2",
+      "name": "nested_durable_action_mismatch",
+      "stage": "log",
+      "expected_returncode": 1,
+      "returncode": 1,
+      "defect_accepted": false,
+      "valid_case_rejected": false,
+      "fixture_note": null,
+      "stdout": "log     FAILED   on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n         PROBLEM: 1 durable decision(s) disagree with the episode record on the action taken, e.g. [(('e1', 0), 1)]\n\n1 stage(s) NOT safe to commit",
+      "stderr": ""
+    },
+    {
+      "ref": "6f9202613a6e5c38ad4d7e733912495d3f138ea2",
+      "name": "missing_run_manifest",
+      "stage": "log",
+      "expected_returncode": 1,
+      "returncode": 1,
+      "defect_accepted": false,
+      "valid_case_rejected": false,
+      "fixture_note": null,
+      "stdout": "log     FAILED   on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n         PROBLEM: run_manifest.jsonl is missing or empty\n\n1 stage(s) NOT safe to commit",
+      "stderr": ""
+    },
+    {
+      "ref": "6f9202613a6e5c38ad4d7e733912495d3f138ea2",
+      "name": "branch_missing_parent_log",
+      "stage": "branch",
+      "expected_returncode": 1,
+      "returncode": 0,
+      "defect_accepted": true,
+      "valid_case_rejected": false,
+      "fixture_note": null,
+      "stdout": "branch  OK       on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n\nALL STAGES VERIFIED - safe to commit",
+      "stderr": ""
+    },
+    {
+      "ref": "6f9202613a6e5c38ad4d7e733912495d3f138ea2",
+      "name": "branch_empty_parent_log",
+      "stage": "branch",
+      "expected_returncode": 1,
+      "returncode": 0,
+      "defect_accepted": true,
+      "valid_case_rejected": false,
+      "fixture_note": null,
+      "stdout": "branch  OK       on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n\nALL STAGES VERIFIED - safe to commit",
+      "stderr": ""
+    },
+    {
+      "ref": "6f9202613a6e5c38ad4d7e733912495d3f138ea2",
+      "name": "manifest_without_invocation_ids",
+      "stage": "log",
+      "expected_returncode": 1,
+      "returncode": 0,
+      "defect_accepted": true,
+      "valid_case_rejected": false,
+      "fixture_note": null,
+      "stdout": "log     OK       on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n\nALL STAGES VERIFIED - safe to commit",
+      "stderr": ""
+    },
+    {
+      "ref": "6f9202613a6e5c38ad4d7e733912495d3f138ea2",
+      "name": "wrong_task_correct_seed",
+      "stage": "log",
+      "expected_returncode": 1,
+      "returncode": 0,
+      "defect_accepted": true,
+      "valid_case_rejected": false,
+      "fixture_note": null,
+      "stdout": "log     OK       on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n\nALL STAGES VERIFIED - safe to commit",
+      "stderr": ""
+    },
+    {
+      "ref": "6f9202613a6e5c38ad4d7e733912495d3f138ea2",
+      "name": "wrong_invocation_present_in_manifest",
+      "stage": "log",
+      "expected_returncode": 1,
+      "returncode": 0,
+      "defect_accepted": true,
+      "valid_case_rejected": false,
+      "fixture_note": null,
+      "stdout": "log     OK       on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n\nALL STAGES VERIFIED - safe to commit",
+      "stderr": ""
+    },
+    {
+      "ref": "6f9202613a6e5c38ad4d7e733912495d3f138ea2",
+      "name": "missing_specific_durable_decision",
+      "stage": "log",
+      "expected_returncode": 1,
+      "returncode": 0,
+      "defect_accepted": true,
+      "valid_case_rejected": false,
+      "fixture_note": null,
+      "stdout": "log     OK       on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n\nALL STAGES VERIFIED - safe to commit",
+      "stderr": ""
+    },
+    {
+      "ref": "6f9202613a6e5c38ad4d7e733912495d3f138ea2",
+      "name": "preserved_recovery_old_action_differs",
+      "stage": "live",
+      "expected_returncode": 0,
+      "returncode": 1,
+      "defect_accepted": false,
+      "valid_case_rejected": true,
+      "fixture_note": "Valid historical row from a prior invocation of adaptive live class_tailored: exception routes small, while the retained current invocation assertion routes large. It is deliberately retained and distinguished by invocation, not presented as a current completion.",
+      "stdout": "live    FAILED   on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n         PROBLEM: 1 durable decision(s) disagree with the episode record on the action taken, e.g. [(('e1', 1), 0)]\n\n1 stage(s) NOT safe to commit",
+      "stderr": ""
+    },
+    {
+      "ref": "6f9202613a6e5c38ad4d7e733912495d3f138ea2",
+      "name": "recovery_ledger_allows_different_old_action",
+      "stage": "live",
+      "expected_returncode": 0,
+      "returncode": 1,
+      "defect_accepted": false,
+      "valid_case_rejected": true,
+      "fixture_note": "Valid historical row from a prior invocation of adaptive live class_tailored: exception routes small, while the retained current invocation assertion routes large. It is deliberately retained and distinguished by invocation, not presented as a current completion.",
+      "stdout": "live    FAILED   on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n         PROBLEM: 1 durable decision(s) disagree with the episode record on the action taken, e.g. [(('e1', 1), 0)]\n\n1 stage(s) NOT safe to commit",
+      "stderr": ""
+    },
+    {
+      "ref": "6f9202613a6e5c38ad4d7e733912495d3f138ea2",
+      "name": "ledger_wrong_declared_row_count",
+      "stage": "log",
+      "expected_returncode": 1,
+      "returncode": 0,
+      "defect_accepted": true,
+      "valid_case_rejected": false,
+      "fixture_note": null,
+      "stdout": "log     OK       on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n\nALL STAGES VERIFIED - safe to commit",
+      "stderr": ""
+    },
+    {
+      "ref": "6f9202613a6e5c38ad4d7e733912495d3f138ea2",
+      "name": "ledger_extra_historical_stage",
+      "stage": "log",
+      "expected_returncode": 1,
+      "returncode": 0,
+      "defect_accepted": true,
+      "valid_case_rejected": false,
+      "fixture_note": null,
+      "stdout": "log     OK       on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n\nALL STAGES VERIFIED - safe to commit",
+      "stderr": ""
+    },
+    {
+      "ref": "bd1ace89da2c3b93e437154f03f8eb12b6c0ed63",
+      "name": "clean_log",
+      "stage": "log",
+      "expected_returncode": 0,
+      "returncode": 0,
+      "defect_accepted": false,
+      "valid_case_rejected": false,
+      "fixture_note": null,
+      "stdout": "log     OK       on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n\nALL STAGES VERIFIED - safe to commit",
+      "stderr": ""
+    },
+    {
+      "ref": "bd1ace89da2c3b93e437154f03f8eb12b6c0ed63",
+      "name": "clean_branch",
+      "stage": "branch",
+      "expected_returncode": 0,
+      "returncode": 0,
+      "defect_accepted": false,
+      "valid_case_rejected": false,
+      "fixture_note": null,
+      "stdout": "branch  OK       on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n\nALL STAGES VERIFIED - safe to commit",
+      "stderr": ""
+    },
+    {
+      "ref": "bd1ace89da2c3b93e437154f03f8eb12b6c0ed63",
+      "name": "torn_episode_tail",
+      "stage": "log",
+      "expected_returncode": 1,
+      "returncode": 1,
+      "defect_accepted": false,
+      "valid_case_rejected": false,
+      "fixture_note": null,
+      "stdout": "log     FAILED   on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 1)\n         PROBLEM: torn final line (1)\n\n1 stage(s) NOT safe to commit",
+      "stderr": ""
+    },
+    {
+      "ref": "bd1ace89da2c3b93e437154f03f8eb12b6c0ed63",
+      "name": "torn_decision_tail",
+      "stage": "log",
+      "expected_returncode": 1,
+      "returncode": 1,
+      "defect_accepted": false,
+      "valid_case_rejected": false,
+      "fixture_note": null,
+      "stdout": "log     FAILED   on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n         PROBLEM: decisions.jsonl has a torn final line\n\n1 stage(s) NOT safe to commit",
+      "stderr": ""
+    },
+    {
+      "ref": "bd1ace89da2c3b93e437154f03f8eb12b6c0ed63",
+      "name": "duplicate_completed_episode",
+      "stage": "log",
+      "expected_returncode": 1,
+      "returncode": 1,
+      "defect_accepted": false,
+      "valid_case_rejected": false,
+      "fixture_note": null,
+      "stdout": "log     FAILED   on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n         PROBLEM: 1 episode id(s) have more than one completed row, e.g. ['e1']\n\n1 stage(s) NOT safe to commit",
+      "stderr": ""
+    },
+    {
+      "ref": "bd1ace89da2c3b93e437154f03f8eb12b6c0ed63",
+      "name": "wrong_config_hash",
+      "stage": "log",
+      "expected_returncode": 1,
+      "returncode": 1,
+      "defect_accepted": false,
+      "valid_case_rejected": false,
+      "fixture_note": null,
+      "stdout": "log     FAILED   on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n         PROBLEM: config_sha256 does not match the frozen value on some rows (['999999999999'])\n\n1 stage(s) NOT safe to commit",
+      "stderr": ""
+    },
+    {
+      "ref": "bd1ace89da2c3b93e437154f03f8eb12b6c0ed63",
+      "name": "wrong_tasks_hash",
+      "stage": "log",
+      "expected_returncode": 1,
+      "returncode": 1,
+      "defect_accepted": false,
+      "valid_case_rejected": false,
+      "fixture_note": null,
+      "stdout": "log     FAILED   on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n         PROBLEM: tasks_sha256 does not match the frozen value on some rows (['999999999999'])\n\n1 stage(s) NOT safe to commit",
+      "stderr": ""
+    },
+    {
+      "ref": "bd1ace89da2c3b93e437154f03f8eb12b6c0ed63",
+      "name": "wrong_visible_hash",
+      "stage": "log",
+      "expected_returncode": 1,
+      "returncode": 1,
+      "defect_accepted": false,
+      "valid_case_rejected": false,
+      "fixture_note": null,
+      "stdout": "log     FAILED   on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n         PROBLEM: visible_tests_sha256 does not match the frozen value on some rows (['999999999999'])\n\n1 stage(s) NOT safe to commit",
+      "stderr": ""
+    },
+    {
+      "ref": "bd1ace89da2c3b93e437154f03f8eb12b6c0ed63",
+      "name": "missing_invocation_key",
+      "stage": "log",
+      "expected_returncode": 1,
+      "returncode": 1,
+      "defect_accepted": false,
+      "valid_case_rejected": false,
+      "fixture_note": null,
+      "stdout": "log     FAILED   on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n         PROBLEM: 1 durable decision row(s) have a null/absent invocation id\n         PROBLEM: 1 durable decision key(s) match no retained completion and are not in the recovery ledger, e.g. [('e1', None, 1)]\n         PROBLEM: 1 completed decision(s) have no durable pre-invocation record, e.g. [('e1', 'inv-A', 1, 0)]\n\n1 stage(s) NOT safe to commit",
+      "stderr": ""
+    },
+    {
+      "ref": "bd1ace89da2c3b93e437154f03f8eb12b6c0ed63",
+      "name": "orphan_episode_id",
+      "stage": "log",
+      "expected_returncode": 1,
+      "returncode": 1,
+      "defect_accepted": false,
+      "valid_case_rejected": false,
+      "fixture_note": null,
+      "stdout": "log     FAILED   on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n         PROBLEM: 1 episode id(s) have durable decisions but no resolved episode, e.g. ['ghost']\n         PROBLEM: 1 durable decision key(s) match no retained completion and are not in the recovery ledger, e.g. [('ghost', 'inv-A', 1)]\n         PROBLEM: 1 completed decision(s) have no durable pre-invocation record, e.g. [('e1', 'inv-A', 1, 0)]\n\n1 stage(s) NOT safe to commit",
+      "stderr": ""
+    },
+    {
+      "ref": "bd1ace89da2c3b93e437154f03f8eb12b6c0ed63",
+      "name": "claimed_restoration_missing_parent",
+      "stage": "branch",
+      "expected_returncode": 1,
+      "returncode": 1,
+      "defect_accepted": false,
+      "valid_case_rejected": false,
+      "fixture_note": null,
+      "stdout": "branch  FAILED   on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n         PROBLEM: 1 completed branch row(s) record no parent, e.g. ['e1']\n\n1 stage(s) NOT safe to commit",
+      "stderr": ""
+    },
+    {
+      "ref": "bd1ace89da2c3b93e437154f03f8eb12b6c0ed63",
+      "name": "false_restoration_flags",
+      "stage": "branch",
+      "expected_returncode": 1,
+      "returncode": 1,
+      "defect_accepted": false,
+      "valid_case_rejected": false,
+      "fixture_note": null,
+      "stdout": "branch  FAILED   on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n         PROBLEM: completed branch row e1 is analysed despite a false/absent restoration flag\n\n1 stage(s) NOT safe to commit",
+      "stderr": ""
+    },
+    {
+      "ref": "bd1ace89da2c3b93e437154f03f8eb12b6c0ed63",
+      "name": "missing_restoration",
+      "stage": "branch",
+      "expected_returncode": 1,
+      "returncode": 1,
+      "defect_accepted": false,
+      "valid_case_rejected": false,
+      "fixture_note": null,
+      "stdout": "branch  FAILED   on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n         PROBLEM: completed branch row e1 has no restoration evidence\n\n1 stage(s) NOT safe to commit",
+      "stderr": ""
+    },
+    {
+      "ref": "bd1ace89da2c3b93e437154f03f8eb12b6c0ed63",
+      "name": "true_flags_nonexistent_parent",
+      "stage": "branch",
+      "expected_returncode": 1,
+      "returncode": 1,
+      "defect_accepted": false,
+      "valid_case_rejected": false,
+      "fixture_note": null,
+      "stdout": "branch  FAILED   on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n         PROBLEM: 1 branch row(s) name a parent that is not a completed log episode, e.g. ['nonexistent-parent']\n\n1 stage(s) NOT safe to commit",
+      "stderr": ""
+    },
+    {
+      "ref": "bd1ace89da2c3b93e437154f03f8eb12b6c0ed63",
+      "name": "true_flags_parent_hash_mismatch",
+      "stage": "branch",
+      "expected_returncode": 1,
+      "returncode": 0,
+      "defect_accepted": true,
+      "valid_case_rejected": false,
+      "fixture_note": null,
+      "stdout": "branch  OK       on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n\nALL STAGES VERIFIED - safe to commit",
+      "stderr": ""
+    },
+    {
+      "ref": "bd1ace89da2c3b93e437154f03f8eb12b6c0ed63",
+      "name": "missing_required_metadata",
+      "stage": "log",
+      "expected_returncode": 1,
+      "returncode": 1,
+      "defect_accepted": false,
+      "valid_case_rejected": false,
+      "fixture_note": null,
+      "stdout": "log     FAILED   on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n         PROBLEM: 1 completed row(s) are missing config_sha256, e.g. ['e1']\n         PROBLEM: 1 completed row(s) are missing tasks_sha256, e.g. ['e1']\n         PROBLEM: 1 completed row(s) are missing visible_tests_sha256, e.g. ['e1']\n\n1 stage(s) NOT safe to commit",
+      "stderr": ""
+    },
+    {
+      "ref": "bd1ace89da2c3b93e437154f03f8eb12b6c0ed63",
+      "name": "null_required_metadata",
+      "stage": "log",
+      "expected_returncode": 1,
+      "returncode": 1,
+      "defect_accepted": false,
+      "valid_case_rejected": false,
+      "fixture_note": null,
+      "stdout": "log     FAILED   on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n         PROBLEM: 1 completed row(s) are missing config_sha256, e.g. ['e1']\n         PROBLEM: 1 completed row(s) are missing tasks_sha256, e.g. ['e1']\n         PROBLEM: 1 completed row(s) are missing visible_tests_sha256, e.g. ['e1']\n\n1 stage(s) NOT safe to commit",
+      "stderr": ""
+    },
+    {
+      "ref": "bd1ace89da2c3b93e437154f03f8eb12b6c0ed63",
+      "name": "wrong_source_hash",
+      "stage": "log",
+      "expected_returncode": 1,
+      "returncode": 0,
+      "defect_accepted": true,
+      "valid_case_rejected": false,
+      "fixture_note": null,
+      "stdout": "log     OK       on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n\nALL STAGES VERIFIED - safe to commit",
+      "stderr": ""
+    },
+    {
+      "ref": "bd1ace89da2c3b93e437154f03f8eb12b6c0ed63",
+      "name": "wrong_frozen_task_and_seed",
+      "stage": "log",
+      "expected_returncode": 1,
+      "returncode": 1,
+      "defect_accepted": false,
+      "valid_case_rejected": false,
+      "fixture_note": null,
+      "stdout": "log     FAILED   on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n         PROBLEM: 1 row(s) carry a seed that differs from the frozen design, e.g. ['e1']\n         PROBLEM: 1 row(s) are attached to a different task than the frozen design, e.g. ['e1']\n\n1 stage(s) NOT safe to commit",
+      "stderr": ""
+    },
+    {
+      "ref": "bd1ace89da2c3b93e437154f03f8eb12b6c0ed63",
+      "name": "null_invocation_value",
+      "stage": "log",
+      "expected_returncode": 1,
+      "returncode": 1,
+      "defect_accepted": false,
+      "valid_case_rejected": false,
+      "fixture_note": null,
+      "stdout": "log     FAILED   on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n         PROBLEM: 1 durable decision row(s) have a null/absent invocation id\n         PROBLEM: 1 durable decision key(s) match no retained completion and are not in the recovery ledger, e.g. [('e1', None, 1)]\n         PROBLEM: 1 completed decision(s) have no durable pre-invocation record, e.g. [('e1', 'inv-A', 1, 0)]\n\n1 stage(s) NOT safe to commit",
+      "stderr": ""
+    },
+    {
+      "ref": "bd1ace89da2c3b93e437154f03f8eb12b6c0ed63",
+      "name": "mismatched_invocation",
+      "stage": "log",
+      "expected_returncode": 1,
+      "returncode": 1,
+      "defect_accepted": false,
+      "valid_case_rejected": false,
+      "fixture_note": null,
+      "stdout": "log     FAILED   on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n         PROBLEM: 1 durable decision row(s) carry an invocation absent from the manifest, e.g. ['inv-NOT-IN-EPISODE-OR-MANIFEST']\n         PROBLEM: 1 durable decision key(s) match no retained completion and are not in the recovery ledger, e.g. [('e1', 'inv-NOT-IN-EPISODE-OR-MANIFEST', 1)]\n         PROBLEM: 1 completed decision(s) have no durable pre-invocation record, e.g. [('e1', 'inv-A', 1, 0)]\n\n1 stage(s) NOT safe to commit",
+      "stderr": ""
+    },
+    {
+      "ref": "bd1ace89da2c3b93e437154f03f8eb12b6c0ed63",
+      "name": "missing_decisions_file",
+      "stage": "log",
+      "expected_returncode": 1,
+      "returncode": 1,
+      "defect_accepted": false,
+      "valid_case_rejected": false,
+      "fixture_note": null,
+      "stdout": "log     FAILED   on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n         PROBLEM: decisions.jsonl is missing or empty\n\n1 stage(s) NOT safe to commit",
+      "stderr": ""
+    },
+    {
+      "ref": "bd1ace89da2c3b93e437154f03f8eb12b6c0ed63",
+      "name": "empty_decisions_file",
+      "stage": "log",
+      "expected_returncode": 1,
+      "returncode": 1,
+      "defect_accepted": false,
+      "valid_case_rejected": false,
+      "fixture_note": null,
+      "stdout": "log     FAILED   on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n         PROBLEM: decisions.jsonl is missing or empty\n\n1 stage(s) NOT safe to commit",
+      "stderr": ""
+    },
+    {
+      "ref": "bd1ace89da2c3b93e437154f03f8eb12b6c0ed63",
+      "name": "nested_durable_action_mismatch",
+      "stage": "log",
+      "expected_returncode": 1,
+      "returncode": 1,
+      "defect_accepted": false,
+      "valid_case_rejected": false,
+      "fixture_note": null,
+      "stdout": "log     FAILED   on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n         PROBLEM: 1 durable decision(s) disagree with the episode record on the action taken, e.g. [('e1', 'inv-A', 1, 0)]\n\n1 stage(s) NOT safe to commit",
+      "stderr": ""
+    },
+    {
+      "ref": "bd1ace89da2c3b93e437154f03f8eb12b6c0ed63",
+      "name": "missing_run_manifest",
+      "stage": "log",
+      "expected_returncode": 1,
+      "returncode": 1,
+      "defect_accepted": false,
+      "valid_case_rejected": false,
+      "fixture_note": null,
+      "stdout": "log     FAILED   on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n         PROBLEM: run_manifest.jsonl is missing or empty\n\n1 stage(s) NOT safe to commit",
+      "stderr": ""
+    },
+    {
+      "ref": "bd1ace89da2c3b93e437154f03f8eb12b6c0ed63",
+      "name": "branch_missing_parent_log",
+      "stage": "branch",
+      "expected_returncode": 1,
+      "returncode": 1,
+      "defect_accepted": false,
+      "valid_case_rejected": false,
+      "fixture_note": null,
+      "stdout": "branch  FAILED   on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n         PROBLEM: branch stage cannot be verified: the reference log episodes.jsonl is missing\n\n1 stage(s) NOT safe to commit",
+      "stderr": ""
+    },
+    {
+      "ref": "bd1ace89da2c3b93e437154f03f8eb12b6c0ed63",
+      "name": "branch_empty_parent_log",
+      "stage": "branch",
+      "expected_returncode": 1,
+      "returncode": 0,
+      "defect_accepted": true,
+      "valid_case_rejected": false,
+      "fixture_note": null,
+      "stdout": "branch  OK       on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n\nALL STAGES VERIFIED - safe to commit",
+      "stderr": ""
+    },
+    {
+      "ref": "bd1ace89da2c3b93e437154f03f8eb12b6c0ed63",
+      "name": "manifest_without_invocation_ids",
+      "stage": "log",
+      "expected_returncode": 1,
+      "returncode": 0,
+      "defect_accepted": true,
+      "valid_case_rejected": false,
+      "fixture_note": null,
+      "stdout": "log     OK       on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n\nALL STAGES VERIFIED - safe to commit",
+      "stderr": ""
+    },
+    {
+      "ref": "bd1ace89da2c3b93e437154f03f8eb12b6c0ed63",
+      "name": "wrong_task_correct_seed",
+      "stage": "log",
+      "expected_returncode": 1,
+      "returncode": 1,
+      "defect_accepted": false,
+      "valid_case_rejected": false,
+      "fixture_note": null,
+      "stdout": "log     FAILED   on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n         PROBLEM: 1 row(s) are attached to a different task than the frozen design, e.g. ['e1']\n\n1 stage(s) NOT safe to commit",
+      "stderr": ""
+    },
+    {
+      "ref": "bd1ace89da2c3b93e437154f03f8eb12b6c0ed63",
+      "name": "wrong_invocation_present_in_manifest",
+      "stage": "log",
+      "expected_returncode": 1,
+      "returncode": 1,
+      "defect_accepted": false,
+      "valid_case_rejected": false,
+      "fixture_note": null,
+      "stdout": "log     FAILED   on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n         PROBLEM: 1 durable decision key(s) match no retained completion and are not in the recovery ledger, e.g. [('e1', 'inv-B', 1)]\n         PROBLEM: 1 completed decision(s) have no durable pre-invocation record, e.g. [('e1', 'inv-A', 1, 0)]\n\n1 stage(s) NOT safe to commit",
+      "stderr": ""
+    },
+    {
+      "ref": "bd1ace89da2c3b93e437154f03f8eb12b6c0ed63",
+      "name": "missing_specific_durable_decision",
+      "stage": "log",
+      "expected_returncode": 1,
+      "returncode": 1,
+      "defect_accepted": false,
+      "valid_case_rejected": false,
+      "fixture_note": null,
+      "stdout": "log     FAILED   on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n         PROBLEM: 1 completed decision(s) have no durable pre-invocation record, e.g. [('e1', 'inv-A', 1, 1)]\n\n1 stage(s) NOT safe to commit",
+      "stderr": ""
+    },
+    {
+      "ref": "bd1ace89da2c3b93e437154f03f8eb12b6c0ed63",
+      "name": "preserved_recovery_old_action_differs",
+      "stage": "live",
+      "expected_returncode": 1,
+      "returncode": 1,
+      "defect_accepted": false,
+      "valid_case_rejected": false,
+      "fixture_note": "Valid historical row from a prior invocation of adaptive live class_tailored: exception routes small, while the retained current invocation assertion routes large. It is deliberately retained and distinguished by invocation, not presented as a current completion.",
+      "stdout": "live    FAILED   on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n         PROBLEM: 1 durable decision key(s) match no retained completion and are not in the recovery ledger, e.g. [('e1', 'inv-old', 1)]\n\n1 stage(s) NOT safe to commit",
+      "stderr": ""
+    },
+    {
+      "ref": "bd1ace89da2c3b93e437154f03f8eb12b6c0ed63",
+      "name": "recovery_ledger_allows_different_old_action",
+      "stage": "live",
+      "expected_returncode": 0,
+      "returncode": 0,
+      "defect_accepted": false,
+      "valid_case_rejected": false,
+      "fixture_note": "Valid historical row from a prior invocation of adaptive live class_tailored: exception routes small, while the retained current invocation assertion routes large. It is deliberately retained and distinguished by invocation, not presented as a current completion.",
+      "stdout": "live    OK       on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n\nALL STAGES VERIFIED - safe to commit",
+      "stderr": ""
+    },
+    {
+      "ref": "bd1ace89da2c3b93e437154f03f8eb12b6c0ed63",
+      "name": "ledger_wrong_declared_row_count",
+      "stage": "log",
+      "expected_returncode": 1,
+      "returncode": 0,
+      "defect_accepted": true,
+      "valid_case_rejected": false,
+      "fixture_note": null,
+      "stdout": "log     OK       on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n\nALL STAGES VERIFIED - safe to commit",
+      "stderr": ""
+    },
+    {
+      "ref": "bd1ace89da2c3b93e437154f03f8eb12b6c0ed63",
+      "name": "ledger_extra_historical_stage",
+      "stage": "log",
+      "expected_returncode": 1,
+      "returncode": 0,
+      "defect_accepted": true,
+      "valid_case_rejected": false,
+      "fixture_note": null,
+      "stdout": "log     OK       on disk 1/1  (good 1, intention-to-treat 0, retries owed 0, missing 0, unexpected 0, torn 0)\n\nALL STAGES VERIFIED - safe to commit",
+      "stderr": ""
+    }
+  ],
+  "interpretation": [
+    "Accepted: missing parent-log file, wrong task identity with correct seed, wrong same-episode invocation that exists elsewhere in the manifest, and missing individual durable record now reject.",
+    "Positive historical recovery now passes when declared in a stage-correct ledger and manifest; action comparison no longer incorrectly joins across invocations/attempts. The previous unledgered recovery case is now correctly rejected under the explicit ledger requirement, not counted as a remaining false positive.",
+    "Still accepted: empty parent log, manifest with no invocation identifiers, parent transcript-hash mismatch and wrong source hash. Parent membership still depends on a nonempty parent set; invocation membership still depends on a nonempty invocation set.",
+    "Both ledger negatives pass: wrong declared row counts/totals and an extra historical t=99 row under an otherwise declared episode/invocation/attempt, even with accurate updated counts and horizon=3. _ledger_keys validates only the three-key exemption and ledger stage, not individual historical decision stages, durable_decision_rows or totals. The actual committed ledger nevertheless independently reconciles all five historical rows across four IDs exactly.",
+    "The ledger is a new provenance declaration, not recovered lost outcomes. Pre-invocation rows show assignments were recorded; they alone do not prove each model call completed or reconstruct the 665 operator-reported lost results.",
+    "The 30 focused fixtures and bounded negative cases do not establish atomic publication or actual-host writer exclusion. No local PID observation is interpreted as remote liveness."
+  ]
+}

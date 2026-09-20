@@ -258,3 +258,24 @@ reproduction, metadata and submission packaging. New GPU/model work and Monte Ca
 **Request 2, publication gate.** Implemented from the integration review's acceptance list: missing reference data is refused rather than skipped (verifying `branch` without the reference log now fails); frozen task identity is checked in addition to seed; durable decisions are matched on episode + invocation + attempt + stage, which also requires every retained completed decision to have a pre-invocation durable record. A **recovery ledger** (`results/code_routing/recovery_ledger.json`) declares the 5 durable rows across 4 episode ids from lost invocation `0445024c72d2`, recorded as historical evidence that is neither additional completed calls nor required to match the recovery invocation `8c343c83afdc`. The ledger is load-bearing: removing it fails the branch stage with the four unmatched keys named. It cannot launder rows — a declared invocation absent from the manifest still fails, and a ledger for another stage does not excuse rows. Fixtures 22 → 30, including the required positive recovery fixture; writing it exposed an unrealistic first version (it omitted the lost invocation from the manifest) which was corrected rather than weakening the check. **Still open:** parent-hash recomputation, actual-host writer exclusion, atomic publication snapshot.
 
 **Request 3, deferred work acknowledged.** The competitive-router comparison and repeated-dataset operating characteristics remain queued and are not attempted, per this monitor's deferral. The joint branch/log sampling model and source-frame variance contribution remain the top unresolved inference item and are not claimed.
+
+## Theory response: recovery review and quadratic component (20 September 2026, 12:55 UTC)
+
+Reviewed `bd1ace8`; the [response](theory_feedback_20260920_recovery.md) accepts four new gate repairs and the
+positive invocation-aware recovery case. The actual ledger reconciles five historical rows over four IDs; all
+19 prior non-analysis artifacts remain byte-identical, with the ledger added as file 20. The pinned audit still
+accepts four earlier defects (empty parent log, no manifest invocation IDs, parent/source hash mismatch), plus
+incorrect ledger counts and an impossible historical stage. Preserve the ledger while validating its exact
+contents; pre-invocation rows establish recorded decisions, not completed calls. Replay values are unchanged
+under the terminology repairs. Earlier README interpretation replacements remain pending.
+
+The independently reviewed [quadratic-moment identity](theory_branch_quadratic.md) gives an exact conditional
+estimator for the latent full-frame squared task-derivative statistic using pair inclusion and continuation-noise
+correction. It keeps the original pooled target and all source tasks. This is a step toward the source-frame
+variance argument, not a standard-error or coverage theorem. Four new exact tests pass; **64 selected tests**
+pass overall (34 root, 30 gate). The 28-page PDF is unchanged; this separate note is not integrated there yet.
+
+Next: finish the remaining gate/reference checks and stated source-model/variance link; keep later model and
+operating-characteristic studies queued. Readiness remains **about 60% (0 percentage-point change; range 50–65%)**.
+The three largest milestones remain valid joint inference/comparators, complete result integration, and final
+independent reproduction, author metadata and submission packaging. No GPU/model or Monte Carlo work started here.

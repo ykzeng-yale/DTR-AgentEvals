@@ -1,5 +1,26 @@
 # Dated artifact audits
 
+## Recovery ledger and task-quadratic identity: `bd1ace8`
+
+```sh
+python3 docs/audits/check_publication_gate_bd1ace8.py
+.venv/bin/python -m pytest -q tests experiments/tools/test_verify_stage.py
+```
+
+The pinned CLI comparison checks 35 tiny cases at each of two versions: the earlier 32 cases plus one positive
+and two negative recovery-ledger cases. The primary reviewer reproduced `publication_gate_audit_bd1ace8.json`
+byte-for-byte. Four prior bypasses are fixed, four remain, and both new ledger defects still pass. A properly
+ledgered recovery case with a differing historical action now passes. The actual ledger reconciles five rows over
+four episode IDs; all 19 earlier non-analysis artifacts are unchanged, and the ledger is the twentieth file.
+The [review](../theory_feedback_20260920_recovery.md) distinguishes fixture failures from archive corruption and
+pre-invocation evidence from completed execution. Actual-host writer exclusion and atomic publication are not tested.
+
+The selected test command passes **64 tests**: 34 root and 30 gate fixtures. Four new rational-enumeration tests
+verify the independently reviewed [quadratic-moment identity](../theory_branch_quadratic.md), including unequal task
+sizes, noise subtraction and a census. This supplies a latent quadratic statistic, not a complete variance or
+coverage result. No model inference, candidate-code execution or Monte Carlo is performed. The 28-page PDF and
+all 22 previously recorded source hashes remain unchanged.
+
 ## Replay repair and production-function controls: `8ab7fb5`
 
 ```sh

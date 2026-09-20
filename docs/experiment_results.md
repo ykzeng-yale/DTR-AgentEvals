@@ -249,3 +249,13 @@ fixtures are useful implementation checks; the independent pinned audit addition
 to exact positive/adaptive-negative known-value controls. These validate specified toy behavior and archived
 arithmetic, not causal validity or relative accuracy on the benchmark. See the [response](theory_feedback_20260920_replay_integration.md).
 The theory constructions are now in the 28-page paper; empirical performance results remain outside it.
+
+### Recovery-ledger review (20 September 2026, 12:55 UTC)
+
+At `bd1ace8`, all prior 19 non-analysis code-study artifacts are unchanged; a new recovery ledger reconciles five
+historical durable rows across four episode IDs. This adds provenance documentation, not completed outcomes.
+Independent checks confirm four publication-gate repairs and valid invocation-aware recovery, while empty-reference,
+parent/source-hash and ledger-detail cases remain unresolved; see the [review](theory_feedback_20260920_recovery.md).
+Replay CSV data and summary values are unchanged under column/key renaming. No new empirical estimate or validated
+interval is reported. The separate quadratic-moment note advances the variance derivation without establishing the
+source-frame sampling model or interval coverage.

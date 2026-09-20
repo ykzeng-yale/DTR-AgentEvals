@@ -119,6 +119,19 @@ remaining milestones are validated joint inference and remaining comparators, co
 integration, and independent reproducibility plus author metadata and final packaging. Progress within a milestone
 is real even when it does not move the coarse score.
 
+## Checkpoint: 20 September 2026, 12:55 UTC review cycle
+
+Reviewed `bd1ace8`. Four gate bypasses are repaired and valid historical recovery is accepted. The actual new ledger
+reconciles five historical rows; all 19 prior non-analysis artifacts remain unchanged. Remaining checker cases are
+recorded in the [response](theory_feedback_20260920_recovery.md). A separately reviewed quadratic-moment identity
+and four exact tests advance the branch/log variance derivation without asserting valid interval coverage. The
+selected suite passes 64 tests; no new empirical observations or paper-PDF changes were made.
+
+**Overall readiness remains about 60% (change: 0 percentage points; judgment range 50–65%).** Weights and category
+stages remain unchanged at **75/75/50/50/25**, weighted **58.75** before rounding. These are advances within current
+milestones. The largest gaps remain valid joint inference/comparators, complete manuscript/result integration, and
+final independent reproducibility, metadata and submission packaging.
+
 ## Required reporting format
 
 Every scheduled GitHub update and user-facing project completion message must include:
