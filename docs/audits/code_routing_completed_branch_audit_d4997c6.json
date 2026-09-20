@@ -1,0 +1,178 @@
+{
+  "ref": "d4997c68ca93a4d5835bcc578470af472be311b2",
+  "prior_ref": "ac3ca8368e0b1b05990f1ef108fe1cc4bfb1251a",
+  "scope": "Completed branch artifact consistency and read-only guard review; no candidate/model execution, outcome analysis, Monte Carlo, or new collection.",
+  "hashes": {
+    "results/code_routing/branch/branch_plan.json": "59a384ac66c2b8d2e5e42c9828d7cc48757f802be9f4fa050eb22dac34367b35",
+    "results/code_routing/branch/episodes.jsonl": "83bf00634fbeeb8af05cdfb546480fb3e72aa440a3b9d6b71f3d22dbc2c98413",
+    "results/code_routing/branch/decisions.jsonl": "959a11c40a6bbaccd770895fc04f92ae72382e0f38d4f07e7d5de02a4ff71855",
+    "results/code_routing/branch/run_manifest.jsonl": "6809db5554fda641ab8440d7e9f66f6925120b838c8360ac1249026cc206e705",
+    "results/code_routing/design.json": "230638a757c581138d1a3611a9c5788ed79b80a655313d316cac63cbba4ff43d",
+    "results/code_routing/visible_tests.json": "634570cf88743416eca301f77e731c0a1b59013753ffa87c8238a3c77690ddff",
+    "results/code_routing/redactions.json": "a4464dc97f717ede05c45706d4bd750ed9ee1b5f7643428c020ce316885c6da0",
+    "experiments/code_routing/config.json": "3dfa7d53990e6d7832c2b22b6ae2f0bf60a9beac052c1ef7dfe10ec9a96d6177",
+    "experiments/tools/verify_stage.py": "9c670a07294e3e320dab5a31e889f8d0d0d43f5362351b27fa14d9cb915d7df8",
+    "experiments/code_routing/protocol.md": "ff23a6f9bc2d42e3d75c3e1b680245eed5a6d302a79a8be6e852099dfd5d3391"
+  },
+  "retained_call_accounting": {
+    "by_stage": {
+      "pilot": 163,
+      "log": 6063,
+      "live": 5504,
+      "branch": 1434
+    },
+    "log_live_branch": 13001,
+    "all_four_stages": 13164,
+    "scope": "Counts of nested decisions attached to retained completed episodes. Excludes unrecovered original executions and environment-construction test-writer calls; not total physical inference cost."
+  },
+  "retry_accounting": {
+    "error_based_retry_attempts": 0,
+    "retained_records_with_attempt_above_one": 0,
+    "second_invocation_complement_episodes": 665,
+    "scope": "Zero error-based retry attempts is verified. The 665 recovery executions are a separate restart/reexecution category; their claimed prior completion is operator-reported."
+  },
+  "counts": {
+    "plan": 800,
+    "episodes": 800,
+    "distinct_tasks": 103,
+    "distinct_parent_prefixes": 200,
+    "nested_decisions": 1434,
+    "durable_decisions": 1439,
+    "durable_decisions_without_retained_completion": 5,
+    "affected_reexecuted_episode_ids": [
+      "branch:log:humaneval/4#3:large#0",
+      "branch:log:humaneval/4#3:large#1",
+      "branch:log:humaneval/46#3:large#0",
+      "branch:log:humaneval/46#3:small#1"
+    ],
+    "episodes_by_invocation": {
+      "0445024c72d2": 135,
+      "8c343c83afdc": 665
+    },
+    "durable_by_invocation": {
+      "0445024c72d2": 243,
+      "8c343c83afdc": 1196
+    },
+    "nested_by_stage": {
+      "1": 800,
+      "2": 634
+    },
+    "error_rows": 0,
+    "attempts": {
+      "1": 800
+    },
+    "finish_reasons": {
+      "stop": 1434
+    },
+    "validation_timeouts": 0,
+    "hidden_timeouts": 0,
+    "foreign_gpu_load": 0,
+    "restoration_both_true": 800
+  },
+  "chronology": {
+    "0445024c72d2": {
+      "manifest_start": "2026-09-20T01:11:55Z",
+      "first_episode_start": "2026-09-20T01:11:55Z",
+      "last_episode_start": "2026-09-20T01:26:55Z",
+      "last_durable_decision": "2026-09-20T01:27:04Z"
+    },
+    "8c343c83afdc": {
+      "manifest_start": "2026-09-20T02:13:49Z",
+      "first_episode_start": "2026-09-20T02:13:49Z",
+      "last_episode_start": "2026-09-20T02:55:49Z",
+      "last_durable_decision": "2026-09-20T02:55:59Z"
+    }
+  },
+  "duplicate_keys_without_invocation": [
+    {
+      "episode_id": "branch:log:humaneval/4#3:large#0",
+      "attempt": 1,
+      "t": 1,
+      "changed_fields": [
+        "invocation",
+        "logged_utc"
+      ]
+    },
+    {
+      "episode_id": "branch:log:humaneval/4#3:large#1",
+      "attempt": 1,
+      "t": 1,
+      "changed_fields": [
+        "invocation",
+        "logged_utc"
+      ]
+    },
+    {
+      "episode_id": "branch:log:humaneval/46#3:small#1",
+      "attempt": 1,
+      "t": 1,
+      "changed_fields": [
+        "invocation",
+        "logged_utc"
+      ]
+    },
+    {
+      "episode_id": "branch:log:humaneval/46#3:small#1",
+      "attempt": 1,
+      "t": 2,
+      "changed_fields": [
+        "invocation",
+        "logged_utc"
+      ]
+    },
+    {
+      "episode_id": "branch:log:humaneval/46#3:large#0",
+      "attempt": 1,
+      "t": 1,
+      "changed_fields": [
+        "invocation",
+        "logged_utc"
+      ]
+    }
+  ],
+  "checks": {
+    "distinct": 80,
+    "individual": 43899,
+    "failures": {}
+  },
+  "independently_verified_incident_consistency": [
+    "The 135 previously published episodes and 243 durable decisions survive as exact byte prefixes.",
+    "The second manifest specifies 135 resolved and 665 planned; exactly those 665 complementary plan IDs have new episode rows, with unchanged plan seeds and source/config/model manifest values.",
+    "Five old-invocation decision rows over four episode IDs lack an old completion row and are repeated under the second invocation. Invocation is required in the durable-record key because both invocations label attempt=1."
+  ],
+  "reported_not_independently_verified": [
+    "The first invocation completed all 800; 665 original completion records were lost. Only 135 old completion rows plus five pre-action rows of four other episodes are committed.",
+    "The causal mechanism was rebase replacement of open inodes, the original runner exited cleanly, and no person observed any lost outcome. No deleted-inode recovery, process exit log, or inode evidence was supplied.",
+    "Same seeds and frozen code imply matching requested conditions, not proof of identical generated outputs or outcomes for lost executions.",
+    "The sentence \"none that can bias a result\" requires an outcome-independent loss/reexecution assumption and runtime stability; committed records alone cannot establish it."
+  ],
+  "verify_stage_static_review": [
+    {
+      "severity": "material",
+      "finding": "The pass condition ignores res[torn]. An otherwise complete episode file with a tolerated final unparsable line can print torn=1 while returning OK."
+    },
+    {
+      "severity": "material",
+      "finding": "It checks resolved ID sets only; successful duplicates collapse to the last row, and a row with the right ID but missing error/content fields can count as good. It does not validate decisions, invocation identity, seeds, frozen plan hashes, model/source provenance, or restoration."
+    },
+    {
+      "severity": "material",
+      "finding": "The quiet-period check uses only episodes.jsonl mtime; there is no OS lock or atomic snapshot through commit/rebase. A new writer can start after the check (TOCTOU), and decisions/manifest may still change."
+    },
+    {
+      "severity": "scope",
+      "finding": "PID liveness applies to the current host and treats every OSError as dead, including a permission error. A cloned or absent lock cannot prove remote liveness."
+    },
+    {
+      "severity": "scope",
+      "finding": "Passing permits exhausted error episodes as intention-to-treat outcomes, so completeness is not equivalent to error-free success. No such error rows occur in this archive."
+    }
+  ],
+  "limitations": [
+    "Parent hashes are compared as stored; task source needed to reconstruct initial prompts is absent, and no tool restoration or hidden reward was reexecuted.",
+    "Model hashes and runtime metadata are consistent declarations; the physical model/server environment and original lost files were not inspected.",
+    "Current retained call counts omit unrecovered original executions. Exact total physical inference cost cannot be reconstructed from the archived branch records.",
+    "Restoration checks prove only the recorded transcript/tool-result comparisons, not bitwise full runtime state or identical stochastic continuation.",
+    "The new guard improves count checking but does not establish that historical log/live stages were idle when committed; local mtime cannot retrospectively attest that."
+  ]
+}

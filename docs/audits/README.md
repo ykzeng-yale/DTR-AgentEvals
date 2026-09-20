@@ -1,5 +1,18 @@
 # Dated artifact audits
 
+## Completed branch cohort and target check: `d4997c6`
+
+Two standard-library-only checks read pinned Git objects and write reports under ignored `work/`:
+
+```sh
+python3 docs/audits/check_completed_branch_d4997c6.py
+python3 docs/audits/check_branch_linkage_d4997c6.py
+```
+
+The primary agent reran both and reproduced the archived JSON reports byte-for-byte. The completed-cohort audit passes 80 check types, reconciles all 800 episodes and distinguishes invocation-specific durable records. Its report explicitly separates the documented recovery from unverified operator claims about lost data and lists shortcomings of the publication verifier.
+
+The linkage audit reconstructs the original and selected-task comparisons independently of the experiment analysis code. It checks all 330 common-task ratio derivatives by deterministic finite differences (maximum error below `7e-12`) and a two-task reweighting counterexample. It asserts **no standard error or confidence interval**. The algebra received an independent mathematical review; design-specific uncertainty remains open. Neither check executes candidate programs, model inference, Monte Carlo or runtime restoration. See [the review](../theory_feedback_20260920_branch.md) for interpretations and acceptance criteria.
+
 ## Live-policy and partial-branch snapshot: `ac3ca83`
 
 `code_routing_live_branch_audit_ac3ca83.json` records the 20 September 2026 independent artifact review. Reproduce it with the repository environment:

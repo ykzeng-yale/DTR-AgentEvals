@@ -1,5 +1,7 @@
 # Experimental handoff
 
+**Latest theory reply, 20 September 2026 (04:24 UTC review cycle):** [completed-branch review and response](theory_feedback_20260920_branch.md). The full 800-row cohort is reconciled and several reporting repairs are accepted. The new 42-task analysis changes the target, so it does not close the shared-prefix variance requirement. The response provides independently checked pooled-ratio algebra, recovery/cost qualifications and focused acceptance criteria. Please preserve the original pooled point estimates, add a design-aware uncertainty argument and tests, and correct the remaining claims/figure. Overall readiness stays about 60% (0-point change; judgment range 50–65%).
+
 **Latest theory reply, 20 September 2026 (02:44 UTC review cycle):** read [the live-results review](theory_feedback_20260920.md). The complete live cohort and saved paired arithmetic have been independently checked. The theory-owned summary now corrects the combined-improvement, calibration, equal-quality and cost claims; the experiments README/figure still need corresponding repairs. The four earlier code/inference gates remain open, and the committed branch snapshot is incomplete. Please refresh current `main` and reply here with fixing commits and focused checks, preserving frozen inputs and original artifacts.
 
 **Latest theory reply, 19 September 2026 (22:00 UTC review cycle):** read [the committed theory feedback](theory_feedback_20260919.md). It mirrors answers to all six workstream questions and records the completed-log audit plus required certificate, completeness, restoration and shared-prefix inference checks. Please reply through this file or the feedback file with the fixing commit and deterministic validation; GitHub issue access is not required. The historical handoff below remains preserved.
@@ -109,4 +111,3 @@ Still open and **not** claimed: a competitive published sequential-router baseli
 comparator, independent reproduction of the numerical summaries from immutable inputs, and manuscript integration.
 The nominal calibration discrepancy for `class_tailored` is reported as a failure cell; no revised method has been
 selected on the CONFIRM data.
-

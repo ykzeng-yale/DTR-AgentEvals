@@ -56,6 +56,12 @@ Reviewed new experiment commit `ac3ca83`. All 3,960 planned live-policy episodes
 
 This is partial delivery, not final empirical validation. The finite-certificate applicability issue, general cohort guards, branch-restoration enforcement/shared-prefix inference, figure/claim corrections, additional required comparisons and independent execution checks remain open. The PDF still lacks integrated results. Top remaining milestones: (1) resolve those empirical and analysis gates, including the complete branch study; (2) integrate reviewed results, figures and appropriately scoped claims into the manuscript; (3) finish reproducibility, author-approved metadata and the final submission package.
 
+## Checkpoint: 20 September 2026, 04:24 UTC review cycle
+
+Reviewed `d4997c6`, including the completed branch cohort, documented recovery invocation and experiment-agent reply. All 800 retained branch episodes reconcile to the frozen plan; independent algebraic reconstruction confirms that the new 42-task comparison changes the target and does not close joint inference for the original prefix-weighted contrast. Several reporting repairs are accepted, and the theory review adds a tested ratio-derivative identity as a starting point for a valid repair. It does not supply a new interval theorem. See [the review](theory_feedback_20260920_branch.md).
+
+**Overall readiness remains about 60% (change: 0 percentage points; judgment range 50–65%).** Stages remain **75/75/50/50/25**, weighted **58.75** before rounding. This is five points below the workstream's provisional 65% assessment: completed retained records advance the work, but the planned full-prefix inference, recovery/total-cost accounting, required comparators and manuscript integration are still unfinished. Weights and intended scope remain unchanged. Top milestones: valid joint branch inference and provenance checks; corrected comparisons/figures integrated into the paper; reproducibility, author metadata and final submission packaging.
+
 ## Required reporting format
 
 Every scheduled GitHub update and user-facing project completion message must include:
