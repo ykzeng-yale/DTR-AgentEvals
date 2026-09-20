@@ -13,6 +13,27 @@ The primary agent reran both and reproduced the archived JSON reports byte-for-b
 
 The linkage audit reconstructs the original and selected-task comparisons independently of the experiment analysis code. It checks all 330 common-task ratio derivatives by deterministic finite differences (maximum error below `7e-12`) and a two-task reweighting counterexample. It asserts **no standard error or confidence interval**. The algebra received an independent mathematical review; design-specific uncertainty remains open. Neither check executes candidate programs, model inference, Monte Carlo or runtime restoration. See [the review](../theory_feedback_20260920_branch.md) for interpretations and acceptance criteria.
 
+## Revised publication gate and manuscript integration: `6f92026`
+
+```sh
+.venv/bin/python docs/audits/check_publication_gate_6f92026.py
+.venv/bin/python -m pytest -q tests experiments/tools/test_verify_stage.py
+sh manuscript/build.sh
+```
+
+The pinned CLI comparison runs 32 tiny cases against each of the old and new gates, writing only under ignored
+`work/` and temporary directories. The primary reviewer reproduced `publication_gate_audit_6f92026.json`
+byte-for-byte. Twelve of the prior 14 bypasses are fixed. The expanded suite finds eight accepted defective cases
+and one rejected valid historical-recovery case at the new pin; all 19 non-analysis artifacts are unchanged.
+The [response](../theory_feedback_20260920_integration.md) distinguishes remaining checker gaps from data corruption.
+
+The selected test command passes **49 tests** (27 root and 22 gate fixtures), without launching experiment sweeps.
+The manuscript now integrates the reviewed sampling proposition, builds to **27 pages**, has 13 numbered results,
+and received independent proof-preservation and document-wide visual review. Source/PDF hashes and exact scope are
+in `manuscript/validation.json`. Rebuilding can change PDF metadata; the hashes identify the delivered artifact.
+No new model inference, Monte Carlo sweep, hidden-test rescoring, runtime restoration or remote-liveness validation
+is performed by this monitor.
+
 ## Target-preserving repair and publication gate: `29ee443`
 
 Reproduce the current independent checks using pinned Git objects:

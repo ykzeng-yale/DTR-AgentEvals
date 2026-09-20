@@ -220,3 +220,13 @@ The publication gate now rejects several earlier defects, including torn tails a
 independent fixtures show that false/missing restoration evidence, missing metadata and incomplete invocation/decision
 linkage can still pass. These are checker gaps, not new defects found in the actual saved cohort. All 19 non-analysis
 code-study artifacts are byte-identical to `d4997c6`; the independent cohort audit remains a separate evidence layer.
+
+### Reporting and gate revision reviewed at `6f92026` (07:50 UTC cycle)
+
+No empirical numbers or raw records changed; only the reporting figure changed under the results directory.
+Independent deterministic fixtures confirm that 12 of the earlier 14 publication-check bypasses now reject. Parent
+hash/source identity and further isolated reference-data/linkage cases remain open, and invocation-blind matching
+can reject valid historical recovery rows. The [review](theory_feedback_20260920_integration.md) records the exact
+scope and remaining contradictory README/figure text. All 19 non-analysis artifacts remain unchanged. The conditional
+sampling proof is now in the manuscript; this advances the theory paper without validating the empirical joint band
+or inserting empirical results into the PDF.

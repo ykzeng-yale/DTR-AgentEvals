@@ -1,6 +1,6 @@
 # Fixed-size prefix sampling with replicated continuations
 
-**20 September 2026.** This note supplies the conditional branch component needed by the completed-code-study review. It follows from elementary sampling and total-variance identities; no new general sampling theorem is claimed. It does not validate the currently reported branch-minus-log interval, establish model performance, or change the compiled manuscript. A separate internal mathematical reviewer checked the result and its scope.
+**20 September 2026.** This note supplies the conditional branch component needed by the completed-code-study review. It follows from elementary sampling and total-variance identities; no new general sampling theorem is claimed. It does not validate the currently reported branch-minus-log interval or establish model performance. A separate internal mathematical reviewer checked the result and its scope. **07:50 UTC cycle update:** the theoretical result and full proof are integrated into Section 9.3, Proposition 11 of the [27-page manuscript](../manuscript/README.md), with independent proof-preservation and visual review; empirical numbers in this companion note are not inserted into the paper.
 
 ## Target and assumptions
 

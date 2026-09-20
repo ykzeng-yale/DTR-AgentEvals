@@ -1,6 +1,6 @@
 # Theory-first manuscript status
 
-**19 September 2026.** This is a complete working draft of the scoped theory paper, with empirical methods prespecified and empirical performance results deliberately deferred. It is not a submission-ready claim, a novelty certification, or external peer review.
+**Updated 20 September 2026.** This is a complete working draft of the scoped theory paper, with empirical methods prespecified and empirical performance results deliberately deferred. It is not a submission-ready claim, a novelty certification, or external peer review.
 
 ## Delivered scope
 
@@ -13,26 +13,29 @@
 | Supported interventions | Fixed versus unknown-behavior-dependent targets distinguished; the behavior-adaptive gradient is derived. A general estimator/rate theorem for the latter remains outside scope. |
 | Eligible-opportunity reduction | Exact block factorization and likelihood ratio proved; second-moment bound depends on eligible opportunities, not realized switches. |
 | Branch validation and allocation | Prefix transport, exact augmented-score mean/variance, independent two-sample corollary, and clipped oracle cost allocation proved. Global optimal exploration is not claimed. |
+| Fixed-size prefix sampling | Conditional fixed-frame variance and an unbiased estimator with replicated continuations proved; the additional source-frame/log variance term for a full joint comparison remains unresolved. |
 | Execution drift | Full-history coupling bound and deployment-adjusted improvement certificate proved for externally justified kernel allowances and a common payoff. The allowances are not estimated from ordinary logs. |
 | Empirical sections | Prospective methods and reporting targets written. New simulations, GPU/model execution, and empirical results deferred. |
 | Discussion and reproducibility | Written, with practical limitations, open questions, build instructions, and this audit record. |
 
-There are 12 numbered theorem/proposition/corollary statements, plus additional derived identities and explicitly scoped corollaries in the prose. All proofs concern their written assumptions; no claim is made that realistic agent systems already satisfy those assumptions.
+There are 13 numbered theorem/proposition/corollary statements, plus additional derived identities and explicitly scoped corollaries in the prose. All proofs concern their written assumptions; no claim is made that realistic agent systems already satisfy those assumptions.
 
 ## Review and validation
 
 - A separate agent reviewed the theory and assembled manuscript. The [full review](../docs/theory_review_20260919.md) records findings and resolutions. A second agent checked source positioning and the rendered latter half of the paper.
 - Corrections made during review: valid root marginals for cluster inference; explicit sequential support for every candidate; almost-everywhere support wording; proportional fold sizes; target-null conventions for branch scores; residual-second-moment allocation; complete kernel/payoff conditions; and manuscript conversion/cross-reference repairs.
-- The full repository test suite passed: **23 tests**, including **13 exact theorem checks** across the existing and new theory test files. These are small CPU algebra checks, not new Monte Carlo or model experiments.
-- The compiled PDF has **25 pages**. All pages were rendered and visually reviewed. Bibliography, cross-references, equations, margins, and indicator glyphs were checked; the final LaTeX log has no undefined citations/references or overfull boxes.
+- The repository root test suite passed: **27 tests**, including **17 exact theorem checks** across the three theory test files. With the 22 publication-gate fixtures, this review ran **49 passing tests**. These checks do not launch a new Monte Carlo sweep or model experiment; the workstream's broader reported test run is separate.
+- The compiled PDF has **27 pages**. All pages were rendered and visually reviewed: the primary reviewer inspected pages 1–17, and a separate reviewer checked pages 18–27 and preservation of the new proof. Bibliography, cross-references, equations, margins, and indicator glyphs were checked; the final LaTeX log has no warnings, undefined citations/references or overfull boxes. The final page contains one bibliography entry; this is a minor pagination choice, not missing content.
 - The paper build uses the canonical bibliography with audit-only notes removed for display. Source-level audit annotations remain in the canonical file.
 - `validation.json` records the PDF/source hashes and reproducibility details. Build intermediates are ignored by Git.
 
 ## Integration boundary
 
-This manuscript builds on the original theory package at `40da0d42422611f61f49fdec23dbf2f76a40eb6d`. The repository was refreshed through `66b7488` before publication, preserving the intervening experiment work. Those newer experiment commits were not independently rerun or validated for this paper and supply no numerical results to it. This update changes no archived experimental outputs and launches no model workload.
+This manuscript builds on the original theory package at `40da0d42422611f61f49fdec23dbf2f76a40eb6d`. Its initial publication followed repository checkpoint `66b7488`; the current paper revision follows `6f92026` and integrates the reviewed conditional sampling note from `7d06c2d`. Later experiment audits are recorded below, but no empirical performance numbers are inserted into this theory-first PDF. The update changes no archived experimental outputs and launches no model workload. The prior PDF/source and validation record remain available in Git history.
 
 ## Later author and empirical work
+
+**20 September, 07:50 UTC coordination review:** the conditional sampling proof is integrated into Section 9.3, Proposition 11, with independent proof-preservation review and a clean 27-page build. Exact uncertainty limits remain explicit. At `6f92026`, 12 of the previous 14 checker bypasses are fixed; the new independent audit identifies remaining reference-data, identity/linkage and recovery cases, while all 19 non-analysis code-study artifacts remain unchanged. Accepted reporting fixes and exact replacements for residual contradictions are in the [response](../docs/theory_feedback_20260920_integration.md). Full-project readiness remains **about 60% (0 percentage-point change; range 50–65%)**; manuscript progress does not close empirical inference/comparators or final packaging.
 
 **20 September, 06:04 UTC coordination review:** `29ee443` restores the original pooled branch comparison and narrows several claims. The new [sampling supplement](../docs/theory_branch_sampling.md) proves the conditional fixed-frame branch variance and an unbiased estimator, with independent mathematical review and four exact enumeration tests. The full branch-minus-log sampling justification remains open. Nine publication-gate fixtures pass, but independent CLI counterexamples expose missing checks; see the [response](../docs/theory_feedback_20260920_sampling.md). The repository root suite now has 27 passing tests (36 including the nine gate fixtures). The 25-page PDF and its numbered results are unchanged; the new supplement is not yet integrated there. Readiness stays **about 60% (0 percentage-point change; range 50–65%)**.
 

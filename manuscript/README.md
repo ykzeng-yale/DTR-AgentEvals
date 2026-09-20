@@ -1,6 +1,6 @@
 # Dynamic Agent Regimes — full theory-first manuscript
 
-**Working draft, 19 September 2026.** [Read the PDF](DTR_Agent_Regimes_Theory_Draft.pdf), [edit the source](main.tex), or read the [validation and status record](STATUS.md).
+**Working draft, updated 20 September 2026.** [Read the 27-page PDF](DTR_Agent_Regimes_Theory_Draft.pdf), [edit the source](main.tex), or read the [validation and status record](STATUS.md).
 
 The current paper develops the theory, complete proofs for its stated results, introduction, related-work positioning, discussion, and prospective empirical methods. New model experiments and empirical performance results are deferred at the author's request because GPU capacity is limited. Prior development results remain in the repository archive and are not used as evidence in this manuscript.
 
@@ -10,6 +10,7 @@ The current paper develops the theory, complete proofs for its stated results, i
 - Task-level inference conditions, resource outcomes, supported stochastic interventions, and the distinction between a frozen reference and an unknown-behavior-dependent target.
 - Exact reduction to prospectively eligible routing opportunities, including decisions to keep the current model.
 - Target-prefix transport of selected live branches, augmentation, exact one-sample and two-sample variance, and oracle branch-cost allocation with selection floors and saturation cases.
+- Fixed-size sampling of a recorded prefix frame: conditional variance, an unbiased variance estimator with replicated continuations, and the remaining source-frame/log component needed for a joint comparison. This result does not establish empirical interval coverage.
 - A coupling sensitivity bound for changed execution kernels and a deployment-adjusted policy-improvement certificate.
 
 The paper attributes the classical methods it adapts. Correct proofs and a complete draft do not establish sufficient novelty for a particular venue, empirical superiority, or submission readiness. Author names, affiliations, venue formatting, and eventual results remain to be finalized. General optimal sequential exploration and the other limitations listed in the discussion remain open.

@@ -1,44 +1,57 @@
 {
-  "generated_utc": "2026-09-19T17:59:43.653163+00:00",
-  "reviewed_repository_base": "66b7488d809bca0004c0e0b46a5ae760aa05f8be",
-  "scope": "Theory-first working manuscript; no new model inference or Monte Carlo experiments",
+  "generated_utc": "2026-09-20T08:00:51.387106+00:00",
+  "reviewed_repository_base": "6f9202613a6e5c38ad4d7e733912495d3f138ea2",
+  "scope": "Theory-first manuscript revision integrating the reviewed conditional sampling proof; no empirical results added and no model inference or Monte Carlo sweep",
   "pdf": {
     "path": "manuscript/DTR_Agent_Regimes_Theory_Draft.pdf",
-    "pages": 25,
-    "sha256": "9991aa93aab8288de69ae1596d2c29ff7961f1dbdf08947b84ff953e40dda15d"
+    "pages": 27,
+    "sha256": "47cf9a7cd65c720570f2b2297143d3b7cf01c4e7710995d44295bcb9b247b774"
   },
   "checks": {
-    "full_pytest": "23 passed in 0.35s",
-    "exact_theory_subset_tests": 13,
-    "new_exact_tests": 7,
-    "numbered_mathematical_statements": 12,
+    "full_pytest": "27 root tests passed; combined selected run: 49 passed in 1.11s",
+    "exact_theory_subset_tests": 17,
+    "new_exact_tests": 0,
+    "numbered_mathematical_statements": 13,
     "cited_references": 21,
-    "unique_labels": 74,
-    "symbolic_references": 50,
+    "unique_labels": 81,
+    "symbolic_references": 55,
     "unresolved_references": [],
     "latex_warnings": [],
-    "visual_review": "All 25 pages rendered and inspected; indicator glyph and short display-introduction page-break corrections applied and rerendered."
+    "visual_review": "All 27 pages rendered. Primary reviewer inspected pages 1-17; separate reviewer inspected pages 18-27 and proof preservation; author inspected pages 17-20. No blocking visual defects. New Section 9.3 preserves reviewed assumptions, equations and inference boundary.",
+    "sampling_tests_integrated": 4,
+    "publication_gate_fixture_tests": 22,
+    "independent_gate_comparison": "32 CLI cases at each of two pinned versions; 12 of 14 earlier bypasses fixed; eight defect cases accepted and one valid recovery case rejected at new version. All 19 non-analysis experiment artifacts unchanged."
   },
   "build": "sh manuscript/build.sh",
-  "tests": "PYTHONPATH=src .venv/bin/python -m pytest -q",
+  "tests": ".venv/bin/python -m pytest -q tests experiments/tools/test_verify_stage.py",
   "files_sha256": {
-    "manuscript/main.tex": "1a1bb354a5d2057bbeb8e19166bd5a5a66598673ccb508f9d0d7b5448ee17d7c",
+    "docs/theory_branch_sampling.md": "8d5a13ff4cc1d5008f6c77bbc0ee0fa8ec226ea85ab4a87df65c0dee1890a17b",
+    "docs/theory_feedback_20260920_integration.md": "9b603947e08d6a8bd53198ec9d813ce7dc03447000b53310cc0be79a23335db0",
+    "docs/theory_review_20260919.md": "07db06ae567be32e9a78e8b44eb78c44913c1bd0481059e335bb8e6b4d146930",
     "manuscript/build.sh": "40b9f9842fbb814f28a159a13e075c3d0edc3b8e7cd40575ec0a2ba2c5d0eace",
+    "manuscript/main.tex": "3171b03ad0ec124fb915e2de7a2d4803e12d0e55d59c4987305a69c4c815bfe0",
     "manuscript/prepare_bibliography.py": "874f7f486b8442138b8f7326eef3880b5c2a18b118bcb8aacf92f8b7dde0275f",
     "manuscript/references.bib": "30a0965d0c286050f0d61944c3701eebe7e9d5c67f78fab5127e1726f3835aed",
-    "references/references.bib": "59656ee96c86058989c4c1e45f47c45ccc12469013f478b3583767da8b091038",
     "manuscript/sections/deployment_certificate.tex": "8a1eaa4f78612246dbf01973a7c571080907b67dcc3082c9577c5b48d97a416d",
     "manuscript/sections/discussion.tex": "86f704fecf13afed866bda9eb1ef5534476c026dd3ca69c12e58facec32b63c1",
     "manuscript/sections/empirical_plan.tex": "f4ae747fc81707994cce84704e156a7789db2352970da0caf98cfc179c4ebffe",
-    "manuscript/sections/extensions.tex": "d3fa50e437a0b493f1b9d1380e5a2a540a79a2bee271f19f3a057deaf774a3d8",
+    "manuscript/sections/extensions.tex": "780c9d49992bed5f1405ceee8650f7e5712f252dc16358a4290b1286ad67d3a1",
     "manuscript/sections/foundations.tex": "d8b309eccba94a897eb309d05e4348525341e501792d0f3adb0133b7e6bdf483",
     "manuscript/sections/introduction.tex": "5e9278674e704bffc089608949b3b8756c8b9fadb431327183d36b5d05ac87d6",
+    "references/references.bib": "59656ee96c86058989c4c1e45f47c45ccc12469013f478b3583767da8b091038",
+    "tests/test_branch_sampling.py": "147a858519992ed4b98be1a5beed1834fb892e99224525c62f5ef7554d9dbfc5",
     "tests/test_paper_theory.py": "b88b9fa7c97ff73b0e1499a40340375fa6c70822b74f3bf8a98e1732e5d5491c",
-    "docs/theory_review_20260919.md": "07db06ae567be32e9a78e8b44eb78c44913c1bd0481059e335bb8e6b4d146930"
+    "tests/test_theory_identities.py": "06b9526c4282fdb6dce462da68b9387b19603a9dc90a7c275c10ea908ca08693"
   },
   "limitations": [
     "Internal agent review is not external peer review or proof-assistant certification.",
-    "The PDF hashes identify this delivery; TeX metadata timestamps can change on rebuilding.",
-    "No empirical superiority, efficiency advantage, or submission readiness is established."
-  ]
+    "PDF hashes identify this delivery; TeX metadata timestamps can change on rebuilding.",
+    "Conditional sampling variance does not validate the full empirical branch-minus-log uncertainty or normal coverage.",
+    "Empirical performance results remain deferred in this manuscript; no superiority, efficiency advantage, or submission readiness is established."
+  ],
+  "prior_delivery": {
+    "validation_at_commit": "7d06c2d1a792e5c8ee93ceabd648e8cf39ac476e",
+    "pdf_sha256": "9991aa93aab8288de69ae1596d2c29ff7961f1dbdf08947b84ff953e40dda15d",
+    "pages": 25
+  }
 }

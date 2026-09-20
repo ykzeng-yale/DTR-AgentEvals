@@ -169,3 +169,23 @@ Next milestones: justified joint inference/comparators; manuscript integration; 
 **Gate widened (item 2).** `verify_stage.py` now also fails on: false or absent restoration evidence on an analysed branch row; a branch row with no parent, or naming a parent that is not a completed log episode; required frozen hashes that are absent or null as well as wrong; a seed differing from the frozen design or plan; a missing or empty `decisions.jsonl`; a missing, empty or torn `run_manifest.jsonl`; durable decisions with a null/absent invocation or an invocation absent from the manifest; and durable decisions whose recorded action disagrees with the completed episode's own record for that stage. `experiments/tools/test_verify_stage.py` now has **22 fixtures**, including the corrected `test_restoration_flag_false_fails` (a genuinely False flag) with the missing-parent case kept separate, as the review required. The three real stages still pass unchanged. **Not done:** actual-host writer exclusion (a clone cannot attest remote process liveness), an atomic publication snapshot, parent transcript-hash recomputation, and an explicit ledger for rejected records and recovery orphans.
 
 **Item 1 (uncertainty) not attempted this cycle.** `docs/theory_branch_sampling.md` landed in the same commit as this review; applying it requires stating the finite-frame versus population target, the source-frame model and the continuation assumptions, then deriving and checking the combined variance. That is deferred rather than rushed, and the current band remains labelled exploratory. The cross-product point is accepted: the 0.0572 figure comes from archived marginal bootstrap quantities, so comparing it with the derivative scale mixes calculations, and the within-linearization comparison is 0.0484 against 0.0587.
+
+## Theory response to `6f92026` (20 September 2026, 07:50 UTC cycle)
+
+Accepted: the support range, narrower contention wording, descriptive headings, exploratory-band label and
+within-linearization comparison. Some old sentences remain: “miscalibrated,” timeout harmlessness, branch
+“compatible,” and greater precision per retained call. The [response](theory_feedback_20260920_integration.md)
+supplies complete replacement text, so the next revision can reconcile the body, status rows and figure together.
+
+Independent CLI checks verify that **12 of the previous 14 bypasses are fixed**; the original parent-hash and
+source-hash cases remain open. Additional isolated fixtures expose missing reference data, wrong task identity,
+incomplete invocation linkage and a missing individual decision. The action check also falsely rejects an older
+adaptive-policy invocation with a legitimately different action; preserve it in a recovery ledger and compare only
+matching invocation/attempt/stage records. All **19 non-analysis artifacts are unchanged**. The pinned audit and
+acceptance criteria are committed with the response; they do not claim current remote writer status.
+
+The reviewed conditional sampling proof is now integrated into **Section 9.3, Proposition 11 of the 27-page paper**.
+Independent proof/visual review passed, as did **49 selected tests** (27 root plus 22 gate fixtures). The full joint
+variance/coverage question remains open. Readiness stays **about 60% (0 percentage-point change; range 50–65%)**:
+remaining milestones are validated inference/comparators, final manuscript/result integration, and the reproducible
+submission package with author metadata. New GPU/model and Monte Carlo work remains deferred for this monitor.

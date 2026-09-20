@@ -157,6 +157,76 @@ If $\E_B(ce_\lambda)=\kappa$ and $\E_B(ce)\le\kappa$, rearrangement proves optim
 
 This is a Neyman-type allocation calculation for the specified branch-estimation problem, not a new general theory of optimal exploration \citep{neyman1934representative,li2023allocation}. The general design depends on residual second moment, not conditional variance alone: a poor frozen continuation predictor makes under-sampled histories costly even if their branch outcomes have little intrinsic variance. The optimum is oracle because $\mu$ and $v$ are unknown. An independent pilot can estimate them and freeze an approximate allocation; unbiasedness survives any such fixed design with positive selection probabilities, while oracle optimality does not follow automatically. The optimization also holds the prefix-generation design and cost fixed and does not optimize how many root tasks to generate or how to train $m$.
 
+\subsection{Fixed-size sampling of a recorded prefix frame}
+\label{sec:fixed-frame-branches}
+
+The independent Bernoulli selection in Theorem~\ref{thm:branch} differs from choosing a fixed number of prefixes from a completed source log. For the latter design, conditioning on that log separates uncertainty from selecting and executing branches from uncertainty in the source population and its log estimate. The following result is an elementary finite-population sampling and total-variance calculation, not a new general sampling theorem.
+
+Condition on a complete source frame $\mathcal F$, including its log and $N\ge2$ eligible prefixes. At prefix $i$, let $d_i$ be the expected contrast between two frozen continuation policies under the specified restored-state execution law. The target is the finite-frame mean $\mu_{\mathcal F}=N^{-1}\sum_{i=1}^N d_i$. Select a simple random sample $S$ of size $2\le m\le N$, without replacement and independently of fresh continuation randomness given $\mathcal F$. For each selected prefix, observe an unbiased contrast $\widehat d_i$ of conditional variance $v_i$. Assume these contrasts are independent across prefixes given $(S,\mathcal F)$, have finite second moments, and have conditional laws unchanged by selection. These execution assumptions do not follow from distinct seed labels or matching recorded restoration checks.
+
+For example, with $r_{ia}\ge2$ independent identically distributed outcomes under continuation arm $a\in\{0,1\}$, fixed replicate counts, and independence across arms and prefixes,
+\begin{equation}
+ \widehat d_i=\overline Y_{i1}-\overline Y_{i0},\qquad
+ v_i=\frac{\sigma_{i1}^2}{r_{i1}}+\frac{\sigma_{i0}^2}{r_{i0}},\qquad
+ \widehat v_i=\frac{s_{i1}^2}{r_{i1}}+\frac{s_{i0}^2}{r_{i0}},
+ \label{eq:frame-replicates}
+\end{equation}
+where $s_{ia}^2$ is the unbiased arm-specific sample variance. Thus $\widehat v_i$ is conditionally unbiased for $v_i$. Coupled arms require their covariance term, while shared execution shocks across prefixes require additional covariance terms.
+
+\begin{proposition}[Conditional variance under fixed-size prefix sampling]
+\label{prop:fixed-frame-branches}
+Under the preceding assumptions, define
+\[
+ \widehat B=\frac1m\sum_{i\in S}\widehat d_i,\qquad
+ f=\frac mN,\qquad
+ S_d^2=\frac1{N-1}\sum_{i=1}^N(d_i-\mu_{\mathcal F})^2,\qquad
+ \overline v=\frac1N\sum_{i=1}^N v_i.
+\]
+Then
+\begin{equation}
+ \E(\widehat B\mid\mathcal F)=\mu_{\mathcal F},\qquad
+ \Var(\widehat B\mid\mathcal F)=\frac{1-f}{m}S_d^2+\frac{\overline v}{m}.
+ \label{eq:frame-variance}
+\end{equation}
+Let $s_{\widehat d,S}^2=(m-1)^{-1}\sum_{i\in S}(\widehat d_i-\widehat B)^2$. If $\E(\widehat v_i\mid\mathcal F,i\in S)=v_i$, then
+\begin{equation}
+ \widehat V_{\mathcal F}
+ =\frac{1-f}{m}s_{\widehat d,S}^2
+ +\frac f m\left(\frac1m\sum_{i\in S}\widehat v_i\right)
+ \label{eq:frame-variance-estimator}
+\end{equation}
+is unbiased for the variance in \eqref{eq:frame-variance}. Independence between $\widehat d_i$ and $\widehat v_i$ within a prefix is not required.
+\end{proposition}
+
+\begin{proof}
+Given $(S,\mathcal F)$, the mean of $\widehat B$ is $m^{-1}\sum_{i\in S}d_i$, and its variance is $m^{-2}\sum_{i\in S}v_i$. The selection indicators have inclusion probabilities $m/N$ and joint inclusion probabilities $m(m-1)/\{N(N-1)\}$. Expanding the variance of the sampled mean using these probabilities gives $(1-f)S_d^2/m$. Averaging its conditional continuation variance gives $\overline v/m$. Iterated expectation and total variance therefore prove \eqref{eq:frame-variance}.
+
+Write $s_{d,S}^2$ for the sample variance of the fixed $d_i$ in $S$. Expansion around their sample mean gives
+\[
+ \E(s_{\widehat d,S}^2\mid S,\mathcal F)
+ =s_{d,S}^2+\frac1m\sum_{i\in S}v_i.
+\]
+The inclusion probabilities also imply $\E(s_{d,S}^2\mid\mathcal F)=S_d^2$. Hence $\E(s_{\widehat d,S}^2\mid\mathcal F)=S_d^2+\overline v$, while the sampled mean of $\widehat v_i$ has expectation $\overline v$. Substitution into \eqref{eq:frame-variance-estimator} proves unbiasedness.
+\end{proof}
+
+The finite-population correction applies to between-prefix heterogeneity, not to all continuation noise. At $m=N$, fresh execution noise remains, with variance $\overline v/N$; noiseless continuations recover the usual finite-frame sampling variance. Multiplying the entire observed sample variance by $1-f$ omits $f\overline v/m$. An unbiased variance estimator alone does not establish normal-interval coverage.
+
+\paragraph{Comparison with an estimate from the same source log.}
+Let $L(\mathcal F)$ be a log-based continuation contrast measurable with respect to the source frame, and set $\widehat\Delta=\widehat B-L(\mathcal F)$. Conditional on the frame,
+\begin{equation}
+ \E(\widehat\Delta\mid\mathcal F)=\mu_{\mathcal F}-L(\mathcal F),\qquad
+ \Var(\widehat\Delta\mid\mathcal F)=\Var(\widehat B\mid\mathcal F).
+ \label{eq:frame-conditional-gap}
+\end{equation}
+This concerns uncertainty around a frame-specific difference, whose target is not automatically zero: the realized log estimate has already been conditioned on. Under a random-frame model with finite second moments, total variance instead gives
+\begin{equation}
+ \Var(\widehat\Delta)
+ =\E\{\Var(\widehat B\mid\mathcal F)\}
+ +\Var\{\mu_{\mathcal F}-L(\mathcal F)\}.
+ \label{eq:frame-total-gap}
+\end{equation}
+The second term contains source-task variability and its linkage to the log estimate; Proposition~\ref{prop:fixed-frame-branches} does not supply it. Random frame sizes and multiple prefixes per task belong in that source model. Fixed-size selection can still permit a valid unconditional task-population sandwich under suitable assumptions: selection dependence alone neither proves nor disproves its validity, and replicate averages already contribute to task-score variation. Full comparison therefore requires a justified sampling argument for the declared target, rather than a mechanical correction factor applied to squared task derivatives. These conditional identities do not validate an empirical branch-minus-log interval or imply a new efficiency guarantee.
+
 \subsection{Sensitivity to changed model or harness kernels}
 \label{sec:kernel-drift}
 

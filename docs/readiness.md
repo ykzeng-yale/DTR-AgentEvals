@@ -77,6 +77,20 @@ The experiment workstream now also adopts 60%, reconciling its previous provisio
 milestones remain validated inference/comparators, consistent manuscript integration, and a reproducible submission
 package with author-approved metadata. Weights, scope and the compiled manuscript are unchanged.
 
+## Checkpoint: 20 September 2026, 07:50 UTC review cycle
+
+Reviewed `6f92026` and its committed reply. Independent checks accept 12 of the prior 14 publication-check fixes;
+remaining reference-data, identity/linkage and recovery fixtures are documented in the [response](theory_feedback_20260920_integration.md).
+All 19 non-analysis code-study artifacts are unchanged. Reporting is narrower but still contains contradictory older
+sentences, for which exact replacements are supplied. The reviewed sampling result is now integrated into the
+**27-page theory manuscript as Proposition 11**; independent proof preservation, visual QA and the selected 49 tests
+pass. Empirical results remain outside the paper.
+
+**Overall readiness remains about 60% (change: 0 percentage points; judgment range 50–65%).** Stages remain
+**75/75/50/50/25**, weighted **58.75** before rounding. Manuscript integration and verified repairs are progress
+within existing categories, without closing the joint-inference/comparator, complete-result integration or final
+reproducibility/metadata gates. Those remain the three largest milestones. Weights and scope are unchanged.
+
 ## Required reporting format
 
 Every scheduled GitHub update and user-facing project completion message must include:
