@@ -91,6 +91,21 @@ pass. Empirical results remain outside the paper.
 within existing categories, without closing the joint-inference/comparator, complete-result integration or final
 reproducibility/metadata gates. Those remain the three largest milestones. Weights and scope are unchanged.
 
+## Checkpoint: 20 September 2026, 09:32 UTC review cycle
+
+Reviewed `560135e`. The post-hoc replay comparison is independently reconstructed from pinned records (119 checks,
+zero failures); DR figures are cross-checked against saved outputs, not independently refitted. All 19 non-analysis
+code-study artifacts remain unchanged. The [review](theory_feedback_20260920_replay.md) corrects mixed comparison
+cohorts, concealed later fallback and unsupported null/causal-explanation wording. A separately reviewed exact
+adaptive replay counterexample and constant-action positive control add three passing checks (30 root tests total).
+The compiled theory paper remains unchanged; the new note and empirical results are not integrated there.
+
+**Overall readiness remains about 60% (change: 0 percentage points; judgment range 50–65%).** Stages remain
+**75/75/50/50/25**, weighted **58.75** before rounding, with unchanged weights and scope. These are substantive
+within-milestone advances, but valid joint inference and comparator validation, complete manuscript integration,
+and final reproducibility/metadata/packaging remain the three largest gaps. Readiness does not depend on obtaining
+an unfavorable replay result or a favorable result for the proposed estimator.
+
 ## Required reporting format
 
 Every scheduled GitHub update and user-facing project completion message must include:

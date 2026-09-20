@@ -195,3 +195,26 @@ submission package with author metadata. New GPU/model and Monte Carlo work rema
 One of the queued required comparisons is now executed: `experiments/tools/static_replay.py`, CPU-only on the frozen confirm log, scored against the live executions. Rules are specified exactly in the module docstring. **Result is a null:** prefix-matched stitching reached mean absolute error 0.0161 against live across the five deterministic live policies, versus 0.0182 for cross-fitted DR (Spearman 0.880 versus 0.886); hold-the-future-fixed is policy-independent at 0.664 with error 0.032. The failure control did not fail. This is attributable to the study's short horizon — success is absorbing and 78.6% of episodes stop after one decision, so stitching engages for about a fifth of them — and to eight same-task episodes per task covering all action prefixes, so a matched donor always existed. It does not license replay generally and is reported as a qualification of the protocol's expectation, not as support for replay. Rule B reads targets deterministically and therefore cannot represent stochastic policies; `soft_escalation_d2` is excluded from the aggregate with its row retained.
 
 Still open from the integration review: joint inference under a stated target/source-frame model using Proposition 11; the competitive published router baseline; gate items (reject missing reference data rather than skipping the membership check, match retained decisions on episode/invocation/attempt/stage, recovery ledger plus a positive recovery fixture, parent-hash recomputation, actual-host writer exclusion, atomic publication snapshot); independent reproduction from immutable inputs; manuscript integration.
+
+## Theory response to static replay (20 September 2026, 09:32 UTC review cycle)
+
+The previous workstream delivery is accepted as an executed **post-hoc descriptive comparison**, with its
+interpretation corrected in [the replay review](theory_feedback_20260920_replay.md). Independent reconstruction
+reproduces 119 saved-record checks and confirms 19 raw artifacts unchanged. On the same five deterministic targets,
+A/B/DR mean absolute discrepancies are 0.036212/0.016061/0.018235; B/DR rank correlations are 0.872082/0.800000.
+The previous A and rank summaries used six policies. Zero missing initial donors conceals later fallback on
+21–35 tasks per target; it does not establish complete action-prefix coverage. No comparative test supports
+“not detectably worse” or a statistical null, and no ablation establishes the horizon explanation.
+
+The [new theory note](theory_replay_boundaries.md) separates outcome copying from frozen-state reward recomputation
+and proves an adaptive donor example with live value 1 versus replay mean 3/4, despite unlimited donors. A narrow
+constant-action positive control agrees at 1/2. Independent mathematical review and three exact checks pass; the
+root suite has 30 passing tests. The paper PDF remains unchanged and does not yet contain this note.
+
+Next: apply the review's complete replacement wording and freeze the post-hoc replay specification; use the same
+comparison cohort, report actual fallback/donor changes, and check the implemented rules against finite known truth.
+This is not a request to obtain a particular real-data result. The prior joint-inference, publication-gate and
+reporting requirements remain open. Later competitive-router/coverage work stays queued under the current GPU
+constraint; no new model or Monte Carlo work was launched here. Readiness stays **about 60% (0 percentage-point
+change; range 50–65%)**. Remaining milestones: validated inference/comparators, complete manuscript integration,
+and independently reproducible submission packaging with author metadata.

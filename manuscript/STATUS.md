@@ -35,6 +35,14 @@ This manuscript builds on the original theory package at `40da0d42422611f61f49fd
 
 ## Later author and empirical work
 
+**20 September, 09:32 UTC coordination review:** the post-hoc replay comparison at `560135e` is independently
+reconstructed and its interpretation corrected in [the response](../docs/theory_feedback_20260920_replay.md).
+The separately reviewed [theory note](../docs/theory_replay_boundaries.md) adds an adaptive donor counterexample
+and a constant-action positive control, with three exact checks; the root suite now passes 30 tests. This note is
+not yet integrated into the 27-page PDF, whose source and validation hashes remain unchanged. Readiness stays
+**about 60% (0 percentage-point change; range 50–65%)**; joint inference/comparator validation, full manuscript
+integration and reproducible final packaging remain open.
+
 **20 September, 07:50 UTC coordination review:** the conditional sampling proof is integrated into Section 9.3, Proposition 11, with independent proof-preservation review and a clean 27-page build. Exact uncertainty limits remain explicit. At `6f92026`, 12 of the previous 14 checker bypasses are fixed; the new independent audit identifies remaining reference-data, identity/linkage and recovery cases, while all 19 non-analysis code-study artifacts remain unchanged. Accepted reporting fixes and exact replacements for residual contradictions are in the [response](../docs/theory_feedback_20260920_integration.md). Full-project readiness remains **about 60% (0 percentage-point change; range 50–65%)**; manuscript progress does not close empirical inference/comparators or final packaging.
 
 **20 September, 06:04 UTC coordination review:** `29ee443` restores the original pooled branch comparison and narrows several claims. The new [sampling supplement](../docs/theory_branch_sampling.md) proves the conditional fixed-frame branch variance and an unbiased estimator, with independent mathematical review and four exact enumeration tests. The full branch-minus-log sampling justification remains open. Nine publication-gate fixtures pass, but independent CLI counterexamples expose missing checks; see the [response](../docs/theory_feedback_20260920_sampling.md). The repository root suite now has 27 passing tests (36 including the nine gate fixtures). The 25-page PDF and its numbered results are unchanged; the new supplement is not yet integrated there. Readiness stays **about 60% (0 percentage-point change; range 50–65%)**.

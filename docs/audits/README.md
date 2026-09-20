@@ -1,5 +1,24 @@
 # Dated artifact audits
 
+## Post-hoc replay comparator: `560135e`
+
+```sh
+python3 docs/audits/check_static_replay_560135e.py
+.venv/bin/python -m pytest -q tests
+```
+
+The standard-library checker reconstructs replay paths from pinned Git records without importing experiment code.
+Its compact report is `static_replay_audit_560135e.json`; pass `--include-paths` to regenerate per-task details under
+ignored `work/`. The primary reviewer reproduced the separate reviewer's arithmetic and diagnostics: **119 checks,
+zero failures**, including saved A/B values, live means, paired standard errors and saved DR/calibration agreement.
+DR was not independently refitted. All 19 non-analysis artifacts are unchanged. The [review](../theory_feedback_20260920_replay.md)
+explains why matched-cohort summaries, later fallback and descriptive interpretation must replace the stronger claims.
+
+The root suite passes **30 tests**, including three new rational-arithmetic checks for the independently reviewed
+[replay note](../theory_replay_boundaries.md). These tests check the mathematical constructions rather than directly
+executing the workstream's comparator. No model inference, candidate-code execution or Monte Carlo is performed.
+The unchanged 27-page PDF and all previously recorded source hashes were checked without rebuilding it.
+
 ## Completed branch cohort and target check: `d4997c6`
 
 Two standard-library-only checks read pinned Git objects and write reports under ignored `work/`:

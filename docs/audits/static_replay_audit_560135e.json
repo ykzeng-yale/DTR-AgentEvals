@@ -1,0 +1,524 @@
+{
+  "ref": "560135e0b85f479d6ee6afd33bd2987115a786ac",
+  "previous_ref": "6f9202613a6e5c38ad4d7e733912495d3f138ea2",
+  "scope": "Independent stdlib reconstruction from pinned raw records; no experiment imports, model calls, generated-code execution, DR refitting or Monte Carlo.",
+  "input_sha256": {
+    "results/code_routing/log/episodes.jsonl": "e643ee44c7ef658fff65efb5e17763ee78c990d21184d060f5823025a100414e",
+    "results/code_routing/live/episodes.jsonl": "fb1b2603c51fda020915f7647a0d29478ebf064a0f21cec850ba5bd4abcc616b",
+    "results/code_routing/design.json": "230638a757c581138d1a3611a9c5788ed79b80a655313d316cac63cbba4ff43d",
+    "results/code_routing/learned_policy.json": "4f22e7b4f8ffc63c7d3fff7a828fffc81d0471db0ce5eb843876ebbf5e89768e",
+    "results/code_routing/analysis/static_replay_comparison.csv": "7102ae5138bafdada00ded8737bac1743bef42f22818226661b4fdc8c5ff30d8",
+    "results/code_routing/analysis/static_replay_summary.json": "754b89de0bba913bfb90aa53399863233f58fe1f646fb7270fd890d13afe7fe1",
+    "results/code_routing/analysis/ope_confirm.csv": "604608b43eecfffbc55e2252d77c1331f9a8d28436c30b6db423131615421e1a",
+    "results/code_routing/analysis/calibration_ope_vs_live.csv": "fd7bb9bb6961ec751fd212941fcb080ba73c41bfe481b23714896e21d8e86834",
+    "experiments/tools/static_replay.py": "feb2e5e07ff72d7ed69d5ea4ba58f782cc353c22120be8e2fc2d64e16e85f904"
+  },
+  "checks": {
+    "distinct": 34,
+    "individual": 119,
+    "failures": {}
+  },
+  "logged_confirm": {
+    "episodes": 2640,
+    "tasks": 330,
+    "first_stage_stops": 2076,
+    "first_stage_continues": 564,
+    "first_stage_continue_fraction": 0.21363636363636362
+  },
+  "prefix_coverage": {
+    "1": {
+      "possible_action_prefixes": 2,
+      "number_observed_prefixes_per_task": {
+        "2": 330
+      },
+      "tasks_with_all_prefixes": 330,
+      "tasks_with_any_prefix": 330,
+      "tasks_with_no_prefix": 0,
+      "observed_task_prefix_pairs": 660,
+      "tasks_by_prefix": {
+        "0": 330,
+        "1": 330
+      }
+    },
+    "2": {
+      "possible_action_prefixes": 4,
+      "number_observed_prefixes_per_task": {
+        "0": 178,
+        "1": 59,
+        "2": 38,
+        "3": 22,
+        "4": 33
+      },
+      "tasks_with_all_prefixes": 33,
+      "tasks_with_any_prefix": 152,
+      "tasks_with_no_prefix": 178,
+      "observed_task_prefix_pairs": 333,
+      "tasks_by_prefix": {
+        "00": 106,
+        "01": 96,
+        "10": 64,
+        "11": 67
+      }
+    },
+    "3": {
+      "possible_action_prefixes": 8,
+      "number_observed_prefixes_per_task": {
+        "0": 196,
+        "1": 51,
+        "2": 29,
+        "3": 20,
+        "4": 11,
+        "5": 7,
+        "6": 12,
+        "7": 4
+      },
+      "tasks_with_all_prefixes": 0,
+      "tasks_with_any_prefix": 134,
+      "tasks_with_no_prefix": 196,
+      "observed_task_prefix_pairs": 348,
+      "tasks_by_prefix": {
+        "000": 62,
+        "001": 49,
+        "010": 48,
+        "011": 39,
+        "100": 36,
+        "101": 39,
+        "110": 38,
+        "111": 37
+      }
+    }
+  },
+  "per_policy": [
+    {
+      "policy": "always_large",
+      "live_success": 0.7166666666666667,
+      "live_se": 0.023753503221477564,
+      "dr_success": 0.7114370482356182,
+      "dr_se": 0.023871631861807668,
+      "static_A": 0.6643939393939394,
+      "static_B": 0.7121212121212122,
+      "static_B_tasks": 330,
+      "no_donor_tasks": 0,
+      "B_minus_live": -0.004545454545454545,
+      "B_minus_live_se": 0.014151635362774525,
+      "A_minus_live": -0.05227272727272727,
+      "A_minus_live_se": 0.011914000367538945,
+      "DR_minus_live": -0.005229618431048522,
+      "rule_can_represent": true,
+      "replay_diagnostics": {
+        "by_stage": [
+          {
+            "t": 0,
+            "requests": 330,
+            "matched": 330,
+            "missing_prefix": 0,
+            "donor_changes": 0,
+            "visible_pass_stops": 273,
+            "visible_fail_continue": 57,
+            "horizon_stops": 0
+          },
+          {
+            "t": 1,
+            "requests": 57,
+            "matched": 49,
+            "missing_prefix": 8,
+            "donor_changes": 19,
+            "visible_pass_stops": 8,
+            "visible_fail_continue": 41,
+            "horizon_stops": 0
+          },
+          {
+            "t": 2,
+            "requests": 41,
+            "matched": 28,
+            "missing_prefix": 13,
+            "donor_changes": 10,
+            "visible_pass_stops": 2,
+            "visible_fail_continue": 0,
+            "horizon_stops": 26
+          }
+        ],
+        "initial_stops": 273,
+        "initial_stop_fraction": 0.8272727272727273,
+        "initial_failures": 57,
+        "initial_failure_fraction": 0.17272727272727273,
+        "fallback_tasks": 21,
+        "tasks_with_donor_change": 26,
+        "donor_change_events": 29,
+        "matched_postinitial_requests": 77,
+        "stop_histogram": {
+          "fallback_to_last_donor_final_outcome": 21,
+          "horizon_stop": 26,
+          "visible_pass_stop": 283
+        }
+      }
+    },
+    {
+      "policy": "always_small",
+      "live_success": 0.6106060606060606,
+      "live_se": 0.024033855719790012,
+      "dr_success": 0.594593983729829,
+      "dr_se": 0.024731291632319075,
+      "static_A": 0.6643939393939394,
+      "static_B": 0.603030303030303,
+      "static_B_tasks": 330,
+      "no_donor_tasks": 0,
+      "B_minus_live": -0.007575757575757576,
+      "B_minus_live_se": 0.02006966328606792,
+      "A_minus_live": 0.05378787878787879,
+      "A_minus_live_se": 0.015093203163066799,
+      "DR_minus_live": -0.01601207687623163,
+      "rule_can_represent": true,
+      "replay_diagnostics": {
+        "by_stage": [
+          {
+            "t": 0,
+            "requests": 330,
+            "matched": 330,
+            "missing_prefix": 0,
+            "donor_changes": 0,
+            "visible_pass_stops": 249,
+            "visible_fail_continue": 81,
+            "horizon_stops": 0
+          },
+          {
+            "t": 1,
+            "requests": 81,
+            "matched": 66,
+            "missing_prefix": 15,
+            "donor_changes": 27,
+            "visible_pass_stops": 8,
+            "visible_fail_continue": 58,
+            "horizon_stops": 0
+          },
+          {
+            "t": 2,
+            "requests": 58,
+            "matched": 38,
+            "missing_prefix": 20,
+            "donor_changes": 3,
+            "visible_pass_stops": 1,
+            "visible_fail_continue": 0,
+            "horizon_stops": 37
+          }
+        ],
+        "initial_stops": 249,
+        "initial_stop_fraction": 0.7545454545454545,
+        "initial_failures": 81,
+        "initial_failure_fraction": 0.24545454545454545,
+        "fallback_tasks": 35,
+        "tasks_with_donor_change": 29,
+        "donor_change_events": 30,
+        "matched_postinitial_requests": 104,
+        "stop_histogram": {
+          "fallback_to_last_donor_final_outcome": 35,
+          "horizon_stop": 37,
+          "visible_pass_stop": 258
+        }
+      }
+    },
+    {
+      "policy": "class_tailored",
+      "live_success": 0.6515151515151515,
+      "live_se": 0.02349342619084726,
+      "dr_success": 0.6148707228276163,
+      "dr_se": 0.02447455906869416,
+      "static_A": 0.6643939393939394,
+      "static_B": 0.6121212121212121,
+      "static_B_tasks": 330,
+      "no_donor_tasks": 0,
+      "B_minus_live": -0.03939393939393939,
+      "B_minus_live_se": 0.020013783310718364,
+      "A_minus_live": 0.012878787878787878,
+      "A_minus_live_se": 0.014831578855245576,
+      "DR_minus_live": -0.03664442868753515,
+      "rule_can_represent": true,
+      "replay_diagnostics": {
+        "by_stage": [
+          {
+            "t": 0,
+            "requests": 330,
+            "matched": 330,
+            "missing_prefix": 0,
+            "donor_changes": 0,
+            "visible_pass_stops": 249,
+            "visible_fail_continue": 81,
+            "horizon_stops": 0
+          },
+          {
+            "t": 1,
+            "requests": 81,
+            "matched": 66,
+            "missing_prefix": 15,
+            "donor_changes": 36,
+            "visible_pass_stops": 19,
+            "visible_fail_continue": 47,
+            "horizon_stops": 0
+          },
+          {
+            "t": 2,
+            "requests": 47,
+            "matched": 34,
+            "missing_prefix": 13,
+            "donor_changes": 9,
+            "visible_pass_stops": 3,
+            "visible_fail_continue": 0,
+            "horizon_stops": 31
+          }
+        ],
+        "initial_stops": 249,
+        "initial_stop_fraction": 0.7545454545454545,
+        "initial_failures": 81,
+        "initial_failure_fraction": 0.24545454545454545,
+        "fallback_tasks": 28,
+        "tasks_with_donor_change": 41,
+        "donor_change_events": 45,
+        "matched_postinitial_requests": 100,
+        "stop_histogram": {
+          "fallback_to_last_donor_final_outcome": 28,
+          "horizon_stop": 31,
+          "visible_pass_stop": 271
+        }
+      }
+    },
+    {
+      "policy": "escalate_after_first_failure",
+      "live_success": 0.646969696969697,
+      "live_se": 0.024112117553675358,
+      "dr_success": 0.630581099278206,
+      "dr_se": 0.025758829207467526,
+      "static_A": 0.6643939393939394,
+      "static_B": 0.6212121212121212,
+      "static_B_tasks": 330,
+      "no_donor_tasks": 0,
+      "B_minus_live": -0.025757575757575757,
+      "B_minus_live_se": 0.020365785675421865,
+      "A_minus_live": 0.017424242424242425,
+      "A_minus_live_se": 0.015238822325486331,
+      "DR_minus_live": -0.016388597691490925,
+      "rule_can_represent": true,
+      "replay_diagnostics": {
+        "by_stage": [
+          {
+            "t": 0,
+            "requests": 330,
+            "matched": 330,
+            "missing_prefix": 0,
+            "donor_changes": 0,
+            "visible_pass_stops": 249,
+            "visible_fail_continue": 81,
+            "horizon_stops": 0
+          },
+          {
+            "t": 1,
+            "requests": 81,
+            "matched": 69,
+            "missing_prefix": 12,
+            "donor_changes": 27,
+            "visible_pass_stops": 24,
+            "visible_fail_continue": 45,
+            "horizon_stops": 0
+          },
+          {
+            "t": 2,
+            "requests": 45,
+            "matched": 29,
+            "missing_prefix": 16,
+            "donor_changes": 7,
+            "visible_pass_stops": 3,
+            "visible_fail_continue": 0,
+            "horizon_stops": 26
+          }
+        ],
+        "initial_stops": 249,
+        "initial_stop_fraction": 0.7545454545454545,
+        "initial_failures": 81,
+        "initial_failure_fraction": 0.24545454545454545,
+        "fallback_tasks": 28,
+        "tasks_with_donor_change": 31,
+        "donor_change_events": 34,
+        "matched_postinitial_requests": 98,
+        "stop_histogram": {
+          "fallback_to_last_donor_final_outcome": 28,
+          "horizon_stop": 26,
+          "visible_pass_stop": 276
+        }
+      }
+    },
+    {
+      "policy": "learned",
+      "live_success": 0.7090909090909091,
+      "live_se": 0.023424418712750972,
+      "dr_success": 0.7259892489869318,
+      "dr_se": 0.025063800775783185,
+      "static_A": 0.6643939393939394,
+      "static_B": 0.7121212121212122,
+      "static_B_tasks": 330,
+      "no_donor_tasks": 0,
+      "B_minus_live": 0.0030303030303030303,
+      "B_minus_live_se": 0.014711298562572929,
+      "A_minus_live": -0.0446969696969697,
+      "A_minus_live_se": 0.011716155656648552,
+      "DR_minus_live": 0.01689833989602274,
+      "rule_can_represent": true,
+      "replay_diagnostics": {
+        "by_stage": [
+          {
+            "t": 0,
+            "requests": 330,
+            "matched": 330,
+            "missing_prefix": 0,
+            "donor_changes": 0,
+            "visible_pass_stops": 273,
+            "visible_fail_continue": 57,
+            "horizon_stops": 0
+          },
+          {
+            "t": 1,
+            "requests": 57,
+            "matched": 47,
+            "missing_prefix": 10,
+            "donor_changes": 20,
+            "visible_pass_stops": 4,
+            "visible_fail_continue": 43,
+            "horizon_stops": 0
+          },
+          {
+            "t": 2,
+            "requests": 43,
+            "matched": 32,
+            "missing_prefix": 11,
+            "donor_changes": 8,
+            "visible_pass_stops": 7,
+            "visible_fail_continue": 0,
+            "horizon_stops": 25
+          }
+        ],
+        "initial_stops": 273,
+        "initial_stop_fraction": 0.8272727272727273,
+        "initial_failures": 57,
+        "initial_failure_fraction": 0.17272727272727273,
+        "fallback_tasks": 21,
+        "tasks_with_donor_change": 22,
+        "donor_change_events": 28,
+        "matched_postinitial_requests": 79,
+        "stop_histogram": {
+          "fallback_to_last_donor_final_outcome": 21,
+          "horizon_stop": 25,
+          "visible_pass_stop": 284
+        }
+      }
+    },
+    {
+      "policy": "soft_escalation_d2",
+      "live_success": 0.6757575757575758,
+      "live_se": 0.02327320123247078,
+      "dr_success": 0.6688838067928169,
+      "dr_se": 0.021134798706134317,
+      "static_A": 0.6643939393939394,
+      "static_B": 0.7121212121212122,
+      "static_B_tasks": 330,
+      "no_donor_tasks": 0,
+      "B_minus_live": 0.03636363636363636,
+      "B_minus_live_se": 0.017712937288994545,
+      "A_minus_live": -0.011363636363636364,
+      "A_minus_live_se": 0.011859407269784123,
+      "DR_minus_live": -0.006873768964758886,
+      "rule_can_represent": false,
+      "replay_diagnostics": {
+        "by_stage": [
+          {
+            "t": 0,
+            "requests": 330,
+            "matched": 330,
+            "missing_prefix": 0,
+            "donor_changes": 0,
+            "visible_pass_stops": 273,
+            "visible_fail_continue": 57,
+            "horizon_stops": 0
+          },
+          {
+            "t": 1,
+            "requests": 57,
+            "matched": 49,
+            "missing_prefix": 8,
+            "donor_changes": 19,
+            "visible_pass_stops": 8,
+            "visible_fail_continue": 41,
+            "horizon_stops": 0
+          },
+          {
+            "t": 2,
+            "requests": 41,
+            "matched": 28,
+            "missing_prefix": 13,
+            "donor_changes": 10,
+            "visible_pass_stops": 2,
+            "visible_fail_continue": 0,
+            "horizon_stops": 26
+          }
+        ],
+        "initial_stops": 273,
+        "initial_stop_fraction": 0.8272727272727273,
+        "initial_failures": 57,
+        "initial_failure_fraction": 0.17272727272727273,
+        "fallback_tasks": 21,
+        "tasks_with_donor_change": 26,
+        "donor_change_events": 29,
+        "matched_postinitial_requests": 77,
+        "stop_histogram": {
+          "fallback_to_last_donor_final_outcome": 21,
+          "horizon_stop": 26,
+          "visible_pass_stop": 283
+        }
+      }
+    }
+  ],
+  "matched_five_policy_metrics": {
+    "n_policies": 5,
+    "policies": [
+      "always_large",
+      "always_small",
+      "class_tailored",
+      "escalate_after_first_failure",
+      "learned"
+    ],
+    "MAE_A": 0.03621212121212123,
+    "MAE_B": 0.016060606060606063,
+    "MAE_DR": 0.018234612316465792,
+    "Spearman_A_vs_live": null,
+    "Spearman_B_vs_live": 0.872081599272381,
+    "Spearman_DR_vs_live": 0.8,
+    "max_absolute_B": 0.039393939393939426,
+    "max_absolute_DR": 0.03664442868753515
+  },
+  "six_policy_metrics": {
+    "n_policies": 6,
+    "policies": [
+      "always_large",
+      "always_small",
+      "class_tailored",
+      "escalate_after_first_failure",
+      "learned",
+      "soft_escalation_d2"
+    ],
+    "MAE_A": 0.03207070707070708,
+    "MAE_B": 0.019444444444444448,
+    "MAE_DR": 0.01634113842451464,
+    "Spearman_A_vs_live": null,
+    "Spearman_B_vs_live": 0.8804062740424285,
+    "Spearman_DR_vs_live": 0.8857142857142857,
+    "max_absolute_B": 0.039393939393939426,
+    "max_absolute_DR": 0.03664442868753515
+  },
+  "interpretation": [
+    "All published per-policy Rule A/B values, live means, B-minus-live paired standard errors and numeric summary fields reconstruct. DR estimates/SEs are checked against existing saved OPE/calibration outputs, not independently refit.",
+    "no_donor_tasks counts only failure to find an initial donor (None return). An intermediate missing prefix falls back to the last donor final outcome and is still counted among all 330 tasks.",
+    "The 21.36% number is first-failure eligibility among 2,640 original log episodes, not actual donor-changing or continuation frequency among the six sets of 330 replay paths.",
+    "Observed action-prefix coverage counts only prefixes that reached a recorded decision. Missing coverage does not itself establish structural positivity failure; it directly contradicts the stronger descriptive assertion that every action prefix was available per task.",
+    "MAE_A=0.03207 and rank correlations 0.8804/0.8857 use six policies, including a stochastic target that Rule B determinizes. Use the five-policy metrics for a matched deterministic comparison.",
+    "Mean absolute discrepancy against noisy live estimates is not bias estimated across repeated datasets. No uncertainty/test comparing MAEs, equivalence test, or power analysis is supplied; nominally smaller MAE cannot establish \"not detectably worse\" or a null scientific conclusion.",
+    "This audit reconstructs a post-hoc descriptive comparator on the same archived benchmark. It does not validate static replay as causal policy evaluation or prove which design feature explains the observed discrepancies."
+  ],
+  "detail_note": "Per-task means and replay paths can be regenerated with --include-paths; omitted from this compact archive."
+}
