@@ -3,6 +3,66 @@
 Pushed about every two hours while experiments run. Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-19 23:10 EDT — STUDY COMPLETE (log + live + branch); two corrections accepted from review
+
+**All four stages executed and verified against the frozen design** (`experiments/tools/verify_stage.py`):
+pilot 120, randomized log **4,488/4,488**, live **3,960/3,960**, branch **800/800** — 0 unresolved episodes,
+0 intention-to-treat scorings, 0 torn records, 0 episodes under foreign GPU load. 13,001 model calls in total,
+1 validation timeout, 0 hidden-test timeouts, 3 truncated generations. Committed at `f984f15`.
+
+### Findings
+
+1. **The evaluation claim holds.** Off-policy values from ONE randomized log matched what the policies did when
+   actually run: 5 of 6 paired differences cover zero, Spearman 0.886, SE ratio 0.91–1.07. One policy
+   (`class_tailored`) is miscalibrated (−0.037 [−0.070, −0.005]) and is reported as a failure cell.
+2. **The improvement claim fails where it counts.** Five policies beat the pre-registered `always_small` baseline,
+   but the learned tailored regime does **not** beat simply always using the large model: utility +0.018
+   [−0.016, +0.051] offline and **−0.005 [−0.027, +0.017]** live. Success is close to monotone in large-model calls
+   and every frozen policy sits on that line. The learned regime gets the same success with 11% fewer large calls —
+   cheaper, not better. **This null is the headline.**
+3. **Forking works, and transfers from simulation.** 800/800 restorations reproduced the saved state exactly
+   (transcript hash and tool result). Forked replay and the randomized log agree on the same causal contrast
+   (0.120 vs 0.135, difference −0.015 [−0.127, +0.098]), with forking **2.19× more precise using 39% of the calls**.
+   The synthetic study predicted 2.1–2.3×; the real system delivered 2.19×.
+4. **The design earns its keep.** Naive association −0.484; IPW with a deliberately wrong propensity returns 2.015
+   on success, outside [0, 1]. Same-state same-model continuations disagree 8.0% — the serving-noise floor.
+
+### Corrections accepted from the theory workstream's independent review
+
+It audited the committed snapshot and was right on three counts, all now fixed: the wrong-propensity control is on
+**success** not utility; the IPW/DR/g-computation disagreement reaches 0.0167 on success rather than staying under
+0.016; and **Theorem 5 is not merely vacuous here but inapplicable as computed** — it assumes nuisances fitted on
+data independent of the evaluation sample, which cross-fitting *within* CONFIRM does not supply. It is now reported
+as a scale calculation, not a certificate. Its fourth finding — that only 135 of 800 branch continuations were in
+that snapshot — was also correct; see below.
+
+### Incident (retained, not repaired silently)
+
+665 of the first 800 branch continuations were **lost by an operator error in publishing**: the stage directory was
+`git add`-ed, committed and rebased while the runner still held its files open, so writes went to an unlinked inode
+and the runner reported "800/800, errors 0" and exited 0. They were re-run from the frozen plan with the same seeds.
+The lost outcomes were never readable, so no selection on outcome was possible. Protocol §11 records it.
+`experiments/tools/verify_stage.py` now gates publication: it checks episodes **on disk** against the frozen design
+rather than trusting the runner's counter, and refuses a stage whose runner is live or whose file was just written.
+Verified retrospectively that `log` and `live` were idle before they were committed and are intact.
+
+### Next
+
+Manuscript integration of these results; a competitive published router baseline and an explicit static-replay
+comparator (issue #3); shared-prefix variance treatment in the branch analysis; independent audit of the new code.
+
+**Overall submission readiness: about 65% (change: +5 percentage points; judgment range 55–70%).** Evidence
+advanced and independently reviewed: all four real-model stages completed and verified, with the improvement result
+a reported null and two analysis errors corrected by external review. "Core simulations and real-agent evidence"
+50→75: known-truth operating characteristics, the randomized log, fresh-policy validation and branch validation all
+exist with limitations and nulls reported; still missing are a competitive published router baseline, a static-replay
+comparator and shared-prefix variance handling. "Independent validation" stays at 50: the theory workstream reviewed
+the results and found real errors, but the experiment code, protocol adherence and final analysis have not had a full
+audit — and this workstream should not grade its own. Weighted: 0.25×75 + 0.20×75 + 0.30×75 + 0.15×50 + 0.10×25 =
+66.25 → 65%. Main remaining work: (1) integrate results, figures and limitations into the manuscript; (2) add the
+missing comparators and shared-prefix variance treatment; (3) independent audit and the submission package.
+*Checkpoints are recorded here because this host has no GitHub CLI or token for issue #4.*
+
 ## 2026-09-19 18:00 EDT — randomized log COMPLETE; policy frozen; live stage running
 
 **Stage `log`: finished, 4,488 of 4,488 episodes.** 0 infrastructure errors, 0 episodes owing a retry, 0
