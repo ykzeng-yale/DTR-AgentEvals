@@ -38,6 +38,21 @@ This manuscript builds on the original theory package at `40da0d42422611f61f49fd
 
 ## Later author and empirical work
 
+**20 September, author-requested scientific diagnosis:** three independently reconstructed diagnostics identify
+the learned policy as a fixed large/small/large repair schedule, document zero visible checks on 60/330 evaluation
+tasks and limited repair eligibility, and reproduce the class-tailored IPW/DR/live discrepancy without finding an
+inspected assignment or calculation mismatch. The [lead's scientific decisions](../docs/scientific_diagnosis_20260920.md)
+retain the original metric, fixed-benchmark target and unfavorable results, and specify concrete reporting and
+future-design requests. These retrospective results are not yet integrated into the unchanged 31-page PDF.
+Further peripheral theorem extensions are lower priority than resolving the declared inference and empirical claims.
+The concurrent A6 diagnosis at `4f9abe4` was also reviewed: its empirical oracle-ceiling, no-power and
+theory-vindication claims were rejected, and current result narratives corrected while preserving the old artifact.
+The lead also inspected and preserved `8382b3c`'s provenance/reporting fixes. Readiness is conservatively revised
+to **about 55% (−5 percentage points; range 45–65%)** because validation remains materially incomplete, not because
+the results are unfavorable. Valid inference/adequate comparisons, full empirical integration, and independent
+final reproduction/metadata/packaging remain the largest gaps. See the diagnostic report for the unchanged rubric
+and the distinction between the workstream's reported audit inventory/tests and independent checks.
+
 **20 September, 19:34 UTC coordination review:** the source-model result is now Section 9.5, Proposition 13 of
 the **31-page paper**, with separate mathematical review and all-page visual QA. Independent public-source task
 regeneration reproduces all 591 frozen records, and transcript reconstruction matches all 800 parent/branch/durable

@@ -12,10 +12,10 @@ agent and are not edited from here. Rules in [`AGENTS.md`](../AGENTS.md) apply.
 | E0 | Design-efficiency simulation: one sequentially randomized experiment vs one arm per scaffold; tailored-regime learning; forking vs randomizing at equal compute | synthetic, known truth | **executed** — 5,000 replicates, `results/sim/` |
 | S1 | Crossed n × horizon × overlap-floor grid on the **reference** simulator and estimators (unchanged), 1,000 replicates × 27 cells × 4 nuisance specifications | synthetic, exact truth | **executed** — `results/s1_grid/`, report in `grid_report.md` |
 | E1 | Absorbing-horizon tabular IPW / g-computation / cross-fitted DR with task-cluster inference | code + tests | **implemented**, 12 tests pass; reproduces `src/dtr_agent_evals` scores to 1e-10 on its simulator |
-| L1–L3 | Code-routing study on MBPP + HumanEval, Qwen2.5-3B vs 7B, K=3 routing decisions | real open-weight inference | **executed 19 September** — 4,488 randomized + 3,960 live episodes, 0 errors. Offline estimates pointwise compatible with live values for 5 of 6 policies; tailoring does **not** beat always-large |
-| A6 | Post-hoc diagnosis of the null: design vs metric vs theory | analysis of real records | **executed 20 September** — oracle tailoring ceiling +0.0003 vs study SE 0.024; t=1 effect +0.031±0.038; metric flips at 2.9x the frozen penalty |
+| L1–L3 | Code-routing study on MBPP + HumanEval, Qwen2.5-3B vs 7B, K=3 routing decisions | real open-weight inference | **executed 19 September** — 4,488 randomized + 3,960 live episodes, 0 errors. Five of six nominal calibration intervals include zero discrepancy; coverage remains unvalidated. The learned fixed-schedule comparison with always-large is inconclusive. |
+| A6 | Post-hoc diagnosis of the null: design vs metric vs theory | descriptive analysis of real records | **reviewed and corrected 20 September** — original oracle-ceiling/power claim withdrawn; fixed learned repair schedule and limited opportunities verified; cost crossing requires both penalties to scale |
 | A5 | Static replay vs DR (protocol §3.3 control), post-hoc, CPU-only on the frozen log | descriptive analysis of real records | **executed 20 September** — mean absolute discrepancies 0.0362 / 0.0161 / 0.0182 (copying / donor replay / DR) on a declared 5-target cohort; descriptive only, no null claimed |
-| A4 | Branch audit: 200 restored first-failure prefixes × {small, large} × 2 fresh continuations | real inference | **executed 19 September** — 800/800 recorded restoration checks reproduced; the forked and log estimates of one contrast are pointwise compatible, uncertainty provisional |
+| A4 | Branch audit: 200 restored first-failure prefixes × {small, large} × 2 fresh continuations | real inference | **executed 19 September** — 800/800 recorded restoration checks reproduced; branch/log points .1200 versus .1347; joint uncertainty unresolved |
 
 The L1–L3 study below is executed on real open-weight models; E0 and S1 remain synthetic.
 
@@ -334,55 +334,49 @@ hidden-test success. No comparative uncertainty test for the methods' absolute d
 paired standard errors do not provide one, and discrepancies against noisy live estimates are not repeated-sampling
 bias. The executed result is retained whatever its ordering turns out to be under further correction.
 
-### A6 — why the tailored regime did not win: design, metric, or theory? (post-hoc)
+### A6 — diagnosis of the unresolved routing comparison (post-hoc; corrected by scientific lead)
 
-Not pre-registered. It uses only the frozen log, after every stage completed. At each eligible decision the action is
-a fresh coin flip given the history, so the contrasts below are clean randomized effects within their strata.
-Script `experiments/tools/why_null.py`, output `results/code_routing/analysis/why_null.json`.
+The original analysis at `4f9abe4` uses the frozen CONFIRM log **and the live frontier**. Its archived script/output
+remain available at `experiments/tools/why_null.py` and `results/code_routing/analysis/why_null.json` for provenance.
+**The archived field names and interpretations calling a statistic an oracle ceiling are not accepted.** Use the
+[lead's independently reviewed diagnosis](../docs/scientific_diagnosis_20260920.md) for the current interpretation.
 
-**A. Design — the dominant cause. The study had almost no power to show tailoring.**
-**78.6%** of confirm episodes are decided by the first action alone: success absorbs at the visible-validator pass,
-so a dynamic regime cannot differ from a static one on four episodes in five. Worse, compute the **oracle ceiling**:
-an oracle that knew the true sign of every state cell, playing against always-large, could gain at most
-**+0.0003 utility units at t=1 and +0.0000 at t=2** — because always-large already takes the large arm everywhere and
-no cell favours small by a detectable margin. The study's own standard error on a policy value is ≈ **0.024**, about
-**80× larger**. Even a perfect tailoring rule would have been invisible here. That is a property of the design, fixed
-before any data: K = 3, absorption at validator pass, and a task set where the first attempt usually succeeds.
+**Design and learner.** Of the CONFIRM log, 2,076/2,640 episodes (78.6%) stop after the first call. The learned live
+policy is the fixed schedule large → small → large, subject to visible-pass absorption: 542 episodes stop after
+large, 16 after large/small and 102 reach large/small/large. Certification leaves 60/330 evaluation tasks without
+visible checks. In the learned cohort, 104 hidden-test failures stop immediately after passing visible validation.
+These are concrete restrictions on decision opportunities and tailoring; they do not prove that no other router
+could improve, that continuing would repair those failures, or that the experiment has zero power.
 
-**B. Metric — contributory, and a protocol gap of ours.** The tailored regime's one real advantage is buying
-**1.155 large calls per episode against 1.300** for always-large, at a success cost of −0.0076. Whether that nets out
-is decided entirely by the cost weighting, which `config.json` froze at 0.03 per large call (0.01 small) as an
-admittedly unitless choice. The regime overtakes always-large at a large-call penalty of **0.088, about 2.9× the
-frozen value**. So the sign of the headline utility comparison is a function of a number chosen arbitrarily before
-any data — and **no cost-sensitivity analysis was pre-registered in this protocol or run**. That is an omission on
-our side, not a property of the result; the earlier draft protocol for a different design did pre-register a λ sweep,
-and this one dropped it.
+**The alleged oracle ceiling is not a bound.** The archived .000278 and 0 quantities apply the positive-part
+function to noisy **success** contrasts within pooled cells, weighted by logger occupancy. They are not utility
+gains, true state effects, upper confidence bounds, or comparisons under always-large/optimal continuation.
+The cell summary also omits benchmark identity. Comparing this statistic to an approximate marginal policy-value
+standard error does not establish the power of a paired policy contrast. The earlier claims that no possible
+router could achieve a detectable gain and that design was the proven dominant cause are withdrawn.
 
-**C. Theory — not implicated by this study.** Tailoring can only pay where the effect *varies with the state*.
-Within a stage it does not vary detectably: at t = 1 the four cells are −0.004, +0.008, +0.039, +0.067, all mutually
-within noise, and the pooled t = 1 effect is **+0.031 (SE 0.038)** — indistinguishable from zero. So the learner was
-asked to tailor on a signal that is not there, and "no tailoring gain" is the *correct* answer for this environment
-rather than a counterexample to the framework.
+**Metric.** The observed learned-minus-large success contrast is −.007576 and the original utility contrast is
+−.005000. The larger-model penalty crossing of **.088235** is correct only when **both penalties scale together**
+at the original 1:3 ratio; the small penalty then equals **.029412**. If small stays at .01, the crossing is instead
+**.064375**. Both are retrospective revaluations of frozen policies, not a reason to change the primary endpoint.
+The lead's independent TRAIN-only sensitivity fit leaves the reachable schedule unchanged when call penalties
+are removed. The original objective remains reported, along with separate success and resource measures.
 
-There is, however, a **stage** gradient that is suggestive and was not part of the tailoring hypothesis: the effect
-of using the large model is **+0.031 (SE 0.038) at t = 1** but **+0.116 (SE 0.035) at t = 2**, a difference of
-+0.086 (SE 0.051), about 1.7 SE. Model size appears to matter more at the third attempt than the second. That is a
-hypothesis this study generates, not one it confirms.
+**Stage comparisons and theory.** The archived stage-specific success contrasts (.030647 at stage 1, .116260 at
+stage 2) describe one-step large-versus-small interventions at logger-reached eligible histories, followed by the
+logger's continuation where applicable. They do not establish the same effect at the same histories or evaluate
+the full learned policy. The archived standard errors treat episodes independently, and the stage-difference
+standard error omits covariance despite overlapping tasks/episodes. They are not validated task-design inference.
+Lack of detected cell heterogeneity does not establish absence of heterogeneity. The data neither demonstrate
+a DR-specific defect nor prove all framework assumptions correct. The class-tailored calibration discrepancy
+and fixed-benchmark joint inference remain open scientific questions.
 
-**What the learned regime actually does, traced through reachable states:** large → (on failure) small → (on failure)
-large. At t = 1 after a large failure the measured effect is 0.000 (SE 0.057), so switching to small costs nothing
-detectable and saves a call; at t = 2 it is back on large, where the effect is largest. The rule is coherent with the
-data. *(An earlier reading of the policy table alone suggested it chose small at t = 2 and was harming itself; that
-was wrong — tracing which states are reachable shows it picks small at t = 2 in **0%** of its live episodes. The
-table must be read against reachability, not row by row.)*
-
-**Consequence for the claim.** "A tailored regime does not beat always-large" is still what was observed, but it
-should not be read as evidence about dynamic treatment regimes for agents. In this environment the oracle gain was
-∼0.0003 against a noise floor of 0.024. The honest statement is: **this design could not have detected a tailoring
-benefit, and its cost metric was set where quality dominates.** A study that could test the hypothesis needs a
-longer effective horizon (absorption on hidden success rather than a validator pass, or harder tasks so the first
-attempt fails more often), a cost weighting in the region where the trade-off is live, and pre-registered sensitivity
-over that weighting.
+**Next design.** Preserve all old outcomes. Develop informative, deployable visible feedback and explicit zero-check
+handling, competent fixed/router comparisons and justified success/resource criteria on development data before
+freezing a new evaluation. Hidden-test success cannot control stopping in the deployed policy; using it would
+create an explicitly oracle-only environment. Any new model or Monte Carlo work remains deferred. The lead owns
+these design decisions and the unresolved inference; the experiment worker should implement the concrete reporting
+and prospective-draft requests in `docs/experiment_handoff.md`.
 
 ### Contention and timing
 

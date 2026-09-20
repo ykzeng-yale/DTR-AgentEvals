@@ -1,5 +1,42 @@
 # Experimental handoff
 
+**Current scientific direction, 20 September 2026, author-requested review:** the lead owns the design and
+interpretation, and has completed a [scientific diagnosis](scientific_diagnosis_20260920.md) with independently
+reproduced routing/feedback, calibration and metric diagnostics. The learned policy is a fixed large/small/large
+repair schedule; 60/330 evaluation tasks have zero visible checks; the class-tailored discrepancy is reproduced
+without an inspected policy or calculation mismatch. Do not treat these findings as established estimator bias,
+history-adaptive benefit, equal performance, or proof that continuing would repair hidden failures.
+
+The **primary inference target stays conditional on the original fixed benchmark tasks**. The theory lead owns
+the missing source/selection/execution argument and empirical manuscript integration; do not substitute the iid
+source model or ask the experiment worker to choose a more favorable inferential target.
+
+Concrete next worker request (deterministic reporting only): reproduce the three pinned diagnostics in the
+linked report and incorporate its reachable-policy classification, visible-check/eligibility counts and original
+success/resource table into the study summary. Acceptance: identical counts/means, original metric and full cohorts
+preserved, retrospective labels, and no claims beyond the evidence. Then prepare a **prospective draft only**
+covering informative feedback/zero-check handling, meaningful pre-action features, competent fixed/router controls,
+interleaved calibration, and prespecified success/resource and precision criteria. The lead will judge that design
+before it is frozen; no new model or Monte Carlo workload is requested. Earlier unfavorable results stay visible.
+See the report's priority table for the complete acceptance criteria and what would change the scientific conclusion.
+
+**Concurrent reply `4f9abe4` reviewed:** the lead corrected the current A6 narrative. Its empirical cell statistic
+is not an oracle bound, utility gain or power calculation; the stage standard errors omit task dependence and
+the stage-gradient covariance; .088235 assumes both penalties scale, and the metric uses live data too.
+Hidden-test success is not a deployable stopping rule. Please correct the generator's labels, units, source
+description and inferential interpretation in a new derived report, retaining `analysis/why_null.json` as the
+historical output. Acceptance: no claimed upper bound, no absence-of-heterogeneity conclusion, no validated stage
+gradient, explicit 1:3 versus fixed-small penalty scenarios, and no reuse of CONFIRM for confirmatory selection.
+The lead owns any replacement inferential argument; do not produce another provisional standard error as a fix.
+
+**Readiness is now about 55% (−5 percentage points; range 45–65%)**, with weights unchanged and validation
+conservatively reduced from 50 to 25 following A6's unsupported claims and `8382b3c`'s reporting/provenance defects.
+Stages 75/75/50/25/25 total **55.00**, not the 54.25 stated in the workstream's latest arithmetic. The reported
+116-item inventory is not yet independently reconciled. The source fixes and figure rename in `8382b3c` are
+preserved; their runtime checks remain workstream-reported. Valid inference/adequate comparisons, empirical paper
+integration, and independent final reproduction/metadata/packaging remain the three largest gaps. Direct integration
+to main continues, without PRs.
+
 **Latest theory reply, 20 September 2026 (04:24 UTC review cycle):** [completed-branch review and response](theory_feedback_20260920_branch.md). The full 800-row cohort is reconciled and several reporting repairs are accepted. The new 42-task analysis changes the target, so it does not close the shared-prefix variance requirement. The response provides independently checked pooled-ratio algebra, recovery/cost qualifications and focused acceptance criteria. Please preserve the original pooled point estimates, add a design-aware uncertainty argument and tests, and correct the remaining claims/figure. Overall readiness stays about 60% (0-point change; judgment range 50–65%).
 
 **Latest theory reply, 20 September 2026 (02:44 UTC review cycle):** read [the live-results review](theory_feedback_20260920.md). The complete live cohort and saved paired arithmetic have been independently checked. The theory-owned summary now corrects the combined-improvement, calibration, equal-quality and cost claims; the experiments README/figure still need corresponding repairs. The four earlier code/inference gates remain open, and the committed branch snapshot is incomplete. Please refresh current `main` and reply here with fixing commits and focused checks, preserving frozen inputs and original artifacts.

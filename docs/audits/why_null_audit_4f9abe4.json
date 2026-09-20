@@ -1,0 +1,190 @@
+{
+  "ref": "4f9abe49925060cb551d6cbb4900348f65984d68",
+  "scope": "Independent deterministic reconstruction of published stage/cell point estimates, naive SEs, plus live metric counts. No bootstrap, MC, policy search, model or validator execution.",
+  "source_hashes": {
+    "experiments/tools/why_null.py": "d4ecdd3fb65787b598fe9fe58b2e46e34711da893aa7f45b89b1349b0ba17ad9",
+    "results/code_routing/analysis/why_null.json": "8b0c448345c406bcd10cda5b0d146dfed9068f88a3b6c2d91dc919318c7c1002",
+    "results/code_routing/log/episodes.jsonl": "e643ee44c7ef658fff65efb5e17763ee78c990d21184d060f5823025a100414e",
+    "results/code_routing/live/episodes.jsonl": "fb1b2603c51fda020915f7647a0d29478ebf064a0f21cec850ba5bd4abcc616b",
+    "results/code_routing/analysis/frontier_live.csv": "81930220b08145c2488b6628626e17dc974e20020cdd8822eeb47f08c2d2d908"
+  },
+  "stage_contrasts": {
+    "1": {
+      "effect": 0.030647092180706992,
+      "episode_independent_se": 0.03799180657974984,
+      "n": 564,
+      "n_eligible_tasks": 152,
+      "n_large": 295,
+      "n_small": 269,
+      "large_success": 0.2983050847457627,
+      "small_success": 0.26765799256505574
+    },
+    "2": {
+      "effect": 0.11625992917982582,
+      "episode_independent_se": 0.034715486292937414,
+      "n": 458,
+      "n_eligible_tasks": 134,
+      "n_large": 215,
+      "n_small": 243,
+      "large_success": 0.22325581395348837,
+      "small_success": 0.10699588477366255
+    }
+  },
+  "cell_contrasts": {
+    "1": {
+      "assertion|prev=L": {
+        "effect": -0.0039424860853432275,
+        "episode_independent_se": 0.06276987176875047,
+        "n": 186,
+        "n_eligible_tasks": 70,
+        "n_large": 98,
+        "n_small": 88,
+        "large_success": 0.23469387755102042,
+        "small_success": 0.23863636363636365
+      },
+      "exception|prev=L": {
+        "effect": 0.0076923076923077205,
+        "episode_independent_se": 0.1399047591689395,
+        "n": 46,
+        "n_eligible_tasks": 25,
+        "n_large": 26,
+        "n_small": 20,
+        "large_success": 0.3076923076923077,
+        "small_success": 0.3
+      },
+      "assertion|prev=S": {
+        "effect": 0.03908196721311474,
+        "episode_independent_se": 0.05705330259950212,
+        "n": 247,
+        "n_eligible_tasks": 113,
+        "n_large": 122,
+        "n_small": 125,
+        "large_success": 0.29508196721311475,
+        "small_success": 0.256
+      },
+      "exception|prev=S": {
+        "effect": 0.06746031746031744,
+        "episode_independent_se": 0.10813765105042718,
+        "n": 85,
+        "n_eligible_tasks": 52,
+        "n_large": 49,
+        "n_small": 36,
+        "large_success": 0.42857142857142855,
+        "small_success": 0.3611111111111111
+      }
+    },
+    "2": {
+      "exception|prev=L": {
+        "effect": 0.09541062801932368,
+        "episode_independent_se": 0.06588841458964535,
+        "n": 82,
+        "n_eligible_tasks": 46,
+        "n_large": 36,
+        "n_small": 46,
+        "large_success": 0.1388888888888889,
+        "small_success": 0.043478260869565216
+      },
+      "assertion|prev=S": {
+        "effect": 0.18026315789473685,
+        "episode_independent_se": 0.057602408664539174,
+        "n": 199,
+        "n_eligible_tasks": 93,
+        "n_large": 95,
+        "n_small": 104,
+        "large_success": 0.30526315789473685,
+        "small_success": 0.125
+      },
+      "assertion|prev=L": {
+        "effect": 0.01492537313432836,
+        "episode_independent_se": 0.057922383099587776,
+        "n": 134,
+        "n_eligible_tasks": 67,
+        "n_large": 67,
+        "n_small": 67,
+        "large_success": 0.13432835820895522,
+        "small_success": 0.11940298507462686
+      },
+      "exception|prev=S": {
+        "effect": 0.17873303167420815,
+        "episode_independent_se": 0.13060864742963688,
+        "n": 43,
+        "n_eligible_tasks": 34,
+        "n_large": 17,
+        "n_small": 26,
+        "large_success": 0.29411764705882354,
+        "small_success": 0.11538461538461539
+      }
+    }
+  },
+  "stage_difference": {
+    "estimate": 0.08561283699911883,
+    "saved_episode_independent_se": 0.05146399086495575,
+    "note": "The source adds stage variances as if independent, omitting their shared episodes/tasks. No replacement SE is derived or proposed here; an inferential target and joint sampling argument are required."
+  },
+  "posthoc_negative_success_cell_statistic": {
+    "1": 0.00027776606510372735,
+    "2": 0.0
+  },
+  "live_metric": {
+    "learned": {
+      "n_episodes": 660,
+      "successes": 468,
+      "large_calls": 762,
+      "small_calls": 118,
+      "all_calls": 880,
+      "mean_success": 0.7090909090909091,
+      "mean_utility": 0.6726666666666666,
+      "reachable_sequences": {
+        "L": 542,
+        "LSL": 102,
+        "LS": 16
+      }
+    },
+    "always_large": {
+      "n_episodes": 660,
+      "successes": 473,
+      "large_calls": 858,
+      "small_calls": 0,
+      "all_calls": 858,
+      "mean_success": 0.7166666666666667,
+      "mean_utility": 0.6776666666666666,
+      "reachable_sequences": {
+        "L": 544,
+        "LL": 34,
+        "LLL": 82
+      }
+    },
+    "thresholds": {
+      "success_difference": -0.007575757575757576,
+      "large_call_difference": -0.14545454545454545,
+      "small_call_difference": 0.1787878787878788,
+      "utility_difference_frozen": -0.005000000000000001,
+      "utility_difference_formula": "(-5 + 96*c_large - 118*c_small)/660",
+      "fixed_small_penalty_0p01_large_threshold": 0.064375,
+      "both_costs_scale_factor": 2.9411764705882364,
+      "both_scaled_large_threshold": 0.08823529411764709,
+      "both_scaled_small_threshold": 0.029411764705882363,
+      "note": "Post-hoc arithmetic crossover of noisy live means, not a statistically validated break-even point. It is the TRAIN-learned policy, not class_tailored."
+    }
+  },
+  "stage1_after_large": {
+    "effect": 0.0,
+    "episode_independent_se": 0.05724269990575715,
+    "n": 232,
+    "n_eligible_tasks": 86,
+    "n_large": 124,
+    "n_small": 108,
+    "large_success": 0.25,
+    "small_success": 0.25
+  },
+  "corrections": [
+    "Rename oracle ceiling as an in-sample negative-cell terminal-success statistic, or remove it. It uses estimated signs and logger-reached state frequencies under subsequent logging actions, not true Q values, utility rewards, always-large occupancy or optimal continuation. It is neither an upper confidence bound nor an upper bound on dynamic-policy gain.",
+    "The stage1 contrast is the current-action effect on terminal hidden success under subsequent randomized logging, among histories reached by the logger. The stage2 contrast concerns a different, selected risk set. Their difference is descriptive and does not isolate a stage interaction for a common population.",
+    "Published SEs treat episodes as independent, despite repeated task records; the stage-gradient SE also treats the overlapping estimates as independent. A valid replacement requires an explicit target and joint source/sampling argument; none is derived here.",
+    "Absorption after one decision is78.636% under this logger; it is not evidence78.636% achieved hidden success, not a policy-invariant ceiling, and not evidence the design could detect no tailoring benefit. Initial actions can differ between policies. For learned versus always-large the initial action agrees, but their later histories and continuation laws differ.",
+    "A single policy-value SE\u22480.024 is not the SE of a paired policy gain and does not prove insufficient power. Estimated cells failing individual null tests do not prove no heterogeneity, nor that no useful policy exists. The framework supplies evaluation conditions, not a guarantee that tailoring must help.",
+    "State cost crossover correctly: holding small penalty0.01, large threshold0.064375; scaling both penalties proportionally, multiplier2.941176 gives large0.088235 and small0.029412. The original code computes the latter but the prose suggests the former. Specify this uses learned, not class_tailored.",
+    "The source statement frozen-log-only is false for this analysis: the metric section loads frontier_live.csv, independently matched here to660 learned and660 always-large live episodes.",
+    "The learned policy really follows L,LS,LSL on its reachable live histories, with zero small third calls. It has96 fewer large but118 more small calls,22 more total calls than always-large. Switching models can save cost; it does not save a model call. The qualitative null-mechanism interpretation remains hypothetical."
+  ]
+}

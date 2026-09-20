@@ -2,7 +2,13 @@
 
 The original result sections below were generated on 2026-09-18; later checkpoints are dated explicitly. Synthetic results, real open-weight model observations, and remaining publication work are separated. The tests establish implementation identities and numerical correctness; they do not replace statistical assumptions or benchmark validation.
 
-**Latest review, 20 September 2026, 04:24 UTC cycle:** all 800 branch completions are now published at `d4997c6` and independently reconciled as saved records. The new 42-task analysis changes the population and weights, so uncertainty for the original full-prefix contrast remains unresolved. See [the completed-branch review](theory_feedback_20260920_branch.md). The earlier live-policy review at `ac3ca83` remains valid within its stated limits; historical snapshots below are dated explicitly.
+**Latest scientific review, 20 September 2026:** the [lead's diagnostic report](scientific_diagnosis_20260920.md)
+independently reconstructs the learned fixed large/small/large schedule, limited repair opportunities and
+zero-check stopping, the unresolved class-tailored calibration discrepancy, and descriptive utility sensitivity.
+These retrospective analyses narrow the empirical claims; no original outcomes, objectives or cohorts changed.
+The primary fixed-benchmark joint inference and complete empirical manuscript integration remain open.
+
+**Earlier review, 20 September 2026, 04:24 UTC cycle:** all 800 branch completions are now published at `d4997c6` and independently reconciled as saved records. The new 42-task analysis changes the population and weights, so uncertainty for the original full-prefix contrast remains unresolved. See [the completed-branch review](theory_feedback_20260920_branch.md). The earlier live-policy review at `ac3ca83` remains valid within its stated limits; historical snapshots below are dated explicitly.
 
 ## Coding-study checkpoint: 19 September 2026, 22:00 UTC review cycle
 
@@ -300,16 +306,18 @@ The [response](theory_feedback_20260920_reconstruction.md) records accepted repo
 scope. The sufficient iid source-model result is now in the 31-page paper as Proposition 13, without empirical
 performance results or validation of the exploratory joint band.
 
-### Why the tailored regime did not win: a post-hoc diagnosis (added 20 September 2026)
+### Scientific correction to the concurrent post-hoc diagnosis at 4f9abe4
 
-Not pre-registered; uses the frozen log only, after all stages completed. At each eligible decision the action is a fresh coin flip given the history, so the contrasts are clean randomized effects within their strata. Script `experiments/tools/why_null.py`; output `results/code_routing/analysis/why_null.json`; narrative in [`experiments/README.md`](../experiments/README.md) §A6.
+The [reviewed diagnosis](scientific_diagnosis_20260920.md) supersedes the original A6 interpretation. Its
+.000278/0 empirical positive-part success statistics are **not oracle bounds**, utility gains or a power
+calculation; they use noisy pooled-cell contrasts and logger occupancy/continuation. The code reads both log
+and live summaries. The .088235 large-penalty crossing requires the small penalty to rise to .029412;
+with small fixed at .01 the crossing is .064375. Stage-effect standard errors do not account for task clustering,
+and the stage-gradient calculation omits covariance and compares different eligible populations.
 
-**The design, not the theory, dominates the null.** 78.6% of confirm episodes are decided by the first action alone, because success absorbs at the visible-validator pass. An oracle knowing the true sign of every state cell could beat always-large by at most **+0.0003 utility units at t = 1 and +0.0000 at t = 2**, against a study standard error on a policy value of ≈ **0.024** — roughly 80× larger. No tailoring rule, however good, could have produced a detectable gain in this environment.
-
-**The cost metric is contributory and reflects a protocol gap.** The tailored regime buys 1.155 large calls per episode against 1.300 for always-large at a success cost of −0.0076; it overtakes always-large at a large-call penalty of 0.088, about **2.9× the frozen 0.03**. The frozen weighting is an explicitly unitless choice made before any data, and **no cost-sensitivity analysis was pre-registered in this protocol or run** — an omission on the experiments side.
-
-**The framework is not implicated.** Within a stage the effect does not vary detectably: the four t = 1 cells are −0.004, +0.008, +0.039 and +0.067, mutually within noise, and the pooled t = 1 effect is +0.031 (SE 0.038). Tailoring can only pay where the effect varies with state; here it does not, so "no tailoring gain" is the correct answer for this environment rather than a counterexample to dynamic treatment regimes. A separate **stage** gradient is suggestive and was not part of the hypothesis: the large-model effect is +0.031 (SE 0.038) at t = 1 against +0.116 (SE 0.035) at t = 2, a difference of +0.086 (SE 0.051). That is a hypothesis generated, not confirmed.
-
-**Correction to an intermediate reading.** Inspecting the learned policy table row by row suggested it selected the small model at t = 2 where the large model is clearly better. Tracing reachable states shows the opposite: the regime runs large → small → large and selects small at t = 2 in 0% of its live episodes. Policy tables must be read against reachability.
-
-**Consequence.** The observation stands, but it is not evidence about dynamic treatment regimes for agents. Testing that hypothesis requires a longer effective horizon (absorption on hidden-test success rather than a validator pass, or harder tasks), a cost weighting in the region where the trade-off is live, and pre-registered sensitivity over that weighting.
+The lead has corrected the [current A6 narrative](../experiments/README.md) and withdrawn claims that no router
+could have achieved a detectable benefit, that no heterogeneity exists, or that the framework was thereby
+vindicated. The observed fixed learned schedule and limited repair opportunities remain independently verified.
+The original diagnostic code/output are preserved as historical artifacts with their interpretation explicitly
+superseded. A future deployable stopping rule cannot consult hidden-test success. Reporting/generator corrections
+are queued in the handoff; the scientific lead owns inference and design decisions.

@@ -2,6 +2,13 @@
 
 **Research specification, updated 19 September 2026.** This is a proposed research program with a mathematical foundation and a runnable pilot. It is not a claim of a new doubly robust estimator, established empirical superiority, or an exhaustive novelty search. See [the literature audit](literature.md), [theory and proofs](theory.md), and [the experiment protocol](experiment_protocol.md).
 
+**20 September scientific diagnosis:** the coding study's learned policy reduces to a fixed large/small/large
+repair schedule; feedback and stopping limit adaptive decision opportunities, and the class-tailored calibration
+discrepancy remains unexplained. These findings narrow the current empirical contribution to a critical evaluation
+case study. The original hypotheses below remain research questions. See the lead's
+[diagnosis, evidence and revised priorities](scientific_diagnosis_20260920.md); do not infer adaptive benefit from
+the always-small comparison or substitute an iid-population theorem for the declared fixed-benchmark target.
+
 ## 1. Scientific question
 
 For a population of tasks executed by a fixed agent harness, which model should be invoked at each eligible decision, given everything observed so far, to improve final task success subject to resource constraints? Can we estimate the consequences of changing that routing policy from previously randomized trajectories, with uncertainty that agrees with fresh executions?

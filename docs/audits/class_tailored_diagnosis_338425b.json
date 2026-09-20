@@ -1,0 +1,851 @@
+{
+  "ref": "338425b468cb301f785b0b5daef4a796951f8f55",
+  "scope": "Deterministic reconstruction from pinned records, including one exact reproduction of the original 3-fold tabular DR specification; no alternative fits, simulations, models or validators. All subgroup comparisons are post-hoc descriptive, with no multiple-comparison inference.",
+  "versions": {
+    "python": "3.14.4 (main, Apr  7 2026, 13:13:20) [Clang 21.0.0 (clang-2100.0.123.102)]",
+    "numpy": "2.5.3"
+  },
+  "hashes": {
+    "experiments/code_routing/policies.py": "b2b324c09c2bf7c5858f97ff50e1467478aa96fb2e224725d3a0dd688f4258d7",
+    "experiments/code_routing/estimators_absorbing.py": "791fad5ad2ad8944599864cf37a82d18d3cadda165c70b73a44ca6104714a403",
+    "results/code_routing/log/episodes.jsonl": "e643ee44c7ef658fff65efb5e17763ee78c990d21184d060f5823025a100414e",
+    "results/code_routing/live/episodes.jsonl": "fb1b2603c51fda020915f7647a0d29478ebf064a0f21cec850ba5bd4abcc616b",
+    "results/code_routing/log/run_manifest.jsonl": "4b7aead19747d36c72e5098583c7a231c209cdd65158d006062e0f2969985937",
+    "results/code_routing/live/run_manifest.jsonl": "8149fa48eb979c61ff7006acd758906c5bf15a905abe12cc611d1edc00ec3430",
+    "results/code_routing/design.json": "230638a757c581138d1a3611a9c5788ed79b80a655313d316cac63cbba4ff43d"
+  },
+  "cohort": {
+    "n_tasks": 330,
+    "log_episodes": 2640,
+    "log_initial_small": 1320,
+    "live_episodes": 660
+  },
+  "policy_validation": {
+    "check_counts": {
+      "design_task_seed": 3300,
+      "utility_identity": 3300,
+      "stage": 4596,
+      "preaction_state": 4596,
+      "probabilities": 4596,
+      "design_draw_action": 4596,
+      "model_penalty": 4596,
+      "absorption": 4596,
+      "stop_rule": 3300,
+      "policy_action": 934
+    },
+    "n_failures": 0,
+    "problems": [],
+    "actual_production_function_matches_independent_rule": true,
+    "initial_prompt_hash_matches_by_task": true,
+    "stage_action_counts": [
+      {
+        "cohort": "live",
+        "t": 0,
+        "fail_class": "start",
+        "action": "small",
+        "n": 660
+      },
+      {
+        "cohort": "live",
+        "t": 1,
+        "fail_class": "assertion",
+        "action": "large",
+        "n": 121
+      },
+      {
+        "cohort": "live",
+        "t": 1,
+        "fail_class": "exception",
+        "action": "small",
+        "n": 45
+      },
+      {
+        "cohort": "live",
+        "t": 2,
+        "fail_class": "assertion",
+        "action": "large",
+        "n": 60
+      },
+      {
+        "cohort": "live",
+        "t": 2,
+        "fail_class": "exception",
+        "action": "small",
+        "n": 48
+      },
+      {
+        "cohort": "log",
+        "t": 0,
+        "fail_class": "start",
+        "action": "large",
+        "n": 1320
+      },
+      {
+        "cohort": "log",
+        "t": 0,
+        "fail_class": "start",
+        "action": "small",
+        "n": 1320
+      },
+      {
+        "cohort": "log",
+        "t": 1,
+        "fail_class": "assertion",
+        "action": "large",
+        "n": 220
+      },
+      {
+        "cohort": "log",
+        "t": 1,
+        "fail_class": "assertion",
+        "action": "small",
+        "n": 213
+      },
+      {
+        "cohort": "log",
+        "t": 1,
+        "fail_class": "exception",
+        "action": "large",
+        "n": 75
+      },
+      {
+        "cohort": "log",
+        "t": 1,
+        "fail_class": "exception",
+        "action": "small",
+        "n": 56
+      },
+      {
+        "cohort": "log",
+        "t": 2,
+        "fail_class": "assertion",
+        "action": "large",
+        "n": 162
+      },
+      {
+        "cohort": "log",
+        "t": 2,
+        "fail_class": "assertion",
+        "action": "small",
+        "n": 171
+      },
+      {
+        "cohort": "log",
+        "t": 2,
+        "fail_class": "exception",
+        "action": "large",
+        "n": 53
+      },
+      {
+        "cohort": "log",
+        "t": 2,
+        "fail_class": "exception",
+        "action": "small",
+        "n": 72
+      }
+    ],
+    "identity": {
+      "config_sha256": {
+        "log": [
+          "3dfa7d53990e6d7832c2b22b6ae2f0bf60a9beac052c1ef7dfe10ec9a96d6177"
+        ],
+        "live": [
+          "3dfa7d53990e6d7832c2b22b6ae2f0bf60a9beac052c1ef7dfe10ec9a96d6177"
+        ]
+      },
+      "code_sha256": {
+        "log": [
+          "b697d39065697358ff9a33b59f9aa51b4cbfcb3eed3347f05443a79658d24c26"
+        ],
+        "live": [
+          "b697d39065697358ff9a33b59f9aa51b4cbfcb3eed3347f05443a79658d24c26"
+        ]
+      },
+      "tasks_sha256": {
+        "log": [
+          "23727895971fa4a040198d8770173a4f0c3263a63a9cb1479abc4203bb01c2ce"
+        ],
+        "live": [
+          "23727895971fa4a040198d8770173a4f0c3263a63a9cb1479abc4203bb01c2ce"
+        ]
+      },
+      "visible_tests_sha256": {
+        "log": [
+          "634570cf88743416eca301f77e731c0a1b59013753ffa87c8238a3c77690ddff"
+        ],
+        "live": [
+          "634570cf88743416eca301f77e731c0a1b59013753ffa87c8238a3c77690ddff"
+        ]
+      }
+    },
+    "recorded_gguf_hashes_equal": true,
+    "recorded_gguf": {
+      "small": [
+        {
+          "file": "qwen2.5-3b-instruct-q4_k_m.gguf",
+          "bytes": 2104932768,
+          "sha256": "626b4a6678b86442240e33df819e00132d3ba7dddfe1cdc4fbb18e0a9615c62d"
+        }
+      ],
+      "large": [
+        {
+          "file": "qwen2.5-7b-instruct-q4_k_m-00001-of-00002.gguf",
+          "bytes": 3993201344,
+          "sha256": "dfce12e3862a5283ccfb88221b48480e58745165de856439950d0f22590580db"
+        },
+        {
+          "file": "qwen2.5-7b-instruct-q4_k_m-00002-of-00002.gguf",
+          "bytes": 689872288,
+          "sha256": "539cf93f78e887edea1c04e2d7d8cdaca9d01dae9c9025bcb8accbe29df3d72a"
+        }
+      ]
+    },
+    "log_live_base_seed_overlap": 0
+  },
+  "reproduction": [
+    {
+      "outcome": "success",
+      "max_absolute_error": 1.1102230246251565e-16
+    },
+    {
+      "outcome": "utility",
+      "max_absolute_error": 1.1102230246251565e-16
+    }
+  ],
+  "estimates": {
+    "success": {
+      "ipw": {
+        "mean": 0.6106060606060606,
+        "sd": 0.44819082042508346,
+        "se": 0.024672092657513623,
+        "n": 330
+      },
+      "dr": {
+        "mean": 0.6148707228276162,
+        "sd": 0.4446024445842711,
+        "se": 0.02447455906869416,
+        "n": 330
+      },
+      "plugin": 0.6200993577278304,
+      "live": {
+        "mean": 0.6515151515151515,
+        "sd": 0.42677928075409194,
+        "se": 0.02349342619084726,
+        "n": 330
+      },
+      "ipw_minus_live": {
+        "mean": -0.04090909090909091,
+        "sd": 0.29340640234729165,
+        "se": 0.016151490872022705,
+        "n": 330
+      },
+      "dr_minus_live": {
+        "mean": -0.03664442868753516,
+        "sd": 0.2966895400503493,
+        "se": 0.016332221654372037,
+        "n": 330
+      },
+      "dr_minus_ipw": 0.004264662221555637,
+      "q_fallback_on_heldout_target_states": {
+        "0": 0,
+        "1": 0,
+        "2": 0
+      },
+      "dr_augmentation_decomposition": {
+        "plugin_mean": 0.6200993577278304,
+        "stage_terms": [
+          -0.5401989313088933,
+          -0.058946499669656184,
+          -0.016689264527728016
+        ],
+        "sum": 0.004264662221552931
+      },
+      "benchmark": [
+        {
+          "benchmark": "mbpp",
+          "n_tasks": 239,
+          "ipw": 0.600418410041841,
+          "dr": 0.6061690297529809,
+          "live": 0.6276150627615062,
+          "ipw_minus_live": -0.027196652719665274,
+          "dr_minus_live": -0.02144603300852532,
+          "contribution_to_overall_dr_gap": -0.015532126936477427
+        },
+        {
+          "benchmark": "humaneval",
+          "n_tasks": 91,
+          "ipw": 0.6373626373626373,
+          "dr": 0.6377246200236367,
+          "live": 0.7142857142857143,
+          "ipw_minus_live": -0.07692307692307693,
+          "dr_minus_live": -0.07656109426207748,
+          "contribution_to_overall_dr_gap": -0.02111230175105773
+        }
+      ],
+      "influence": {
+        "negative_tasks": 99,
+        "positive_tasks": 63,
+        "nearzero_tasks": 168,
+        "largest_abs_task_contribution": 0.004385964912280702,
+        "max_single_task_centered_variance_share": 0.07604575119315958,
+        "top10_centered_variance_share": 0.33359544298305904,
+        "top10_absolute_gap_contribution": -0.009533309219414227,
+        "leave_one_task_out_gap_range": [
+          -0.041155106042368494,
+          -0.03355632184783962
+        ]
+      },
+      "top10_absolute_task_gaps": [
+        {
+          "task": "humaneval/10",
+          "ipw": 2.5,
+          "dr": 2.447368421052632,
+          "live": 1.0,
+          "dr_minus_live": 1.4473684210526319,
+          "contribution": 0.004385964912280702
+        },
+        {
+          "task": "humaneval/20",
+          "ipw": 0.0,
+          "dr": -0.05263157894736842,
+          "live": 1.0,
+          "dr_minus_live": -1.0526315789473684,
+          "contribution": -0.003189792663476874
+        },
+        {
+          "task": "mbpp/285",
+          "ipw": 1.0,
+          "dr": 0.9849330357142858,
+          "live": 0.0,
+          "dr_minus_live": 0.9849330357142858,
+          "contribution": 0.002984645562770563
+        },
+        {
+          "task": "mbpp/59",
+          "ipw": 0.25,
+          "dr": 0.04591389683976868,
+          "live": 1.0,
+          "dr_minus_live": -0.9540861031602313,
+          "contribution": -0.0028911700095764587
+        },
+        {
+          "task": "mbpp/71",
+          "ipw": 0.25,
+          "dr": 0.06715506715506718,
+          "live": 1.0,
+          "dr_minus_live": -0.9328449328449329,
+          "contribution": -0.002826802826802827
+        },
+        {
+          "task": "humaneval/156",
+          "ipw": 0.0,
+          "dr": -0.40735042735042737,
+          "live": 0.5,
+          "dr_minus_live": -0.9073504273504274,
+          "contribution": -0.0027495467495467496
+        },
+        {
+          "task": "mbpp/300",
+          "ipw": 0.0,
+          "dr": 0.1194295900178253,
+          "live": 1.0,
+          "dr_minus_live": -0.8805704099821747,
+          "contribution": -0.002668395181764166
+        },
+        {
+          "task": "humaneval/19",
+          "ipw": 0.25,
+          "dr": 0.1282051282051282,
+          "live": 1.0,
+          "dr_minus_live": -0.8717948717948718,
+          "contribution": -0.002641802641802642
+        },
+        {
+          "task": "mbpp/450",
+          "ipw": 1.5,
+          "dr": 1.3650793650793651,
+          "live": 0.5,
+          "dr_minus_live": 0.8650793650793651,
+          "contribution": 0.0026214526214526214
+        },
+        {
+          "task": "mbpp/248",
+          "ipw": 0.25,
+          "dr": 0.15590545982702844,
+          "live": 1.0,
+          "dr_minus_live": -0.8440945401729716,
+          "contribution": -0.0025578622429483985
+        }
+      ]
+    },
+    "utility": {
+      "ipw": {
+        "mean": 0.590969696969697,
+        "sd": 0.4527274309543323,
+        "se": 0.02492182484797331,
+        "n": 330
+      },
+      "dr": {
+        "mean": 0.5946871367388237,
+        "sd": 0.45088990124379535,
+        "se": 0.024820672166541092,
+        "n": 330
+      },
+      "plugin": 0.599836991012841,
+      "live": {
+        "mean": 0.6318787878787879,
+        "sd": 0.43329561692445345,
+        "se": 0.023852138691094774,
+        "n": 330
+      },
+      "ipw_minus_live": {
+        "mean": -0.04090909090909091,
+        "sd": 0.2934677753612189,
+        "se": 0.016154869345247225,
+        "n": 330
+      },
+      "dr_minus_live": {
+        "mean": -0.03719165113996432,
+        "sd": 0.29925416514771874,
+        "se": 0.01647339961953891,
+        "n": 330
+      },
+      "dr_minus_ipw": 0.0037174397691267513,
+      "q_fallback_on_heldout_target_states": {
+        "0": 0,
+        "1": 0,
+        "2": 0
+      },
+      "dr_augmentation_decomposition": {
+        "plugin_mean": 0.599836991012841,
+        "stage_terms": [
+          -0.5300801813154663,
+          -0.052895559945967355,
+          -0.01314380998227348
+        ],
+        "sum": 0.003717439769133909
+      },
+      "benchmark": [
+        {
+          "benchmark": "mbpp",
+          "n_tasks": 239,
+          "ipw": 0.5810041841004183,
+          "dr": 0.5859967478299182,
+          "live": 0.6075313807531381,
+          "ipw_minus_live": -0.026527196652719666,
+          "dr_minus_live": -0.021534632923219943,
+          "contribution_to_overall_dr_gap": -0.015596294753483533
+        },
+        {
+          "benchmark": "humaneval",
+          "n_tasks": 91,
+          "ipw": 0.6171428571428572,
+          "dr": 0.6175113449721028,
+          "live": 0.6958241758241758,
+          "ipw_minus_live": -0.0786813186813187,
+          "dr_minus_live": -0.07831283085207318,
+          "contribution_to_overall_dr_gap": -0.021595356386480784
+        }
+      ],
+      "influence": {
+        "negative_tasks": 100,
+        "positive_tasks": 75,
+        "nearzero_tasks": 155,
+        "largest_abs_task_contribution": 0.0043189792663476875,
+        "max_single_task_centered_variance_share": 0.0725919736501753,
+        "top10_centered_variance_share": 0.3318502316377363,
+        "top10_absolute_gap_contribution": -0.00995704601976432,
+        "leave_one_task_out_gap_range": [
+          -0.0416368025352066,
+          -0.0340836110458449
+        ]
+      },
+      "top10_absolute_task_gaps": [
+        {
+          "task": "humaneval/10",
+          "ipw": 2.385,
+          "dr": 2.385263157894737,
+          "live": 0.96,
+          "dr_minus_live": 1.425263157894737,
+          "contribution": 0.0043189792663476875
+        },
+        {
+          "task": "humaneval/20",
+          "ipw": -0.115,
+          "dr": -0.1297368421052631,
+          "live": 0.93,
+          "dr_minus_live": -1.059736842105263,
+          "contribution": -0.003211323763955343
+        },
+        {
+          "task": "mbpp/285",
+          "ipw": 0.965,
+          "dr": 0.9458705357142857,
+          "live": -0.030000000000000002,
+          "dr_minus_live": 0.9758705357142857,
+          "contribution": 0.0029571834415584417
+        },
+        {
+          "task": "mbpp/59",
+          "ipw": 0.19,
+          "dr": 0.00728182136807054,
+          "live": 0.96,
+          "dr_minus_live": -0.9527181786319294,
+          "contribution": -0.0028870247837331194
+        },
+        {
+          "task": "mbpp/300",
+          "ipw": -0.039999999999999994,
+          "dr": 0.0594295900178253,
+          "live": 0.99,
+          "dr_minus_live": -0.9305704099821747,
+          "contribution": -0.002819910333279317
+        },
+        {
+          "task": "mbpp/71",
+          "ipw": 0.19999999999999998,
+          "dr": 0.039496336996336964,
+          "live": 0.97,
+          "dr_minus_live": -0.930503663003663,
+          "contribution": -0.00281970806970807
+        },
+        {
+          "task": "humaneval/156",
+          "ipw": -0.065,
+          "dr": -0.44961709401709393,
+          "live": 0.48,
+          "dr_minus_live": -0.9296170940170939,
+          "contribution": -0.0028170214970214967
+        },
+        {
+          "task": "humaneval/19",
+          "ipw": 0.21999999999999997,
+          "dr": 0.10403846153846158,
+          "live": 0.99,
+          "dr_minus_live": -0.8859615384615385,
+          "contribution": -0.0026847319347319347
+        },
+        {
+          "task": "mbpp/450",
+          "ipw": 1.4449999999999998,
+          "dr": 1.3347619047619048,
+          "live": 0.45499999999999996,
+          "dr_minus_live": 0.8797619047619049,
+          "contribution": 0.0026659451659451663
+        },
+        {
+          "task": "mbpp/248",
+          "ipw": 0.18,
+          "dr": 0.09738694130850994,
+          "live": 0.975,
+          "dr_minus_live": -0.8776130586914901,
+          "contribution": -0.0026594335111863334
+        }
+      ]
+    }
+  },
+  "support": {
+    "terminal_weight_mass": 0.9818181818181818,
+    "ess_terminal": 821.7299412915851,
+    "max_weight": 8.0,
+    "matching_episodes": 1087,
+    "tasks_with_terminal_support": 321,
+    "weight_counts": {
+      "0.0": 1553,
+      "2.0": 988,
+      "4.0": 44,
+      "8.0": 55
+    }
+  },
+  "terminal_stage_decomposition": [
+    {
+      "last_stage": 0,
+      "log_matching_episodes": 988,
+      "log_weighted_terminal_mass": 0.7484848484848485,
+      "live_terminal_mass": 0.7484848484848485,
+      "log_ipw_success_contribution": 0.5409090909090909,
+      "live_success_contribution": 0.5575757575757576
+    },
+    {
+      "last_stage": 1,
+      "log_matching_episodes": 44,
+      "log_weighted_terminal_mass": 0.06666666666666667,
+      "live_terminal_mass": 0.08787878787878788,
+      "log_ipw_success_contribution": 0.051515151515151514,
+      "live_success_contribution": 0.07424242424242425
+    },
+    {
+      "last_stage": 2,
+      "log_matching_episodes": 55,
+      "log_weighted_terminal_mass": 0.16666666666666666,
+      "live_terminal_mass": 0.16363636363636364,
+      "log_ipw_success_contribution": 0.01818181818181818,
+      "live_success_contribution": 0.019696969696969695
+    }
+  ],
+  "stage_penalty_decomposition": [
+    {
+      "t": 0,
+      "log_ipw_reach_mass": 1.0,
+      "live_reach_mass": 1.0,
+      "log_ipw_penalty": 0.01,
+      "live_penalty": 0.01
+    },
+    {
+      "t": 1,
+      "log_ipw_reach_mass": 0.23939393939393938,
+      "live_reach_mass": 0.2515151515151515,
+      "log_ipw_penalty": 0.00609090909090909,
+      "live_penalty": 0.0061818181818181816
+    },
+    {
+      "t": 2,
+      "log_ipw_reach_mass": 0.16666666666666666,
+      "live_reach_mass": 0.16363636363636364,
+      "log_ipw_penalty": 0.003545454545454545,
+      "live_penalty": 0.003454545454545454
+    }
+  ],
+  "first_candidate_comparison": [
+    {
+      "cohort": "log_initial_small",
+      "n_episodes": 1320,
+      "first_candidate_hidden_success": 0.5651515151515152,
+      "first_visible_pass": 0.7484848484848485,
+      "final_hidden_success": 0.6181818181818182,
+      "benchmark": [
+        {
+          "benchmark": "mbpp",
+          "n_episodes": 956,
+          "first_candidate_hidden_success": 0.553347280334728
+        },
+        {
+          "benchmark": "humaneval",
+          "n_episodes": 364,
+          "first_candidate_hidden_success": 0.5961538461538461
+        }
+      ]
+    },
+    {
+      "cohort": "class_tailored",
+      "n_episodes": 660,
+      "first_candidate_hidden_success": 0.5909090909090909,
+      "first_visible_pass": 0.7484848484848485,
+      "final_hidden_success": 0.6515151515151515,
+      "benchmark": [
+        {
+          "benchmark": "mbpp",
+          "n_episodes": 478,
+          "first_candidate_hidden_success": 0.5669456066945606
+        },
+        {
+          "benchmark": "humaneval",
+          "n_episodes": 182,
+          "first_candidate_hidden_success": 0.6538461538461539
+        }
+      ]
+    },
+    {
+      "cohort": "always_small",
+      "n_episodes": 660,
+      "first_candidate_hidden_success": 0.5803030303030303,
+      "first_visible_pass": 0.7318181818181818,
+      "final_hidden_success": 0.6106060606060606,
+      "benchmark": [
+        {
+          "benchmark": "mbpp",
+          "n_episodes": 478,
+          "first_candidate_hidden_success": 0.5774058577405857
+        },
+        {
+          "benchmark": "humaneval",
+          "n_episodes": 182,
+          "first_candidate_hidden_success": 0.5879120879120879
+        }
+      ]
+    },
+    {
+      "cohort": "escalate_after_first_failure",
+      "n_episodes": 660,
+      "first_candidate_hidden_success": 0.5833333333333334,
+      "first_visible_pass": 0.7454545454545455,
+      "final_hidden_success": 0.646969696969697,
+      "benchmark": [
+        {
+          "benchmark": "mbpp",
+          "n_episodes": 478,
+          "first_candidate_hidden_success": 0.5690376569037657
+        },
+        {
+          "benchmark": "humaneval",
+          "n_episodes": 182,
+          "first_candidate_hidden_success": 0.6208791208791209
+        }
+      ]
+    }
+  ],
+  "first_candidate_gap": {
+    "log_minus_live": -0.025757575757575757,
+    "paired_task_summary": {
+      "mean": -0.025757575757575757,
+      "sd": 0.24980880595387167,
+      "se": 0.013751522178234749,
+      "n": 330
+    },
+    "ipw_final_gap": -0.04090909090909091,
+    "remaining_after_first_candidate": -0.015151515151515152,
+    "note": "The initial-small comparison precedes adaptive routing and is a useful common-prefix diagnostic. The arithmetic residual is not a mediated causal effect or proof of where estimation bias arose."
+  },
+  "failure_class_strata": [
+    {
+      "t": 1,
+      "fail_class": "assertion",
+      "expected_action": "large",
+      "log_matched_prefixes": 122,
+      "log_weighted_reach": 0.18484848484848485,
+      "live_reach": 0.18333333333333332,
+      "log_weighted_final_success_joint_mass": 0.05303030303030303,
+      "live_final_success_joint_mass": 0.08181818181818182
+    },
+    {
+      "t": 1,
+      "fail_class": "exception",
+      "expected_action": "small",
+      "log_matched_prefixes": 36,
+      "log_weighted_reach": 0.05454545454545454,
+      "live_reach": 0.06818181818181818,
+      "log_weighted_final_success_joint_mass": 0.016666666666666666,
+      "live_final_success_joint_mass": 0.012121212121212121
+    },
+    {
+      "t": 2,
+      "fail_class": "assertion",
+      "expected_action": "large",
+      "log_matched_prefixes": 31,
+      "log_weighted_reach": 0.09393939393939393,
+      "live_reach": 0.09090909090909091,
+      "log_weighted_final_success_joint_mass": 0.012121212121212121,
+      "live_final_success_joint_mass": 0.013636363636363636
+    },
+    {
+      "t": 2,
+      "fail_class": "exception",
+      "expected_action": "small",
+      "log_matched_prefixes": 24,
+      "log_weighted_reach": 0.07272727272727272,
+      "live_reach": 0.07272727272727272,
+      "log_weighted_final_success_joint_mass": 0.006060606060606061,
+      "live_final_success_joint_mass": 0.006060606060606061
+    }
+  ],
+  "original_q_training_cell_counts": [
+    {
+      "fold": 0,
+      "t": 2,
+      "n_training": 291,
+      "n_cells": 16,
+      "min_cell": 5,
+      "median_cell": 10.5
+    },
+    {
+      "fold": 0,
+      "t": 1,
+      "n_training": 353,
+      "n_cells": 16,
+      "min_cell": 4,
+      "median_cell": 15.0
+    },
+    {
+      "fold": 0,
+      "t": 0,
+      "n_training": 1760,
+      "n_cells": 4,
+      "min_cell": 264,
+      "median_cell": 440.0
+    },
+    {
+      "fold": 1,
+      "t": 2,
+      "n_training": 334,
+      "n_cells": 16,
+      "min_cell": 5,
+      "median_cell": 14.5
+    },
+    {
+      "fold": 1,
+      "t": 1,
+      "n_training": 407,
+      "n_cells": 16,
+      "min_cell": 7,
+      "median_cell": 16.5
+    },
+    {
+      "fold": 1,
+      "t": 0,
+      "n_training": 1760,
+      "n_cells": 4,
+      "min_cell": 244,
+      "median_cell": 440.0
+    },
+    {
+      "fold": 2,
+      "t": 2,
+      "n_training": 291,
+      "n_cells": 16,
+      "min_cell": 2,
+      "median_cell": 12.0
+    },
+    {
+      "fold": 2,
+      "t": 1,
+      "n_training": 368,
+      "n_cells": 16,
+      "min_cell": 3,
+      "median_cell": 14.0
+    },
+    {
+      "fold": 2,
+      "t": 0,
+      "n_training": 1760,
+      "n_cells": 4,
+      "min_cell": 220,
+      "median_cell": 440.0
+    }
+  ],
+  "operational_exceptions": [
+    {
+      "cohort": "live",
+      "episode": "live:class_tailored:mbpp/119#0",
+      "task": "mbpp/119",
+      "validation_timeouts": 1,
+      "hidden_timeout": false,
+      "truncations": 0,
+      "success": 0
+    },
+    {
+      "cohort": "live",
+      "episode": "live:class_tailored:mbpp/780#1",
+      "task": "mbpp/780",
+      "validation_timeouts": 0,
+      "hidden_timeout": false,
+      "truncations": 3,
+      "success": 0
+    }
+  ],
+  "interpretation": [
+    "No routing or estimator implementation mismatch found in this bounded diagnosis. The independent policy rule and recorded states, action draws, observed probabilities, penalties, stopping rule and selected model aliases agree. Both cohorts share recorded configuration/source/task/visible-test/GGUF hashes, and initial prompts agree per task; those metadata checks do not prove stationary serving noise.",
+    "The success difference exists with unaugmented IPW (-4.091 percentage points) and is slightly smaller after the exact original DR fit (-3.664 points). Hence it is not generated by a Q-model fitting adjustment. There are no heldout target-state fallback uses. Some training cells have only 2-7 observations, but sparse cells alone do not identify the cause; with known randomization and stable harness laws, Q misspecification is not sufficient evidence of asymptotic DR bias.",
+    "IPW utility and success gaps are both -4.091 points: the weighted call penalties equal live mean penalties exactly. This discrepancy is driven by the final hidden-success score rather than a utility/penalty coding mismatch.",
+    "A -2.576-point log/live difference is already present in the first hidden-validated candidate under the same initial-small action and task prompts. The adaptive decision rule has not yet acted. This is 63 percent of the final IPW gap arithmetically, but not a causal mediation decomposition; the residual reflects both later outcomes and sequential weighting noise.",
+    "Terminal-stage contributions locate the difference: -1.667 points among episodes stopping after the first call, -2.273 points among episodes stopping after one repair, and -0.152 points at the third call. The stage-1 assertion/large stratum contributes -2.879 points to later final-success joint mass, partly offset by exception/small; these observed selected strata do not identify conditional treatment effects.",
+    "HumanEval represents 91 of 330 tasks but contributes -2.111 points of the overall -3.664-point DR gap; MBPP contributes -1.553 points. The initial HumanEval gap is already 5.769 points in the same direction. These are post-hoc localization summaries, not subgroup hypothesis tests.",
+    "The estimate is noisy but not explained by one extreme task: the largest absolute task contribution is 0.439 points, and deleting any one task leaves the success difference between -4.116 and -3.356 points. Terminal support includes 1087 compatible episodes, of which only 44 stop after one repair and 55 reach the third decision, with weights4 and8. Terminal weight mass is0.9818; the finite-sample weight variability is material without demonstrating lack of structural positivity.",
+    "The one timeout and three truncations occur in two failed tailored live episodes. They cannot explain a spuriously high live hidden-success mean by adding successes; changing both failures to successes would instead increase that mean by at most2/660=0.303 points. No outcome-changing rerun or exclusion is performed.",
+    "Under stable transitions/rewards and correct recorded randomization, these are finite-sample noisy estimates of the same policy value. The nominal DR difference is about2.24 paired standard errors and was selected from six pointwise policy comparisons; it does not diagnose systematic OPE failure. Chance/reference noise remains plausible, and an unrecorded serving-distribution difference cannot be ruled out from one sequential log/live collection. Neither explanation is proved here."
+  ],
+  "discriminating_followup": [
+    "Keep the current discrepancy and all failed episodes in the main report. State that the independent code and mapping checks passed, the unaugmented estimate shows the same gap, and much of the mismatch predates routing.",
+    "The next queued calibration experiment should predefine paired task contrasts and run randomized-log and class-tailored reference episodes interleaved within time blocks under the same frozen harness. Track initial-candidate hidden success separately as a common-prefix diagnostic; do not tune routing or Q models to erase this discrepancy.",
+    "Independent repeated log/reference cohorts, with the evaluation family specified in advance, distinguish persistent directional calibration failure from finite-repetition noise. Repeating only the two failed episodes or selecting an alternative estimator by this live result would not provide that evidence."
+  ]
+}

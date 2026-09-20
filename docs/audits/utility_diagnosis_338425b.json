@@ -1,0 +1,161 @@
+{
+  "boundaries": [
+    "The scale grid was chosen after observing results; it is not a new primary endpoint.",
+    "Break-even values are empirical equalities without inferential or optimization guarantees.",
+    "Completion tokens and wall time are separate observed resources, not dollars or energy.",
+    "Original unitless penalties and all frozen outcomes remain unchanged.",
+    "This grid does not refit the learner or identify what changed-penalty training would learn."
+  ],
+  "checks": "All episode utilities and policy success/utility means reproduce the archive",
+  "episodes": 3960,
+  "frontier": {
+    "always_large": {
+      "calls": 1.3,
+      "completion_tokens": 122.56818181818181,
+      "large_calls": 1.3,
+      "small_calls": 0.0,
+      "success": 0.7166666666666667,
+      "utility": 0.6776666666666666,
+      "wall_seconds": 13.804014591462064
+    },
+    "always_small": {
+      "calls": 1.5,
+      "completion_tokens": 131.5939393939394,
+      "large_calls": 0,
+      "small_calls": 1.5,
+      "success": 0.6106060606060606,
+      "utility": 0.5956060606060606,
+      "wall_seconds": 8.844825726211297
+    },
+    "class_tailored": {
+      "calls": 1.415151515151515,
+      "completion_tokens": 129.5818181818182,
+      "large_calls": 0.27424242424242423,
+      "small_calls": 1.1409090909090909,
+      "success": 0.6515151515151515,
+      "utility": 0.6318787878787878,
+      "wall_seconds": 10.380706338290915
+    },
+    "escalate_after_first_failure": {
+      "calls": 1.415151515151515,
+      "completion_tokens": 125.00909090909092,
+      "large_calls": 0.41515151515151516,
+      "small_calls": 0.9999999999999999,
+      "success": 0.646969696969697,
+      "utility": 0.6245151515151515,
+      "wall_seconds": 10.941075646302973
+    },
+    "learned": {
+      "calls": 1.3333333333333333,
+      "completion_tokens": 118.82878787878788,
+      "large_calls": 1.1545454545454545,
+      "small_calls": 0.17878787878787872,
+      "success": 0.7090909090909091,
+      "utility": 0.6726666666666666,
+      "wall_seconds": 12.959412669458173
+    },
+    "soft_escalation_d2": {
+      "calls": 1.3757575757575757,
+      "completion_tokens": 124.01515151515152,
+      "large_calls": 0.7818181818181819,
+      "small_calls": 0.5939393939393939,
+      "success": 0.6757575757575758,
+      "utility": 0.6463636363636364,
+      "wall_seconds": 12.00943936679625
+    }
+  },
+  "input_sha256": {
+    "results/code_routing/analysis/frontier_live.csv": "81930220b08145c2488b6628626e17dc974e20020cdd8822eeb47f08c2d2d908",
+    "results/code_routing/live/episodes.jsonl": "fb1b2603c51fda020915f7647a0d29478ebf064a0f21cec850ba5bd4abcc616b"
+  },
+  "large_penalty_break_even_with_small_001": 0.06437499999999993,
+  "learned_minus_always_large": {
+    "calls": 0.033333333333333215,
+    "completion_tokens": -3.739393939393935,
+    "large_calls": -0.1454545454545455,
+    "small_calls": 0.17878787878787872,
+    "success": -0.007575757575757569,
+    "utility": -0.0050000000000000044,
+    "wall_seconds": -0.844601922003891
+  },
+  "original_penalty_cost_saving": 0.0025757575757575776,
+  "penalty_scale_break_even": 2.9411764705882306,
+  "policies": 6,
+  "ref": "338425b468cb301f785b0b5daef4a796951f8f55",
+  "sensitivity_grid": [
+    {
+      "learned_minus_large": -0.007575757575757569,
+      "penalty_scale": 0,
+      "utilities": {
+        "always_large": 0.7166666666666667,
+        "always_small": 0.6106060606060606,
+        "class_tailored": 0.6515151515151515,
+        "escalate_after_first_failure": 0.646969696969697,
+        "learned": 0.7090909090909091,
+        "soft_escalation_d2": 0.6757575757575758
+      }
+    },
+    {
+      "learned_minus_large": -0.006287878787878842,
+      "penalty_scale": 0.5,
+      "utilities": {
+        "always_large": 0.6971666666666667,
+        "always_small": 0.6031060606060606,
+        "class_tailored": 0.6416969696969697,
+        "escalate_after_first_failure": 0.6357424242424242,
+        "learned": 0.6908787878787879,
+        "soft_escalation_d2": 0.6610606060606061
+      }
+    },
+    {
+      "learned_minus_large": -0.0050000000000000044,
+      "penalty_scale": 1,
+      "utilities": {
+        "always_large": 0.6776666666666666,
+        "always_small": 0.5956060606060606,
+        "class_tailored": 0.6318787878787878,
+        "escalate_after_first_failure": 0.6245151515151515,
+        "learned": 0.6726666666666666,
+        "soft_escalation_d2": 0.6463636363636364
+      }
+    },
+    {
+      "learned_minus_large": -0.00242424242424244,
+      "penalty_scale": 2,
+      "utilities": {
+        "always_large": 0.6386666666666667,
+        "always_small": 0.5806060606060606,
+        "class_tailored": 0.6122424242424243,
+        "escalate_after_first_failure": 0.6020606060606061,
+        "learned": 0.6362424242424243,
+        "soft_escalation_d2": 0.616969696969697
+      }
+    },
+    {
+      "learned_minus_large": 0.00015151515151512474,
+      "penalty_scale": 3,
+      "utilities": {
+        "always_large": 0.5996666666666667,
+        "always_small": 0.5656060606060606,
+        "class_tailored": 0.5926060606060606,
+        "escalate_after_first_failure": 0.5796060606060606,
+        "learned": 0.5998181818181818,
+        "soft_escalation_d2": 0.5875757575757576
+      }
+    },
+    {
+      "learned_minus_large": 0.0027272727272728003,
+      "penalty_scale": 4,
+      "utilities": {
+        "always_large": 0.5606666666666666,
+        "always_small": 0.5506060606060605,
+        "class_tailored": 0.5729696969696969,
+        "escalate_after_first_failure": 0.5571515151515152,
+        "learned": 0.5633939393939394,
+        "soft_escalation_d2": 0.5581818181818182
+      }
+    }
+  ],
+  "status": "Retrospective descriptive metric diagnostic; no new confirmatory inference",
+  "tasks_per_policy": 330
+}

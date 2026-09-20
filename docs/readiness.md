@@ -188,3 +188,32 @@ Add a judgment range when material uncertainty remains. A no-change update retai
 Record new checkpoint scores and the reasons in [GitHub issue #4](https://github.com/ykzeng-yale/DTR-AgentEvals/issues/4). Keep this baseline as a historical entry; append a clearly dated checkpoint here when the rubric, core scope, or a major completion milestone changes. Do not silently change the weights to manufacture progress.
 
 **The 100% gate:** every mandatory category must be complete, with no unresolved material proof, data/analysis, manuscript consistency, reproducibility, authorship, or packaging issue. Rounding must never turn an incomplete project into 100%. Cap the displayed score below 100% while any mandatory gate is open. Actual uploading/submission requires separate author authorization and is not implied by this reporting request.
+
+## Checkpoint: 20 September 2026, author-requested scientific diagnosis
+
+At `338425b`, three deterministic diagnostics were independently reconstructed: the learned policy deploys a
+fixed large/small/large schedule, visible-pass stopping and zero-check tasks limit repair opportunities, and the
+class-tailored calibration discrepancy persists under IPW without an inspected assignment/calculation mismatch.
+The [scientific lead's report](scientific_diagnosis_20260920.md) narrows the empirical claims, retains the original
+metric and fixed-benchmark target, and takes responsibility for the design and next discriminating checks.
+The 90-minute monitor now explicitly requires this scientific judgment. No new observations were collected;
+the 31-page PDF and experiment archives remain unchanged.
+
+Concurrent experiment commit `4f9abe4` added a null diagnosis during this review. Its arithmetic reproduces,
+but two independent reviews reject its purported oracle bound, no-power inference and theory-vindication claims.
+The lead corrected the current narratives and retained the historical output, with concrete generator/reporting
+repairs requested. This prevents those unsupported conclusions from advancing the empirical category.
+
+**Overall readiness is now about 55% (change: −5 percentage points; judgment range 45–65%).** Weights and intended
+scope are unchanged. Independent validation/reproducibility is conservatively reduced from 50 to 25; category
+stages **75/75/50/25/25** give **55.00** before rounding. The later `8382b3c` report discloses a provenance-writing
+defect and a reporting repair that had been claimed but not fully applied. Together with A6's unsupported bound
+and inference claims, these expose an insufficiently validated interpretation/reporting layer. Existing independent
+reconstructions remain completed evidence. The reduction is not because of unfavorable outcomes, and does not
+adopt the unreconciled count of 116 audit items as a measure of readiness. The workstream's category arithmetic
+was 55.00, not its stated 54.25; both round to the same 55%.
+
+The latest source fixes and unchanged-byte figure rename are integrated and inspected; the claimed 101 tests
+and 116-item inventory remain workstream-reported in this turn. Largest remaining milestones: valid inference
+and scientifically adequate comparisons; full empirical manuscript integration; independent final reproduction,
+author-approved metadata and submission packaging. Submission remains unperformed.

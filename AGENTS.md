@@ -8,6 +8,9 @@ The author explicitly requested direct integration into `main`, without pull req
 
 ## Research rules
 
+- The lead agent owns the scientific judgment, including the estimand, design, metrics, comparators, interpretation and next discriminating study. The experiment agent largely implements that design; do not shift responsibility for an inconclusive or unfavorable finding back to it.
+- Diagnose weak or failed results before requesting more experiments. Compare plausible design, metric, learner, implementation, inference and theory explanations against existing evidence; record evidence against the preferred explanation and what would change the conclusion. Distinguish an implementation defect, a violated assumption, an inadequate test and an empirical null. Revise the lead's own design and claims when warranted.
+- Use bounded deterministic retrospective diagnostics while compute is deferred; preserve frozen outputs and label these analyses. Do not tune on CONFIRM to obtain a favorable result, change a primary endpoint retrospectively, or treat a new proof or passing infrastructure check as evidence of practical improvement. Prioritize the declared scientific target over peripheral extensions. The current lead decisions and concrete worker requests are in `docs/scientific_diagnosis_20260920.md`.
 - Preserve raw run artifacts and immutable configurations. Never overwrite a completed experiment; use a new run directory.
 - Distinguish synthetic simulation, real model inference, pilot evidence, confirmatory results and planned experiments.
 - Do not call known DTR/OPE theory novel. Attach assumptions and primary citations to mathematical claims.
