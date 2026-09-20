@@ -106,6 +106,19 @@ within-milestone advances, but valid joint inference and comparator validation, 
 and final reproducibility/metadata/packaging remain the three largest gaps. Readiness does not depend on obtaining
 an unfavorable replay result or a favorable result for the proposed estimator.
 
+## Checkpoint: 20 September 2026, 11:15 UTC review cycle
+
+Reviewed `8ab7fb5` and accepted its corrected post-hoc A5 reporting. The replay mechanism controls were checked,
+and the separate audit connects production replay to exact known-value examples. The reviewed replay note is now
+integrated into Section 8.2 of the 28-page paper, with proof review, clean compilation and full visual QA. These are
+reporting, validation and theory-paper advances; no new model observations or empirical results were added.
+
+**Overall readiness remains about 60% (change: 0 percentage points; judgment range 50–65%).** Category stages
+remain **75/75/50/50/25**, weighted **58.75** before rounding under the same weights and scope. The three largest
+remaining milestones are validated joint inference and remaining comparators, complete manuscript/result
+integration, and independent reproducibility plus author metadata and final packaging. Progress within a milestone
+is real even when it does not move the coarse score.
+
 ## Required reporting format
 
 Every scheduled GitHub update and user-facing project completion message must include:

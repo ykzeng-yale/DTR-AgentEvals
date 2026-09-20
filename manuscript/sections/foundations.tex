@@ -404,6 +404,23 @@ Let \(T=2\), no baseline covariates, \(L_2=A_1\), and terminal reward \(Y=\mathb
 
 This example does not require claiming that every replay method is invalid. Restoring a valid pre-decision snapshot and \textbf{executing the new continuation} under the target kernel is a real branch experiment. Also, replay that is correct by a specially justified environment invariance can be valid. What fails is assuming unchanged downstream states without that justification.
 
+Simply copying the recorded outcome is a different operation from recomputing the reward after freezing the state. Outcome copying returns 1 in the example above, just as the live target does, although a policy-independent copied outcome generally cannot distinguish policies. A counterexample must therefore be attached to the specified replay operation and assumptions.
+
+\subsection{Adaptive donor matching can discard the relevant state}\label{adaptive-donor-replay}
+
+Consider another two-decision system, with first action fixed at zero. The first execution reveals \(U\sim\operatorname{Bernoulli}(1/2)\), and visible validation always fails at this decision. The logger then chooses \(A_2\sim\operatorname{Bernoulli}(1/2)\) independently of \(U\). Terminal hidden-test success is \(Y=\ind\{A_2=U\}\); visible validation stops the episode at decision two, including when \(Y=0\). The adaptive target chooses \(A_2=U\), so \(V(\pi)=1\).
+
+Let an unlimited ordered bank contain independent and identically distributed donors from this same task and execution law, with order fixed before observing their records. Define replay to take the first donor's observed state, request the target action there, and return the stored outcome of the earliest donor matching the requested action prefix. Both second actions have a matching donor almost surely; no fallback is needed. If the first donor's logged action equals its state, probability \(1/2\), replay keeps that donor and returns 1. Otherwise replay selects the first later donor whose action equals the \emph{old} state \(U\). Since each donor's action is independent of its own state, selection leaves the replacement state \(U'\) an independent fair bit. Thus
+\[
+\E(\widehat Y_{\mathrm{replay}})
+=\tfrac12\cdot1+\tfrac12\cdot\tfrac12
+=\tfrac34,
+\qquad V(\pi)=1.
+\]
+Matching the action prefix has discarded the state that determined the adaptive target's action. The discrepancy occurs with stable kernels, supported randomized actions and unlimited donors at a horizon of two. It does not imply a particular bias on any empirical benchmark.
+
+In the same system, a target with constant second action \(c\) has value \(\P(U=c)=1/2\). Replay selects the first donor with \(A_2=c\), whose state is still a fair bit, and also averages \(1/2\). This narrow positive control explains why replay failure cannot be assumed for every policy. It supplies no general validity theorem for adaptive targets, history-dependent logging probabilities, finite-bank fallback or other forms of state substitution.
+
 \subsection{Nonidentification without support}\label{nonidentification-without-support}
 
 Take one decision and no covariates, with \(A=0\) and \(Y=0\) always in the logs. In world I, the potential reward for action 1 is 0; in world II, it is 1. The observed laws are identical, but the value of ``always action 1'' differs. No estimator based solely on these logs identifies that value. A language-model outcome regressor, a world model, a DR correction, or a different causal vocabulary cannot resolve this observational equivalence without an assumption or new data.

@@ -1,5 +1,31 @@
 # Dated artifact audits
 
+## Replay repair and production-function controls: `8ab7fb5`
+
+```sh
+python3 docs/audits/check_replay_controls_8ab7fb5.py
+.venv/bin/python -m pytest -q tests
+sh manuscript/build.sh
+```
+
+The standard-library checker extracts reviewed pure functions from pinned source through the Python AST, without
+importing the experiment modules. The primary reviewer reproduced the archived `replay_controls_audit_8ab7fb5.json`
+report: **71 checks, zero failures**. It compares saved diagnostics and common-cohort summaries with the prior
+independent reconstruction, checks unchanged raw artifacts, and connects the implemented replay rule to exact
+known-value controls. All 24 calls over eight equally weighted cases have available donors and zero fallback:
+adaptive replay 3/4 versus truth 1; constant second-action replay 1/2 versus truth 1/2. The two represented donors
+are the first donor and first later opposite-action match, not an unconditional two-donor iid sample.
+
+All **19 non-analysis artifacts**, the comparison CSV and the production replay rule are unchanged. The report also
+records a separate reviewer's successful run of the eight published fixtures and its pinned dependency command;
+the stdlib audit does not rerun that command. The root `.venv` lacks pandas, so the experiment fixture suite needs
+its experiment dependencies. The 30 root tests pass. No new GPU/model, candidate-code execution or Monte Carlo
+work is performed. See the [response](../theory_feedback_20260920_replay_integration.md).
+
+The reviewed replay note is now integrated in Section 8.2 of the **28-page manuscript**. Its proof, prospective-plan
+clarification and all rendered pages were reviewed; the build has no warnings or unresolved references. Updated
+source/PDF hashes and prior-delivery provenance are in `manuscript/validation.json`.
+
 ## Post-hoc replay comparator: `560135e`
 
 ```sh

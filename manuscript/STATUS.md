@@ -15,6 +15,7 @@
 | Branch validation and allocation | Prefix transport, exact augmented-score mean/variance, independent two-sample corollary, and clipped oracle cost allocation proved. Global optimal exploration is not claimed. |
 | Fixed-size prefix sampling | Conditional fixed-frame variance and an unbiased estimator with replicated continuations proved; the additional source-frame/log variance term for a full joint comparison remains unresolved. |
 | Execution drift | Full-history coupling bound and deployment-adjusted improvement certificate proved for externally justified kernel allowances and a common payoff. The allowances are not estimated from ordinary logs. |
+| Replay limits | Outcome copying distinguished from frozen-state reward recomputation; adaptive donor failure and a narrow positive control proved in Section 8.2. |
 | Empirical sections | Prospective methods and reporting targets written. New simulations, GPU/model execution, and empirical results deferred. |
 | Discussion and reproducibility | Written, with practical limitations, open questions, build instructions, and this audit record. |
 
@@ -24,16 +25,24 @@ There are 13 numbered theorem/proposition/corollary statements, plus additional 
 
 - A separate agent reviewed the theory and assembled manuscript. The [full review](../docs/theory_review_20260919.md) records findings and resolutions. A second agent checked source positioning and the rendered latter half of the paper.
 - Corrections made during review: valid root marginals for cluster inference; explicit sequential support for every candidate; almost-everywhere support wording; proportional fold sizes; target-null conventions for branch scores; residual-second-moment allocation; complete kernel/payoff conditions; and manuscript conversion/cross-reference repairs.
-- The repository root test suite passed: **27 tests**, including **17 exact theorem checks** across the three theory test files. With the 22 publication-gate fixtures, this review ran **49 passing tests**. These checks do not launch a new Monte Carlo sweep or model experiment; the workstream's broader reported test run is separate.
-- The compiled PDF has **27 pages**. All pages were rendered and visually reviewed: the primary reviewer inspected pages 1–17, and a separate reviewer checked pages 18–27 and preservation of the new proof. Bibliography, cross-references, equations, margins, and indicator glyphs were checked; the final LaTeX log has no warnings, undefined citations/references or overfull boxes. The final page contains one bibliography entry; this is a minor pagination choice, not missing content.
+- The repository root suite passes **30 tests**, including **20 exact theoretical checks** across four theory test files. Eight additional workstream replay fixtures were independently checked in an environment supplying their experiment dependencies; the minimal root environment alone lacks pandas. The workstream's reported 73-test run is separate. The pinned audit supplies exact production-function controls without requiring those imports.
+- The compiled PDF has **28 pages**. All pages were rendered and visually reviewed: the primary reviewer inspected pages 1–12, and a separate reviewer checked pages 13–28, including the new Section 8.2 and prospective controls paragraph. Only page 14 changed under the final donor-order clarification and was rechecked by the primary reviewer. Independent mathematical review confirms proof preservation. The final LaTeX log has no warnings, undefined citations/references or overfull boxes. A trailing Discussion line on page 26 and one bibliography entry on page 28 are minor pagination choices, not missing content.
 - The paper build uses the canonical bibliography with audit-only notes removed for display. Source-level audit annotations remain in the canonical file.
 - `validation.json` records the PDF/source hashes and reproducibility details. Build intermediates are ignored by Git.
 
 ## Integration boundary
 
-This manuscript builds on the original theory package at `40da0d42422611f61f49fdec23dbf2f76a40eb6d`. Its initial publication followed repository checkpoint `66b7488`; the current paper revision follows `6f92026` and integrates the reviewed conditional sampling note from `7d06c2d`. Later experiment audits are recorded below, but no empirical performance numbers are inserted into this theory-first PDF. The update changes no archived experimental outputs and launches no model workload. The prior PDF/source and validation record remain available in Git history.
+This manuscript builds on the original theory package at `40da0d42422611f61f49fdec23dbf2f76a40eb6d`. Its initial publication followed repository checkpoint `66b7488`; the current paper revision follows `8ab7fb5` and integrates the reviewed replay note from `d13d5a5`, alongside the previously integrated conditional sampling result. Later experiment audits are recorded below, but no empirical performance numbers are inserted into this theory-first PDF. The update changes no archived experimental outputs and launches no model workload. The prior PDF/source and validation record remain available in Git history.
 
 ## Later author and empirical work
+
+**20 September, 11:15 UTC coordination review:** accepted the A5 reporting repairs and checked the new replay
+mechanics fixtures at `8ab7fb5`. The reviewed replay counterexample and positive control are now integrated into
+Section 8.2 of the **28-page paper**, with proof review, a clean build and document-wide visual review. A pinned
+production-function audit connects the exact construction to the implemented replay rule; empirical performance
+results remain deferred. See the [response](../docs/theory_feedback_20260920_replay_integration.md). Full-project
+readiness remains **about 60% (0 percentage-point change; range 50–65%)**; joint inference/comparators, complete
+result integration and the final reproducible package with author metadata remain open.
 
 **20 September, 09:32 UTC coordination review:** the post-hoc replay comparison at `560135e` is independently
 reconstructed and its interpretation corrected in [the response](../docs/theory_feedback_20260920_replay.md).

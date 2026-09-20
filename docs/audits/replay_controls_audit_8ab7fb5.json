@@ -1,0 +1,511 @@
+{
+  "ref": "8ab7fb577cb3879b706ebc0c931517e0bfca4ae7",
+  "prior_ref": "560135e0b85f479d6ee6afd33bd2987115a786ac",
+  "scope": "Pinned pure-function diagnostic checks and finite exhaustive control; no experiment imports, models, candidate-code execution or Monte Carlo.",
+  "source_hashes": {
+    "experiments/tools/static_replay.py": "67c37ee2125777ebd20a761698ce324541de57284b6dc4eb39c6aa3cffccc310",
+    "experiments/code_routing/policies.py": "b2b324c09c2bf7c5858f97ff50e1467478aa96fb2e224725d3a0dd688f4258d7",
+    "experiments/tools/test_static_replay.py": "119ec123e57bb9d11fb15414380a021ee61e6b6c4e4f3dea925bbadeeccc30a5"
+  },
+  "published_tests": {
+    "default_venv_result": "Collection failed: ModuleNotFoundError: pandas",
+    "executed_command": "uv run --no-project --python .venv/bin/python --with pandas --with numpy --with pytest python -m pytest -q experiments/tools/test_static_replay.py",
+    "reproduce_command": "uv run --no-project --python .venv/bin/python --with pandas==3.0.6 --with numpy==2.5.3 --with pytest==9.1.1 python -m pytest -q experiments/tools/test_static_replay.py",
+    "successful_observation": "8 passed in 8.43s using an ephemeral environment resolving to the recorded versions",
+    "versions": {
+      "python": "3.14.4",
+      "pandas": "3.0.6",
+      "numpy": "2.5.3",
+      "pytest": "9.1.1"
+    }
+  },
+  "checks": {
+    "distinct": 19,
+    "individual": 71,
+    "failures": {}
+  },
+  "saved_diagnostics": {
+    "prefix_coverage": {
+      "tasks_with_all_4_length2_prefixes": 33,
+      "tasks_with_all_8_length3_prefixes": 0,
+      "n_tasks": 330
+    },
+    "per_target": {
+      "always_large": {
+        "continue_after_stage0": 57,
+        "missing_donor_stage1": 8,
+        "missing_donor_stage2": 13,
+        "tasks_using_fallback": 21,
+        "tasks_changing_donor": 26
+      },
+      "always_small": {
+        "continue_after_stage0": 81,
+        "missing_donor_stage1": 15,
+        "missing_donor_stage2": 20,
+        "tasks_using_fallback": 35,
+        "tasks_changing_donor": 29
+      },
+      "class_tailored": {
+        "continue_after_stage0": 81,
+        "missing_donor_stage1": 15,
+        "missing_donor_stage2": 13,
+        "tasks_using_fallback": 28,
+        "tasks_changing_donor": 41
+      },
+      "escalate_after_first_failure": {
+        "continue_after_stage0": 81,
+        "missing_donor_stage1": 12,
+        "missing_donor_stage2": 16,
+        "tasks_using_fallback": 28,
+        "tasks_changing_donor": 31
+      },
+      "learned": {
+        "continue_after_stage0": 57,
+        "missing_donor_stage1": 10,
+        "missing_donor_stage2": 11,
+        "tasks_using_fallback": 21,
+        "tasks_changing_donor": 22
+      }
+    }
+  },
+  "common_five_metrics": {
+    "n_policies": 5,
+    "policies": [
+      "always_large",
+      "always_small",
+      "class_tailored",
+      "escalate_after_first_failure",
+      "learned"
+    ],
+    "MAE_A": 0.03621212121212123,
+    "MAE_B": 0.016060606060606063,
+    "MAE_DR": 0.018234612316465792,
+    "Spearman_A_vs_live": null,
+    "Spearman_B_vs_live": 0.872081599272381,
+    "Spearman_DR_vs_live": 0.8,
+    "max_absolute_B": 0.039393939393939426,
+    "max_absolute_DR": 0.03664442868753515
+  },
+  "all_raw_artifacts_unchanged": true,
+  "exact_control": {
+    "bank_definition": "Uniform eight triples (U,A,U_prime); current donor (0,A),state U; first later opposite-action donor (0,1-A),state U_prime. Second validation passes; hidden success=1{second action matches that donor state}. Rejected same-action rows are integrated out, not interpreted as two unconditional iid rows.",
+    "source_state_distribution": "U fair; logging A fair and independent; donor U_prime fair independent",
+    "result": {
+      "class_tailored": {
+        "replay_value": 0.75,
+        "true_value": 1.0,
+        "donor_change_cases": 4,
+        "fallback_cases": 0
+      },
+      "fixed_second_small": {
+        "replay_value": 0.5,
+        "true_value": 0.5,
+        "donor_change_cases": 4,
+        "fallback_cases": 0
+      },
+      "fixed_second_large": {
+        "replay_value": 0.5,
+        "true_value": 0.5,
+        "donor_change_cases": 4,
+        "fallback_cases": 0
+      }
+    },
+    "enumeration": [
+      {
+        "U": 0,
+        "A": 0,
+        "U_prime": 0,
+        "weight": 0.125,
+        "target": "class_tailored",
+        "replayed_success": 1.0,
+        "true_target_success": 1,
+        "diagnostics": {
+          "continue_after_stage0": 1,
+          "missing_donor_stage1": 0,
+          "missing_donor_stage2": 0,
+          "tasks_using_fallback": 0,
+          "tasks_changing_donor": 0
+        }
+      },
+      {
+        "U": 0,
+        "A": 0,
+        "U_prime": 0,
+        "weight": 0.125,
+        "target": "fixed_second_small",
+        "replayed_success": 1.0,
+        "true_target_success": 1,
+        "diagnostics": {
+          "continue_after_stage0": 1,
+          "missing_donor_stage1": 0,
+          "missing_donor_stage2": 0,
+          "tasks_using_fallback": 0,
+          "tasks_changing_donor": 0
+        }
+      },
+      {
+        "U": 0,
+        "A": 0,
+        "U_prime": 0,
+        "weight": 0.125,
+        "target": "fixed_second_large",
+        "replayed_success": 0.0,
+        "true_target_success": 0,
+        "diagnostics": {
+          "continue_after_stage0": 1,
+          "missing_donor_stage1": 0,
+          "missing_donor_stage2": 0,
+          "tasks_using_fallback": 0,
+          "tasks_changing_donor": 1
+        }
+      },
+      {
+        "U": 0,
+        "A": 0,
+        "U_prime": 1,
+        "weight": 0.125,
+        "target": "class_tailored",
+        "replayed_success": 1.0,
+        "true_target_success": 1,
+        "diagnostics": {
+          "continue_after_stage0": 1,
+          "missing_donor_stage1": 0,
+          "missing_donor_stage2": 0,
+          "tasks_using_fallback": 0,
+          "tasks_changing_donor": 0
+        }
+      },
+      {
+        "U": 0,
+        "A": 0,
+        "U_prime": 1,
+        "weight": 0.125,
+        "target": "fixed_second_small",
+        "replayed_success": 1.0,
+        "true_target_success": 1,
+        "diagnostics": {
+          "continue_after_stage0": 1,
+          "missing_donor_stage1": 0,
+          "missing_donor_stage2": 0,
+          "tasks_using_fallback": 0,
+          "tasks_changing_donor": 0
+        }
+      },
+      {
+        "U": 0,
+        "A": 0,
+        "U_prime": 1,
+        "weight": 0.125,
+        "target": "fixed_second_large",
+        "replayed_success": 1.0,
+        "true_target_success": 0,
+        "diagnostics": {
+          "continue_after_stage0": 1,
+          "missing_donor_stage1": 0,
+          "missing_donor_stage2": 0,
+          "tasks_using_fallback": 0,
+          "tasks_changing_donor": 1
+        }
+      },
+      {
+        "U": 0,
+        "A": 1,
+        "U_prime": 0,
+        "weight": 0.125,
+        "target": "class_tailored",
+        "replayed_success": 1.0,
+        "true_target_success": 1,
+        "diagnostics": {
+          "continue_after_stage0": 1,
+          "missing_donor_stage1": 0,
+          "missing_donor_stage2": 0,
+          "tasks_using_fallback": 0,
+          "tasks_changing_donor": 1
+        }
+      },
+      {
+        "U": 0,
+        "A": 1,
+        "U_prime": 0,
+        "weight": 0.125,
+        "target": "fixed_second_small",
+        "replayed_success": 1.0,
+        "true_target_success": 1,
+        "diagnostics": {
+          "continue_after_stage0": 1,
+          "missing_donor_stage1": 0,
+          "missing_donor_stage2": 0,
+          "tasks_using_fallback": 0,
+          "tasks_changing_donor": 1
+        }
+      },
+      {
+        "U": 0,
+        "A": 1,
+        "U_prime": 0,
+        "weight": 0.125,
+        "target": "fixed_second_large",
+        "replayed_success": 0.0,
+        "true_target_success": 0,
+        "diagnostics": {
+          "continue_after_stage0": 1,
+          "missing_donor_stage1": 0,
+          "missing_donor_stage2": 0,
+          "tasks_using_fallback": 0,
+          "tasks_changing_donor": 0
+        }
+      },
+      {
+        "U": 0,
+        "A": 1,
+        "U_prime": 1,
+        "weight": 0.125,
+        "target": "class_tailored",
+        "replayed_success": 0.0,
+        "true_target_success": 1,
+        "diagnostics": {
+          "continue_after_stage0": 1,
+          "missing_donor_stage1": 0,
+          "missing_donor_stage2": 0,
+          "tasks_using_fallback": 0,
+          "tasks_changing_donor": 1
+        }
+      },
+      {
+        "U": 0,
+        "A": 1,
+        "U_prime": 1,
+        "weight": 0.125,
+        "target": "fixed_second_small",
+        "replayed_success": 0.0,
+        "true_target_success": 1,
+        "diagnostics": {
+          "continue_after_stage0": 1,
+          "missing_donor_stage1": 0,
+          "missing_donor_stage2": 0,
+          "tasks_using_fallback": 0,
+          "tasks_changing_donor": 1
+        }
+      },
+      {
+        "U": 0,
+        "A": 1,
+        "U_prime": 1,
+        "weight": 0.125,
+        "target": "fixed_second_large",
+        "replayed_success": 0.0,
+        "true_target_success": 0,
+        "diagnostics": {
+          "continue_after_stage0": 1,
+          "missing_donor_stage1": 0,
+          "missing_donor_stage2": 0,
+          "tasks_using_fallback": 0,
+          "tasks_changing_donor": 0
+        }
+      },
+      {
+        "U": 1,
+        "A": 0,
+        "U_prime": 0,
+        "weight": 0.125,
+        "target": "class_tailored",
+        "replayed_success": 0.0,
+        "true_target_success": 1,
+        "diagnostics": {
+          "continue_after_stage0": 1,
+          "missing_donor_stage1": 0,
+          "missing_donor_stage2": 0,
+          "tasks_using_fallback": 0,
+          "tasks_changing_donor": 1
+        }
+      },
+      {
+        "U": 1,
+        "A": 0,
+        "U_prime": 0,
+        "weight": 0.125,
+        "target": "fixed_second_small",
+        "replayed_success": 0.0,
+        "true_target_success": 0,
+        "diagnostics": {
+          "continue_after_stage0": 1,
+          "missing_donor_stage1": 0,
+          "missing_donor_stage2": 0,
+          "tasks_using_fallback": 0,
+          "tasks_changing_donor": 0
+        }
+      },
+      {
+        "U": 1,
+        "A": 0,
+        "U_prime": 0,
+        "weight": 0.125,
+        "target": "fixed_second_large",
+        "replayed_success": 0.0,
+        "true_target_success": 1,
+        "diagnostics": {
+          "continue_after_stage0": 1,
+          "missing_donor_stage1": 0,
+          "missing_donor_stage2": 0,
+          "tasks_using_fallback": 0,
+          "tasks_changing_donor": 1
+        }
+      },
+      {
+        "U": 1,
+        "A": 0,
+        "U_prime": 1,
+        "weight": 0.125,
+        "target": "class_tailored",
+        "replayed_success": 1.0,
+        "true_target_success": 1,
+        "diagnostics": {
+          "continue_after_stage0": 1,
+          "missing_donor_stage1": 0,
+          "missing_donor_stage2": 0,
+          "tasks_using_fallback": 0,
+          "tasks_changing_donor": 1
+        }
+      },
+      {
+        "U": 1,
+        "A": 0,
+        "U_prime": 1,
+        "weight": 0.125,
+        "target": "fixed_second_small",
+        "replayed_success": 0.0,
+        "true_target_success": 0,
+        "diagnostics": {
+          "continue_after_stage0": 1,
+          "missing_donor_stage1": 0,
+          "missing_donor_stage2": 0,
+          "tasks_using_fallback": 0,
+          "tasks_changing_donor": 0
+        }
+      },
+      {
+        "U": 1,
+        "A": 0,
+        "U_prime": 1,
+        "weight": 0.125,
+        "target": "fixed_second_large",
+        "replayed_success": 1.0,
+        "true_target_success": 1,
+        "diagnostics": {
+          "continue_after_stage0": 1,
+          "missing_donor_stage1": 0,
+          "missing_donor_stage2": 0,
+          "tasks_using_fallback": 0,
+          "tasks_changing_donor": 1
+        }
+      },
+      {
+        "U": 1,
+        "A": 1,
+        "U_prime": 0,
+        "weight": 0.125,
+        "target": "class_tailored",
+        "replayed_success": 1.0,
+        "true_target_success": 1,
+        "diagnostics": {
+          "continue_after_stage0": 1,
+          "missing_donor_stage1": 0,
+          "missing_donor_stage2": 0,
+          "tasks_using_fallback": 0,
+          "tasks_changing_donor": 0
+        }
+      },
+      {
+        "U": 1,
+        "A": 1,
+        "U_prime": 0,
+        "weight": 0.125,
+        "target": "fixed_second_small",
+        "replayed_success": 1.0,
+        "true_target_success": 0,
+        "diagnostics": {
+          "continue_after_stage0": 1,
+          "missing_donor_stage1": 0,
+          "missing_donor_stage2": 0,
+          "tasks_using_fallback": 0,
+          "tasks_changing_donor": 1
+        }
+      },
+      {
+        "U": 1,
+        "A": 1,
+        "U_prime": 0,
+        "weight": 0.125,
+        "target": "fixed_second_large",
+        "replayed_success": 1.0,
+        "true_target_success": 1,
+        "diagnostics": {
+          "continue_after_stage0": 1,
+          "missing_donor_stage1": 0,
+          "missing_donor_stage2": 0,
+          "tasks_using_fallback": 0,
+          "tasks_changing_donor": 0
+        }
+      },
+      {
+        "U": 1,
+        "A": 1,
+        "U_prime": 1,
+        "weight": 0.125,
+        "target": "class_tailored",
+        "replayed_success": 1.0,
+        "true_target_success": 1,
+        "diagnostics": {
+          "continue_after_stage0": 1,
+          "missing_donor_stage1": 0,
+          "missing_donor_stage2": 0,
+          "tasks_using_fallback": 0,
+          "tasks_changing_donor": 0
+        }
+      },
+      {
+        "U": 1,
+        "A": 1,
+        "U_prime": 1,
+        "weight": 0.125,
+        "target": "fixed_second_small",
+        "replayed_success": 0.0,
+        "true_target_success": 0,
+        "diagnostics": {
+          "continue_after_stage0": 1,
+          "missing_donor_stage1": 0,
+          "missing_donor_stage2": 0,
+          "tasks_using_fallback": 0,
+          "tasks_changing_donor": 1
+        }
+      },
+      {
+        "U": 1,
+        "A": 1,
+        "U_prime": 1,
+        "weight": 0.125,
+        "target": "fixed_second_large",
+        "replayed_success": 1.0,
+        "true_target_success": 1,
+        "diagnostics": {
+          "continue_after_stage0": 1,
+          "missing_donor_stage1": 0,
+          "missing_donor_stage2": 0,
+          "tasks_using_fallback": 0,
+          "tasks_changing_donor": 0
+        }
+      }
+    ]
+  },
+  "accepted": [
+    "Every saved per-target diagnostic and prefix-coverage count matches the prior independent reconstruction and direct production pure-function evaluation.",
+    "All five-policy numeric summaries match the corrected prior audit. The six-policy legacy MAEs are explicitly suffixed all6.",
+    "The existing replay estimates and 19 raw artifacts are byte-identical; rule_b and by_task function ASTs are unchanged.",
+    "Eight published mechanism tests pass with pandas available; independent K=3/fallback/order controls pass."
+  ],
+  "limitations": [
+    "The eight published fixtures check mechanics rather than causal truth. The independent exhaustive control added here demonstrates exact adaptive replay value 3/4 versus true 1, while both fixed policies reproduce 1/2, without fallback or missing donors. This does not estimate bias of the observed coding benchmark.",
+    "The default repository test environment lacks pandas; test reproduction currently needs the experiment dependencies or the recorded ephemeral environment.",
+    "Legacy summary keys still use bias terminology and stitching_engages_in_share_of_episodes for the original-log eligibility fraction. Those labels do not turn this post-hoc observed discrepancy into repeated-sampling bias or the actual donor-change rate."
+  ]
+}

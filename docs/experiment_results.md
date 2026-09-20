@@ -240,3 +240,12 @@ Independent reconstruction reproduces all saved A/B values, live means and paire
 Zero `no_donor_tasks` means only that an initial donor exists. Later missing donors cause fallback on **21–35 of 330 tasks per deterministic target**. Only 33 tasks have all four recorded length-two prefixes, and none have all eight length-three prefixes. Absorption is at visible-validator pass; absence of a later recorded prefix alone is not structural positivity failure. The 21.36% continuation statistic concerns logger episodes, not replay donor changes. Neither short horizon nor donor density has been established as the cause of the descriptive method ordering.
 
 Thresholding `soft_escalation_d2` produces a different, always-large replay policy. Its row is excluded consistently from these five-policy summaries and cannot evaluate the intended stochastic target. The largest absolute Rule B discrepancy is class-tailored, −0.039394; the thresholded stochastic comparison is +0.036364. The [review and reproducible audit](theory_feedback_20260920_replay.md) give per-stage donor diagnostics, exact theoretical controls and remaining acceptance criteria. Raw records and workstream analysis outputs are preserved unchanged; no empirical results have been inserted into the manuscript PDF.
+
+### Acceptance of replay reporting repairs (20 September 2026, 11:15 UTC review)
+
+At `8ab7fb5`, the experiments-owned A5 section now adopts the corrected five-target summaries and donor diagnostics
+and withdraws the unsupported null, complete-donor-coverage and horizon-explanation claims. The new mechanics
+fixtures are useful implementation checks; the independent pinned audit additionally connects the implemented rule
+to exact positive/adaptive-negative known-value controls. These validate specified toy behavior and archived
+arithmetic, not causal validity or relative accuracy on the benchmark. See the [response](theory_feedback_20260920_replay_integration.md).
+The theory constructions are now in the 28-page paper; empirical performance results remain outside it.

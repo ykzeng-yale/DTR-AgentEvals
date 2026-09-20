@@ -9,6 +9,8 @@ Finite sequential environments will vary prior-treatment-induced confounding, sa
 
 Comparators will include direct on-policy estimation, iterated regression, per-decision importance weighting, normalized importance weighting, and the longitudinal doubly robust estimator. A deliberately naive switch/no-switch association and a fully specified static-replay rule will serve as failure controls. When the experiment concerns branch allocation, uniform branch selection and the oracle allocation will be compared with a rule estimated on independent development data. The oracle supplies a benchmark, not an implementable competitor with privileged test information.
 
+The replay implementation will first be checked against both positive and adaptive-negative examples with known policy values, such as Section~\ref{adaptive-donor-replay}. Donor ordering, stopping, fallback and any thresholding of stochastic targets must be explicit. Failure in a specified counterexample does not require replay to perform worse on every empirical benchmark; a descriptive discrepancy from noisy live estimates is not a repeated-sampling bias estimate or a test of equal accuracy.
+
 The primary statistical outputs will be bias, root mean squared error, confidence-interval coverage and length, false improvement declarations, and computation. Weight tails, zero-match rates, stage-specific effective sample sizes, empty nuisance-fit cells, and numerical failures will be retained. Monte Carlo uncertainty will accompany performance summaries. An interval that fails under misspecification will be reported as a failure under the relevant assumptions rather than hidden by selective reporting or undeclared truncation.
 
 \subsection{Prospective open-weight agent experiment}

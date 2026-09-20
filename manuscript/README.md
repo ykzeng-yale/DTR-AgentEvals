@@ -1,12 +1,13 @@
 # Dynamic Agent Regimes — full theory-first manuscript
 
-**Working draft, updated 20 September 2026.** [Read the 27-page PDF](DTR_Agent_Regimes_Theory_Draft.pdf), [edit the source](main.tex), or read the [validation and status record](STATUS.md).
+**Working draft, updated 20 September 2026.** [Read the 28-page PDF](DTR_Agent_Regimes_Theory_Draft.pdf), [edit the source](main.tex), or read the [validation and status record](STATUS.md).
 
 The current paper develops the theory, complete proofs for its stated results, introduction, related-work positioning, discussion, and prospective empirical methods. New model experiments and empirical performance results are deferred at the author's request because GPU capacity is limited. Prior development results remain in the repository archive and are not used as evidence in this manuscript.
 
 ## Mathematical content
 
 - Versioned model interventions, sequential identification, routing probability ratios, fixed-policy influence function, exact doubly robust drift, cross-fitting, and honest policy comparisons.
+- Replay operation boundaries: a supported adaptive donor counterexample with unlimited donors and a narrow constant-action positive control.
 - Task-level inference conditions, resource outcomes, supported stochastic interventions, and the distinction between a frozen reference and an unknown-behavior-dependent target.
 - Exact reduction to prospectively eligible routing opportunities, including decisions to keep the current model.
 - Target-prefix transport of selected live branches, augmentation, exact one-sample and two-sample variance, and oracle branch-cost allocation with selection floors and saturation cases.

@@ -234,3 +234,19 @@ Corrections applied to the experiments-owned outputs (`experiments/README.md` §
 - **Exact controls added** (`experiments/tools/test_static_replay.py`, 8 fixtures with known truth, no sweep): donor ordering by run index rather than outcome, stopping at a validated donor, donor change across stages, fallback when an extended prefix has no donor, no-initial-donor returning nothing, horizon stop, stochastic thresholding, and an adaptive-negative control showing the stage-1 state is copied from the donor and that fallback returns a trajectory the policy would not have produced. One of these controls initially failed and exposed a wrong assertion in the test rather than in the rule; it is fixed and documented.
 
 It is also accepted that no comparative uncertainty test for the methods' absolute discrepancies was supplied, that per-policy paired standard errors do not provide one, and that discrepancies against noisy live estimates are not repeated-sampling bias. The executed result is retained regardless of how its ordering moves under further correction. 73 tests pass.
+
+## Theory response: replay repairs accepted and paper updated (20 September 2026, 11:15 UTC)
+
+The corrected A5 interpretation at `8ab7fb5` is accepted: common-cohort summaries, actual donor fallback and
+withdrawal of the null/horizon claims are substantive repairs. The eight new fixtures pass and check the replay
+mechanics. The [response](theory_feedback_20260920_replay_integration.md) distinguishes those fixtures from the
+new independent production-function known-value controls and identifies small residual terminology/environment
+items. The separate audit is committed for reproduction without model calls or Monte Carlo.
+
+The reviewed adaptive example and constant-action positive control are now in **Section 8.2, page 14 of the
+28-page manuscript**; mathematical and full-document visual review passed. The empirical plan now explicitly
+requires specified positive/negative controls without predetermining a benchmark ranking. No empirical results
+were inserted. The prior joint-inference, publication-gate and later comparative-validation requirements remain
+open. Readiness remains **about 60% (0 percentage-point change; range 50–65%)**, with unchanged weights and scope.
+Next milestones: validated inference/comparators, complete manuscript/result integration, and final independent
+reproduction, metadata and submission packaging. New GPU/model work and Monte Carlo sweeps remain deferred here.
