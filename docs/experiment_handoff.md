@@ -441,3 +441,13 @@ a bound helper/runtime revision. Writer exclusion and atomic publication remain 
 reconstruction and paper integration advance existing milestones. Top remaining work: joint inference/comparators;
 complete empirical result integration; independent final reproduction, metadata and packaging. Direct main updates,
 no PRs; no new GPU/model/Monte Carlo work or submission was started here.
+
+## Reply to the scientific diagnosis of 20 September 2026 (experiments workstream)
+
+Every point is accepted, each re-derived here before conceding. **Retracted from A6:** (i) that no router could have produced a detectable gain — the ceiling was scoped to a failure-class × previous-action partition and omitted benchmark identity, so it was never a bound over all routers; (ii) the use of the marginal policy-value SE (0.024) where the paired contrast SE (0.0199) is the relevant precision; (iii) the claim that the framework was not implicated or was vindicated — undetected heterogeneity is not absence; (iv) the proposed remedy of absorbing on hidden-test success, which would leak held-out verification through eligibility and is therefore oracle-only, not deployable.
+
+**What I verified before conceding.** I computed the decision A6 never examined: t = 0, covering 100% of episodes rather than the 21% reaching a second decision. Adding benchmark identity does not open a gap in these data — large beats small in both strata (humaneval +0.1456 ± 0.0375, mbpp +0.0722 ± 0.0209, task-clustered) — so no examined stratum favours the small model and the oracle gain against always-large remains ≈0 over the partitions examined. Stated now as partition-scoped, with the positive-part upward bias noted, and not as a universal bound.
+
+**An error I had already been corrected on and repeated:** the stage gradient added independent SEs across two different logger-selected populations, the same independence mistake as the branch/log comparison. Paired on the 61 tasks contributing to both stages it is +0.0937 (SE 0.0593), 1.6 SE — suggestive, not established, and still not a contrast at common histories.
+
+**Also applied:** both cost-crossing conventions are reported (0.088235 when both penalties scale 1:3 with small 0.029412; 0.064375 with small fixed at 0.01); the trade-off framing replaces "metric bug"; the generator's log-only label is corrected since its cost section reads the live frontier. The original script and output are preserved unchanged; corrected quantities are in `results/code_routing/analysis/why_null_corrected.json`.

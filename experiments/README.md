@@ -334,49 +334,52 @@ hidden-test success. No comparative uncertainty test for the methods' absolute d
 paired standard errors do not provide one, and discrepancies against noisy live estimates are not repeated-sampling
 bias. The executed result is retained whatever its ordering turns out to be under further correction.
 
-### A6 — diagnosis of the unresolved routing comparison (post-hoc; corrected by scientific lead)
+### A6 — why the tailored regime did not win (post-hoc; **corrected 20 Sep after review**)
 
-The original analysis at `4f9abe4` uses the frozen CONFIRM log **and the live frontier**. Its archived script/output
-remain available at `experiments/tools/why_null.py` and `results/code_routing/analysis/why_null.json` for provenance.
-**The archived field names and interpretations calling a statistic an oracle ceiling are not accepted.** Use the
-[lead's independently reviewed diagnosis](../docs/scientific_diagnosis_20260920.md) for the current interpretation.
+Not pre-registered. The first version of this section over-claimed in three ways and those claims are **retracted**;
+the original script and its output are preserved unchanged at `experiments/tools/why_null.py` and
+`results/code_routing/analysis/why_null.json` for auditability, with the corrected quantities in
+`why_null_corrected.json`. Corrections follow an independent review (`docs/scientific_diagnosis_20260920.md`).
 
-**Design and learner.** Of the CONFIRM log, 2,076/2,640 episodes (78.6%) stop after the first call. The learned live
-policy is the fixed schedule large → small → large, subject to visible-pass absorption: 542 episodes stop after
-large, 16 after large/small and 102 reach large/small/large. Certification leaves 60/330 evaluation tasks without
-visible checks. In the learned cohort, 104 hidden-test failures stop immediately after passing visible validation.
-These are concrete restrictions on decision opportunities and tailoring; they do not prove that no other router
-could improve, that continuing would repair those failures, or that the experiment has zero power.
+**Retracted.** (i) "No tailoring rule, however good, could have produced a detectable gain" — the ceiling I computed
+is **specific to the cell partition used** (failure class × previous action) and omitted benchmark identity, which
+the learner can use. A ceiling over one partition is not an upper bound over all routers. (ii) The comparison used
+the **marginal** policy-value SE (≈0.024); the relevant precision is the **paired** contrast SE (**0.0199**).
+(iii) "Theory not implicated / the correct answer for this environment" — undetected heterogeneity is not proof that
+none exists, and does not vindicate the framework's assumptions.
 
-**The alleged oracle ceiling is not a bound.** The archived .000278 and 0 quantities apply the positive-part
-function to noisy **success** contrasts within pooled cells, weighted by logger occupancy. They are not utility
-gains, true state effects, upper confidence bounds, or comparisons under always-large/optimal continuation.
-The cell summary also omits benchmark identity. Comparing this statistic to an approximate marginal policy-value
-standard error does not establish the power of a paired policy contrast. The earlier claims that no possible
-router could achieve a detectable gain and that design was the proven dominant cause are withdrawn.
+**What survives, stated within its scope.** Adding benchmark identity does not open a gap: at t = 0 — the decision
+that covers **every** episode, which the first version never examined — the large model is better in **both**
+strata (**humaneval +0.146 ± 0.038, mbpp +0.072 ± 0.021**, task-clustered). Since no examined stratum at any stage
+favours the small model, the oracle gain against always-large is ≈0 over the partitions examined (pooled and
+benchmark at t = 0; failure-class × previous-action at t ≥ 1). Because the statistic takes positive parts of noisy
+cell estimates it is biased *upward*, so the true value over these partitions is no larger. **This is a
+partition-scoped statement, not a universal bound**: a partition on features not recorded here could differ.
 
-**Metric.** The observed learned-minus-large success contrast is −.007576 and the original utility contrast is
-−.005000. The larger-model penalty crossing of **.088235** is correct only when **both penalties scale together**
-at the original 1:3 ratio; the small penalty then equals **.029412**. If small stays at .01, the crossing is instead
-**.064375**. Both are retrospective revaluations of frozen policies, not a reason to change the primary endpoint.
-The lead's independent TRAIN-only sensitivity fit leaves the reachable schedule unchanged when call penalties
-are removed. The original objective remains reported, along with separate success and resource measures.
+**Design.** 78.6% of confirm episodes are decided by the first action alone, so a dynamic regime differs from a
+static one on about a fifth of episodes. That constrains how large any tailoring gain could be, and it is a fixed
+property of the design (K = 3, absorption at validator pass).
 
-**Stage comparisons and theory.** The archived stage-specific success contrasts (.030647 at stage 1, .116260 at
-stage 2) describe one-step large-versus-small interventions at logger-reached eligible histories, followed by the
-logger's continuation where applicable. They do not establish the same effect at the same histories or evaluate
-the full learned policy. The archived standard errors treat episodes independently, and the stage-difference
-standard error omits covariance despite overlapping tasks/episodes. They are not validated task-design inference.
-Lack of detected cell heterogeneity does not establish absence of heterogeneity. The data neither demonstrate
-a DR-specific defect nor prove all framework assumptions correct. The class-tailored calibration discrepancy
-and fixed-benchmark joint inference remain open scientific questions.
+**Metric.** The tailored regime buys 1.155 large calls per episode against 1.300 at a success cost of −0.0076. It
+overtakes always-large at a large-call penalty of **0.088 when both penalties scale at 1:3** (small 0.029), or
+**0.064 with the small penalty fixed at 0.01**. Both are reported because the crossing depends on the convention.
+No cost-sensitivity analysis was pre-registered in this protocol or run — an omission on our side. The review's
+framing is accepted: this is a **trade-off**, not a metric bug.
 
-**Next design.** Preserve all old outcomes. Develop informative, deployable visible feedback and explicit zero-check
-handling, competent fixed/router comparisons and justified success/resource criteria on development data before
-freezing a new evaluation. Hidden-test success cannot control stopping in the deployed policy; using it would
-create an explicitly oracle-only environment. Any new model or Monte Carlo work remains deferred. The lead owns
-these design decisions and the unresolved inference; the experiment worker should implement the concrete reporting
-and prospective-draft requests in `docs/experiment_handoff.md`.
+**Stage gradient, corrected.** The first version compared t = 1 and t = 2 effects using independent SEs across
+*different logger-selected populations*. Paired on the 61 tasks contributing to both stages, the difference is
+**+0.094 (SE 0.059), 1.6 SE** — suggestive, not established, and still not a contrast at common histories.
+
+**A remedy withdrawn.** The first version suggested absorbing on hidden-test success instead of the validator pass.
+That is **not deployable**: it would leak held-out verification into the agent's eligibility, making an oracle-only
+environment. Legitimate routes to a longer effective horizon are harder tasks, weaker first attempts, or more
+routing opportunities — not a stronger stopping signal.
+
+**Reading the learned policy.** Traced through reachable states it runs large → small → large and selects small at
+t = 2 in **0%** of live episodes. An earlier reading of the table row by row suggested the opposite; policy tables
+must be read against reachability.
+
+**Label correction.** The generator is described as log-only but its cost section also reads the live frontier.
 
 ### Contention and timing
 

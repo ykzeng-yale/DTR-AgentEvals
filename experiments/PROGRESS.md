@@ -3,6 +3,58 @@
 Pushed about every two hours while experiments run. Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-20 16:45 EDT — scheduled check: my own diagnosis over-claimed; retracted and rescoped
+
+**Stage status: nothing to advance.** All stages complete and verified: pilot 120, log **4,488/4,488**, live
+**3,960/3,960**, branch **800/800**; 0 unresolved, 0 torn. No runner alive, both llama-servers healthy, no foreign
+llama-server generating at any episode start.
+
+**The A6 diagnosis I published two hours ago over-claimed, and the review is right.** Three retractions, each
+verified here before accepting:
+
+1. **"No tailoring rule, however good, could have produced a detectable gain."** Retracted. My oracle ceiling was
+   computed over one cell partition (failure class × previous action) and **omitted benchmark identity**, which the
+   learner can use. A ceiling over one partition is not a bound over all routers. The review gave an exact logical
+   counterexample where a pooled contrast is zero yet benchmark tailoring wins outright.
+2. **Wrong yardstick.** I compared the ceiling with the *marginal* policy-value SE (≈0.024). The relevant precision
+   is the **paired** contrast SE, **0.0199**.
+3. **"Theory not implicated / the correct answer for this environment."** Retracted. Undetected heterogeneity is not
+   proof of absence and does not vindicate the framework's assumptions.
+
+**What I checked before conceding, and what survives.** I examined the decision the first version never looked at —
+**t = 0, which covers 100% of episodes** rather than the 21% that reach a second decision. Adding benchmark identity
+does not open a gap: large beats small in **both** strata (**humaneval +0.146 ± 0.038, mbpp +0.072 ± 0.021**,
+task-clustered). Since no examined stratum at any stage favours the small model, the oracle gain against
+always-large is ≈0 **over the partitions examined**, and because the statistic takes positive parts of noisy cells
+it is biased upward. That is now stated as partition-scoped, not universal.
+
+**I repeated an error I had already been corrected on.** The stage gradient added independent SEs across two
+*different logger-selected populations* — the same independence mistake as the branch/log comparison two days ago.
+Paired on the 61 tasks contributing to both stages it is **+0.094 (SE 0.059), 1.6 SE**: suggestive, not
+established, and still not a contrast at common histories.
+
+**A remedy I proposed is not deployable.** I suggested absorbing on hidden-test success instead of the validator
+pass. That would leak held-out verification into the agent's eligibility — an oracle-only environment. Withdrawn;
+legitimate routes to a longer horizon are harder tasks, weaker first attempts, or more routing opportunities.
+
+**Also corrected:** the cost crossing is reported under both conventions (**0.088** when both penalties scale 1:3,
+**0.064** with the small penalty fixed at 0.01), and the review's framing that this is a **trade-off, not a metric
+bug** is accepted. The generator's "log-only" label is wrong — its cost section reads the live frontier.
+
+The original `why_null.py` and `why_null.json` are preserved unchanged for auditability; corrected quantities are in
+`why_null_corrected.json` and A6 is rewritten in place with the retractions visible.
+
+**Problems:** the above. **101 tests pass**; all three stages verify unchanged.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Evidence advanced:
+none. This tick retracted three of my own claims and rescoped a fourth. It is corrective, not additive. Categories
+unchanged at 75/75/50/25/25, weighted 54.25 → 55%. I am not lowering further only because the underlying records and
+their provenance are unaffected — what failed was my interpretation of them, which is now narrowed to what the data
+supports. Main remaining work: (1) the declared inferential target and source model, still the most-repeated gate;
+(2) the documentation-truth sweep and the silently dropped items from the 16:10 audit; (3) manuscript integration,
+independent reproduction and packaging. *This workstream cannot post to GitHub issue #4 (no GitHub CLI or token on
+the experiment host), so the checkpoint is recorded here.*
+
 ## 2026-09-20 16:10 EDT — audit of all outstanding work; a claimed-done item was false
 
 A 125-agent audit of every commitment across PROGRESS, README, protocol, the ten `theory_feedback_*.md` files, the

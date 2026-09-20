@@ -1,0 +1,53 @@
+{
+ "status": "CORRECTED post-hoc quantities; supersedes the interpretations in why_null.json, which is preserved unchanged",
+ "retractions": [
+  "oracle ceiling stated as universal; it is scoped to the cell partition used and omitted benchmark identity",
+  "marginal policy-value SE (0.024) used as the yardstick instead of the paired contrast SE (0.0199)",
+  "claim that the framework was not implicated / was vindicated; undetected heterogeneity is not absence",
+  "suggested remedy of absorbing on hidden-test success, which is not deployable (leaks held-out verification)"
+ ],
+ "t0_effect_by_benchmark": {
+  "humaneval": {
+   "effect": 0.1456,
+   "se": 0.0375,
+   "n_tasks": 91
+  },
+  "mbpp": {
+   "effect": 0.0722,
+   "se": 0.0209,
+   "n_tasks": 239
+  },
+  "pooled": {
+   "effect": 0.0924,
+   "se": 0.0184,
+   "n_tasks": 330
+  },
+  "note": "task-clustered; t=0 covers 100% of episodes"
+ },
+ "oracle_gain_vs_always_large": {
+  "partition_pooled_t0": 0.0,
+  "partition_benchmark_t0": 0.0,
+  "scope": "no examined stratum favours the small model; positive-part of noisy cells so biased upward; NOT a universal bound"
+ },
+ "paired_contrast_se": 0.0199,
+ "stage_gradient_paired": {
+  "tasks": 61,
+  "t1": 0.0044,
+  "t2": 0.0981,
+  "difference": 0.0937,
+  "se": 0.0593,
+  "sigmas": 1.6,
+  "note": "paired on tasks contributing to both stages; still not a contrast at common histories"
+ },
+ "cost_crossing": {
+  "both_scale_1to3": {
+   "large": 0.088235,
+   "small": 0.029412
+  },
+  "small_fixed_0p01": {
+   "large": 0.064375
+  },
+  "framing": "a trade-off, not a metric bug"
+ },
+ "generator_label": "why_null.py reads the live frontier in its cost section despite a log-only description"
+}
