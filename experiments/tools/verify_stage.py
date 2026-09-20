@@ -102,12 +102,29 @@ def check_records(ep_path, d, stage, res, design, cfg) -> list:
             return problems                      # refuse rather than skip the membership check
         lrows, _ = common.read_jsonl(lg)
         parents = {r['episode_id'] for r in lrows if not r.get('error')}
+        if not parents:
+            problems.append('branch stage cannot be verified: the reference log supplies no completed parent episodes')
+            return problems                      # existence of the file is not evidence that it supplies records
         for r in completed:
             rest = r.get('restoration')
             if not isinstance(rest, dict):
                 problems.append('completed branch row %s has no restoration evidence' % r['episode_id']); break
             if rest.get('transcript_hash_matches') is not True or rest.get('tool_result_reproduced') is not True:
                 problems.append('completed branch row %s is analysed despite a false/absent restoration flag' % r['episode_id']); break
+        rc = ep_path.parent.parent / 'analysis' / 'restoration_recheck.json'
+        if not rc.exists():
+            problems.append('no independent restoration recheck (run experiments/tools/verify_restoration.py)')
+        else:
+            doc = json.loads(rc.read_text())
+            if doc.get('branch_episodes_checked', 0) < len(completed):
+                problems.append('restoration recheck covers %s of %d completed branch rows'
+                                % (doc.get('branch_episodes_checked'), len(completed)))
+            if doc.get('disagreements', 1) != 0 or doc.get('missing_parent', 1) != 0:
+                problems.append('restoration recheck reports %s disagreement(s) and %s missing parent(s)'
+                                % (doc.get('disagreements'), doc.get('missing_parent')))
+            if doc.get('recomputed_transcript_hash_matches') != doc.get('branch_episodes_checked'):
+                problems.append('restoration recheck: %s of %s transcript hashes recomputed as matching'
+                                % (doc.get('recomputed_transcript_hash_matches'), doc.get('branch_episodes_checked')))
         noparent = [r['episode_id'] for r in completed if not r.get('parent_episode_id')]
         if noparent:
             problems.append('%d completed branch row(s) record no parent, e.g. %s' % (len(noparent), noparent[:2]))
@@ -126,6 +143,14 @@ def check_records(ep_path, d, stage, res, design, cfg) -> list:
         if mtorn:
             problems.append('run_manifest.jsonl has a torn final line')
         invocations = {m.get('invocation') for m in mrows if m.get('invocation')}
+        if not invocations:
+            problems.append('run_manifest.jsonl carries no invocation identifiers')      # nonempty is not enough
+        man_code = {m.get('code_sha256') for m in mrows if m.get('code_sha256')}
+        ep_code = {r.get('code_sha256') for r in completed}
+        if None in ep_code or '' in ep_code:
+            problems.append('completed row(s) are missing code_sha256')
+        elif man_code and not (ep_code <= man_code):
+            problems.append('code_sha256 on completed rows is absent from the manifest: %s' % [str(x)[:12] for x in sorted(ep_code - man_code)][:2])
 
     dec = ep_path.parent / 'decisions.jsonl'
     if not dec.exists() or not dec.read_text().strip():
@@ -149,7 +174,8 @@ def check_records(ep_path, d, stage, res, design, cfg) -> list:
     retained = {(r['episode_id'], r.get('invocation'), r.get('attempt')) for r in completed}
     nested = {(r['episode_id'], r.get('invocation'), r.get('attempt'), dd['t']): dd.get('a')
               for r in completed for dd in r.get('decisions', []) if dd.get('completed', True)}
-    declared = _ledger_keys(ep_path.parent.parent, stage)
+    declared, declared_counts, ledger_problems = _ledger(ep_path.parent.parent, stage)
+    problems += ledger_problems
     unmatched, mism = set(), []
     for x in drows:
         k3 = (x['episode_id'], x.get('invocation'), x.get('attempt'))
@@ -163,6 +189,18 @@ def check_records(ep_path, d, stage, res, design, cfg) -> list:
     if unmatched:
         problems.append('%d durable decision key(s) match no retained completion and are not in the recovery ledger, e.g. %s'
                         % (len(unmatched), sorted(unmatched, key=str)[:2]))
+    if declared:
+        actual = {}
+        for x in drows:
+            k3 = (x['episode_id'], x.get('invocation'), x.get('attempt'))
+            if k3 in declared:
+                actual[k3] = actual.get(k3, 0) + 1
+                t = x.get('t')
+                if not isinstance(t, int) or not 0 <= t < cfg['horizon']:
+                    problems.append('historical decision for %s has stage t=%s outside [0, %d)' % (k3[0], t, cfg['horizon']))
+        for k3, want in declared_counts.items():
+            if actual.get(k3, 0) != want:
+                problems.append('recovery ledger declares %d row(s) for %s but %d are retained' % (want, k3[0], actual.get(k3, 0)))
     if mism:
         problems.append('%d durable decision(s) disagree with the episode record on the action taken, e.g. %s' % (len(mism), mism[:2]))
     missing_nested = [k for k in nested if k not in {(x['episode_id'], x.get('invocation'), x.get('attempt'), x.get('t')) for x in drows}]
@@ -171,14 +209,30 @@ def check_records(ep_path, d, stage, res, design, cfg) -> list:
     return problems
 
 
-def _ledger_keys(base, stage) -> set:
+def _ledger(base, stage):
+    """(declared_keys, declared_counts, problems). A ledger entry exempts historical rows only if its schema, its
+    exact per-key row count and its total agree with what is actually retained."""
     led = base / 'recovery_ledger.json'
     if not led.exists():
-        return set()
-    doc = json.loads(led.read_text())
+        return set(), {}, []
+    try:
+        doc = json.loads(led.read_text())
+    except ValueError:
+        return set(), {}, ['recovery_ledger.json is not valid JSON']
     if doc.get('stage') != stage:
-        return set()
-    return {(r['episode_id'], r['invocation'], r['attempt']) for r in doc.get('rows', [])}
+        return set(), {}, []
+    probs_, keys, counts = [], set(), {}
+    for r in doc.get('rows', []):
+        if not all(k in r for k in ('episode_id', 'invocation', 'attempt', 'durable_decision_rows')):
+            probs_.append('recovery ledger row is missing a required field: %s' % str(r)[:80]); continue
+        k = (r['episode_id'], r['invocation'], r['attempt'])
+        keys.add(k); counts[k] = r['durable_decision_rows']
+    total = doc.get('total_rows')
+    if total is not None and total != sum(counts.values()):
+        probs_.append('recovery ledger total_rows %s does not equal the sum of its declared rows (%d)' % (total, sum(counts.values())))
+    if doc.get('total_episode_ids') is not None and doc['total_episode_ids'] != len({k[0] for k in keys}):
+        probs_.append('recovery ledger total_episode_ids does not equal its declared episode ids')
+    return keys, counts, probs_
 
 
 def base_vt_sha():

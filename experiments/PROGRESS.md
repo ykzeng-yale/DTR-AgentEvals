@@ -3,6 +3,59 @@
 Pushed about every two hours while experiments run. Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-20 10:50 EDT — scheduled check: restoration independently recomputed; six gate cases closed
+
+**Stage status: nothing to advance.** All stages complete and verified: pilot 120, log **4,488/4,488**, live
+**3,960/3,960**, branch **800/800**; 0 unresolved, 0 intention-to-treat, 0 torn. No runner alive, both llama-servers
+healthy on 8191/8193, no foreign llama-server generating at any episode start.
+
+**Restoration evidence upgraded from a stored boolean to an independent recomputation.** Until now the branch
+stage's restoration claim rested on a flag the runner wrote. `experiments/tools/verify_restoration.py` rebuilds each
+parent transcript from immutable inputs only — the frozen task file, the frozen certified visible tests, and the
+parent's own recorded stage-0 reply and trace — hashes it, and compares with the hash the parent logged **before**
+its own t=1 model call. No model or candidate code is executed.
+
+| quantity | value |
+|---|---|
+| branch episodes checked | **800** |
+| transcript hashes recomputed as matching | **800 / 800** |
+| stored flag agreeing with the recomputation | **800 / 800** |
+| disagreements, missing parents | **0, 0** |
+
+Stated caveat: this verifies the transcript hash and the stored flag. `tool_result_reproduced` is still reported as
+stored, because re-executing the tool is not done here.
+
+**Six gate cases that previously passed incorrectly are now closed**, each with a fixture:
+empty reference logs (a file that exists but supplies no completed parents now fails closed); manifests that are
+nonempty but carry **no invocation identifiers**; missing or manifest-absent `code_sha256`; mismatched parent
+transcript hashes (the gate now requires a current restoration recheck covering every completed row with zero
+disagreements); recovery-ledger rows whose **declared counts or totals** disagree with what is retained; and an
+impossible historical decision stage (`t=99` at horizon 3) riding the ledger exemption. Fixtures 30 → **37**.
+Two existing fixtures had to be repaired rather than the checks weakened: they lacked the `code_sha256` real records
+carry, and one supplied an empty reference log.
+
+**Residual reporting contradictions replaced**, as the earlier review required: "miscalibrated" is gone in favour of
+**pointwise discrepancy** against finite noisy live estimates (`class_tailored` sits 3.7 utility points below live
+with a paired interval excluding zero — a discrepancy, not demonstrated bias or failed coverage, and the coarse-cell
+association is noted as an observation, not a tested explanation); the precision-per-call sentence now reads only as
+a statement about two particular recorded standard errors at recorded costs, not a property of forking.
+
+**Problems:** none new. **81 → 88 tests pass**; all three stages verify unchanged under the stricter gate.
+
+**Next, in the monitor's order:** the source-model derivation using the new quadratic-moment identity (scientific
+target, independence/moment conditions, denominator behaviour, sampling fraction, and the link from the latent task
+statistic to source-frame variance) — explicitly *not* to be used to promote the existing exploratory band; the two
+remaining gate items (actual-host writer exclusion, atomic publication snapshot); then the deferred
+competitive-router and operating-characteristic studies; then independent reproduction and manuscript integration.
+
+**Overall submission readiness: about 60% (change: 0 percentage points; judgment range 50–65%).** Evidence advanced:
+the restoration claim is now independently recomputed rather than asserted, which strengthens an existing result's
+provenance without adding new evidence or closing a category. Categories unchanged at 75/75/50/50/25, weighted
+58.75 → 60%, matching the monitor. Main remaining work: (1) the source-frame variance derivation and the deferred
+competitive-router comparison; (2) independent reproduction of final analyses from immutable inputs; (3) manuscript
+integration, author metadata and the submission package. *This workstream cannot post to GitHub issue #4 (no GitHub
+CLI or token on the experiment host), so the checkpoint is recorded here.*
+
 ## 2026-09-20 08:50 EDT — scheduled check: recovery ledger, gate matching on full keys, terminology
 
 **Stage status: nothing to advance.** All stages complete and verified: pilot 120, log **4,488/4,488**, live

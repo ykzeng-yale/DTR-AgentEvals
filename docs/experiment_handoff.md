@@ -279,3 +279,22 @@ Next: finish the remaining gate/reference checks and stated source-model/varianc
 operating-characteristic studies queued. Readiness remains **about 60% (0 percentage-point change; range 50–65%)**.
 The three largest milestones remain valid joint inference/comparators, complete result integration, and final
 independent reproduction, author metadata and submission packaging. No GPU/model or Monte Carlo work started here.
+
+## Reply to theory_feedback_20260920_recovery (experiments workstream, 20 September 2026)
+
+**All four reference/source cases and both ledger negatives are closed**, each with a fixture (`experiments/tools/test_verify_stage.py`, now 37):
+
+- empty parent logs — a reference file that exists but supplies no completed parents now fails closed, before any membership check;
+- manifests that are nonempty but carry no invocation identifiers;
+- incorrect source hashes — `code_sha256` must be present on completed rows and appear in the stage manifest;
+- mismatched parent transcript hashes — the gate now requires a current independent restoration recheck covering every completed branch row with zero disagreements and every hash recomputed as matching;
+- recovery-ledger rows whose declared per-key counts, `total_rows` or `total_episode_ids` disagree with what is retained;
+- an impossible historical decision stage (`t=99` at horizon 3) under a declared episode/invocation/attempt.
+
+Differing historical actions are still preserved and are never compared with a later invocation; the positive recovery fixture is retained. Two pre-existing fixtures were repaired rather than the checks weakened (they omitted the `code_sha256` that real records carry, and one supplied an empty reference log).
+
+**Parent-hash recomputation is implemented** in `experiments/tools/verify_restoration.py`: each parent transcript is rebuilt from immutable inputs — frozen task file, frozen certified visible tests, and the parent's recorded stage-0 reply and trace — hashed, and compared with the hash the parent logged before its own t=1 call. Result over the full cohort: **800 episodes checked, 800/800 transcript hashes recomputed as matching, 800/800 stored flags agreeing, 0 disagreements, 0 missing parents**; report at `results/code_routing/analysis/restoration_recheck.json`. Caveat recorded in the report: this verifies the transcript hash and the stored flag; `tool_result_reproduced` remains as stored because the tool is not re-executed.
+
+**Residual reporting contradictions replaced:** "miscalibrated" is removed in favour of pointwise discrepancy against finite noisy live estimates, with the coarse-cell association labelled an observation rather than a tested explanation; the precision-per-call sentence now asserts only a relation between two recorded standard errors at recorded costs.
+
+**Still open and not claimed:** actual-host writer exclusion and an atomic publication snapshot; the source-model derivation using the new quadratic-moment identity, which will not be used to promote the existing exploratory band; the deferred competitive-router and operating-characteristic studies; independent reproduction of final analyses; manuscript integration.

@@ -174,10 +174,14 @@ Paired by task, DR value from the shared randomized log minus the value measured
 | escalate_after_first_failure | 0.6079 | 0.6245 | −0.017 | [−0.052, +0.019] | yes |
 | **class_tailored** | 0.5947 | 0.6319 | **−0.037** | **[−0.070, −0.005]** | **no** |
 
-Five of six paired intervals include zero, which is pointwise compatibility at this sample size and not a coverage or equivalence statement; the Spearman rank correlation of policy utilities is **0.886**. One policy is
-**miscalibrated**: `class_tailored` is under-estimated by 3.7 utility points. It is the policy whose action depends on
-the failure *class*, the tailoring variable with the coarsest tabular cells, which is where a fitted-Q cell is
-thinnest — reported as a failure of the method in this cell, not smoothed away.
+Five of six paired intervals include zero, which is pointwise compatibility with finite, noisy live estimates at
+this sample size — not a coverage statement, not equivalence, and not evidence of unbiasedness. The Spearman rank
+correlation of policy utilities is **0.886** over these six policies. One policy is
+the largest **pointwise discrepancy**: for `class_tailored` the offline estimate sits 3.7 utility points below the
+live value and its paired interval excludes zero. That is a discrepancy against a finite, noisy live estimate at this
+sample size, not a demonstration of bias or of failed coverage. It is the policy whose action depends on the failure
+*class*, where the tabular cells are coarsest; that association is an observation, not a tested explanation. It is
+reported rather than smoothed away.
 
 Precision per unit of compute: the OPE/live standard-error ratio is 0.91–1.07, i.e. the shared log estimates each
 policy about as precisely as dedicated live runs. Costs must be stated at two levels and not conflated. **Evaluation
@@ -255,6 +259,7 @@ continuations over 103 tasks.
 | quantity | value |
 |---|---|
 | recorded transcript hash equals the hash logged before the parent's call | **800 / 800** |
+| **independently recomputed** from frozen inputs (`verify_restoration.py`), and agreeing with the stored flag | **800 / 800** |
 | re-validated parent candidate reproduces the recorded tool-result fields | **800 / 800** |
 | same state, same model, two fresh seeds: outcome disagreement over 400 pairs (sample statistic) | **0.080** |
 | effect of continuing with the large model, from forked replay | 0.1200 (task-cluster SE 0.0320) |
@@ -281,8 +286,9 @@ of 400 pairs — a sample statistic for two seeds, not an irreducible noise boun
 On precision, the forked estimate has SE 0.0320 against 0.0474 for the log route, obtained from 1,434 retained
 branch calls against the 3,662 confirm-log calls. That ratio is **not an equal-compute comparison and not a
 replication of the synthetic finding**: it excludes the cost of acquiring the prefixes (the randomized log itself,
-without which no prefix exists) and the 665 continuations executed and lost in the publishing incident. Read as
-"this contrast was estimated more precisely per retained branch call", not as a general evaluation-cost result.
+without which no prefix exists) and the 665 continuations executed and lost in the publishing incident. Read only as "the recorded
+standard errors of these two particular estimates differ in this direction at these recorded costs", not as a
+precision-per-call property of forking or a general evaluation-cost result.
 
 The estimand is narrow and the uncertainty is provisional: this is the mean continuation effect over the prefix
 population that the *randomized logger* reached, it is **not** the value of a policy that changes how those prefixes

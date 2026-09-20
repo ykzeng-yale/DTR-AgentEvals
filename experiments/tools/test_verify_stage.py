@@ -21,11 +21,13 @@ import verify_stage as V  # noqa: E402
 CFG = common.load_config()
 DESIGN = json.loads((common.RESULTS / 'design.json').read_text())
 VT = V.base_vt_sha()
-META = dict(config_sha256=CFG['_config_sha256'], tasks_sha256=DESIGN['tasks_sha256'], visible_tests_sha256=VT)
+CODE = 'c' * 64
+META = dict(config_sha256=CFG['_config_sha256'], tasks_sha256=DESIGN['tasks_sha256'], visible_tests_sha256=VT,
+            code_sha256=CODE)
 EP = dict(episode_id='e1', task_uid='t1', split='confirm', error=None, seed=None,
           invocation='inv1', attempt=1, decisions=[dict(t=0, a=1, completed=True)], **META)
 DEC = dict(episode_id='e1', invocation='inv1', attempt=1, t=0, a=1)
-MAN = dict(invocation='inv1', started_utc='2026-09-20T00:00:00Z')
+MAN = dict(invocation='inv1', started_utc='2026-09-20T00:00:00Z', code_sha256=CODE)
 
 
 def build(tmp, stage='log', episodes=(EP,), decisions=(DEC,), manifest=(MAN,), torn=False, log_parents=None, ledger=None):
@@ -98,7 +100,8 @@ def test_restoration_absent_fails(tmp_path):
 
 def test_missing_parent_id_fails(tmp_path):
     bad = dict(EP, restoration=dict(transcript_hash_matches=True, tool_result_reproduced=True))
-    assert_flags(build(tmp_path, stage='branch', episodes=(bad,), log_parents=[]), 'record no parent', stage='branch')
+    assert_flags(build(tmp_path, stage='branch', episodes=(bad,), decisions=(DEC,),
+                       log_parents=[dict(episode_id='p1', error=None)]), 'record no parent', stage='branch')
 
 
 def test_nonexistent_parent_fails(tmp_path):
@@ -188,6 +191,53 @@ def test_branch_without_reference_log_is_refused(tmp_path):
     bad = dict(EP, parent_episode_id='p1', restoration=dict(transcript_hash_matches=True, tool_result_reproduced=True))
     ep = build(tmp_path, stage='branch', episodes=(bad,), decisions=(DEC,))
     assert_flags(ep, 'reference log episodes.jsonl is missing', stage='branch')
+
+
+def test_empty_reference_log_is_refused(tmp_path):
+    """A reference file that exists but supplies no completed parents must fail closed."""
+    bad = dict(EP, parent_episode_id='p1', restoration=dict(transcript_hash_matches=True, tool_result_reproduced=True))
+    ep = build(tmp_path, stage='branch', episodes=(bad,), decisions=(DEC,), log_parents=[dict(episode_id='p1', error='boom')])
+    assert_flags(ep, 'supplies no completed parent episodes', stage='branch')
+
+
+def test_manifest_without_invocation_ids_fails(tmp_path):
+    """A nonempty manifest that carries no invocation identifiers is not usable reference data."""
+    assert_flags(build(tmp_path, manifest=(dict(started_utc='x'),)), 'carries no invocation identifiers')
+
+
+def test_missing_code_sha_fails(tmp_path):
+    assert_flags(build(tmp_path, episodes=(dict(EP, code_sha256=None),)), 'missing code_sha256')
+
+
+def test_code_sha_absent_from_manifest_fails(tmp_path):
+    ep = build(tmp_path, episodes=(dict(EP, code_sha256='a' * 64),), manifest=(dict(MAN, code_sha256='b' * 64),))
+    assert_flags(ep, 'absent from the manifest')
+
+
+def test_ledger_with_wrong_declared_count_fails(tmp_path):
+    """Declaring more historical rows than are retained must not pass."""
+    hist = dict(DEC, invocation='lost_inv')
+    led = dict(stage='log', rows=[dict(episode_id='e1', invocation='lost_inv', attempt=1, durable_decision_rows=7)],
+               total_rows=7, total_episode_ids=1)
+    man = (MAN, dict(MAN, invocation='lost_inv'))
+    assert_flags(build(tmp_path, decisions=(DEC, hist), manifest=man, ledger=led), 'declares 7 row(s)')
+
+
+def test_ledger_total_inconsistent_with_rows_fails(tmp_path):
+    hist = dict(DEC, invocation='lost_inv')
+    led = dict(stage='log', rows=[dict(episode_id='e1', invocation='lost_inv', attempt=1, durable_decision_rows=1)],
+               total_rows=99, total_episode_ids=1)
+    man = (MAN, dict(MAN, invocation='lost_inv'))
+    assert_flags(build(tmp_path, decisions=(DEC, hist), manifest=man, ledger=led), 'total_rows 99')
+
+
+def test_impossible_historical_stage_fails(tmp_path):
+    """A declared historical decision at t=99 with horizon 3 must fail, not ride the ledger exemption."""
+    hist = dict(DEC, invocation='lost_inv', t=99)
+    led = dict(stage='log', rows=[dict(episode_id='e1', invocation='lost_inv', attempt=1, durable_decision_rows=1)],
+               total_rows=1, total_episode_ids=1)
+    man = (MAN, dict(MAN, invocation='lost_inv'))
+    assert_flags(build(tmp_path, decisions=(DEC, hist), manifest=man, ledger=led), 'outside [0,')
 
 
 def test_real_stages_still_pass():
