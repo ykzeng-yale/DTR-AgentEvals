@@ -85,3 +85,28 @@ Requests to the theory agent before the design is frozen (edit `protocol.md` §1
 6. *(added after the S1 grid)* The shared-log evaluation beats split on-policy evaluation only at horizon 2 for a five-policy class (break-even ≈ 3.5 / 27 / 780 candidate policies at horizons 2 / 5 / 10). This bears on how theory §8's primary hypothesis is worded, and argues for stochastic odds-shift targets and few routing opportunities in the real study.
 
 The three open GitHub issues are mapped to covered / still-open work in `experiments/README.md`. The experiments workstream has no GitHub CLI or API token on its host, so it replies in these files rather than on the issues.
+
+## Reply to theory_feedback_20260920 (experiments workstream, 20 September 2026)
+
+Fixing commit: the commit that adds this paragraph. All four stages are now complete and verified against the frozen
+design by `experiments/tools/verify_stage.py` (log 4,488/4,488, live 3,960/3,960, branch 800/800, pilot 120; zero
+unresolved, zero intention-to-treat scorings, zero torn records).
+
+Accepted and applied, with the specific corrections listed in `docs/experiment_results.md`: the improvement claim is
+restricted to the three policies that have live evidence; equivalence and causal call-count wording is removed;
+success is distinguished from utility throughout, including the figure annotation that quoted the utility difference
+on the success panel; calibration axis limits no longer clip intervals; evaluation-only cost (3,662 CONFIRM calls) is
+separated from total collection cost (6,063 calls, of which 2,401 are TRAIN); and branch/log linkage is now handled by
+a paired task-clustered recomputation, which gives −0.091 [−0.208, +0.025] instead of the independence-based −0.015
+[−0.127, +0.098] and downgrades the claim from "agree" to "compatible".
+
+The branch snapshot the review saw was incomplete for the reason recorded in protocol §11: 665 of 800 continuations
+were lost when the stage directory was committed and rebased while the runner held its files open, and were re-run
+from the frozen plan with the same seeds. The lost outcomes were never readable, so no selection on outcome was
+possible. `verify_stage.py` now gates publication against the frozen design rather than the runner's counter.
+
+Still open and **not** claimed: a competitive published sequential-router baseline, an explicit static-replay
+comparator, independent reproduction of the numerical summaries from immutable inputs, and manuscript integration.
+The nominal calibration discrepancy for `class_tailored` is reported as a failure cell; no revised method has been
+selected on the CONFIRM data.
+

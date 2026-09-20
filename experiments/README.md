@@ -179,15 +179,22 @@ the failure *class*, the tailoring variable with the coarsest tabular cells, whi
 thinnest — reported as a failure of the method in this cell, not smoothed away.
 
 Precision per unit of compute: the OPE/live standard-error ratio is 0.91–1.07, i.e. the shared log estimates each
-policy about as precisely as dedicated live runs — while **one log of 3,662 model calls supports all nine frozen
-policies**, against 5,504 calls to run just six of them live.
+policy about as precisely as dedicated live runs. Costs must be stated at two levels and not conflated. **Evaluation
+only:** the CONFIRM portion of the log is 3,662 model calls and supports all nine frozen policies, against 5,504
+calls to run six of them live. **Total collection:** the whole randomized log cost 6,063 calls, the extra 2,401 being
+TRAIN calls spent to learn the policy rather than to evaluate anything. Whether the shared log is cheaper therefore
+depends on how many policies are evaluated and whether policy learning is charged to evaluation.
 
 ### A2 — does any regime beat the baseline? Yes. Does tailoring beat "always use the big model"? **No**
 
 Pre-registered rule: claim improvement over `always_small` only if the Bonferroni-simultaneous OPE interval excludes
-0 **and** the live contrast agrees in sign. Claimed for `always_large` (+0.092 utility), `learned` (+0.110),
-`soft_escalation_d2/d4` (+0.060) and `large_then_small`. **Not** claimed for `class_tailored` or
-`escalate_after_first_failure` — their simultaneous intervals include 0 although their live contrasts are positive.
+0 **and** the live contrast agrees in sign. Only six policies were executed live, so **only those six can satisfy the
+rule at all**: it is met by `always_large` (+0.092 utility), `learned` (+0.110) and `soft_escalation_d2` (+0.060).
+`class_tailored` and `escalate_after_first_failure` fail it (their simultaneous intervals include 0 although their
+live contrasts are positive). `large_then_small`, `soft_escalation_d4` and `escalate_after_second_failure` have
+**offline estimates only and no live evidence**, so no improvement is claimed for them however favourable their OPE
+contrast looks. The utility contrast is primary; the success contrasts are secondary and the utility-family
+Bonferroni correction does not cover them, the calibration diagnostics or the secondary comparison below.
 
 The comparison that matters was **not** pre-registered and is reported as secondary: **learned vs always_large**.
 
@@ -196,12 +203,14 @@ The comparison that matters was **not** pre-registered and is reported as second
 | utility | +0.018 [−0.016, +0.051] | **−0.005 [−0.027, +0.017]** |
 | success | +0.015 [−0.018, +0.047] | **−0.008 [−0.029, +0.014]** |
 
-**The learned tailored regime does not beat always-large.** Both intervals cover zero and the live point estimate is
-slightly negative. The right-hand panel shows why: on this benchmark and model pair, success is close to a monotone
-function of how much large-model compute is spent (0.611 at 0 large calls per episode → 0.717 at 1.30), and every
-frozen policy lands near that line. The learned regime reaches 0.709 success with **1.15 large calls per episode
-against 1.30 (−11%)** — the same quality slightly cheaper, but not enough to win on the frozen utility, and not a
-statistically distinguishable improvement on either outcome.
+**The learned tailored regime did not beat always-large, and this is not a demonstration that they are equal.** Both
+intervals cover zero and the live point estimate is slightly negative; the live success interval [−0.029, +0.014] is
+compatible with either policy being better by up to about 0.03, which is a failure to detect a difference, not
+evidence of equivalence. The right-hand panel shows the context: on this benchmark and model pair success is close to
+a monotone function of how much large-model compute is spent (0.611 at 0 large calls per episode to 0.717 at 1.30),
+and every frozen policy lands near that line. The learned regime reached 0.709 success while issuing 1.15 large calls
+per episode against 1.30 — a descriptive difference in what the two policies spent, not an established causal saving
+at matched quality.
 
 This is a negative result for the *improvement* half of the DTR hypothesis in this setting, and it is the honest
 headline. It does not bear on the *evaluation* half, which A1 supports.
@@ -250,14 +259,20 @@ continuations over 103 tasks.
 | the same quantity from the randomized log (Hájek IPW, task bootstrap SE) | 0.1347 (SE 0.0474) |
 | forked minus log | **−0.015, 95% CI [−0.127, +0.098]** |
 
-Two independent routes to the same causal quantity agree. Restoration is exact: every one of the 800 rebuilt
-transcripts hashed identically to what was logged before the original call, and every re-validated parent candidate
-reproduced its logged tool result — so the environment really is replayable, which is the assumption the whole branch
-estimand rests on. The 8% same-state/same-model disagreement is the irreducible sampling noise of the server at
-T = 0.7 and bounds how sharp any single-episode counterfactual claim can be.
+The two estimates are **compatible, which is weaker than agreement**. Their unpaired difference is −0.015
+[−0.127, +0.098], but they are not independent: branch prefixes are sampled from the very log episodes the other
+estimate uses, and the per-task estimates correlate at r = 0.54. Recomputing the comparison as a paired, task-clustered
+difference on the 42 tasks where both quantities are estimable gives **−0.091, 95% CI [−0.208, +0.025]** — still
+covering zero, but wide and with a larger point discrepancy than the unpaired figure suggests. Neither version
+establishes that the two routes measure the same number; they fail to detect a difference at this sample size.
+Restoration, by contrast, is exact: every one of the 800 rebuilt transcripts hashed identically to what was logged
+before the original call, and every re-validated parent candidate reproduced its logged tool result, so the
+environment really is replayable. The 8% same-state/same-model disagreement is the irreducible sampling noise of the
+server at T = 0.7 and bounds how sharp any single-episode counterfactual claim can be.
 
-**Forking was 2.19× more precise using 39% of the model calls** (1,434 new calls versus 3,662 in the confirm log;
-variance × compute 1.47 versus 8.23, a 5.6× efficiency gain for this contrast). The synthetic study E0 predicted a
+On precision per call, forking did well: **SE 0.0320 against 0.0474 for 39% of the calls** (1,434 new calls versus
+the 3,662 confirm-log calls; variance × compute 1.47 versus 8.23). This compares one contrast estimated two ways and
+is not a general claim about evaluation cost. The synthetic study E0 predicted a
 2.1–2.3× variance reduction from forking at equal compute; the real open-weight system delivered 2.19×. That
 prediction transferring from a planted simulator to real models is the most transportable finding here.
 

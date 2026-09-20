@@ -3,6 +3,55 @@
 Pushed about every two hours while experiments run. Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-20 00:10 EDT — scheduled check: pipeline complete, review corrections applied
+
+**Stage status: nothing to advance.** All stages of the frozen pipeline are finished and verified against the frozen
+design (`experiments/tools/verify_stage.py`): pilot 120, log **4,488/4,488**, live **3,960/3,960**, branch
+**800/800**; 0 unresolved, 0 intention-to-treat scorings, 0 torn records. No stage runner is alive; both
+llama-servers are healthy on 8191/8193; **no foreign llama-server is generating**, so contention remains 0 across
+every stage. Total 13,001 model calls, 1 validation timeout, 0 hidden-test timeouts, 3 truncated generations.
+
+**This tick did analysis corrections, not collection.** The theory workstream published
+`docs/theory_feedback_20260920.md`. Its findings were checked against the data and **four were my errors**:
+
+1. **Improvement claim overstated.** Only six of nine frozen policies ran live, so only those six can satisfy a rule
+   requiring a live contrast. It is met by `always_large`, `learned`, `soft_escalation_d2`. I had also listed
+   `large_then_small` and `soft_escalation_d4`, which have **no live data at all**. Corrected.
+2. **Figure defect.** The success panel annotated the *utility* difference (−0.005) rather than the success
+   difference (−0.008 [−0.029, +0.014]), and fixed axis limits clipped the calibration error bars. Both fixed.
+3. **Equivalence wording.** "Same success, 11% fewer calls" implies equality that a null does not establish;
+   the live success interval admits either policy being better by ~0.03. Reworded as a failure to detect.
+4. **Cost conflation.** The 3,662 calls that support all nine policies are the CONFIRM portion; the whole log cost
+   6,063 calls including 2,401 TRAIN calls spent on policy learning. Both figures now stated.
+
+**One correction changed a scientific conclusion.** The review asked for branch/log linkage to be accounted for. The
+published branch-minus-log difference assumed independence, but branch prefixes are drawn from the same confirm
+episodes and per-task estimates correlate at **r = 0.54**. A paired task-clustered recomputation on the 42 tasks
+where both are estimable gives **−0.091, 95% CI [−0.208, +0.025]** instead of −0.015 [−0.127, +0.098]. It still
+covers zero, but it is wider in implication, so the claim is downgraded from "two independent routes agree" to
+"compatible, and not shown to be equal". Restoration evidence is unaffected and now covers the full cohort:
+**800/800** transcript hashes and tool results reproduced exactly.
+
+Replies are recorded in `docs/experiment_handoff.md`; corrections are itemised in `docs/experiment_results.md`.
+
+**Problems:** none new. The earlier publishing incident (protocol §11) is closed: the re-run completed and all
+stages verify.
+
+**Next:** items that need no new collection — a competitive published router baseline and an explicit static-replay
+comparator (issue #3), independent reproduction of the numerical summaries from immutable inputs, and manuscript
+integration. None are claimed as done.
+
+**Overall submission readiness: about 65% (change: 0 percentage points; judgment range 55–70%).** Evidence advanced:
+none that the rubric counts — this tick corrected published analysis and reporting rather than producing new
+evidence, and two of the corrections weakened previously published claims. Category scores are unchanged at
+75/75/75/50/25 (weighted 66.25 → 65%). The theory workstream independently scored 60% at its 02:53 UTC checkpoint
+before the completed branch cohort and these corrections were visible to it; the difference is a scoring judgment
+between workstreams on "core evidence", not a factual dispute, and that workstream owns the rubric. Main remaining
+work: (1) integrate reviewed results and limitations into the manuscript; (2) add the missing comparators and an
+independent reproduction from immutable inputs; (3) finish reproducibility and submission packaging.
+*This workstream cannot post to GitHub issue #4 (no GitHub CLI or token on the experiment host), so the checkpoint is
+recorded here.*
+
 ## 2026-09-19 23:10 EDT — STUDY COMPLETE (log + live + branch); two corrections accepted from review
 
 **All four stages executed and verified against the frozen design** (`experiments/tools/verify_stage.py`):

@@ -71,9 +71,11 @@ def main():
     # ---- panel 1: does the offline estimate match what actually happens?
     style(ax[0], 'Offline estimate vs. what the policy actually did', 'off-policy estimate from ONE shared randomized log',
           'value measured by running the policy')
-    lo, hi = 0.56, 0.715
+    allv = np.concatenate([cal.ope_dr - 1.96 * cal.ope_se, cal.ope_dr + 1.96 * cal.ope_se,
+                           cal.live - 1.96 * cal.live_se, cal.live + 1.96 * cal.live_se])
+    lo, hi = float(allv.min()) - 0.012, float(allv.max()) + 0.012      # data-driven: fixed limits clipped the intervals
     ax[0].plot([lo, hi], [lo, hi], color=MUTED, linewidth=1, linestyle=(0, (4, 3)), zorder=1)
-    ax[0].annotate('perfect agreement', (0.595, 0.595), xytext=(10, -12), textcoords='offset points', fontsize=8, color=INK2, rotation=0)
+    ax[0].annotate('perfect agreement', (lo + 0.035, lo + 0.035), xytext=(10, -12), textcoords='offset points', fontsize=8, color=INK2, rotation=0)
     OFF1 = {'always_small': (0, -17, 'center'), 'class_tailored': (0, 11, 'center'), 'escalate_after_first_failure': (9, -14, 'left'),
             'soft_escalation_d2': (-9, 8, 'right'), 'always_large': (-9, 9, 'right'), 'learned': (8, -15, 'left')}
     for _, r in cal.iterrows():
@@ -84,7 +86,7 @@ def main():
         ax[0].annotate(SHORT.get(r.policy, r.policy) + ('' if r.covers_zero else '  (x)'), (r.ope_dr, r.live),
                        xytext=(dx, dy), textcoords='offset points', fontsize=8.5, color=INK, ha=ha)
     ax[0].set_xlim(lo, hi); ax[0].set_ylim(lo, hi)
-    ax[0].annotate('(x) = paired difference excludes 0\n1 of 6 policies miscalibrated', (0.5625, 0.7115), fontsize=8, color=INK2,
+    ax[0].annotate('(x) = paired difference excludes 0\n1 of 6 policies miscalibrated', (lo + 0.003, hi - 0.003), fontsize=8, color=INK2,
                    va='top', ha='left')
 
     # ---- panel 2: the frontier that explains the null
@@ -101,12 +103,13 @@ def main():
         ax[1].annotate(SHORT.get(r.policy, r.policy), (r.large_calls_per_episode, r.success), xytext=(dx, dy),
                        textcoords='offset points', fontsize=8.5, color=INK, ha=ha)
     ax[1].set_xlim(-0.12, 1.62); ax[1].set_ylim(0.560, 0.772)
-    ax[1].annotate('the learned regime buys the same success with 11% fewer\nlarge-model calls, but does not beat always-large\n(live difference -0.005, 95% CI -0.027 to +0.017)',
+    ax[1].annotate('the learned regime did not beat always-large: live success\ndifference -0.008, 95% CI -0.029 to +0.014 - compatible with\neither being better by up to ~0.03, so NOT equivalence.\nIt used 1.15 vs 1.30 large calls per episode (descriptive).',
                    (1.60, 0.564), fontsize=8.3, color=INK2, va='bottom', ha='right')
 
     # ---- panel 3: two independent routes to the same causal quantity
     br = json.loads((SRC / 'branch_summary.json').read_text())
-    style(ax[2], 'Two routes to the same causal number', '', 'effect of continuing with the large model\n(success, after a first failure)')
+    lk = json.loads((SRC / 'branch_vs_log_linked.json').read_text())
+    style(ax[2], 'Two routes to the same causal number: compatible', '', 'effect of continuing with the large model\n(success, after a first failure)')
     labels = ['off-policy estimate\nfrom the randomized log', 'forked replay of both\nmodels from the same state']
     vals = [br['log_estimate'], br['branch_estimate']]; ses = [br['log_se'], br['branch_se']]
     cols = [YELLOW, BLUE]
@@ -116,11 +119,12 @@ def main():
         ax[2].annotate('%.3f' % v, (i, v), xytext=(11, -3), textcoords='offset points', fontsize=9, color=INK)
     ax[2].axhline(0, color=MUTED, linewidth=1, linestyle=(0, (4, 3)))
     ax[2].set_xticks([0, 1]); ax[2].set_xticklabels(labels, fontsize=8.5, color=INK2)
-    ax[2].set_xlim(-0.45, 1.6); ax[2].set_ylim(-0.02, 0.245)
-    ax[2].annotate('they agree: difference %.3f, 95%% CI [%.3f, %.3f]\n\nforking is %.1fx more precise using %.0f%% of the\nmodel calls; %d/%d restorations reproduced the\nsaved state exactly; two fresh continuations of\nthe SAME state disagree %.0f%% of the time'
-                   % (br['difference'], br['diff_lower'], br['diff_upper'], br['variance_ratio'], 100 * br['compute_ratio'],
-                      br['restored_ok'], br['n_continuations'], 100 * br['noise_floor']),
-                   (-0.40, 0.232), fontsize=8.3, color=INK2, va='top')
+    ax[2].set_xlim(-0.45, 1.6); ax[2].set_ylim(-0.02, 0.30)
+    ax[2].annotate('compatible, not shown equal: unpaired difference %.3f\n[%.3f, %.3f]; the two share tasks (r=%.2f), and on the\n%d tasks where both are estimable the PAIRED difference\nis %.3f [%.3f, %.3f] - wide, and covering zero.\n\n%d/%d restorations reproduced the saved state exactly;\ntwo fresh continuations of the SAME state differ %.0f%% of\nthe time. Forking spent %.0f%% of the confirm-log calls.'
+                   % (br['difference'], br['diff_lower'], br['diff_upper'], lk['correlation'], lk['n_tasks_linked'],
+                      lk['paired_difference'], lk['paired_lower'], lk['paired_upper'],
+                      br['restored_ok'], br['n_continuations'], 100 * br['noise_floor'], 100 * br['compute_ratio']),
+                   (-0.40, 0.292), fontsize=8.0, color=INK2, va='top')
 
     fig.suptitle('Code-routing study · Qwen2.5 3B vs 7B · MBPP + HumanEval · 330 held-out tasks · 4,488 randomized + 3,960 live + 800 forked episodes',
                  x=0.05, ha='left', fontsize=9.5, color=INK2, y=0.955)
