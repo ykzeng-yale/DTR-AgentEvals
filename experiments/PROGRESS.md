@@ -3,6 +3,52 @@
 Pushed about every two hours while experiments run. Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-20 12:55 EDT — scheduled check: three provenance gaps closed and demonstrated
+
+**Stage status: nothing to advance.** All stages complete and verified: pilot 120, log **4,488/4,488**, live
+**3,960/3,960**, branch **800/800**; 0 unresolved, 0 intention-to-treat, 0 torn. No runner alive, both llama-servers
+healthy on 8191/8193, no foreign llama-server generating at any episode start.
+
+**The three cases the independent CLI audit still accepted now fail**, and I demonstrated each one by tampering with
+a copy of the real archive and restoring it afterwards (byte-identity against `HEAD` re-verified for every touched
+file):
+
+1. **Branch-side hash tampering.** Previously the recheck compared only the *parent's* logged hash, so altering the
+   branch episode's own stored transcript hash passed. The recheck now also recomputes against the hash the **branch
+   episode itself logged before its first call**, and the report is **bound to its sources** — it records the sha256
+   of `branch/episodes.jsonl`, `log/episodes.jsonl` and `visible_tests.json` plus a digest of the covered episode
+   ids, all of which the gate re-derives. Tampering after the report was written now invalidates it. *(exit 1)*
+2. **Source hash borrowed from another invocation.** `code_sha256` is now bound to the manifest row of the
+   episode's **own** invocation; a hash recorded only under a different invocation is no longer evidence. *(exit 1)*
+3. **No manifest source hash at all.** Previously the membership check was silently skipped; it now fails closed.
+   *(exit 1)*
+
+Six permanent fixtures replace my ad-hoc tampering, including a positive bound-report case. Fixtures 37 → **42**;
+one older fixture was updated because the same defect now fails under a stricter, per-invocation message.
+**92 → 97 tests pass**, and all three stages verify unchanged.
+
+**A note on the quiet-window heuristic:** rewriting the archive during the tamper test tripped the gate's
+"modified in the last 120 s" refusal, exactly as intended, even though the content was restored byte-for-byte. It
+cleared once the window elapsed. The heuristic cannot distinguish a live writer from any other write, which is
+conservative and was reported as such when it first fired on a rebase.
+
+**Problems:** none new in the data.
+
+**Next, in the monitor's order:** declare the intended joint-inference target and source model, with an
+independently reviewed variance/limit argument that preserves the original target and addresses source-log
+dependence, execution noise and recovery selection — explicitly *not* a promotion of the existing exploratory band;
+the two remaining publication items (actual-host writer exclusion, atomic publication snapshot); then the deferred
+competitive-router and operating-characteristic studies; then independent reproduction and manuscript integration.
+
+**Overall submission readiness: about 60% (change: 0 percentage points; judgment range 50–65%).** Evidence advanced:
+none that the rubric counts. This tick closed provenance gaps in the checker and bound an existing report to its
+sources — it makes existing evidence harder to forge without producing new evidence or resolving inference.
+Categories unchanged at 75/75/50/50/25, weighted 58.75 → 60%, matching the monitor. Main remaining work: (1) the
+joint-inference target/source model and the deferred competitive-router comparison; (2) independent reproduction of
+final analyses from immutable inputs; (3) manuscript integration, author metadata and the submission package.
+*This workstream cannot post to GitHub issue #4 (no GitHub CLI or token on the experiment host), so the checkpoint
+is recorded here.*
+
 ## 2026-09-20 10:50 EDT — scheduled check: restoration independently recomputed; six gate cases closed
 
 **Stage status: nothing to advance.** All stages complete and verified: pilot 120, log **4,488/4,488**, live

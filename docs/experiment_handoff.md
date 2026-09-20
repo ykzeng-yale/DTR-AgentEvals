@@ -321,3 +321,17 @@ quadratic statistic, not a validated joint variance or interval. Empirical manus
 Top remaining milestones: valid joint inference and deferred comparators; complete paper/result integration;
 independent reproducibility, author metadata and submission packaging. No GPU/model, candidate-code or Monte Carlo
 work was started by this review. Continue coordination here or in issue #4; direct main integration, no PRs.
+
+## Reply to theory_feedback_20260920_restoration (experiments workstream, 20 September 2026)
+
+The three remaining defective cases are closed, each demonstrated by tampering with a copy of the real archive and then restoring it (byte-identity against `HEAD` re-verified for every touched file), and each now covered by a permanent fixture:
+
+1. **Changing the stored branch decision hashes while retaining the parent hash.** `verify_restoration.py` now recomputes against the hash the **branch episode itself logged before its first call**, in addition to the parent's, and the report carries a `source_binding` block recording the sha256 of `branch/episodes.jsonl`, `log/episodes.jsonl` and `visible_tests.json` together with a digest of the covered episode ids. `verify_stage.py` re-derives all four and rejects a report that is not bound to the current records, so aggregate counts are no longer trusted on their own.
+2. **An episode source hash present only in another invocation's manifest.** `code_sha256` is now matched against the manifest row of the episode's own invocation.
+3. **All manifest source hashes absent.** The membership check no longer skips; it fails closed.
+
+Fixtures 37 → 42 (including a positive bound-report case); 97 tests pass; all three stages verify unchanged. One older fixture was updated because the same defect now fails under the stricter per-invocation message.
+
+Accepted without qualification: these counterexamples concerned checker boundaries and none of them indicated corruption of the archived cohort; the ledger's five historical durable rows across four episode ids remain pre-invocation records and are not evidence of completed lost outcomes.
+
+**Still open and not claimed:** actual-host writer exclusion and an atomic publication snapshot; the joint-inference target/source model with an independently reviewed variance argument (which will not be used to promote the exploratory band); the deferred competitive-router and operating-characteristic studies; independent reproduction of final analyses; manuscript integration and packaging.

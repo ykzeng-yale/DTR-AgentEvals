@@ -116,6 +116,18 @@ def check_records(ep_path, d, stage, res, design, cfg) -> list:
             problems.append('no independent restoration recheck (run experiments/tools/verify_restoration.py)')
         else:
             doc = json.loads(rc.read_text())
+            sb = doc.get('source_binding') or {}
+            want = dict(branch_episodes_sha256=common.sha256_bytes(ep_path.read_bytes()),
+                        log_episodes_sha256=common.sha256_bytes((ep_path.parent.parent / 'log' / 'episodes.jsonl').read_bytes()),
+                        visible_tests_sha256=common.sha256_bytes((ep_path.parent.parent / 'visible_tests.json').read_bytes()),
+                        covered_episode_ids_sha256=__import__('hashlib').sha256(
+                            '\n'.join(sorted(r['episode_id'] for r in completed)).encode()).hexdigest())
+            for k, v in want.items():
+                if sb.get(k) != v:
+                    problems.append('restoration recheck is not bound to the current records: %s differs' % k)
+            if doc.get('branch_side_transcript_hash_matches') != doc.get('branch_episodes_checked'):
+                problems.append('restoration recheck: %s of %s branch-side transcript hashes match'
+                                % (doc.get('branch_side_transcript_hash_matches'), doc.get('branch_episodes_checked')))
             if doc.get('branch_episodes_checked', 0) < len(completed):
                 problems.append('restoration recheck covers %s of %d completed branch rows'
                                 % (doc.get('branch_episodes_checked'), len(completed)))
@@ -145,12 +157,21 @@ def check_records(ep_path, d, stage, res, design, cfg) -> list:
         invocations = {m.get('invocation') for m in mrows if m.get('invocation')}
         if not invocations:
             problems.append('run_manifest.jsonl carries no invocation identifiers')      # nonempty is not enough
-        man_code = {m.get('code_sha256') for m in mrows if m.get('code_sha256')}
+        by_inv = {}
+        for m in mrows:
+            if m.get('invocation') and m.get('code_sha256'):
+                by_inv.setdefault(m['invocation'], set()).add(m['code_sha256'])
         ep_code = {r.get('code_sha256') for r in completed}
         if None in ep_code or '' in ep_code:
             problems.append('completed row(s) are missing code_sha256')
-        elif man_code and not (ep_code <= man_code):
-            problems.append('code_sha256 on completed rows is absent from the manifest: %s' % [str(x)[:12] for x in sorted(ep_code - man_code)][:2])
+        elif not by_inv:
+            problems.append('no manifest row records a code_sha256, so source identity cannot be checked')
+        else:
+            wrong = [r['episode_id'] for r in completed
+                     if r.get('code_sha256') not in by_inv.get(r.get('invocation'), set())]
+            if wrong:      # a hash recorded only under a DIFFERENT invocation is not evidence for this one
+                problems.append('%d row(s) carry a code_sha256 not recorded by their own invocation, e.g. %s'
+                                % (len(wrong), wrong[:2]))
 
     dec = ep_path.parent / 'decisions.jsonl'
     if not dec.exists() or not dec.read_text().strip():

@@ -15,6 +15,7 @@ import pytest
 ROOT = Path(__file__).resolve().parents[2]
 for sub in ('tools', 'code_routing', 'common'):
     sys.path.insert(0, str(ROOT / 'experiments' / sub))
+import hashlib  # noqa: E402
 import common  # noqa: E402
 import verify_stage as V  # noqa: E402
 
@@ -210,8 +211,10 @@ def test_missing_code_sha_fails(tmp_path):
 
 
 def test_code_sha_absent_from_manifest_fails(tmp_path):
+    """Superseded message: the rule is now per-invocation, so an unrecorded hash fails as 'not recorded by their
+    own invocation' rather than merely 'absent from the manifest'."""
     ep = build(tmp_path, episodes=(dict(EP, code_sha256='a' * 64),), manifest=(dict(MAN, code_sha256='b' * 64),))
-    assert_flags(ep, 'absent from the manifest')
+    assert_flags(ep, 'not recorded by their own invocation')
 
 
 def test_ledger_with_wrong_declared_count_fails(tmp_path):
@@ -238,6 +241,63 @@ def test_impossible_historical_stage_fails(tmp_path):
                total_rows=1, total_episode_ids=1)
     man = (MAN, dict(MAN, invocation='lost_inv'))
     assert_flags(build(tmp_path, decisions=(DEC, hist), manifest=man, ledger=led), 'outside [0,')
+
+
+# --- restoration-report binding (branch stage) ---------------------------------------------------------------
+PARENT = dict(episode_id='p1', error=None)
+BR = dict(EP, episode_id='b1', parent_episode_id='p1', fork_t=1,
+          decisions=[dict(t=1, a=1, completed=True, transcript_sha256='d' * 64)],
+          restoration=dict(transcript_hash_matches=True, tool_result_reproduced=True))
+BRDEC = dict(episode_id='b1', invocation='inv1', attempt=1, t=1, a=1)
+
+
+def branch_case(tmp_path, report_overrides=None, episodes=(BR,)):
+    d = build(tmp_path, stage='branch', episodes=episodes, decisions=(BRDEC,), log_parents=[PARENT])
+    (tmp_path / 'visible_tests.json').write_text('{}')
+    ana = tmp_path / 'analysis'; ana.mkdir(exist_ok=True)
+    ids = sorted(e['episode_id'] for e in episodes)
+    rep = dict(branch_episodes_checked=len(episodes), missing_parent=0, disagreements=0,
+               recomputed_transcript_hash_matches=len(episodes), branch_side_transcript_hash_matches=len(episodes),
+               source_binding=dict(branch_episodes_sha256=common.sha256_bytes(d.read_bytes()),
+                                   log_episodes_sha256=common.sha256_bytes((tmp_path / 'log' / 'episodes.jsonl').read_bytes()),
+                                   visible_tests_sha256=common.sha256_bytes((tmp_path / 'visible_tests.json').read_bytes()),
+                                   covered_episode_ids_sha256=hashlib.sha256('\n'.join(ids).encode()).hexdigest(),
+                                   n_covered=len(ids)))
+    rep.update(report_overrides or {})
+    (ana / 'restoration_recheck.json').write_text(json.dumps(rep))
+    return d
+
+
+def test_bound_restoration_report_passes(tmp_path):
+    assert probs(branch_case(tmp_path), 'branch') == []
+
+
+def test_restoration_report_not_bound_to_current_branch_records_fails(tmp_path):
+    """Altering branch records after the report was written must invalidate it (stale source binding)."""
+    d = branch_case(tmp_path)
+    rows = d.read_text().splitlines()
+    rec = json.loads(rows[0]); rec['decisions'][0]['transcript_sha256'] = '0' * 64
+    d.write_text(json.dumps(rec) + '\n')
+    assert_flags(d, 'not bound to the current records', stage='branch')
+
+
+def test_restoration_report_with_branch_side_hash_failures_fails(tmp_path):
+    d = branch_case(tmp_path, report_overrides=dict(branch_side_transcript_hash_matches=0))
+    assert_flags(d, 'branch-side transcript hashes match', stage='branch')
+
+
+def test_source_hash_only_in_another_invocations_manifest_fails(tmp_path):
+    """A code_sha256 recorded under a different invocation is not evidence for this one."""
+    ep = build(tmp_path, episodes=(dict(EP, invocation='inv1', code_sha256='a' * 64),),
+               decisions=(dict(DEC, invocation='inv1'),),
+               manifest=(dict(MAN, invocation='inv1', code_sha256='z' * 64), dict(MAN, invocation='other', code_sha256='a' * 64)))
+    assert_flags(ep, 'not recorded by their own invocation')
+
+
+def test_no_manifest_source_hash_fails_closed(tmp_path):
+    """If no manifest row records a source hash the check must fail, not be skipped."""
+    man = (dict(invocation='inv1', started_utc='x'),)
+    assert_flags(build(tmp_path, manifest=man), 'source identity cannot be checked')
 
 
 def test_real_stages_still_pass():

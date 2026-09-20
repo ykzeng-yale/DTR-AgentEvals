@@ -34,8 +34,8 @@ def main() -> int:
     br, _ = A.read(common.RESULTS / 'branch' / 'episodes.jsonl', cfg)
 
     n = recomputed_true = agreed = 0
-    missing_parent = mismatch = tool_recheck_ok = 0
-    examples = []
+    missing_parent = mismatch = tool_recheck_ok = branch_hash_ok = 0
+    examples = []; covered = []
     for e in br:
         pid = e.get('parent_episode_id')
         par = parents.get(pid)
@@ -52,6 +52,13 @@ def main() -> int:
         recomputed_true += ok
         stored = bool((e.get('restoration') or {}).get('transcript_hash_matches'))
         agreed += (ok == stored)
+        covered.append(e['episode_id'])
+        # the branch episode logged its OWN t=1 transcript hash before its first call; it must equal the
+        # recomputation too, so altering the branch-side hashes while leaving the parent's intact cannot pass
+        own = next((d.get('transcript_sha256') for d in e.get('decisions', []) if d.get('t') == e.get('fork_t')), None)
+        branch_hash_ok += (own == h)
+        if own != h and len(examples) < 3:
+            examples.append(dict(episode_id=e['episode_id'], reason='branch-side transcript hash differs from recomputation'))
         if ok != stored:
             mismatch += 1
             if len(examples) < 3:
@@ -59,7 +66,16 @@ def main() -> int:
         if (e.get('restoration') or {}).get('tool_result_reproduced'):
             tool_recheck_ok += 1
 
+    def fsha(path):
+        return hashlib.sha256(Path(path).read_bytes()).hexdigest()
     out = dict(branch_episodes_checked=n, missing_parent=missing_parent,
+               branch_side_transcript_hash_matches=branch_hash_ok,
+               # bind the report to the exact files and episode set it was computed from
+               source_binding=dict(branch_episodes_sha256=fsha(common.RESULTS / 'branch' / 'episodes.jsonl'),
+                                   log_episodes_sha256=fsha(common.RESULTS / 'log' / 'episodes.jsonl'),
+                                   visible_tests_sha256=fsha(common.RESULTS / 'visible_tests.json'),
+                                   covered_episode_ids_sha256=hashlib.sha256('\n'.join(sorted(covered)).encode()).hexdigest(),
+                                   n_covered=len(covered)),
                recomputed_transcript_hash_matches=recomputed_true,
                stored_flag_agrees_with_recomputation=agreed, disagreements=mismatch, examples=examples,
                stored_tool_result_reproduced=tool_recheck_ok,
@@ -70,7 +86,7 @@ def main() -> int:
                       'tool, so `tool_result_reproduced` is reported as stored, not independently recomputed.')
     (common.RESULTS / 'analysis' / 'restoration_recheck.json').write_text(json.dumps(out, indent=1))
     print(json.dumps(out, indent=1))
-    return 0 if (mismatch == 0 and missing_parent == 0 and recomputed_true == n and n > 0) else 1
+    return 0 if (mismatch == 0 and missing_parent == 0 and recomputed_true == n and branch_hash_ok == n and n > 0) else 1
 
 
 if __name__ == '__main__':
