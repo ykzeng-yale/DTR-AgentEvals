@@ -6,6 +6,19 @@ This repository studies causal evaluation of dynamic model routing. Read README.
 
 The author explicitly requested direct integration into `main`, without pull requests. All project agents and the recurring monitor must validate their changes, synchronize with the latest remote `main`, preserve concurrent work, and commit/push directly to `main`. Do not create a PR, draft PR, or PR-based handoff unless the author later changes this instruction. If an isolated branch is needed for local work, integrate its reviewed changes locally and publish to `main` directly. Never force-push or overwrite another agent's work. Continue mathematical/code review and appropriate checks before publishing; direct publication does not remove validation requirements. Use issues and committed handoff files for coordination.
 
+## Git commit identity
+
+The owner explicitly requires **Yukang Zeng <ykzeng2019@gmail.com>** as both author and committer for all new
+project-agent commits. Configure `user.name` and `user.email` in each checkout and check the actual author and
+committer before pushing; environment overrides can supersede Git configuration. The verified GitHub account
+linked to this address is `ykzeng-yale`. Do not use OpenAI, Codex, an AI vendor/model, a Yale address or a machine
+identity as the commit author/committer, and do not append AI/vendor `Co-Authored-By` trailers. This is a Git
+attribution instruction, not a change to scientific citations, licenses or acknowledgments.
+
+The repository `.mailmap` canonicalizes the owner's historical name/email aliases in Git views that honor it.
+It does not rewrite raw historical commit metadata or remove historical trailers. Preserve published commit IDs
+and their scientific provenance links under the existing no-force-push instruction.
+
 ## Research rules
 
 - The lead agent owns the scientific judgment, including the estimand, design, metrics, comparators, interpretation and next discriminating study. The experiment agent largely implements that design; do not shift responsibility for an inconclusive or unfavorable finding back to it.

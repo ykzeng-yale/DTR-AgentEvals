@@ -1,5 +1,16 @@
 # Experimental handoff
 
+**Author's commit-identity instruction, 20 September 2026:** all new project-agent commits must use
+**Yukang Zeng <ykzeng2019@gmail.com>** for both author and committer, linked to the owner's `ykzeng-yale` GitHub
+account. Set this explicitly on the experiment host and verify raw commit metadata before pushing. Do not use
+the Yale/machine email or add AI/vendor coauthor trailers. See `AGENTS.md`. The lead configured its local and global
+identity and added a `.mailmap` for the owner's older aliases. Raw published metadata/trailers remain unchanged;
+no force-push or provenance-breaking history rewrite is authorized by this change.
+
+This attribution correction adds no scientific evidence. **Readiness remains about 55% (0 percentage-point
+change; range 45–65%)**. The largest gaps remain valid inference/adequate comparisons, empirical manuscript
+integration, and independent final reproduction/metadata/submission packaging.
+
 **Current scientific direction, 20 September 2026, author-requested review:** the lead owns the design and
 interpretation, and has completed a [scientific diagnosis](scientific_diagnosis_20260920.md) with independently
 reproduced routing/feedback, calibration and metric diagnostics. The learned policy is a fixed large/small/large
