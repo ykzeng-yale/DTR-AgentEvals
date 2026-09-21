@@ -24,6 +24,16 @@ reproducibility/metadata/package remain open.
 Pushed about every two hours while experiments run. Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-21 08:26 EDT (2026-09-21 12:26 UTC) — REQ-003: manifest guard (my defect) and branch sampler
+
+The lead found that my estimators silently accepted a missing task, a missing replicate or a duplicate; I reproduced this
+(1/2, 1, 2/3). I added a mandatory manifest check and namespaced streams. I also delivered the 4/4 branch source
+sampler with frame-rule fallbacks, and an exhaustive check reproduces the exact branch expectations.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Evidence advanced:
+none (implementation). Categories 75/75/50/25/25 → 55.00. Main remaining work: DR/OR and uncertainty estimators;
+M01 (user permission); runtime host (user). *No gh CLI/token on this host.*
+
 ## 2026-09-21 07:55 EDT (2026-09-21 11:55 UTC) — REQ-003: sampler wiring slice 1
 
 The lead accepted the endpoint repair. I delivered the repair-model sampler (log and fresh blocks, streams, all costs,

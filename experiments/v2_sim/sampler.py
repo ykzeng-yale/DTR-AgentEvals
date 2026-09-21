@@ -11,13 +11,17 @@ Wired in this slice (accepted repair kernels, common-initial-small model):
   run_episode       one episode under a LOGGER (records the probability of each logged action) or a frozen POLICY
                     (fresh, deterministic, probability 1); exits: first_call_pass, true_pass, false_pass, K_exhausted;
                     every call cost is retained, including the common first call
-  run_blocks        every task of the frozen list x r replicates, each with its own stream id '<mode>:<task>:<rep>';
-                    nothing is dropped (absorbed episodes included)
-  ipw_estimate      (1/n) sum_g (1/r) sum_j W Z with the trajectory weight recomputed from the recorded history
-  fresh_estimate    (1/n) sum_g (1/r) sum_j Z
-NOT wired yet (listed explicitly): the 4/4 archive branch source sampler and the Delta estimator with the frame_rule
-whole-range fallback (next slice); DR and outcome-regression estimators; per-decision cost estimator in sampled form;
-variance, interval and covariance-based contrast estimators; any seeded stream source.
+  run_blocks        every task of the frozen list x r replicates; stream id
+                    '<cfg>|rep=<b>|<role>|<logger or fresh policy>|<task>|<rep>'; nothing is dropped
+  validate_manifest mandatory analysis boundary: exact frozen task x stratum x replicate keys, no missing/extra/
+                    duplicate records (repair after lead review 76b3199); violations raise, nothing is dropped
+  ipw_estimate      (1/n) sum_g (1/r) sum_j W Z, after validate_manifest
+  fresh_estimate    (1/n) sum_g (1/r) sum_j Z, after validate_manifest
+Distinct stream labels are identities, not a proof of independence.
+The 4/4 archive branch source sampler and the Delta estimator with the frame_rule fallback are in branch_sampler.py.
+NOT wired yet (listed explicitly): DR and outcome-regression estimators; per-decision cost estimator in sampled form;
+variance, interval and covariance-based contrast estimators; a manifest check for the branch study's analysis
+boundary beyond task retention; any seeded stream source.
 """
 from __future__ import annotations
 from fractions import Fraction as Fr
@@ -130,16 +134,47 @@ def ipw_weight(rec, pol):
     return w
 
 
-def run_blocks(tasks, cell, r, draws, mode, logger=None, policy=None):
-    """tasks: [(task_id, stratum)]; every task x replicate yields one retained episode with its own stream id."""
+class ManifestError(ValueError):
+    pass
+
+
+def stream_namespace(config, repetition):
+    """Simulation configuration and repetition identity; the prefix of every stream in that repetition."""
+    return 'cfg=%s|rep=%d' % (config, repetition)
+
+
+def run_blocks(tasks, cell, r, draws, namespace, role, logger=None, logger_name=None, policy=None):
+    """tasks: [(task_id, stratum)]; every task x replicate yields one retained episode. Stream ids encode
+    configuration, repetition, role (log/fresh), the logger or fresh policy, task and replicate."""
+    if role == 'log' and (logger is None or not logger_name or policy is not None):
+        raise ValueError('log role needs a named logger and no policy')
+    if role == 'fresh' and (policy is None or logger is not None):
+        raise ValueError('fresh role needs a policy and no logger')
+    if role not in ('log', 'fresh'):
+        raise ValueError('role must be log or fresh')
+    name = logger_name if role == 'log' else policy.name
     out = []
     for task_id, s in tasks:
         for j in range(r):
-            stream = '%s:%s:%d' % (mode, task_id, j)
+            stream = '%s|%s|%s|%s|%d' % (namespace, role, name, task_id, j)
             rec = run_episode(cell, s, draws, stream, logger=logger, policy=policy)
             rec.update(task_id=task_id, replicate=j)
             out.append(rec)
     return out
+
+
+def validate_manifest(episodes, tasks, r):
+    """Mandatory analysis-boundary check (lead review 76b3199): the records must be EXACTLY the frozen task x stratum x
+    replicate manifest, with no missing, extra or duplicate keys and a utility on every record (absorbed and
+    zero-success episodes included). Violations raise; records are never dropped and outcomes never fabricated."""
+    expected = {(t, s, j) for t, s in tasks for j in range(r)}
+    keys = [(e.get('task_id'), e.get('stratum'), e.get('replicate')) for e in episodes]
+    dup = {k for k in keys if keys.count(k) > 1}
+    missing, extra = expected - set(keys), set(keys) - expected
+    bad = [k for k, e in zip(keys, episodes) if e.get('utility') is None]
+    if dup or missing or extra or bad:
+        raise ManifestError('incomplete analysis input: missing %s, extra %s, duplicate %s, no utility %s'
+                            % (sorted(missing), sorted(extra), sorted(dup), bad))
 
 
 def _task_means(episodes, value):
@@ -149,11 +184,13 @@ def _task_means(episodes, value):
     return [sum(v) / len(v) for v in by.values()]
 
 
-def ipw_estimate(episodes, pol):
+def ipw_estimate(episodes, pol, tasks, r):
+    validate_manifest(episodes, tasks, r)
     m = _task_means(episodes, lambda e: ipw_weight(e, pol) * e['utility'])
     return sum(m) / len(m)
 
 
-def fresh_estimate(episodes):
+def fresh_estimate(episodes, tasks, r):
+    validate_manifest(episodes, tasks, r)
     m = _task_means(episodes, lambda e: e['utility'])
     return sum(m) / len(m)

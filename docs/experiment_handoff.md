@@ -1449,3 +1449,19 @@ Acknowledge REQ-001 completed, REQ-002 running with qualification open/blocked, 
 **Readiness 55%, change 0 points, range 45–65%.** Same rubric. No empirical outcomes or paper pages added.
 Remaining milestones: useful validated inference/adequate comparisons; statistical validation and final empirical
 synthesis; independent reproducibility, author metadata and submission packaging.
+
+## Worker checkpoint — 2026-09-21T12:26:28Z (host clock; local 2026-09-21 08:26 EDT)
+
+Code/config commit at checkpoint start: `f3034c3`. Last lead checkpoint read: `76b3199` (12:18 cycle), which arrived during this tick. **Authorized runs: none.** Gate `log live branch` verified; no runner; servers healthy; foreign load `[]`.
+
+**Acknowledged:** REQ-001 is completed; REQ-002 is running with qualification open or blocked; REQ-003 is running, with the repair done below.
+
+**Your boundary probes, reproduced before conceding.** From `docs/audits/sampler_audit_f3034c3.json`, my `f3034c3` `fresh_estimate` returned 3/4 (complete), **1/2** (missing task), **1** (missing replicate) and **2/3** (duplicate), silently accepting all three bad inputs. **You were right.**
+
+| Request | Status | Artifact / reason |
+|---|---|---|
+| DTR-REQ-001 (P0) | completed | — |
+| DTR-REQ-002 (P1) | running; qualification open/blocked (user permission) | — |
+| DTR-REQ-003 (P1) | **running: boundary guard repaired, then branch slice 2 delivered** | **Repair ([`sampler.py`](../experiments/v2_sim/sampler.py)).** `validate_manifest` is now a **mandatory** argument pair (`tasks`, `r`) of both estimators. It requires exactly the frozen task × stratum × replicate keys: no missing, extra or duplicate records, a wrong stratum is rejected, and a utility must be present. Violations raise `ManifestError`; nothing is dropped or fabricated. Your four probes are regressions read from the audit file: the complete set keeps 3/4 for both estimators, and all three bad cases raise for both. Streams are now namespaced as `cfg=<config>\|rep=<b>\|<role>\|<logger or fresh policy>\|<task>\|<rep>`. A log block must name its logger and a fresh block names its policy. The docstring states that distinct labels are identities, not proof of independence. **Branch slice 2 ([`branch_sampler.py`](../experiments/v2_sim/branch_sampler.py)).** This is the archive 4/4 source design, distinct from the repair model and with the same namespaced streams. The allocation is always exactly 4 small and 4 large (sequential remaining-count draws). A prefix exists iff the first feedback is not a pass, and zero-prefix tasks are retained. Source repairs are logged with probability ½ and W_a follows bound-doc equation 1. `frame_rule` gives the whole range [−2,2] when N=0 or an observed D_a=0, a census when N ≤ m_max, and otherwise SRSWOR by sequential uniform draws. Two fresh replicate pairs per selected prefix run from the ideal full restored state, and Δ̂ = B̂ − ν̂₁ + ν̂₀. **Fixtures:** 4/4 allocation under two draw orders; all-first-call-pass giving N=0, the whole range and both tasks retained; D_small=0 giving the whole range; the census path (N=8); the SRSWOR path (m_max=3, three distinct selections, `…\|bsel` draws); namespaced role streams with 8×2×2 distinct fresh streams. **Exhaustive, non-Monte-Carlo wiring checks:** source-episode M, D_a and U_a match `branch_module.per_episode` exactly for 2 kernel cells × 2 strata × 2 initial arms, and stay continuations match `stay_value`. **19 sampler/branch cases pass; 264 tests pass.** **Still unwired:** DR/OR, per-decision cost in sampled form, variance/interval/covariance estimators, a manifest check for the branch study's analysis boundary beyond task retention, and any seeded source. |
+
+No question for the lead.
