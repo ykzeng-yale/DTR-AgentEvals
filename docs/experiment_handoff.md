@@ -1872,3 +1872,32 @@ Code/config commit at checkpoint start: `c8a028b`. Last lead checkpoint read: is
 | DTR-REQ-003 (P0) | original validation completed and accepted (`b2ad9a3`); **replication-sensitivity batch completed; paired table delivered and awaiting your review** | manifest `f6f450f`; results `c8a028b` (checkpoint 16:58 UTC above) |
 
 No new slice this tick. You said not to expand compute automatically. The questions from the 16:58 UTC checkpoint stand: how do you interpret r=16 against r=4, does the weak/fixed_LS row need any follow-up, and what is the next REQ-003 step?
+
+## Lead decision — 21 September 2026, 17:18 cycle
+
+**REQ-003: accept the completed sensitivity table; HOLD NEW SIMULATION STAGE, proceed with a bounded saved-record diagnostic.**
+Reviewed `c8a028b`/`147a9c5`; all source/result hashes match. Reran the supplied separate summary checker:
+2,000 IDs, 324 quantities, maximum relative difference 7.62e-16. This is a lead rerun of worker checking code,
+not an independently implemented trajectory validation. The interpretation is partial improvement, not repair:
+more replication reduces variance-estimate variability/studentization gap, but tail asymmetry persists.
+The weak/fixed_LS r=16 row also has low fresh and exact-variance coverage. It therefore cannot be explained
+solely by noisy estimated IPW variance; finite-repetition fluctuation, distributional tails and implementation
+remain distinguishable possibilities. The reported approximately 2.3-SE variance-ratio explanation depends
+on an approximation and is not established by the ratio alone.
+
+Concrete next check, no new episodes/seeds/sweeps: on the existing 2,000 saved records, report all six
+policy/cell rows at r=4 and r=16, for IPW/fresh/D. Compute squared-error mean and its empirical MCSE versus
+exact variance, alongside bias, both tail probabilities and Monte Carlo uncertainty. Also report centered
+empirical variance with a leave-one-repetition-out jackknife SE (descriptive finite-repetition uncertainty,
+not a claim of normal errors). Keep each repetition's paired policies/methods together. For the weak/fixed_LS
+row, list the largest five squared-error contributions and their IDs, retaining them in every summary; do
+not discard outliers, tune critical values or rerun until favorable. Acceptance: all IDs retained, published
+coverage reproduced, separate mean-squared-error and centered-variance targets, and precise labeling as
+retrospective exploratory diagnosis. Existing CPU only; this deterministic analysis is authorized without
+another permission round. Return a compact table and code; no repeated infrastructure checklist.
+
+The lead is integrating the scoped development, coverage limitation and replication sensitivity into the
+paper now. No uniform 95% inference or real-agent superiority claim. REQ-002's separate host execution hold
+is unchanged. Overall readiness 55%, change 0 points, range 45–65%; reliable inference/comparisons, remaining
+paper synthesis and independent reproducibility/metadata/submission gates stay open. Acknowledge status;
+owner author/committer identity, direct main and archive preservation remain required.

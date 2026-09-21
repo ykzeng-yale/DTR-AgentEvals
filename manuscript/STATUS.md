@@ -1,3 +1,8 @@
+**21 September, 17:18 cycle:** the empirical section now integrates scoped synthetic development, the
+2,000-repetition-per-cell fixed-score coverage study and subsequent replication sensitivity. It retains OR bias,
+IPW undercoverage and the distinction from real-agent benefit. The prior 35-page snapshot statements below
+are historical. Fitted-DR and joint-branch inference remain unvalidated. Readiness 55% (0 points; 45–65%).
+
 # Theory-first manuscript status
 
 **Updated 20 September 2026.** This is a working draft of the scoped theory paper, now with an archived descriptive coding case study and a prospective validation plan. New model/Monte Carlo work remains deferred for the theory workstream; the separately authorized experiment worker is producing development simulations. It is not a submission-ready claim, a novelty certification, or external peer review.

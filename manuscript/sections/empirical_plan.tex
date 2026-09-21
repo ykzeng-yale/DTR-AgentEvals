@@ -1,11 +1,49 @@
-\section{Prospective empirical evaluation}
+\section{Empirical validation and remaining evaluation}
 \label{sec:empirical-plan}
 
 \paragraph{Status.}
 Section~\ref{sec:coding-case-study} now reports a descriptive analysis of the existing coding-study archive.
-The broader known-truth validation and a new prospective agent evaluation remain deferred. This section specifies
-their questions and reporting structure. The archived comparisons and retrospective diagnoses do not substitute
+A scoped known-truth validation is now available, as summarized below; the broader validation grid and a new
+prospective agent evaluation remain incomplete. This section separates those results from the remaining plan. The archived comparisons and retrospective diagnoses do not substitute
 for prespecified validation of the final method, nor authorize new model or Monte Carlo runs.
+
+\subsection{Scoped synthetic validation and finite-sample limitations}
+A two-decision repair environment with exactly enumerated policy values was used to check fixed-benchmark
+estimation. Each study retained 250 balanced tasks with four independent executions per task. Three frozen
+policies (a feedback rule, a prompt-only rule, and a known-kernel-selected fixed schedule) were evaluated
+under informative or weak feedback and uniform or feedback-dependent randomized logging. The latter logger
+had minimum action probability 0.2. The selected fixed schedule is an oracle benchmark, not a learned policy.
+
+An initial development batch used 200 repetitions per cell. Fitted task-split doubly robust estimation had
+observed root mean squared error 0.742--0.934 times trajectory importance weighting across the 12 policy/cell
+comparisons. This is scoped synthetic evidence, not a general efficiency guarantee. Fitted outcome regression
+had positive biases of 0.00823 and 0.00446 for two policies in the informative-feedback, nonuniform-logging
+cell. In a retrospective intervention on the same logs and folds, replacing second-stage regression by exact
+continuation values reduced these biases to 0.00088 and 0.00127. This implicates second-stage estimation in
+this implementation, without isolating pooled fallback as the cause or supplying a deployable oracle method.
+
+A separately frozen fixed-score validation used 2,000 repetitions per cell. Nominal 95\% normal intervals
+used within-task replicate variance for the fixed task list; offline-minus-independent-live intervals summed
+the two estimated variances. Observed coverage ranges were 0.9425--0.9615 for direct execution,
+0.9300--0.9575 for trajectory importance weighting, and 0.9355--0.9585 for their discrepancy. Thus these intervals
+were not uniformly calibrated over the studied grid. For the weak-feedback, nonuniform-logging prompt policy,
+importance-weighted coverage was 0.930 versus 0.953 using exact variance. Lower- and upper-tail miss frequencies
+were 0.062 and 0.008. Correct mean variance estimation alone did not ensure satisfactory studentized tails.
+
+A subsequent development sensitivity study used a new seed, 1,000 repetitions per nonuniform-logging cell,
+and nested four- versus sixteen-execution task blocks. It preserved the original validation rather than
+replacing it. More replication reduced variance-estimate variability and generally narrowed the gap from
+exact-variance intervals, but residual undercoverage remained: the weak-feedback fixed schedule covered
+0.932 for importance weighting and 0.935 for direct execution at sixteen replicates. Their exact-variance
+coverages were 0.940 and 0.934, respectively. These selected diagnostics require Monte Carlo uncertainty and
+are not evidence that every residual departure has the same cause. Additional replication changes the
+execution budget and sampling distribution; it is not a cost-free interval correction.
+
+These studies do not validate fitted-regression confidence intervals, the joint branch discrepancy,
+or real-agent policy improvement. The underlying manifests, per-repetition estimates, Monte Carlo uncertainty
+and retained failure records are available in the repository under
+\texttt{results/v2\_sim/}; the development, fixed-score validation, and replication-sensitivity artifacts
+remain separately identified. Final inference and broader empirical comparisons are still required.
 
 \subsection{Known-truth evaluation of the statistical claims}
 Finite sequential environments will vary prior-treatment-induced confounding, sample size, eligible-decision count, policy divergence, and outcome sparsity. Exact enumeration or dynamic programming will determine policy truth. Separate cells will omit a relevant historical variable, misspecify either nuisance family, alter the execution kernels, or introduce missing terminal outcomes. A factorial design should vary horizon and overlap separately; combined stress tests will be labeled accordingly.

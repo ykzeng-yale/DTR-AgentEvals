@@ -1,8 +1,8 @@
 # Dynamic Agent Regimes — full theory-first manuscript
 
-**Working draft, updated 20 September 2026.** [Read the 35-page PDF](DTR_Agent_Regimes_Theory_Draft.pdf), [edit the source](main.tex), or read the [validation and status record](STATUS.md).
+**Working draft, updated 20 September 2026.** [Read the current PDF](DTR_Agent_Regimes_Theory_Draft.pdf), [edit the source](main.tex), or read the [validation and status record](STATUS.md).
 
-The current paper develops the theory, complete proofs for its stated results, introduction, related-work positioning, discussion, and prospective empirical methods. The archived coding experiment is now integrated as a descriptive case study, including all six live-policy comparisons, limited feedback/repair opportunities, the fixed learned schedule, unfavorable replay comparison and unresolved calibration/inference. New model experiments and Monte Carlo studies remain deferred because GPU capacity is limited. Historical arithmetic pilots are not treated as confirmatory evidence.
+The current paper develops the theory, complete proofs for its stated results, introduction, related-work positioning, discussion, and prospective empirical methods. The archived coding experiment is now integrated as a descriptive case study, including all six live-policy comparisons, limited feedback/repair opportunities, the fixed learned schedule, unfavorable replay comparison and unresolved calibration/inference. The empirical section now also reports scoped synthetic development, fixed-score coverage and replication sensitivity; broader inference validation and new model evaluation remain incomplete. Historical arithmetic pilots are not treated as confirmatory evidence.
 
 ## Mathematical content
 
