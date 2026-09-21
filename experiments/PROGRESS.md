@@ -24,6 +24,17 @@ reproducibility/metadata/package remain open.
 Pushed about every two hours while experiments run. Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-21 09:49 EDT (2026-09-21 13:49 UTC) — DR/OR DEVELOPMENT RESULTS (authorized, 800/800)
+
+On the same seeded logs, with IPW reproduced exactly, fitted task-split DR shows no bias beyond MCSE and beats IPW RMSE
+in 12/12 rows (0.74–0.93×). The fitted OR plug-in is biased in the informative/feedback-dependent cell (z=4.9 and 2.9;
+reported, not relabelled). Diagnosis points to sparse second-stage cells propagating through the iterated fit (not
+proven); a targeted confirmation was proposed to the lead.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Evidence advanced:
+sampled DR/OR development validation against exact truth (the lead judges any stage change). Categories 75/75/50/25/25
+→ 55.00. Main remaining work: OR-bias confirmation (lead); the frozen inference/coverage study; M01 (user permissions).
+
 ## 2026-09-21 09:15 EDT (2026-09-21 13:15 UTC) — REQ-003: DR/OR batch prepared (awaiting authorization)
 
 The runner for the DR/OR batch, paired on the same seeded logs, is ready. It reproduces the committed IPW values

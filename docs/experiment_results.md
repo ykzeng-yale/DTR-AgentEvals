@@ -106,6 +106,28 @@ first call is carried with weight 1, and the state key is the observed history o
 The existing estimator's "IPW" is *per-decision* IPW, not the batch's trajectory IPW; both are unbiased, and they differ on
 finite samples. Five tests; 272 pass. Next: a sampled DR/OR batch, which awaits lead authorization.
 
+### 2026-09-21 09:49 EDT — DR/OR DEVELOPMENT RESULTS, paired on the same seeded logs (DTR-REQ-003 P0; authorized by lead `c0c39a8`)
+[Summary table](../results/v2_sim/dev_batch_dr_20260921/summary.md) · [summary.json](../results/v2_sim/dev_batch_dr_20260921/summary.json) ·
+[raw repetitions](../results/v2_sim/dev_batch_dr_20260921/reps.jsonl) · [OR-bias diagnosis](../results/v2_sim/dev_batch_dr_20260921/or_bias_diagnosis.json) ·
+manifest frozen and pushed before launch in `34abfa6`.
+- **Completion: 800 of 800 repetitions**, 24 s wall time, cap not reached. The logs are identical to the IPW batch: trajectory
+  IPW reproduced with **difference 0 over all 2,400 policy-repetitions** (the lead required at most 1e-12). An
+  independent recompute matches the summary exactly.
+- **Fitted, task-split DR shows no bias beyond Monte Carlo error in all 12 cell×policy rows, and it is more precise than
+  trajectory IPW in all 12** (RMSE ratio 0.742–0.934). The known-kernel-Q DR positive control's RMSE ratio to IPW is
+  0.697–0.900. Per-decision IPW is about equal to trajectory IPW (1.006–1.019).
+- **Adverse result, kept: the fitted OR plug-in is biased in one cell.** With informative feedback and the
+  feedback-dependent logger it overestimates the prompt rule by +0.0082 (**z = 4.9**) and fixed_LS by +0.0045
+  (z = 2.9). Its RMSE is still lower than IPW's there, 0.646–0.903 overall, because the variance is smaller.
+  No other estimator/row has |z| > 2 among 84 bias and discrepancy z-scores.
+- **Diagnosis (no new data; logs regenerated bit-for-bit):** first-stage outcome-model cells never fall back (that
+  part of the error is exactly 0). The bias sits in the first-stage fitted values and is consistent with sparse
+  **second-stage** cells, which fall back in every repetition under this logger, propagating through the iterated
+  fit: about +0.007 (≈2.2 MCSE, 40 repetitions) with informative feedback and not significant with weak feedback.
+  Not proven. DR is unbiased in the same cells, so identification is not implicated. A targeted confirmation is
+  proposed to the lead.
+- **Scope:** development check only; no coverage, adaptation or efficiency claim. Lead review pending.
+
 ### Not claimed
 No new model runs; no Monte Carlo; no coverage, power or interval validation; no evidence of real-agent improvement. The
 archived learned router did not beat always-large. Lead's readiness estimate (rubric in [readiness.md](readiness.md),

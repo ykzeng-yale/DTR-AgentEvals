@@ -1570,3 +1570,23 @@ Weak-feedback history-rule inferiority is retained and does not imply failed ide
 remain separate. Acknowledge status and publish manifest/results in the shared results doc. Owner commit identity
 remains Yukang Zeng <ykzeng2019@gmail.com>, author and committer, direct main. Readiness **55%, 0 points, 45–65%**;
 remaining inference/comparisons, empirical synthesis and independent reproducibility/submission gates stay open.
+
+## Worker checkpoint — 2026-09-21T13:49:39Z (host clock; local 2026-09-21 09:49 EDT)
+
+Code/config commit at checkpoint start: `34abfa6` (DR/OR manifest frozen and pushed before launch). Last lead checkpoint read: `c0c39a8` (13:18 cycle). **Authorized runs:** the paired DR/OR development batch (your `c0c39a8`); it has completed. Nothing else is running.
+
+**Acknowledged:** the first batch is accepted as scoped development evidence, and the weak-feedback history-rule inferiority is retained.
+
+| Request | Status | Artifact / reason |
+|---|---|---|
+| DTR-REQ-001 (P0) | completed | — |
+| DTR-REQ-002 (P1) | open/blocked: host download and execution permissions (user) and runtime host | — |
+| DTR-REQ-003 (P0) | **running: paired DR/OR results delivered** | [`summary.md`](../results/v2_sim/dev_batch_dr_20260921/summary.md), [`summary.json`](../results/v2_sim/dev_batch_dr_20260921/summary.json), [`reps.jsonl`](../results/v2_sim/dev_batch_dr_20260921/reps.jsonl), [`manifest.json`](../results/v2_sim/dev_batch_dr_20260921/manifest.json), [`or_bias_diagnosis.json`](../results/v2_sim/dev_batch_dr_20260921/or_bias_diagnosis.json) (from [`dev_batch_dr_diagnose.py`](../experiments/v2_sim/dev_batch_dr_diagnose.py) plus a first-40-repetition mechanism block). **800/800** repetitions in 24 s; cap not reached. **IPW reproduction: 0 difference over 2,400 policy-repetitions** (acceptance ≤1e-12). An independent recompute matches the summary exactly. **Fitted task-split DR:** no bias beyond MCSE in 12/12 rows, and lower RMSE than trajectory IPW in 12/12 (ratio 0.742–0.934). Known-Q DR control: 0.697–0.900. Per-decision IPW: 1.006–1.019. **Adverse, retained: the fitted OR plug-in is biased** in the informative/feedback-dependent cell, by +0.0082 for the prompt rule (z=4.89) and +0.0045 for fixed_LS (z=2.86). Its RMSE is still below IPW's (0.646–0.903) because its variance is lower. These are the only 2 of 84 z-scores above 2. |
+
+**Diagnosis of the OR bias (no new data; logs regenerated bit-for-bit, folds identical to `cluster_scores`):**
+1. Test-fold decisions whose (key, target action) cell is empty in training occur in 102–200 of 200 repetitions across *all* cells. That includes the weak/feedback-dependent cells, which have fallback in 200/200 repetitions but no significant OR bias. **Fallback frequency alone does not explain the bias.**
+2. A rigorous split over repetitions 0–39: the part of the first-stage plug-in error (fitted minus exact known-kernel Q at the target action) from **first-stage fallback cells is exactly 0**. The error lies in non-fallback first-stage cells: +0.0066 (MCSE 0.0030) and +0.0070 (0.0031) with informative feedback, against −0.0002 (0.0033) and −0.0061 (0.0040) with weak feedback.
+3. **Interpretation (hypothesis for you, not established):** sparse *second-stage* cells, which use the pooled fallback in every repetition under the .2 logger, bias the iterated-Q training targets for the first stage. Informative feedback makes the history-specific values differ from the pooled fallback. DR is unbiased in the same cells, so identification is not implicated.
+4. **Correction of my own interim number:** my first, looser mechanism calculation summed second-stage terms that do not enter the plug-in directly (+0.0026 and +0.0040). It is superseded by point 2 and not reported as the explanation.
+
+**Question for the lead (your decision):** may I run one targeted confirmation on the same regenerated logs? It would refit the OR with the second-stage Q replaced by the exact known-kernel Q (first stage still fitted). If the first-stage bias vanishes, the stage-2-propagation mechanism is confirmed. No new data, no other change. Otherwise I hold, per your instruction not to add models or sample size before diagnosing.
