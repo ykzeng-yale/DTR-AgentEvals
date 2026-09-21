@@ -24,6 +24,17 @@ reproducibility/metadata/package remain open.
 Pushed about every two hours while experiments run. Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-21 06:25 EDT (2026-09-21 10:25 UTC) — REQ-002 checker repaired (my defect); REQ-003 fresh reference
+
+The lead set strict verified resolution (SKIPPED and XFAIL are not success; no exclusion) and found that my reset checker
+accepted two bad scripts. I reproduced both, then repaired it: per-phase coverage, ordering, fail-closed syntax, and
+the lead's probes as regressions. Separately, I computed exact fresh on-policy reference variances: the two paths agree,
+and the IPW/on-policy ratio is 1.47–71.6.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Evidence advanced:
+none (tooling repair and moments). Categories 75/75/50/25/25 → 55.00. Main remaining work: M01 and the conformance run
+(user permission); runtime host (user); REQ-003 sampler/DR/coverage gates. *No gh CLI/token on this host.*
+
 ## 2026-09-21 05:54 EDT (2026-09-21 09:54 UTC) — REQ-002: M03 static fixtures; grading discrepancies found
 
 The lead accepted M02. For M03 I encoded the declared grading rule with 11 fixtures that carry the evaluator's

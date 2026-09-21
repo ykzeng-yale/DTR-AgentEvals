@@ -7,9 +7,12 @@ and new files get `rm -f <files>`, both before applying the test patch and after
 
 check_reset_commands inspects a command list (as the evaluator would generate it) WITHOUT executing anything:
   R1 no bare `git checkout <base_commit>` (a reset with no paths);
-  R2 every checkout path is a modified file of the test patch, and all modified files are covered;
-  R3 every new file of the test patch is removed with `rm -f`, and no other path is removed;
-  R4 resets occur both before the patch application and after the end-of-output marker.
+  R2 in EACH phase (before the patch application, after the end-of-output marker) the checkout paths equal exactly
+     the patch's modified files;
+  R3 in EACH phase the `rm -f` paths equal exactly the patch's new files;
+  R4 exactly one application and one end marker, application first, and no reset inside the test run;
+  unsupported reset/remove syntax is reported, never assumed safe (fail closed).
+Repaired after lead review d1d9de6, whose two adversarial probes the first version accepted.
 R1-R3 together mean no path outside the test patch's own files is reset, so unrelated setup changes are preserved.
 Producing the real generated scripts for the 500 rows is M01 and needs the user's permission (not yet given).
 """
@@ -32,25 +35,44 @@ def patch_files(test_patch):
 
 
 def check_reset_commands(commands, test_patch, base_commit, apply_marker='git apply', end_marker='END_TEST_OUTPUT'):
-    modified, new = patch_files(test_patch)
+    """Phase-aware, fail-closed check (repaired after lead review d1d9de6). Supported grammar only:
+    `git checkout <base_commit> <paths...>`, `rm -f <paths...>`, one command starting with `git apply`, one command
+    containing END_TEST_OUTPUT. Anything else that resets or removes files is reported as unsupported, not assumed safe."""
+    modified, new = set(patch_files(test_patch)[0]), set(patch_files(test_patch)[1])
     problems = []
-    checkout_paths, removed, reset_idx = [], [], []
+    applies = [i for i, c in enumerate(commands) if c.strip().startswith(apply_marker)]
+    ends = [i for i, c in enumerate(commands) if end_marker in c]
+    if len(applies) != 1 or len(ends) != 1:
+        problems.append('R4 need exactly one patch application and one end-of-output marker (found %d, %d)'
+                        % (len(applies), len(ends)))
+        return problems
+    apply_i, end_i = applies[0], ends[0]
+    if apply_i > end_i:
+        problems.append('R4 the test patch is applied after the end-of-output marker')
+        return problems
+    phases = {'before': commands[:apply_i], 'after': commands[end_i + 1:]}
     for i, cmd in enumerate(commands):
-        m = re.fullmatch(r'git checkout %s(.*)' % re.escape(base_commit), cmd.strip())
-        if m:
-            paths = m.group(1).split()
-            if not paths:
-                problems.append('R1 bare checkout resets the whole tree: %r' % cmd)
-            checkout_paths += paths; reset_idx.append(i)
-        elif cmd.strip().startswith('rm -f '):
-            removed += cmd.strip()[len('rm -f '):].split(); reset_idx.append(i)
-    if set(checkout_paths) - set(modified) or set(modified) - set(checkout_paths):
-        problems.append('R2 checkout paths %s differ from modified files %s' % (sorted(set(checkout_paths)), sorted(modified)))
-    if set(removed) != set(new):
-        problems.append('R3 removed paths %s differ from new files %s' % (sorted(set(removed)), sorted(new)))
-    apply_i = next((i for i, c in enumerate(commands) if c.startswith(apply_marker)), None)
-    end_i = next((i for i, c in enumerate(commands) if end_marker in c), None)
-    if (modified or new) and (apply_i is None or end_i is None or not any(i < apply_i for i in reset_idx)
-                              or not any(i > end_i for i in reset_idx)):
-        problems.append('R4 resets must occur before the patch is applied and after the test output')
+        c = cmd.strip()
+        m = re.fullmatch(r'git checkout %s(.*)' % re.escape(base_commit), c)
+        if m and not m.group(1).split():
+            problems.append('R1 bare checkout resets the whole tree: %r' % cmd)
+        elif c.startswith('git checkout') and not m:
+            problems.append('UNSUPPORTED checkout syntax: %r' % cmd)
+        elif re.match(r'(git (reset|clean|stash|restore)\b|rm(?! -f ))', c):
+            problems.append('UNSUPPORTED reset/remove syntax: %r' % cmd)
+        elif apply_i < i < end_i and (m or c.startswith('rm -f ')):
+            problems.append('R4 reset inside the test run: %r' % cmd)
+    for name, cmds in phases.items():
+        checkout, removed = set(), set()
+        for cmd in cmds:
+            c = cmd.strip()
+            m = re.fullmatch(r'git checkout %s(.*)' % re.escape(base_commit), c)
+            if m:
+                checkout |= set(m.group(1).split())
+            elif c.startswith('rm -f '):
+                removed |= set(c[len('rm -f '):].split())
+        if checkout != modified:
+            problems.append('R2 %s phase: checkout paths %s != modified files %s' % (name, sorted(checkout), sorted(modified)))
+        if removed != new:
+            problems.append('R3 %s phase: removed paths %s != new files %s' % (name, sorted(removed), sorted(new)))
     return problems

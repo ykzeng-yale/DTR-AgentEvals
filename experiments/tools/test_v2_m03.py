@@ -60,4 +60,41 @@ def test_post_fix_mixed_script_passes_and_preserves_unrelated_paths():
 
 def test_reset_must_bracket_the_test_run():
     only_before = ['cd /testbed', 'rm -f tests/test_new.py', "git apply -v - <<'EOF_1'", ": 'END_TEST_OUTPUT'"]
-    assert any(p.startswith('R4') for p in E.check_reset_commands(only_before, NEW_ONLY, BASE))
+    assert any(p.startswith('R3 after') for p in E.check_reset_commands(only_before, NEW_ONLY, BASE))
+
+
+# ---- regressions from the lead's adversarial probes (docs/audits/m03_review_bfed7e1.json), read from the audit file
+def _lead_cases():
+    import json
+    a = json.loads((Path(__file__).resolve().parents[2] / 'docs' / 'audits' / 'm03_review_bfed7e1.json').read_text())
+    return a, {c['name']: c['commands'] for c in a['cases']}
+
+
+def test_lead_probe_incomplete_resets_per_phase_is_rejected():
+    a, cases = _lead_cases()
+    probs = E.check_reset_commands(cases['incomplete_resets_per_phase'], a['test_patch'], a['base_commit'])
+    assert any(p.startswith('R3 before') for p in probs) and any(p.startswith('R2 after') for p in probs)
+
+
+def test_lead_probe_reversed_markers_is_rejected():
+    a, cases = _lead_cases()
+    assert any(p.startswith('R4') for p in E.check_reset_commands(cases['reversed_markers'], a['test_patch'], a['base_commit']))
+
+
+def test_lead_positive_control_passes():
+    a, cases = _lead_cases()
+    assert E.check_reset_commands(cases['complete_per_phase'], a['test_patch'], a['base_commit']) == []
+
+
+@pytest.mark.parametrize('cmd', ['git reset --hard abc123', 'git clean -fd', 'git stash', 'rm tests/test_new.py',
+                                 'git checkout main tests/test_old.py', 'git restore tests/test_old.py'])
+def test_unsupported_reset_syntax_fails_closed(cmd):
+    bad = script(['git checkout %s tests/test_old.py' % BASE, 'rm -f tests/test_new.py', cmd])
+    assert any(p.startswith('UNSUPPORTED') for p in E.check_reset_commands(bad, MIXED, BASE))
+
+
+def test_missing_or_duplicate_markers_fail_closed():
+    good = script(['git checkout %s tests/test_old.py' % BASE, 'rm -f tests/test_new.py'])
+    no_end = [c for c in good if 'END_TEST_OUTPUT' not in c]
+    assert any(p.startswith('R4') for p in E.check_reset_commands(no_end, MIXED, BASE))
+    assert any(p.startswith('R4') for p in E.check_reset_commands(good + ["git apply -v x"], MIXED, BASE))

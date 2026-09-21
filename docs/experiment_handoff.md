@@ -1265,3 +1265,22 @@ REQ-003 running. No new model/Monte Carlo run or interruption of separately auth
 **Readiness: 55%, change 0 points, range 45–65%.** Same rubric. No new empirical results or paper pages.
 Top milestones: useful validated inference/adequate comparisons; statistical validation and final empirical
 synthesis; independent reproducibility, author metadata and submission packaging.
+
+## Worker checkpoint — 2026-09-21T10:25:21Z (host clock; local 2026-09-21 06:25 EDT)
+
+Code/config commit at checkpoint start: `bfed7e1`. Last lead checkpoint read: `d1d9de6` (10:19 cycle), which arrived during this tick. **Authorized runs: none.** Gate `log live branch` verified; no runner; servers healthy; foreign load `[]`.
+
+**Acknowledged (`d1d9de6`):**
+- REQ-002 is running on the repair; REQ-001 is completed; REQ-003 is running.
+- **Strict verified resolution** is the study-specific primary operational endpoint. SKIPPED and XFAIL required tests, F2P or P2P, are **not** verified success. They count as zero with their status and reason kept, and **no episode or task is excluded** for that outcome.
+- Upstream scores are preserved separately, and the endpoint is not described as the official score. The same mapping applies to logs, fresh policies and controls. No archived result is re-scored.
+
+**Your reset-checker challenge, reproduced before conceding.** Running your three probes from `docs/audits/m03_review_bfed7e1.json` against my `bfed7e1` checker: `incomplete_resets_per_phase` and `reversed_markers` both returned `[]`, i.e. **falsely accepted**. R2/R3 used the global path union and R4 never required application before completion. **You were right.**
+
+| Request | Status | Artifact / reason |
+|---|---|---|
+| DTR-REQ-001 (P0) | completed | — |
+| DTR-REQ-002 (P1) | **running: reset checker repaired for review** | [`eval_script_check.py`](../experiments/v2_adapter/eval_script_check.py) is now phase-aware and fails closed. It requires **exactly one** application and one end marker, with the application first. Each phase (before application, after end) must check out exactly the modified files **and** remove exactly the new files. It rejects resets inside the test run and bare checkouts. Unsupported reset syntax (`git reset/clean/stash/restore`, plain `rm`, checkout of another ref) is reported, not assumed safe; this is stated as a grammar limit, not general shell safety. **Your probes are regressions read directly from the audit file.** Both bad cases are now rejected (R3/R2 per phase; R4 order), and your positive control passes. The new-only and mixed positives and the tox.ini unrelated-path rejection are retained, and 6 unsupported-syntax and 2 marker cases were added. **28 M03 cases pass.** Real generated scripts (M01) and execution controls are still needed to show actual setup preservation; static checking cannot. |
+| DTR-REQ-003 (P1) | **running: fresh on-policy reference uncertainty delivered** | [`fresh_reference.py`](../experiments/v2_sim/fresh_reference.py) writes [`fresh_reference_v1.json`](../experiments/v2_sim/fresh_reference_v1.json). It covers the open "worker computes" gate: the exact on-policy per-episode utility variance under separate fresh blocks, for 24 rows (8 core cells × history rule, prompt rule and best fixed). It is derived two ways that agree **exactly**: a direct policy enumeration, and the IPW second moment under a policy-copying logger. With r_fresh = 4 (a **proposal**; you specify the design), fresh-mean SE is .0117–.0141 at n=250 and .0058–.0071 at n=1000. The SE of the log-minus-fresh calibration discrepancy with independent blocks is .021–.073 at n=250. The **IPW/on-policy per-episode variance ratio is 1.47–71.6** across all 96 (row, logger, stratum) entries. The minimum is the history rule under the aligned feedback-dependent logger; the maximum is K=4 always-large under that same logger. Every ratio is ≥ 1, as the matched-path weight argument requires, and this is tested. Ranges were computed from the full JSON. Four tests pass; 228 tests pass. Moments only; no power or coverage claim. |
+
+M01 and the upstream conformance run remain blocked on the user's download/execution permission, which I have already requested. No duplicate request is made.
