@@ -1174,3 +1174,53 @@ Code/config commit at checkpoint start: `22c5224`. Last lead checkpoint read: `1
 | DTR-REQ-003 (P1) | running (not this tick's priority) | gate table `22c5224` |
 
 **No question for the lead.** The M01 blocker is a user permission, not a design decision.
+
+
+## Lead review — 2026-09-21 09:18 UTC cycle: consolidated gates and next qualification
+
+Reviewed worker commit `22c5224af616db16c7c4119357445f06837564d2` against the accepted source-bound reviews.
+**DTR-REQ-003: proceed with the consolidated handoff, with scope repairs integrated in
+[v2_gate_table_20260921.md](v2_gate_table_20260921.md).** The primary joint branch/log target is
+Δ = θ − ν₁ + ν₀; θ alone is its branch component. The existing finite bound is mathematically available
+but vacuous for the archive under unverified assumptions; useful validated inference remains open.
+Known-kernel oracle catalog extensions are optional, not a new acceptance gate. A two-log comparison is
+conditional on claiming that design comparison, not an added mandatory experiment. Runtime qualification
+requires an exact image/architecture match, not an unsupported universal x86_64 requirement. The host
+blocker remains worker-reported. No new v2 Monte Carlo is requested, and separately authorized worker jobs
+are unaffected. These are reporting/scope corrections, not new mathematical or empirical results.
+
+**DTR-REQ-002 (P1): proceed with M01–M03 at selected evaluator `f7bbbb2`; this remains the next priority.**
+Use the exact [existing acceptance criteria](theory_feedback_20260921_evaluator_selection.md): all 500 pinned
+metadata rows and generated-script hashes with pinned external inputs; missing/malformed/empty-required-test
+rejection; declared-outcome grading checks and the new-file-only checkout regression preserving unrelated
+setup changes. Report fixture IDs, counts, exact sources and any discrepancies; distinguish construction
+from execution. Do not wait for a runtime host to begin metadata/static fixture work or launch a new
+benchmark stage before the existing v2 gates. No new control cells or repeated accepted numerical audits
+are requested. Acknowledge REQ-001 completed, REQ-002 running, and REQ-003 running for remaining
+implementation/inference, without duplicating queued work. Retain Yukang Zeng <ykzeng2019@gmail.com> as both
+author and committer.
+
+**FULL-project readiness: 55%, change 0 percentage points, judgment range 45–65%.** Rubric and stages unchanged.
+The table now records the accepted artifacts and actual gaps more accurately; no new outcomes, validated
+interval or manuscript content were added. Top milestones remain useful validated inference/adequate
+comparisons; statistical validation and final empirical synthesis; independent reproducibility, author
+metadata and submission packaging.
+
+### Same-cycle arrival: M02 review at `1ac0cea4ba5317eb70ee9fc82d0d79f93a76be63`
+
+The worker's 09:23:42 UTC checkpoint arrived during publication synchronization; its changes were preserved.
+**REQ-002 verdict: accept M02's delivered synthetic fixture slice; proceed to M03.** The lead inspected
+`qualify_instances.py` and its test source and reran all **29 cases successfully**. The guard refuses absent
+F2P/P2P keys, malformed lists and empty F2P, retains explicitly empty P2P with a limitation, and leaves input
+content unchanged. This is a source review and test rerun, not an independently implemented validator,
+real-row qualification, grading conformance or runtime acceptance. The reported broader 196-test suite was
+not rerun. The table now distinguishes this delivery from still-planned fixtures.
+
+M01's blocker is **reported external-worker permission**, not a scientific rejection: the worker says its
+operating rules require explicit user permission to download the pinned public dataset and execute upstream
+code, and says it has asked. The lead has not inspected that host's rules or any approval response. Keep that
+request with the concrete file/revision and exact execution scope; distinguish passive retrieval from script
+execution when describing it. Do not duplicate the permission request or treat elapsed time as consent.
+Continue independent M03 work within that host's permissions; report precisely what remains blocked. No new
+installation, runtime workload or compute is requested here. Readiness remains **55%, 0-point change, 45–65%**;
+this additional fixture evidence does not close a scientific or empirical milestone.
