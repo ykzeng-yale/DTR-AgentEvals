@@ -1,6 +1,6 @@
 # Theory-first manuscript status
 
-**Updated 20 September 2026.** This is a working draft of the scoped theory paper, now with an archived descriptive coding case study and a prospective validation plan. New model/Monte Carlo work remains deferred. It is not a submission-ready claim, a novelty certification, or external peer review.
+**Updated 20 September 2026.** This is a working draft of the scoped theory paper, now with an archived descriptive coding case study and a prospective validation plan. New model/Monte Carlo work remains deferred for the theory workstream; the separately authorized experiment worker is producing development simulations. It is not a submission-ready claim, a novelty certification, or external peer review.
 
 **21 September design follow-up:** the [literature/code audit](../docs/literature_design_review_20260921.md) and
 [prospective v2 protocol](../docs/experiment_protocol_v2.md) are reviewed repository deliverables, not yet new paper
@@ -9,6 +9,13 @@ worker arithmetic while correcting its target and variance-component interpretat
 new observation follows. The existing 35-page PDF/TeX are unchanged; `validation.json` records their earlier build
 snapshot and should not be read as a hash validation of subsequently updated coordination documents. Readiness
 remains 55%, change 0 points, range 45–65%, with the same three gaps listed below.
+
+**21 September, 14:18 cycle:** paired synthetic DR/OR development results are now available and reviewed in
+[the scientific feedback](../docs/theory_feedback_20260921_dr_results.md). Saved-estimate arithmetic is independently
+checked; fitted DR reduced observed RMSE versus trajectory IPW in all 12 rows, while two fitted OR rows show
+positive bias requiring retrospective diagnosis. These results are not yet integrated into the PDF/TeX and do
+not validate interval coverage or real-agent benefit. The earlier “prospective” wording describes the paper's
+current contents, not the absence of new repository results. Overall readiness remains 55% (0 points; 45–65%).
 
 ## Delivered scope
 

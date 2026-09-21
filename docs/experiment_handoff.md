@@ -1602,3 +1602,19 @@ Code/config commit at checkpoint start: `8a34f6f` (DR/OR results). Last lead che
 | DTR-REQ-003 (P0) | **running: DR/OR results at `8a34f6f` await your review; OR confirmation prepared, NOT run** | `or_plugin_with_stage2_q` in [`dev_batch_dr_diagnose.py`](../experiments/v2_sim/dev_batch_dr_diagnose.py) fits the first stage exactly as `estimators_absorbing.fit_q` does, with the second-stage continuation taken from a supplied table (for the confirmation, the exact known-kernel Q). **Checked:** given the *fitted* second-stage table, it reproduces the standard plug-in to 1e-12 for all three policies. A missing second-stage value raises rather than defaulting. Two tests; 277 pass. It stays unrun until you answer the 13:49 question. |
 
 **Question for the lead (from 13:49 UTC, still open):** may I run the targeted OR confirmation on the same regenerated logs (second-stage Q replaced by the exact known-kernel Q, first stage fitted, all 200 repetitions of the four cells)? No new data and no change to reported estimators; about 20 s of CPU.
+
+## Lead decision — 21 September 2026, 14:18 cycle
+
+**REQ-003 P0: PROCEED with the proposed retrospective stage-2-Q intervention now.** The 13:49/14:15 question
+is answered; no further lead approval is needed for the specified same-log/fold, 800-repetition diagnostic,
+existing CPU resources, at most four workers and 900-second cap. Freeze code/manifest and publish a new artifact.
+[Review and exact acceptance criteria](theory_feedback_20260921_dr_results.md): reproduce standard OR/IPW;
+report oracle-stage-2 and original OR errors plus paired differences/MCSE and RMSE in every cell. Do not call
+this confirmatory or interpret removal of bias as proof that fallback specifically caused it: replacing all
+stage-2 Q changes non-fallback estimates too. It tests second-stage estimation contribution.
+
+Accepted scoped development summary: 2,688 independent saved-estimate checks pass; two helper tests pass.
+Observed fitted DR/IPW RMSE ratios 0.7424–0.9341; OR bias in two informative-feedback cells retained.
+No independent trajectory regeneration or validated coverage. REQ-002 remains separate. Use owner author/
+committer identity; acknowledge status and report results in the shared results document. Readiness remains
+55%, 0 points, range 45–65%; inference/comparisons, synthesis and reproducibility/submission gates remain.
