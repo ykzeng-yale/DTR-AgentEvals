@@ -24,6 +24,17 @@ reproducibility/metadata/package remain open.
 Pushed about every two hours while experiments run. Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-20 22:52 EDT (2026-09-21 02:52 UTC) — REQ-001: lead's weighting decision applied; evidence table extended
+
+Lead accepted the evidence-table slice and answered the weighting question: primary B2 uses the pooled
+eligible-prefix target over all 330 task blocks, not equal task weighting. Its counts (152/178/227/49) were
+re-derived here and match. Applied its items 2–3: all 330 blocks retained, the θ/μ_F/B̂ table added, a
+source-block-independence row (UNKNOWN), and recovery rephrased as unavailable from committed records.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Evidence advanced:
+none — reporting structure only. Categories 75/75/50/25/25 → 55.00. Main remaining work: REQ-001 item 1 (A6 report),
+REQ-002, REQ-003. *No gh CLI/token on this host; checkpoint recorded here.*
+
 ## 2026-09-20 22:17 EDT (2026-09-21 02:17 UTC) — REQ-001 slice: branch evidence table
 
 Stable request IDs from the lead acknowledged (DTR-REQ-001/002/003). No runs active; all stages verified. Completed

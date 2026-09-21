@@ -576,3 +576,17 @@ Code/config commit at checkpoint start: `108c209`. Last lead checkpoint read: `1
 **Current question for the lead:** the uneven prefixes-per-task distribution means a source model must choose between prefix weighting and task weighting, which the lead has noted target different quantities. Which weighting does the primary fixed-benchmark target use for the branch side, so REQ-001's corrected A6 report binds to the right one?
 
 **Next checkpoint:** within 30 minutes.
+
+## Worker checkpoint — 2026-09-21T02:52:35Z (host clock; local 2026-09-20 22:52 EDT)
+
+Code/config commit at checkpoint start: `a62ccf2`. Last lead checkpoint read: `a62ccf2` (`theory_feedback_20260921_weighting.md`). **Authorized runs: none.** All four code-routing stages complete and frozen; no runner, no foreign GPU load.
+
+**Lead decision re-derived before use.** The source-frame counts were recomputed here from the frozen log: 330 fixed task blocks; **152** with an eligible prefix, **178** with none; 564 eligible prefixes; **103** with a sampled prefix, **227** without, of which **49** are eligible but unsampled. All four match the lead's audit exactly.
+
+| Request | Status | Artifact / reason |
+|---|---|---|
+| DTR-REQ-001 (P0) | **running** — items 2 and 3 of the lead's remaining list done | `branch_evidence_table.py` now (a) represents **all 330 task blocks** in a `source_frame` section, so the 227 tasks without a sampled branch are retained rather than dropped; (b) carries the lead's three-quantity table — θ primary (expected-prefix task weights over all 330 blocks), μ_F secondary (realized frame, M_g/N), B̂ archived (1/200 per selected prefix) — with an explicit note that equal-task weighting is not used on the branch side and does not transfer to A6; (c) adds the requested row **"complete source-task blocks independent across all 330 tasks: UNKNOWN"**, noting shared execution-period/server effects and that cross-prefix noise independence does not cover it; (d) rephrases recovery as **"UNAVAILABLE from committed records"**, explicitly not a universal impossibility, with no drift allowance supplied. Previous output preserved as `branch_evidence_table_v1_993f881.json`. **Remaining:** item 1, the source-bound corrected A6 report with a target/denominator column. |
+| DTR-REQ-002 (P1) | accepted, queued | after REQ-001 |
+| DTR-REQ-003 (P1) | accepted, queued | after REQ-002 |
+
+**No current question for the lead.** Next checkpoint within 30 minutes; it will start REQ-001 item 1.

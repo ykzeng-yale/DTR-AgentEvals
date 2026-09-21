@@ -48,8 +48,31 @@ def main():
     only_lost = sum(1 for s in inv_sets if s == frozenset({'0445024c72d2'}))
     only_rec = sum(1 for s in inv_sets if s == frozenset({'8c343c83afdc'}))
 
+    # full source frame: ALL 330 fixed CONFIRM task blocks, including those with no eligible or no sampled prefix
+    log, _ = A.read(common.RESULTS / 'log' / 'episodes.jsonl', cfg)
+    conf = [e for e in log if e['split'] == 'confirm']
+    all_tasks = {e['task_uid'] for e in conf}
+    elig = collections.Counter(e['task_uid'] for e in conf if e['n_decisions'] >= 2)
+    sampled_tasks = set(blocks)
     out = dict(
         request='DTR-REQ-001 (P0) slice: source-block / fresh-pair / recovery evidence',
+        source_frame=dict(
+            n_fixed_task_blocks=len(all_tasks),
+            tasks_with_eligible_prefix=len(elig), tasks_with_no_eligible_prefix=len(all_tasks) - len(elig),
+            n_eligible_prefixes=sum(elig.values()),
+            tasks_with_sampled_prefix=len(sampled_tasks), tasks_with_no_sampled_prefix=len(all_tasks) - len(sampled_tasks),
+            tasks_eligible_but_unsampled=len(set(elig) - sampled_tasks),
+            note='all 330 task blocks are retained; tasks without a sampled branch are part of the source frame, not dropped'),
+        quantities=[
+            dict(name='theta', role='PRIMARY repeated-source target (lead decision, theory_feedback_20260921_weighting.md)',
+                 weighting='ratio of expected eligible-prefix totals over all 330 fixed task blocks; expected-prefix task weights E(M_g)/sum E(M_h)'),
+            dict(name='mu_F', role='SECONDARY realized-frame mean',
+                 weighting='sum_i d_i / N over the N=%d recorded eligible prefixes; task weights M_g/N within this frame' % sum(elig.values())),
+            dict(name='B_hat', role='ARCHIVED sampled branch estimate',
+                 weighting='mean of the 200 selected prefix contrasts, weight 1/200 each; selected-task means weight m_g/200'),
+        ],
+        weighting_note='equal-task weighting is NOT used for the branch side; it would change the question. '
+                       'This weighting does NOT transfer to the A6 whole-policy comparisons, which keep their own equal-task target.',
         status='descriptive evidence only; no interpretation, coverage or power claim; no primary-target substitution',
         source_blocks=dict(n_source_tasks_with_branches=len(blocks), n_prefixes=len(per),
                            prefixes_per_task_distribution=dict(sorted(collections.Counter(blocks.values()).items())),
@@ -74,8 +97,14 @@ def main():
                  evidence='arms share the restored transcript and serving process; no coupling test was designed'),
             dict(assumption='no execution shocks shared across prefixes', status='UNKNOWN',
                  evidence='continuations ran concurrently on shared servers; timing is recorded but shock sharing is not identified'),
-            dict(assumption='lost and recovered executions follow the same law', status='UNKNOWN (not recoverable)',
-                 evidence='the 665 lost outcomes were written to an unlinked file and cannot be compared; %d prefixes span both invocations'
+            dict(assumption='complete source-task blocks are independent across all 330 tasks', status='UNKNOWN',
+                 evidence='the 8 episodes of a task block share a task but ran interleaved with other tasks on the same two '
+                          'servers over one execution period; shared execution-period or server effects are neither designed '
+                          'against nor identified. Cross-prefix fresh-noise independence does not cover this assumption.'),
+            dict(assumption='lost and recovered executions follow the same law', status='UNAVAILABLE from committed records',
+                 evidence='the lost outcomes are not in the committed records, so this cannot be checked FROM THEM; retained '
+                          'outcomes and hashes cannot establish the required law. This is not a claim that kernel stability '
+                          'is uncheckable in principle, and no numerical drift allowance is supplied. %d prefixes span both invocations.'
                           % comp.get(2, 0)),
             dict(assumption='restored prefix equals the logged pre-call state', status='OBSERVED for recorded fields',
                  evidence='800/800 transcript hashes independently recomputed (restoration_recheck.json); '

@@ -1,33 +1,5 @@
 {
  "request": "DTR-REQ-001 (P0) slice: source-block / fresh-pair / recovery evidence",
- "source_frame": {
-  "n_fixed_task_blocks": 330,
-  "tasks_with_eligible_prefix": 152,
-  "tasks_with_no_eligible_prefix": 178,
-  "n_eligible_prefixes": 564,
-  "tasks_with_sampled_prefix": 103,
-  "tasks_with_no_sampled_prefix": 227,
-  "tasks_eligible_but_unsampled": 49,
-  "note": "all 330 task blocks are retained; tasks without a sampled branch are part of the source frame, not dropped"
- },
- "quantities": [
-  {
-   "name": "theta",
-   "role": "PRIMARY repeated-source target (lead decision, theory_feedback_20260921_weighting.md)",
-   "weighting": "ratio of expected eligible-prefix totals over all 330 fixed task blocks; expected-prefix task weights E(M_g)/sum E(M_h)"
-  },
-  {
-   "name": "mu_F",
-   "role": "SECONDARY realized-frame mean",
-   "weighting": "sum_i d_i / N over the N=564 recorded eligible prefixes; task weights M_g/N within this frame"
-  },
-  {
-   "name": "B_hat",
-   "role": "ARCHIVED sampled branch estimate",
-   "weighting": "mean of the 200 selected prefix contrasts, weight 1/200 each; selected-task means weight m_g/200"
-  }
- ],
- "weighting_note": "equal-task weighting is NOT used for the branch side; it would change the question. This weighting does NOT transfer to the A6 whole-policy comparisons, which keep their own equal-task target.",
  "status": "descriptive evidence only; no interpretation, coverage or power claim; no primary-target substitution",
  "source_blocks": {
   "n_source_tasks_with_branches": 103,
@@ -95,14 +67,9 @@
    "evidence": "continuations ran concurrently on shared servers; timing is recorded but shock sharing is not identified"
   },
   {
-   "assumption": "complete source-task blocks are independent across all 330 tasks",
-   "status": "UNKNOWN",
-   "evidence": "the 8 episodes of a task block share a task but ran interleaved with other tasks on the same two servers over one execution period; shared execution-period or server effects are neither designed against nor identified. Cross-prefix fresh-noise independence does not cover this assumption."
-  },
-  {
    "assumption": "lost and recovered executions follow the same law",
-   "status": "UNAVAILABLE from committed records",
-   "evidence": "the lost outcomes are not in the committed records, so this cannot be checked FROM THEM; retained outcomes and hashes cannot establish the required law. This is not a claim that kernel stability is uncheckable in principle, and no numerical drift allowance is supplied. 2 prefixes span both invocations."
+   "status": "UNKNOWN (not recoverable)",
+   "evidence": "the 665 lost outcomes were written to an unlinked file and cannot be compared; 2 prefixes span both invocations"
   },
   {
    "assumption": "restored prefix equals the logged pre-call state",
