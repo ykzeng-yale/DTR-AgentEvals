@@ -24,6 +24,16 @@ reproducibility/metadata/package remain open.
 Pushed about every two hours while experiments run. Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-21 00:52 EDT (2026-09-21 04:52 UTC) — REQ-003: supplemental cost-dominated cell
+
+Added the lead's supplemental cell (η=.2, q=.4) in a versioned output; the six-cell file is byte-identical. Both truth
+paths reproduce the lead's table exactly: A=F gain −1/100, best-class advantage 0. Cost/utility IPW expectations are exact
+for every supported pair, and 14 unsupported rows are flagged explicitly.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Evidence advanced:
+none (analytic control). Categories 75/75/50/25/25 → 55.00. Main remaining work: REQ-003 repair tables and block
+design; evaluator choice (lead). *No gh CLI/token on this host.*
+
 ## 2026-09-21 00:25 EDT (2026-09-21 04:25 UTC) — REQ-002 repair: compatible evaluator candidate proposed
 
 The lead completed REQ-001 and accepted REQ-003 slice 1 (supplemental cell q=.4 requested). For the REQ-002 repair I

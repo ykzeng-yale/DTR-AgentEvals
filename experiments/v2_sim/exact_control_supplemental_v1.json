@@ -1,0 +1,2903 @@
+{
+ "request": "DTR-REQ-003: supplemental development output v1 (lead decision 54e1621, theory_feedback_20260921_exact_control.md)",
+ "status": "EXACT rational enumeration; no Monte Carlo, no model. The six-cell artifact exact_control_truth.json is unchanged; this file adds the supplemental cell and cost/utility IPW expectation checks for all seven cells",
+ "supplemental_cell": "eta=1/5, q=2/5, c=1/10: informative feedback and a real action effect, but benefit below cost",
+ "loggers": {
+  "uniform_floor_0.5": {
+   "P(A=1|F=0)": "1/2",
+   "P(A=1|F=1)": "1/2"
+  },
+  "state_dependent_floor_0.2": {
+   "P(A=1|F=0)": "1/5",
+   "P(A=1|F=1)": "4/5"
+  },
+  "zero_support_negative_control": {
+   "P(A=1|F=0)": "1/2",
+   "P(A=1|F=1)": "1"
+  }
+ },
+ "checks": {
+  "all_bellman_equal_enumeration": true,
+  "all_closed_forms_match": true,
+  "supported_ipw_exact_for_success_cost_utility": true,
+  "unsupported_rows_flagged": 14,
+  "best_class_advantage_never_negative": true
+ },
+ "cells": [
+  {
+   "role": "original",
+   "eta": "0",
+   "q": "0",
+   "c": "1/10",
+   "policies": {
+    "const_0": {
+     "success": {
+      "exact": "1/2",
+      "decimal": 0.5
+     },
+     "cost": {
+      "exact": "0",
+      "decimal": 0.0
+     },
+     "utility": {
+      "exact": "1/2",
+      "decimal": 0.5
+     },
+     "learnable": true,
+     "enumeration_equals_closed_form": true,
+     "bellman_equals_enumeration": true,
+     "ipw": {
+      "uniform_floor_0.5": {
+       "status": "supported",
+       "success": {
+        "expectation": {
+         "exact": "1/2",
+         "decimal": 0.5
+        },
+        "equals_truth": true
+       },
+       "cost": {
+        "expectation": {
+         "exact": "0",
+         "decimal": 0.0
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "1/2",
+         "decimal": 0.5
+        },
+        "equals_truth": true
+       }
+      },
+      "state_dependent_floor_0.2": {
+       "status": "supported",
+       "success": {
+        "expectation": {
+         "exact": "1/2",
+         "decimal": 0.5
+        },
+        "equals_truth": true
+       },
+       "cost": {
+        "expectation": {
+         "exact": "0",
+         "decimal": 0.0
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "1/2",
+         "decimal": 0.5
+        },
+        "equals_truth": true
+       }
+      },
+      "zero_support_negative_control": {
+       "status": "UNSUPPORTED: target not identified by IPW under this logger",
+       "success": {
+        "expectation": {
+         "exact": "1/4",
+         "decimal": 0.25
+        },
+        "equals_truth": false
+       },
+       "cost": {
+        "expectation": {
+         "exact": "0",
+         "decimal": 0.0
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "1/4",
+         "decimal": 0.25
+        },
+        "equals_truth": false
+       }
+      }
+     }
+    },
+    "const_1": {
+     "success": {
+      "exact": "1/2",
+      "decimal": 0.5
+     },
+     "cost": {
+      "exact": "1/10",
+      "decimal": 0.1
+     },
+     "utility": {
+      "exact": "2/5",
+      "decimal": 0.4
+     },
+     "learnable": true,
+     "enumeration_equals_closed_form": true,
+     "bellman_equals_enumeration": true,
+     "ipw": {
+      "uniform_floor_0.5": {
+       "status": "supported",
+       "success": {
+        "expectation": {
+         "exact": "1/2",
+         "decimal": 0.5
+        },
+        "equals_truth": true
+       },
+       "cost": {
+        "expectation": {
+         "exact": "1/10",
+         "decimal": 0.1
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "2/5",
+         "decimal": 0.4
+        },
+        "equals_truth": true
+       }
+      },
+      "state_dependent_floor_0.2": {
+       "status": "supported",
+       "success": {
+        "expectation": {
+         "exact": "1/2",
+         "decimal": 0.5
+        },
+        "equals_truth": true
+       },
+       "cost": {
+        "expectation": {
+         "exact": "1/10",
+         "decimal": 0.1
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "2/5",
+         "decimal": 0.4
+        },
+        "equals_truth": true
+       }
+      },
+      "zero_support_negative_control": {
+       "status": "supported",
+       "success": {
+        "expectation": {
+         "exact": "1/2",
+         "decimal": 0.5
+        },
+        "equals_truth": true
+       },
+       "cost": {
+        "expectation": {
+         "exact": "1/10",
+         "decimal": 0.1
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "2/5",
+         "decimal": 0.4
+        },
+        "equals_truth": true
+       }
+      }
+     }
+    },
+    "observe_F": {
+     "success": {
+      "exact": "1/2",
+      "decimal": 0.5
+     },
+     "cost": {
+      "exact": "1/20",
+      "decimal": 0.05
+     },
+     "utility": {
+      "exact": "9/20",
+      "decimal": 0.45
+     },
+     "learnable": true,
+     "enumeration_equals_closed_form": true,
+     "bellman_equals_enumeration": true,
+     "ipw": {
+      "uniform_floor_0.5": {
+       "status": "supported",
+       "success": {
+        "expectation": {
+         "exact": "1/2",
+         "decimal": 0.5
+        },
+        "equals_truth": true
+       },
+       "cost": {
+        "expectation": {
+         "exact": "1/20",
+         "decimal": 0.05
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "9/20",
+         "decimal": 0.45
+        },
+        "equals_truth": true
+       }
+      },
+      "state_dependent_floor_0.2": {
+       "status": "supported",
+       "success": {
+        "expectation": {
+         "exact": "1/2",
+         "decimal": 0.5
+        },
+        "equals_truth": true
+       },
+       "cost": {
+        "expectation": {
+         "exact": "1/20",
+         "decimal": 0.05
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "9/20",
+         "decimal": 0.45
+        },
+        "equals_truth": true
+       }
+      },
+      "zero_support_negative_control": {
+       "status": "supported",
+       "success": {
+        "expectation": {
+         "exact": "1/2",
+         "decimal": 0.5
+        },
+        "equals_truth": true
+       },
+       "cost": {
+        "expectation": {
+         "exact": "1/20",
+         "decimal": 0.05
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "9/20",
+         "decimal": 0.45
+        },
+        "equals_truth": true
+       }
+      }
+     }
+    },
+    "observe_not_F": {
+     "success": {
+      "exact": "1/2",
+      "decimal": 0.5
+     },
+     "cost": {
+      "exact": "1/20",
+      "decimal": 0.05
+     },
+     "utility": {
+      "exact": "9/20",
+      "decimal": 0.45
+     },
+     "learnable": true,
+     "enumeration_equals_closed_form": true,
+     "bellman_equals_enumeration": true,
+     "ipw": {
+      "uniform_floor_0.5": {
+       "status": "supported",
+       "success": {
+        "expectation": {
+         "exact": "1/2",
+         "decimal": 0.5
+        },
+        "equals_truth": true
+       },
+       "cost": {
+        "expectation": {
+         "exact": "1/20",
+         "decimal": 0.05
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "9/20",
+         "decimal": 0.45
+        },
+        "equals_truth": true
+       }
+      },
+      "state_dependent_floor_0.2": {
+       "status": "supported",
+       "success": {
+        "expectation": {
+         "exact": "1/2",
+         "decimal": 0.5
+        },
+        "equals_truth": true
+       },
+       "cost": {
+        "expectation": {
+         "exact": "1/20",
+         "decimal": 0.05
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "9/20",
+         "decimal": 0.45
+        },
+        "equals_truth": true
+       }
+      },
+      "zero_support_negative_control": {
+       "status": "UNSUPPORTED: target not identified by IPW under this logger",
+       "success": {
+        "expectation": {
+         "exact": "1/4",
+         "decimal": 0.25
+        },
+        "equals_truth": false
+       },
+       "cost": {
+        "expectation": {
+         "exact": "1/20",
+         "decimal": 0.05
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "1/5",
+         "decimal": 0.2
+        },
+        "equals_truth": false
+       }
+      }
+     }
+    },
+    "oracle_U": {
+     "success": {
+      "exact": "1/2",
+      "decimal": 0.5
+     },
+     "cost": {
+      "exact": "1/20",
+      "decimal": 0.05
+     },
+     "utility": {
+      "exact": "9/20",
+      "decimal": 0.45
+     },
+     "learnable": false,
+     "enumeration_equals_closed_form": true
+    }
+   },
+   "observe_F_gain_over_const_0": {
+    "exact": "-1/20",
+    "decimal": -0.05
+   },
+   "best_fixed": {
+    "policy": "const_0",
+    "utility": {
+     "exact": "1/2",
+     "decimal": 0.5
+    }
+   },
+   "best_F_measurable": {
+    "policy": "const_0",
+    "utility": {
+     "exact": "1/2",
+     "decimal": 0.5
+    }
+   },
+   "best_class_advantage_over_best_fixed": {
+    "exact": "0",
+    "decimal": 0.0
+   }
+  },
+  {
+   "role": "original",
+   "eta": "0",
+   "q": "1/4",
+   "c": "1/10",
+   "policies": {
+    "const_0": {
+     "success": {
+      "exact": "1/2",
+      "decimal": 0.5
+     },
+     "cost": {
+      "exact": "0",
+      "decimal": 0.0
+     },
+     "utility": {
+      "exact": "1/2",
+      "decimal": 0.5
+     },
+     "learnable": true,
+     "enumeration_equals_closed_form": true,
+     "bellman_equals_enumeration": true,
+     "ipw": {
+      "uniform_floor_0.5": {
+       "status": "supported",
+       "success": {
+        "expectation": {
+         "exact": "1/2",
+         "decimal": 0.5
+        },
+        "equals_truth": true
+       },
+       "cost": {
+        "expectation": {
+         "exact": "0",
+         "decimal": 0.0
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "1/2",
+         "decimal": 0.5
+        },
+        "equals_truth": true
+       }
+      },
+      "state_dependent_floor_0.2": {
+       "status": "supported",
+       "success": {
+        "expectation": {
+         "exact": "1/2",
+         "decimal": 0.5
+        },
+        "equals_truth": true
+       },
+       "cost": {
+        "expectation": {
+         "exact": "0",
+         "decimal": 0.0
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "1/2",
+         "decimal": 0.5
+        },
+        "equals_truth": true
+       }
+      },
+      "zero_support_negative_control": {
+       "status": "UNSUPPORTED: target not identified by IPW under this logger",
+       "success": {
+        "expectation": {
+         "exact": "1/4",
+         "decimal": 0.25
+        },
+        "equals_truth": false
+       },
+       "cost": {
+        "expectation": {
+         "exact": "0",
+         "decimal": 0.0
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "1/4",
+         "decimal": 0.25
+        },
+        "equals_truth": false
+       }
+      }
+     }
+    },
+    "const_1": {
+     "success": {
+      "exact": "1/2",
+      "decimal": 0.5
+     },
+     "cost": {
+      "exact": "1/10",
+      "decimal": 0.1
+     },
+     "utility": {
+      "exact": "2/5",
+      "decimal": 0.4
+     },
+     "learnable": true,
+     "enumeration_equals_closed_form": true,
+     "bellman_equals_enumeration": true,
+     "ipw": {
+      "uniform_floor_0.5": {
+       "status": "supported",
+       "success": {
+        "expectation": {
+         "exact": "1/2",
+         "decimal": 0.5
+        },
+        "equals_truth": true
+       },
+       "cost": {
+        "expectation": {
+         "exact": "1/10",
+         "decimal": 0.1
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "2/5",
+         "decimal": 0.4
+        },
+        "equals_truth": true
+       }
+      },
+      "state_dependent_floor_0.2": {
+       "status": "supported",
+       "success": {
+        "expectation": {
+         "exact": "1/2",
+         "decimal": 0.5
+        },
+        "equals_truth": true
+       },
+       "cost": {
+        "expectation": {
+         "exact": "1/10",
+         "decimal": 0.1
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "2/5",
+         "decimal": 0.4
+        },
+        "equals_truth": true
+       }
+      },
+      "zero_support_negative_control": {
+       "status": "supported",
+       "success": {
+        "expectation": {
+         "exact": "1/2",
+         "decimal": 0.5
+        },
+        "equals_truth": true
+       },
+       "cost": {
+        "expectation": {
+         "exact": "1/10",
+         "decimal": 0.1
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "2/5",
+         "decimal": 0.4
+        },
+        "equals_truth": true
+       }
+      }
+     }
+    },
+    "observe_F": {
+     "success": {
+      "exact": "1/2",
+      "decimal": 0.5
+     },
+     "cost": {
+      "exact": "1/20",
+      "decimal": 0.05
+     },
+     "utility": {
+      "exact": "9/20",
+      "decimal": 0.45
+     },
+     "learnable": true,
+     "enumeration_equals_closed_form": true,
+     "bellman_equals_enumeration": true,
+     "ipw": {
+      "uniform_floor_0.5": {
+       "status": "supported",
+       "success": {
+        "expectation": {
+         "exact": "1/2",
+         "decimal": 0.5
+        },
+        "equals_truth": true
+       },
+       "cost": {
+        "expectation": {
+         "exact": "1/20",
+         "decimal": 0.05
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "9/20",
+         "decimal": 0.45
+        },
+        "equals_truth": true
+       }
+      },
+      "state_dependent_floor_0.2": {
+       "status": "supported",
+       "success": {
+        "expectation": {
+         "exact": "1/2",
+         "decimal": 0.5
+        },
+        "equals_truth": true
+       },
+       "cost": {
+        "expectation": {
+         "exact": "1/20",
+         "decimal": 0.05
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "9/20",
+         "decimal": 0.45
+        },
+        "equals_truth": true
+       }
+      },
+      "zero_support_negative_control": {
+       "status": "supported",
+       "success": {
+        "expectation": {
+         "exact": "1/2",
+         "decimal": 0.5
+        },
+        "equals_truth": true
+       },
+       "cost": {
+        "expectation": {
+         "exact": "1/20",
+         "decimal": 0.05
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "9/20",
+         "decimal": 0.45
+        },
+        "equals_truth": true
+       }
+      }
+     }
+    },
+    "observe_not_F": {
+     "success": {
+      "exact": "1/2",
+      "decimal": 0.5
+     },
+     "cost": {
+      "exact": "1/20",
+      "decimal": 0.05
+     },
+     "utility": {
+      "exact": "9/20",
+      "decimal": 0.45
+     },
+     "learnable": true,
+     "enumeration_equals_closed_form": true,
+     "bellman_equals_enumeration": true,
+     "ipw": {
+      "uniform_floor_0.5": {
+       "status": "supported",
+       "success": {
+        "expectation": {
+         "exact": "1/2",
+         "decimal": 0.5
+        },
+        "equals_truth": true
+       },
+       "cost": {
+        "expectation": {
+         "exact": "1/20",
+         "decimal": 0.05
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "9/20",
+         "decimal": 0.45
+        },
+        "equals_truth": true
+       }
+      },
+      "state_dependent_floor_0.2": {
+       "status": "supported",
+       "success": {
+        "expectation": {
+         "exact": "1/2",
+         "decimal": 0.5
+        },
+        "equals_truth": true
+       },
+       "cost": {
+        "expectation": {
+         "exact": "1/20",
+         "decimal": 0.05
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "9/20",
+         "decimal": 0.45
+        },
+        "equals_truth": true
+       }
+      },
+      "zero_support_negative_control": {
+       "status": "UNSUPPORTED: target not identified by IPW under this logger",
+       "success": {
+        "expectation": {
+         "exact": "1/4",
+         "decimal": 0.25
+        },
+        "equals_truth": false
+       },
+       "cost": {
+        "expectation": {
+         "exact": "1/20",
+         "decimal": 0.05
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "1/5",
+         "decimal": 0.2
+        },
+        "equals_truth": false
+       }
+      }
+     }
+    },
+    "oracle_U": {
+     "success": {
+      "exact": "1/2",
+      "decimal": 0.5
+     },
+     "cost": {
+      "exact": "1/20",
+      "decimal": 0.05
+     },
+     "utility": {
+      "exact": "9/20",
+      "decimal": 0.45
+     },
+     "learnable": false,
+     "enumeration_equals_closed_form": true
+    }
+   },
+   "observe_F_gain_over_const_0": {
+    "exact": "-1/20",
+    "decimal": -0.05
+   },
+   "best_fixed": {
+    "policy": "const_0",
+    "utility": {
+     "exact": "1/2",
+     "decimal": 0.5
+    }
+   },
+   "best_F_measurable": {
+    "policy": "const_0",
+    "utility": {
+     "exact": "1/2",
+     "decimal": 0.5
+    }
+   },
+   "best_class_advantage_over_best_fixed": {
+    "exact": "0",
+    "decimal": 0.0
+   }
+  },
+  {
+   "role": "original",
+   "eta": "0",
+   "q": "1/2",
+   "c": "1/10",
+   "policies": {
+    "const_0": {
+     "success": {
+      "exact": "1/2",
+      "decimal": 0.5
+     },
+     "cost": {
+      "exact": "0",
+      "decimal": 0.0
+     },
+     "utility": {
+      "exact": "1/2",
+      "decimal": 0.5
+     },
+     "learnable": true,
+     "enumeration_equals_closed_form": true,
+     "bellman_equals_enumeration": true,
+     "ipw": {
+      "uniform_floor_0.5": {
+       "status": "supported",
+       "success": {
+        "expectation": {
+         "exact": "1/2",
+         "decimal": 0.5
+        },
+        "equals_truth": true
+       },
+       "cost": {
+        "expectation": {
+         "exact": "0",
+         "decimal": 0.0
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "1/2",
+         "decimal": 0.5
+        },
+        "equals_truth": true
+       }
+      },
+      "state_dependent_floor_0.2": {
+       "status": "supported",
+       "success": {
+        "expectation": {
+         "exact": "1/2",
+         "decimal": 0.5
+        },
+        "equals_truth": true
+       },
+       "cost": {
+        "expectation": {
+         "exact": "0",
+         "decimal": 0.0
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "1/2",
+         "decimal": 0.5
+        },
+        "equals_truth": true
+       }
+      },
+      "zero_support_negative_control": {
+       "status": "UNSUPPORTED: target not identified by IPW under this logger",
+       "success": {
+        "expectation": {
+         "exact": "1/4",
+         "decimal": 0.25
+        },
+        "equals_truth": false
+       },
+       "cost": {
+        "expectation": {
+         "exact": "0",
+         "decimal": 0.0
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "1/4",
+         "decimal": 0.25
+        },
+        "equals_truth": false
+       }
+      }
+     }
+    },
+    "const_1": {
+     "success": {
+      "exact": "1/2",
+      "decimal": 0.5
+     },
+     "cost": {
+      "exact": "1/10",
+      "decimal": 0.1
+     },
+     "utility": {
+      "exact": "2/5",
+      "decimal": 0.4
+     },
+     "learnable": true,
+     "enumeration_equals_closed_form": true,
+     "bellman_equals_enumeration": true,
+     "ipw": {
+      "uniform_floor_0.5": {
+       "status": "supported",
+       "success": {
+        "expectation": {
+         "exact": "1/2",
+         "decimal": 0.5
+        },
+        "equals_truth": true
+       },
+       "cost": {
+        "expectation": {
+         "exact": "1/10",
+         "decimal": 0.1
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "2/5",
+         "decimal": 0.4
+        },
+        "equals_truth": true
+       }
+      },
+      "state_dependent_floor_0.2": {
+       "status": "supported",
+       "success": {
+        "expectation": {
+         "exact": "1/2",
+         "decimal": 0.5
+        },
+        "equals_truth": true
+       },
+       "cost": {
+        "expectation": {
+         "exact": "1/10",
+         "decimal": 0.1
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "2/5",
+         "decimal": 0.4
+        },
+        "equals_truth": true
+       }
+      },
+      "zero_support_negative_control": {
+       "status": "supported",
+       "success": {
+        "expectation": {
+         "exact": "1/2",
+         "decimal": 0.5
+        },
+        "equals_truth": true
+       },
+       "cost": {
+        "expectation": {
+         "exact": "1/10",
+         "decimal": 0.1
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "2/5",
+         "decimal": 0.4
+        },
+        "equals_truth": true
+       }
+      }
+     }
+    },
+    "observe_F": {
+     "success": {
+      "exact": "1/2",
+      "decimal": 0.5
+     },
+     "cost": {
+      "exact": "1/20",
+      "decimal": 0.05
+     },
+     "utility": {
+      "exact": "9/20",
+      "decimal": 0.45
+     },
+     "learnable": true,
+     "enumeration_equals_closed_form": true,
+     "bellman_equals_enumeration": true,
+     "ipw": {
+      "uniform_floor_0.5": {
+       "status": "supported",
+       "success": {
+        "expectation": {
+         "exact": "1/2",
+         "decimal": 0.5
+        },
+        "equals_truth": true
+       },
+       "cost": {
+        "expectation": {
+         "exact": "1/20",
+         "decimal": 0.05
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "9/20",
+         "decimal": 0.45
+        },
+        "equals_truth": true
+       }
+      },
+      "state_dependent_floor_0.2": {
+       "status": "supported",
+       "success": {
+        "expectation": {
+         "exact": "1/2",
+         "decimal": 0.5
+        },
+        "equals_truth": true
+       },
+       "cost": {
+        "expectation": {
+         "exact": "1/20",
+         "decimal": 0.05
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "9/20",
+         "decimal": 0.45
+        },
+        "equals_truth": true
+       }
+      },
+      "zero_support_negative_control": {
+       "status": "supported",
+       "success": {
+        "expectation": {
+         "exact": "1/2",
+         "decimal": 0.5
+        },
+        "equals_truth": true
+       },
+       "cost": {
+        "expectation": {
+         "exact": "1/20",
+         "decimal": 0.05
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "9/20",
+         "decimal": 0.45
+        },
+        "equals_truth": true
+       }
+      }
+     }
+    },
+    "observe_not_F": {
+     "success": {
+      "exact": "1/2",
+      "decimal": 0.5
+     },
+     "cost": {
+      "exact": "1/20",
+      "decimal": 0.05
+     },
+     "utility": {
+      "exact": "9/20",
+      "decimal": 0.45
+     },
+     "learnable": true,
+     "enumeration_equals_closed_form": true,
+     "bellman_equals_enumeration": true,
+     "ipw": {
+      "uniform_floor_0.5": {
+       "status": "supported",
+       "success": {
+        "expectation": {
+         "exact": "1/2",
+         "decimal": 0.5
+        },
+        "equals_truth": true
+       },
+       "cost": {
+        "expectation": {
+         "exact": "1/20",
+         "decimal": 0.05
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "9/20",
+         "decimal": 0.45
+        },
+        "equals_truth": true
+       }
+      },
+      "state_dependent_floor_0.2": {
+       "status": "supported",
+       "success": {
+        "expectation": {
+         "exact": "1/2",
+         "decimal": 0.5
+        },
+        "equals_truth": true
+       },
+       "cost": {
+        "expectation": {
+         "exact": "1/20",
+         "decimal": 0.05
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "9/20",
+         "decimal": 0.45
+        },
+        "equals_truth": true
+       }
+      },
+      "zero_support_negative_control": {
+       "status": "UNSUPPORTED: target not identified by IPW under this logger",
+       "success": {
+        "expectation": {
+         "exact": "1/4",
+         "decimal": 0.25
+        },
+        "equals_truth": false
+       },
+       "cost": {
+        "expectation": {
+         "exact": "1/20",
+         "decimal": 0.05
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "1/5",
+         "decimal": 0.2
+        },
+        "equals_truth": false
+       }
+      }
+     }
+    },
+    "oracle_U": {
+     "success": {
+      "exact": "1/2",
+      "decimal": 0.5
+     },
+     "cost": {
+      "exact": "1/20",
+      "decimal": 0.05
+     },
+     "utility": {
+      "exact": "9/20",
+      "decimal": 0.45
+     },
+     "learnable": false,
+     "enumeration_equals_closed_form": true
+    }
+   },
+   "observe_F_gain_over_const_0": {
+    "exact": "-1/20",
+    "decimal": -0.05
+   },
+   "best_fixed": {
+    "policy": "const_0",
+    "utility": {
+     "exact": "1/2",
+     "decimal": 0.5
+    }
+   },
+   "best_F_measurable": {
+    "policy": "const_0",
+    "utility": {
+     "exact": "1/2",
+     "decimal": 0.5
+    }
+   },
+   "best_class_advantage_over_best_fixed": {
+    "exact": "0",
+    "decimal": 0.0
+   }
+  },
+  {
+   "role": "original",
+   "eta": "1/5",
+   "q": "0",
+   "c": "1/10",
+   "policies": {
+    "const_0": {
+     "success": {
+      "exact": "1/2",
+      "decimal": 0.5
+     },
+     "cost": {
+      "exact": "0",
+      "decimal": 0.0
+     },
+     "utility": {
+      "exact": "1/2",
+      "decimal": 0.5
+     },
+     "learnable": true,
+     "enumeration_equals_closed_form": true,
+     "bellman_equals_enumeration": true,
+     "ipw": {
+      "uniform_floor_0.5": {
+       "status": "supported",
+       "success": {
+        "expectation": {
+         "exact": "1/2",
+         "decimal": 0.5
+        },
+        "equals_truth": true
+       },
+       "cost": {
+        "expectation": {
+         "exact": "0",
+         "decimal": 0.0
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "1/2",
+         "decimal": 0.5
+        },
+        "equals_truth": true
+       }
+      },
+      "state_dependent_floor_0.2": {
+       "status": "supported",
+       "success": {
+        "expectation": {
+         "exact": "1/2",
+         "decimal": 0.5
+        },
+        "equals_truth": true
+       },
+       "cost": {
+        "expectation": {
+         "exact": "0",
+         "decimal": 0.0
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "1/2",
+         "decimal": 0.5
+        },
+        "equals_truth": true
+       }
+      },
+      "zero_support_negative_control": {
+       "status": "UNSUPPORTED: target not identified by IPW under this logger",
+       "success": {
+        "expectation": {
+         "exact": "7/20",
+         "decimal": 0.35
+        },
+        "equals_truth": false
+       },
+       "cost": {
+        "expectation": {
+         "exact": "0",
+         "decimal": 0.0
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "7/20",
+         "decimal": 0.35
+        },
+        "equals_truth": false
+       }
+      }
+     }
+    },
+    "const_1": {
+     "success": {
+      "exact": "1/2",
+      "decimal": 0.5
+     },
+     "cost": {
+      "exact": "1/10",
+      "decimal": 0.1
+     },
+     "utility": {
+      "exact": "2/5",
+      "decimal": 0.4
+     },
+     "learnable": true,
+     "enumeration_equals_closed_form": true,
+     "bellman_equals_enumeration": true,
+     "ipw": {
+      "uniform_floor_0.5": {
+       "status": "supported",
+       "success": {
+        "expectation": {
+         "exact": "1/2",
+         "decimal": 0.5
+        },
+        "equals_truth": true
+       },
+       "cost": {
+        "expectation": {
+         "exact": "1/10",
+         "decimal": 0.1
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "2/5",
+         "decimal": 0.4
+        },
+        "equals_truth": true
+       }
+      },
+      "state_dependent_floor_0.2": {
+       "status": "supported",
+       "success": {
+        "expectation": {
+         "exact": "1/2",
+         "decimal": 0.5
+        },
+        "equals_truth": true
+       },
+       "cost": {
+        "expectation": {
+         "exact": "1/10",
+         "decimal": 0.1
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "2/5",
+         "decimal": 0.4
+        },
+        "equals_truth": true
+       }
+      },
+      "zero_support_negative_control": {
+       "status": "supported",
+       "success": {
+        "expectation": {
+         "exact": "1/2",
+         "decimal": 0.5
+        },
+        "equals_truth": true
+       },
+       "cost": {
+        "expectation": {
+         "exact": "1/10",
+         "decimal": 0.1
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "2/5",
+         "decimal": 0.4
+        },
+        "equals_truth": true
+       }
+      }
+     }
+    },
+    "observe_F": {
+     "success": {
+      "exact": "7/10",
+      "decimal": 0.7
+     },
+     "cost": {
+      "exact": "1/20",
+      "decimal": 0.05
+     },
+     "utility": {
+      "exact": "13/20",
+      "decimal": 0.65
+     },
+     "learnable": true,
+     "enumeration_equals_closed_form": true,
+     "bellman_equals_enumeration": true,
+     "ipw": {
+      "uniform_floor_0.5": {
+       "status": "supported",
+       "success": {
+        "expectation": {
+         "exact": "7/10",
+         "decimal": 0.7
+        },
+        "equals_truth": true
+       },
+       "cost": {
+        "expectation": {
+         "exact": "1/20",
+         "decimal": 0.05
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "13/20",
+         "decimal": 0.65
+        },
+        "equals_truth": true
+       }
+      },
+      "state_dependent_floor_0.2": {
+       "status": "supported",
+       "success": {
+        "expectation": {
+         "exact": "7/10",
+         "decimal": 0.7
+        },
+        "equals_truth": true
+       },
+       "cost": {
+        "expectation": {
+         "exact": "1/20",
+         "decimal": 0.05
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "13/20",
+         "decimal": 0.65
+        },
+        "equals_truth": true
+       }
+      },
+      "zero_support_negative_control": {
+       "status": "supported",
+       "success": {
+        "expectation": {
+         "exact": "7/10",
+         "decimal": 0.7
+        },
+        "equals_truth": true
+       },
+       "cost": {
+        "expectation": {
+         "exact": "1/20",
+         "decimal": 0.05
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "13/20",
+         "decimal": 0.65
+        },
+        "equals_truth": true
+       }
+      }
+     }
+    },
+    "observe_not_F": {
+     "success": {
+      "exact": "3/10",
+      "decimal": 0.3
+     },
+     "cost": {
+      "exact": "1/20",
+      "decimal": 0.05
+     },
+     "utility": {
+      "exact": "1/4",
+      "decimal": 0.25
+     },
+     "learnable": true,
+     "enumeration_equals_closed_form": true,
+     "bellman_equals_enumeration": true,
+     "ipw": {
+      "uniform_floor_0.5": {
+       "status": "supported",
+       "success": {
+        "expectation": {
+         "exact": "3/10",
+         "decimal": 0.3
+        },
+        "equals_truth": true
+       },
+       "cost": {
+        "expectation": {
+         "exact": "1/20",
+         "decimal": 0.05
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "1/4",
+         "decimal": 0.25
+        },
+        "equals_truth": true
+       }
+      },
+      "state_dependent_floor_0.2": {
+       "status": "supported",
+       "success": {
+        "expectation": {
+         "exact": "3/10",
+         "decimal": 0.3
+        },
+        "equals_truth": true
+       },
+       "cost": {
+        "expectation": {
+         "exact": "1/20",
+         "decimal": 0.05
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "1/4",
+         "decimal": 0.25
+        },
+        "equals_truth": true
+       }
+      },
+      "zero_support_negative_control": {
+       "status": "UNSUPPORTED: target not identified by IPW under this logger",
+       "success": {
+        "expectation": {
+         "exact": "3/20",
+         "decimal": 0.15
+        },
+        "equals_truth": false
+       },
+       "cost": {
+        "expectation": {
+         "exact": "1/20",
+         "decimal": 0.05
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "1/10",
+         "decimal": 0.1
+        },
+        "equals_truth": false
+       }
+      }
+     }
+    },
+    "oracle_U": {
+     "success": {
+      "exact": "7/10",
+      "decimal": 0.7
+     },
+     "cost": {
+      "exact": "1/20",
+      "decimal": 0.05
+     },
+     "utility": {
+      "exact": "13/20",
+      "decimal": 0.65
+     },
+     "learnable": false,
+     "enumeration_equals_closed_form": true
+    }
+   },
+   "observe_F_gain_over_const_0": {
+    "exact": "3/20",
+    "decimal": 0.15
+   },
+   "best_fixed": {
+    "policy": "const_0",
+    "utility": {
+     "exact": "1/2",
+     "decimal": 0.5
+    }
+   },
+   "best_F_measurable": {
+    "policy": "observe_F",
+    "utility": {
+     "exact": "13/20",
+     "decimal": 0.65
+    }
+   },
+   "best_class_advantage_over_best_fixed": {
+    "exact": "3/20",
+    "decimal": 0.15
+   }
+  },
+  {
+   "role": "original",
+   "eta": "1/5",
+   "q": "1/4",
+   "c": "1/10",
+   "policies": {
+    "const_0": {
+     "success": {
+      "exact": "1/2",
+      "decimal": 0.5
+     },
+     "cost": {
+      "exact": "0",
+      "decimal": 0.0
+     },
+     "utility": {
+      "exact": "1/2",
+      "decimal": 0.5
+     },
+     "learnable": true,
+     "enumeration_equals_closed_form": true,
+     "bellman_equals_enumeration": true,
+     "ipw": {
+      "uniform_floor_0.5": {
+       "status": "supported",
+       "success": {
+        "expectation": {
+         "exact": "1/2",
+         "decimal": 0.5
+        },
+        "equals_truth": true
+       },
+       "cost": {
+        "expectation": {
+         "exact": "0",
+         "decimal": 0.0
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "1/2",
+         "decimal": 0.5
+        },
+        "equals_truth": true
+       }
+      },
+      "state_dependent_floor_0.2": {
+       "status": "supported",
+       "success": {
+        "expectation": {
+         "exact": "1/2",
+         "decimal": 0.5
+        },
+        "equals_truth": true
+       },
+       "cost": {
+        "expectation": {
+         "exact": "0",
+         "decimal": 0.0
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "1/2",
+         "decimal": 0.5
+        },
+        "equals_truth": true
+       }
+      },
+      "zero_support_negative_control": {
+       "status": "UNSUPPORTED: target not identified by IPW under this logger",
+       "success": {
+        "expectation": {
+         "exact": "3/10",
+         "decimal": 0.3
+        },
+        "equals_truth": false
+       },
+       "cost": {
+        "expectation": {
+         "exact": "0",
+         "decimal": 0.0
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "3/10",
+         "decimal": 0.3
+        },
+        "equals_truth": false
+       }
+      }
+     }
+    },
+    "const_1": {
+     "success": {
+      "exact": "1/2",
+      "decimal": 0.5
+     },
+     "cost": {
+      "exact": "1/10",
+      "decimal": 0.1
+     },
+     "utility": {
+      "exact": "2/5",
+      "decimal": 0.4
+     },
+     "learnable": true,
+     "enumeration_equals_closed_form": true,
+     "bellman_equals_enumeration": true,
+     "ipw": {
+      "uniform_floor_0.5": {
+       "status": "supported",
+       "success": {
+        "expectation": {
+         "exact": "1/2",
+         "decimal": 0.5
+        },
+        "equals_truth": true
+       },
+       "cost": {
+        "expectation": {
+         "exact": "1/10",
+         "decimal": 0.1
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "2/5",
+         "decimal": 0.4
+        },
+        "equals_truth": true
+       }
+      },
+      "state_dependent_floor_0.2": {
+       "status": "supported",
+       "success": {
+        "expectation": {
+         "exact": "1/2",
+         "decimal": 0.5
+        },
+        "equals_truth": true
+       },
+       "cost": {
+        "expectation": {
+         "exact": "1/10",
+         "decimal": 0.1
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "2/5",
+         "decimal": 0.4
+        },
+        "equals_truth": true
+       }
+      },
+      "zero_support_negative_control": {
+       "status": "supported",
+       "success": {
+        "expectation": {
+         "exact": "1/2",
+         "decimal": 0.5
+        },
+        "equals_truth": true
+       },
+       "cost": {
+        "expectation": {
+         "exact": "1/10",
+         "decimal": 0.1
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "2/5",
+         "decimal": 0.4
+        },
+        "equals_truth": true
+       }
+      }
+     }
+    },
+    "observe_F": {
+     "success": {
+      "exact": "3/5",
+      "decimal": 0.6
+     },
+     "cost": {
+      "exact": "1/20",
+      "decimal": 0.05
+     },
+     "utility": {
+      "exact": "11/20",
+      "decimal": 0.55
+     },
+     "learnable": true,
+     "enumeration_equals_closed_form": true,
+     "bellman_equals_enumeration": true,
+     "ipw": {
+      "uniform_floor_0.5": {
+       "status": "supported",
+       "success": {
+        "expectation": {
+         "exact": "3/5",
+         "decimal": 0.6
+        },
+        "equals_truth": true
+       },
+       "cost": {
+        "expectation": {
+         "exact": "1/20",
+         "decimal": 0.05
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "11/20",
+         "decimal": 0.55
+        },
+        "equals_truth": true
+       }
+      },
+      "state_dependent_floor_0.2": {
+       "status": "supported",
+       "success": {
+        "expectation": {
+         "exact": "3/5",
+         "decimal": 0.6
+        },
+        "equals_truth": true
+       },
+       "cost": {
+        "expectation": {
+         "exact": "1/20",
+         "decimal": 0.05
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "11/20",
+         "decimal": 0.55
+        },
+        "equals_truth": true
+       }
+      },
+      "zero_support_negative_control": {
+       "status": "supported",
+       "success": {
+        "expectation": {
+         "exact": "3/5",
+         "decimal": 0.6
+        },
+        "equals_truth": true
+       },
+       "cost": {
+        "expectation": {
+         "exact": "1/20",
+         "decimal": 0.05
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "11/20",
+         "decimal": 0.55
+        },
+        "equals_truth": true
+       }
+      }
+     }
+    },
+    "observe_not_F": {
+     "success": {
+      "exact": "2/5",
+      "decimal": 0.4
+     },
+     "cost": {
+      "exact": "1/20",
+      "decimal": 0.05
+     },
+     "utility": {
+      "exact": "7/20",
+      "decimal": 0.35
+     },
+     "learnable": true,
+     "enumeration_equals_closed_form": true,
+     "bellman_equals_enumeration": true,
+     "ipw": {
+      "uniform_floor_0.5": {
+       "status": "supported",
+       "success": {
+        "expectation": {
+         "exact": "2/5",
+         "decimal": 0.4
+        },
+        "equals_truth": true
+       },
+       "cost": {
+        "expectation": {
+         "exact": "1/20",
+         "decimal": 0.05
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "7/20",
+         "decimal": 0.35
+        },
+        "equals_truth": true
+       }
+      },
+      "state_dependent_floor_0.2": {
+       "status": "supported",
+       "success": {
+        "expectation": {
+         "exact": "2/5",
+         "decimal": 0.4
+        },
+        "equals_truth": true
+       },
+       "cost": {
+        "expectation": {
+         "exact": "1/20",
+         "decimal": 0.05
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "7/20",
+         "decimal": 0.35
+        },
+        "equals_truth": true
+       }
+      },
+      "zero_support_negative_control": {
+       "status": "UNSUPPORTED: target not identified by IPW under this logger",
+       "success": {
+        "expectation": {
+         "exact": "1/5",
+         "decimal": 0.2
+        },
+        "equals_truth": false
+       },
+       "cost": {
+        "expectation": {
+         "exact": "1/20",
+         "decimal": 0.05
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "3/20",
+         "decimal": 0.15
+        },
+        "equals_truth": false
+       }
+      }
+     }
+    },
+    "oracle_U": {
+     "success": {
+      "exact": "7/10",
+      "decimal": 0.7
+     },
+     "cost": {
+      "exact": "1/20",
+      "decimal": 0.05
+     },
+     "utility": {
+      "exact": "13/20",
+      "decimal": 0.65
+     },
+     "learnable": false,
+     "enumeration_equals_closed_form": true
+    }
+   },
+   "observe_F_gain_over_const_0": {
+    "exact": "1/20",
+    "decimal": 0.05
+   },
+   "best_fixed": {
+    "policy": "const_0",
+    "utility": {
+     "exact": "1/2",
+     "decimal": 0.5
+    }
+   },
+   "best_F_measurable": {
+    "policy": "observe_F",
+    "utility": {
+     "exact": "11/20",
+     "decimal": 0.55
+    }
+   },
+   "best_class_advantage_over_best_fixed": {
+    "exact": "1/20",
+    "decimal": 0.05
+   }
+  },
+  {
+   "role": "original",
+   "eta": "1/5",
+   "q": "1/2",
+   "c": "1/10",
+   "policies": {
+    "const_0": {
+     "success": {
+      "exact": "1/2",
+      "decimal": 0.5
+     },
+     "cost": {
+      "exact": "0",
+      "decimal": 0.0
+     },
+     "utility": {
+      "exact": "1/2",
+      "decimal": 0.5
+     },
+     "learnable": true,
+     "enumeration_equals_closed_form": true,
+     "bellman_equals_enumeration": true,
+     "ipw": {
+      "uniform_floor_0.5": {
+       "status": "supported",
+       "success": {
+        "expectation": {
+         "exact": "1/2",
+         "decimal": 0.5
+        },
+        "equals_truth": true
+       },
+       "cost": {
+        "expectation": {
+         "exact": "0",
+         "decimal": 0.0
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "1/2",
+         "decimal": 0.5
+        },
+        "equals_truth": true
+       }
+      },
+      "state_dependent_floor_0.2": {
+       "status": "supported",
+       "success": {
+        "expectation": {
+         "exact": "1/2",
+         "decimal": 0.5
+        },
+        "equals_truth": true
+       },
+       "cost": {
+        "expectation": {
+         "exact": "0",
+         "decimal": 0.0
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "1/2",
+         "decimal": 0.5
+        },
+        "equals_truth": true
+       }
+      },
+      "zero_support_negative_control": {
+       "status": "UNSUPPORTED: target not identified by IPW under this logger",
+       "success": {
+        "expectation": {
+         "exact": "1/4",
+         "decimal": 0.25
+        },
+        "equals_truth": false
+       },
+       "cost": {
+        "expectation": {
+         "exact": "0",
+         "decimal": 0.0
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "1/4",
+         "decimal": 0.25
+        },
+        "equals_truth": false
+       }
+      }
+     }
+    },
+    "const_1": {
+     "success": {
+      "exact": "1/2",
+      "decimal": 0.5
+     },
+     "cost": {
+      "exact": "1/10",
+      "decimal": 0.1
+     },
+     "utility": {
+      "exact": "2/5",
+      "decimal": 0.4
+     },
+     "learnable": true,
+     "enumeration_equals_closed_form": true,
+     "bellman_equals_enumeration": true,
+     "ipw": {
+      "uniform_floor_0.5": {
+       "status": "supported",
+       "success": {
+        "expectation": {
+         "exact": "1/2",
+         "decimal": 0.5
+        },
+        "equals_truth": true
+       },
+       "cost": {
+        "expectation": {
+         "exact": "1/10",
+         "decimal": 0.1
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "2/5",
+         "decimal": 0.4
+        },
+        "equals_truth": true
+       }
+      },
+      "state_dependent_floor_0.2": {
+       "status": "supported",
+       "success": {
+        "expectation": {
+         "exact": "1/2",
+         "decimal": 0.5
+        },
+        "equals_truth": true
+       },
+       "cost": {
+        "expectation": {
+         "exact": "1/10",
+         "decimal": 0.1
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "2/5",
+         "decimal": 0.4
+        },
+        "equals_truth": true
+       }
+      },
+      "zero_support_negative_control": {
+       "status": "supported",
+       "success": {
+        "expectation": {
+         "exact": "1/2",
+         "decimal": 0.5
+        },
+        "equals_truth": true
+       },
+       "cost": {
+        "expectation": {
+         "exact": "1/10",
+         "decimal": 0.1
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "2/5",
+         "decimal": 0.4
+        },
+        "equals_truth": true
+       }
+      }
+     }
+    },
+    "observe_F": {
+     "success": {
+      "exact": "1/2",
+      "decimal": 0.5
+     },
+     "cost": {
+      "exact": "1/20",
+      "decimal": 0.05
+     },
+     "utility": {
+      "exact": "9/20",
+      "decimal": 0.45
+     },
+     "learnable": true,
+     "enumeration_equals_closed_form": true,
+     "bellman_equals_enumeration": true,
+     "ipw": {
+      "uniform_floor_0.5": {
+       "status": "supported",
+       "success": {
+        "expectation": {
+         "exact": "1/2",
+         "decimal": 0.5
+        },
+        "equals_truth": true
+       },
+       "cost": {
+        "expectation": {
+         "exact": "1/20",
+         "decimal": 0.05
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "9/20",
+         "decimal": 0.45
+        },
+        "equals_truth": true
+       }
+      },
+      "state_dependent_floor_0.2": {
+       "status": "supported",
+       "success": {
+        "expectation": {
+         "exact": "1/2",
+         "decimal": 0.5
+        },
+        "equals_truth": true
+       },
+       "cost": {
+        "expectation": {
+         "exact": "1/20",
+         "decimal": 0.05
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "9/20",
+         "decimal": 0.45
+        },
+        "equals_truth": true
+       }
+      },
+      "zero_support_negative_control": {
+       "status": "supported",
+       "success": {
+        "expectation": {
+         "exact": "1/2",
+         "decimal": 0.5
+        },
+        "equals_truth": true
+       },
+       "cost": {
+        "expectation": {
+         "exact": "1/20",
+         "decimal": 0.05
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "9/20",
+         "decimal": 0.45
+        },
+        "equals_truth": true
+       }
+      }
+     }
+    },
+    "observe_not_F": {
+     "success": {
+      "exact": "1/2",
+      "decimal": 0.5
+     },
+     "cost": {
+      "exact": "1/20",
+      "decimal": 0.05
+     },
+     "utility": {
+      "exact": "9/20",
+      "decimal": 0.45
+     },
+     "learnable": true,
+     "enumeration_equals_closed_form": true,
+     "bellman_equals_enumeration": true,
+     "ipw": {
+      "uniform_floor_0.5": {
+       "status": "supported",
+       "success": {
+        "expectation": {
+         "exact": "1/2",
+         "decimal": 0.5
+        },
+        "equals_truth": true
+       },
+       "cost": {
+        "expectation": {
+         "exact": "1/20",
+         "decimal": 0.05
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "9/20",
+         "decimal": 0.45
+        },
+        "equals_truth": true
+       }
+      },
+      "state_dependent_floor_0.2": {
+       "status": "supported",
+       "success": {
+        "expectation": {
+         "exact": "1/2",
+         "decimal": 0.5
+        },
+        "equals_truth": true
+       },
+       "cost": {
+        "expectation": {
+         "exact": "1/20",
+         "decimal": 0.05
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "9/20",
+         "decimal": 0.45
+        },
+        "equals_truth": true
+       }
+      },
+      "zero_support_negative_control": {
+       "status": "UNSUPPORTED: target not identified by IPW under this logger",
+       "success": {
+        "expectation": {
+         "exact": "1/4",
+         "decimal": 0.25
+        },
+        "equals_truth": false
+       },
+       "cost": {
+        "expectation": {
+         "exact": "1/20",
+         "decimal": 0.05
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "1/5",
+         "decimal": 0.2
+        },
+        "equals_truth": false
+       }
+      }
+     }
+    },
+    "oracle_U": {
+     "success": {
+      "exact": "7/10",
+      "decimal": 0.7
+     },
+     "cost": {
+      "exact": "1/20",
+      "decimal": 0.05
+     },
+     "utility": {
+      "exact": "13/20",
+      "decimal": 0.65
+     },
+     "learnable": false,
+     "enumeration_equals_closed_form": true
+    }
+   },
+   "observe_F_gain_over_const_0": {
+    "exact": "-1/20",
+    "decimal": -0.05
+   },
+   "best_fixed": {
+    "policy": "const_0",
+    "utility": {
+     "exact": "1/2",
+     "decimal": 0.5
+    }
+   },
+   "best_F_measurable": {
+    "policy": "const_0",
+    "utility": {
+     "exact": "1/2",
+     "decimal": 0.5
+    }
+   },
+   "best_class_advantage_over_best_fixed": {
+    "exact": "0",
+    "decimal": 0.0
+   }
+  },
+  {
+   "role": "supplemental_cost_dominated",
+   "eta": "1/5",
+   "q": "2/5",
+   "c": "1/10",
+   "policies": {
+    "const_0": {
+     "success": {
+      "exact": "1/2",
+      "decimal": 0.5
+     },
+     "cost": {
+      "exact": "0",
+      "decimal": 0.0
+     },
+     "utility": {
+      "exact": "1/2",
+      "decimal": 0.5
+     },
+     "learnable": true,
+     "enumeration_equals_closed_form": true,
+     "bellman_equals_enumeration": true,
+     "ipw": {
+      "uniform_floor_0.5": {
+       "status": "supported",
+       "success": {
+        "expectation": {
+         "exact": "1/2",
+         "decimal": 0.5
+        },
+        "equals_truth": true
+       },
+       "cost": {
+        "expectation": {
+         "exact": "0",
+         "decimal": 0.0
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "1/2",
+         "decimal": 0.5
+        },
+        "equals_truth": true
+       }
+      },
+      "state_dependent_floor_0.2": {
+       "status": "supported",
+       "success": {
+        "expectation": {
+         "exact": "1/2",
+         "decimal": 0.5
+        },
+        "equals_truth": true
+       },
+       "cost": {
+        "expectation": {
+         "exact": "0",
+         "decimal": 0.0
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "1/2",
+         "decimal": 0.5
+        },
+        "equals_truth": true
+       }
+      },
+      "zero_support_negative_control": {
+       "status": "UNSUPPORTED: target not identified by IPW under this logger",
+       "success": {
+        "expectation": {
+         "exact": "27/100",
+         "decimal": 0.27
+        },
+        "equals_truth": false
+       },
+       "cost": {
+        "expectation": {
+         "exact": "0",
+         "decimal": 0.0
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "27/100",
+         "decimal": 0.27
+        },
+        "equals_truth": false
+       }
+      }
+     }
+    },
+    "const_1": {
+     "success": {
+      "exact": "1/2",
+      "decimal": 0.5
+     },
+     "cost": {
+      "exact": "1/10",
+      "decimal": 0.1
+     },
+     "utility": {
+      "exact": "2/5",
+      "decimal": 0.4
+     },
+     "learnable": true,
+     "enumeration_equals_closed_form": true,
+     "bellman_equals_enumeration": true,
+     "ipw": {
+      "uniform_floor_0.5": {
+       "status": "supported",
+       "success": {
+        "expectation": {
+         "exact": "1/2",
+         "decimal": 0.5
+        },
+        "equals_truth": true
+       },
+       "cost": {
+        "expectation": {
+         "exact": "1/10",
+         "decimal": 0.1
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "2/5",
+         "decimal": 0.4
+        },
+        "equals_truth": true
+       }
+      },
+      "state_dependent_floor_0.2": {
+       "status": "supported",
+       "success": {
+        "expectation": {
+         "exact": "1/2",
+         "decimal": 0.5
+        },
+        "equals_truth": true
+       },
+       "cost": {
+        "expectation": {
+         "exact": "1/10",
+         "decimal": 0.1
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "2/5",
+         "decimal": 0.4
+        },
+        "equals_truth": true
+       }
+      },
+      "zero_support_negative_control": {
+       "status": "supported",
+       "success": {
+        "expectation": {
+         "exact": "1/2",
+         "decimal": 0.5
+        },
+        "equals_truth": true
+       },
+       "cost": {
+        "expectation": {
+         "exact": "1/10",
+         "decimal": 0.1
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "2/5",
+         "decimal": 0.4
+        },
+        "equals_truth": true
+       }
+      }
+     }
+    },
+    "observe_F": {
+     "success": {
+      "exact": "27/50",
+      "decimal": 0.54
+     },
+     "cost": {
+      "exact": "1/20",
+      "decimal": 0.05
+     },
+     "utility": {
+      "exact": "49/100",
+      "decimal": 0.49
+     },
+     "learnable": true,
+     "enumeration_equals_closed_form": true,
+     "bellman_equals_enumeration": true,
+     "ipw": {
+      "uniform_floor_0.5": {
+       "status": "supported",
+       "success": {
+        "expectation": {
+         "exact": "27/50",
+         "decimal": 0.54
+        },
+        "equals_truth": true
+       },
+       "cost": {
+        "expectation": {
+         "exact": "1/20",
+         "decimal": 0.05
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "49/100",
+         "decimal": 0.49
+        },
+        "equals_truth": true
+       }
+      },
+      "state_dependent_floor_0.2": {
+       "status": "supported",
+       "success": {
+        "expectation": {
+         "exact": "27/50",
+         "decimal": 0.54
+        },
+        "equals_truth": true
+       },
+       "cost": {
+        "expectation": {
+         "exact": "1/20",
+         "decimal": 0.05
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "49/100",
+         "decimal": 0.49
+        },
+        "equals_truth": true
+       }
+      },
+      "zero_support_negative_control": {
+       "status": "supported",
+       "success": {
+        "expectation": {
+         "exact": "27/50",
+         "decimal": 0.54
+        },
+        "equals_truth": true
+       },
+       "cost": {
+        "expectation": {
+         "exact": "1/20",
+         "decimal": 0.05
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "49/100",
+         "decimal": 0.49
+        },
+        "equals_truth": true
+       }
+      }
+     }
+    },
+    "observe_not_F": {
+     "success": {
+      "exact": "23/50",
+      "decimal": 0.46
+     },
+     "cost": {
+      "exact": "1/20",
+      "decimal": 0.05
+     },
+     "utility": {
+      "exact": "41/100",
+      "decimal": 0.41
+     },
+     "learnable": true,
+     "enumeration_equals_closed_form": true,
+     "bellman_equals_enumeration": true,
+     "ipw": {
+      "uniform_floor_0.5": {
+       "status": "supported",
+       "success": {
+        "expectation": {
+         "exact": "23/50",
+         "decimal": 0.46
+        },
+        "equals_truth": true
+       },
+       "cost": {
+        "expectation": {
+         "exact": "1/20",
+         "decimal": 0.05
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "41/100",
+         "decimal": 0.41
+        },
+        "equals_truth": true
+       }
+      },
+      "state_dependent_floor_0.2": {
+       "status": "supported",
+       "success": {
+        "expectation": {
+         "exact": "23/50",
+         "decimal": 0.46
+        },
+        "equals_truth": true
+       },
+       "cost": {
+        "expectation": {
+         "exact": "1/20",
+         "decimal": 0.05
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "41/100",
+         "decimal": 0.41
+        },
+        "equals_truth": true
+       }
+      },
+      "zero_support_negative_control": {
+       "status": "UNSUPPORTED: target not identified by IPW under this logger",
+       "success": {
+        "expectation": {
+         "exact": "23/100",
+         "decimal": 0.23
+        },
+        "equals_truth": false
+       },
+       "cost": {
+        "expectation": {
+         "exact": "1/20",
+         "decimal": 0.05
+        },
+        "equals_truth": true
+       },
+       "utility": {
+        "expectation": {
+         "exact": "9/50",
+         "decimal": 0.18
+        },
+        "equals_truth": false
+       }
+      }
+     }
+    },
+    "oracle_U": {
+     "success": {
+      "exact": "7/10",
+      "decimal": 0.7
+     },
+     "cost": {
+      "exact": "1/20",
+      "decimal": 0.05
+     },
+     "utility": {
+      "exact": "13/20",
+      "decimal": 0.65
+     },
+     "learnable": false,
+     "enumeration_equals_closed_form": true
+    }
+   },
+   "observe_F_gain_over_const_0": {
+    "exact": "-1/100",
+    "decimal": -0.01
+   },
+   "best_fixed": {
+    "policy": "const_0",
+    "utility": {
+     "exact": "1/2",
+     "decimal": 0.5
+    }
+   },
+   "best_F_measurable": {
+    "policy": "const_0",
+    "utility": {
+     "exact": "1/2",
+     "decimal": 0.5
+    }
+   },
+   "best_class_advantage_over_best_fixed": {
+    "exact": "0",
+    "decimal": 0.0
+   }
+  }
+ ],
+ "not_claimed": [
+  "no agent-performance model",
+  "no estimator variance, interval or coverage",
+  "not a change to the real-study utility or the 32-cell core grid"
+ ]
+}

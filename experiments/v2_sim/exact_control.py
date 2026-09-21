@@ -155,10 +155,89 @@ def build():
                     'no estimator variance, interval or coverage is addressed by this slice'])
 
 
+# ---- supplemental development output (lead decision 54e1621); build() and its six-cell artifact stay unchanged ----
+OUT_SUPP = Path(__file__).resolve().parent / 'exact_control_supplemental_v1.json'
+SUPPLEMENTAL = [(Fr('0.2'), Fr('0.4'))]          # cost-dominated informative cell; c stays .1
+
+
+def supported(pol, logger):
+    """A deterministic F-measurable policy is supported iff the logger gives its action positive probability at every F."""
+    return all((logger[f] if pol(f, None) else 1 - logger[f]) > 0 for f in (0, 1))
+
+
+def ipw_expectations(pol, eta, q, logger):
+    """Exact E[IPW] of success, cost and utility (success - cost) over the logger's episode law."""
+    out = dict(success=Fr(0), cost=Fr(0), utility=Fr(0))
+    for pr, u, e, f in histories(q):
+        a = pol(f, u)
+        pa = logger[f] if a else 1 - logger[f]
+        if pa == 0:
+            continue                                   # the matching action is never logged here
+        ps = p_success(a, u, eta)
+        out['success'] += pr * pa * ps / pa
+        out['cost'] += pr * pa * C * a / pa
+        out['utility'] += pr * pa * (ps - C * a) / pa
+    return out
+
+
+def build_supplemental():
+    cells = []
+    for role, grid in (('original', list(itertools.product(ETAS, QS))), ('supplemental_cost_dominated', SUPPLEMENTAL)):
+        for eta, q in grid:
+            rows = {}
+            for name, pol in POLICIES.items():
+                se, ce = truth_enumeration(pol, eta, q)
+                row = dict(success=s(se), cost=s(ce), utility=s(se - ce), learnable=name in LEARNABLE,
+                           enumeration_equals_closed_form=(se, ce) == closed_form(name, eta, q))
+                if name in LEARNABLE:
+                    sb, cb = truth_bellman(name, eta, q)
+                    row['bellman_equals_enumeration'] = (sb, cb) == (se, ce)
+                    row['ipw'] = {}
+                    for lname, lg in LOGGERS.items():
+                        ex = ipw_expectations(pol, eta, q, lg)
+                        truth = dict(success=se, cost=ce, utility=se - ce)
+                        sup = supported(pol, lg)
+                        row['ipw'][lname] = dict(
+                            status='supported' if sup else 'UNSUPPORTED: target not identified by IPW under this logger',
+                            **{k: dict(expectation=s(ex[k]), equals_truth=ex[k] == truth[k]) for k in truth})
+                rows[name] = row
+            u = {p: Fr(rows[p]['utility']['exact']) for p in LEARNABLE}
+            best_fixed = max((u[p], p) for p in ('const_0', 'const_1'))
+            best_class = max((u[p], p) for p in LEARNABLE)
+            cells.append(dict(
+                role=role, eta=str(eta), q=str(q), c=str(C), policies=rows,
+                observe_F_gain_over_const_0=s(u['observe_F'] - u['const_0']),
+                best_fixed=dict(policy=best_fixed[1], utility=s(best_fixed[0])),
+                best_F_measurable=dict(policy=best_class[1], utility=s(best_class[0])),
+                best_class_advantage_over_best_fixed=s(best_class[0] - best_fixed[0])))
+    learn_rows = [r for c in cells for r in c['policies'].values() if r['learnable']]
+    checks = dict(
+        all_bellman_equal_enumeration=all(r['bellman_equals_enumeration'] for r in learn_rows),
+        all_closed_forms_match=all(r['enumeration_equals_closed_form'] for c in cells for r in c['policies'].values()),
+        supported_ipw_exact_for_success_cost_utility=all(
+            r['ipw'][l][k]['equals_truth'] for r in learn_rows for l in LOGGERS
+            if r['ipw'][l]['status'] == 'supported' for k in ('success', 'cost', 'utility')),
+        unsupported_rows_flagged=sum(r['ipw'][l]['status'] != 'supported' for r in learn_rows for l in LOGGERS),
+        best_class_advantage_never_negative=all(Fr(c['best_class_advantage_over_best_fixed']['exact']) >= 0 for c in cells))
+    return dict(
+        request='DTR-REQ-003: supplemental development output v1 (lead decision 54e1621, theory_feedback_20260921_exact_control.md)',
+        status='EXACT rational enumeration; no Monte Carlo, no model. The six-cell artifact exact_control_truth.json is unchanged; '
+               'this file adds the supplemental cell and cost/utility IPW expectation checks for all seven cells',
+        supplemental_cell='eta=1/5, q=2/5, c=1/10: informative feedback and a real action effect, but benefit below cost',
+        loggers={k: {'P(A=1|F=0)': str(v[0]), 'P(A=1|F=1)': str(v[1])} for k, v in LOGGERS.items()},
+        checks=checks, cells=cells,
+        not_claimed=['no agent-performance model', 'no estimator variance, interval or coverage',
+                     'not a change to the real-study utility or the 32-cell core grid'])
+
+
 def main():
     rep = build()
     if not all(v for k, v in rep['checks'].items() if isinstance(v, bool)):
         raise SystemExit('exact control checks failed: %s' % rep['checks'])
+    supp = build_supplemental()
+    if not all(v for k, v in supp['checks'].items() if isinstance(v, bool)):
+        raise SystemExit('supplemental checks failed: %s' % supp['checks'])
+    OUT_SUPP.write_text(json.dumps(supp, indent=1) + '\n')
     OUT.write_text(json.dumps(rep, indent=1) + '\n')
     for c in rep['cells']:
         print('eta=%-3s q=%-4s effect=%-5s informative=%-5s gain=%-6s adaptive_adv=%-5s best_obs=%s' % (

@@ -779,3 +779,17 @@ Code/config commit at checkpoint start: `0d2a6bb`. Last lead checkpoint read: `5
 | DTR-REQ-003 (P1) | running | Slice 1 accepted (`54e1621`). Next: the supplemental cell with cost/utility expectation checks, then the finite repair tables and complete fixed-task blocks. |
 
 **Question for the lead:** which evaluator should be adopted: `f7bbbb2` (includes the #518 checkout fix; #492 and #489 unaudited) or the tagged `v4.1.0`? No pin changes until you decide.
+
+## Worker checkpoint — 2026-09-21T04:52:56Z (host clock; local 2026-09-21 00:52 EDT)
+
+Code/config commit at checkpoint start: `81128ee`. Last lead checkpoint read: `54e1621`; issue #4's latest comment (04:22 UTC) is the same review. **Authorized runs: none.** Gate `log live branch` verified; no runner; servers healthy; foreign load `[]`.
+
+**Acknowledged:** REQ-001 completed. REQ-002 running on the compatibility repair; my candidate `f7bbbb2` (`81128ee`) awaits your choice, and pins are unchanged. REQ-003 is running, and the supplemental-cell decision is applied below.
+
+| Request | Status | Artifact / reason |
+|---|---|---|
+| DTR-REQ-001 (P0) | completed | lead review `8ecdfde` |
+| DTR-REQ-002 (P1) | running; repair candidate awaiting review | [`evaluator_compatibility_20260921.md`](evaluator_compatibility_20260921.md): `f7bbbb2` or tagged `v4.1.0`? |
+| DTR-REQ-003 (P1) | **running: supplemental cell delivered** | [`exact_control_supplemental_v1.json`](../experiments/v2_sim/exact_control_supplemental_v1.json), from `build_supplemental()` in [`exact_control.py`](../experiments/v2_sim/exact_control.py). The six-cell artifact is **byte-identical**: its SHA-256 is pinned by a test, and `build()` is unchanged. For η=1/5, q=2/5, c=1/10, both truth paths reproduce your table exactly: const 0 is 1/2, 0, 1/2; const 1 is 1/2, 1/10, 2/5; A=F is 27/50, 1/20, 49/100; A=1−F is 23/50, 1/20, 41/100; the U-oracle is 7/10, 1/20, 13/20. **A=F gain is −1/100 and best-class advantage is 0** (const 0), reported separately. **Cost/utility IPW:** for all 7 cells and every supported (logger, policy) pair, the exact IPW expectations of success, cost and utility equal the truth. The 14 zero-support rows (7 cells × {const 0, A=1−F}) carry an explicit `UNSUPPORTED` status. Nine tests pass. Next: the multi-opportunity transition/observation tables. |
+
+**Observation, no decision needed:** under the zero-support logger, the unsupported policies' IPW **cost** expectation still equals truth. That is a coincidence of this model: the never-logged action, 0, costs nothing. So a cost-only check cannot detect this support failure, while success and utility do. That is why the status field, not equality, marks identification.

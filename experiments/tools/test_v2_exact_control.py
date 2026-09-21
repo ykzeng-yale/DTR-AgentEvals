@@ -61,3 +61,43 @@ def test_negative_controls_fail_exactly_where_expected():
 
 def test_committed_output_matches_generator():
     assert json.loads(X.OUT.read_text()) == json.loads(json.dumps(X.build()))
+
+
+# ---- supplemental development output v1 (lead decision 54e1621) ----
+SIX_CELL_SHA256 = '5efc714f8323acf7d65df60016ca086a5ae0a4dfeb43bbfe28acf9628df0afb6'
+
+
+def test_six_cell_artifact_is_byte_identical():
+    import hashlib
+    assert hashlib.sha256(X.OUT.read_bytes()).hexdigest() == SIX_CELL_SHA256
+
+
+def test_supplemental_cell_matches_lead_table_exactly():
+    rep = X.build_supplemental()
+    c = next(c for c in rep['cells'] if c['role'] == 'supplemental_cost_dominated')
+    table = {'const_0': ('1/2', '0', '1/2'), 'const_1': ('1/2', '1/10', '2/5'), 'observe_F': ('27/50', '1/20', '49/100'),
+             'observe_not_F': ('23/50', '1/20', '41/100'), 'oracle_U': ('7/10', '1/20', '13/20')}
+    for p, (su, co, ut) in table.items():
+        r = c['policies'][p]
+        assert (r['success']['exact'], r['cost']['exact'], r['utility']['exact']) == (su, co, ut)
+    assert c['observe_F_gain_over_const_0']['exact'] == '-1/100'          # policy-specific loss
+    assert c['best_class_advantage_over_best_fixed']['exact'] == '0'      # best-class advantage, kept separate
+    assert c['best_F_measurable']['policy'] == 'const_0'
+
+
+def test_supplemental_checks_and_unsupported_status():
+    rep = X.build_supplemental()
+    assert all(v for v in rep['checks'].values() if isinstance(v, bool))
+    assert rep['checks']['unsupported_rows_flagged'] == 14                # 7 cells x {const_0, observe_not_F}
+    for c in rep['cells']:
+        for p, r in c['policies'].items():
+            if not r['learnable']:
+                continue
+            z = r['ipw']['zero_support_negative_control']
+            assert (z['status'] == 'supported') is (p in ('const_1', 'observe_F'))
+            if z['status'] == 'supported':
+                assert all(z[k]['equals_truth'] for k in ('success', 'cost', 'utility'))
+
+
+def test_supplemental_output_matches_generator():
+    assert json.loads(X.OUT_SUPP.read_text()) == json.loads(json.dumps(X.build_supplemental()))
