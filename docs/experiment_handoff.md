@@ -2315,3 +2315,56 @@ Read lead `9f9e29d` (20:49 cycle). **DTR-REQ-003 P0:**
 - **Accepted and running now:** the bounded retrospective conditional-moment diagnosis for informative/.2 only. I reconstruct the training streams for repetitions 0..999 (seed 2026092104, frozen `4ec6831` namespaces), refit the three policies, require all 3,000 saved Q/fallback-table hashes to match, then compute the per-fit exact conditional moments, including third central moments, through the exact-check interface. No new evaluation or fresh streams, seed, model or grid; 900 s bound.
 - **Also accepted:** hardening the standalone recompute checker(s) to assert their tolerance.
 - The fixed-fit grid remains **held**.
+
+## Worker checkpoint — 2026-09-21T21:19:53Z (host clock; local 2026-09-21 17:19 EDT)
+
+Code/config commit at checkpoint start: `d2df3e3` (status). Last lead checkpoint read: the 20:49 cycle (`9f9e29d`; issue #4 at 20:53 UTC). **Authorized run:** the retrospective conditional-moment diagnosis as specified in `9f9e29d`. It has completed. State check: all stages verified, no stage runner, servers ok, foreign busy []. Your `scripts/audit_honest_split_f532597.py` still passes. 331 tests pass.
+
+**Checker hardening: completed.** `check_honest_split_coverage.py`, `check_replication_sensitivity.py` and `check_coverage_summary.py` now **assert** abs-or-rel 1e-12 on every recomputed quantity. All three pass on the published data (516 / 324 / 288 checks), and a 1e-6 disagreement raises.
+
+**Retrospective conditional-moment diagnosis: completed.**
+- Code: [`conditional_moment_diagnosis.py`](../experiments/v2_sim/conditional_moment_diagnosis.py), with 5 tests.
+- Artifact: [`summary.json`](../results/v2_sim/honest_split_conditional_moments_20260921/summary.json) and [`.md`](../results/v2_sim/honest_split_conditional_moments_20260921/summary.md).
+
+*Method*
+- Checked that the `4ec6831` sources are unchanged and the saved-record hash matches.
+- Reconstructed only the training streams (`cfg=hsc-…informative…0.2|rep=<b>|cohort=train`, seed 2026092104) for repetitions 0..999 in index order, with 4 workers, finishing in 27 s against the 900 s bound.
+- Refitted the three policies and required each hash to match before use.
+- Enumerated the 475 evaluation branches per stratum once and scored them with each frozen fit through `episode_scores`: mean, variance and third central moment.
+- Per fit: V_fit = Σ_g var_{s_g}/(r n²) over the evaluation manifest, κ₃ = Σ_g k3_{s_g}/(r² n³), and the fresh exact variance of the fixed policy added for D.
+- The tests cross-check per-fit variances against the previously reviewed `conditional_moments` path, test a hash mismatch (flagged, fit not used), the jackknife deletion identity and the comparison statistics on hand values, and assert artifact acceptance.
+
+*Acceptance*
+- 3,000/3,000 table hashes match; first divergence none.
+- Conditional means equal the targets to within 5.6e-16.
+- Evaluation weights 125 easy and 125 hard × 4.
+- Original Wald covered counts and tails reproduced in all 6 rows.
+- Completed prefix 1,000/1,000, not capped.
+
+*Results*
+
+| Policy | Estimand | Wald cov. | Exact-var cov. | Wald − exact (MCSE) | Mean est./exact | Emp. var / mean exact (jk z) | V_fit CV | Mean skew of avg |
+|---|---|---|---|---|---|---|---|---|
+| history | DR | 0.945 | 0.947 | −0.002 (0.003) | 1.000 | 1.025 (+0.57) | 0.003 | −0.039 |
+| history | DR−fresh | 0.951 | 0.956 | −0.005 (0.003) | 1.000 | 1.024 (+0.56) | 0.003 | — |
+| prompt | DR | 0.951 | 0.945 | +0.006 (0.008) | 1.008 | 0.988 (−0.24) | 0.175 | +0.004 |
+| prompt | DR−fresh | 0.934 | 0.936 | −0.002 (0.007) | 1.006 | 1.030 (+0.61) | 0.175 | — |
+| fixed_LS | DR | 0.936 | 0.945 | −0.009 (0.006) | 1.012 | 1.061 (+1.14) | 0.083 | −0.073 |
+| fixed_LS | DR−fresh | 0.933 | 0.936 | −0.003 (0.005) | 1.010 | 1.089 (+1.68) | 0.083 | — |
+
+- Estimated/exact 5–95% ranges: history 0.91–1.09, prompt 0.43–1.87, fixed_LS 0.58–1.72.
+- Correlation of error with the estimated/exact ratio: −0.72 for history, −0.09 for prompt, −0.24 for fixed_LS.
+- Single-fit skewness ranges: prompt −0.48 to +0.38, fixed_LS −0.43 to +0.20.
+- Exact-variance tails (lower/upper): fixed_LS DR 0.031/0.024, fixed_LS DR−fresh 0.037/0.027.
+- What I observe, not interpret:
+  - In both DR−fresh shortfall rows, per-fit exact-variance intervals cover about the same as Wald (0.936), so the estimated-scale variation does not account for those two.
+  - In fixed_LS DR, replacing the estimated scale with the per-fit exact one moves coverage from 0.936 to 0.945, a paired −0.009 with MCSE 0.006.
+  - Empirical variance exceeds the mean exact variance by 3–9% in five rows, all with |z| < 1.7.
+
+| Request | Status | Artifact / reason |
+|---|---|---|
+| DTR-REQ-001 (P0) | completed | — |
+| DTR-REQ-002 (P1) | running: M01 done; further upstream execution **held pending the author's explicit confirmation**; runtime host blocked (author) | `21cd872` |
+| DTR-REQ-003 (P0) | repeated-training batch accepted (`f532597`); fixed-fit grid **held**; **checker hardening and retrospective diagnosis completed; awaiting your review** | `results/v2_sim/honest_split_conditional_moments_20260921/`, this commit |
+
+**Question for the lead:** how do you interpret this, and what is the next REQ-003 step? I will run it as soon as it is specified.

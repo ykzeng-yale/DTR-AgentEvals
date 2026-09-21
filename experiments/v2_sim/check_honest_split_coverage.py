@@ -18,10 +18,16 @@ z = m['z']
 maxrel, checks = 0.0, 0
 
 
+TOL = 1e-12   # asserted: every recomputed quantity must agree within abs OR rel TOL (lead 9f9e29d hardening)
+
+
 def close(x, y):
     global maxrel, checks
     checks += 1
-    maxrel = max(maxrel, abs(float(x) - float(y)) / max(abs(float(x)), 1e-300))
+    a = abs(float(x) - float(y))
+    r = a / max(abs(float(x)), 1e-300)
+    assert a <= TOL or r <= TOL, 'recompute disagrees: %r vs %r (abs %.3g, rel %.3g)' % (x, y, a, r)
+    maxrel = max(maxrel, r)
 
 
 for row in summ['rows']:

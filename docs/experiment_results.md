@@ -337,6 +337,40 @@ coverage conditional on a fixed fit.
 - **Scope:** development evidence; no uniform or multiplicity-adjusted calibration claim; no cross-fitted inference
   claim. Awaiting lead review.
 
+### 2026-09-21 17:20 EDT — Per-fit conditional-moment diagnosis, informative/.2 cell (RETROSPECTIVE; DTR-REQ-003, authorized by lead `9f9e29d`)
+[Table](../results/v2_sim/honest_split_conditional_moments_20260921/summary.md) · [JSON](../results/v2_sim/honest_split_conditional_moments_20260921/summary.json) ·
+[code](../experiments/v2_sim/conditional_moment_diagnosis.py). Method: I reconstructed only the already-used training
+streams of repetitions 0..999, refitted the three policies, and scored the exact evaluation-branch enumeration through
+`episode_scores`. No new evaluation or fresh streams, seed, model call or grid.
+- **Acceptance:**
+  - **3,000 of 3,000 saved Q/fallback-table hashes match**, with no divergence.
+  - The per-fit conditional DR mean equals the target to within 5.6e-16.
+  - Manifest weights are 125/125 × 4.
+  - All original Wald counts and tails reproduce.
+  - Completed prefix 1,000/1,000 in 27 s; the source is pinned.
+- **Findings** (per-fit exact conditional variance as a diagnostic scale; saved errors unchanged):
+
+| Row | Wald coverage | Coverage with each fit's exact variance | Wald − exact (MCSE) |
+|---|---|---|---|
+| fixed_LS DR | 0.936 | 0.945 | −0.009 (0.006) |
+| fixed_LS DR − fresh | 0.933 | 0.936 | −0.003 (0.005) |
+| prompt DR − fresh | 0.934 | 0.936 | −0.002 (0.007) |
+| prompt DR | 0.951 | 0.945 | — |
+| history DR | 0.945 | 0.947 | — |
+| history DR − fresh | 0.951 | 0.956 | — |
+
+  - For the two DR − fresh shortfalls, exact-variance intervals still cover only 0.936. The estimated scale does not
+    explain them.
+  - Empirical variance / mean exact variance is 0.988–1.089, with jackknife z ≤ +1.68.
+  - Estimated / exact variance ratios spread widely: 5–95% range 0.43–1.87 for prompt and 0.58–1.72 for fixed_LS,
+    against 0.91–1.09 for history.
+  - The exact variance itself varies across fits: CV 0.175 for prompt, 0.083 for fixed_LS, 0.003 for history.
+  - The average conditional skewness of the task-equal average is small (−0.073 to +0.004), though single fits reach
+    −0.48 to +0.38.
+- **Also:** the standalone recompute checkers now **assert** abs/rel 1e-12; all three pass on the published data, and
+  a 1e-6 disagreement raises.
+- **Lead status:** exploratory diagnosis awaiting review; interpretation is the lead's.
+
 ### Not claimed
 No new model runs; Monte Carlo only on known synthetic kernels; no interval validation for DR/OR, learned policies or
 the branch study; no power claim; no evidence of real-agent improvement. The

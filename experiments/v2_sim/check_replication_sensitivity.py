@@ -16,10 +16,15 @@ assert ids == {(c['config'], b) for c in m['cells'] for b in range(m['repetition
 maxrel, checks = 0.0, 0
 
 
+TOL = 1e-12   # asserted: every recomputed quantity must agree within abs OR rel TOL (lead 9f9e29d hardening)
+
+
 def close(x, y):
     global maxrel, checks
     checks += 1
-    d = abs(float(x) - float(y)) / max(abs(float(x)), 1e-300)
+    a = abs(float(x) - float(y))
+    d = a / max(abs(float(x)), 1e-300)
+    assert a <= TOL or d <= TOL, 'recompute disagrees: %r vs %r (abs %.3g, rel %.3g)' % (x, y, a, d)
     maxrel = max(maxrel, d)
 
 

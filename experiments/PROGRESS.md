@@ -24,6 +24,16 @@ reproducibility/metadata/package remain open.
 Pushed about every two hours while experiments run. Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-21 17:19 EDT (2026-09-21 21:19 UTC) — retrospective conditional-moment diagnosis delivered (REQ-003, lead 9f9e29d)
+
+Reconstructed 1,000 training fits for informative/.2 with all 3,000 table hashes matching and exact conditional means.
+Per-fit exact-variance intervals change fixed_LS DR coverage from 0.936 to 0.945, but leave the two DR−fresh shortfalls
+at 0.936. The recompute checkers now assert their tolerance. Interpretation is the lead's.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Evidence advanced:
+retrospective diagnostic only (no new data). Categories 75/75/50/25/25 → 55.00. Main remaining work: lead inference
+decision; manuscript synthesis; author confirmation for execution; runtime host (author).
+
 ## 2026-09-21 16:42 EDT (2026-09-21 20:42 UTC) — honest-split DR repeated-training coverage completed (REQ-003, lead 3f4dfc2)
 
 Scoped repair done (tolerant artifact comparison, table-only hash documented, provenance pinned). The batch ran 4,000 of

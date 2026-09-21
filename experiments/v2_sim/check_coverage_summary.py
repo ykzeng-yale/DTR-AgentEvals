@@ -32,7 +32,8 @@ for row in summ['rows']:
                     empirical_sd=np.std(e, ddof=1), mean_estimated_variance=np.mean(v), average_length=np.mean(2 * z * np.sqrt(v)),
                     empirical_over_exact_variance=np.var(e, ddof=1) / xv, mean_estimated_over_exact_variance=np.mean(v) / xv)
         for k, x in vals.items():
-            d = abs(float(x) - s[k]) / max(1e-300, abs(float(x)))
+            a = abs(float(x) - s[k]); d = a / max(1e-300, abs(float(x)))
+            assert a <= 1e-12 or d <= 1e-12, 'recompute disagrees: %s %s %s %s: %r vs %r' % (row['config'], row['policy'], key, k, x, s[k])
             maxdiff = max(maxdiff, d); checks += 1
         assert s['failed_intervals'] == 0 and s['zero_variance_point_intervals'] == int(np.sum(v == 0))
 print('checks', checks, 'max relative diff', maxdiff)
