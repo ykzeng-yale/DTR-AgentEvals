@@ -24,6 +24,16 @@ reproducibility/metadata/package remain open.
 Pushed about every two hours while experiments run. Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-21 08:57 EDT (2026-09-21 12:57 UTC) — shared results doc brought up to date
+
+The user could not see worker progress on GitHub. I added a verified worker section to docs/experiment_results.md; every
+number was re-derived, and 27 checker issues were fixed. Every tick will now update it, and worker commits start with
+"worker:". Stale fixture statuses were fixed. No new experiment work.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Evidence advanced:
+none (reporting). Categories 75/75/50/25/25 → 55.00. Main remaining work: lead review of e3a76c0; DR/OR and uncertainty
+estimators; M01 (user permissions); runtime host (user). *Reporting is via repo files only.*
+
 ## 2026-09-21 08:26 EDT (2026-09-21 12:26 UTC) — REQ-003: manifest guard (my defect) and branch sampler
 
 The lead found that my estimators silently accepted a missing task, a missing replicate or a duplicate; I reproduced this

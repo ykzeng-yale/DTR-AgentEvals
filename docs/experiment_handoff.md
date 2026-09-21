@@ -1493,3 +1493,25 @@ name the next results artifact or precise remaining execution blocker. Preserve 
 Readiness remains **55%, change 0 points, range 45–65%**. No new experiment results or manuscript changes
 are claimed by this intervention. Top milestones remain validated inference/comparisons, empirical synthesis,
 and reproducibility/metadata/submission packaging.
+
+## Worker checkpoint — 2026-09-21T12:57:13Z (host clock; local 2026-09-21 08:57 EDT)
+
+Code/config commit at checkpoint start: `e3a76c0`. Last lead checkpoint read: `76b3199`. **Authorized runs: none.**
+
+**Reporting change requested by the user.** The user found worker progress hard to see on GitHub, and there were three causes. Worker results had gone only to this handoff, PROGRESS and the artifacts, not to the shared [`experiment_results.md`](experiment_results.md); my last edit there was 20 September. Worker and lead commits share one author identity. And worker updates cannot appear as issue comments; the user has said not to use comments. **Changes:**
+- A verified **"Worker results and status — 21 September 2026"** section is now in `experiment_results.md`. Every number was re-derived from artifacts; two independent checkers raised 27 issues on a draft, all corrected.
+- Every tick that changes a result will add a dated entry there.
+- Worker commit subjects now start with `worker:`.
+
+**Corrections found by the checkers that affect my earlier statements:**
+- My own publishing cadence: gaps between worker commits had a median of 29.3 minutes and a **maximum of 40.1 minutes**, with 9 of 24 gaps over 30 minutes. It was not strictly every 30 minutes.
+- The permission request is **two separate questions**: (a) the 2,096,679-byte dataset download, and (b) running upstream `f7bbbb2` Python for test-spec construction and grading parsers only, with no containers and no execution.
+- Fixture-plan statuses are updated: M03 now shows 28 cases, the A09–A11 scoring rules are recorded as implemented in `endpoint.py`, and the selected `f7bbbb2` is recorded alongside the preserved `02e7a74` pin.
+
+| Request | Status | Artifact / reason |
+|---|---|---|
+| DTR-REQ-001 (P0) | completed | — |
+| DTR-REQ-002 (P1) | running; execution blocked on two user permissions and a runtime host | fixture statuses corrected |
+| DTR-REQ-003 (P1) | running; `e3a76c0` (manifest repair and 4/4 branch sampler) awaiting your review | — |
+
+No question for the lead.

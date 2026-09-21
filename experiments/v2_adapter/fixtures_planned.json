@@ -1,6 +1,6 @@
 {
  "request": "DTR-REQ-002: planned deterministic fixtures for the v2 routing/logging adapter",
- "status": "PLANNED: specified only. No adapter, fixture runner, upstream package, container, model or evaluator has been installed, implemented or executed.",
+ "status": "Mostly PLANNED (specification only). Implemented locally and tested: M02 (qualify_instances.py), M03 static part (grading_conformance.py, eval_script_check.py) and the A09-A11 scoring rules (endpoint.py). Nothing upstream installed or executed; M01 blocked on user permission.",
  "governing_documents": [
   "docs/experiment_protocol_v2.md",
   "docs/literature_harness_design_20260921.md",
@@ -116,7 +116,8 @@
     "evaluation_requested": false,
     "salvaged_patch": null,
     "exit_reason_retained": true
-   }
+   },
+   "implementation_status": "IMPLEMENTED locally in experiments/v2_adapter/endpoint.py (fail-closed contract accepted 0cd1fef); not wired to runtime"
   },
   {
    "id": "A10-evaluator-failure-unknown",
@@ -132,7 +133,8 @@
      1
     ],
     "regenerated_solution": false
-   }
+   },
+   "implementation_status": "IMPLEMENTED locally in experiments/v2_adapter/endpoint.py (fail-closed contract accepted 0cd1fef); not wired to runtime"
   },
   {
    "id": "A11-unique-evaluation-id",
@@ -141,7 +143,8 @@
    "expected": {
     "distinct_evaluation_ids": 2,
     "reports_read_from_other_run_ids": 0
-   }
+   },
+   "implementation_status": "IMPLEMENTED locally in experiments/v2_adapter/endpoint.py (fail-closed contract accepted 0cd1fef); not wired to runtime"
   },
   {
    "id": "A12-weight-bound",
@@ -384,14 +387,15 @@
    "expected": {
     "resolution_differences": "0 or an explicit list for lead review"
    },
-   "implementation_status": "STATIC PART IMPLEMENTED: experiments/v2_adapter/grading_conformance.py (declared rule, 11 fixtures G01-G11 with f7bbbb2 source-derived upstream outcomes as data; 4 count-as-pass discrepancies: SKIPPED F2P/P2P, all-F2P-skipped vacuous, XFAIL) and experiments/v2_adapter/eval_script_check.py (new-file-only reset regression R1-R4). 18 cases in experiments/tools/test_v2_m03.py. Upstream NOT executed; the conformance run and real generated scripts need user permission."
+   "implementation_status": "STATIC PART IMPLEMENTED: experiments/v2_adapter/grading_conformance.py (declared rule, 11 fixtures G01-G11 with f7bbbb2 source-derived upstream outcomes as data; 4 count-as-pass discrepancies: SKIPPED F2P/P2P, all-F2P-skipped vacuous, XFAIL) and experiments/v2_adapter/eval_script_check.py (new-file-only reset regression R1-R4). 28 cases (after the lead-requested reset-checker repair, 6b2baca) in experiments/tools/test_v2_m03.py. Upstream NOT executed; the conformance run and real generated scripts need user permission."
   }
  ],
  "upstream_pins": {
   "mini-swe-agent": "04d809ceab9df28f9adaed044884180159172930",
   "SWE-bench": "02e7a74ffd0b707aab73d203fe87bdc7c76afc8e",
   "RouteLLM": "0b64fdafe049e596a3f5657c219329f24af24198",
-  "router_checkpoint": "routellm/bert_gpt4_augmented@86237e3df400762178ea98379477b8296e66d5e4"
+  "router_checkpoint": "routellm/bert_gpt4_augmented@86237e3df400762178ea98379477b8296e66d5e4",
+  "SWE-bench_selected_for_qualification": "f7bbbb2ccdf479001d6467c9e34af59e44a840f9 (lead 91c8bcc); 02e7a74 above is the preserved original pin"
  },
  "lead_decisions_applied": "8ecdfde (theory_feedback_20260921_adapter.md): K2, H, P_max, reserve(), context preflight, prompt basis, evaluator option (b)"
 }

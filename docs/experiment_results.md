@@ -22,6 +22,64 @@ corrects the worker's revised A6 interpretation and gives a separately reviewed,
 
 **Earlier review, 20 September 2026, 04:24 UTC cycle:** all 800 branch completions are now published at `d4997c6` and independently reconciled as saved records. The new 42-task analysis changes the population and weights, so uncertainty for the original full-prefix contrast remains unresolved. See [the completed-branch review](theory_feedback_20260920_branch.md). The earlier live-policy review at `ac3ca83` remains valid within its stated limits; historical snapshots below are dated explicitly.
 
+## Worker results and status — 21 September 2026 (experiments workstream)
+
+*Written by the worker from committed artifacts. Every number below was re-derived from the artifact files, git or test runs.
+Two independent checkers reviewed a draft and raised 27 issues, all corrected here. Replies to each lead review are in
+[experiment_handoff.md](experiment_handoff.md). From now on, worker commit subjects start with `worker:`, and every tick
+that changes a result adds a dated entry to this section.*
+
+**Where things stand.** There have been no new model runs since the archived coding study. Today's worker output falls
+into three parts. First, the archived-report correction (DTR-REQ-001, completed). Second, static qualification tooling
+for the planned SWE-bench study (DTR-REQ-002); nothing runs until the user permissions below are given. Third, exact
+synthetic-design artifacts and the first sampler slices (DTR-REQ-003). **Publishing cadence:** 25 worker commits since
+23:00 EDT on 20 September, all pushed to GitHub (latest before this section `e3a76c0`). The gaps between them had a
+median of 29.3 minutes and a maximum of 40.1 minutes; 9 of 24 gaps exceeded 30 minutes.
+
+### DTR-REQ-001 — archived coding study (completed; lead `8ecdfde`)
+| Artifact | Result | Lead status |
+|---|---|---|
+| [`a6_report.md`](../results/code_routing/analysis/a6_report.md) | 39 rows in 6 analysis classes. 119 audit comparisons: 118 against six lead audits and 1 against the archived corrected JSON. Largest difference 2.8e-17. 12 tests pass | completed `8ecdfde` |
+| Live whole-policy contrast (learned minus always-large) | Success −5/660 = −0.0076 (task-paired arithmetic scale 0.0110); utility −0.0050 (scale 0.0113). No validated interval | `8ecdfde` |
+| Archived branch/log point | Branch 0.1200 against log 0.1347, a difference of −0.0147. Exploratory algebraic scale 0.0484, which is not an SE. The secondary realized-frame SE is 0.0235 under unverified assumptions. **No validated estimate or interval exists for the primary target Δ = θ − ν₁ + ν₀** (lead `d3425bf`); the report's `primary_target` field names θ, from the earlier decision | open (lead) |
+| [`branch_evidence_table.json`](../results/code_routing/analysis/branch_evidence_table.json) | 330 task blocks; 564 eligible prefixes on 152 tasks; 200 sampled on 103; 32 of 400 same-arm fresh pairs discordant. The frozen sample redraws exactly (a6 report, `branch_plan_reproduction`) | accepted `a62ccf2` / `ac1d89e` (descriptive) |
+
+### DTR-REQ-002 — SWE-bench v2 qualification (running; execution blocked)
+| Artifact | Result | Lead status |
+|---|---|---|
+| [Adapter contract](adapter_contract_20260921.md) and [fixture plan](../experiments/v2_adapter/fixtures_planned.json) | Hook and field map at pinned sources; 35 planned fixtures | design accepted `8ecdfde` |
+| [Evaluator selection](evaluator_compatibility_20260921.md) | SWE-bench `f7bbbb2` on SWE-bench_Verified `c104f84`. Status `selected_for_development_qualification_not_execution_qualified`; the config lists 7 open gates, including M02, whose synthetic fixtures were since accepted | selected `91c8bcc` |
+| M02 test-list qualification | 29 synthetic cases pass; not yet run on the 500 real rows | accepted `d3425bf` |
+| M03 strict grading and reset checker | 11 grading fixtures. In 4 of them the evaluator counts a pass that the strict rule rejects (skipped F2P or P2P; all F2P skipped, resolved vacuously; XFAIL); this comes from reading the source, not executing it. The phase-aware reset checker has 28 cases. **Strict verified resolution** is the primary endpoint | strict rule `d1d9de6`; repair accepted `6b2baca` |
+| Episode endpoint mapper | Fail-closed input contract; 17 cases | accepted `0cd1fef` |
+
+### DTR-REQ-003 — synthetic design, exact truth and samplers (running)
+| Artifact | Result | Lead status |
+|---|---|---|
+| One-decision exact control | A=F gain over constant-0: 3/20 and 1/20 in the two informative cells with an action effect, −1/20 in the other four. Best-class advantage: 3/20, 1/20 and 0. The closed form matches enumeration in 30/30 cell×policy entries | accepted `54e1621` |
+| Cost-dominated supplemental cell | A=F gain −1/100; best-class advantage 0 | accepted `4f76701` |
+| Repair kernels (12 cells) | History advantage over the best fixed schedule is 0 except in the crossing cells: K=2 0.0411 / 0.0089 and K=4 0.0304 / 0.0058 (informative / weak feedback). Two truth paths agree exactly | accepted `935fabd` |
+| Logger layer | 468 rows: 348 supported (IPW exact) and 120 unsupported (12 of them final-only). v1 was rejected for 60 wrong cost-support labels and is preserved | v2 accepted `c847751` |
+| Fixed-task blocks | Exact SE at n=250 is 0.0169–0.0718 over all 48 rows (history rule 0.0169–0.0352). The iid-formula variance ratio is 1.0028–1.1440 (history rule 1.0195–1.1440) | accepted `dd898b5` |
+| Archive branch module | Calibrated Δ = 0 exactly; the drift control gives Δ −0.0174 / −0.0154 | accepted `7e04762` |
+| n=330 occupancy sensitivity | E[N] goes from 1181.4 to 564; ratios unchanged | accepted `13c1b91` |
+| Shared-log contrast covariance | The contrast-SE ratio over 48 comparisons is 0.7045–1.0058, and 7 are above 1 | accepted `9d31341` |
+| Fresh on-policy reference | Fresh SE at n=250 is 0.0117–0.0141. The IPW/on-policy variance ratio is 1.469–71.64, all at least 1 | accepted `6b2baca` |
+| Samplers | Slice 1 accepted with a required repair (`76b3199`). The repair and the 4/4 branch sampler are at `e3a76c0`, **awaiting review** | 19 tests |
+
+The eight synthetic-control test files have 58 passing tests; the two sampler files have 19.
+
+### Blocked or open
+- **User, two separate permissions.** (a) Download one pinned file, `data/test-00000-of-00001.parquet` (2,096,679 bytes per the Hugging Face API), from `princeton-nlp/SWE-bench_Verified@c104f84`. (b) Import and run SWE-bench `f7bbbb2` Python, limited to test-spec construction and grading parsers, in an isolated environment: no containers, no eval-script execution and no benchmark run. Both were asked in chat and recorded in the handoff; neither has been answered. They block M01, M02 on real rows and the conformance run.
+- **User.** A container runtime or a qualified host for any evaluator execution. This host is arm64 with none installed.
+- **Lead.** Review `e3a76c0`; the inference design for Δ; precision and resource choices.
+- **Worker.** DR and outcome-regression estimators; the sampled per-decision cost estimator; variance, interval and covariance estimators; a manifest check for the branch study's analysis boundary.
+
+### Not claimed
+No new model runs; no Monte Carlo; no coverage, power or interval validation; no evidence of real-agent improvement. The
+archived learned router did not beat always-large. Lead's readiness estimate (rubric in [readiness.md](readiness.md),
+`76b3199`): 55%, change 0 percentage points, range 45–65%.
+
 ## Coding-study checkpoint: 19 September 2026, 22:00 UTC review cycle
 
 At commit `035d245`, two independent internal reviewers inspected the committed randomized log: **4,488 unique episodes, 561 tasks, eight episodes per task, and 6,063 durable decision records**. TRAIN has 231 tasks / 1,848 episodes; CONFIRM has 330 tasks / 2,640 episodes, with no task overlap. Episode assignments agree with the frozen design, and no infrastructure-error episode is recorded. The learned-policy artifact is frozen and its source code uses TRAIN only. These are independently checked artifact and source-code properties, not fresh execution or independently rescored hidden-test results.
