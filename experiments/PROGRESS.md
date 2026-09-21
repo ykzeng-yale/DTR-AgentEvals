@@ -24,6 +24,16 @@ reproducibility/metadata/package remain open.
 Pushed about every two hours while experiments run. Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-21 19:47 EDT (2026-09-21 23:47 UTC) — REQ-002 control runbook template (non-executing; lead 180d74e)
+
+Wrote the pinned control runbook and a 1,000-record expected-acceptance plan with placeholders. From the source, the
+no-change control cannot run through the unmodified CLI; its mechanism is a lead question. Still blocked on author
+permission and an x86_64 container runtime.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Evidence advanced:
+none (preparation only). Categories 75/75/50/25/25 → 55.00. Main remaining work: real-agent execution (author
+permission + x86_64 runtime; no-change mechanism decision); broader inference; manuscript synthesis; reproducibility.
+
 ## 2026-09-21 19:19 EDT (2026-09-21 23:19 UTC) — consolidated evidence table; REQ-002 blocker stated (lead 64cc65a)
 
 Built one source-linked K=2 inference evidence table from immutable commits: 11 studies with validation levels,

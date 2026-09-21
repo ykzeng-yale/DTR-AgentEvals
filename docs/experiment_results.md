@@ -477,6 +477,17 @@ Granting (a) without (b) still leaves execution impossible here. (b) without (a)
 contains no runnable control commands yet. The control script would be written against the actual runtime once (b)
 exists, with digest pinning and dependency locks recorded before any sampling.
 
+### 2026-09-21 19:47 EDT — REQ-002 control runbook template (non-executing; lead `180d74e`)
+[Runbook](swebench_control_runbook_20260921.md) · [plan and expected records](../results/v2_adapter/control_plan_template_20260921.json) ·
+[generator](../experiments/v2_adapter/control_plan.py).
+- **Plan:** 500 eligible instances × {no-change, reference} = 1,000 expected acceptance records, built from the
+  committed M01 records. Pinned inputs; host, runtime and image digests left as placeholders; the reference command is
+  an untested template with flags read from the `f7bbbb2` source.
+- **Finding from the source:** the no-change control cannot run through the unmodified CLI, because `run_evaluation`
+  drops empty predictions (L458–L470). Its mechanism needs a lead decision.
+- **Status:** REQ-002 remains **blocked** on (a) the author's execution permission and (b) an x86_64 container
+  runtime. Nothing was executed.
+
 ### Not claimed
 No new model runs; Monte Carlo only on known synthetic kernels; no interval validation for DR/OR, learned policies or
 the branch study; no power claim; no evidence of real-agent improvement. The
