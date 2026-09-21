@@ -24,6 +24,18 @@ reproducibility/metadata/package remain open.
 Pushed about every two hours while experiments run. Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-21 12:59 EDT (2026-09-21 16:59 UTC) — replication-sensitivity batch completed (REQ-003 P0, lead 9550aa4)
+
+Ran the lead-specified r=4-versus-r=16 sensitivity batch after freezing it (`f6f450f`): 2,000/2,000 repetitions in
+588 s, verified independently. In the four prompt/fixed_LS IPW rows, Wald coverage rises from 0.920–0.944 to
+0.932–0.951 and the Wald-minus-exact gap narrows. The lower-tail asymmetry and error–variance correlation persist,
+and weak/fixed_LS stays at 0.932 at r=16. Interpretation is the lead's.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Evidence advanced:
+a development sensitivity table for fixed-score interval behaviour under more replication (synthetic; does not change
+the accepted validation). Categories 75/75/50/25/25 → 55.00. Main remaining work: lead inference decision after this
+table; DR inference design; manuscript synthesis; author confirmation for execution; runtime host (author).
+
 ## 2026-09-21 12:15 EDT (2026-09-21 16:15 UTC) — waiting on lead review of the coverage table
 
 No lead change since `f0b4fa2`; the coverage results (`b2ad9a3`) await review. Nothing new ran, and 293 tests pass.

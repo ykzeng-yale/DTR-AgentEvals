@@ -201,6 +201,39 @@ needs r ≥ 2. No interval or coverage is computed or claimed; a coverage study 
 - **Scope:** a prospective synthetic check of fixed-score estimators only. It makes no DR/OR or learned-policy inference
   claim, no multiplicity-adjusted claim, no real-agent claim, and no threshold chosen after viewing the results.
 
+### 2026-09-21 12:58 EDT — Replication-sensitivity development batch, r=4 versus r=16 (DTR-REQ-003 P0; authorized by lead `9550aa4`)
+[Summary table](../results/v2_sim/replication_sensitivity_20260921/summary.md) · [summary.json](../results/v2_sim/replication_sensitivity_20260921/summary.json) ·
+[raw repetitions](../results/v2_sim/replication_sensitivity_20260921/reps.jsonl) · [independent recompute](../experiments/v2_sim/check_replication_sensitivity.py) ·
+manifest frozen and pushed **before** launch in `f6f450f`. The lead accepted the original validation (`b2ad9a3`),
+including its undercoverage, as completed evidence. This batch is a post-design **development sensitivity** check and
+changes none of the original results.
+- **Design:** the two feedback-dependent-.2 cells, the three policies, n=250, 1,000 repetitions per cell and seed
+  2026092103. 16 logged and 16 fresh replicates are generated per task. They are analysed as the nested first-4 block,
+  with its own r=4 manifest, and as the full 16 block, on the same streams.
+- **Completion:** 2,000 of 2,000 repetitions, 588 s wall on 4 processes, cap not reached; the lock/finalize step
+  certified 2,000 unique ids. There are 0 failed intervals, 0 zero-variance intervals and 0 recorded errors.
+- **Verification:** the numpy recompute reproduces every coverage and tail count and 324 quantities (max relative
+  difference 7.6e-16). Before launch, tests showed:
+  - the r=16 exact variances equal r=4/4, by exhaustive enumeration;
+  - the first-4 streams are nested bit-for-bit in the 16 block;
+  - the first-4 analysis matches an independently generated r=4 block.
+- **The r=4 arm replicates the original pattern on a new seed.** IPW coverage for the prompt rule and fixed_LS is
+  0.920–0.944, with exact-variance coverage 0.944–0.951.
+- **At r=16, for those four IPW rows** (MCSE about 0.007 per row, about 0.01 for paired differences):
+  - Wald coverage is 0.932–0.951.
+  - The paired r16−r4 coverage difference is +0.007 to +0.021; none is individually beyond 2.2 MCSE.
+  - Wald-minus-exact coverage shrinks from −0.024…−0.001 to −0.008…+0.003.
+  - The variance CV roughly halves, from 0.30–0.44 to 0.15–0.23.
+  - The error–variance correlation is unchanged: 0.62–0.72 at r=16, against 0.62–0.70 at r=4.
+  - Lower-tail misses still exceed upper-tail misses: 0.033–0.048 against 0.008–0.020.
+  - Interval length is 0.503–0.510 of the r=4 length for 4× the episodes.
+- **Adverse row kept (weak / fixed_LS at r=16):** Wald coverage is 0.932 for IPW, 0.935 for fresh and 0.936 for D,
+  the only r=16 entries more than 2 MCSE from 0.95. Exact-variance coverage there is 0.940 for IPW and 0.934 for
+  fresh. Empirical variance is 1.08–1.11 × exact, while the estimated variance is 0.999–1.000 × exact for IPW and fresh.
+- **Scope (lead wording):** any improvement is sensitivity to more execution replication (budget). It is not a
+  cost-free interval repair and not an isolated variance-estimation effect. Development evidence only; interpretation
+  is the lead's.
+
 ### Not claimed
 No new model runs; Monte Carlo only on known synthetic kernels; no interval validation for DR/OR, learned policies or
 the branch study; no power claim; no evidence of real-agent improvement. The

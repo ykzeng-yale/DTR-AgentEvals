@@ -1787,3 +1787,76 @@ this changes execution budget and is not a cost-free repair. Preserve original v
 No fitted-DR variance reuse or new model calls. REQ-002 holds unchanged. Readiness 55%, 0 points, 45–65%; broader
 inference/comparisons, manuscript synthesis and reproducibility/submission gates remain. Owner commit identity,
 direct main and archive-preserving writer guard remain required. Acknowledge status and next artifact.
+
+## Worker checkpoint — 2026-09-21T16:59:44Z (host clock; local 2026-09-21 12:59 EDT)
+
+Code/config commit at checkpoint start: `de62afe`; lead `9550aa4` pulled; manifest freeze `f6f450f`. Last lead checkpoint read: the 16:19 cycle (`9550aa4`, [undercoverage feedback](theory_feedback_20260921_undercoverage.md), issue #4 at 16:22 UTC). **Authorized run this tick:** the replication-sensitivity batch exactly as specified in `9550aa4`. It was launched after the deterministic checks and has finished. No model calls, no paid resources, no upstream-code execution. State check: all stages verified, 0 stage runners, servers ok, foreign busy [].
+
+**Acknowledged:** the original validation is accepted as completed evidence, including its undercoverage. No uniform-coverage claim and no t-multiplier tuning. The replication-sensitivity batch is **completed**.
+
+**Implementation note: a runtime change for your review.** `sampler.validate_manifest` scans for duplicates in O(n²), and the estimators call it on every use. At r=16 that made one job take 2.0 CPU-s, which projected past the 900 s cap. [`replication_sensitivity.py`](../experiments/v2_sim/replication_sensitivity.py) therefore wraps each job in `ValidateOncePerBlock`. The **accepted** validator runs once per distinct block object, task list and r, and exact repeats are skipped.
+- `sampler.py` is **not edited**, so every earlier manifest hash and your `scripts/audit_coverage_b2ad9a3.py` still pass; I re-ran the audit before the freeze.
+- Tests show the memoized output is identical to the plain path, the original validator is restored afterwards, and missing or duplicate records still raise.
+- The job took 0.96 CPU-s; the run took 588 s wall and 2,314 CPU-s.
+
+**Pre-launch checks ([`test_v2_replication_sensitivity.py`](../experiments/tools/test_v2_replication_sensitivity.py), 7 tests; 300 pass).**
+- **Exact variances:** the r=4 and r=16 IPW and fresh exact variances were re-derived by exhaustive enumeration. The r=16 value is exactly r=4/4, and the r=4 value equals the frozen validation table.
+- **Nesting:** the first-4 log and fresh streams are nested bit-for-bit in the 16 block.
+- **First-4 analysis:** it is reproduced exactly from an independently generated r=4 block (estimates and variances).
+- **Also tested:** the memo equivalence above, tail/correlation/CV/paired statistics against hand values, refusal while the lock is held, and an exact-id finalize.
+
+**Result: [`summary.md`](../results/v2_sim/replication_sensitivity_20260921/summary.md) / [`summary.json`](../results/v2_sim/replication_sensitivity_20260921/summary.json) / [`reps.jsonl`](../results/v2_sim/replication_sensitivity_20260921/reps.jsonl) / [`run_status.json`](../results/v2_sim/replication_sensitivity_20260921/run_status.json).**
+
+*Run and verification*
+- Completion is 1.0 (2,000/2,000 repetitions); finalize reported 2,000 unique ids with 0 missing.
+- 0 failures, 0 zero-variance intervals and 0 recorded errors.
+- [`check_replication_sensitivity.py`](../experiments/v2_sim/check_replication_sensitivity.py) recomputes everything in numpy: all coverage and tail counts match, and 324 quantities agree to a maximum relative difference of 7.6e-16.
+
+*Coverage over the 18 row×estimand entries* (MCSE ≈ 0.0069)
+
+| Estimand | r=4 Wald | r=4 exact-variance | r=16 Wald | r=16 exact-variance |
+|---|---|---|---|---|
+| IPW | 0.920–0.944 | 0.939–0.951 | 0.932–0.958 | 0.940–0.957 |
+| Fresh | 0.942–0.955 | — | 0.935–0.962 | — |
+| D | 0.930–0.958 | — | 0.936–0.963 | — |
+
+- Mean estimated / exact variance: 0.985–1.022 at r=4 and 0.999–1.006 at r=16.
+- |bias/MCSE| ≤ 2.15; the maximum is fresh, informative/prompt, r=16.
+
+*The four prompt/fixed_LS IPW rows*
+
+| Quantity | r=4 | r=16 |
+|---|---|---|
+| Wald coverage | 0.920–0.944 | 0.932–0.951 |
+| Wald minus exact-variance coverage | −0.024…−0.001 | −0.008…+0.003 |
+| Variance CV | 0.30–0.44 | 0.15–0.23 |
+| Error–variance correlation | 0.62–0.70 | 0.62–0.72 |
+| Lower / upper tail miss | 0.037–0.066 / 0.010–0.019 | 0.033–0.048 / 0.008–0.020 |
+
+- Length ratio r16/r4: 0.503–0.510.
+- Paired r16−r4 Wald coverage:
+
+| Cell | Policy | Paired difference (MCSE) |
+|---|---|---|
+| Informative | prompt | +0.008 (0.0097) |
+| Informative | fixed_LS | +0.007 (0.0091) |
+| Weak | prompt | +0.021 (0.0096) |
+| Weak | fixed_LS | +0.012 (0.0107) |
+
+- Across all 18 entries the paired difference ranges from −0.007 to +0.021. The largest |z| is 2.46, for weak/history IPW (+0.021, MCSE 0.0085; its r=4 coverage was 0.937).
+
+*Outside 0.95 ± 2 MCSE*
+- At r=4, 4 entries: IPW informative/prompt 0.936, weak/prompt 0.927 and weak/fixed_LS 0.920; D weak/fixed_LS 0.930.
+- At r=16, 3 entries, all in **weak/fixed_LS**: IPW 0.932, fresh 0.935, D 0.936. Exact-variance coverage there is 0.940 (IPW) and 0.934 (fresh). Empirical variance is 1.08–1.11 × exact in all three, while the estimated variance is 0.999–1.000 × exact for IPW and fresh.
+- I have not tested whether this row reflects Monte Carlo variation (about 2.3 SE for a variance ratio at 1,000 repetitions) or something else.
+
+| Request | Status | Artifact / reason |
+|---|---|---|
+| DTR-REQ-001 (P0) | completed | — |
+| DTR-REQ-002 (P1) | running: M01 done; further upstream execution **held pending the author's explicit confirmation**; runtime host blocked (author) | `21cd872` |
+| DTR-REQ-003 (P0) | original validation completed and accepted (`b2ad9a3`); **replication-sensitivity batch completed; table awaiting your review** | manifest `f6f450f`; results this commit |
+
+**Questions for the lead:**
+1. How do you interpret r=16 against r=4? The studentization gap narrows, but the tail asymmetry and the error–variance correlation persist.
+2. Should the weak/fixed_LS r=16 row get any follow-up?
+3. What is the next REQ-003 step? You said not to expand compute automatically if undercoverage persists, so I will not start anything further without your direction.
