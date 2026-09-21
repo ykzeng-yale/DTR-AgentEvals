@@ -2006,3 +2006,47 @@ I report integrity supported **for these streams only**; this says nothing about
 | DTR-REQ-003 (P0) | validation, sensitivity and diagnosis accepted; new simulation stage **held**; **replay integrity check completed; awaiting your review** | `results/v2_sim/replay_integrity_20260921/` in this commit |
 
 **Question for the lead:** what is the next REQ-003 step? I will not start anything further without your direction.
+
+## Lead decision — 21 September 2026, 18:18 cycle
+
+**REQ-003 P0: close the selected-outlier integrity inquiry; proceed to honest sample-split DR inference wiring.**
+Reviewed `4ad7345`: source hashes and 12 zero-difference comparisons verified in the artifact; four new tests
+pass. The lead did not independently regenerate the 12,000 episodes. The worker replay supports integrity
+for 0/1/933 only, not stochastic independence, the whole simulator, or nominal interval coverage. Preserve
+933 and all original validation rows. Its elevated utility across both strata and many tasks is inconsistent
+with a single gross task-contribution error in these records; it does not establish a probability for the
+selected maximum. No further outlier hunting or new seed sweep is requested.
+
+Next concrete deliverable (bounded implementation/exact checks, no simulation batch yet): reuse the existing
+absorbing DR implementation with an **independent training cohort and frozen Q**. This is an additional honest
+split baseline, not a rebranding of the previous three-fold DR estimator or a replacement for its results.
+Design: four existing K=2 crossing cells, three frozen policies, train 250 balanced tasks ×4 logging replicates,
+evaluate 250 distinct balanced task IDs ×4 logging replicates, plus independent fresh reference ×4. Training,
+evaluation-log and fresh namespaces must be disjoint. Fit one observed-history Q per policy on training only;
+freeze Q, fallback and feature map before scoring any evaluation record. Keep the common-first-call term.
+No latent-U features. Account for training cost separately; this is not equal-budget evidence versus IPW.
+
+Implement an evaluation-score interface accepting frozen nuisance tables, and expose per-episode DR scores
+rather than calling the cross-fitting routine. Preserve separate target/behavior ratios, task-equal averages
+and the full fixed task manifests. Candidate variance: apply the within-task replicate estimator only to
+scores from this independent evaluation cohort conditional on the frozen training fit; independent fresh
+variance is then additive. This is a proposed inference baseline to validate, not an assertion of finite-sample
+normal coverage. Do not use the same calculation on cross-fitted scores whose training sets overlap.
+
+Acceptance before any sampled study: exact enumeration under the known logging kernels must check conditional
+DR mean against policy truth for the existing known-Q and zero-Q controls plus a specified bounded wrong-Q
+fixture; check conditional score second moments and the variance of the task-equal average in both strata.
+Prove by instrumented calls that evaluation data cannot enter fitting/fallback selection, and test a mutation
+of evaluation outcomes leaves frozen Q unchanged. Empty/duplicate/missing evaluation records must fail the
+manifest guard. Report which identities depend on known correct logging probabilities; do not imply arbitrary
+nuisance/propensity misspecification is covered. Known-Q remains a separately labelled oracle control.
+
+This wiring and deterministic check task is authorized now on existing worker resources, with no new
+Monte Carlo/model jobs. Publish code and exact-check artifact with accepted/running/completed/blocked status.
+The lead will use it to specify the subsequent coverage batch and distinguish conditional training-fit
+calibration from repeated-training operating characteristics. REQ-002 upstream execution/runtime holds are
+unchanged. The 36-page paper remains current; no new inference claim added.
+
+Overall readiness **55%, change 0 points, range 45–65%**. Remaining reliable inference/comparisons, paper
+synthesis and independent reproducibility/metadata/submission gates remain; direct main, owner identities
+and immutable archives required.
