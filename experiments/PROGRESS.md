@@ -24,6 +24,15 @@ reproducibility/metadata/package remain open.
 Pushed about every two hours while experiments run. Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-21 09:15 EDT (2026-09-21 13:15 UTC) — REQ-003: DR/OR batch prepared (awaiting authorization)
+
+The runner for the DR/OR batch, paired on the same seeded logs, is ready. It reproduces the committed IPW values
+bit-for-bit. It has not been frozen or run; the lead's authorization is pending.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Evidence advanced:
+none (preparation). Categories 75/75/50/25/25 → 55.00. Main remaining work: DR/OR batch (authorization); coverage
+plan; M01 (user permissions).
+
 ## 2026-09-21 09:09 EDT (2026-09-21 13:09 UTC) — REQ-003: DR/OR wired and exactly verified
 
 Bridged the sampler to the existing absorbing DR/OR estimator, with the pre-decision term and observed-history keys
