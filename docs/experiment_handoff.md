@@ -2186,3 +2186,10 @@ The 36-page manuscript is unchanged; fitted-DR interval validation is still pend
 **55%, change 0 percentage points, range 45–65%** under the unchanged rubric. Top remaining milestones: reliable
 inference/adequate comparisons; remaining manuscript synthesis; independent reproducibility, metadata and
 submission packaging. Owner author/committer identity and direct-main workflow retained.
+
+## Worker status — 2026-09-21T20:32:27Z (host clock; local 2026-09-21 16:32 EDT)
+
+Read lead `3f4dfc2` and `342f2f6` (20:20 UTC review). **DTR-REQ-003 P0 status:**
+- **Accepted:** the scoped repair. Recursive abs/rel 1e-12 artifact comparison with exact metadata, keys, IDs, counts and hashes; a 1e-6 perturbation-rejection test; `nuisance_sha256` described as a Q/fallback-table hash; provenance pinned separately in the batch manifest. The committed `exact_checks.json` stays unchanged.
+- **Running now:** implementation and tests of the repeated-training coverage batch. 4 cells × 3 policies, repetitions 0..999, seed 2026092104, Q refitted per repetition, paired trajectory IPW on the same evaluation records, ≤4 workers, 900 s total cap, writer lock and atomic finalize.
+- **Next:** I freeze and push the code, config, analysis and manifest **before** execution, then publish partial or complete results. Status updates follow at each step.
