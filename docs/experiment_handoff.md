@@ -1036,3 +1036,42 @@ Code/config commit at checkpoint start: `9202019`. Last lead checkpoint read: `d
 **Labelling caution, no decision needed.** The history policy in these contrasts is the frozen **catalog rule** "large after exception". It is not the belief-DP optimum, which is outside the catalog. Several contrasts are therefore negative, for example no-crossing −.0264 against best fixed, and crossing/weak −.0163 against the best stratum schedule. These are exact contrasts of these particular frozen rules, not statements about the value of history. None of this is a power or coverage claim.
 
 **Question still open (from `9202019`):** should P0A be retuned to archive-like prefix occupancy (21.4% against 44.8% now)?
+
+## Lead response — 2026-09-21 07:49 UTC cycle: structural branch control accepted
+
+Reviewed `9202019f9cb790d4c0c79e7c792854e1c04087bf`. **DTR-REQ-003 P1: accept the structural branch
+specification/exact means; proceed to queued covariance calculations.** Twelve affected tests pass, and
+independent no-worker-import code verifies 16 rows / 80 exact target quantities. See
+[review and decisions](theory_feedback_20260921_branch_design.md) and
+[audit](audits/branch_module_audit_9202019.json). The reported broad suite was not rerun.
+
+**Occupancy decision:** retain baseline P0A; no retuning or new core grid. Before archive-facing inference
+claims, queue one separate n=330 expected-occupancy sensitivity: alpha=940/1969 and
+P0A_new=1-alpha*(1-P0A). Verify E[N]=564, all expected M/T/U/D totals scale uniformly and target ratios
+stay unchanged. This matches expected occupancy to an observed count, not the archive's full law or realized
+sampling fraction. Deliver this after the already queued shared-log covariance artifact.
+
+**Corrections for the next report:** n=1000 P(N<=200)=0.0 is underflow/pruning; independent high-precision
+arithmetic gives about 5.94e-1787 (log10=-1786.226251). P(N<=200) is small-frame probability, not actual
+census use probability because fallback takes precedence. Log10 probabilities are approximations even when
+the underlying product is rational. -546.4767 for log10 P(N=0) is n=250 only; n=1000 is -2185.9069.
+Preserve v1. Label restoration as ideal full-state (including latent U); proposed simulator branch noise is
+independent across arms/prefixes/replicates conditional on full state and separate from source noise.
+These choices do not validate historical recovery or feedback-only restoration. Population Delta=0 does
+not force a zero realized-frame gap or unbiased finite-sample ratios.
+
+**Next, REQ-003:** exact shared-log contrast second moments/covariance, identical-policy zero, PSD check;
+independent fresh-reference variance separately. Then the one occupancy sensitivity and consolidated remaining
+gates. REQ-002 qualification queued; REQ-001 completed. Acknowledge the decisions with existing IDs.
+No model/verifier/Monte Carlo or duplicate jobs; no separately authorized work interrupted. Direct-main author
+and committer: Yukang Zeng <ykzeng2019@gmail.com>.
+**Readiness: 55%, delta 0 points, range 45–65%.** Remaining: useful inference/comparisons; statistical validation
+and empirical synthesis; independent reproduction/metadata/package. Paper and empirical archives unchanged.
+
+### Same-cycle late arrival: covariance delivery `b4b074d` acknowledged
+
+The covariance source and your reply arrived during this review and were inspected. Do not duplicate that
+artifact; its numerical reconstruction and test rerun are the lead's next review item, not yet completed.
+Retain the negative catalog-history contrasts and distinction from the belief oracle. Your independent-score
+variance is not yet an independent fresh on-policy reference variance. You may proceed to the one occupancy
+sensitivity specified above while this covariance audit is pending. REQ-003 remains running.
