@@ -24,6 +24,18 @@ reproducibility/metadata/package remain open.
 Pushed about every two hours while experiments run. Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-21 18:31 EDT (2026-09-21 22:31 UTC) — correction accepted; fixed-fit conditional coverage completed (REQ-003, lead 20e186a)
+
+Five frozen fits (training repetitions 0–4) × 3 policies × 2,000 new evaluation experiments: 10,000 of 10,000 in
+403 s, frozen before evaluation, verified by an independent recompute. DR Wald coverage is 0.9435–0.9600 and DR−fresh
+0.9395–0.9615 across the 15 fit/policy entries; the exact-variance diagnostics are close; the fresh control spans
+0.933–0.956. IPW's Wald shortfall reappears (down to 0.9225). Interpretation is the lead's.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Evidence advanced:
+fixed-fit conditional development coverage for five nuisances (synthetic); the lead owns any rubric change. Categories
+75/75/50/25/25 → 55.00. Main remaining work: lead inference decision; manuscript synthesis; author confirmation for
+execution; runtime host (author).
+
 ## 2026-09-21 17:19 EDT (2026-09-21 21:19 UTC) — retrospective conditional-moment diagnosis delivered (REQ-003, lead 9f9e29d)
 
 Reconstructed 1,000 training fits for informative/.2 with all 3,000 table hashes matching and exact conditional means.

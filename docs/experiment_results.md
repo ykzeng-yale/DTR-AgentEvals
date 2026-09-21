@@ -371,6 +371,39 @@ streams of repetitions 0..999, refitted the three policies, and scored the exact
   a 1e-6 disagreement raises.
 - **Lead status:** exploratory diagnosis awaiting review; interpretation is the lead's.
 
+### 2026-09-21 18:29 EDT — Correction and fixed-fit conditional coverage (DTR-REQ-003 P0; leads `20e186a`/`bc8f057`, correction accepted in `c97a232`)
+**Correction** (`6ac98b5`; accepted by the lead). The per-fit records are published immutably. The paired delete-one
+jackknife recomputes both the error variance and the mean exact variance; the corrected z equals the historical z to
+within 0.002. Discrepancy rows now have their own skewness and CV.
+
+**Fixed-fit study** · [summary](../results/v2_sim/fixed_fit_coverage_20260921/summary.md) · [summary.json](../results/v2_sim/fixed_fit_coverage_20260921/summary.json) ·
+[raw](../results/v2_sim/fixed_fit_coverage_20260921/reps.jsonl) · [frozen nuisances](../results/v2_sim/fixed_fit_coverage_20260921/nuisances.json) ·
+[independent recompute](../experiments/v2_sim/check_fixed_fit_coverage.py) · frozen before any evaluation draw in `ffef6fd`.
+- **Design:**
+  - Informative / .2 cell. Five fits, training repetitions 0–4 chosen by index, three policies each: 15 frozen tables,
+    all matching the saved hashes and never refitted.
+  - 2,000 new evaluation experiments per fit (seed 2026092105): **10,000 of 10,000 jobs in 403 s**, with 0 failures
+    and 0 errors.
+  - The numpy recompute asserts all 480 checks at 1e-12 (max difference 0).
+- **Coverage per fit and policy** (15 entries; MCSE ≈ 0.0049; ±2 MCSE = 0.940–0.960):
+
+| Estimand | Wald coverage | Exact-variance coverage | Entries outside ±2 MCSE (Wald) |
+|---|---|---|---|
+| DR | 0.9435–0.9600 | 0.9435–0.9570 | 1, above: fit 4 fixed_LS 0.960 |
+| DR − fresh | 0.9395–0.9615 | 0.9420–0.9585 | 2: fit 2 history 0.9395, fit 2 prompt 0.9615 |
+| Fresh (control) | 0.9335–0.9585 | 0.9330–0.9560 | 3 |
+| IPW (retained) | 0.9225–0.9510 | 0.9485–0.9625 | 6, mostly prompt |
+
+  - DR misses: 0.011–0.027 below and 0.018–0.044 above.
+  - DR empirical / exact variance is 0.932–1.019, and mean estimated / exact variance is 0.988–1.002.
+  - The fresh control's exact-variance coverage also spans 0.933–0.956, which shows the Monte Carlo spread at this
+    size.
+  - IPW's Wald-minus-exact gap reaches −0.034, repeating the earlier IPW pattern.
+  - In the fixed-fit setting, the prompt and fixed_LS DR − fresh rows that covered 0.933–0.934 over repeated training
+    cover 0.9450–0.9615 across these five fits.
+- **Scope:** these five fixed nuisances only. No uniform conditional validity, CONFIRM, cross-fitted or tuning claim.
+  Interpretation is the lead's; awaiting review.
+
 ### Not claimed
 No new model runs; Monte Carlo only on known synthetic kernels; no interval validation for DR/OR, learned policies or
 the branch study; no power claim; no evidence of real-agent improvement. The

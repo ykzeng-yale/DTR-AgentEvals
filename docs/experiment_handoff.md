@@ -2492,3 +2492,62 @@ reproducibility/metadata/submission package. Owner author/committer and direct-m
   - Per-fit exact moments are pinned in the manifest and equal the published per-fit records.
   - Tests cover: `fit_q` never called during evaluation; distinct fit/evalrep/role namespaces, also disjoint from training; failure retention; statistics; incomplete labelling. 8 tests; 342 pass.
   - Design: 10,000 jobs (evalrep outer, fit inner), seed 2026092105, ≤4 workers, 900 s total.
+
+## Worker checkpoint — 2026-09-21T22:31:19Z (host clock; local 2026-09-21 18:31 EDT)
+
+Code/config commit at checkpoint start: `ffef6fd` (freeze). Last lead checkpoint read: the 22:18 cycle (`c97a232`, correction accepted). **Authorized run:** the fixed-fit conditional coverage study (`20e186a`/`bc8f057`). It has completed.
+
+**Fixed-fit study: completed.**
+- Results: [`summary.md`](../results/v2_sim/fixed_fit_coverage_20260921/summary.md), [`summary.json`](../results/v2_sim/fixed_fit_coverage_20260921/summary.json), [`reps.jsonl`](../results/v2_sim/fixed_fit_coverage_20260921/reps.jsonl), [`run_status.json`](../results/v2_sim/fixed_fit_coverage_20260921/run_status.json).
+- Frozen `nuisances.json` and manifest in `ffef6fd`.
+- Independent recompute [`check_fixed_fit_coverage.py`](../experiments/v2_sim/check_fixed_fit_coverage.py): no study import, 480 asserted checks at 1e-12, max difference 0.
+
+*Run*
+- 10,000/10,000 jobs, evalrep outer / fit inner, 403 s on 4 workers, cap not reached.
+- Finalize: 10,000 unique ids, 0 missing. 0 failed intervals, 0 recorded errors.
+- The 15 frozen tables were used without refitting; the `fit_q` guard was tested before the freeze.
+
+*Results* (per fit/policy, 15 entries; MCSE ≈ 0.0049)
+
+| Estimand | Wald | Exact-variance | Wald outside ±2 MCSE | Exact outside ±2 MCSE | Paired Wald − exact |
+|---|---|---|---|---|---|
+| DR | 0.9435–0.9600 | 0.9435–0.9570 | 1 (fit 4 fixed_LS 0.960, above) | 0 | −0.0055 to +0.0045 |
+| DR − fresh | 0.9395–0.9615 | 0.9420–0.9585 | 2 (fit 2 history 0.9395; fit 2 prompt 0.9615) | 0 | −0.0055 to +0.0060 |
+| Fresh (control) | 0.9335–0.9585 | 0.9330–0.9560 | 3 (fit 2 history 0.940; fit 3 history 0.9335; fit 3 prompt 0.9375) | 2 | — |
+| IPW (retained) | 0.9225–0.9510 | 0.9485–0.9625 | 6 (fit 0 prompt, fit 0 fixed_LS, fits 1–4 prompt) | 1 (fit 1 prompt 0.9625, above) | down to −0.034 |
+
+- **DR:** misses 0.0105–0.0265 lower and 0.0175–0.0435 upper. Empirical/exact variance 0.932–1.019 (max |jk z| 2.29). Mean estimated/exact 0.988–1.002. |bias/MCSE| ≤ 1.57.
+- **DR − fresh:** empirical/exact 0.943–1.060; |bias/MCSE| ≤ 2.12.
+
+*Per fit, DR Wald / exact:*
+
+| Fit | history | prompt | fixed_LS |
+|---|---|---|---|
+| 0 | 0.950/0.952 | 0.954/0.952 | 0.944/0.949 |
+| 1 | 0.946/0.948 | 0.956/0.956 | 0.949/0.948 |
+| 2 | 0.952/0.953 | 0.959/0.955 | 0.958/0.954 |
+| 3 | 0.955/0.953 | 0.958/0.957 | 0.952/0.952 |
+| 4 | 0.947/0.944 | 0.956/0.952 | 0.960/0.956 |
+
+*Per fit, DR − fresh Wald / exact:*
+
+| Fit | history | prompt | fixed_LS |
+|---|---|---|---|
+| 0 | 0.948/0.947 | 0.954/0.954 | 0.951/0.956 |
+| 1 | 0.949/0.949 | 0.956/0.959 | 0.954/0.951 |
+| 2 | 0.940/0.942 | 0.962/0.956 | 0.945/0.951 |
+| 3 | 0.957/0.957 | 0.949/0.951 | 0.951/0.951 |
+| 4 | 0.941/0.944 | 0.957/0.956 | 0.956/0.955 |
+
+**Observations, not interpreted:**
+- The fresh control, whose variance is known exactly, spans a similar range: exact-variance coverage 0.933–0.956.
+- Within each fixed fit, DR and DR − fresh Wald coverage is close to its exact-variance counterpart.
+- The IPW Wald shortfall for prompt reappears, with paired gaps down to −0.034.
+
+| Request | Status | Artifact / reason |
+|---|---|---|
+| DTR-REQ-001 (P0) | completed | — |
+| DTR-REQ-002 (P1) | running: M01 done; further upstream execution **held pending the author's explicit confirmation**; runtime host blocked (author) | `21cd872` |
+| DTR-REQ-003 (P0) | correction accepted (`c97a232`); **fixed-fit conditional coverage study completed; awaiting your review** | frozen `ffef6fd`; results this commit |
+
+**Question for the lead:** how do you interpret this, and what is the next REQ-003 step? I will freeze and run it as soon as it is specified.
