@@ -2683,3 +2683,52 @@ Code/config commit at checkpoint start: `c62c564`; lead `180d74e` pulled. Last l
 | DTR-REQ-003 (P0) | evidence table accepted (`180d74e`); sampling held | — |
 
 **Question for the lead (design, not a blocker to the template):** which mechanism should the no-change control use? One option is running the M01-generated eval script in the instance image with no prediction applied, graded by the pinned log parser and the strict rule, and recorded as a separately versioned control path. The unmodified harness cannot evaluate an empty patch.
+
+## Lead design decision — 2026-09-21 23:49 cycle
+
+**DTR-REQ-002: runbook template accepted; proceed with nonexecuting implementation preparation for an explicit
+no-change control path. Execution remains blocked by the two external dependencies.** Reviewed `0d3f9da`;
+two control-plan tests pass. The saved pinned `f7bbbb2` source confirms the CLI filters empty predictions and
+`run_instance` applies a prediction before invoking the generated eval script. This is source inspection,
+not an executed upstream conformance test. The 1,000 expected control records remain a plan, not observations.
+
+Choose a separately versioned control adapter with an explicit `no_change` mode that bypasses ONLY prediction
+patch application. Start from the same digest-pinned instance image/base commit and invoke the identical M01
+hash-checked eval script; let that script perform its own test-patch/reset sequence once. Do not manually apply
+the test patch a second time, fabricate a nonempty model patch, rely on empty git-apply behavior, or alter tests
+to make the baseline fail. Record control mode, adapter source hash, no-prediction identity, pre/post repository
+state, script hash, image digests, raw logs, parsed statuses and strict endpoint. Mark patch application as
+not applicable for no-change rather than falsely reporting a successful patch application. This is a qualification
+control, not an official model submission or model-performance observation.
+
+Use the same adapter in `reference` mode with the dataset reference patch, retaining the pinned application and
+evaluation sequence. On an approved compatible runtime, reference-mode behavior must be checked against the
+unmodified pinned gold path on the same task/image; preserve any report/status disagreement and diagnose it.
+Where upstream reporting assumes a prediction was applied, state the no-change report's scope explicitly rather
+than fabricating upstream success markers. Both modes use the same pinned log parser and M03 strict test-status
+rule. The future runtime check must establish equivalence; static tests cannot claim it.
+
+**Material acceptance clarification:** `strict_verified_resolved == False` alone is insufficient to qualify a
+no-change control. A timeout, missing/unparsable report, missing required tests, or evaluator/setup failure can
+produce that same false score without demonstrating a valid negative control. Require completed, interpretable
+test execution with all required test identities accounted for, all required PASS_TO_PASS tests observed PASSED
+(unless the predeclared empty-P2P limitation applies), and at least one FAIL_TO_PASS test observed FAILED.
+A test-level ERROR or ambiguous failure must be retained for diagnosis rather than automatically qualifying the
+negative control. Other F2P statuses must be accounted for without missing/skipped/xfail ambiguity. Reference
+qualification still requires every required F2P/P2P test observed PASSED. Preserve raw failures and the existing
+operational endpoint/retry rule; do not silently exclude a task or conflate operational zero with a valid control.
+This sharpens the infrastructure gate and does not rescore any archived or CONFIRM outcome.
+
+Next artifact: revise the runbook/plan's resolved lead decision and qualification criteria, and prepare the
+adapter boundary with fake-runtime call-order/status tests if implementation is useful. Test that no-change
+never attempts prediction application; both modes invoke the same eval script exactly once; missing-report,
+timeout and missing-test cases cannot qualify; valid baseline failure and reference success remain distinct.
+Do not import/execute upstream harness or generated scripts, install a runtime, or run containers/model jobs
+under this preparation authorization. After static preparation, report completed/blocked with artifacts;
+execution waits on the author's runtime and worker-host approval, not another scientific-design decision.
+REQ-003 remains closed for the scoped reporting deliverable with sampling held.
+
+Worker checkpoint at 23:47 UTC is fresh. No new experiment evidence or manuscript change this cycle. Readiness
+**55%, change 0 percentage points, range 45–65%**. Remaining: reliable inference/adequate real-agent comparisons;
+complete manuscript synthesis; independent reproducibility, metadata and submission package. Owner identities
+and direct-main history rules retained.
