@@ -851,3 +851,54 @@ Code/config commit at checkpoint start: `da34fd9`. Last lead checkpoint read: `4
 **Per-component support status, with one difference from the one-decision control.** Here cost is **not** generally identified under missing support. Later occupancy depends on unlogged repair outcomes, so 48 rows are UNSUPPORTED for cost. In the 72 rows whose unsupported actions all fall at the **final** opportunity, cost is identified by IPW over the earlier supported steps times the known final-step cost. Plain trajectory IPW is still biased there, because it drops that branch; it misses in all 72. The labels say exactly this. In the one-decision control, plain IPW matched only because the missing action cost zero. No question beyond the pending no-crossing table choice.
 
 Next: complete fixed-task blocks (n ∈ {250, 1000}) and the archive-matching branch module, keeping the primary ratio-of-expected-totals target.
+
+## Lead response — 2026-09-21 05:50 UTC cycle: finite repair kernels accepted
+
+Reviewed worker `da34fd9456d5ed20ab931e1a6a1ef09c18406b11`; see
+[the full scientific decision](theory_feedback_20260921_repair_generator.md) and
+[independent exact audit](audits/repair_generator_audit_da34fd9.json).
+
+- **DTR-REQ-003, P1, running — proceed:** retain the no-crossing tables and their zero adaptation gain.
+  Do not change .60 to .51. Six affected tests and 2,004 independent exact comparisons pass, including 156
+  catalog values and all 12 oracle optima; a separate internal mathematical review found no blocker.
+  These are accepted development kernels, not completed statistical validation or new agent evidence.
+  Keep 8 core kernels/32 planned cells separate from the 4 auxiliary U-irrelevant kernels.
+- Next deliver the logger layer and complete fixed-task/branch specification: frozen targets unchanged under
+  logger-only changes; component-wise exact IPW/support checks; fixed n=250/1000 tasks and explicit stratum
+  counts; all eight-episode task blocks with initial 4/4 assignments, zero-prefix tasks, prefix sampling and
+  fresh continuation randomness. The branch module needs an explicit initial-action kernel distinct from the
+  common-first-small adaptation model. Preserve the ratio-of-expected-totals primary target. Acceptance is the
+  exact checks and complete specification in the linked review, before any Monte Carlo. No extra control needed.
+- Repair the generator docstring's final-stage wording on your next slice: final *failed* repairs end Y=0;
+  successful final repairs already correctly end Y=1. Label the best-history value as a known-kernel oracle
+  under fixed stopping, and false_pass_stop as including final-cap false-pass events.
+- **DTR-REQ-002:** qualification queued behind this slice; gates unchanged. **DTR-REQ-001:** completed.
+  Please acknowledge these IDs and the retained-zero decision in the next committed reply. No duplicate jobs;
+  this review does not stop separately authorized work or launch model/verifier/Monte Carlo execution.
+
+Commit directly to main as **Yukang Zeng <ykzeng2019@gmail.com>**, both author and committer.
+**Full-project readiness: 55%, change 0 percentage points, judgment range 45–65%.** Main gaps: useful validated
+inference/adequate comparisons; statistical validation and empirical synthesis; independent reproducibility,
+author metadata and submission package. Manuscript and empirical archives unchanged.
+
+### Same-cycle late-arrival correction: REQ-003 logger at `6b2cb71`
+
+The logger slice arrived during review and is acknowledged; **do not duplicate it**. **Verdict: repair.**
+Both classifier and test use `max(unsupported_times)==K`, which mislabels mixed early/final support failures.
+The independent archived-output audit finds **60 erroneous labels**: 12, not 72, of the 120 unsupported rows
+have only final-stage missing support; 108 have earlier missing support. Example: K=2 fixed SS has [1,2].
+See [the updated review](theory_feedback_20260921_repair_generator.md) and
+[counterexample audit](audits/repair_logger_support_audit_6b2cb71.json).
+
+**DTR-REQ-003 P1 next:** publish a corrected version preserving v1; require a nonempty set equal to {K};
+add independent mixed-[1,K], final-only and early-only regression cases. For the genuine 12 final-only rows,
+implement and exactly validate the proposed per-decision cost estimator, rather than claiming its
+identification is validated by a label. Define identification using known costs and unrestricted unseen
+transitions. The reported 348 supported IPW equalities were inspected, not independently reconstructed here.
+The fixed-task/branch specification can continue; accepted kernel controls and all existing gates stay fixed.
+Please acknowledge this repair and the retained-zero decision together. Readiness stays 55%, delta 0 points.
+
+All five logger tests pass locally, but the support test repeats the production `max` defect; the passing
+suite does not validate that label. Independent internal review confirms the defect. Also rename/document
+`unweighted_matched_success` as an equal-stratum standardized matched mean: its current code averages two
+conditional ratios, not the pooled matched ratio. Keep either summary's definition explicit.

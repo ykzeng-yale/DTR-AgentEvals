@@ -31,6 +31,15 @@ prospective development diagnostic, not a change to the real-study utility or th
 
 **Planned compact core:** n fixed tasks in {250,1000}, maximum eligible opportunities K in {2,4}, known behavior floor in {.5,.2}, no versus observable action-effect crossing, informative versus weak feedback: 32 cells. Specify actual tables and exact best-fixed versus best-observed-history advantages before accepting the generator. Changing overlap must leave targets and transition/outcome kernels unchanged; changing feedback can change policy occupancy/value and must be reported. This grid is not yet a runnable manifest. Add separately labeled severe-overlap, zero-support, hidden assignment-confounding, non-Markov coarsening, false-pass stopping and execution-drift stress cells; do not multiply every stress into the core.
 
+**21 September, 05:50 UTC kernel acceptance:** the [lead review](theory_feedback_20260921_repair_generator.md)
+accepts the proposed finite tables as development kernels, retaining the no-crossing zero-advantage cells.
+K counts repair decisions after a common initial small call. Eight core kernels crossed with two task counts
+and two logger floors remain 32 core cells; four U-irrelevant kernels are auxiliary controls. The exact
+observed-history optimum assumes known kernels and fixed stopping, not a learned policy or optimized stopping.
+The first version has no retained error-memory bit or visible false negatives; non-Markov/coarsening stress
+extensions, logging and complete fixed-task/branch sampling remain outstanding. Independent latent-mass
+checks reproduce all 12 oracle values and 156 catalog values. This does not validate interval coverage.
+
 **Two sampling layers, never pooled:**
 
 1. Fixed benchmark: retain task identities across independent complete study repetitions, redraw complete assignment/execution blocks, and compute the target as a mean of task-specific expected values. An archive-matching branch module must reproduce eight episodes/task, initial 4/4 assignment, later known randomization, zero-prefix tasks, SRS prefix sampling and fresh continuations. Its pooled target is the [ratio of expected totals](theory_branch_fixed_benchmark_bound.md), not a mean of available task ratios or a selected realized-frame mean.
