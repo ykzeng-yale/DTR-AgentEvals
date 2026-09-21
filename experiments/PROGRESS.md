@@ -24,6 +24,30 @@ reproducibility/metadata/package remain open.
 Pushed about every two hours while experiments run. Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-21 22:05 EDT — half-hourly sync starts; four of my B2 claims corrected; v2 design adopted
+
+**New cadence:** results are now pushed every 30 minutes (job at :13 and :43) so the lead can judge the experimental
+direction continuously. Pipeline: all four stages complete and verified; no runner; servers healthy; no foreign GPU
+load.
+
+**The lead reviewed my B2 write-up and was right four times** — each verified here before conceding:
+the conditional-frame target is **secondary**, not the primary fixed-benchmark target, so "B2 half-discharged" was
+wrong; the variance split is **1.76:1, not 7:1** — I reported the ratio of the estimator's two *terms*, but its first
+term already contains execution noise; a conditional test of Δ_F = 0 **is** possible in principle; and the readiness
+arithmetic is **55.00, not the 54.25** I had written in several entries. My claim that the manuscript had "no study
+numbers" was also stale. The tool is relabelled, both decompositions are reported, and the original output is kept.
+
+**Direction changed by the lead**, which is what this cadence is for: `docs/experiment_protocol_v2.md` moves the
+substantive study to **two decisions inside repository repair** (mini-swe-agent), adds **RouteLLM** as the
+competitive baseline, and makes the central test a history-dependent router against a **prompt-only router with the
+same initial action** — isolating the value of history, which the archived design could not. Three no-execution
+deliverables are queued; the next ticks start on them.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Evidence advanced:
+none — corrections and a design hand-off. Categories 75/75/50/25/25, weighted **55.00**. Main remaining work: (1) the
+three v2 deliverables; (2) the primary B2 source/selection uncertainty; (3) independent reproduction and packaging.
+*This host cannot post to GitHub issue #4 (no GitHub CLI or token), so the checkpoint is recorded here.*
+
 ## 2026-09-20 20:25 EDT — scheduled check: B2 half-discharged, declared target replaces the added SEs
 
 **Stage status: nothing to advance.** All four stages complete and verified: pilot 120, log **4,488/4,488**, live

@@ -1,13 +1,19 @@
 {
- "target": "finite frame: mu_F - L(F), conditional on the realized task set, randomized log and eligible prefix frame",
+ "status": "SECONDARY conditional-frame target; NOT the primary B2 target and does NOT discharge B2",
+ "primary_target": "ratio-of-expected-source-totals contrast Delta = theta - nu_1 + nu_0 (theory_branch_fixed_benchmark_bound.md eq. 2); uncertainty OPEN",
+ "target": "secondary finite frame: mu_F - L(F), conditional on the realized task set, randomized log and eligible prefix frame",
  "N_eligible_prefixes": 564,
  "m_sampled": 200,
  "sampling_fraction": 0.3546099290780142,
  "B_hat": 0.12,
  "L_of_F": 0.13465370743933003,
  "delta_hat": -0.014653707439330033,
- "between_prefix_component": 0.0004803129120781211,
- "execution_component": 7.092198581560284e-05,
+ "estimator_term_1_observed_between": 0.0004803129120781211,
+ "estimator_term_2": 7.092198581560284e-05,
+ "estimator_terms_note": "these are the two TERMS of the unbiased estimator (eq. 2); term 1 uses the variance of observed contrasts and so already contains execution noise. They are NOT the variance components.",
+ "latent_between_prefix_component": 0.0003512348978937239,
+ "execution_component": 0.0002,
+ "latent_between_to_execution_ratio": 1.7561744894686195,
  "var_hat_frame": 0.000551234897893724,
  "se_frame": 0.023478392148818965,
  "interval_95_normal": [
@@ -17,13 +23,15 @@
  "sample_variance_of_contrasts": 0.14884422110552764,
  "mean_within_prefix_variance": 0.04,
  "prefixes_with_replicates_from_two_invocations": 2,
- "supersedes": {
+ "relation_to_earlier_scales": {
   "independence_sum_se": 0.0572,
   "influence_function_scale": 0.0484,
-  "why": "both treated the log side as contributing randomness; under the declared finite-frame target L(F) is a constant, so Var(Delta_hat|F) = Var(B_hat|F)"
+  "note": "these answered other questions and remain unvalidated; this secondary result neither replaces nor validates them"
  },
  "does_not_establish": [
-  "that Delta_F is zero (the realized log estimate is conditioned on)",
+  "the PRIMARY B2 target or its source/selection uncertainty",
+  "a valid interval: a conditional test of Delta_F=0 is possible in principle but needs a justified construction",
+  "that a conditional rejection would refute kernel stability (it concerns agreement with this realized log only)",
   "the unconditional task-population claim (needs Var{mu_F - L(F)}, not supplied)",
   "nominal coverage of the normal interval (needs a limit theorem)",
   "the iid/independence execution assumptions, which are assumed not shown"

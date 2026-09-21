@@ -1,6 +1,14 @@
-"""B2: declared inferential target for the branch-minus-log comparison, with its frame-conditional variance.
+"""A SECONDARY conditional-frame target for the branch-minus-log comparison, with its frame-conditional variance.
 
-DECLARED TARGET (finite frame). Condition on the complete source frame F: the realized task set, the realized
+STATUS (corrected 21 Sep after review, docs/theory_feedback_20260921_conditional_frame.md): this is NOT the primary
+B2 target and does NOT discharge B2. The primary fixed-benchmark target is the ratio-of-expected-source-totals
+contrast Delta = theta - nu_1 + nu_0 of docs/theory_branch_fixed_benchmark_bound.md eq. 2, and its source/selection
+uncertainty remains open. This module answers a different, secondary question whose point estimate happens to equal
+the archived pooled difference. The first version (output preserved as branch_frame_inference_v1_981f7b9.json)
+over-claimed on three points corrected below: it said this "settles" the independence objection and "supersedes"
+earlier scales, it mislabelled the variance components (7:1), and it said a test of Delta_F = 0 was impossible.
+
+SECONDARY TARGET (finite frame). Condition on the complete source frame F: the realized task set, the realized
 randomized log, and the N eligible first-failure prefixes it contains. Let d_i be the expected large-minus-small
 continuation outcome at prefix i under the frozen continuation rule, and
 
@@ -9,11 +17,10 @@ continuation outcome at prefix i under the frozen continuation rule, and
 where L(F) is the pooled Hajek log contrast, which is MEASURABLE with respect to F. The estimator is
 Delta_hat = B_hat - L(F).
 
-WHY THIS SETTLES THE "TWO SEs ADDED AS IF INDEPENDENT" PROBLEM. Conditional on F, L(F) is a constant, so
-Var(Delta_hat | F) = Var(B_hat | F) exactly (docs/theory_branch_sampling.md eq. 3). The log side contributes no
-variance at all under this target - neither the independence-sum that the published report used, nor the
-influence-function covariance correction we tried next, which was estimating a different, joint-randomness
-quantity. The branch sample is the only randomness.
+CONDITIONAL VARIANCE. Conditional on F, L(F) is a constant, so Var(Delta_hat | F) = Var(B_hat | F) under the
+stated sampling/execution assumptions (that document's eq. 3). This is a property of the SECONDARY target only; it
+does not validate or replace the earlier independence-sum or task-derivative scales, which remain unvalidated
+calculations for other questions.
 
 VARIANCE (that document's Proposition, eq. 1-2), for simple random sampling of m of N prefixes without replacement,
 with r_ia >= 2 continuations per arm drawn independently of the selection:
@@ -24,8 +31,10 @@ with r_ia >= 2 continuations per arm drawn independently of the selection:
 V_hat_F is unbiased for Var(B_hat | F); no independence between dhat_i and vhat_i within a prefix is required.
 
 WHAT THIS DOES **NOT** ESTABLISH, stated because the estimate is easy to over-read:
-  * it is uncertainty AROUND Delta_F, the frame-specific difference. It does not test that Delta_F = 0: the
-    realized log estimate has already been conditioned on;
+  * a conditional confidence set for Delta_F CAN in principle be inverted to test Delta_F = 0; what is missing is a
+    justified interval construction for the stated execution model, not the logic of the test. And even a
+    conditional rejection would concern agreement with THIS realized log reference: kernel stability does not force
+    Delta_F = 0, because the realized log contrast has its own sampling error;
   * it is not the unconditional task-population claim, which needs Var{mu_F - L(F)} from a source model
     (eq. 4) that is not supplied and remains open;
   * an unbiased variance estimator does not give a normal interval nominal coverage; that needs a limit theorem;
@@ -92,19 +101,33 @@ def main():
     L = num[1] / den[1] - num[0] / den[0]
     delta = B - L
 
+    # the first estimator term uses the variance of OBSERVED contrasts, which already contains execution noise; the
+    # true split subtracts the mean within-prefix variance to obtain the latent between-prefix variance
+    S2_latent = s2 - vbar_hat
+    latent_between = (1 - f) / m * S2_latent
+    execution_true = vbar_hat / m
     out = dict(
-        target='finite frame: mu_F - L(F), conditional on the realized task set, randomized log and eligible prefix frame',
+        status='SECONDARY conditional-frame target; NOT the primary B2 target and does NOT discharge B2',
+        primary_target='ratio-of-expected-source-totals contrast Delta = theta - nu_1 + nu_0 (theory_branch_fixed_benchmark_bound.md eq. 2); uncertainty OPEN',
+        target='secondary finite frame: mu_F - L(F), conditional on the realized task set, randomized log and eligible prefix frame',
         N_eligible_prefixes=N, m_sampled=m, sampling_fraction=f,
         B_hat=B, L_of_F=float(L), delta_hat=float(delta),
-        between_prefix_component=float((1 - f) / m * s2), execution_component=float((f / m) * vbar_hat),
+        estimator_term_1_observed_between=float((1 - f) / m * s2),
+        estimator_term_2=float((f / m) * vbar_hat),
+        estimator_terms_note='these are the two TERMS of the unbiased estimator (eq. 2); term 1 uses the variance of '
+                             'observed contrasts and so already contains execution noise. They are NOT the variance components.',
+        latent_between_prefix_component=float(latent_between),
+        execution_component=float(execution_true),
+        latent_between_to_execution_ratio=float(latent_between / execution_true),
         var_hat_frame=float(V), se_frame=se,
         interval_95_normal=[float(delta - 1.96 * se), float(delta + 1.96 * se)],
         sample_variance_of_contrasts=s2, mean_within_prefix_variance=vbar_hat,
         prefixes_with_replicates_from_two_invocations=mixed,
-        supersedes=dict(independence_sum_se=0.0572, influence_function_scale=0.0484,
-                        why='both treated the log side as contributing randomness; under the declared finite-frame '
-                            'target L(F) is a constant, so Var(Delta_hat|F) = Var(B_hat|F)'),
-        does_not_establish=['that Delta_F is zero (the realized log estimate is conditioned on)',
+        relation_to_earlier_scales=dict(independence_sum_se=0.0572, influence_function_scale=0.0484,
+            note='these answered other questions and remain unvalidated; this secondary result neither replaces nor validates them'),
+        does_not_establish=['the PRIMARY B2 target or its source/selection uncertainty',
+                            'a valid interval: a conditional test of Delta_F=0 is possible in principle but needs a justified construction',
+                            'that a conditional rejection would refute kernel stability (it concerns agreement with this realized log only)',
                             'the unconditional task-population claim (needs Var{mu_F - L(F)}, not supplied)',
                             'nominal coverage of the normal interval (needs a limit theorem)',
                             'the iid/independence execution assumptions, which are assumed not shown'])
