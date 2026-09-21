@@ -24,6 +24,19 @@ reproducibility/metadata/package remain open.
 Pushed about every two hours while experiments run. Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-21 12:00 EDT (2026-09-21 16:00 UTC) — fixed-score coverage study completed (REQ-003 P0)
+
+Ran the lead-specified coverage component after freezing its manifest (`aac1abb`): 8,000/8,000 repetitions in 460 s,
+with writer-lock and atomic-finalize output isolation. Fresh intervals cover 0.9425–0.9615. Trajectory-IPW intervals
+cover 0.9300–0.9575: four rows are below 0.95 by more than 2 MCSE, three of them with the feedback-dependent logger.
+IPW−fresh intervals cover 0.9355–0.9585. Exact-variance intervals cover closer to nominal in those rows. An
+independent recompute matches all counts. The next step is the lead's decision.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Evidence advanced:
+first prospective interval-coverage table for fixed-score estimators (synthetic). Categories 75/75/50/25/25 → 55.00
+(the lead owns any change). Main remaining work: lead interpretation of IPW undercoverage; DR inference design;
+author confirmation for execution; runtime host (author).
+
 ## 2026-09-21 11:16 EDT (2026-09-21 15:16 UTC) — variance estimator wired; upstream execution held
 
 Wired the fixed-benchmark within-block variance estimator; it is exactly unbiased in an exhaustive check. Further

@@ -1701,3 +1701,61 @@ REQ-002: download acknowledged; M01 outputs inspected, not independently rerun. 
 remains under the worker's stated hold pending author confirmation; no new execution requested here. Report
 request status and exact artifact. Readiness 55%, change 0, range 45–65%; inference/comparisons, synthesis and
 reproducibility/submission gates remain. Owner author/committer, direct main/no PR workflow retained.
+
+## Worker checkpoint — 2026-09-21T16:00:41Z (host clock; local 2026-09-21 12:00 EDT)
+
+Code/config commit at checkpoint start: `73b4ae3`; manifest freeze `aac1abb`. Last lead checkpoint read: `f0b4fa2` (15:18 cycle). **Authorized run this tick:** the fixed-score coverage component exactly as specified in `f0b4fa2`, launched after the listed prerequisites passed. No model calls, no paid resources, no upstream-code execution.
+
+**Acknowledgement:** REQ-001 completed; REQ-002 running, with further upstream execution held pending the author's explicit confirmation (unchanged; nothing executed) and runtime host blocked (author); REQ-003 P0 coverage component **completed and delivered below**.
+
+**Write-loss defect addressed before the run.** [`writer_lock.py`](../experiments/v2_sim/writer_lock.py): the runner writes only under git-ignored `work/runs/` (`git stash -u` and pull/rebase leave ignored files alone), holds an exclusive `O_CREAT|O_EXCL` lock under `work/locks/` while writing, and publishes to `results/` only through `finalize`. That step runs after the pool and file are closed: it parses every persisted line, refuses duplicates or unexpected ids, reports missing ids, and replaces the target atomically. `python writer_lock.py guard` exits non-zero while any lock is held; I ran it before every git operation this tick. Completion is certified from the persisted file, not the runner counter. The earlier incident record and misleading status file are preserved unchanged.
+
+**Prerequisites ([`test_v2_coverage_batch.py`](../experiments/tools/test_v2_coverage_batch.py), 10 tests; 293 pass in total).**
+- The exact reference variances are **re-derived by an independent route**: exhaustive enumeration of one episode's branches with the sampler. For all 12 rows they equal the accepted tables **exactly** (Fractions).
+  - IPW: (σ²_easy + σ²_hard)/(2·r·n) equals `fixed_task_blocks_v1` `exact_var_V_hat`, and the enumerated IPW mean equals the truth.
+  - Fresh: the on-policy per-episode variances give `fresh_var`.
+- The independent-reference sum √(Var_IPW + Var_fresh) matches `fresh_reference_v1`'s own `calibration_discrepancy_se_<logger>` and `fresh_se` to relative 1e-12.
+- Interval rules: missing, NaN or negative variances fail and do not cover; a zero variance gives a point interval; Wilson matches the reference values.
+- Lock exclusivity and release on exception; finalize refusals leave the previous output intact.
+- A small end-to-end run and resume (exact ids, lock released), and refusal while a lock is held or after a source change.
+
+**Result: [`summary.md`](../results/v2_sim/coverage_fixed_score_20260921/summary.md) / [`summary.json`](../results/v2_sim/coverage_fixed_score_20260921/summary.json) / [`reps.jsonl`](../results/v2_sim/coverage_fixed_score_20260921/reps.jsonl) / [`run_status.json`](../results/v2_sim/coverage_fixed_score_20260921/run_status.json).**
+
+*Run and verification*
+- 8,000/8,000 repetitions (completion 1.0) in 460 s wall on 4 processes (1,820 CPU-s); cap not reached.
+- Finalize: 8,000 records, 8,000 unique, 0 missing.
+- 0 failed intervals and 0 zero-variance intervals in all 36 row×estimand entries.
+- [`check_coverage_summary.py`](../experiments/v2_sim/check_coverage_summary.py) recomputes from the raw file in numpy: every coverage count matches, and 288 quantities agree to a maximum relative difference of 4.9e-15.
+
+*Estimates and variances (all 36 entries)*
+- Bias: |bias/MCSE| ≤ 1.62.
+- Mean estimated variance / exact: IPW 0.987–1.003, fresh 0.998–1.001, D 0.989–1.002.
+- Empirical variance / exact: 0.945–1.080.
+
+*Wald coverage* (MCSE ≈ 0.005; Wilson intervals in the table)
+- Fresh: 0.9425–0.9615.
+- IPW: 0.9300–0.9575.
+- D: 0.9355–0.9585, so rejection at zero is 0.0415–0.0645.
+- 7 of the 36 entries lie outside 0.95 ± 2 MCSE, 6 below and 1 above. They are not independent, because the three policies share each repetition's log and D shares the IPW.
+  - IPW, feedback-dependent-.2 logger: weak/prompt 0.9300; informative/prompt 0.9315; weak/fixed_LS 0.9330.
+  - IPW, weak/uniform/fixed_LS: 0.9400.
+  - D, weak/feedback-dependent: fixed_LS 0.9355; prompt 0.9375.
+  - Fresh, weak/feedback-dependent/fixed_LS: 0.9615, the one entry above.
+
+*Diagnostic, for your interpretation*
+- In the six undercovering entries, exact-variance intervals cover 0.942–0.953, and the mean estimated variance is 0.987–1.000 of exact.
+- A **post hoc** paired Wald-minus-exact coverage difference in the worst entry is −0.0230 (MCSE 0.0059). The next worst is D in the same row, −0.0130 (MCSE 0.0052).
+- This is consistent with the shortfall coming from the *variability* of the r = 4 within-block variance under heavy weights (and its dependence on the estimate), not from its mean or from normality of the estimate. I did not test this, and I did not choose or tune any threshold after viewing.
+
+| Request | Status | Artifact / reason |
+|---|---|---|
+| DTR-REQ-001 (P0) | completed | — |
+| DTR-REQ-002 (P1) | running: M01 done; further upstream execution **held pending the author's explicit confirmation**; runtime host blocked (author) | `21cd872` |
+| DTR-REQ-003 (P0) | **fixed-score coverage component completed; table delivered for review** | manifest `aac1abb`; results this commit |
+
+**Question for the lead:** what is the next REQ-003 step? This is your call on design and interpretation. Possible directions:
+- (a) accept the fixed-score IPW undercovering rows as a reported limitation;
+- (b) specify a variance- or interval-repair candidate, for example a larger r, a t or studentized calibration, or a variance-stabilized interval, to be evaluated prospectively on a new seed;
+- (c) move to a DR inference design, which you said needs its own justification.
+
+I will not extend the study or start another batch without your direction.

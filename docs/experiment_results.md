@@ -167,8 +167,43 @@ manifest frozen and pushed before launch in `34abfa6`.
 every pair of independent logged episodes shows it is **exactly unbiased** (r = 2). It enforces the complete manifest and
 needs r ≥ 2. No interval or coverage is computed or claimed; a coverage study remains the lead's decision.
 
+### 2026-09-21 12:00 EDT — FIXED-SCORE COVERAGE RESULTS, all 12 rows (DTR-REQ-003 P0; authorized by lead `f0b4fa2`)
+[Summary table](../results/v2_sim/coverage_fixed_score_20260921/summary.md) · [summary.json](../results/v2_sim/coverage_fixed_score_20260921/summary.json) ·
+[raw repetitions](../results/v2_sim/coverage_fixed_score_20260921/reps.jsonl) · [run status](../results/v2_sim/coverage_fixed_score_20260921/run_status.json) ·
+[independent recompute](../experiments/v2_sim/check_coverage_summary.py) · manifest frozen and pushed **before** launch in `aac1abb`.
+- **Design (lead spec):** the four K=2 crossing cells, three policies, the frozen 250-task list, 4 logged and 4 fresh
+  episodes per task and policy, 2,000 repetitions per cell, new root seed 2026092102 in `cov-` namespaces. IPW and fresh
+  variances come from `within_block_variance` on the fixed per-episode scores, and D = IPW − fresh uses the summed
+  variance. Intervals are nominal 95% Wald (z = 1.959963984540054), plus exact-variance intervals as a diagnostic, with
+  exact values fixed in the manifest before the run.
+- **Completion: 8,000 of 8,000 repetitions (fraction 1.0)**, 460 s wall on 4 processes, cap not reached. No failed
+  intervals and no zero-variance intervals in any of the 36 row×estimand combinations. The write-loss fix was in force:
+  records were written under git-ignored `work/runs/` with an exclusive writer lock, and after the writers closed, the
+  atomic finalize certified 8,000 unique expected ids with 0 missing. An independent numpy recompute from the raw file
+  reproduces all coverage counts and 288 summary quantities (max relative difference 4.9e-15).
+- **Point estimates:** unbiased within MCSE in all 36 (largest |bias/MCSE| 1.62). The mean estimated variance matches the
+  exact variance: ratio 0.987–1.003 for IPW, 0.998–1.001 for fresh and 0.989–1.002 for D. Empirical/exact variance ratio:
+  0.945–1.080 overall.
+- **Fresh intervals:** coverage 0.9425–0.9615 over the 12 rows (MCSE about 0.005).
+- **IPW intervals undercover in some rows (unfavourable, kept):** coverage 0.9300–0.9575. Four IPW rows are more than 2
+  MCSE below 0.95. Three are the prompt rule or fixed_LS under the feedback-dependent-.2 logger: 0.9300 (weak, prompt),
+  0.9315 (informative, prompt) and 0.9330 (weak, fixed_LS). The fourth is 0.9400 (weak, uniform, fixed_LS).
+- **D = IPW − fresh:** coverage 0.9355–0.9585, so the rejection rate at zero is 0.0415–0.0645. Two rows are more than
+  2 MCSE below 0.95, both in the weak/feedback-dependent cell: fixed_LS 0.9355 and prompt 0.9375.
+- **Across all 36 combinations:** 7 are outside 0.95 ± 2 MCSE, 6 below and 1 above (fresh, 0.9615). Rows share logs
+  across policies, so they are not independent tests.
+- **Diagnostic (for the lead to interpret):** in the same undercovering rows, exact-variance intervals cover
+  0.942–0.953. The mean estimated variance there is 0.987–1.000 of the exact variance. A **post hoc** paired comparison gives Wald
+  minus exact-variance coverage of −0.023 (MCSE 0.0059) in the worst row. This is consistent with the shortfall coming
+  mainly from the *variability* of the r = 4 within-block variance estimate under heavy IPW weights (and its dependence
+  on the estimate), not from its mean or from normality of the estimate. That mechanism is a hypothesis; it was not
+  tested.
+- **Scope:** a prospective synthetic check of fixed-score estimators only. It makes no DR/OR or learned-policy inference
+  claim, no multiplicity-adjusted claim, no real-agent claim, and no threshold chosen after viewing the results.
+
 ### Not claimed
-No new model runs; no Monte Carlo; no coverage, power or interval validation; no evidence of real-agent improvement. The
+No new model runs; Monte Carlo only on known synthetic kernels; no interval validation for DR/OR, learned policies or
+the branch study; no power claim; no evidence of real-agent improvement. The
 archived learned router did not beat always-large. Lead's readiness estimate (rubric in [readiness.md](readiness.md),
 `76b3199`): 55%, change 0 percentage points, range 45–65%.
 
