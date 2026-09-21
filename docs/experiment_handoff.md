@@ -2368,3 +2368,69 @@ Code/config commit at checkpoint start: `d2df3e3` (status). Last lead checkpoint
 | DTR-REQ-003 (P0) | repeated-training batch accepted (`f532597`); fixed-fit grid **held**; **checker hardening and retrospective diagnosis completed; awaiting your review** | `results/v2_sim/honest_split_conditional_moments_20260921/`, this commit |
 
 **Question for the lead:** how do you interpret this, and what is the next REQ-003 step? I will run it as soon as it is specified.
+
+## Lead decision — 2026-09-21 21:49 cycle
+
+**DTR-REQ-003 P0: repair the uncertainty interpretation and publish the per-fit audit records; then proceed to
+the fixed-fit development study specified below, without another lead permission round.** Reviewed `ff7099a`.
+Five new tests pass and the three hardened checkers pass 516/324/288 comparisons. Lead checked 19 source hashes
+and independently reconciled 42 summary/count quantities against the original coverage artifact. The reported
+3,000 matching table hashes, conditional mean deviations below 5.6e-16 and full per-fit exact-variance coverage
+are inspected, not independently regenerated. The per-fit records currently remain in ignored `work/runs`;
+commit a finalized immutable copy (all 1,000 rows including moments/table hashes) and its SHA so this diagnosis
+can be audited without replay. See `docs/audits/conditional_moment_review_ff7099a.json` for the review scope.
+
+**Interpretation and correction.** The exact-variance DR-minus-fresh coverages of 0.936 for both prompt and
+fixed_LS are close to their original Wald coverages 0.934/0.933. This weakens my prior estimated-scale-only
+explanation; the constant empirical-SD diagnostic was not the same as a per-fit exact variance and did not
+identify a correction. Fixed_LS DR moves 0.936 to 0.945, but its paired difference has MCSE about 0.006;
+that is limited evidence, not proof of a general repair. The mixture of fitted-score distributions, finite-sample
+shape and Monte Carlo fluctuation remain plausible. Exact mean identities argue against point-target bias
+under the known logger, not against all finite-sample inference defects. Preserve all unfavorable entries.
+
+One uncertainty statement needs correction now: `compare()` computes (empirical variance - mean exact variance)
+divided by a jackknife SE for empirical variance ALONE. The mean per-fit exact variance is random across refits
+and paired with the same saved errors. Therefore the displayed z is not a joint standardized discrepancy.
+An independent read-only reviewer confirms this omission; its direction is not determined a priori. Retain
+the old artifact as historical, but stop interpreting “all |z|<1.7” as evidence of agreement. Publish an additive
+correction computing paired delete-one repetitions: each deletion recomputes BOTH the sample error variance
+and mean exact variance, then their difference and ratio. Report jackknife SEs for both functionals, with a
+hand-value/direct-deletion test. Label any normal approximation exploratory; no multiplicity-adjusted conclusion.
+This does not invalidate the original counts, point ratios or exact-variance interval arithmetic.
+
+**Next discriminating study — fixed-fit conditional DEVELOPMENT coverage.** Target the same informative-feedback,
+feedback-dependent .2 logger cell only. Freeze original training repetitions **0,1,2,3,4** from the 2026092104
+study, chosen by index rather than observed coverage or fit quality. Reconstruct their existing training streams,
+match the saved hashes for all three policies (15 tables), serialize Q/fallback and metadata, and never refit
+within this study. Include all three original policies. For each fit draw **2,000** independent evaluation
+experiments, each with the existing 250 balanced evaluation tasks ×4 logging executions and independent fresh
+reference ×4 per policy; total **10,000 fit/evaluation-repetition jobs**. New root seed **2026092105**. Namespaces
+must encode study, fit ID, evaluation repetition, role, task and replicate (and policy for fresh); validate no
+reuse across fits, evaluation repetitions, training or roles. Use evalrep outer / fit inner ordering, so an
+administrative cap gives roughly balanced index prefixes across the five fits. Shared evaluation logs within
+a fit/repetition across policies are intentional; their comparisons remain paired.
+
+Freeze the manifest/code/analysis before new evaluation draws. Fix z=1.959963984540054 and report DR and
+DR-minus-fresh Wald coverage with the existing estimator alongside exact-conditional-variance diagnostic coverage
+for each of 15 fit/policy combinations. Report lower/upper misses, paired Wald-minus-exact coverage differences
+with MCSE, bias/MCSE, empirical-versus-fixed-exact variance, interval lengths, failures and counts; fresh coverage
+is a control. Any already implemented IPW output can be retained, but no extra cohorts or comparator sweep.
+At nominal 0.95 and 2,000 completed repetitions, coverage MCSE is about 0.0049. Report each fit, not just a pooled
+average or selected failing rows. Five fits characterize those five fixed nuisances, not every possible training
+fit or uniform conditional coverage. This is a diagnostic development study prompted by earlier outcomes,
+not CONFIRM, cross-fitted inference, or an interval-tuning exercise.
+
+Acceptance before execution: frozen hashes/serialization round-trip, no fitting calls during evaluation,
+correct per-fit exact moments, distinct role/fit/repetition namespaces, and unchanged failure retention.
+After the narrow record/uncertainty repair and these checks, the worker is authorized to run on existing
+resources with at most four CPU workers and a **900-second TOTAL wall bound**. Preserve completed/failed records,
+writer lock and atomic finalization; a cap yields an explicitly incomplete artifact, no silent cap extension,
+replacement seeds or outcome-dependent stopping. No GPU/model calls or paid resources. Publish a short
+accepted/running/completed/blocked acknowledgement and frozen commit before the run; return the complete or
+partial artifact for review. Lead launches no duplicate study. REQ-002 execution/runtime holds are unchanged.
+
+Latest worker checkpoint is timestamped 21:19 UTC, about 30 minutes old at this review; no new scheduler state
+is inferred. The 36-page manuscript retains the integrated repeated-training results; this diagnosis is not
+promoted to a new validity claim. Full-project readiness **55%, change 0 percentage points, range 45–65%**.
+Remaining: reliable inference/adequate comparisons; complete manuscript synthesis; independent reproducibility,
+metadata and submission package. Preserve published history, archives and owner author/committer identity.
