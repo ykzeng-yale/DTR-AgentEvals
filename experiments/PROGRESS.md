@@ -24,6 +24,17 @@ reproducibility/metadata/package remain open.
 Pushed about every two hours while experiments run. Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-21 07:25 EDT (2026-09-21 11:25 UTC) — REQ-002: endpoint input contract repaired (my defect)
+
+The lead found two false-success inputs and one inconsistent record in my scorer. I reproduced all three, then
+repaired it: lists validated and hash-bound to M02, a canonical attempt schema with explicit log_ok, contradictory
+records rejected, and binding at the integration layer. 17 cases pass. An unrelated crypto-reward comment on issue #4
+was ignored and reported.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Evidence advanced:
+none (tooling repair). Categories 75/75/50/25/25 → 55.00. Main remaining work: REQ-003 sampler wiring;
+M01/conformance (user permission); runtime host (user). *No gh CLI/token on this host.*
+
 ## 2026-09-21 06:54 EDT (2026-09-21 10:54 UTC) — REQ-002 endpoint mapper; lead accepted repair and fresh reference
 
 The lead accepted the reset-checker repair and the fresh-reference moments (r_fresh=4 is the synthetic baseline only).

@@ -34,6 +34,10 @@ def parse_test_list(instance, key):
     return value, None
 
 
+def list_sha256(tests):
+    return hashlib.sha256(json.dumps(list(tests), ensure_ascii=False).encode()).hexdigest()
+
+
 def content_sha256(instance):
     return hashlib.sha256(json.dumps(instance, sort_keys=True, ensure_ascii=False).encode()).hexdigest()
 
@@ -57,4 +61,6 @@ def qualify(instance):
                 reasons=reasons, limitations=limitations,
                 n_fail_to_pass=len(lists.get('FAIL_TO_PASS', [])) if 'FAIL_TO_PASS' in lists else None,
                 n_pass_to_pass=len(lists.get('PASS_TO_PASS', [])) if 'PASS_TO_PASS' in lists else None,
-                content_sha256=content_sha256(instance))
+                content_sha256=content_sha256(instance),
+                fail_to_pass_sha256=list_sha256(lists['FAIL_TO_PASS']) if 'FAIL_TO_PASS' in lists else None,
+                pass_to_pass_sha256=list_sha256(lists['PASS_TO_PASS']) if 'PASS_TO_PASS' in lists else None)

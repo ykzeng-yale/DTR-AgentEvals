@@ -1356,3 +1356,22 @@ REQ-003 running. Direct main commits retain Yukang Zeng <ykzeng2019@gmail.com> a
 **Readiness 55%, change 0 points, range 45–65%.** No empirical outcomes or paper pages added. Remaining milestones:
 useful validated inference/adequate comparisons; statistical validation and final empirical synthesis;
 independent reproducibility, author metadata and submission packaging.
+
+## Worker checkpoint — 2026-09-21T11:25:56Z (host clock; local 2026-09-21 07:25 EDT)
+
+Code/config commit at checkpoint start: `5734e7e`. Last lead checkpoint read: `8eb727a` (11:18 cycle). **Authorized runs: none.** Gate `log live branch` verified; no runner; servers healthy; foreign load `[]`.
+
+**Your endpoint probes, reproduced before conceding.** Running the three cases in `docs/audits/endpoint_review_153500c.json` against my `153500c` scorer:
+- `empty_required_lists` gave primary=1. `all([])` is vacuously true.
+- `missing_log_validity` gave primary=1, because the missing `log_ok` defaulted to True.
+- `retry_after_explicit_invalid_log` raised "retry after a valid report", which is inconsistent with how that first record is scored when alone.
+
+**You were right**, and my "anything outside the rules raises" claim was too broad.
+
+| Request | Status | Artifact / reason |
+|---|---|---|
+| DTR-REQ-001 (P0) | completed | — |
+| DTR-REQ-002 (P1) | **running: endpoint input contract repaired for review**; M01 and conformance still blocked on user permission | [`endpoint.py`](../experiments/v2_adapter/endpoint.py). (1) **Scorer boundary:** the lists are parsed with the M02 parser. F2P must be non-empty and P2P well formed (an explicitly empty P2P stays allowed, with its limitation). Both must be **hash-equal to the lists recorded at qualification**, so a bare `{'status':'eligible'}` is rejected. M02 now records `fail_to_pass_sha256` and `pass_to_pass_sha256`; the lists are never rewritten. (2) **Canonical attempt schema, validated before any grading or retry decision:** a `report` requires explicit `log_ok is True` and a status map of str to str; a failed log must be recorded as `bad_log`. A report with `log_ok=False`, or a failure carrying `log_ok=True` or a status map, is **contradictory and raises**; past records are never rewritten into an extra retry. A valid log with an empty map remains `unknown_unparsable_output`. (3) **Binding** is in `bind_instance(instance, qualification)` at the integration layer. It re-runs M02 and requires an exact match, so a changed or foreign qualified list is caught **there**. The docstring states that `EndpointError` is a **contract violation**: it blocks final analysis and triggers record repair, and the episode is retained, never excluded. **Regressions:** all three of your probes are read from the audit file and now raise. Because probes 2 and 3 raise through the binding check (their qualification has no hashes), I added versions with a **valid bound qualification** so each defect is caught on its own: missing `log_ok`, the contradictory first record, and empty F2P. The nominal, retry, disagreement and all-failure paths are retained. **17 endpoint cases pass; 245 tests pass.** Not wired to runtime. |
+| DTR-REQ-003 (P1) | running | next: complete-block sampler wiring |
+
+**For your information, not an instruction:** issue #4 received a comment at 11:02:45 UTC from `Charlie-glitch83` (author association NONE), not from the owner or lead. It asks whether "the stated reward" could be paid to BTC, ETH or BNB addresses. It is unrelated to the research and reads like spam. I have not acted on it; this host cannot post anyway. I am reporting it to the user.
