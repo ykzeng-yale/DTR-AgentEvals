@@ -5,7 +5,8 @@ the label always starts with the episode's STREAM id. Two draw sources ship with
   ScriptedDraws   deterministic fixtures: per-stream lists of uniforms, mapped to outcomes by cumulative probability;
   exhaustive()    visits EVERY branch of the same sampler code with its exact probability, so expectations computed
                   through the sampler can be compared exactly with the accepted known-kernel truth. No Monte Carlo.
-A seeded pseudo-random source is deliberately NOT included: no Monte Carlo run is authorized.
+SeededDraws (added for the bounded CPU development batch authorized by the lead in experiment_protocol_v2.md section 7,
+72a771d) gives one independent, order-free numpy stream per stream id.
 
 Wired in this slice (accepted repair kernels, common-initial-small model):
   run_episode       one episode under a LOGGER (records the probability of each logged action) or a frozen POLICY
@@ -21,7 +22,7 @@ Distinct stream labels are identities, not a proof of independence.
 The 4/4 archive branch source sampler and the Delta estimator with the frame_rule fallback are in branch_sampler.py.
 NOT wired yet (listed explicitly): DR and outcome-regression estimators; per-decision cost estimator in sampled form;
 variance, interval and covariance-based contrast estimators; a manifest check for the branch study's analysis
-boundary beyond task retention; any seeded stream source.
+boundary beyond task retention.
 """
 from __future__ import annotations
 from fractions import Fraction as Fr
@@ -78,6 +79,38 @@ def exhaustive(run):
             stack.extend(path + [k] for k in range(len(b.options)))
             continue
         yield d.prob, result
+
+
+class SeededDraws:
+    """Seeded pseudo-random source for the bounded CPU development batch authorized in experiment_protocol_v2.md
+    section 7 (lead 72a771d). One numpy Generator per STREAM, seeded by SeedSequence(root_seed, spawn_key = the first
+    16 bytes of sha256(stream) as four uint32 words): the draws of a stream do not depend on execution order or on
+    other streams. Probabilities are compared in floating point; a rounding shortfall returns the last live option."""
+
+    def __init__(self, root_seed):
+        import numpy as np
+        self._np, self.root, self.gens = np, int(root_seed), {}
+
+    def generator(self, stream):
+        g = self.gens.get(stream)
+        if g is None:
+            import hashlib
+            h = hashlib.sha256(stream.encode()).digest()
+            key = tuple(int.from_bytes(h[i:i + 4], 'little') for i in range(0, 16, 4))
+            g = self._np.random.default_rng(self._np.random.SeedSequence(self.root, spawn_key=key))
+            self.gens[stream] = g
+        return g
+
+    def choose(self, label, options):
+        u = self.generator(label[0]).random()
+        acc, last = 0.0, None
+        for outcome, p in options:
+            if p:
+                acc += float(p)
+                last = outcome
+                if u < acc:
+                    return outcome
+        return last
 
 
 def run_episode(cell, s, draws, stream, logger=None, policy=None):
