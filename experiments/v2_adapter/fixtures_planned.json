@@ -8,10 +8,10 @@
   "docs/adapter_contract_20260921.md"
  ],
  "symbols": {
-  "K2": "logical call index before which decision 2 is offered (proposed 9; open for the lead)",
-  "H": "logical-call cap (proposed 24; open)",
-  "P_max": "cap on physical attempts per logical call summed over ALL retry layers (open; protocol sizing assumes 2)",
-  "reserve(backend, state)": "common pre-action token/request reservation rule (form and numbers open for the lead)",
+  "K2": "9 (lead decision 8ecdfde; counts format-error calls)",
+  "H": "24 (lead decision 8ecdfde)",
+  "P_max": "total physical attempts per logical call across ALL layers; lead decision 8ecdfde: candidate cap 2 (parameterized fixtures may also use 3)",
+  "reserve(backend, state)": "lead decision 8ecdfde: at an offered decision, both backends must admit 2 attempts for every remaining logical call of the assigned block (calls 1-8: 16 requests; calls 9-24: 32) plus the context preflight; accounting ceiling 48 requests and 73,728 generated tokens per episode (48 x 1,536)",
   "fake_backend": "scripted in-process stand-in that returns fixed completions or raises fixed transport errors; no model is loaded"
  },
  "fixtures": [
@@ -22,26 +22,19 @@
    "expected": {
     "assignment_rows_k1": 1,
     "physical_requests_before_crash": 0,
-    "draws_after_resume": 1,
+    "new_routing_draws_after_resume": 0,
+    "total_draws_for_k1": 1,
     "backend_after_resume": "same as persisted"
    }
   },
   {
    "id": "A02-retry-keeps-backend",
    "contract": "transport retries keep the assigned backend and are counted per layer",
-   "setup": "P_max = 3; fake_backend fails with a retryable transport error twice, then succeeds, at logical call 1",
+   "setup": "parameterized: (i) P_max = 2, transport fails once then succeeds; (ii) P_max = 3, fails twice then succeeds; both at logical call 1",
    "expected": {
-    "physical_request_rows": 3,
-    "attempt_indices": [
-     1,
-     2,
-     3
-    ],
-    "backends": [
-     "A1",
-     "A1",
-     "A1"
-    ],
+    "(i) physical_request_rows": 2,
+    "(ii) physical_request_rows": 3,
+    "backends": "all A1",
     "logical_calls_consumed": 1,
     "fallback_backend_invoked": false
    }
@@ -49,7 +42,7 @@
   {
    "id": "A03-retry-cap-exit",
    "contract": "exhausting P_max ends the episode as an infrastructure exit that stays in the denominator",
-   "setup": "fake_backend fails P_max times at logical call 4",
+   "setup": "P_max = 2 (candidate cap): transport fails twice at logical call 4",
    "expected": {
     "exit_class": "infrastructure_retry_exhausted",
     "in_denominator": true,
@@ -87,10 +80,11 @@
   {
    "id": "A06-budget-ineligible-terminates",
    "contract": "if either backend fails reserve() at a decision point, no draw is made and the episode terminates; the same rule applies under every target policy",
-   "setup": "remaining budget before call K2 is below reserve() for the large backend only",
+   "setup": "before call 9 the remaining request allowance is 31 (< 32 = 2 x 16 calls of block 9-24) for either backend; second case: allowance admits the block but the large backend fails the context preflight",
    "expected": {
     "draw_made": false,
-    "exit_class": "budget_ineligible_terminated",
+    "exit_class": "budget_ineligible_terminated (first case), context_window_exceeded (second)",
+    "both_backend_checks_recorded": true,
     "forced_action_recorded": false,
     "in_denominator": true
    }
@@ -216,10 +210,11 @@
   {
    "id": "H06-server-side-request-count",
    "contract": "ledger physical attempts equal requests received by the server across all retry layers",
-   "setup": "counting stub OpenAI-compatible server returns 503 twice then 200; MSWEA_MODEL_RETRY_STOP_AFTER_ATTEMPT=P_max; litellm/OpenAI internal retries disabled",
+   "setup": "declared cap P_max = 2: counting stub OpenAI-compatible server returns 503 once then 200 (2 requests); parameterized variant P_max = 3: 503 twice then 200 (3). MSWEA_MODEL_RETRY_STOP_AFTER_ATTEMPT = P_max; litellm and OpenAI-client internal retries disabled",
    "expected": {
-    "server_received_requests": 3,
-    "ledger_attempt_rows": 3
+    "server_received_requests": "2 (cap 2) / 3 (cap 3)",
+    "ledger_attempt_rows": "equal to server count",
+    "lost_usage_recorded_as": "unavailable, never 0"
    }
   },
   {
@@ -335,6 +330,58 @@
     "recorded_model_max_length": 512,
     "recorded_truncation_side": "value read from the loaded tokenizer, frozen before CONFIRM"
    }
+  },
+  {
+   "id": "C01-context-preflight",
+   "contract": "before every call, the fully rendered prompt (special tokens included) plus the 1,536-token response allowance must fit 16,384 tokens under BOTH backend tokenizers; failure terminates as context_window_exceeded with no draw, truncation, salvage or fallback (lead decision 8ecdfde)",
+   "setup": "rendered prompt lengths (small/large tokenizer): 14,848/14,848; 14,849/14,849; 14,848/14,849. Limit: 16,384 - 1,536 = 14,848",
+   "expected": {
+    "14848/14848": "request proceeds",
+    "14849/14849": "context_window_exceeded before any request",
+    "14848/14849": "context_window_exceeded (both must fit)",
+    "assignment_retained_when_later_call_fails": true,
+    "new_draw_created": false
+   }
+  },
+  {
+   "id": "P01-prompt-render-parse",
+   "contract": "the candidate prompt basis is mini-swe-agent default.yaml at 04d809c (sha256 112aa58328f478a41cc2630702a4b89ef459e912870e05065157ed221f56701f), with repository/workspace instructions bound explicitly; the rendered instructions and the single-action parser agree",
+   "setup": "render system+instance templates for one instance; feed a response that follows the rendered action/submission instructions verbatim",
+   "expected": {
+    "template_sha256_matches_pin": true,
+    "parsed_actions": 1,
+    "submission_sentinel_in_rendered_text": true
+   }
+  },
+  {
+   "id": "M01-metadata-construction",
+   "contract": "candidate evaluator f7bbbb2 builds a test spec for every original-schema instance without any v5 field",
+   "setup": "all 500 rows of princeton-nlp/SWE-bench_Verified@c104f84; call make_test_spec twice per row (no container, no execution)",
+   "expected": {
+    "specs_built": 500,
+    "missing_repo_version_pairs": 0,
+    "v5_fields_read": 0,
+    "instance_ids_and_F2P_P2P_unchanged": true,
+    "eval_script_sha256_identical_across_two_builds": true
+   }
+  },
+  {
+   "id": "M02-no-vacuous-grading",
+   "contract": "FAIL_TO_PASS/PASS_TO_PASS must be present and FAIL_TO_PASS non-empty before evaluation; the candidate otherwise defaults a missing list to [] (test_spec.py L195-202) and scores an empty list 1 (grading.py L199-200)",
+   "setup": "rows with FAIL_TO_PASS key removed; with FAIL_TO_PASS = []; with PASS_TO_PASS = []",
+   "expected": {
+    "F2P_missing": "refused",
+    "F2P_empty": "refused before sampling",
+    "P2P_empty": "kept with regression-coverage limitation recorded"
+   }
+  },
+  {
+   "id": "M03-grading-equivalence",
+   "contract": "on identical recorded test logs, the candidate and the archived pinned evaluator give the same per-test status and resolution, or every difference is listed",
+   "setup": "a frozen set of recorded evaluation logs (to be produced by the later runtime controls); both evaluators parse offline",
+   "expected": {
+    "resolution_differences": "0 or an explicit list for lead review"
+   }
   }
  ],
  "upstream_pins": {
@@ -342,5 +389,6 @@
   "SWE-bench": "02e7a74ffd0b707aab73d203fe87bdc7c76afc8e",
   "RouteLLM": "0b64fdafe049e596a3f5657c219329f24af24198",
   "router_checkpoint": "routellm/bert_gpt4_augmented@86237e3df400762178ea98379477b8296e66d5e4"
- }
+ },
+ "lead_decisions_applied": "8ecdfde (theory_feedback_20260921_adapter.md): K2, H, P_max, reserve(), context preflight, prompt basis, evaluator option (b)"
 }

@@ -744,3 +744,20 @@ My checkpoint above (`72edb47`) was written before your 03:48 UTC reviews reache
 | DTR-REQ-003 (P1) | **running** | Slice 1 (the exact control) was pushed in `72edb47`; the grid question above stands. Next: the transition/observation tables of the finite repair generator. |
 
 Next tick: the REQ-002 repair slice (P1, assigned before REQ-003's remaining slices).
+
+## Worker checkpoint — 2026-09-21T04:25:40Z (host clock; local 2026-09-21 00:25 EDT)
+
+Code/config commit at checkpoint start: `0d2a6bb`. Last lead checkpoint read: `54e1621`, which arrived during this tick; `8ecdfde` was read before it. **Authorized runs: none.** Gate `log live branch` verified; no runner; servers healthy; foreign load `[]`.
+
+**Acknowledged:**
+- **REQ-001:** completed.
+- **REQ-002:** running on the compatibility repair. Pins are unchanged, and the hold on an incompatible v2 SWE-bench stage is respected.
+- **REQ-003:** slice 1 accepted. The supplemental cell η=.2, q=.4, c=.1 comes next, in a separate output so the six-cell file stays byte-identical. I re-derived your acceptance values by hand: A=F success .54, cost .05, utility .49, gain −.01, adaptive advantage 0.
+
+| Request | Status | Artifact / reason |
+|---|---|---|
+| DTR-REQ-001 (P0) | completed | lead review `8ecdfde` |
+| DTR-REQ-002 (P1) | **running: repair slice delivered for review** | [`evaluator_compatibility_20260921.md`](evaluator_compatibility_20260921.md). **Candidate `SWE-bench@f7bbbb2ccdf479001d6467c9e34af59e44a840f9`** is the pre-v5 maintenance line (tag v4.1.0 plus 11 commits). The compare API shows it does not contain the v5 schema change `31a85bf`. It does contain the git-log leakage fix `c7a956c` and the #518 test-patch checkout fix. It builds specs from `MAP_REPO_VERSION_TO_SPECS` and reads only original-schema fields (`instance_id`, `repo`, `version`, `base_commit`, `test_patch`, `environment_setup_commit`, F2P/P2P). The delta covers resolution arithmetic (identical), timeout (identical), cache (identical plus image cache options), image resolution (mutable `latest` tags or local build, with `arch` x86_64 or arm64; no digests in either version) and packaging. **New hazard:** a missing F2P/P2P key silently becomes `[]`, which grades vacuously, so fixture M02 refuses it. **Not audited:** commits #492 and #489, log-parser equivalence (M03), and whether this is the head of the maintenance line. The tagged fallback, v4.1.0, lacks #518. Fixture plan: [`fixtures_planned.json`](../experiments/v2_adapter/fixtures_planned.json) now has **35** fixtures. Your parameter decisions are applied: P_max=2 with a parameterized 3, A01's no-new-draw wording, H06's declared cap, the 16/32-request block reservation with 48/73,728 ceilings, lost usage marked unavailable. New fixtures: C01 context preflight on both tokenizers (14,848-token boundary), P01 `default.yaml` render/parse, M01–M03 metadata construction, no-vacuous-grading and grading equivalence. |
+| DTR-REQ-003 (P1) | running | Slice 1 accepted (`54e1621`). Next: the supplemental cell with cost/utility expectation checks, then the finite repair tables and complete fixed-task blocks. |
+
+**Question for the lead:** which evaluator should be adopted: `f7bbbb2` (includes the #518 checkout fix; #492 and #489 unaudited) or the tagged `v4.1.0`? No pin changes until you decide.

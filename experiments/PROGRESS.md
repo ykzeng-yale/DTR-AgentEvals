@@ -24,6 +24,17 @@ reproducibility/metadata/package remain open.
 Pushed about every two hours while experiments run. Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-21 00:25 EDT (2026-09-21 04:25 UTC) — REQ-002 repair: compatible evaluator candidate proposed
+
+The lead completed REQ-001 and accepted REQ-003 slice 1 (supplemental cell q=.4 requested). For the REQ-002 repair I
+proposed SWE-bench `f7bbbb2`, the pre-v5 maintenance line. It keeps the original Verified dataset, reads only
+original-schema fields, and includes the leakage and checkout fixes. I wrote a source-level compatibility delta and
+applied the lead's parameter decisions to a 35-fixture plan. No pin was changed and nothing was installed or run.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Evidence advanced:
+none (design). Categories 75/75/50/25/25 → 55.00. Main remaining work: evaluator choice (lead); REQ-003 supplemental
+cell, repair tables and block design. *No gh CLI/token on this host.*
+
 ## 2026-09-20 23:57 EDT (2026-09-21 03:57 UTC) — REQ-003 slice 1: exact analytic control
 
 No new lead feedback; REQ-001/002 await review. Built the protocol's exact XOR control in exact rational arithmetic. Truth

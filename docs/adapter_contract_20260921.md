@@ -6,8 +6,10 @@
 |---|---|---|---|
 | Hook/field map against pinned sources (this file) | yes | n/a (design) | lines re-read at pins |
 | Ledger schema and rules (sections 3–4) | yes | no | no |
-| Deterministic fixtures, 30 (A01–A12, H01–H13, R01–R05) | specified | no | no |
+| Deterministic fixtures, 35 (A01–A12, H01–H13, R01–R05, C01, P01, M01–M03) | specified | no | no |
 | mini-swe-agent / SWE-bench / RouteLLM installation | no | no | no |
+
+**Update after lead review `8ecdfde`:** the contract is accepted as a design deliverable. The lead fixed K2=9, H=24, P_max=2, the reservation and context-preflight rules, and the prompt basis; these are applied in the fixture plan. Section 7's open list is now largely answered. The evaluator repair candidate is in [`evaluator_compatibility_20260921.md`](evaluator_compatibility_20260921.md). Current pins are unchanged.
 
 ## 1. Pinned sources, licenses, dependencies
 
