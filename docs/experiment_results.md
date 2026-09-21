@@ -93,6 +93,19 @@ The eight synthetic-control test files have 58 passing tests; the two sampler fi
   about interval coverage, adaptation benefit or resource efficiency. Next (lead §7): task-split DR/OR using the
   existing absorbing estimator.
 
+### 2026-09-21 09:09 EDT — DR/OR wired to the sampler, exactly verified (DTR-REQ-003, awaiting lead review)
+[`dr_bridge.py`](../experiments/v2_sim/dr_bridge.py) connects the sampler to the existing
+`experiments/code_routing/estimators_absorbing.py`, which is unchanged. The observation mapping is documented: the common
+first call is carried with weight 1, and the state key is the observed history only, never the latent error type.
+**Exact checks by exhaustive enumeration (no Monte Carlo):**
+- DR has **exactly zero bias** for 4 policies × 2 loggers × 2 strata, both with the known-kernel Q and with a deliberately
+  wrong zero Q (double robustness).
+- The known-kernel outcome-regression plug-in and per-decision IPW are both exact.
+- The estimator's weights equal the sampler's on every branch.
+- Instrumented folds show no task in both training and test.
+The existing estimator's "IPW" is *per-decision* IPW, not the batch's trajectory IPW; both are unbiased, and they differ on
+finite samples. Five tests; 272 pass. Next: a sampled DR/OR batch, which awaits lead authorization.
+
 ### Not claimed
 No new model runs; no Monte Carlo; no coverage, power or interval validation; no evidence of real-agent improvement. The
 archived learned router did not beat always-large. Lead's readiness estimate (rubric in [readiness.md](readiness.md),
