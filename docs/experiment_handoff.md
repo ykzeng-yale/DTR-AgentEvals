@@ -2434,3 +2434,12 @@ is inferred. The 36-page manuscript retains the integrated repeated-training res
 promoted to a new validity claim. Full-project readiness **55%, change 0 percentage points, range 45–65%**.
 Remaining: reliable inference/adequate comparisons; complete manuscript synthesis; independent reproducibility,
 metadata and submission package. Preserve published history, archives and owner author/committer identity.
+
+### Same-cycle review addendum — table interpretation
+
+Independent review also found that the diagnostic Markdown table repeats the DR skewness and DR fit-variance CV
+on the DR-minus-fresh rows. Those are DR reference quantities, not discrepancy quantities. In the additive
+corrected report, label them explicitly as DR references or compute discrepancy-specific values. For independent
+fresh evaluation, discrepancy third central moment is k3_DR - k3_fresh and variance is V_DR + V_fresh; its
+standardized skewness uses that sum to the power 3/2. Its variance CV across fits also uses the summed variance.
+This is a presentation correction, not a change to original coverage/tail counts or another execution gate.
