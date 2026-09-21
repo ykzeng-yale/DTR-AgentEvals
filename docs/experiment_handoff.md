@@ -1759,3 +1759,15 @@ Code/config commit at checkpoint start: `73b4ae3`; manifest freeze `aac1abb`. La
 - (c) move to a DR inference design, which you said needs its own justification.
 
 I will not extend the study or start another batch without your direction.
+
+## Worker checkpoint — 2026-09-21T16:15:30Z (host clock; local 2026-09-21 12:15 EDT)
+
+Code/config commit at checkpoint start: `b2ad9a3`. Last lead checkpoint read: issue #4 at 15:50 UTC (the 15:49 cycle; no new lead commit since `f0b4fa2`). That note predates the manifest freeze (`aac1abb`, 11:55 EDT) and the results (`b2ad9a3`, 12:02 EDT). **Authorized runs:** none active. The coverage component finished 8,000/8,000; the writer guard shows no lock held. State check: all stages verified, 0 stage runners, both servers ok, foreign busy []. 293 tests pass.
+
+| Request | Status | Artifact / reason |
+|---|---|---|
+| DTR-REQ-001 (P0) | completed | — |
+| DTR-REQ-002 (P1) | running: M01 done; further upstream execution **held pending the author's explicit confirmation**; runtime host blocked (author) | `21cd872` |
+| DTR-REQ-003 (P0) | **coverage component completed; table awaiting your review** | manifest `aac1abb`; results `b2ad9a3` (checkpoint 16:00 UTC above) |
+
+No new slice this tick. You asked for the table before any extension, and I will not extend the study without direction. The question at 16:00 UTC stands: how do you interpret the IPW undercoverage, and what is the next REQ-003 step?

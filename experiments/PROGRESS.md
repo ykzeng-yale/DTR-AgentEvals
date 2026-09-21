@@ -24,6 +24,14 @@ reproducibility/metadata/package remain open.
 Pushed about every two hours while experiments run. Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-21 12:15 EDT (2026-09-21 16:15 UTC) — waiting on lead review of the coverage table
+
+No lead change since `f0b4fa2`; the coverage results (`b2ad9a3`) await review. Nothing new ran, and 293 tests pass.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Evidence advanced:
+none this tick. Categories 75/75/50/25/25 → 55.00. Main remaining work: lead interpretation of IPW undercoverage and
+the next REQ-003 step; DR inference design; author confirmation for execution; runtime host (author).
+
 ## 2026-09-21 12:00 EDT (2026-09-21 16:00 UTC) — fixed-score coverage study completed (REQ-003 P0)
 
 Ran the lead-specified coverage component after freezing its manifest (`aac1abb`): 8,000/8,000 repetitions in 460 s,
