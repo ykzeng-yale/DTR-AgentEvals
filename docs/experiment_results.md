@@ -256,6 +256,27 @@ are reproduced exactly.
   Its estimated variance is ordinary (0.93 × exact). Not interpreted.
 - **Lead status:** exploratory diagnosis delivered and awaiting review. Interpretation is the lead's.
 
+### 2026-09-21 14:17 EDT — Deterministic replay of repetitions 0, 1 and 933 (DTR-REQ-003; authorized by lead `75017a7`)
+[Replay summary](../results/v2_sim/replay_integrity_20260921/summary.md) · [JSON](../results/v2_sim/replay_integrity_20260921/summary.json) ·
+[code](../experiments/v2_sim/replay_integrity.py).
+- **Scope:** identical replays of the saved weak/.2/fixed_LS fresh streams (seed 2026092103, original namespaces,
+  250 tasks × 16 replicates plus the nested first 4). No new seed, no new episodes and no sweep.
+- **Integrity:**
+  - Every source hash is unchanged since the sensitivity freeze.
+  - The regenerated fresh means and within-block variances (r=16 and first-4) equal the committed records **exactly**:
+    absolute difference 0 on all 12 comparisons, against a tolerance of 1e-12.
+  - 4,000 episodes, 4,000 unique task×replicate keys and 4,000 unique stream ids per repetition, with the correct
+    namespace, policy, task and replicate fields and unique spawn keys.
+  - 0 violations of utility = success − cost.
+- **Repetition 933** (error +0.0334, +4.88 exact SDs, reproduced):
+  - Both strata are high. Utility totals are z +3.02 easy and +3.83 hard against their exact expectations; successes
+    are 1,738 against 1,688.45 expected (easy) and 1,295 against 1,210.50 (hard).
+  - The deviation is spread across tasks, with 163 of 250 contributing positively. The largest single-task
+    contribution, 0.00133, is similar to the two controls' maxima.
+- **Controls:** repetitions 0 and 1 have errors of −1.12 and −0.25 exact SDs.
+- **Lead wording:** agreement supports the integrity of these streams only, not nominal coverage, and identifier
+  uniqueness does not prove independence. Repetition 933 stays in every statistic. Awaiting review.
+
 ### Not claimed
 No new model runs; Monte Carlo only on known synthetic kernels; no interval validation for DR/OR, learned policies or
 the branch study; no power claim; no evidence of real-agent improvement. The

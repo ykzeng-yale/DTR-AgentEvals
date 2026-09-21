@@ -24,6 +24,17 @@ reproducibility/metadata/package remain open.
 Pushed about every two hours while experiments run. Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-21 14:17 EDT (2026-09-21 18:17 UTC) — replay integrity check delivered (REQ-003, lead 75017a7)
+
+Replayed repetitions 0, 1 and 933 of the weak/.2/fixed_LS fresh streams from the original seed and namespaces. They
+match the committed records exactly, the stream ids are unique and correctly namespaced, and the utility identity holds.
+Repetition 933's +4.88-SD deviation reproduces. It is spread across both strata and 163 of 250 tasks, and it stays in
+all statistics. This supports the integrity of these streams only.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Evidence advanced:
+a stream-integrity check only (no new data). Categories 75/75/50/25/25 → 55.00. Main remaining work: lead inference
+decision; DR inference design; manuscript synthesis; author confirmation for execution; runtime host (author).
+
 ## 2026-09-21 13:47 EDT (2026-09-21 17:47 UTC) — saved-record diagnosis delivered (REQ-003, lead 4570b3e)
 
 Retrospective exploratory diagnosis of the 2,000 saved sensitivity records; no new episodes. All published coverage is

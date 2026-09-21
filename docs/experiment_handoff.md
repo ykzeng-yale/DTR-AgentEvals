@@ -1969,3 +1969,40 @@ The 36-page paper already retains these limitations; no new manuscript claim thi
 runtime holds remain separate. Overall readiness **55%, change 0 points, range 45–65%**. Remaining reliable
 inference/comparisons, paper synthesis and reproducibility/metadata/submission gates unchanged. Acknowledge
 accepted/running/completed/blocked; owner author/committer identity and direct-main/no-PR workflow retained.
+
+## Worker checkpoint — 2026-09-21T18:17:18Z (host clock; local 2026-09-21 14:17 EDT)
+
+Code/config commit at checkpoint start: `d45f01d`; lead `75017a7` pulled. Last lead checkpoint read: the 17:49 cycle (`75017a7`; issue #4 at 17:51 UTC). **Authorized this tick:** the bounded deterministic replay only. It replayed the identical saved streams, with no new seed, episodes or sweep, and no model or GPU. State check: all stages verified, 0 stage runners, servers ok, foreign busy []. Your audit scripts for `b2ad9a3` and `d45f01d` still pass. 308 tests pass.
+
+**Acknowledged:** your answers to (1)–(3) are accepted. The replay is **completed**. Code: [`replay_integrity.py`](../experiments/v2_sim/replay_integrity.py), with 4 tests: the detectors catch planted defects (duplicate id, wrong policy or namespace, stratum mismatch, missing replicate, broken utility), the exact stratum expectations equal the frozen r=16 table, and the committed artifact matches. Artifact: [`summary.md`](../results/v2_sim/replay_integrity_20260921/summary.md) and [`summary.json`](../results/v2_sim/replay_integrity_20260921/summary.json), including the source hashes.
+
+*Integrity checks (all three repetitions)*
+- Sources are unchanged since the `f6f450f` freeze.
+- The regenerated values equal the committed records **exactly**: fresh mean and within-block variance at r=16 and for the first-4 block, absolute difference 0 on all 12 comparisons (tolerance 1e-12). No first divergent component.
+- Each repetition has 4,000 episodes, 4,000 unique task×replicate keys and 4,000 unique stream ids. Every id has the form `cfg=rs-…weak…|rep=<b>|fresh|fixed_LS|<task>|<replicate>` and matches its record, and the spawn keys are unique. As you noted, uniqueness is not a proof of independence.
+- 0 violations of utility = success − cost or of cost = Σ call costs.
+
+*Utility and success totals by stratum*
+
+| Rep | Error (exact SDs) | Easy utility total vs expected (z) | Hard utility total vs expected (z) | Easy successes vs expected | Hard successes vs expected |
+|---|---|---|---|---|---|
+| 0 (control) | −1.12 | 1,628.92 vs 1,643.15 (−0.86) | 1,130.31 vs 1,146.67 (−0.75) | — | — |
+| 1 (control) | −0.25 | 1,634.53 vs 1,643.15 (−0.52) | 1,148.44 vs 1,146.67 (+0.08) | — | — |
+| 933 | +4.88 | 1,693.17 vs 1,643.15 (+3.02) | 1,230.47 vs 1,146.67 (+3.83) | 1,738 vs 1,688.45 | 1,295 vs 1,210.50 |
+
+*Repetition 933 detail*
+- The error decomposes into +0.0125 from the easy stratum and +0.0210 from the hard stratum.
+- 163 of 250 tasks contribute positively (controls: 125 and 126).
+- Task-contribution quantiles: 5% −0.00044, median +0.00012, 95% +0.00083.
+- The largest single-task contribution is 0.00133, against 0.00131 and 0.00109 in the controls.
+- Exit classes shift from false_pass and K_exhausted towards true_pass and first_call_pass; full counts are in the artifact.
+
+I report integrity supported **for these streams only**; this says nothing about nominal coverage. Repetition 933 stays in every published statistic.
+
+| Request | Status | Artifact / reason |
+|---|---|---|
+| DTR-REQ-001 (P0) | completed | — |
+| DTR-REQ-002 (P1) | running: M01 done; further upstream execution **held pending the author's explicit confirmation**; runtime host blocked (author) | `21cd872` |
+| DTR-REQ-003 (P0) | validation, sensitivity and diagnosis accepted; new simulation stage **held**; **replay integrity check completed; awaiting your review** | `results/v2_sim/replay_integrity_20260921/` in this commit |
+
+**Question for the lead:** what is the next REQ-003 step? I will not start anything further without your direction.

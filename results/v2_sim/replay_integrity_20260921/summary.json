@@ -1,0 +1,470 @@
+{
+ "request": "DTR-REQ-003 bounded deterministic replay integrity check (lead 75017a7)",
+ "scope": "identical replays of saved fixed_LS fresh streams; no new seed/episodes/sweep; repetition 933 retained everywhere",
+ "config": "rs-K2-crossing-weak-feedback_dependent_floor_0.2",
+ "policy": "fixed_LS",
+ "repetitions": [
+  0,
+  1,
+  933
+ ],
+ "controls": "repetitions 0 and 1 chosen by index, not outcome",
+ "root_seed": 2026092103,
+ "task_list_sha256": "cc3a03d099fc7fe34835dd52eaa9653aa04defc7510969c1e08d3dbc23561b8e",
+ "tolerance": 1e-12,
+ "sensitivity_sources_unchanged_since_freeze": true,
+ "changed_sources": [],
+ "source_sha256": {
+  "experiments/v2_sim/replay_integrity.py": "2f0a2e841402c1c1db0a9ab67fbd5bede7d2be38d1aad4e56ba2c08480343ac5",
+  "experiments/v2_sim/replication_sensitivity.py": "2e1851c7ce24e87302dd4be23adf948241406f68b69b1d9f83ff551081fa3606",
+  "experiments/v2_sim/sampler.py": "6826551ef65a821eebfabd4f74c9ede4e38da50e8bc6b40e72e23f0bd2926c13",
+  "experiments/v2_sim/repair_generator.py": "ffd6878afdf208f8c32ef75feda5fa324ab01b3387adcfeea96fe08d14017ecd",
+  "experiments/v2_sim/repair_logger.py": "d0305470c9e02b3c6cd5afe274a6e081a6d32cacb970887a4a332dae41276344",
+  "experiments/v2_sim/fixed_task_blocks.py": "fafa3bc90da3114c8ff858a979476617dd4e47aabac6ca9d8fe7343d9b42dfa1",
+  "experiments/v2_sim/dev_batch.py": "d4d85208a1534b9f3326fecdcfa6fc338fe02b86b5e0138993874846f7473062",
+  "experiments/v2_sim/coverage_batch.py": "a7f9f40d494b72a78b71dc465cdaa742ebe2cc28ab1957d8ad8ed2fdbc60ca13",
+  "experiments/v2_sim/writer_lock.py": "dc15bb2228e2575368619257175fbb45ef88858125fc65cea6ad797f03f7ef7d",
+  "experiments/v2_sim/repair_generator_v1.json": "22e9f31057fabb9b65d80502d263827dbdbc1e6a90c41b758972f0f5c0d969f4",
+  "experiments/v2_sim/fixed_task_blocks_v1.json": "f57a2fc8d291d3af48095727c9188976b782a96144a9b7c46e135b4c2f83fc10",
+  "experiments/v2_sim/fresh_reference_v1.json": "9f48f0dfa41903294242a64362f3afe10d424964037fbaca650bcf2821e0c637",
+  "results/v2_sim/replication_sensitivity_20260921/manifest.json": "02c26a470c54cb3b35ea4637235f19f4bbc63938ffd9159c5fca2590638c8085",
+  "results/v2_sim/replication_sensitivity_20260921/reps.jsonl": "1a5913bcb35a524275e35ccf2f85b12c7167044bae4d1983c593d0a30c964aa4"
+ },
+ "stratum_expectations": {
+  "easy": {
+   "success": "13191/15625",
+   "cost": "56617/2500000",
+   "utility": "2053943/2500000",
+   "utility_var": "854466977751/6250000000000"
+  },
+  "hard": {
+   "success": "9457/15625",
+   "cost": "9973/312500",
+   "utility": "179167/312500",
+   "utility_var": "1460761046/6103515625"
+  }
+ },
+ "all_match": true,
+ "all_streams_ok": true,
+ "utility_identity_violations": 0,
+ "note": "agreement supports integrity of these streams only; it is not evidence of nominal coverage; identifier uniqueness does not prove stochastic independence",
+ "replays": [
+  {
+   "repetition": 0,
+   "namespace": "cfg=rs-K2-crossing-weak-feedback_dependent_floor_0.2|rep=0",
+   "episodes": 4000,
+   "unique_task_replicate_keys": 4000,
+   "unique_stream_ids": 4000,
+   "stream_problems": [],
+   "first4_stream_problems": [],
+   "utility_identity_violations": 0,
+   "comparisons": [
+    {
+     "block": "r16",
+     "field": "fresh",
+     "regenerated": 0.6898075,
+     "committed": 0.6898075,
+     "abs_diff": 0.0,
+     "regenerated_exact": "275923/400000"
+    },
+    {
+     "block": "r16",
+     "field": "fresh_var",
+     "regenerated": 4.777489041666667e-05,
+     "committed": 4.777489041666667e-05,
+     "abs_diff": 0.0,
+     "regenerated_exact": "114659737/2400000000000"
+    },
+    {
+     "block": "r4",
+     "field": "fresh",
+     "regenerated": 0.69827,
+     "committed": 0.69827,
+     "abs_diff": 0.0,
+     "regenerated_exact": "69827/100000"
+    },
+    {
+     "block": "r4",
+     "field": "fresh_var",
+     "regenerated": 0.00018378523333333334,
+     "committed": 0.00018378523333333334,
+     "abs_diff": 0.0,
+     "regenerated_exact": "5513557/30000000000"
+    }
+   ],
+   "all_match": true,
+   "first_divergent_component": null,
+   "error_r16": -0.0076483,
+   "error_r16_exact_sd": -1.1155512655013737,
+   "strata": {
+    "easy": {
+     "episodes": 2000,
+     "tasks": 125,
+     "totals": {
+      "success": 1674.0,
+      "cost": 45.08,
+      "utility": 1628.92
+     },
+     "expected_totals": {
+      "success": 1688.448,
+      "cost": 45.2936,
+      "utility": 1643.1544
+     },
+     "utility_total_z": -0.8608282975704564,
+     "exit_classes": {
+      "K_exhausted": 184,
+      "false_pass": 142,
+      "first_call_pass": 1205,
+      "true_pass": 469
+     },
+     "first4_utility_total": 415.42
+    },
+    "hard": {
+     "episodes": 2000,
+     "tasks": 125,
+     "totals": {
+      "success": 1194.0,
+      "cost": 63.69,
+      "utility": 1130.31
+     },
+     "expected_totals": {
+      "success": 1210.496,
+      "cost": 63.8272,
+      "utility": 1146.6688
+     },
+     "utility_total_z": -0.7477163646968101,
+     "exit_classes": {
+      "K_exhausted": 260,
+      "false_pass": 546,
+      "first_call_pass": 382,
+      "true_pass": 812
+     },
+     "first4_utility_total": 282.85
+    }
+   },
+   "task_contributions": {
+    "sum": -0.0076483,
+    "sum_by_stratum": {
+     "easy": -0.0035586000000000003,
+     "hard": -0.0040897
+    },
+    "quantiles": {
+     "0.0": -0.0016833376,
+     "0.05": -0.0006883376,
+     "0.25": -0.0003838088,
+     "0.5": 4.91624e-05,
+     "0.75": 0.0003266624,
+     "0.95": 0.0006386912,
+     "1.0": 0.0013116624
+    },
+    "largest_five": [
+     {
+      "task": "t0125",
+      "stratum": 1,
+      "contribution": -0.0016833376
+     },
+     {
+      "task": "t0221",
+      "stratum": 1,
+      "contribution": 0.0013116624
+     },
+     {
+      "task": "t0185",
+      "stratum": 1,
+      "contribution": -0.0012108376
+     },
+     {
+      "task": "t0131",
+      "stratum": 1,
+      "contribution": -0.0011983376
+     },
+     {
+      "task": "t0073",
+      "stratum": 1,
+      "contribution": -0.0011458376
+     }
+    ],
+    "positive_tasks": 125,
+    "negative_tasks": 125
+   }
+  },
+  {
+   "repetition": 1,
+   "namespace": "cfg=rs-K2-crossing-weak-feedback_dependent_floor_0.2|rep=1",
+   "episodes": 4000,
+   "unique_task_replicate_keys": 4000,
+   "unique_stream_ids": 4000,
+   "stream_problems": [],
+   "first4_stream_problems": [],
+   "utility_identity_violations": 0,
+   "comparisons": [
+    {
+     "block": "r16",
+     "field": "fresh",
+     "regenerated": 0.6957425,
+     "committed": 0.6957425,
+     "abs_diff": 0.0,
+     "regenerated_exact": "278297/400000"
+    },
+    {
+     "block": "r16",
+     "field": "fresh_var",
+     "regenerated": 4.757773375e-05,
+     "committed": 4.757773375e-05,
+     "abs_diff": 0.0,
+     "regenerated_exact": "38062187/800000000000"
+    },
+    {
+     "block": "r4",
+     "field": "fresh",
+     "regenerated": 0.69666,
+     "committed": 0.69666,
+     "abs_diff": 0.0,
+     "regenerated_exact": "34833/50000"
+    },
+    {
+     "block": "r4",
+     "field": "fresh_var",
+     "regenerated": 0.0001900926,
+     "committed": 0.0001900926,
+     "abs_diff": 0.0,
+     "regenerated_exact": "950463/5000000000"
+    }
+   ],
+   "all_match": true,
+   "first_divergent_component": null,
+   "error_r16": -0.0017133,
+   "error_r16_exact_sd": -0.249895268645778,
+   "strata": {
+    "easy": {
+     "episodes": 2000,
+     "tasks": 125,
+     "totals": {
+      "success": 1680.0,
+      "cost": 45.47,
+      "utility": 1634.53
+     },
+     "expected_totals": {
+      "success": 1688.448,
+      "cost": 45.2936,
+      "utility": 1643.1544
+     },
+     "utility_total_z": -0.5215623819456137,
+     "exit_classes": {
+      "K_exhausted": 173,
+      "false_pass": 147,
+      "first_call_pass": 1205,
+      "true_pass": 475
+     },
+     "first4_utility_total": 411.83
+    },
+    "hard": {
+     "episodes": 2000,
+     "tasks": 125,
+     "totals": {
+      "success": 1212.0,
+      "cost": 63.56,
+      "utility": 1148.44
+     },
+     "expected_totals": {
+      "success": 1210.496,
+      "cost": 63.8272,
+      "utility": 1146.6688
+     },
+     "utility_total_z": 0.08095674653097967,
+     "exit_classes": {
+      "K_exhausted": 260,
+      "false_pass": 528,
+      "first_call_pass": 391,
+      "true_pass": 821
+     },
+     "first4_utility_total": 284.83
+    }
+   },
+   "task_contributions": {
+    "sum": -0.0017132999999999994,
+    "sum_by_stratum": {
+     "easy": -0.0021560999999999998,
+     "hard": 0.00044280000000000025
+    },
+    "quantiles": {
+     "0.0": -0.0013713088,
+     "0.05": -0.0006733376,
+     "0.25": -0.0002133376,
+     "0.5": 6.66624e-05,
+     "0.75": 0.0003441624,
+     "0.95": 0.0006311912,
+     "1.0": 0.0010916624
+    },
+    "largest_five": [
+     {
+      "task": "t0138",
+      "stratum": 0,
+      "contribution": -0.0013713088
+     },
+     {
+      "task": "t0031",
+      "stratum": 1,
+      "contribution": -0.0011758376
+     },
+     {
+      "task": "t0033",
+      "stratum": 1,
+      "contribution": 0.0010916624
+     },
+     {
+      "task": "t0047",
+      "stratum": 1,
+      "contribution": -0.0009333376
+     },
+     {
+      "task": "t0073",
+      "stratum": 1,
+      "contribution": -0.0009183376
+     }
+    ],
+    "positive_tasks": 126,
+    "negative_tasks": 124
+   }
+  },
+  {
+   "repetition": 933,
+   "namespace": "cfg=rs-K2-crossing-weak-feedback_dependent_floor_0.2|rep=933",
+   "episodes": 4000,
+   "unique_task_replicate_keys": 4000,
+   "unique_stream_ids": 4000,
+   "stream_problems": [],
+   "first4_stream_problems": [],
+   "utility_identity_violations": 0,
+   "comparisons": [
+    {
+     "block": "r16",
+     "field": "fresh",
+     "regenerated": 0.73091,
+     "committed": 0.73091,
+     "abs_diff": 0.0,
+     "regenerated_exact": "73091/100000"
+    },
+    {
+     "block": "r16",
+     "field": "fresh_var",
+     "regenerated": 4.3544533333333336e-05,
+     "committed": 4.3544533333333336e-05,
+     "abs_diff": 0.0,
+     "regenerated_exact": "40823/937500000"
+    },
+    {
+     "block": "r4",
+     "field": "fresh",
+     "regenerated": 0.74965,
+     "committed": 0.74965,
+     "abs_diff": 0.0,
+     "regenerated_exact": "14993/20000"
+    },
+    {
+     "block": "r4",
+     "field": "fresh_var",
+     "regenerated": 0.00016497763333333333,
+     "committed": 0.00016497763333333333,
+     "abs_diff": 0.0,
+     "regenerated_exact": "4949329/30000000000"
+    }
+   ],
+   "all_match": true,
+   "first_divergent_component": null,
+   "error_r16": 0.0334542,
+   "error_r16_exact_sd": 4.879499385005303,
+   "strata": {
+    "easy": {
+     "episodes": 2000,
+     "tasks": 125,
+     "totals": {
+      "success": 1738.0,
+      "cost": 44.83,
+      "utility": 1693.17
+     },
+     "expected_totals": {
+      "success": 1688.448,
+      "cost": 45.2936,
+      "utility": 1643.1544
+     },
+     "utility_total_z": 3.024703802054524,
+     "exit_classes": {
+      "K_exhausted": 149,
+      "false_pass": 113,
+      "first_call_pass": 1228,
+      "true_pass": 510
+     },
+     "first4_utility_total": 430.7
+    },
+    "hard": {
+     "episodes": 2000,
+     "tasks": 125,
+     "totals": {
+      "success": 1295.0,
+      "cost": 64.53,
+      "utility": 1230.47
+     },
+     "expected_totals": {
+      "success": 1210.496,
+      "cost": 63.8272,
+      "utility": 1146.6688
+     },
+     "utility_total_z": 3.8303254897199257,
+     "exit_classes": {
+      "K_exhausted": 231,
+      "false_pass": 474,
+      "first_call_pass": 412,
+      "true_pass": 883
+     },
+     "first4_utility_total": 318.95
+    }
+   },
+   "task_contributions": {
+    "sum": 0.0334542,
+    "sum_by_stratum": {
+     "easy": 0.0125039,
+     "hard": 0.0209503
+    },
+    "quantiles": {
+     "0.0": -0.0014358376,
+     "0.05": -0.0004383376,
+     "0.25": -0.0001388088,
+     "0.5": 0.0001186912,
+     "0.75": 0.0003761912,
+     "0.95": 0.0008266624,
+     "1.0": 0.0013266624
+    },
+    "largest_five": [
+     {
+      "task": "t0025",
+      "stratum": 1,
+      "contribution": -0.0014358376
+     },
+     {
+      "task": "t0063",
+      "stratum": 1,
+      "contribution": 0.0013266624
+     },
+     {
+      "task": "t0001",
+      "stratum": 1,
+      "contribution": 0.0013241624
+     },
+     {
+      "task": "t0003",
+      "stratum": 1,
+      "contribution": 0.0010841624
+     },
+     {
+      "task": "t0201",
+      "stratum": 1,
+      "contribution": 0.0010791624
+     }
+    ],
+    "positive_tasks": 163,
+    "negative_tasks": 87
+   }
+  }
+ ]
+}
