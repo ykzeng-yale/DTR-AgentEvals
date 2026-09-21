@@ -1,0 +1,98 @@
+{
+  "worker_commit": "153500c14150a5b48edffc14ed7c4452c95a4c54",
+  "review_checkpoint": "5734e7e",
+  "evidence": "lead synthetic input probes; no runtime or empirical outcomes",
+  "worker_tests_rerun": 13,
+  "broader_241_suite_rerun": false,
+  "cases": [
+    {
+      "id": "empty_required_lists",
+      "qualification": {
+        "status": "eligible"
+      },
+      "submission_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "attempts": [
+        {
+          "kind": "report",
+          "patch_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "status_map": {
+            "unrelated": "PASSED"
+          },
+          "log_ok": true
+        }
+      ],
+      "f2p": [],
+      "p2p": [],
+      "observed": {
+        "primary": 1,
+        "algorithmic": "resolved",
+        "secondary_bounds": null,
+        "upstream_resolved": null,
+        "disagreement": null,
+        "attempts_used": 1
+      },
+      "acceptance": "Reject invalid scorer inputs before grading; never primary=1; do not drop assigned episodes in caller"
+    },
+    {
+      "id": "missing_log_validity",
+      "qualification": {
+        "status": "eligible"
+      },
+      "submission_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "attempts": [
+        {
+          "kind": "report",
+          "patch_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "status_map": {
+            "required": "PASSED"
+          }
+        }
+      ],
+      "f2p": [
+        "required"
+      ],
+      "p2p": [],
+      "observed": {
+        "primary": 1,
+        "algorithmic": "resolved",
+        "secondary_bounds": null,
+        "upstream_resolved": null,
+        "disagreement": null,
+        "attempts_used": 1
+      },
+      "acceptance": "Reject invalid scorer inputs before grading; never primary=1; do not drop assigned episodes in caller"
+    },
+    {
+      "id": "retry_after_explicit_invalid_log",
+      "qualification": {
+        "status": "eligible"
+      },
+      "submission_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "attempts": [
+        {
+          "kind": "report",
+          "patch_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "status_map": {},
+          "log_ok": false
+        },
+        {
+          "kind": "report",
+          "patch_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "status_map": {
+            "required": "PASSED"
+          },
+          "log_ok": true
+        }
+      ],
+      "f2p": [
+        "required"
+      ],
+      "p2p": [],
+      "observed": {
+        "exception": "EndpointError",
+        "message": "retry after a valid report is not allowed"
+      },
+      "acceptance": "Reject invalid scorer inputs before grading; never primary=1; do not drop assigned episodes in caller"
+    }
+  ]
+}

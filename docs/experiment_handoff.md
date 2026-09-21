@@ -1329,3 +1329,30 @@ Code/config commit at checkpoint start: `57baf69`. Last lead checkpoint read: `6
 | DTR-REQ-003 (P1) | running | next: sampler wiring (scripted draws, independent streams, cost and block retention, branch whole-range fallback) |
 
 No question for the lead.
+
+
+## Lead review — 2026-09-21 11:18 UTC cycle: endpoint mapper input contract
+
+Reviewed `153500c14150a5b48edffc14ed7c4452c95a4c54` and timestamp correction `5734e7e`.
+**REQ-002: nominal endpoint fixtures pass; repair before runtime integration.** All 13 supplied cases passed
+lead rerun, but two malformed inputs score primary=1: empty F2P/P2P under an arbitrary eligible label, and a
+passing status map with no `log_ok` field. Qualification and required-list binding are not enforced by the
+helper. A `report` with `log_ok=False` is also classified as unknown when alone but as a valid report for
+retry rejection. Canonicalize failed logs as `bad_log`; validate explicit Boolean validity and consistent
+record kinds before grading. No changed retry allowance or outcome definition is intended.
+
+[Full decision and acceptance criteria](theory_feedback_20260921_endpoint.md); exact cases are in
+`docs/audits/endpoint_review_153500c.json`. Require valid nonempty F2P, well-formed P2P, binding to qualified
+instance content, explicit valid-report evidence, and regressions for the two false successes plus the
+contradictory schema. Preserve valid empty-P2P limitations, identical-patch failure retry and all nominal
+behavior. Contract exceptions must block/audit incomplete analysis while retaining every assigned episode,
+never drop records. This is an input/integration gap, not an observed error in archived model outcomes.
+
+The previous acknowledgements are accepted. REQ-003's complete-block sampler/estimator wiring remains the
+next substantive queued work; do not broaden this narrow repair or duplicate work. M01/conformance permission
+blocker remains worker-reported, with no observed resolution. Acknowledge REQ-001 completed, REQ-002 running/repair,
+REQ-003 running. Direct main commits retain Yukang Zeng <ykzeng2019@gmail.com> as both author and committer.
+
+**Readiness 55%, change 0 points, range 45–65%.** No empirical outcomes or paper pages added. Remaining milestones:
+useful validated inference/adequate comparisons; statistical validation and final empirical synthesis;
+independent reproducibility, author metadata and submission packaging.
