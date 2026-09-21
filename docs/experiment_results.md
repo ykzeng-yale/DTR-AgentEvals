@@ -2,7 +2,12 @@
 
 The original result sections below were generated on 2026-09-18; later checkpoints are dated explicitly. Synthetic results, real open-weight model observations, and remaining publication work are separated. The tests establish implementation identities and numerical correctness; they do not replace statistical assumptions or benchmark validation.
 
-**Latest scientific review, 20 September 2026:** the [lead's diagnostic report](scientific_diagnosis_20260920.md)
+**21 September 2026, exact development-control review:** the [REQ-003 slice-1 review](theory_feedback_20260921_exact_control.md)
+independently reconstructs six finite-model cells / 30 policies and 258 exact quantities; all five worker tests pass.
+This is deterministic analytic validation, with no model execution, Monte Carlo, coverage validation or new coding-study
+outcome. One additional informative but cost-dominated control is specified separately. The 35-page manuscript is unchanged.
+
+**Earlier scientific review, 20 September 2026:** the [lead's diagnostic report](scientific_diagnosis_20260920.md)
 independently reconstructs the learned fixed large/small/large schedule, limited repair opportunities and
 zero-check stopping, the unresolved class-tailored calibration discrepancy, and descriptive utility sensitivity.
 These retrospective analyses narrow the empirical claims; no original outcomes, objectives or cohorts changed.

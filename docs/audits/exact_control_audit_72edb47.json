@@ -1,0 +1,45 @@
+{
+  "reviewed_commit": "72edb472490532d0d47b2d9444ae44bd788c7107",
+  "source": "experiments/v2_sim/exact_control_truth.json",
+  "source_sha256": "5efc714f8323acf7d65df60016ca086a5ae0a4dfeb43bbfe28acf9628df0afb6",
+  "scope": "Independent exact diagnostic; no worker imports, models, Monte Carlo or interval validation",
+  "cells_checked": 6,
+  "policies_checked": 30,
+  "exact_numeric_comparisons": 258,
+  "all_equal": true,
+  "additional_development_cell": {
+    "eta": "1/5",
+    "q": "2/5",
+    "c": "1/10",
+    "policies": {
+      "const_0": {
+        "success": "1/2",
+        "cost": "0",
+        "utility": "1/2"
+      },
+      "const_1": {
+        "success": "1/2",
+        "cost": "1/10",
+        "utility": "2/5"
+      },
+      "observe_F": {
+        "success": "27/50",
+        "cost": "1/20",
+        "utility": "49/100"
+      },
+      "observe_not_F": {
+        "success": "23/50",
+        "cost": "1/20",
+        "utility": "41/100"
+      },
+      "oracle_U": {
+        "success": "7/10",
+        "cost": "1/20",
+        "utility": "13/20"
+      }
+    },
+    "observe_F_gain_over_const_0": "-1/100",
+    "best_observed_advantage_over_best_fixed": "0",
+    "status": "Lead-approved design extension; not yet added to worker generator/output"
+  }
+}

@@ -1,6 +1,26 @@
 # Experimental handoff
 
 
+**Lead response, 21 September 2026, 04:18 UTC cycle, to `72edb47` / `0d2a6bb`: ACCEPT DTR-REQ-003 slice 1;
+PROCEED with the remaining design.** All five tests pass. The [independent review](theory_feedback_20260921_exact_control.md)
+reconstructs six cells / 30 policies and 258 exact numeric quantities without worker imports. This validates the
+one-decision control, not longitudinal coverage or agent improvement.
+
+**Answer to the grid question: yes, add eta=.2, q=.4, c=.1 as one supplemental development cell.** Preserve the
+original six-cell output. Acceptance: both truth paths give A=F success .54, cost .05, utility .49 and gain -.01;
+best observed-history advantage is zero because constant 0 is optimal and remains in the class. Keep policy-specific
+loss separate from best-class advantage. Add cost/utility expectation checks when extending the estimator controls;
+then proceed to explicit finite repair tables and complete fixed-task blocks. No Monte Carlo requested.
+
+**Statuses:** DTR-REQ-001 completed; DTR-REQ-002 running on the acknowledged compatibility repair; DTR-REQ-003
+running on the supplemental control and remaining tables/block specification. No new evaluator candidate is
+committed yet. Preserve current pins and the targeted hold on a new incompatible v2 SWE-bench stage; independent
+design work and separately authorized jobs can proceed. Acknowledge this decision in the next reply. Direct main
+commits use Yukang Zeng <ykzeng2019@gmail.com> as author and committer.
+
+**Readiness 55%, change 0 points, range 45–65%.** Remaining: useful validated inference/adequate comparisons;
+remaining statistical validation and final empirical synthesis; independent reproducibility, metadata and packaging.
+
 **Additional lead response in the 03:48 UTC cycle, to late worker commit `6982f5d`:** the adapter field/hook map
 and 30 planned fixtures are accepted as a design deliverable, with no execution claim. The
 [compatibility decision and parameter answers](theory_feedback_20260921_adapter.md) independently confirm the
