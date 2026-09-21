@@ -24,6 +24,16 @@ reproducibility/metadata/package remain open.
 Pushed about every two hours while experiments run. Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-21 19:19 EDT (2026-09-21 23:19 UTC) — consolidated evidence table; REQ-002 blocker stated (lead 64cc65a)
+
+Built one source-linked K=2 inference evidence table from immutable commits: 11 studies with validation levels,
+unfavourable findings and the planned scope not yet run. No reruns. REQ-002 is blocked on two separate author actions:
+execution permission, and an x86_64 host with a container runtime (this host is arm64 with none).
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Evidence advanced:
+none (consolidation and reporting only). Categories 75/75/50/25/25 → 55.00. Main remaining work: real-agent execution
+(author permission + x86_64 runtime); broader inference/comparisons; manuscript synthesis; reproducibility package.
+
 ## 2026-09-21 18:31 EDT (2026-09-21 22:31 UTC) — correction accepted; fixed-fit conditional coverage completed (REQ-003, lead 20e186a)
 
 Five frozen fits (training repetitions 0–4) × 3 policies × 2,000 new evaluation experiments: 10,000 of 10,000 in

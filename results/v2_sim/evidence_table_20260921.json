@@ -1,0 +1,166 @@
+{
+ "request": "DTR-REQ-003 P0 consolidated evidence table (lead 64cc65a)",
+ "generated_from": "immutable commits via git show",
+ "validation_levels": {
+  "W": "worker-computed (+ worker recompute checker where linked)",
+  "A": "lead independent saved-record arithmetic audit (not trajectory regeneration)",
+  "E": "exact/deterministic identity by enumeration",
+  "R": "regeneration (replay) of the stated streams only"
+ },
+ "rows": [
+  {
+   "study": "Development batch: trajectory IPW vs fresh (point estimation)",
+   "cells": "4 K=2 crossing cells \u00d7 3 policies; n=250, r=4",
+   "reps": "800 of 800",
+   "result": "IPW max abs(bias/MCSE) 1.40; fresh 1.89; IPW empirical/exact SD 0.939\u20131.063; IPW RMSE 0.0161\u20130.0371",
+   "adverse": "\u2014",
+   "validation": "W; A; exact SDs E (accepted tables)",
+   "links": [
+    "[summary](https://github.com/ykzeng-yale/DTR-AgentEvals/blob/35b2f36327d4/results/v2_sim/dev_batch_20260921/summary.json)",
+    "[manifest ffd0e5c](https://github.com/ykzeng-yale/DTR-AgentEvals/blob/ffd0e5cef7c3/results/v2_sim/dev_batch_20260921/manifest.json)",
+    "[lead audit c0c39a8](https://github.com/ykzeng-yale/DTR-AgentEvals/blob/c0c39a8db551/docs/audits/dev_batch_audit_35b2f36.json)"
+   ]
+  },
+  {
+   "study": "Original three-fold cross-fitted DR / OR plug-in (point estimation)",
+   "cells": "same 4 cells \u00d7 3 policies; paired logs",
+   "reps": "800 of 800",
+   "result": "DR max abs(bias/MCSE) 1.48; DR/IPW RMSE 0.742\u20130.934; known-kernel DR/IPW RMSE 0.697\u20130.900; OR/IPW RMSE 0.646\u20130.903",
+   "adverse": "OR plug-in bias +0.0082 (z 4.9) in informative-feedback_dependent_floor_0.2 / prompt_only_large_if_hard",
+   "validation": "W; A",
+   "links": [
+    "[summary](https://github.com/ykzeng-yale/DTR-AgentEvals/blob/8a34f6f516d8/results/v2_sim/dev_batch_dr_20260921/summary.json)",
+    "[manifest 34abfa6](https://github.com/ykzeng-yale/DTR-AgentEvals/blob/34abfa6728f4/results/v2_sim/dev_batch_dr_20260921/manifest.json)",
+    "[lead audit 9f9308e](https://github.com/ykzeng-yale/DTR-AgentEvals/blob/9f9308e206ad/docs/audits/dr_batch_audit_8a34f6f.json)"
+   ]
+  },
+  {
+   "study": "Retrospective oracle stage-2 Q intervention on the fitted OR",
+   "cells": "same 4 cells \u00d7 3 policies; regenerated identical logs",
+   "reps": "800 of 800 (after documented write-loss recovery)",
+   "result": "largest paired oracle\u2212standard change -0.0074 (z -6.1), informative-feedback_dependent_floor_0.2 / prompt_only_large_if_hard; oracle OR max abs(z) 1.57",
+   "adverse": "supports a stage-2 contribution only; does not isolate fallback; write-loss incident recorded",
+   "validation": "W; A",
+   "links": [
+    "[summary](https://github.com/ykzeng-yale/DTR-AgentEvals/blob/7c77c4c5ca8b/results/v2_sim/dev_batch_or_stage2_20260921/summary.json)",
+    "[manifest 4927dcb](https://github.com/ykzeng-yale/DTR-AgentEvals/blob/4927dcb85a30/results/v2_sim/dev_batch_or_stage2_20260921/manifest.json)",
+    "[incident](https://github.com/ykzeng-yale/DTR-AgentEvals/blob/7c77c4c5ca8b/results/v2_sim/dev_batch_or_stage2_20260921/incident_20260921.json)",
+    "[lead audit f0b4fa2](https://github.com/ykzeng-yale/DTR-AgentEvals/blob/f0b4fa2bf087/docs/audits/stage2_audit_7c77c4c.json)"
+   ]
+  },
+  {
+   "study": "Fixed-score coverage: IPW, fresh, IPW\u2212fresh (nominal 95% Wald, within-task variance)",
+   "cells": "same 4 cells \u00d7 3 policies",
+   "reps": "8,000 of 8,000 (2,000 per cell)",
+   "result": "coverage IPW 0.9300\u20130.9575, fresh 0.9425\u20130.9615, IPW\u2212fresh 0.9355\u20130.9585; exact-variance IPW 0.9420\u20130.9605",
+   "adverse": "7 of 36 entries outside 0.95 \u00b1 2 MCSE (IPW studentization shortfall, feedback-dependent logger)",
+   "validation": "W (checker); A",
+   "links": [
+    "[summary](https://github.com/ykzeng-yale/DTR-AgentEvals/blob/b2ad9a39f4da/results/v2_sim/coverage_fixed_score_20260921/summary.json)",
+    "[manifest aac1abb](https://github.com/ykzeng-yale/DTR-AgentEvals/blob/aac1abb73a10/results/v2_sim/coverage_fixed_score_20260921/manifest.json)",
+    "[checker](https://github.com/ykzeng-yale/DTR-AgentEvals/blob/b2ad9a39f4da/experiments/v2_sim/check_coverage_summary.py)",
+    "[lead audit 9550aa4](https://github.com/ykzeng-yale/DTR-AgentEvals/blob/9550aa45c088/docs/audits/coverage_audit_b2ad9a3.json)"
+   ]
+  },
+  {
+   "study": "Replication sensitivity: nested r=4 vs r=16 (development)",
+   "cells": "2 feedback-dependent cells \u00d7 3 policies",
+   "reps": "2,000 of 2,000",
+   "result": "prompt/fixed_LS IPW coverage r=4 0.9200\u20130.9440 \u2192 r=16 0.9320\u20130.9510; paired r16\u2212r4 +0.007\u2013+0.021",
+   "adverse": "weak/fixed_LS stays below at r=16 (IPW 0.932); tail asymmetry persists; more budget, not a repair",
+   "validation": "W (checker); lead reran worker checker",
+   "links": [
+    "[summary](https://github.com/ykzeng-yale/DTR-AgentEvals/blob/c8a028b61b19/results/v2_sim/replication_sensitivity_20260921/summary.json)",
+    "[manifest f6f450f](https://github.com/ykzeng-yale/DTR-AgentEvals/blob/f6f450fb2af6/results/v2_sim/replication_sensitivity_20260921/manifest.json)",
+    "[checker](https://github.com/ykzeng-yale/DTR-AgentEvals/blob/c8a028b61b19/experiments/v2_sim/check_replication_sensitivity.py)"
+   ]
+  },
+  {
+   "study": "Retrospective saved-record diagnosis (MSE, centered variance, tails)",
+   "cells": "sensitivity records",
+   "reps": "2,000 (no new data)",
+   "result": "centered variance/exact 0.904\u20131.105; skewness > 2 jackknife SE in 8 entries (all r=4 IPW/D)",
+   "adverse": "right-skewed errors with lower-heavy Wald misses (studentization)",
+   "validation": "W; A",
+   "links": [
+    "[diagnosis](https://github.com/ykzeng-yale/DTR-AgentEvals/blob/d45f01ddeb01/results/v2_sim/replication_sensitivity_20260921/diagnosis_retrospective.json)",
+    "[lead audit 75017a7](https://github.com/ykzeng-yale/DTR-AgentEvals/blob/75017a7dfbc5/docs/audits/diagnosis_audit_d45f01d.json)"
+   ]
+  },
+  {
+   "study": "Deterministic replay of repetitions 0, 1, 933 (weak/.2/fixed_LS fresh)",
+   "cells": "3 repetitions",
+   "reps": "12,000 replayed episodes (no new seed)",
+   "result": "all regenerated values equal the records (max abs diff 0.0e+00); repetition 933 at +4.88 exact SDs",
+   "adverse": "outlier retained; integrity of these streams only",
+   "validation": "R (worker); lead checked hashes/comparisons",
+   "links": [
+    "[replay summary](https://github.com/ykzeng-yale/DTR-AgentEvals/blob/4ad7345f1902/results/v2_sim/replay_integrity_20260921/summary.json)"
+   ]
+  },
+  {
+   "study": "Honest sample-split DR wiring: exact conditional identities",
+   "cells": "4 cells \u00d7 3 policies \u00d7 4 frozen-Q fixtures",
+   "reps": "enumeration (no sampling)",
+   "result": "conditional DR mean \u2212 truth \u2264 3.3e-16; expected within-task estimator vs exact conditional variance rel. diff \u2264 2.2e-15",
+   "adverse": "OR plug-in under fitted frozen Q off by -0.0149\u2013+0.0350",
+   "validation": "E; A (portable-comparison repair 4ec6831)",
+   "links": [
+    "[exact checks](https://github.com/ykzeng-yale/DTR-AgentEvals/blob/de029c0fb80a/results/v2_sim/honest_split_dr_20260921/exact_checks.json)",
+    "[lead audit 3f4dfc2](https://github.com/ykzeng-yale/DTR-AgentEvals/blob/3f4dfc282e78/docs/audits/honest_split_review_de029c0.json)"
+   ]
+  },
+  {
+   "study": "Honest-split DR, repeated training (Q refitted each repetition)",
+   "cells": "4 cells \u00d7 3 policies",
+   "reps": "4,000 of 4,000",
+   "result": "coverage DR 0.9360\u20130.9550, DR\u2212fresh 0.9330\u20130.9570, paired IPW 0.9310\u20130.9640, fresh 0.9380\u20130.9600; DR/IPW MSE 0.555\u20130.922 (all 12 < 1)",
+   "adverse": "DR 1/12 and DR\u2212fresh 2/12 beyond 2 MCSE (informative/.2); OR bias z up to 5.2; training cost 1000 episodes, 1744.8 model calls, 24.99 cost units per repetition (not equal-budget)",
+   "validation": "W (asserting checker); A",
+   "links": [
+    "[summary](https://github.com/ykzeng-yale/DTR-AgentEvals/blob/f532597fd499/results/v2_sim/honest_split_coverage_20260921/summary.json)",
+    "[manifest 4ec6831](https://github.com/ykzeng-yale/DTR-AgentEvals/blob/4ec6831c9daf/results/v2_sim/honest_split_coverage_20260921/manifest.json)",
+    "[checker](https://github.com/ykzeng-yale/DTR-AgentEvals/blob/ff7099a78ed8/experiments/v2_sim/check_honest_split_coverage.py)",
+    "[lead audit 9f9e29d](https://github.com/ykzeng-yale/DTR-AgentEvals/blob/9f9e29dd2cb0/docs/audits/honest_split_coverage_f532597.json)"
+   ]
+  },
+  {
+   "study": "Per-fit exact conditional moments, informative/.2 (retrospective) + correction",
+   "cells": "1,000 reconstructed fits \u00d7 3 policies",
+   "reps": "3,000 of 3,000 table hashes matched",
+   "result": "fixed_LS DR Wald 0.936 vs per-fit exact 0.945; DR\u2212fresh prompt/fixed_LS exact 0.936/0.936; corrected paired-jackknife z max 1.68",
+   "adverse": "DR\u2212fresh shortfalls not explained by estimated-scale variation; historical z omitted mean-exact randomness (corrected; negligible)",
+   "validation": "E (per-fit moments); W; A",
+   "links": [
+    "[diagnosis](https://github.com/ykzeng-yale/DTR-AgentEvals/blob/ff7099a78ed8/results/v2_sim/honest_split_conditional_moments_20260921/summary.json)",
+    "[correction](https://github.com/ykzeng-yale/DTR-AgentEvals/blob/6ac98b5cb67f/results/v2_sim/honest_split_conditional_moments_20260921/correction_20260921.json)",
+    "[per-fit records](https://github.com/ykzeng-yale/DTR-AgentEvals/blob/6ac98b5cb67f/results/v2_sim/honest_split_conditional_moments_20260921/per_fit_records.jsonl)",
+    "[lead audit 20e186a](https://github.com/ykzeng-yale/DTR-AgentEvals/blob/20e186af0024/docs/audits/conditional_moment_review_ff7099a.json)",
+    "[lead audit c97a232](https://github.com/ykzeng-yale/DTR-AgentEvals/blob/c97a2321ca86/docs/audits/conditional_correction_6ac98b5.json)"
+   ]
+  },
+  {
+   "study": "Fixed-fit conditional coverage: five frozen fits (training repetitions 0\u20134)",
+   "cells": "informative/.2 \u00d7 3 policies \u00d7 5 fits",
+   "reps": "10,000 of 10,000",
+   "result": "Wald (exact-variance) DR 0.9435\u20130.9600 (0.9435\u20130.9570); DR\u2212fresh 0.9395\u20130.9615 (0.9420\u20130.9585); fresh control 0.9335\u20130.9585 (0.9330\u20130.9560); IPW 0.9225\u20130.9510 (0.9485\u20130.9625)",
+   "adverse": "IPW Wald 6/15 beyond 2 MCSE; five fits only, no uniform conditional validity",
+   "validation": "W (asserting checker); A",
+   "links": [
+    "[summary](https://github.com/ykzeng-yale/DTR-AgentEvals/blob/66fb04aed5e0/results/v2_sim/fixed_fit_coverage_20260921/summary.json)",
+    "[manifest ffef6fd](https://github.com/ykzeng-yale/DTR-AgentEvals/blob/ffef6fd6f653/results/v2_sim/fixed_fit_coverage_20260921/manifest.json)",
+    "[checker](https://github.com/ykzeng-yale/DTR-AgentEvals/blob/66fb04aed5e0/experiments/v2_sim/check_fixed_fit_coverage.py)",
+    "[lead audit 64cc65a](https://github.com/ykzeng-yale/DTR-AgentEvals/blob/64cc65aca31e/docs/audits/fixed_fit_66fb04a.json)"
+   ]
+  }
+ ],
+ "planned_not_run": [
+  "Protocol v2 compact core: 32 cells (n \u2208 {250, 1000} \u00d7 K \u2208 {2, 4} \u00d7 floor {.5, .2} \u00d7 crossing/no-crossing \u00d7 informative/weak); only the four n=250, K=2 crossing cells above have sampled inference evidence.",
+  "Stress cells (severe overlap, zero support, hidden assignment confounding, non-Markov coarsening, false-pass stopping, execution drift): not run.",
+  "Cross-fitted (overlapping-training) DR inference: no justified variance; not claimed.",
+  "Learned-policy / policy-selection studies (whole selection refit per repetition): not run.",
+  "Branch-study primary target \u0394 = \u03b8 \u2212 \u03bd\u2081 + \u03bd\u2080: no validated estimate or interval.",
+  "Real-agent SWE-bench study (DTR-REQ-002): static qualification only; runtime execution blocked (see REQ-002 status)."
+ ],
+ "label": "DEVELOPMENT evidence; nothing here is CONFIRM"
+}

@@ -1,6 +1,6 @@
 {
  "request": "DTR-REQ-002: planned deterministic fixtures for the v2 routing/logging adapter",
- "status": "Mostly PLANNED (specification only). Implemented locally and tested: M02 (qualify_instances.py), M03 static part (grading_conformance.py, eval_script_check.py) and the A09-A11 scoring rules (endpoint.py). Nothing upstream installed or executed; M01 blocked on user permission.",
+ "status": "Mostly PLANNED (specification only). Implemented locally and tested: M02 (qualify_instances.py), M03 static part (grading_conformance.py, eval_script_check.py) and the A09-A11 scoring rules (endpoint.py). M01 COMPLETED on all 500 real rows (21cd872: 500/500 specs built, replay identical, reset check 500/500) with the author's download authorization. No generated script, container or benchmark has been executed. Runtime parts (M03 recorded logs, no-change/reference-patch controls) are BLOCKED on (a) the author's explicit execution permission and (b) an x86_64 host with a container runtime.",
  "governing_documents": [
   "docs/experiment_protocol_v2.md",
   "docs/literature_harness_design_20260921.md",
@@ -367,7 +367,7 @@
     "instance_ids_and_F2P_P2P_unchanged": true,
     "eval_script_sha256_identical_across_two_builds": true
    },
-   "implementation_status": "BLOCKED pending user permission: needs data/test-00000-of-00001.parquet (2,096,679 bytes) from princeton-nlp/SWE-bench_Verified@c104f84 and the SWE-bench f7bbbb2 source in an isolated environment"
+   "implementation_status": "COMPLETED 21cd872: experiments/v2_adapter/m01_metadata.py on all 500 rows at f7bbbb2 (results/v2_adapter/m01_c104f840_f7bbbb2/summary.json); was: BLOCKED pending user permission: needs data/test-00000-of-00001.parquet (2,096,679 bytes) from princeton-nlp/SWE-bench_Verified@c104f84 and the SWE-bench f7bbbb2 source in an isolated environment"
   },
   {
    "id": "M02-no-vacuous-grading",
@@ -397,5 +397,12 @@
   "router_checkpoint": "routellm/bert_gpt4_augmented@86237e3df400762178ea98379477b8296e66d5e4",
   "SWE-bench_selected_for_qualification": "f7bbbb2ccdf479001d6467c9e34af59e44a840f9 (lead 91c8bcc); 02e7a74 above is the preserved original pin"
  },
- "lead_decisions_applied": "8ecdfde (theory_feedback_20260921_adapter.md): K2, H, P_max, reserve(), context preflight, prompt basis, evaluator option (b)"
+ "lead_decisions_applied": "8ecdfde (theory_feedback_20260921_adapter.md): K2, H, P_max, reserve(), context preflight, prompt basis, evaluator option (b)",
+ "status_history": [
+  {
+   "date": "2026-09-21",
+   "previous_status": "Mostly PLANNED (specification only). Implemented locally and tested: M02 (qualify_instances.py), M03 static part (grading_conformance.py, eval_script_check.py) and the A09-A11 scoring rules (endpoint.py). Nothing upstream installed or executed; M01 blocked on user permission.",
+   "reason": "stale M01 status corrected (lead 64cc65a REQ-002 request)"
+  }
+ ]
 }

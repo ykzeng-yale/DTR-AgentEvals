@@ -2601,3 +2601,34 @@ reproducibility, metadata and submission package. Preserve owner author/committe
 Read lead `64cc65a` (22:49 cycle). No sampling will run.
 - **DTR-REQ-003 P0, running now:** a consolidated source-linked K=2 inference evidence table in `docs/experiment_results.md`. It will be generated from the committed artifacts at their immutable commits, with a validation level for every row.
 - **DTR-REQ-002 P1, running now:** identify the existing runtime/conformance checklist artifact and the exact remaining author/host action, separating execution permission from runtime availability. No execution, no installs.
+
+## Worker checkpoint — 2026-09-21T23:19:22Z (host clock; local 2026-09-21 19:19 EDT)
+
+Code/config commit at checkpoint start: `d8a47b3` (status). Last lead checkpoint read: the 22:49 cycle (`64cc65a`; issue #4 at 22:52 UTC). **Authorized runs:** none. No sampling, rerun, model or GPU this tick. State check: all stages verified, 0 stage runners, servers ok. 343 tests pass.
+
+**DTR-REQ-003 P0 consolidated evidence table: completed.**
+- Code: [`evidence_table.py`](../experiments/tools/evidence_table.py), with a test that regenerates it and checks the links. Outputs: [`evidence_table_20260921.md`](../results/v2_sim/evidence_table_20260921.md) and [`.json`](../results/v2_sim/evidence_table_20260921.json). The table is also embedded in `experiment_results.md`.
+- Each of the 11 rows is generated from its artifact **read at the immutable result commit**. Rows link to commit-pinned blobs of the summary, frozen manifest, worker checker and your audit file; the audit's adding commit is resolved from git history.
+- Coverage: cross-fitted DR/OR point estimation and the stage-2 OR oracle; fixed-score coverage; replication sensitivity; the saved-record diagnosis and replay; honest-split exact identities; repeated-training coverage (with training cost); per-fit moments plus the correction; the five-fit conditional study.
+- Validation levels:
+  - W: worker, with a checker.
+  - A: your saved-record audit.
+  - E: exact enumeration.
+  - R: replay of stated streams only.
+- The table states that none of these studies was independently rerun from new trajectories by you.
+- Unfavourable findings are kept in a dedicated column. The planned protocol scope that has not run is listed: 28 of 32 core cells, the stress cells, cross-fitted inference, learned-policy selection, branch Δ, and real-agent work. No row is labelled CONFIRM.
+
+**DTR-REQ-002 P1 blocker statement: completed; the requirement itself remains blocked (author).**
+- The existing checklist is linked, and the stale `fixtures_planned.json` status is corrected (M01 was completed in `21cd872`).
+- **Two separate remaining author actions:**
+  - (a) **Execution permission.** A yes or no on running the pinned f7bbbb2 harness controls (no-change and reference-patch), which execute eval scripts in containers. Asked 21 Sep 15:16 UTC; unanswered.
+  - (b) **Runtime availability.** This host is arm64 with no container runtime, and all 500 specs target x86_64. It needs an x86_64 Linux host or VM with a container runtime, disk and network. The worker will not install system software.
+- The checklist has no runnable control commands yet. They will be written against the actual runtime once (b) exists.
+
+| Request | Status | Artifact / reason |
+|---|---|---|
+| DTR-REQ-001 (P0) | completed | — |
+| DTR-REQ-002 (P1) | **blocked (author)**: (a) execution permission unanswered; (b) no x86_64 container runtime on this host; M01/M02/M03-static completed | this commit (`experiment_results.md` REQ-002 section; `fixtures_planned.json` status corrected) |
+| DTR-REQ-003 (P0) | diagnostic sequence closed; sampling **held**; **consolidated evidence table completed; awaiting your review** | `results/v2_sim/evidence_table_20260921.{md,json}`, this commit |
+
+**Question for the lead:** does the evidence table meet your acceptance criteria? Is there a REQ-003 item you want before the real-agent dependency is resolved?
