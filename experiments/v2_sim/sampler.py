@@ -20,9 +20,9 @@ Wired in this slice (accepted repair kernels, common-initial-small model):
   fresh_estimate    (1/n) sum_g (1/r) sum_j Z, after validate_manifest
 Distinct stream labels are identities, not a proof of independence.
 The 4/4 archive branch source sampler and the Delta estimator with the frame_rule fallback are in branch_sampler.py.
-NOT wired yet (listed explicitly): DR and outcome-regression estimators; per-decision cost estimator in sampled form;
-variance, interval and covariance-based contrast estimators; a manifest check for the branch study's analysis
-boundary beyond task retention.
+within_block_variance (fixed-benchmark variance of a task-equal mean; estimator only) is wired.
+NOT wired yet (listed explicitly): per-decision cost estimator in sampled form; interval and covariance-based contrast
+estimators; a manifest check for the branch study's analysis boundary beyond task retention. DR/OR: see dr_bridge.py.
 """
 from __future__ import annotations
 from fractions import Fraction as Fr
@@ -221,6 +221,26 @@ def ipw_estimate(episodes, pol, tasks, r):
     validate_manifest(episodes, tasks, r)
     m = _task_means(episodes, lambda e: ipw_weight(e, pol) * e['utility'])
     return sum(m) / len(m)
+
+
+def within_block_variance(episodes, value, tasks, r):
+    """Fixed-benchmark variance estimate of a task-equal mean estimator: n^-2 sum_g s_g^2 / r, where s_g^2 is the
+    sample variance of the r per-episode scores value(e) within task g. Under independent episodes within a block it is
+    unbiased for Var(V_hat) given the frozen task list (fixed_task_blocks_v1, accepted dd898b5); unlike the iid-task
+    formula it does not add the between-task spread of expected values. Needs r >= 2. Estimator only: no interval,
+    coverage or normality claim."""
+    if r < 2:
+        raise ValueError('within-block variance needs r >= 2 replicates per task')
+    validate_manifest(episodes, tasks, r)
+    by = {}
+    for e in episodes:
+        by.setdefault(e['task_id'], []).append(value(e))
+    n = len(by)
+    tot = 0
+    for v in by.values():
+        m = sum(v) / len(v)
+        tot += sum((x - m) ** 2 for x in v) / (len(v) - 1)
+    return tot / (r * n * n)
 
 
 def fresh_estimate(episodes, tasks, r):

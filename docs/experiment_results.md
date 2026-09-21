@@ -162,6 +162,11 @@ manifest frozen and pushed before launch in `34abfa6`.
 - **Not done:** no generated script executed, no container or image, no benchmark run, no image digests. Running the
   evaluator still needs a container runtime and a qualified x86_64 host, which is a user action.
 
+### 2026-09-21 11:16 EDT — Fixed-benchmark variance estimator wired (DTR-REQ-003 implementation; estimator only)
+`sampler.within_block_variance` computes n⁻² Σ_g s_g²/r from the replicate scores within each task. An exact check over
+every pair of independent logged episodes shows it is **exactly unbiased** (r = 2). It enforces the complete manifest and
+needs r ≥ 2. No interval or coverage is computed or claimed; a coverage study remains the lead's decision.
+
 ### Not claimed
 No new model runs; no Monte Carlo; no coverage, power or interval validation; no evidence of real-agent improvement. The
 archived learned router did not beat always-large. Lead's readiness estimate (rubric in [readiness.md](readiness.md),

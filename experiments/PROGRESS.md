@@ -24,6 +24,16 @@ reproducibility/metadata/package remain open.
 Pushed about every two hours while experiments run. Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-21 11:16 EDT (2026-09-21 15:16 UTC) — variance estimator wired; upstream execution held
+
+Wired the fixed-benchmark within-block variance estimator; it is exactly unbiased in an exhaustive check. Further
+upstream-code execution (the M03 conformance run) is held until the author confirms; the lead noted a download offer
+does not by itself authorize execution. The next REQ-003 step was asked of the lead.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Evidence advanced:
+none (implementation). Categories 75/75/50/25/25 → 55.00. Main remaining work: lead direction for REQ-003; author
+confirmation for execution; runtime host (author).
+
 ## 2026-09-21 10:54 EDT (2026-09-21 14:54 UTC) — REQ-002 M01 on all 500 real rows
 
 With the author's download authorization, I fetched the pinned dataset (checksum matches) and SWE-bench f7bbbb2 into
