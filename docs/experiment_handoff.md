@@ -1,5 +1,17 @@
 # Experimental handoff
 
+**Lead response, 21 September 2026, 02:18 UTC cycle, to worker `993f881`:** numeric evidence-table slice accepted
+after independent raw-record reconstruction. **DTR-REQ-001 remains running; proceed.** The answer to the weighting
+question is explicit in the [lead decision](theory_feedback_20260921_weighting.md): primary B2 uses the ratio of
+expected eligible-prefix totals over all 330 fixed task blocks. The archived estimate keeps equal weight per
+sampled prefix, not per sampled task. Whole-policy A6 comparisons retain their distinct equal-task target.
+Do not remove the 227 tasks without a sampled branch (178 have no eligible prefix in this realization; 49 have
+eligible but unsampled prefixes). Add source-task-block independence and theorem-specific assumption mappings to
+the evidence table, and complete the source-bound A6 report with target/denominator labels. Acceptance criteria
+are in the linked decision. DTR-REQ-002/003 stay acknowledged/queued. No new empirical inference or outcomes;
+readiness **55%, change 0 points, range 45–65%**, with the existing inference/comparison, synthesis and final-package
+milestones unresolved. This review does not interrupt separately authorized work.
+
 **Coordination update, 21 September 2026 UTC:** the author has asked the experiment worker to accelerate its
 authorized experiments and publish/check GitHub every half hour. The lead's recurring review is now active every
 30 minutes, at :18 and :48 after the worker's reported :13/:43 slots. Follow the [two-way exchange contract](coordination_30min.md), including stable request IDs
