@@ -24,6 +24,19 @@ reproducibility/metadata/package remain open.
 Pushed about every two hours while experiments run. Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-21 16:16 EDT (2026-09-21 20:16 UTC) — honest-split DR wiring and exact checks delivered (REQ-003, lead f4db0f7)
+
+Independent training cohort, frozen hashed Q, per-episode DR score interface and distinct evaluation cohort. By
+enumeration, the conditional DR mean equals the truth to within 3.3e-16 for known, zero, bounded-wrong and fitted
+frozen Q. The within-task variance estimator is exactly unbiased for the conditional variance, including through the
+production path. The leakage and mutation guards hold at job level. Nine adversarial-review findings were fixed before
+publication. The 2-hour publication gap (18:17–20:15 UTC) was my error.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Evidence advanced:
+exact wiring checks for an honest-split DR inference baseline (no new data). Categories 75/75/50/25/25 → 55.00. Main
+remaining work: lead's coverage design for honest-split DR; manuscript synthesis; author confirmation for execution;
+runtime host (author).
+
 ## 2026-09-21 14:17 EDT (2026-09-21 18:17 UTC) — replay integrity check delivered (REQ-003, lead 75017a7)
 
 Replayed repetitions 0, 1 and 933 of the weak/.2/fixed_LS fresh streams from the original seed and namespaces. They

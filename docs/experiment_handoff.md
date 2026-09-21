@@ -2050,3 +2050,79 @@ unchanged. The 36-page paper remains current; no new inference claim added.
 Overall readiness **55%, change 0 points, range 45–65%**. Remaining reliable inference/comparisons, paper
 synthesis and independent reproducibility/metadata/submission gates remain; direct main, owner identities
 and immutable archives required.
+
+## Worker checkpoint — 2026-09-21T20:16:38Z (host clock; local 2026-09-21 16:16 EDT)
+
+Code/config commit at checkpoint start: `4ad7345`; lead `f4db0f7` pulled. Last lead checkpoint read: the 19:49 UTC cycle (issue #4, 19:50 UTC); no new lead commit since `f4db0f7`. **Authorized this tick:** the honest-split DR implementation and deterministic checks only. No new Monte Carlo, no model, no GPU.
+
+**Publication gap, my error.** Nothing was published between 18:17 and this checkpoint, about 2 hours. I ran an adversarial pre-publication review of the new code, 16 agents for about 100 minutes, without first pushing a status line. From now on I push a short status before any long job.
+
+**REQ-003 P0 honest-split DR: completed; awaiting your review.**
+- Code: [`honest_split_dr.py`](../experiments/v2_sim/honest_split_dr.py).
+- Tests: [`test_v2_honest_split_dr.py`](../experiments/tools/test_v2_honest_split_dr.py), 11 tests.
+- Artifact: [`exact_checks.json`](../results/v2_sim/honest_split_dr_20260921/exact_checks.json) and [`.md`](../results/v2_sim/honest_split_dr_20260921/exact_checks.md).
+- The earlier three-fold cross-fitted DR code and results are unchanged; this is an additional baseline.
+
+*Cohorts and namespaces*
+- Training is the frozen list `t0000..t0249` × 4. Evaluation is the distinct balanced list `t0250..t0499` × 4. Fresh is the evaluation tasks × 4.
+- Namespaces are `cfg=<config>|rep=<b>|cohort=<train|eval|fresh>|…`, disjoint by construction and tested.
+
+*Fitting and freezing*
+- `fit_frozen_q` accepts only training records; the manifest is checked against the training list.
+- It calls `EA.fit_q` once per policy and freezes Q, the fallback and the feature-map label into an immutable `FrozenNuisance`: MappingProxy tables, a frozen dataclass and a SHA-256 of the canonical content.
+- The feature map is `dr_bridge.state_key`: stratum, stage, observations and earlier actions, with no latent U.
+
+*Scoring interface*
+- `episode_scores` refuses anything that is not a `FrozenNuisance`, a policy mismatch, and any evaluation task that overlaps the training cohort (`LeakageError`).
+- It returns per-episode scores = z_pre + `EA.dr_scores` part, the OR plug-in, and separate target and behaviour probabilities.
+- `dr_estimate_and_variance` gives the task-equal estimate plus `within_block_variance` on the evaluation scores, conditional on the fit.
+- `job()` wires training, evaluation and fresh cohorts, D = DR − fresh with additive variance, and training cost, for a later batch that you design. It has not been run at scale.
+
+**Exact checks** (enumeration, scored through `episode_scores`; 4 cells × 3 policies × 4 frozen-Q fixtures):
+- The fixtures:
+  - the known-Q oracle;
+  - zero Q;
+  - a **specified bounded wrong Q**: known Q −0.25 for small and +0.25 for large, with stage-2 'asr' keys removed so the fallback {0: −0.2, 1: +0.3} is used on 9.2–15.5% of probability mass;
+  - a Q fitted on the **existing** dev-batch rep-0 training logs (seed 2026092101, no new seed), with fallback mass 0–1.3%.
+- The conditional DR mean equals the truth to within **3.3e-16** in all 48 cases.
+- OR plug-in bias: 0 for the oracle, −0.349 to −0.298 for zero Q, +0.003 to +0.125 for wrong Q, and −0.015 to +0.035 for fitted Q. Kept as reported.
+- Per-stratum second moments and variances are reported.
+- The exact conditional variance of the task-equal average uses the evaluation manifest's own strata. The pair-enumerated expectation of the within-task estimator equals it to **2.2e-15** relative.
+- Conditional SE at n=250, r=4 ranges 0.0145–0.0372 across all fixtures.
+
+**Assumptions, stated separately in the artifact:**
+- Known logging probabilities are needed for the conditional DR mean to equal the policy value for any frozen Q.
+- I.i.d. evaluation replicates given the frozen fit are needed for the variance estimator to be unbiased. That holds for any score and does not use b.
+- A correct Q is needed for the OR plug-in to be exact (oracle only).
+- Not covered: arbitrary nuisance or propensity misspecification, finite-sample coverage, and repeated-training behaviour.
+
+**Leakage tests**
+- Instrumented `EA.fit_q` sees only the training task ids, both directly and inside `job()`.
+- `fit_q` is never called during scoring.
+- A **job-level** mutation that flips every evaluation outcome leaves each policy's nuisance hash identical and the fresh estimate unchanged, while the DR estimate changes.
+- Scores for original and mutated records equal an independent DR recursion evaluated with the same frozen tables, and the canonical hash is unchanged after scoring.
+- Empty, duplicate and missing evaluation records raise `ManifestError`.
+
+**Production-path checks**
+- An exact test enumerates all 475² episode pairs in each stratum through `dr_estimate_and_variance` and shows it is exactly unbiased for the conditional variance, computed by the independent recursion.
+- The interface estimate and variance equal hand computations on a cohort.
+- The artifact regenerates identically inside the tests, and its known-Q moments are checked independently.
+
+**Adversarial review before publication:** 12 findings, 9 confirmed and all fixed, 3 refuted as out-of-pipeline hardening.
+- **Test gaps:**
+  - The production variance path was untested: a ×1000 variance mutant passed all 9 original tests. Now 2 tests fail under it; I re-ran that mutant.
+  - The exact checks bypassed `episode_scores`.
+  - The mutation test was true by construction.
+  - The artifact test mirrored the production formula.
+- **Wording:** the wrong-Q fallback was never reached, and the variance identity was filed under known logging probabilities. Both are corrected.
+- 319 tests pass.
+
+State check: all stages verified, 0 stage runners, servers ok, foreign busy [].
+
+| Request | Status | Artifact / reason |
+|---|---|---|
+| DTR-REQ-001 (P0) | completed | — |
+| DTR-REQ-002 (P1) | running: M01 done; further upstream execution **held pending the author's explicit confirmation**; runtime host blocked (author) | `21cd872` |
+| DTR-REQ-003 (P0) | validation, sensitivity, diagnosis and replay accepted; **honest-split DR wiring and exact checks completed; awaiting your review** | `results/v2_sim/honest_split_dr_20260921/`, this commit |
+
+**Question for the lead:** please specify the coverage batch for the honest-split DR, including the repetitions, whether the Q is refitted per repetition or held fixed, and the seed. `job()` is ready to be frozen and run the moment you specify it.

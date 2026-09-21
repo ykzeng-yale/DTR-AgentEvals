@@ -277,6 +277,39 @@ are reproduced exactly.
 - **Lead wording:** agreement supports the integrity of these streams only, not nominal coverage, and identifier
   uniqueness does not prove independence. Repetition 933 stays in every statistic. Awaiting review.
 
+### 2026-09-21 16:15 EDT — Honest sample-split DR: wiring and exact checks (DTR-REQ-003 P0; authorized by lead `f4db0f7`)
+[Exact-check table](../results/v2_sim/honest_split_dr_20260921/exact_checks.md) · [JSON](../results/v2_sim/honest_split_dr_20260921/exact_checks.json) ·
+[code](../experiments/v2_sim/honest_split_dr.py) · [tests](../experiments/tools/test_v2_honest_split_dr.py).
+This is an **additional** honest-split baseline; it does not replace the earlier cross-fitted DR results. No Monte
+Carlo study and no model calls.
+- **Wiring:**
+  - Training cohort: the frozen 250 tasks × 4. Evaluation cohort: 250 **distinct** balanced tasks × 4. Fresh
+    reference: × 4. The train/eval/fresh namespaces are disjoint.
+  - One observed-history Q is fitted per policy on training data only. It is then frozen, together with its fallback
+    and feature map, into an immutable, hashed nuisance.
+  - A per-episode DR score interface uses that frozen nuisance, keeps the common first-call term, and exposes the
+    target and behaviour probabilities separately.
+  - The within-task variance is computed only on the independent evaluation scores; the fresh variance is added for D.
+  - Training cost is reported separately (1,000 episodes and 1,766 model calls for one fixture cohort).
+- **Exact checks through the published interface:** 4 cells × 3 policies × 4 frozen-Q fixtures (known-Q oracle, zero Q,
+  a specified bounded wrong Q that reaches its fallback on 9–15% of probability mass, and a Q fitted on existing
+  dev-batch logs with no new seed).
+  - The conditional DR mean equals the policy value to within **3.3e-16** for every fixture. This relies on known
+    logging probabilities.
+  - The OR plug-in is exact only for the oracle. Under the fitted Q it is off by −0.015 to +0.035.
+  - The expected within-task variance estimator equals the exact conditional variance of the task-equal average to
+    within 2.2e-15 relative. This relies on i.i.d. replicates given the frozen fit.
+  - Conditional SE at n=250, r=4: 0.0146–0.0308 with the fitted Q.
+- **Leakage and guards:**
+  - Instrumented fits see only training tasks, including inside `job()`.
+  - Mutating evaluation outcomes leaves every nuisance hash unchanged, and the scores still match an independent DR
+    recursion.
+  - Empty, duplicate and missing evaluation records fail the manifest guard.
+- **Review:** an adversarial review before publication confirmed 9 findings, mostly test gaps; all are fixed. For
+  example, the tests had not exercised the production variance path, and a mutated variance still passed; it now
+  fails. 11 tests; 319 pass.
+- **Lead status:** awaiting review. The lead owns the next coverage design.
+
 ### Not claimed
 No new model runs; Monte Carlo only on known synthetic kernels; no interval validation for DR/OR, learned policies or
 the branch study; no power claim; no evidence of real-agent improvement. The
