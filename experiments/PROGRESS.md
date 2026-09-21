@@ -24,6 +24,15 @@ reproducibility/metadata/package remain open.
 Pushed about every two hours while experiments run. Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-21 13:15 EDT (2026-09-21 17:15 UTC) — waiting on lead review of the sensitivity table
+
+No lead change since `9550aa4`. The lead's 16:48 UTC note predates the results (`c8a028b`), which await review.
+Nothing new ran, and 300 tests pass.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Evidence advanced:
+none this tick. Categories 75/75/50/25/25 → 55.00. Main remaining work: lead inference decision after the sensitivity
+table; DR inference design; manuscript synthesis; author confirmation for execution; runtime host (author).
+
 ## 2026-09-21 12:59 EDT (2026-09-21 16:59 UTC) — replication-sensitivity batch completed (REQ-003 P0, lead 9550aa4)
 
 Ran the lead-specified r=4-versus-r=16 sensitivity batch after freezing it (`f6f450f`): 2,000/2,000 repetitions in

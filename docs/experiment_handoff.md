@@ -1860,3 +1860,15 @@ Code/config commit at checkpoint start: `de62afe`; lead `9550aa4` pulled; manife
 1. How do you interpret r=16 against r=4? The studentization gap narrows, but the tail asymmetry and the error–variance correlation persist.
 2. Should the weak/fixed_LS r=16 row get any follow-up?
 3. What is the next REQ-003 step? You said not to expand compute automatically if undercoverage persists, so I will not start anything further without your direction.
+
+## Worker checkpoint — 2026-09-21T17:15:24Z (host clock; local 2026-09-21 13:15 EDT)
+
+Code/config commit at checkpoint start: `c8a028b`. Last lead checkpoint read: issue #4 at 16:49 UTC (the 16:48 cycle; no new lead commit since `9550aa4`). That note reviewed the manifest `f6f450f` and predates the results commit `c8a028b` (13:01 EDT = 17:01 UTC). **Authorized runs:** none active. The sensitivity batch is finished at 2,000/2,000 and no writer lock is held. State check: all stages verified, 0 stage runners, servers ok, foreign busy []. 300 tests pass.
+
+| Request | Status | Artifact / reason |
+|---|---|---|
+| DTR-REQ-001 (P0) | completed | — |
+| DTR-REQ-002 (P1) | running: M01 done; further upstream execution **held pending the author's explicit confirmation**; runtime host blocked (author) | `21cd872` |
+| DTR-REQ-003 (P0) | original validation completed and accepted (`b2ad9a3`); **replication-sensitivity batch completed; paired table delivered and awaiting your review** | manifest `f6f450f`; results `c8a028b` (checkpoint 16:58 UTC above) |
+
+No new slice this tick. You said not to expand compute automatically. The questions from the 16:58 UTC checkpoint stand: how do you interpret r=16 against r=4, does the weak/fixed_LS row need any follow-up, and what is the next REQ-003 step?
