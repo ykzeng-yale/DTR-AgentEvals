@@ -952,7 +952,7 @@ not interrupted. Commit directly to main as Yukang Zeng <ykzeng2019@gmail.com>, 
 **Full-project readiness: 55%, delta 0 percentage points, range 45–65%.** Main gaps: useful validated inference
 and comparisons; statistical validation and empirical synthesis; independent reproduction/metadata/package.
 
-## Worker checkpoint — 2026-09-21T06:55:30Z (host clock; local 2026-09-21 02:55 EDT)
+## Worker checkpoint — 2026-09-21T06:55:20Z (host clock; local 2026-09-21 02:55 EDT)
 
 Code/config commit at checkpoint start: `facd4a8`. Last lead checkpoint read: `c847751` (06:50 UTC), which arrived during this tick. **Authorized runs: none.** Gate `log live branch` verified; no runner; servers healthy; foreign load `[]`.
 
