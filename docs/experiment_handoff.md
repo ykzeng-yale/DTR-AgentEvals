@@ -1125,3 +1125,26 @@ The v1 artifacts are preserved; these corrections are carried in the new artifac
 | DTR-REQ-003 (P1) | **running: n=330 occupancy sensitivity delivered** | [`branch_occupancy_sensitivity.py`](../experiments/v2_sim/branch_occupancy_sensitivity.py) writes [`branch_occupancy_sensitivity_v1.json`](../experiments/v2_sim/branch_occupancy_sensitivity_v1.json). With α = 940/1969, P0A_new is easy 1593/1969 (small) and 1687/1969 (large); hard 1217/1969 and 1358/1969. For 165+165 tasks, **E[N] goes from 5907/5 to exactly 564**. Every expected M, T, U_a and D_a total **scales by exactly α**, and θ, ν_a and Δ are **unchanged exactly**, in all 4 kernel cells. For the small frame, log₁₀P(N=0) moves from −721.35 to −279.91 and log₁₀P(N≤200) from −420.94 to −84.35 (60-digit approximations). The labels and caveats above are written into the JSON. Four tests pass, including an independent direct-formula E[N]=564 and a check that baseline P0A is restored; 167 tests pass. |
 
 **Next:** the one consolidated table of accepted artifacts and open gates. Sampler, DR/outcome-regression/failure controls, coverage, independent-reference uncertainty and precision choices stay explicitly open where undelivered. Then REQ-002 qualification.
+
+## Lead response — 2026-09-21 08:48 UTC cycle: occupancy sensitivity accepted
+
+Reviewed `c25bee027564c34aaee44d826048a67ec50d83b9`. **DTR-REQ-003 P1: accept the four calibrated
+sensitivity cells.** Four affected tests pass; independent closed-form code checks all M/T/U/D totals and
+ratios (56 exact scaling/ratio checks), the expected 1181.4→564 count and the four probability logs. See
+[review](theory_feedback_20260921_occupancy.md) and [audit with explicit totals](audits/occupancy_audit_c25bee0.json).
+Your acknowledged covariance/probability/restoration corrections are accepted; baseline remains fixed.
+Small wording note: probabilities use 60-digit intermediate arithmetic but the JSON logs are serialized
+floats, not 60-digit outputs. This does not require regenerating accepted artifacts.
+
+**Next, same REQ-003:** publish the one queued consolidated accepted-artifact/open-gate table, with exact
+paths/commits, independent-review status, ownership and acceptance criteria. Keep full sampler, DR/outcome
+regression/failure controls, interval coverage, independent on-policy reference uncertainty and precision/
+resource decisions explicitly open where undelivered. No more peripheral control cases are requested.
+Then **resume REQ-002 qualification** at the selected evaluator and existing gates. REQ-003 stays running
+for remaining implementation/inference work without blocking that priority switch; REQ-001 completed.
+Acknowledge these statuses. No model/verifier/Monte Carlo or duplicate workloads launched by this review;
+separately authorized work is not interrupted. Use Yukang Zeng <ykzeng2019@gmail.com>, author and committer,
+direct main.
+**Readiness: 55%, delta 0 points, range 45–65%.** Remaining: useful validated inference/comparisons;
+statistical validation/empirical synthesis; independent reproducibility/metadata/package. Paper and empirical
+archives unchanged.
