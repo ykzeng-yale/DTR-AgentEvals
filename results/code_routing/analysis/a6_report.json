@@ -1,0 +1,1533 @@
+{
+ "request": "DTR-REQ-001 item 1: source-bound corrected A6 report with target/comparator/denominator columns",
+ "status": "POST-HOC reporting; every numeric row re-derived from raw records and matched to a pinned lead audit (tolerance 1e-12) or, where no audit pins it, to the archived file it reproduces",
+ "classes": {
+  "whole_policy": "Root-to-terminal outcome of a fixed policy on all 330 CONFIRM tasks; equal task weight over the planned repeated executions (2 live runs per task per policy).",
+  "initial_action_logger_continued": "Root-to-terminal contrast of the two initial actions, each followed by the randomized logger; all 330 CONFIRM tasks, equal task weight. NOT a whole-policy contrast. Worker label: none of the four named classes fits; the lead may reclassify.",
+  "pooled_repair": "Contrast at a repair decision among histories the logger reached, pooled over episodes or prefixes; weights are realized eligible counts, not tasks.",
+  "realized_frame": "Conditional on the realized 564-prefix frame F and the realized log. SECONDARY target.",
+  "selected_cohort": "Restricted to tasks selected on realized action support or realized denominators; changes cohort and weights. Exploratory only.",
+  "descriptive": "Counts or occupancy of realized records; no contrast target. Worker label, as above."
+ },
+ "primary_target": {
+  "name": "theta = sum_g E(T_g) / sum_g E(M_g) over all 330 source task blocks (expected-prefix task weights)",
+  "estimate": null,
+  "interval": null,
+  "status": "OPEN: not estimated in this report; no row substitutes for it",
+  "decision": "docs/theory_feedback_20260921_weighting.md"
+ },
+ "weighting_note": "Whole-policy rows keep their equal-task, planned-repeat target; the branch expected-prefix weighting does not transfer to them (lead decision, theory_feedback_20260921_weighting.md).",
+ "rows": [
+  {
+   "id": "W-always_large-success",
+   "endpoint": "final hidden success",
+   "target": "E_task[Y(learned) - Y(always_large)] over the fixed 330-task CONFIRM benchmark",
+   "comparator": "always_large, live",
+   "denominator": "330 CONFIRM tasks x 2 live runs per policy = 660 episodes each; task-paired; equal task weight",
+   "estimate": -0.007575757575757576,
+   "uncertainty": {
+    "value": 0.011039322234914934,
+    "label": "task-paired SD/sqrt(330) arithmetic; fixed-benchmark interval validity unresolved; no branch theorem applies"
+   },
+   "status": "ARCHIVED live contrast; lead-audited",
+   "audit": [
+    {
+     "audit": "why_null_audit_aac69b5.json",
+     "path": "paired_se_provenance.reconstructed_candidates.learned_minus_always_large_success.mean",
+     "abs_diff": 0.0
+    },
+    {
+     "audit": "why_null_audit_aac69b5.json",
+     "path": "paired_se_provenance.reconstructed_candidates.learned_minus_always_large_success.se",
+     "abs_diff": 0.0
+    },
+    {
+     "audit": "why_null_audit_4f9abe4.json",
+     "path": "live_metric.thresholds.success_difference",
+     "abs_diff": 0.0
+    }
+   ],
+   "class": "whole_policy"
+  },
+  {
+   "id": "W-always_large-utility",
+   "endpoint": "frozen utility (success - 0.03 x large calls - 0.01 x small calls)",
+   "target": "E_task[Y(learned) - Y(always_large)] over the fixed 330-task CONFIRM benchmark",
+   "comparator": "always_large, live",
+   "denominator": "330 CONFIRM tasks x 2 live runs per policy = 660 episodes each; task-paired; equal task weight",
+   "estimate": -0.004999999999999997,
+   "uncertainty": {
+    "value": 0.011277540665389737,
+    "label": "task-paired SD/sqrt(330) arithmetic; fixed-benchmark interval validity unresolved; no branch theorem applies"
+   },
+   "status": "ARCHIVED live contrast; lead-audited",
+   "audit": [
+    {
+     "audit": "why_null_audit_aac69b5.json",
+     "path": "paired_se_provenance.reconstructed_candidates.learned_minus_always_large_utility.mean",
+     "abs_diff": 0.0
+    },
+    {
+     "audit": "why_null_audit_aac69b5.json",
+     "path": "paired_se_provenance.reconstructed_candidates.learned_minus_always_large_utility.se",
+     "abs_diff": 0.0
+    },
+    {
+     "audit": "why_null_audit_4f9abe4.json",
+     "path": "live_metric.thresholds.utility_difference_frozen",
+     "abs_diff": 4.336808689942018e-18
+    }
+   ],
+   "class": "whole_policy"
+  },
+  {
+   "id": "W-always_small-success",
+   "endpoint": "final hidden success",
+   "target": "E_task[Y(learned) - Y(always_small)] over the fixed 330-task CONFIRM benchmark",
+   "comparator": "always_small, live",
+   "denominator": "330 CONFIRM tasks x 2 live runs per policy = 660 episodes each; task-paired; equal task weight",
+   "estimate": 0.09848484848484848,
+   "uncertainty": {
+    "value": 0.019912593941486263,
+    "label": "task-paired SD/sqrt(330) arithmetic; fixed-benchmark interval validity unresolved; no branch theorem applies"
+   },
+   "status": "ARCHIVED live contrast. This SE (0.019913) is the .0199 in why_null_corrected.json, which that file mislabelled as the learned-minus-large paired SE",
+   "audit": [
+    {
+     "audit": "why_null_audit_aac69b5.json",
+     "path": "paired_se_provenance.reconstructed_candidates.learned_minus_always_small_success.mean",
+     "abs_diff": 0.0
+    },
+    {
+     "audit": "why_null_audit_aac69b5.json",
+     "path": "paired_se_provenance.reconstructed_candidates.learned_minus_always_small_success.se",
+     "abs_diff": 0.0
+    }
+   ],
+   "class": "whole_policy"
+  },
+  {
+   "id": "W-always_small-utility",
+   "endpoint": "frozen utility (success - 0.03 x large calls - 0.01 x small calls)",
+   "target": "E_task[Y(learned) - Y(always_small)] over the fixed 330-task CONFIRM benchmark",
+   "comparator": "always_small, live",
+   "denominator": "330 CONFIRM tasks x 2 live runs per policy = 660 episodes each; task-paired; equal task weight",
+   "estimate": 0.07706060606060607,
+   "uncertainty": {
+    "value": 0.020197445476932727,
+    "label": "task-paired SD/sqrt(330) arithmetic; fixed-benchmark interval validity unresolved; no branch theorem applies"
+   },
+   "status": "ARCHIVED live contrast; lead-audited",
+   "audit": [
+    {
+     "audit": "why_null_audit_aac69b5.json",
+     "path": "paired_se_provenance.reconstructed_candidates.learned_minus_always_small_utility.mean",
+     "abs_diff": 0.0
+    },
+    {
+     "audit": "why_null_audit_aac69b5.json",
+     "path": "paired_se_provenance.reconstructed_candidates.learned_minus_always_small_utility.se",
+     "abs_diff": 0.0
+    }
+   ],
+   "class": "whole_policy"
+  },
+  {
+   "id": "W-value-learned",
+   "endpoint": "final hidden success; frozen utility",
+   "target": "policy value on the fixed 330-task CONFIRM benchmark",
+   "comparator": "none (single policy value)",
+   "denominator": "660 live episodes = 330 tasks x 2 runs",
+   "estimate": {
+    "success": 0.7090909090909091,
+    "utility": 0.6726666666666666
+   },
+   "uncertainty": null,
+   "status": "ARCHIVED; lead-audited",
+   "audit": [
+    {
+     "audit": "why_null_audit_4f9abe4.json",
+     "path": "live_metric.learned.mean_success",
+     "abs_diff": 0.0
+    },
+    {
+     "audit": "why_null_audit_4f9abe4.json",
+     "path": "live_metric.learned.mean_utility",
+     "abs_diff": 0.0
+    },
+    {
+     "audit": "why_null_audit_4f9abe4.json",
+     "path": "live_metric.learned.successes",
+     "abs_diff": 0.0
+    }
+   ],
+   "class": "whole_policy"
+  },
+  {
+   "id": "W-calls-learned",
+   "endpoint": "model calls and realized action sequences",
+   "target": "resource use of the policy on its own live histories",
+   "comparator": "none (tally)",
+   "denominator": "660 live episodes",
+   "estimate": {
+    "large_calls": 762,
+    "small_calls": 118,
+    "all_calls": 880,
+    "sequences": {
+     "L": 542,
+     "LSL": 102,
+     "LS": 16
+    }
+   },
+   "uncertainty": null,
+   "status": "ARCHIVED tally; lead-audited",
+   "audit": [
+    {
+     "audit": "why_null_audit_4f9abe4.json",
+     "path": "live_metric.learned.large_calls",
+     "abs_diff": 0.0
+    },
+    {
+     "audit": "why_null_audit_4f9abe4.json",
+     "path": "live_metric.learned.small_calls",
+     "abs_diff": 0.0
+    },
+    {
+     "audit": "why_null_audit_4f9abe4.json",
+     "path": "live_metric.learned.reachable_sequences",
+     "abs_diff": 0.0
+    }
+   ],
+   "class": "whole_policy"
+  },
+  {
+   "id": "W-value-always_large",
+   "endpoint": "final hidden success; frozen utility",
+   "target": "policy value on the fixed 330-task CONFIRM benchmark",
+   "comparator": "none (single policy value)",
+   "denominator": "660 live episodes = 330 tasks x 2 runs",
+   "estimate": {
+    "success": 0.7166666666666667,
+    "utility": 0.6776666666666666
+   },
+   "uncertainty": null,
+   "status": "ARCHIVED; lead-audited",
+   "audit": [
+    {
+     "audit": "why_null_audit_4f9abe4.json",
+     "path": "live_metric.always_large.mean_success",
+     "abs_diff": 0.0
+    },
+    {
+     "audit": "why_null_audit_4f9abe4.json",
+     "path": "live_metric.always_large.mean_utility",
+     "abs_diff": 0.0
+    },
+    {
+     "audit": "why_null_audit_4f9abe4.json",
+     "path": "live_metric.always_large.successes",
+     "abs_diff": 0.0
+    }
+   ],
+   "class": "whole_policy"
+  },
+  {
+   "id": "W-calls-always_large",
+   "endpoint": "model calls and realized action sequences",
+   "target": "resource use of the policy on its own live histories",
+   "comparator": "none (tally)",
+   "denominator": "660 live episodes",
+   "estimate": {
+    "large_calls": 858,
+    "small_calls": 0,
+    "all_calls": 858,
+    "sequences": {
+     "L": 544,
+     "LL": 34,
+     "LLL": 82
+    }
+   },
+   "uncertainty": null,
+   "status": "ARCHIVED tally; lead-audited",
+   "audit": [
+    {
+     "audit": "why_null_audit_4f9abe4.json",
+     "path": "live_metric.always_large.large_calls",
+     "abs_diff": 0.0
+    },
+    {
+     "audit": "why_null_audit_4f9abe4.json",
+     "path": "live_metric.always_large.small_calls",
+     "abs_diff": 0.0
+    },
+    {
+     "audit": "why_null_audit_4f9abe4.json",
+     "path": "live_metric.always_large.reachable_sequences",
+     "abs_diff": 0.0
+    }
+   ],
+   "class": "whole_policy"
+  },
+  {
+   "id": "W-cost-small-fixed",
+   "endpoint": "frozen-form utility with varied call penalties",
+   "target": "penalty at which the learned-minus-always_large live utility difference, -5/660 successes, -96 large and +118 small calls, crosses zero",
+   "comparator": "always_large, live",
+   "denominator": "660 live episodes per policy",
+   "estimate": {
+    "large_penalty": 0.064375
+   },
+   "uncertainty": null,
+   "status": "ARCHIVED post-hoc arithmetic on noisy live means for the TRAIN-learned policy (not class_tailored); not a validated break-even point; no cost sensitivity was pre-registered",
+   "audit": [
+    {
+     "audit": "why_null_audit_4f9abe4.json",
+     "path": "live_metric.thresholds.fixed_small_penalty_0p01_large_threshold",
+     "abs_diff": 0.0
+    },
+    {
+     "audit": "why_null_audit_aac69b5.json",
+     "path": "cost_crossings.fixed_small_0p01_large",
+     "abs_diff": 0.0
+    }
+   ],
+   "class": "whole_policy"
+  },
+  {
+   "id": "W-cost-both-scaled",
+   "endpoint": "frozen-form utility with varied call penalties",
+   "target": "penalty at which the learned-minus-always_large live utility difference, -5/660 successes, -96 large and +118 small calls, crosses zero",
+   "comparator": "always_large, live",
+   "denominator": "660 live episodes per policy",
+   "estimate": {
+    "factor": 2.9411764705882355,
+    "large_penalty": 0.08823529411764706,
+    "small_penalty": 0.029411764705882356
+   },
+   "uncertainty": null,
+   "status": "ARCHIVED post-hoc arithmetic on noisy live means for the TRAIN-learned policy (not class_tailored); not a validated break-even point; no cost sensitivity was pre-registered",
+   "audit": [
+    {
+     "audit": "why_null_audit_aac69b5.json",
+     "path": "cost_crossings.both_scale_factor",
+     "abs_diff": 0.0
+    },
+    {
+     "audit": "why_null_audit_4f9abe4.json",
+     "path": "live_metric.thresholds.both_scaled_large_threshold",
+     "abs_diff": 2.7755575615628914e-17
+    },
+    {
+     "audit": "why_null_audit_4f9abe4.json",
+     "path": "live_metric.thresholds.both_scaled_small_threshold",
+     "abs_diff": 6.938893903907228e-18
+    }
+   ],
+   "class": "whole_policy"
+  },
+  {
+   "id": "I-success-humaneval",
+   "endpoint": "final hidden success after all eligible decisions",
+   "target": "E_task[Y(A0=large, logger later) - Y(A0=small, logger later)], within humaneval",
+   "comparator": "initial small arm, same logger continuation",
+   "denominator": "91 tasks x (4 initial-large + 4 initial-small logger episodes); task-paired; equal task weight",
+   "estimate": 0.14560439560439561,
+   "uncertainty": {
+    "value": 0.0374854334887439,
+    "label": "SD(task differences)/sqrt(tasks) arithmetic; interval validity unresolved"
+   },
+   "status": "CORRECTED (why_null_corrected.json t0_effect_by_benchmark, reproduced)",
+   "audit": [
+    {
+     "audit": "why_null_audit_aac69b5.json",
+     "path": "t0.reconstructed.success.humaneval.mean",
+     "abs_diff": 0.0
+    },
+    {
+     "audit": "why_null_audit_aac69b5.json",
+     "path": "t0.reconstructed.success.humaneval.se",
+     "abs_diff": 0.0
+    },
+    {
+     "audit": "why_null_audit_aac69b5.json",
+     "path": "t0.reconstructed.success.humaneval.n",
+     "abs_diff": 0.0
+    }
+   ],
+   "class": "initial_action_logger_continued"
+  },
+  {
+   "id": "I-success-mbpp",
+   "endpoint": "final hidden success after all eligible decisions",
+   "target": "E_task[Y(A0=large, logger later) - Y(A0=small, logger later)], within mbpp",
+   "comparator": "initial small arm, same logger continuation",
+   "denominator": "239 tasks x (4 initial-large + 4 initial-small logger episodes); task-paired; equal task weight",
+   "estimate": 0.07217573221757322,
+   "uncertainty": {
+    "value": 0.02088773320541972,
+    "label": "SD(task differences)/sqrt(tasks) arithmetic; interval validity unresolved"
+   },
+   "status": "CORRECTED (why_null_corrected.json t0_effect_by_benchmark, reproduced)",
+   "audit": [
+    {
+     "audit": "why_null_audit_aac69b5.json",
+     "path": "t0.reconstructed.success.mbpp.mean",
+     "abs_diff": 0.0
+    },
+    {
+     "audit": "why_null_audit_aac69b5.json",
+     "path": "t0.reconstructed.success.mbpp.se",
+     "abs_diff": 0.0
+    },
+    {
+     "audit": "why_null_audit_aac69b5.json",
+     "path": "t0.reconstructed.success.mbpp.n",
+     "abs_diff": 0.0
+    }
+   ],
+   "class": "initial_action_logger_continued"
+  },
+  {
+   "id": "I-success-pooled",
+   "endpoint": "final hidden success after all eligible decisions",
+   "target": "E_task[Y(A0=large, logger later) - Y(A0=small, logger later)], all 330 tasks",
+   "comparator": "initial small arm, same logger continuation",
+   "denominator": "330 tasks x (4 initial-large + 4 initial-small logger episodes); task-paired; equal task weight",
+   "estimate": 0.09242424242424242,
+   "uncertainty": {
+    "value": 0.018380868300520454,
+    "label": "SD(task differences)/sqrt(tasks) arithmetic; interval validity unresolved"
+   },
+   "status": "CORRECTED (why_null_corrected.json t0_effect_by_benchmark, reproduced)",
+   "audit": [
+    {
+     "audit": "why_null_audit_aac69b5.json",
+     "path": "t0.reconstructed.success.pooled.mean",
+     "abs_diff": 0.0
+    },
+    {
+     "audit": "why_null_audit_aac69b5.json",
+     "path": "t0.reconstructed.success.pooled.se",
+     "abs_diff": 0.0
+    },
+    {
+     "audit": "why_null_audit_aac69b5.json",
+     "path": "t0.reconstructed.success.pooled.n",
+     "abs_diff": 0.0
+    }
+   ],
+   "class": "initial_action_logger_continued"
+  },
+  {
+   "id": "I-utility-humaneval",
+   "endpoint": "frozen utility",
+   "target": "E_task[Y(A0=large, logger later) - Y(A0=small, logger later)], within humaneval",
+   "comparator": "initial small arm, same logger continuation",
+   "denominator": "91 tasks x (4 initial-large + 4 initial-small logger episodes); task-paired; equal task weight",
+   "estimate": 0.12978021978021978,
+   "uncertainty": {
+    "value": 0.03817119413362339,
+    "label": "SD(task differences)/sqrt(tasks) arithmetic; interval validity unresolved"
+   },
+   "status": "lead audit endpoint control (not previously reported by the worker)",
+   "audit": [
+    {
+     "audit": "why_null_audit_aac69b5.json",
+     "path": "t0.reconstructed.utility.humaneval.mean",
+     "abs_diff": 0.0
+    },
+    {
+     "audit": "why_null_audit_aac69b5.json",
+     "path": "t0.reconstructed.utility.humaneval.se",
+     "abs_diff": 0.0
+    },
+    {
+     "audit": "why_null_audit_aac69b5.json",
+     "path": "t0.reconstructed.utility.humaneval.n",
+     "abs_diff": 0.0
+    }
+   ],
+   "class": "initial_action_logger_continued"
+  },
+  {
+   "id": "I-utility-mbpp",
+   "endpoint": "frozen utility",
+   "target": "E_task[Y(A0=large, logger later) - Y(A0=small, logger later)], within mbpp",
+   "comparator": "initial small arm, same logger continuation",
+   "denominator": "239 tasks x (4 initial-large + 4 initial-small logger episodes); task-paired; equal task weight",
+   "estimate": 0.05361924686192468,
+   "uncertainty": {
+    "value": 0.021261818390396616,
+    "label": "SD(task differences)/sqrt(tasks) arithmetic; interval validity unresolved"
+   },
+   "status": "lead audit endpoint control (not previously reported by the worker)",
+   "audit": [
+    {
+     "audit": "why_null_audit_aac69b5.json",
+     "path": "t0.reconstructed.utility.mbpp.mean",
+     "abs_diff": 0.0
+    },
+    {
+     "audit": "why_null_audit_aac69b5.json",
+     "path": "t0.reconstructed.utility.mbpp.se",
+     "abs_diff": 0.0
+    },
+    {
+     "audit": "why_null_audit_aac69b5.json",
+     "path": "t0.reconstructed.utility.mbpp.n",
+     "abs_diff": 0.0
+    }
+   ],
+   "class": "initial_action_logger_continued"
+  },
+  {
+   "id": "I-utility-pooled",
+   "endpoint": "frozen utility",
+   "target": "E_task[Y(A0=large, logger later) - Y(A0=small, logger later)], all 330 tasks",
+   "comparator": "initial small arm, same logger continuation",
+   "denominator": "330 tasks x (4 initial-large + 4 initial-small logger episodes); task-paired; equal task weight",
+   "estimate": 0.07462121212121212,
+   "uncertainty": {
+    "value": 0.018715744896788896,
+    "label": "SD(task differences)/sqrt(tasks) arithmetic; interval validity unresolved"
+   },
+   "status": "lead audit endpoint control (not previously reported by the worker)",
+   "audit": [
+    {
+     "audit": "why_null_audit_aac69b5.json",
+     "path": "t0.reconstructed.utility.pooled.mean",
+     "abs_diff": 0.0
+    },
+    {
+     "audit": "why_null_audit_aac69b5.json",
+     "path": "t0.reconstructed.utility.pooled.se",
+     "abs_diff": 0.0
+    },
+    {
+     "audit": "why_null_audit_aac69b5.json",
+     "path": "t0.reconstructed.utility.pooled.n",
+     "abs_diff": 0.0
+    }
+   ],
+   "class": "initial_action_logger_continued"
+  },
+  {
+   "id": "I-success_first_candidate-humaneval",
+   "endpoint": "hidden success of the first candidate",
+   "target": "E_task[Y(A0=large, logger later) - Y(A0=small, logger later)], within humaneval",
+   "comparator": "initial small arm, same logger continuation",
+   "denominator": "91 tasks x (4 initial-large + 4 initial-small logger episodes); task-paired; equal task weight",
+   "estimate": 0.18956043956043955,
+   "uncertainty": {
+    "value": 0.03854430306608373,
+    "label": "SD(task differences)/sqrt(tasks) arithmetic; interval validity unresolved"
+   },
+   "status": "lead audit endpoint control (not previously reported by the worker)",
+   "audit": [
+    {
+     "audit": "why_null_audit_aac69b5.json",
+     "path": "t0.reconstructed.success_first_candidate.humaneval.mean",
+     "abs_diff": 0.0
+    },
+    {
+     "audit": "why_null_audit_aac69b5.json",
+     "path": "t0.reconstructed.success_first_candidate.humaneval.se",
+     "abs_diff": 0.0
+    },
+    {
+     "audit": "why_null_audit_aac69b5.json",
+     "path": "t0.reconstructed.success_first_candidate.humaneval.n",
+     "abs_diff": 0.0
+    }
+   ],
+   "class": "initial_action_logger_continued"
+  },
+  {
+   "id": "I-success_first_candidate-mbpp",
+   "endpoint": "hidden success of the first candidate",
+   "target": "E_task[Y(A0=large, logger later) - Y(A0=small, logger later)], within mbpp",
+   "comparator": "initial small arm, same logger continuation",
+   "denominator": "239 tasks x (4 initial-large + 4 initial-small logger episodes); task-paired; equal task weight",
+   "estimate": 0.10669456066945607,
+   "uncertainty": {
+    "value": 0.022099025938176784,
+    "label": "SD(task differences)/sqrt(tasks) arithmetic; interval validity unresolved"
+   },
+   "status": "lead audit endpoint control (not previously reported by the worker)",
+   "audit": [
+    {
+     "audit": "why_null_audit_aac69b5.json",
+     "path": "t0.reconstructed.success_first_candidate.mbpp.mean",
+     "abs_diff": 0.0
+    },
+    {
+     "audit": "why_null_audit_aac69b5.json",
+     "path": "t0.reconstructed.success_first_candidate.mbpp.se",
+     "abs_diff": 0.0
+    },
+    {
+     "audit": "why_null_audit_aac69b5.json",
+     "path": "t0.reconstructed.success_first_candidate.mbpp.n",
+     "abs_diff": 0.0
+    }
+   ],
+   "class": "initial_action_logger_continued"
+  },
+  {
+   "id": "I-success_first_candidate-pooled",
+   "endpoint": "hidden success of the first candidate",
+   "target": "E_task[Y(A0=large, logger later) - Y(A0=small, logger later)], all 330 tasks",
+   "comparator": "initial small arm, same logger continuation",
+   "denominator": "330 tasks x (4 initial-large + 4 initial-small logger episodes); task-paired; equal task weight",
+   "estimate": 0.12954545454545455,
+   "uncertainty": {
+    "value": 0.019290021410609006,
+    "label": "SD(task differences)/sqrt(tasks) arithmetic; interval validity unresolved"
+   },
+   "status": "lead audit endpoint control (not previously reported by the worker)",
+   "audit": [
+    {
+     "audit": "why_null_audit_aac69b5.json",
+     "path": "t0.reconstructed.success_first_candidate.pooled.mean",
+     "abs_diff": 0.0
+    },
+    {
+     "audit": "why_null_audit_aac69b5.json",
+     "path": "t0.reconstructed.success_first_candidate.pooled.se",
+     "abs_diff": 0.0
+    },
+    {
+     "audit": "why_null_audit_aac69b5.json",
+     "path": "t0.reconstructed.success_first_candidate.pooled.n",
+     "abs_diff": 0.0
+    }
+   ],
+   "class": "initial_action_logger_continued"
+  },
+  {
+   "id": "I-positive-part-t0",
+   "endpoint": "final hidden success",
+   "target": "none valid: positive part of estimated small-favouring t0 strata (pooled; by benchmark)",
+   "comparator": "always_large (as mislabelled in the corrected JSON)",
+   "denominator": "330 tasks; 91 + 239 by benchmark",
+   "estimate": {
+    "pooled": 0.0,
+    "by_benchmark": 0.0
+   },
+   "uncertainty": null,
+   "status": "WITHDRAWN as an \"oracle gain\" (corrected JSON oracle_gain_vs_always_large). Values reproduced only so original numbers stay traceable; see withdrawn_interpretations",
+   "audit": [
+    {
+     "audit": "why_null_corrected.json (archived file; no lead audit pins these two zeros)",
+     "path": "oracle_gain_vs_always_large",
+     "abs_diff": 0.0
+    }
+   ],
+   "class": "initial_action_logger_continued"
+  },
+  {
+   "id": "P-stage1",
+   "endpoint": "final hidden success",
+   "target": "current-action effect at repair decision 1 on terminal hidden success, later actions by the randomized logger, among logger-reached histories",
+   "comparator": "small arm at decision 1",
+   "denominator": "564 eligible log episodes (295 large, 269 small) in 152 tasks; pooled episode-arm means",
+   "estimate": 0.030647092180706992,
+   "uncertainty": {
+    "value": 0.03799180657974984,
+    "label": "episode-independent arithmetic; ignores repeated task records; not a valid SE"
+   },
+   "status": "ARCHIVED (why_null.json C_theory.effect_at_t1)",
+   "audit": [
+    {
+     "audit": "why_null_audit_4f9abe4.json",
+     "path": "stage_contrasts.1.effect",
+     "abs_diff": 0.0
+    },
+    {
+     "audit": "why_null_audit_4f9abe4.json",
+     "path": "stage_contrasts.1.episode_independent_se",
+     "abs_diff": 0.0
+    },
+    {
+     "audit": "why_null_audit_4f9abe4.json",
+     "path": "stage_contrasts.1.n",
+     "abs_diff": 0.0
+    },
+    {
+     "audit": "why_null_audit_4f9abe4.json",
+     "path": "stage_contrasts.1.n_large",
+     "abs_diff": 0.0
+    }
+   ],
+   "class": "pooled_repair"
+  },
+  {
+   "id": "P-stage2",
+   "endpoint": "final hidden success",
+   "target": "current-action effect at repair decision 2 on terminal hidden success, later actions by the randomized logger, among logger-reached histories",
+   "comparator": "small arm at decision 2",
+   "denominator": "458 eligible log episodes (215 large, 243 small) in 134 tasks; pooled episode-arm means",
+   "estimate": 0.11625992917982582,
+   "uncertainty": {
+    "value": 0.034715486292937414,
+    "label": "episode-independent arithmetic; ignores repeated task records; not a valid SE"
+   },
+   "status": "ARCHIVED (why_null.json C_theory.effect_at_t2)",
+   "audit": [
+    {
+     "audit": "why_null_audit_4f9abe4.json",
+     "path": "stage_contrasts.2.effect",
+     "abs_diff": 0.0
+    },
+    {
+     "audit": "why_null_audit_4f9abe4.json",
+     "path": "stage_contrasts.2.episode_independent_se",
+     "abs_diff": 0.0
+    },
+    {
+     "audit": "why_null_audit_4f9abe4.json",
+     "path": "stage_contrasts.2.n",
+     "abs_diff": 0.0
+    },
+    {
+     "audit": "why_null_audit_4f9abe4.json",
+     "path": "stage_contrasts.2.n_large",
+     "abs_diff": 0.0
+    }
+   ],
+   "class": "pooled_repair"
+  },
+  {
+   "id": "P-stage-difference",
+   "endpoint": "final hidden success",
+   "target": "none common: stage-2 minus stage-1 contrasts on different, selected risk sets",
+   "comparator": "stage-1 contrast",
+   "denominator": "458 vs 564 overlapping eligible episodes",
+   "estimate": 0.08561283699911883,
+   "uncertainty": {
+    "value": 0.05146399086495575,
+    "label": "ARCHIVED; adds variances as if independent despite shared episodes/tasks; invalid, no replacement derived"
+   },
+   "status": "ARCHIVED descriptive difference; isolates no stage interaction",
+   "audit": [
+    {
+     "audit": "why_null_audit_4f9abe4.json",
+     "path": "stage_difference.estimate",
+     "abs_diff": 0.0
+    },
+    {
+     "audit": "why_null_audit_4f9abe4.json",
+     "path": "stage_difference.saved_episode_independent_se",
+     "abs_diff": 0.0
+    }
+   ],
+   "class": "pooled_repair"
+  },
+  {
+   "id": "P-cell1-assertion|prev=L",
+   "endpoint": "final hidden success",
+   "target": "as P-stage1, within failure class and previous action assertion|prev=L",
+   "comparator": "small arm at decision 1, same cell",
+   "denominator": "186 eligible episodes (98 large, 88 small) in 70 tasks",
+   "estimate": -0.0039424860853432275,
+   "uncertainty": {
+    "value": 0.06276987176875047,
+    "label": "episode-independent arithmetic; not a valid SE"
+   },
+   "status": "ARCHIVED (why_null.json C_theory.cells_t1); favours small by point estimate",
+   "audit": [
+    {
+     "audit": "why_null_audit_4f9abe4.json",
+     "path": "cell_contrasts.1.assertion|prev=L.effect",
+     "abs_diff": 0.0
+    },
+    {
+     "audit": "why_null_audit_4f9abe4.json",
+     "path": "cell_contrasts.1.assertion|prev=L.episode_independent_se",
+     "abs_diff": 0.0
+    }
+   ],
+   "class": "pooled_repair"
+  },
+  {
+   "id": "P-cell1-assertion|prev=S",
+   "endpoint": "final hidden success",
+   "target": "as P-stage1, within failure class and previous action assertion|prev=S",
+   "comparator": "small arm at decision 1, same cell",
+   "denominator": "247 eligible episodes (122 large, 125 small) in 113 tasks",
+   "estimate": 0.03908196721311474,
+   "uncertainty": {
+    "value": 0.05705330259950212,
+    "label": "episode-independent arithmetic; not a valid SE"
+   },
+   "status": "ARCHIVED (why_null.json C_theory.cells_t1)",
+   "audit": [
+    {
+     "audit": "why_null_audit_4f9abe4.json",
+     "path": "cell_contrasts.1.assertion|prev=S.effect",
+     "abs_diff": 0.0
+    },
+    {
+     "audit": "why_null_audit_4f9abe4.json",
+     "path": "cell_contrasts.1.assertion|prev=S.episode_independent_se",
+     "abs_diff": 0.0
+    }
+   ],
+   "class": "pooled_repair"
+  },
+  {
+   "id": "P-cell1-exception|prev=L",
+   "endpoint": "final hidden success",
+   "target": "as P-stage1, within failure class and previous action exception|prev=L",
+   "comparator": "small arm at decision 1, same cell",
+   "denominator": "46 eligible episodes (26 large, 20 small) in 25 tasks",
+   "estimate": 0.0076923076923077205,
+   "uncertainty": {
+    "value": 0.1399047591689395,
+    "label": "episode-independent arithmetic; not a valid SE"
+   },
+   "status": "ARCHIVED (why_null.json C_theory.cells_t1)",
+   "audit": [
+    {
+     "audit": "why_null_audit_4f9abe4.json",
+     "path": "cell_contrasts.1.exception|prev=L.effect",
+     "abs_diff": 0.0
+    },
+    {
+     "audit": "why_null_audit_4f9abe4.json",
+     "path": "cell_contrasts.1.exception|prev=L.episode_independent_se",
+     "abs_diff": 0.0
+    }
+   ],
+   "class": "pooled_repair"
+  },
+  {
+   "id": "P-cell1-exception|prev=S",
+   "endpoint": "final hidden success",
+   "target": "as P-stage1, within failure class and previous action exception|prev=S",
+   "comparator": "small arm at decision 1, same cell",
+   "denominator": "85 eligible episodes (49 large, 36 small) in 52 tasks",
+   "estimate": 0.06746031746031744,
+   "uncertainty": {
+    "value": 0.10813765105042718,
+    "label": "episode-independent arithmetic; not a valid SE"
+   },
+   "status": "ARCHIVED (why_null.json C_theory.cells_t1)",
+   "audit": [
+    {
+     "audit": "why_null_audit_4f9abe4.json",
+     "path": "cell_contrasts.1.exception|prev=S.effect",
+     "abs_diff": 0.0
+    },
+    {
+     "audit": "why_null_audit_4f9abe4.json",
+     "path": "cell_contrasts.1.exception|prev=S.episode_independent_se",
+     "abs_diff": 0.0
+    }
+   ],
+   "class": "pooled_repair"
+  },
+  {
+   "id": "P-cell2-assertion|prev=L",
+   "endpoint": "final hidden success",
+   "target": "as P-stage2, within failure class and previous action assertion|prev=L",
+   "comparator": "small arm at decision 2, same cell",
+   "denominator": "134 eligible episodes (67 large, 67 small) in 67 tasks",
+   "estimate": 0.01492537313432836,
+   "uncertainty": {
+    "value": 0.057922383099587776,
+    "label": "episode-independent arithmetic; not a valid SE"
+   },
+   "status": "ARCHIVED (why_null.json C_theory.cells_t2)",
+   "audit": [
+    {
+     "audit": "why_null_audit_4f9abe4.json",
+     "path": "cell_contrasts.2.assertion|prev=L.effect",
+     "abs_diff": 0.0
+    },
+    {
+     "audit": "why_null_audit_4f9abe4.json",
+     "path": "cell_contrasts.2.assertion|prev=L.episode_independent_se",
+     "abs_diff": 0.0
+    }
+   ],
+   "class": "pooled_repair"
+  },
+  {
+   "id": "P-cell2-assertion|prev=S",
+   "endpoint": "final hidden success",
+   "target": "as P-stage2, within failure class and previous action assertion|prev=S",
+   "comparator": "small arm at decision 2, same cell",
+   "denominator": "199 eligible episodes (95 large, 104 small) in 93 tasks",
+   "estimate": 0.18026315789473685,
+   "uncertainty": {
+    "value": 0.057602408664539174,
+    "label": "episode-independent arithmetic; not a valid SE"
+   },
+   "status": "ARCHIVED (why_null.json C_theory.cells_t2)",
+   "audit": [
+    {
+     "audit": "why_null_audit_4f9abe4.json",
+     "path": "cell_contrasts.2.assertion|prev=S.effect",
+     "abs_diff": 0.0
+    },
+    {
+     "audit": "why_null_audit_4f9abe4.json",
+     "path": "cell_contrasts.2.assertion|prev=S.episode_independent_se",
+     "abs_diff": 0.0
+    }
+   ],
+   "class": "pooled_repair"
+  },
+  {
+   "id": "P-cell2-exception|prev=L",
+   "endpoint": "final hidden success",
+   "target": "as P-stage2, within failure class and previous action exception|prev=L",
+   "comparator": "small arm at decision 2, same cell",
+   "denominator": "82 eligible episodes (36 large, 46 small) in 46 tasks",
+   "estimate": 0.09541062801932368,
+   "uncertainty": {
+    "value": 0.06588841458964535,
+    "label": "episode-independent arithmetic; not a valid SE"
+   },
+   "status": "ARCHIVED (why_null.json C_theory.cells_t2)",
+   "audit": [
+    {
+     "audit": "why_null_audit_4f9abe4.json",
+     "path": "cell_contrasts.2.exception|prev=L.effect",
+     "abs_diff": 0.0
+    },
+    {
+     "audit": "why_null_audit_4f9abe4.json",
+     "path": "cell_contrasts.2.exception|prev=L.episode_independent_se",
+     "abs_diff": 0.0
+    }
+   ],
+   "class": "pooled_repair"
+  },
+  {
+   "id": "P-cell2-exception|prev=S",
+   "endpoint": "final hidden success",
+   "target": "as P-stage2, within failure class and previous action exception|prev=S",
+   "comparator": "small arm at decision 2, same cell",
+   "denominator": "43 eligible episodes (17 large, 26 small) in 34 tasks",
+   "estimate": 0.17873303167420815,
+   "uncertainty": {
+    "value": 0.13060864742963688,
+    "label": "episode-independent arithmetic; not a valid SE"
+   },
+   "status": "ARCHIVED (why_null.json C_theory.cells_t2)",
+   "audit": [
+    {
+     "audit": "why_null_audit_4f9abe4.json",
+     "path": "cell_contrasts.2.exception|prev=S.effect",
+     "abs_diff": 0.0
+    },
+    {
+     "audit": "why_null_audit_4f9abe4.json",
+     "path": "cell_contrasts.2.exception|prev=S.episode_independent_se",
+     "abs_diff": 0.0
+    }
+   ],
+   "class": "pooled_repair"
+  },
+  {
+   "id": "P-negative-cell-statistic",
+   "endpoint": "final hidden success",
+   "target": "none valid: in-sample negative-cell terminal-success statistic (estimated signs, logger occupancy and continuation)",
+   "comparator": "always_large (as mislabelled in why_null.json)",
+   "denominator": "cell episode counts / 2640 confirm episodes",
+   "estimate": {
+    "1": 0.00027776606510372735,
+    "2": 0.0
+   },
+   "uncertainty": null,
+   "status": "WITHDRAWN as an \"oracle tailoring ceiling\" (why_null.json A_design); neither an upper bound nor a confidence bound on dynamic-policy gain",
+   "audit": [
+    {
+     "audit": "why_null_audit_4f9abe4.json",
+     "path": "posthoc_negative_success_cell_statistic",
+     "abs_diff": 0.0
+    }
+   ],
+   "class": "pooled_repair"
+  },
+  {
+   "id": "P-stage1-after-large",
+   "endpoint": "final hidden success",
+   "target": "as P-stage1, restricted to histories whose initial action was large",
+   "comparator": "small arm at decision 1",
+   "denominator": "232 eligible episodes (124 large, 108 small) in 86 tasks",
+   "estimate": 0.0,
+   "uncertainty": {
+    "value": 0.05724269990575715,
+    "label": "episode-independent arithmetic; not a valid SE"
+   },
+   "status": "ARCHIVED (cited in README; not in why_null.json)",
+   "audit": [
+    {
+     "audit": "why_null_audit_4f9abe4.json",
+     "path": "stage1_after_large.effect",
+     "abs_diff": 0.0
+    },
+    {
+     "audit": "why_null_audit_4f9abe4.json",
+     "path": "stage1_after_large.episode_independent_se",
+     "abs_diff": 0.0
+    }
+   ],
+   "class": "pooled_repair"
+  },
+  {
+   "id": "P-B2-branch-minus-log",
+   "endpoint": "final hidden success after first failure",
+   "target": "archived point for the primary branch/log comparison: branch prefix mean minus pooled Hajek log contrast over all 330 source task blocks",
+   "comparator": "pooled Hajek log contrast v1 - v0",
+   "denominator": "branch: 200 sampled prefixes (prefix mean) in 103 tasks; log: arm weight totals D1=570, D0=574 over 564 eligible prefixes in 152 tasks",
+   "estimate": {
+    "branch": 0.12,
+    "log": 0.13465370743933003,
+    "log_large": 0.32280701754385965,
+    "log_small": 0.18815331010452963,
+    "difference": -0.014653707439330033
+   },
+   "uncertainty": {
+    "value": 0.04838557358567037,
+    "label": "exploratory algebraic scale sqrt(sum U_g^2); not a consistent SE; no calibrated coverage"
+   },
+   "status": "ARCHIVED point; the primary target theta has no estimate or interval here (OPEN)",
+   "audit": [
+    {
+     "audit": "branch_linearization_audit_29ee443.json",
+     "path": "branch_estimate",
+     "abs_diff": 0.0
+    },
+    {
+     "audit": "branch_linearization_audit_29ee443.json",
+     "path": "log_estimate",
+     "abs_diff": 0.0
+    },
+    {
+     "audit": "branch_linearization_audit_29ee443.json",
+     "path": "difference",
+     "abs_diff": 0.0
+    },
+    {
+     "audit": "branch_linearization_audit_29ee443.json",
+     "path": "log_arm_numerators",
+     "abs_diff": 0.0
+    },
+    {
+     "audit": "branch_linearization_audit_29ee443.json",
+     "path": "log_arm_denominators",
+     "abs_diff": 0.0
+    },
+    {
+     "audit": "branch_linearization_audit_29ee443.json",
+     "path": "reported_scale",
+     "abs_diff": 0.0
+    }
+   ],
+   "class": "pooled_repair"
+  },
+  {
+   "id": "R-conditional-frame",
+   "endpoint": "final hidden success after first failure",
+   "target": "Delta_F = mu_F - L(F): branch mean over the realized 564-prefix frame minus the realized log contrast",
+   "comparator": "realized log contrast L(F), held fixed",
+   "denominator": "200 of 564 frame prefixes, SRSWOR, 2 replicates per arm",
+   "estimate": -0.014653707439330033,
+   "uncertainty": {
+    "value": 0.023478392148818965,
+    "label": "conditional-frame SE from theory_branch_sampling.md section 1 under its independence assumptions; archived normal interval [-0.060671, 0.031364] is NOT validated"
+   },
+   "status": "SECONDARY; covers no source-frame randomness",
+   "audit": [
+    {
+     "audit": "conditional_branch_frame_audit_981f7b9.json",
+     "path": "numeric_reconstruction.B_hat",
+     "abs_diff": 0.0
+    },
+    {
+     "audit": "conditional_branch_frame_audit_981f7b9.json",
+     "path": "numeric_reconstruction.delta_hat",
+     "abs_diff": 0.0
+    },
+    {
+     "audit": "conditional_branch_frame_audit_981f7b9.json",
+     "path": "numeric_reconstruction.sample_variance_of_contrasts",
+     "abs_diff": 0.0
+    },
+    {
+     "audit": "conditional_branch_frame_audit_981f7b9.json",
+     "path": "numeric_reconstruction.mean_within_prefix_variance",
+     "abs_diff": 0.0
+    },
+    {
+     "audit": "conditional_branch_frame_audit_981f7b9.json",
+     "path": "numeric_reconstruction.between_prefix_component",
+     "abs_diff": 0.0
+    },
+    {
+     "audit": "conditional_branch_frame_audit_981f7b9.json",
+     "path": "numeric_reconstruction.execution_component",
+     "abs_diff": 0.0
+    },
+    {
+     "audit": "conditional_branch_frame_audit_981f7b9.json",
+     "path": "numeric_reconstruction.se_frame",
+     "abs_diff": 0.0
+    }
+   ],
+   "class": "realized_frame"
+  },
+  {
+   "id": "S-61-task-stage-gradient",
+   "endpoint": "final hidden success",
+   "target": "unweighted mean over selected tasks of per-task observed-arm differences at decisions 1 and 2",
+   "comparator": "per-task small-arm mean at the same decision",
+   "denominator": "61 tasks with both actions observed at BOTH decisions (of 134 reaching both; 87 and 71 with both actions at decision 1 and 2 respectively); equal task weight",
+   "estimate": {
+    "t1": 0.004371584699453555,
+    "t2": 0.09808743169398908,
+    "difference": 0.0937158469945355
+   },
+   "uncertainty": {
+    "value": 0.059307074394443236,
+    "label": "SD/sqrt(61) arithmetic on a support-selected cohort; the corrected JSON \"1.6 sigmas\" reading is withdrawn"
+   },
+   "status": "CORRECTED file reproduced; EXPLORATORY selected cohort; not a covariance repair of P-stage-difference",
+   "audit": [
+    {
+     "audit": "why_null_audit_aac69b5.json",
+     "path": "stage_gradient.reproduced.t1.mean",
+     "abs_diff": 0.0
+    },
+    {
+     "audit": "why_null_audit_aac69b5.json",
+     "path": "stage_gradient.reproduced.t1.se",
+     "abs_diff": 0.0
+    },
+    {
+     "audit": "why_null_audit_aac69b5.json",
+     "path": "stage_gradient.reproduced.t2.mean",
+     "abs_diff": 0.0
+    },
+    {
+     "audit": "why_null_audit_aac69b5.json",
+     "path": "stage_gradient.reproduced.t2.se",
+     "abs_diff": 0.0
+    },
+    {
+     "audit": "why_null_audit_aac69b5.json",
+     "path": "stage_gradient.reproduced.difference.mean",
+     "abs_diff": 0.0
+    },
+    {
+     "audit": "why_null_audit_aac69b5.json",
+     "path": "stage_gradient.reproduced.difference.se",
+     "abs_diff": 0.0
+    },
+    {
+     "audit": "why_null_audit_aac69b5.json",
+     "path": "stage_gradient.reproduced.tasks",
+     "abs_diff": 0.0
+    },
+    {
+     "audit": "why_null_audit_aac69b5.json",
+     "path": "stage_gradient.tasks_reaching_both",
+     "abs_diff": 0.0
+    },
+    {
+     "audit": "why_null_audit_aac69b5.json",
+     "path": "stage_gradient.selected_id_digest",
+     "abs_diff": 0.0
+    }
+   ],
+   "class": "selected_cohort"
+  },
+  {
+   "id": "S-42-task-linked",
+   "endpoint": "final hidden success after first failure",
+   "target": "branch-minus-log on tasks with sampled prefixes AND positive log weight in both arms",
+   "comparator": "log contrast on the same 42 tasks",
+   "denominator": "42 of 330 tasks; 98 of 200 sampled prefixes; 240 of 564 eligible log prefixes",
+   "estimate": {
+    "equal_task_branch": 0.09682539682539681,
+    "equal_task_log": 0.18826530612244896,
+    "equal_task_difference": -0.09143990929705215,
+    "prefix_weighted_branch": 0.08673469387755102,
+    "pooled_log": 0.1433933933933934,
+    "prefix_weighted_difference": -0.05665869951584239
+   },
+   "uncertainty": null,
+   "status": "ARCHIVED EXPLORATORY; changes target; not a substitute for P-B2-branch-minus-log",
+   "audit": [
+    {
+     "audit": "theory_branch_linkage_audit_20260920.json",
+     "path": "n_linked_selected_tasks",
+     "abs_diff": 0.0
+    },
+    {
+     "audit": "theory_branch_linkage_audit_20260920.json",
+     "path": "n_log_eligible_prefixes_in_linked_tasks",
+     "abs_diff": 0.0
+    },
+    {
+     "audit": "theory_branch_linkage_audit_20260920.json",
+     "path": "n_selected_prefixes_in_linked_tasks",
+     "abs_diff": 0.0
+    },
+    {
+     "audit": "theory_branch_linkage_audit_20260920.json",
+     "path": "linked_equal_task_branch_mean",
+     "abs_diff": 0.0
+    },
+    {
+     "audit": "theory_branch_linkage_audit_20260920.json",
+     "path": "linked_equal_task_log_mean",
+     "abs_diff": 2.7755575615628914e-17
+    },
+    {
+     "audit": "theory_branch_linkage_audit_20260920.json",
+     "path": "linked_equal_task_difference",
+     "abs_diff": 1.3877787807814457e-17
+    },
+    {
+     "audit": "theory_branch_linkage_audit_20260920.json",
+     "path": "linked_task_subset_prefix_weighted_branch_mean",
+     "abs_diff": 0.0
+    },
+    {
+     "audit": "theory_branch_linkage_audit_20260920.json",
+     "path": "linked_task_subset_pooled_log_mean",
+     "abs_diff": 0.0
+    },
+    {
+     "audit": "theory_branch_linkage_audit_20260920.json",
+     "path": "linked_task_subset_prefix_weighted_difference",
+     "abs_diff": 0.0
+    }
+   ],
+   "class": "selected_cohort"
+  },
+  {
+   "id": "D-logger-occupancy",
+   "endpoint": "number of eligible decisions reached",
+   "target": "realized stopping fraction of THIS logger after one decision",
+   "comparator": "none",
+   "denominator": "2640 confirm log episodes",
+   "estimate": {
+    "reach_second": 564,
+    "reach_third": 458,
+    "stopped_after_first": 0.7863636363636364
+   },
+   "uncertainty": null,
+   "status": "ARCHIVED; a law-dependent realized occupancy, not a policy-invariant design constant",
+   "audit": [
+    {
+     "audit": "why_null_audit_aac69b5.json",
+     "path": "stage_gradient.original_eligible_episodes.1",
+     "abs_diff": 0.0
+    },
+    {
+     "audit": "why_null_audit_aac69b5.json",
+     "path": "stage_gradient.original_eligible_episodes.2",
+     "abs_diff": 0.0
+    }
+   ],
+   "class": "descriptive"
+  },
+  {
+   "id": "D-feedback",
+   "endpoint": "visible-check coverage; first-candidate visible vs hidden outcome",
+   "target": "deployable-feedback limits cited in README A6",
+   "comparator": "none",
+   "denominator": "330 CONFIRM tasks; 660 learned live episodes",
+   "estimate": {
+    "tasks_without_surviving_visible_checks": 60,
+    "learned_first_candidate_visible_pass_hidden_fail": 104
+   },
+   "uncertainty": null,
+   "status": "ARCHIVED counts; they do not show further calls would repair these failures",
+   "audit": [
+    {
+     "audit": "routing_diagnosis_338425b.json",
+     "path": "visible_check_distribution.confirm.zero_check_tasks",
+     "abs_diff": 0.0
+    },
+    {
+     "audit": "routing_diagnosis_338425b.json",
+     "path": "live.learned.all_first_candidate.visible_pass_hidden_fail",
+     "abs_diff": 0.0
+    }
+   ],
+   "class": "descriptive"
+  }
+ ],
+ "withdrawn_interpretations": [
+  {
+   "claim": "oracle tailoring ceiling over always_large (why_null.json A_design; corrected JSON oracle_gain_vs_always_large)",
+   "rows": [
+    "P-negative-cell-statistic",
+    "I-positive-part-t0"
+   ],
+   "replacement": "in-sample negative-cell terminal-success statistic; neither an upper bound nor a confidence bound on dynamic-policy gain, even when scoped to a partition",
+   "source": "why_null_audit_4f9abe4.json; why_null_audit_aac69b5.json"
+  },
+  {
+   "claim": "upward bias of the positive part implies the true partition value is no larger than observed",
+   "rows": [],
+   "replacement": "false: an upward-biased estimator can realize below the true gain (lead counterexample: expectation 0.15 > truth 0.1, realized 0 on one outcome)",
+   "source": "why_null_audit_aac69b5.json"
+  },
+  {
+   "claim": "no examined stratum at any stage favours the small model",
+   "rows": [
+    "P-cell1-assertion|prev=L"
+   ],
+   "replacement": "the original stage-1 assertion|prev=L cell favours small by point estimate; non-significance is not absence",
+   "source": "why_null_audit_aac69b5.json"
+  },
+  {
+   "claim": ".0199 is the paired learned-minus-always_large SE",
+   "rows": [
+    "W-always_small-success",
+    "W-always_large-success"
+   ],
+   "replacement": ".0199 is the learned-minus-ALWAYS_SMALL success SE; learned-minus-large is .011039 (success) and .011278 (utility)",
+   "source": "why_null_audit_aac69b5.json"
+  },
+  {
+   "claim": "0.024 policy-value SE as the yardstick for a paired gain",
+   "rows": [],
+   "replacement": "a literal in why_null.py, not computed there; a single-policy SE is not a paired-gain SE and shows no power deficit",
+   "source": "why_null_audit_4f9abe4.json"
+  },
+  {
+   "claim": "61-task stage gradient at 1.6 sigmas",
+   "rows": [
+    "S-61-task-stage-gradient"
+   ],
+   "replacement": "support-selected cohort with changed weights; exploratory; no validated stage interaction",
+   "source": "why_null_audit_aac69b5.json"
+  },
+  {
+   "claim": "78.6% of episodes are decided by the first action (as a design property)",
+   "rows": [
+    "D-logger-occupancy"
+   ],
+   "replacement": "realized stopping fraction under this logger; policies can change occupancy",
+   "source": "why_null_audit_aac69b5.json"
+  },
+  {
+   "claim": "analysis uses the frozen log only",
+   "rows": [
+    "W-cost-small-fixed",
+    "W-cost-both-scaled"
+   ],
+   "replacement": "the metric section reads frontier_live.csv (live learned and always_large)",
+   "source": "why_null_audit_4f9abe4.json"
+  },
+  {
+   "claim": "framework vindicated / not implicated; hidden-test absorption as a remedy",
+   "rows": [],
+   "replacement": "withdrawn in why_null_corrected.json retractions; hidden outcomes must not drive stopping",
+   "source": "why_null_corrected.json"
+  }
+ ],
+ "theorem_assumption_map": [
+  {
+   "result": "Primary fixed-benchmark bound, sections 2-5",
+   "doc": "docs/theory_branch_fixed_benchmark_bound.md",
+   "applies_to": [
+    "P-B2-branch-minus-log (as the target's archived point only)"
+   ],
+   "conditions": [
+    {
+     "condition": "independent complete source-task blocks",
+     "evidence_row": "complete source-task blocks are independent across all 330 tasks",
+     "status": "UNKNOWN"
+    },
+    {
+     "condition": "conditional uniform prefix selection independent of fresh noise",
+     "evidence_row": "prefix sample is SRSWOR of fixed size m from the frame",
+     "status": "OBSERVED: frozen draw reproduced from the design seed and complete log"
+    },
+    {
+     "condition": "selection-invariant fresh replicate pairs independent across prefix/replicate indices",
+     "evidence_row": "continuations iid within arm given the prefix",
+     "status": "UNKNOWN"
+    },
+    {
+     "condition": "(same) no execution shocks shared across prefixes",
+     "evidence_row": "no execution shocks shared across prefixes",
+     "status": "UNKNOWN"
+    },
+    {
+     "condition": "(same) lost and recovered executions follow one law",
+     "evidence_row": "lost and recovered executions follow the same law",
+     "status": "UNAVAILABLE from committed records"
+    },
+    {
+     "condition": "dependence between the two arms within a pair",
+     "evidence_row": "arms conditionally independent given the prefix",
+     "status": "PERMITTED by the pair version; not required"
+    },
+    {
+     "condition": "source/log covariance retained",
+     "evidence_row": "(estimator requirement)",
+     "status": "structural requirement of the bound, not an execution assumption"
+    }
+   ],
+   "boundary": "No fixed-benchmark interval for theta is computed here; primary B2 coverage remains OPEN."
+  },
+  {
+   "result": "Secondary conditional-frame variance, section 1",
+   "doc": "docs/theory_branch_sampling.md",
+   "applies_to": [
+    "R-conditional-frame"
+   ],
+   "conditions": [
+    {
+     "condition": "unbiased prefix contrasts",
+     "evidence_row": "restored prefix equals the logged pre-call state",
+     "status": "OBSERVED for recorded fields"
+    },
+    {
+     "condition": "independent prefix noise with selection-invariant laws",
+     "evidence_row": "continuations iid within arm given the prefix",
+     "status": "UNKNOWN"
+    },
+    {
+     "condition": "(same) no shared prefix shocks; otherwise extra covariance terms",
+     "evidence_row": "no execution shocks shared across prefixes",
+     "status": "UNKNOWN"
+    },
+    {
+     "condition": "archived variance estimate: independent within-arm replicates and independent arms",
+     "evidence_row": "arms conditionally independent given the prefix",
+     "status": "UNKNOWN"
+    },
+    {
+     "condition": "fixed-size SRSWOR from the frame",
+     "evidence_row": "prefix sample is SRSWOR of fixed size m from the frame",
+     "status": "OBSERVED: frozen draw reproduced from the design seed and complete log"
+    }
+   ],
+   "boundary": "Covers no source-frame randomness and establishes no Wald coverage."
+  },
+  {
+   "result": "Whole-policy A6 contrasts",
+   "doc": "(none)",
+   "applies_to": [
+    "W-always_large-success",
+    "W-always_large-utility",
+    "W-always_small-success",
+    "W-always_small-utility",
+    "W-value-learned",
+    "W-calls-learned",
+    "W-value-always_large",
+    "W-calls-always_large",
+    "W-cost-small-fixed",
+    "W-cost-both-scaled"
+   ],
+   "conditions": [
+    {
+     "condition": "separate root-to-terminal fixed-task estimands with their own inference requirements",
+     "evidence_row": "(none)",
+     "status": "UNRESOLVED: neither branch result supplies their interval justification"
+    }
+   ],
+   "boundary": "Task-paired SEs are reproduced arithmetic only."
+  },
+  {
+   "result": "Initial-action rows (worker-added mapping, same boundary as whole-policy)",
+   "doc": "(none)",
+   "applies_to": [
+    "I-success-humaneval",
+    "I-success-mbpp",
+    "I-success-pooled",
+    "I-utility-humaneval",
+    "I-utility-mbpp",
+    "I-utility-pooled",
+    "I-success_first_candidate-humaneval",
+    "I-success_first_candidate-mbpp",
+    "I-success_first_candidate-pooled",
+    "I-positive-part-t0"
+   ],
+   "conditions": [
+    {
+     "condition": "root-to-terminal fixed-task contrast under logger continuation",
+     "evidence_row": "(none)",
+     "status": "UNRESOLVED: no branch result applies; the lead may reclassify"
+    }
+   ],
+   "boundary": "Arithmetic only."
+  }
+ ],
+ "branch_plan_reproduction": {
+  "numpy_version": "2.5.3",
+  "design_seed": 1008219474,
+  "n_eligible_parents": 564,
+  "plan_n_eligible_prefixes": 564,
+  "plan_log_sha256_matches_current_log": true,
+  "redrawn_equals_frozen_plan": true,
+  "n_plan_rows": 800,
+  "plan_created_utc": "2026-09-20T01:11:55Z",
+  "earliest_branch_start_utc": "2026-09-20T01:11:55Z",
+  "plan_created_not_after_first_start": true,
+  "git_order_note": "branch_plan.json and branch/episodes.jsonl were first committed together (ac3ca83), and the plan time equals the first continuation start at one-second resolution, so neither commit order nor timestamps strictly order the draw before execution.",
+  "reading": "The evidence is the redraw: the frozen sample and continuation seeds are reproduced from the design seed and the complete log alone, so the selection is a function of pre-branch inputs only and cannot depend on fresh continuation outcomes. One realized draw cannot test uniformity; that rests on the documented mechanism (numpy Generator.choice without replacement)."
+ },
+ "source_binding": {
+  "results/code_routing/log/episodes.jsonl": {
+   "sha256": "e643ee44c7ef658fff65efb5e17763ee78c990d21184d060f5823025a100414e",
+   "pinned_by": "why_null_audit_4f9abe4.json"
+  },
+  "results/code_routing/live/episodes.jsonl": {
+   "sha256": "fb1b2603c51fda020915f7647a0d29478ebf064a0f21cec850ba5bd4abcc616b",
+   "pinned_by": "why_null_audit_4f9abe4.json"
+  },
+  "results/code_routing/analysis/frontier_live.csv": {
+   "sha256": "81930220b08145c2488b6628626e17dc974e20020cdd8822eeb47f08c2d2d908",
+   "pinned_by": "why_null_audit_4f9abe4.json"
+  },
+  "results/code_routing/analysis/why_null.json": {
+   "sha256": "8b0c448345c406bcd10cda5b0d146dfed9068f88a3b6c2d91dc919318c7c1002",
+   "pinned_by": "why_null_audit_4f9abe4.json"
+  },
+  "results/code_routing/analysis/why_null_corrected.json": {
+   "sha256": "0495593ccdf47719a4489cd1d653c9c6bdf739a88ab9ae14ad39d8f1e0db683d",
+   "pinned_by": "why_null_audit_aac69b5.json"
+  },
+  "results/code_routing/branch/episodes.jsonl": {
+   "sha256": "83bf00634fbeeb8af05cdfb546480fb3e72aa440a3b9d6b71f3d22dbc2c98413",
+   "pinned_by": "conditional_branch_frame_audit_981f7b9.json"
+  },
+  "results/code_routing/branch/branch_plan.json": {
+   "sha256": "59a384ac66c2b8d2e5e42c9828d7cc48757f802be9f4fa050eb22dac34367b35",
+   "pinned_by": "conditional_branch_frame_audit_981f7b9.json"
+  },
+  "results/code_routing/design.json": {
+   "sha256": "230638a757c581138d1a3611a9c5788ed79b80a655313d316cac63cbba4ff43d",
+   "pinned_by": "conditional_branch_frame_audit_981f7b9.json"
+  },
+  "results/code_routing/visible_tests.json": {
+   "sha256": "634570cf88743416eca301f77e731c0a1b59013753ffa87c8238a3c77690ddff",
+   "pinned_by": "routing_diagnosis_338425b.json"
+  }
+ },
+ "archived_files_unchanged": [
+  "results/code_routing/analysis/why_null.json",
+  "results/code_routing/analysis/why_null_corrected.json",
+  "experiments/tools/why_null.py"
+ ],
+ "not_claimed": [
+  "no interval coverage, power or equivalence for any row",
+  "no oracle ceiling or upper bound",
+  "no estimate of the primary target theta",
+  "no validated stage interaction",
+  "no new observations, cohorts, endpoints or metrics"
+ ]
+}

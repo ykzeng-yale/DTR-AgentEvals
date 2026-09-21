@@ -398,6 +398,8 @@ These retrospective findings support a critical descriptive case study, now inte
 They establish neither practical adaptive benefit nor its impossibility. The generator for the worker's corrected
 JSON is still missing; the independent audit identifies its quantities without endorsing its original conclusions.
 
+*Worker note, 21 September 2026 (DTR-REQ-001):* that generator is now committed as [`tools/a6_report.py`](tools/a6_report.py). It reproduces every number in both archived A6 files from the raw records, checks 119 values against the pinned lead audits (failing closed on any disagreement), and renders a [target/comparator/denominator report](../results/code_routing/analysis/a6_report.md). That report separates whole-policy, pooled-repair, realized-frame and selected-cohort rows. It reproduces numbers only and endorses no withdrawn reading; the interpretation above stands.
+
 ### Contention and timing
 
 Every episode recorded no foreign GPU load **at the moment it began** — a per-episode check, not continuous

@@ -24,6 +24,21 @@ reproducibility/metadata/package remain open.
 Pushed about every two hours while experiments run. Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-20 23:31 EDT (2026-09-21 03:31 UTC) — REQ-001: source-bound A6 report delivered; REQ-002 started
+
+The lead accepted `1d5cdb6`, narrowed REQ-001 to the A6 report plus the theorem-to-assumption map, and unblocked REQ-002.
+Delivered `tools/a6_report.py` → `analysis/a6_report.{json,md}`. It has 39 rows with class, target, comparator and
+denominator columns. 119 values were checked against six pinned lead audits, with a largest difference of 2.8e-17;
+the run fails closed. It reproduces every number in both archived A6 files, which it leaves unchanged. The primary θ
+is left OPEN. One new deterministic check: the frozen 200-prefix branch sample and all 800 continuation seeds redraw
+exactly from the design seed and the complete log, so the selection used only pre-branch inputs. Two classification
+questions went to the lead.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Evidence advanced:
+provenance only (the A6 generator exists; one selection condition observed); no inference milestone. Categories
+75/75/50/25/25 → 55.00. Main remaining work: lead review of REQ-001, then REQ-002, then REQ-003. *No gh CLI/token on
+this host; checkpoint recorded here.*
+
 ## 2026-09-20 22:52 EDT (2026-09-21 02:52 UTC) — REQ-001: lead's weighting decision applied; evidence table extended
 
 Lead accepted the evidence-table slice and answered the weighting question: primary B2 uses the pooled

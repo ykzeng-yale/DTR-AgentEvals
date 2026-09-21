@@ -621,3 +621,23 @@ Code/config commit at checkpoint start: `a62ccf2`. Last lead checkpoint read: `a
 | DTR-REQ-003 (P1) | accepted, queued | after REQ-002 |
 
 **No current question for the lead.** Next checkpoint within 30 minutes; it will start REQ-001 item 1.
+
+## Worker checkpoint — 2026-09-21T03:31:36Z (host clock; local 2026-09-20 23:31 EDT)
+
+Code/config commit at checkpoint start: `ac1d89e`. Last lead checkpoint read: `ac1d89e` (lead response, 03:18 UTC cycle). **Authorized runs: none.** All code-routing stages complete; gate `log live branch` verified; no runner, no foreign GPU load.
+
+**Status changes acknowledged:** evidence-table correction accepted; REQ-001 narrowed to the A6 report plus the theorem-to-assumption mapping; REQ-002 unblocked as independent design work; REQ-003 accepted and queued.
+
+| Request | Status | Artifact / reason |
+|---|---|---|
+| DTR-REQ-001 (P0) | **delivered for review.** Both remaining parts are in one artifact. | Generator [`experiments/tools/a6_report.py`](../experiments/tools/a6_report.py) writes [`a6_report.json`](../results/code_routing/analysis/a6_report.json) and a rendered [`a6_report.md`](../results/code_routing/analysis/a6_report.md). **39 rows**; each has class, endpoint, target, comparator and denominator columns. **119 comparisons** against six pinned lead audits (`why_null_audit_4f9abe4`, `why_null_audit_aac69b5`, `routing_diagnosis_338425b`, `conditional_branch_frame_audit_981f7b9`, `theory_branch_linkage_audit_20260920`, `branch_linearization_audit_29ee443`; the SHA-256 of all nine raw inputs is checked against the hash an audit pinned). Largest absolute difference: 2.8e-17. The run **fails closed**, writing nothing, on any disagreement beyond 1e-12, on a changed input hash, or on a missing audit; tests cover all three. This is the missing generator: all **21** numeric fields of `why_null_corrected.json` and every computed field of `why_null.json` are reproduced, and both files and `why_null.py` stay byte-identical. Withdrawn readings are listed with the lead's replacement wording: the oracle ceiling and positive-part "gain"; the .0199, which is the learned-minus-**always_small** success SE; 0.024 as a yardstick; "1.6 sigmas"; 78.6% as a design constant; "log only"; and "no stratum favours small". The primary θ has no row (`OPEN`), and whole-policy rows keep equal-task weights. The **theorem-to-assumption map** reproduces the lead's three rows. Each condition is linked to its evidence-table row and status. |
+| DTR-REQ-002 (P1) | **started now** as design work | Field/hook map and planned deterministic fixtures come next. Implementation and runtime status will be stated. No model or duplicate run. |
+| DTR-REQ-003 (P1) | accepted, queued | after REQ-002 |
+
+**One new deterministic observation, bounded.** The primary bound requires "conditional uniform prefix selection independent of fresh noise". The frozen branch sample was redrawn offline from `design.json`'s seed (1008219474) over the 564 eligible parents in the complete log, using `run.py`'s own drawing code with numpy 2.5.3. The redraw gives the same 200 prefixes and **all 800 continuation seeds**, and the plan's recorded log hash matches the committed log. So the selection is a function of pre-branch inputs only. Commit order cannot show this, because plan and outcomes were first committed together in `ac3ca83`. Timestamps cannot either: plan time and first start are equal at one-second resolution. One realized draw cannot test uniformity, which rests on the documented mechanism. The report records this condition as OBSERVED. **The accepted evidence table is unchanged** and still says CHECKABLE for that row.
+
+**Questions for the lead (classification is yours):**
+1. The t0 rows (final success, utility and first-candidate success × HumanEval/MBPP/pooled) do not fit the four named classes. They are root-to-terminal and equal-task over all 330 tasks, but they contrast initial actions under logger continuation, not policies. I labelled them `initial_action_logger_continued`. Occupancy and feedback counts are labelled `descriptive`. Accept or reclassify?
+2. Should the evidence table's SRSWOR row be upgraded from CHECKABLE to OBSERVED (selection function of pre-branch inputs; uniformity by mechanism) on the strength of the redraw? I have not changed the accepted table.
+
+Next checkpoint within 30 minutes: REQ-002 field/hook map.
