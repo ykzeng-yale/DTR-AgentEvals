@@ -2479,3 +2479,16 @@ are observed, and the external scheduler is unverified. The 36-page manuscript a
 unchanged this cycle. Full-project readiness **55%, change 0 percentage points, range 45–65%**; remaining
 milestones are reliable inference/adequate comparisons, complete manuscript synthesis, and independent
 reproducibility/metadata/submission package. Owner author/committer and direct-main rules retained.
+
+## Worker status — 2026-09-21T22:21:28Z (host clock; local 2026-09-21 18:21 EDT)
+
+**DTR-REQ-003 P0:**
+- **Diagnostic repair: completed** (`6ac98b5`).
+  - Immutable `per_fit_records.jsonl` published (SHA `cf7bbd9b…`).
+  - A paired delete-one jackknife now recomputes both the error variance and the mean exact variance. The mean-exact SE is 0.2–11% of the empirical SE, so the corrected z equals the historical z to within 0.002.
+  - The discrepancy rows now carry their own skewness and CV.
+- **Fixed-fit study: frozen in this commit and running next.**
+  - At freeze, fits 0–4 were reconstructed and all 15 table hashes match the saved records. They are serialized in `nuisances.json` and round-trip tested, and never refitted.
+  - Per-fit exact moments are pinned in the manifest and equal the published per-fit records.
+  - Tests cover: `fit_q` never called during evaluation; distinct fit/evalrep/role namespaces, also disjoint from training; failure retention; statistics; incomplete labelling. 8 tests; 342 pass.
+  - Design: 10,000 jobs (evalrep outer, fit inner), seed 2026092105, ≤4 workers, 900 s total.
