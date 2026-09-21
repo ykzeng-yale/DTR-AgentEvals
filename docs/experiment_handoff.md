@@ -1422,3 +1422,30 @@ Code/config commit at checkpoint start: `9901fc4`. Last lead checkpoint read: `0
 | DTR-REQ-003 (P1) | **running: sampler wiring slice 1 delivered** | [`sampler.py`](../experiments/v2_sim/sampler.py). Every random step goes through one `draws.choose(label, options)` interface, and each label starts with the episode's **stream id**. **Wired:** `run_episode` (logger or frozen policy; exits `first_call_pass`, `true_pass`, `false_pass`, `K_exhausted`; every call cost retained, including the common first call; logged propensities recorded per decision); `run_blocks` (every task × r replicates retained, stream `<mode>:<task>:<rep>`); `ipw_weight` (recomputed from the recorded history); `ipw_estimate`; `fresh_estimate` (task-equal over replicates). **Scripted-draw fixtures** cover initial absorption (one draw, first-call cost kept); a false pass at O0 and after a repair; K exhaustion with all costs; a recorded .8 propensity with weight 5/4 (0 for a mismatching policy); and full task×replicate retention, with disjoint log/fresh streams, each draw consumed on its own stream and every scripted draw used. **Wiring check without Monte Carlo:** an exhaustive driver runs the *same sampler code* through every branch with its exact probability. It reproduces the accepted exact success and cost for every K=2 catalog policy and three K=4 policies, and the exact IPW utility expectation under the feedback-dependent logger. **NOT wired, listed explicitly:** the 4/4 archive branch source sampler and the Δ estimator with `frame_rule` whole-range fallback (next slice); DR and outcome regression; the per-decision cost estimator in sampled form; variance, interval and covariance-contrast estimators; any seeded pseudo-random source (none included, since no Monte Carlo is authorized). Nine tests pass; 254 tests pass. |
 
 No question for the lead.
+
+
+## Lead review — 2026-09-21 12:18 UTC cycle: sampler slice 1
+
+Reviewed `f3034c3e461ac7aea23fa522733f234d40c0e215`; [full review and acceptance criteria](theory_feedback_20260921_sampler.md).
+**REQ-003: accept the bounded episode-generation slice; repair the complete-block analysis boundary.** Nine
+supplied tests passed on lead rerun. Additional exact path checks against previously independently accepted
+moment tables passed 52 checks across two configurations, three policies each and both strata, including
+fresh/IPW second moments. This uses the sampler's path driver and is not an independent sampler or coverage study.
+The reported 254-test suite was not rerun.
+
+The estimator currently averages the observed rows without an expected manifest. Deterministic unit-weight
+probes give 3/4 for a complete two-task/two-replicate set but silently give 1/2 with a task missing, 1 with a
+replicate missing and 2/3 with a duplicate. Add a mandatory manifest check at the public analysis boundary: exact
+task/stratum/replicate keys, no missing/extra/duplicate records, retained absorbed/zero-success episodes. Reject
+and audit incomplete analysis; never drop records or fabricate outcomes. All bad probes must fail and complete
+input must retain its estimate. Exact inputs are in `docs/audits/sampler_audit_f3034c3.json`.
+
+Stream namespaces must distinguish simulation repetition/configuration, log/fresh role and fresh policy as
+well as task/replicate before introducing a seeded source; distinct labels alone do not validate independence.
+After this guard, continue the already queued 4/4 branch source/Delta fallback slice; DR/OR and uncertainty
+estimators remain explicitly unwired. No new control expansion, Monte Carlo/model run or duplicate job requested.
+Acknowledge REQ-001 completed, REQ-002 running with qualification open/blocked, REQ-003 running/repair.
+
+**Readiness 55%, change 0 points, range 45–65%.** Same rubric. No empirical outcomes or paper pages added.
+Remaining milestones: useful validated inference/adequate comparisons; statistical validation and final empirical
+synthesis; independent reproducibility, author metadata and submission packaging.
