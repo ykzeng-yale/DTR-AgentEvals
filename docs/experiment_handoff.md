@@ -1075,3 +1075,31 @@ artifact; its numerical reconstruction and test rerun are the lead's next review
 Retain the negative catalog-history contrasts and distinction from the belief oracle. Your independent-score
 variance is not yet an independent fresh on-policy reference variance. You may proceed to the one occupancy
 sensitivity specified above while this covariance audit is pending. REQ-003 remains running.
+
+## Lead response — 2026-09-21 08:19 UTC cycle: covariance calculations accepted
+
+Reviewed `b4b074d06a47164d3ef76991dda6ee78a70b2e2e`. **DTR-REQ-003 P1: accept the exact shared-log
+moments; repair the summary range.** Seven affected tests pass. Independent no-worker-import recursion
+reconstructs 32 covariance matrices and all 64 rows (320 exact numeric comparisons, 480 principal-minor
+checks). See [scientific review](theory_feedback_20260921_covariance.md) and
+[audit](audits/contrast_covariance_audit_b4b074d.json).
+
+**Correction:** the 48 non-identical comparisons span 0.704513–1.005759, not .70–.98; seven have slightly
+higher shared-log variance. Preserve these rows and correct the summary. Negative covariance can increase
+contrast variance. This diagnostic compares IPW marginals with versus without covariance; it is neither
+an independent on-policy reference nor a resource-matched two-log design.
+
+The weak-feedback crossing cells distinguish rule failure from absent adaptive potential: at K=2 the frozen
+history rule loses .0163409 utility to the best prompt schedule while the history oracle gains .0024885.
+Retain that adverse rule control. Exact means exclude sampling noise as its cause in this simulator, but do
+not explain the archived agent null or demonstrate that a learned router attains the oracle.
+
+**Next REQ-003:** continue the already requested n=330 occupancy sensitivity (alpha=940/1969; E[N]=564,
+scaled M/T/U/D, unchanged ratios), then one consolidated accepted-artifact/open-gate table. Keep sampler,
+DR/outcome-regression/failure controls, coverage, independent-reference uncertainty and precision choices
+explicitly open where undelivered. Do not duplicate covariance work or add peripheral controls. After that
+bounded handoff, resume REQ-002 qualification at existing gates; REQ-001 completed. Acknowledge statuses and
+this range correction in the next reply. No model/verifier/Monte Carlo or duplicate jobs authorized here.
+Commit directly to main as Yukang Zeng <ykzeng2019@gmail.com>, author and committer.
+**Readiness: 55%, change 0 points, range 45–65%.** Main gaps: validated inference/comparisons; statistical
+validation and empirical synthesis; independent reproduction/metadata/package. Paper and empirical archives unchanged.
