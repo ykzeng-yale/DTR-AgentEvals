@@ -1,0 +1,201 @@
+{
+ "kind": "ADDITIVE correction to a RETROSPECTIVE diagnostic (lead 20e186a / bc8f057); historical summary.json unchanged",
+ "per_fit_records": {
+  "path": "results/v2_sim/honest_split_conditional_moments_20260921/per_fit_records.jsonl",
+  "sha256": "cf7bbd9bf9031ade815dc70192055093965d431f30dd222841065a1ac1bbc9a1",
+  "finalize": {
+   "records": 1000,
+   "unique": 1000,
+   "missing": 0,
+   "expected": 1000
+  }
+ },
+ "correction": "z now uses a PAIRED leave-one-repetition-out jackknife recomputing both the error variance and the mean per-fit exact variance; normal readings are exploratory",
+ "source_sha256": {
+  "experiments/code_routing/estimators_absorbing.py": "791fad5ad2ad8944599864cf37a82d18d3cadda165c70b73a44ca6104714a403",
+  "experiments/v2_sim/conditional_moment_correction.py": "c5a5a8b82cce8820429a54fe197392d03a3097b6b6bd1550fdfeb6efc93c7892",
+  "experiments/v2_sim/conditional_moment_diagnosis.py": "3ded5eb581d2e381b44a8282fe1afd63666a834121c77720b90c45a7cea008e6",
+  "experiments/v2_sim/coverage_batch.py": "a7f9f40d494b72a78b71dc465cdaa742ebe2cc28ab1957d8ad8ed2fdbc60ca13",
+  "experiments/v2_sim/dev_batch.py": "d4d85208a1534b9f3326fecdcfa6fc338fe02b86b5e0138993874846f7473062",
+  "experiments/v2_sim/dr_bridge.py": "6e8732334b33cbdd99106fc52c8dfb8fa8e2cbc87cd933cc035cf9741316a032",
+  "experiments/v2_sim/fixed_task_blocks.py": "fafa3bc90da3114c8ff858a979476617dd4e47aabac6ca9d8fe7343d9b42dfa1",
+  "experiments/v2_sim/fixed_task_blocks_v1.json": "f57a2fc8d291d3af48095727c9188976b782a96144a9b7c46e135b4c2f83fc10",
+  "experiments/v2_sim/fresh_reference_v1.json": "9f48f0dfa41903294242a64362f3afe10d424964037fbaca650bcf2821e0c637",
+  "experiments/v2_sim/honest_split_coverage.py": "861313849d6050b053c3b21a1ef23e3016496c2f40fab6ea93add910c1a7e62b",
+  "experiments/v2_sim/honest_split_dr.py": "7a06898afdc6a2c23901cfeb005391901c6ed7cf3ad822f7bad52bdf0424bc42",
+  "experiments/v2_sim/repair_generator.py": "ffd6878afdf208f8c32ef75feda5fa324ab01b3387adcfeea96fe08d14017ecd",
+  "experiments/v2_sim/repair_generator_v1.json": "22e9f31057fabb9b65d80502d263827dbdbc1e6a90c41b758972f0f5c0d969f4",
+  "experiments/v2_sim/repair_logger.py": "d0305470c9e02b3c6cd5afe274a6e081a6d32cacb970887a4a332dae41276344",
+  "experiments/v2_sim/replication_sensitivity.py": "2e1851c7ce24e87302dd4be23adf948241406f68b69b1d9f83ff551081fa3606",
+  "experiments/v2_sim/sampler.py": "6826551ef65a821eebfabd4f74c9ede4e38da50e8bc6b40e72e23f0bd2926c13",
+  "experiments/v2_sim/writer_lock.py": "dc15bb2228e2575368619257175fbb45ef88858125fc65cea6ad797f03f7ef7d",
+  "results/v2_sim/honest_split_conditional_moments_20260921/summary.json": "0f5b8046b021f05120b0ad23ef4c60bfc5cab5a008364c6d213f1a247a7b31a5",
+  "results/v2_sim/honest_split_coverage_20260921/manifest.json": "dd1cc2394da3e4710bd0c7b3df99f1544ff63ca9b589f66fbf96c7d8d1f86b25",
+  "results/v2_sim/honest_split_coverage_20260921/reps.jsonl": "6f49a84013e3660fc31f6610eac39d00e73187e18ff54481d4220e57413d9bc5",
+  "results/v2_sim/honest_split_coverage_20260921/summary.json": "6317efcef927c7ea8e504a2d2781190326de2aad6d0d400e67901e739dab6db8"
+ },
+ "rows": [
+  {
+   "policy": "history_large_after_exception",
+   "dr": {
+    "jackknife": {
+     "empirical_variance": 0.00021779419483695285,
+     "mean_exact_variance": 0.0002125141780681118,
+     "difference": 5.2800167688410666e-06,
+     "difference_jackknife_se": 9.247374615737534e-06,
+     "ratio": 1.024845480037331,
+     "ratio_jackknife_se": 0.04351426068455331,
+     "exploratory_difference_z": 0.5709746807332032,
+     "exploratory_ratio_minus_one_z": 0.5709732774145615,
+     "empirical_variance_alone_jackknife_se": 9.246373350981525e-06,
+     "mean_exact_variance_jackknife_se": 2.1565037534242718e-08
+    },
+    "historical_z_used_empirical_variance_se_alone": 0.5710365100367248,
+    "skewness_of_average": {
+     "mean": -0.038896762903705154,
+     "min": -0.04361663924827117,
+     "max": -0.03315037737953636
+    },
+    "variance_cv_across_fits": 0.003208945259802023
+   },
+   "dr_minus_fresh": {
+    "jackknife": {
+     "empirical_variance": 0.0003918876315275996,
+     "mean_exact_variance": 0.0003827599301128637,
+     "difference": 9.12770141473586e-06,
+     "difference_jackknife_se": 1.6324184546012276e-05,
+     "ratio": 1.0238470662591155,
+     "ratio_jackknife_se": 0.04264857460604574,
+     "exploratory_difference_z": 0.5591520598782744,
+     "exploratory_ratio_minus_one_z": 0.5591527144669212,
+     "empirical_variance_alone_jackknife_se": 1.632511000357115e-05,
+     "mean_exact_variance_jackknife_se": 2.156503753426251e-08
+    },
+    "historical_z_used_empirical_variance_se_alone": 0.5591203619907711,
+    "fresh_exact": {
+     "variance": 0.00017024575204475196,
+     "k3": -7.724839550721308e-08,
+     "skewness": -0.03477563278704877
+    },
+    "skewness_of_discrepancy": {
+     "mean": -0.005775997459342987,
+     "min": -0.00788317915511418,
+     "max": -0.0036102899840647486
+    },
+    "variance_cv_across_fits": 0.0017816555775608612,
+    "historical_table_repeated_dr_reference": {
+     "skewness": -0.038896762903705154,
+     "variance_cv": 0.003208945259802023
+    }
+   }
+  },
+  {
+   "policy": "prompt_only_large_if_hard",
+   "dr": {
+    "jackknife": {
+     "empirical_variance": 0.0008688211325806327,
+     "mean_exact_variance": 0.0008791851514934842,
+     "difference": -1.0364018912851548e-05,
+     "difference_jackknife_se": 4.327324657038109e-05,
+     "ratio": 0.9882117903205644,
+     "ratio_jackknife_se": 0.04922305173886817,
+     "exploratory_difference_z": -0.23950176458323166,
+     "exploratory_ratio_minus_one_z": -0.23948555124076648,
+     "empirical_variance_alone_jackknife_se": 4.3512275799107306e-05,
+     "mean_exact_variance_jackknife_se": 4.854341951471798e-06
+    },
+    "historical_z_used_empirical_variance_se_alone": -0.2381860916836755,
+    "skewness_of_average": {
+     "mean": 0.004412934253710575,
+     "min": -0.47987467978496057,
+     "max": 0.37984394919585074
+    },
+    "variance_cv_across_fits": 0.17460232445783444
+   },
+   "dr_minus_fresh": {
+    "jackknife": {
+     "empirical_variance": 0.0011053887548770826,
+     "mean_exact_variance": 0.0010731872450643642,
+     "difference": 3.220150981271845e-05,
+     "difference_jackknife_se": 5.279523850073508e-05,
+     "ratio": 1.0300054906176108,
+     "ratio_jackknife_se": 0.04920072271903415,
+     "exploratory_difference_z": 0.6099320834069174,
+     "exploratory_ratio_minus_one_z": 0.6098587370140943,
+     "empirical_variance_alone_jackknife_se": 5.292470617860027e-05,
+     "mean_exact_variance_jackknife_se": 4.8543419514718275e-06
+    },
+    "historical_z_used_empirical_variance_se_alone": 0.6084400299559698,
+    "fresh_exact": {
+     "variance": 0.00019400209357088,
+     "k3": -7.764786281360922e-08,
+     "skewness": -0.028735574332166194
+    },
+    "skewness_of_discrepancy": {
+     "mean": 0.0020661680537581084,
+     "min": -0.4049925875700193,
+     "max": 0.28824884090973296
+    },
+    "variance_cv_across_fits": 0.14303913113537708,
+    "historical_table_repeated_dr_reference": {
+     "skewness": 0.004412934253710575,
+     "variance_cv": 0.17460232445783444
+    }
+   }
+  },
+  {
+   "policy": "fixed_LS",
+   "dr": {
+    "jackknife": {
+     "empirical_variance": 0.0006888016178768022,
+     "mean_exact_variance": 0.0006493256267871163,
+     "difference": 3.9475991089685876e-05,
+     "difference_jackknife_se": 3.450383307595381e-05,
+     "ratio": 1.060795369012331,
+     "ratio_jackknife_se": 0.05314263929762334,
+     "exploratory_difference_z": 1.144104511599821,
+     "exploratory_ratio_minus_one_z": 1.1440035688075052,
+     "empirical_variance_alone_jackknife_se": 3.450321650036089e-05,
+     "mean_exact_variance_jackknife_se": 1.7096846757605626e-06
+    },
+    "historical_z_used_empirical_variance_se_alone": 1.1441249568507033,
+    "skewness_of_average": {
+     "mean": -0.07316643128564143,
+     "min": -0.4260355345083742,
+     "max": 0.20026004172315046
+    },
+    "variance_cv_across_fits": 0.08326327243298982
+   },
+   "dr_minus_fresh": {
+    "jackknife": {
+     "empirical_variance": 0.000911547357480038,
+     "mean_exact_variance": 0.0008373485298955164,
+     "difference": 7.419882758452167e-05,
+     "difference_jackknife_se": 4.420106608128114e-05,
+     "ratio": 1.088611641312346,
+     "ratio_jackknife_se": 0.05278998323786312,
+     "exploratory_difference_z": 1.6786660178756274,
+     "exploratory_ratio_minus_one_z": 1.6785692261555791,
+     "empirical_variance_alone_jackknife_se": 4.421049373919165e-05,
+     "mean_exact_variance_jackknife_se": 1.7096846757605662e-06
+    },
+    "historical_z_used_empirical_variance_se_alone": 1.678308051075802,
+    "fresh_exact": {
+     "variance": 0.0001880229031084,
+     "k3": -7.306288029277265e-08,
+     "skewness": -0.028338747918003258
+    },
+    "skewness_of_discrepancy": {
+     "mean": -0.048259678148708636,
+     "min": -0.3158266724000776,
+     "max": 0.1428115927418354
+    },
+    "variance_cv_across_fits": 0.0645668734471221,
+    "historical_table_repeated_dr_reference": {
+     "skewness": -0.07316643128564143,
+     "variance_cv": 0.08326327243298982
+    }
+   }
+  }
+ ]
+}
