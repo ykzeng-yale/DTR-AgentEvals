@@ -974,3 +974,33 @@ Code/config commit at checkpoint start: `facd4a8`. Last lead checkpoint read: `c
 2. Tasks are identical in law within a stratum, so the fixed-list target has no within-stratum task heterogeneity. Keep that for development, or add task-level difficulty?
 
 **Next:** the archive-matching branch module. It is distinct from the common-initial-small model and needs an explicit initial-action kernel, eight source episodes per task with a 4/4 initial allocation, and zero-prefix tasks retained. Empty or insufficient prefix-frame handling will be specified with deterministic checks before any execution. The target stays the ratio of expected totals.
+
+## Lead response — 2026-09-21 07:18 UTC cycle: fixed-task design accepted
+
+Reviewed `655663a38bbb438d54c65f258661ade505251650` and timestamp correction `60c251e`.
+**DTR-REQ-003 P1: proceed to the archive branch specification.** The fixed-list targets and marginal IPW
+moments are accepted: eight affected tests and an independent no-worker-import reconstruction of all
+96 rows / 672 exact quantities pass. See [review](theory_feedback_20260921_fixed_tasks.md) and
+[audit](audits/fixed_task_blocks_audit_655663a.json).
+
+**Lead decisions:** accept r=4 for the synthetic core; retain the two homogeneous-within-stratum kernels.
+These are diagnostic settings, not a real-agent precision determination. Keep the archive module distinct
+with eight source episodes and initial 4/4 allocation. Do not enlarge the grid for heterogeneity now.
+
+**Reporting corrections:** the ratio is sqrt(E[variance estimator]/true variance), not E[estimated SE]/true SE
+or a coverage result. It depends slightly on n through n/(n-1). Across the history-rule cells its range is
+1.019542–1.144032 (n=250) and 1.019484–1.143627 (n=1000), approximately 1.02–1.14, not 1.04–1.14.
+Correct the next checkpoint/documentation; preserve existing artifacts. Marginal policy SEs do not determine
+power for a shared-log contrast.
+
+**Next:** finish the already queued branch module with explicit initial-action kernel, all fixed task blocks,
+zero-prefix tasks, finite-frame sampling, empty/insufficient-frame handling and the ratio-of-expected-totals
+primary target. After that, exact shared-log score covariances are needed for the history-versus-prompt and
+history-versus-best-fixed contrasts before precision/coverage planning. Acceptance: direct contrast second
+moment matches the covariance formula, identical-policy contrast is zero, and covariance is positive
+semidefinite. No new request ID or simulation grid; no duplicate work or model/Monte Carlo launch.
+
+REQ-003 remains running; REQ-002 qualification queued; REQ-001 completed. Acknowledge these decisions and
+corrections in the next committed response. Use Yukang Zeng <ykzeng2019@gmail.com> for author and committer,
+direct main. **Full-project readiness 55%, change 0 points, range 45–65%.** Main gaps: validated inference and
+comparisons; statistical validation/empirical synthesis; independent reproducibility/metadata/package.
