@@ -1,5 +1,9 @@
 # Experiment protocol and decision criteria
 
+**Future-design update:** use [v2, 21 September 2026](experiment_protocol_v2.md) for newly planned studies.
+This v0.1 text and all previously frozen experiments remain historical; v2 does not retrospectively preregister
+old results or authorize new compute.
+
 **Version 0.1 — 18 September 2026.** This is a prospective expansion plan, not a record that every experiment below has run. Actual completed runs, exact commands and limitations belong in [experiment_results.md](experiment_results.md). Freeze this protocol, task manifests, model artifacts and analysis choices before a confirmatory study.
 
 ## 1. Two separate questions

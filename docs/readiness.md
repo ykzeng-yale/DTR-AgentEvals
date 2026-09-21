@@ -235,3 +235,18 @@ integration, corrected interpretation and an explicit sufficient inferential con
 or validated intervals. Top three remaining milestones: useful validated inference and adequate comparisons;
 remaining statistical validation and final empirical synthesis; independent final reproducibility, author-approved
 metadata and submission packaging. New GPU/model and Monte Carlo requests remain deferred. Nothing submitted.
+
+## Checkpoint: 21 September 2026, literature-informed design review
+
+Reviewed new work at `981f7b9872164697ab79e413a50257c011f11e6f`. The [source review](literature_design_review_20260921.md)
+and [v2 protocol](experiment_protocol_v2.md) separate evaluation calibration from history-dependent improvement,
+select concrete open-source harness/baseline components, and specify task, failure, support and precision gates.
+Independent reviews identified and resolved outcome/eligibility/variance wording issues. The [branch audit](theory_feedback_20260921_conditional_frame.md)
+reconstructs the new conditional calculation, corrects its component interpretation and retains it as secondary;
+it does not replace the primary fixed-benchmark target or validate a confidence interval.
+
+**Overall 55%, change 0 percentage points, judgment range 45–65%.** Unchanged weights 25/20/30/15/10 and stages
+75/75/50/25/25 give **55.00**. The improved design and deterministic diagnosis advance work within existing stages;
+no new observations or simulation validation were produced. The 35-page PDF remains unchanged. Remaining milestones:
+(1) useful validated inference and adequate comparisons; (2) remaining statistical validation and final empirical
+synthesis; (3) independent reproducibility, author metadata and submission packaging. Nothing submitted.

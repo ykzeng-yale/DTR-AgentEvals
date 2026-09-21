@@ -1,5 +1,9 @@
 # Literature and claim audit
 
+**New design audit, 21 September 2026:** [primary methods and official-code review](literature_design_review_20260921.md)
+links the routing, OPE, sequential-trial and harness findings to the [revised prospective protocol](experiment_protocol_v2.md)
+and a pinned reuse inventory. Source inspection is distinct from implementation reproduction.
+
 **Search date:** 2026-09-18. **Scope:** model selection inside a multi-step LLM agent; causal policy value, longitudinal off-policy evaluation (OPE), sequential randomization, and improvement of a routing policy. This is a focused, reproducible scoping review, not an exhaustive systematic review or a claim of priority. The bibliography contains 22 primary research references.
 
 ## Assessment

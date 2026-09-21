@@ -258,7 +258,8 @@ justified foldwise construction, is needed before any finite-sample certificate 
 200 first-failure prefixes were sampled with known probability (0.355) from the completed confirm log, their
 transcripts restored, and both models continued from the identical saved state with 2 fresh seeds each. That is
 **800 continuations, not 800 independent units**: they are 2 replicates × 2 arms within each of 200 prefixes, drawn
-from 103 tasks, and every estimate below averages replicates within a prefix and clusters on the task.
+from 103 tasks, and the historical summaries below average replicates within a prefix and use task clustering. Their reported
+scales/bands are exploratory; none is a validated empirical interval.
 
 | quantity | value |
 |---|---|
@@ -270,39 +271,34 @@ from 103 tasks, and every estimate below averages replicates within a prefix and
 | the same quantity from the randomized log (pooled Hájek IPW) | 0.1347 (SE 0.0474) |
 | forked minus log (pooled targets; first-order task-clustered) | **−0.0147, [−0.109, +0.080]** |
 
-**Declared inferential target (B2), and the variance that follows from it.** The published comparison added the two
-standard errors as if independent, and our next attempt corrected that with an influence-function scale. Both were
-answering the wrong question. Following `docs/theory_branch_sampling.md`, we now **declare a finite-frame target**:
-condition on the source frame F — the realized task set, the realized randomized log, and the N = 564 eligible
-first-failure prefixes — and estimate
+**Lead review, 21 September 2026 — conditional target is secondary.** The worker's
+`981f7b9` calculation is independently reconstructed from raw records in the
+[review and audit](../docs/theory_feedback_20260921_conditional_frame.md). It conditions on the entire realized
+source frame F, including log outcomes, and estimates Δ_F = μ_F − L(F). Then L(F) is constant and the conditional
+variance is the branch variance under the stated sampling/execution assumptions. This does **not** replace the
+primary fixed-benchmark ratio-of-expected-totals target or resolve its source/selection uncertainty.
 
-  μ_F = N⁻¹ Σᵢ dᵢ,  Δ_F = μ_F − L(F),  with L(F) the pooled Hájek log contrast, **measurable with respect to F**.
-
-Because L(F) is then a constant, **Var(Δ̂ | F) = Var(B̂ | F) exactly**: the log side contributes no variance at all,
-and the branch sample is the only randomness. Under simple random sampling of m = 200 of N = 564 prefixes without
-replacement with r = 2 continuations per arm, that document's Proposition gives an unbiased estimator, which yields
-
-| quantity | value |
+| Reconstructed conditional-frame quantity | Value |
 |---|---:|
-| Δ̂ = B̂ − L(F) | **−0.014654** (unchanged; the point estimate was never at issue) |
-| between-prefix sampling component | 0.000480 |
-| execution-noise component | 0.000071 |
-| **frame-conditional SE** | **0.0235** |
-| 95% normal interval | **[−0.0607, +0.0314]** |
+| Point difference, unchanged | −0.014654 |
+| Estimated latent between-prefix component | 0.000351235 |
+| Estimated execution-noise component | 0.000200000 |
+| Total variance estimate | 0.000551235 |
+| Square-root scale | 0.0234784 |
+| Archived normal interval, **coverage unvalidated** | [−0.0607, +0.0314] |
 
-It supersedes the independence sum (0.0572) and the influence-function scale (0.0484), both of which attributed
-randomness to a quantity this target conditions on. Sampling dominates execution noise by about 7:1; the mean
-within-prefix variance of 0.04 implies an 8% same-arm replicate disagreement, matching the independently measured
-figure.
+The previously labeled components .000480 and .000071 are two estimator summands; the first already contains
+execution noise. Their approximately 7:1 ratio does not measure sampling versus execution variation. The corrected
+component-estimate ratio is **1.76**, not a validated allocation rule. All original script/JSON values remain
+preserved. The audit also reconstructs 32 discordant same-arm pairs out of 400 and two prefixes spanning both
+invocations; those facts do not establish independence or unchanged execution laws after recovery.
 
-**What it does not establish**, stated because the interval is easy to over-read: it is uncertainty *around* Δ_F and
-does **not** test that Δ_F = 0, since the realized log estimate is conditioned on; it is **not** the unconditional
-task-population claim, which needs Var{μ_F − L(F)} from a source model that is still **open**; an unbiased variance
-estimator does not confer nominal coverage without a limit theorem; and it assumes continuations are iid within arm
-with no shocks shared across prefixes — assumed, not shown, and **2 of 200 prefixes draw their replicates from two
-different invocations** (the lost run and its recovery), so for those the assumption spans two execution epochs.
+A justified conditional CI could test Δ_F = 0; conditioning does not prohibit that test. However, stable execution
+kernels do not imply that the conditional gap from a noisy realized log is zero. The current interval has no
+validated coverage, so its inclusion of zero establishes neither calibration nor equivalence. Primary B2 remains
+open. See the review for exact equations, assumptions and acceptance criteria.
 
-The two estimates are **compatible, which is weaker than agreement**. Their difference is **−0.0147**, and the
+**Historical exploratory scales below remain unvalidated.** The point difference is **−0.0147**, and the
 sources are not independent: branch prefixes are drawn from the very log episodes the other estimate uses. Keeping
 the pooled estimators and all 330 source tasks, the first-order task-cluster influence contribution of that
 difference (identity supplied by the theory workstream, verified here by central differences over every source task,

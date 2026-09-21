@@ -2,6 +2,14 @@
 
 **Updated 20 September 2026.** This is a working draft of the scoped theory paper, now with an archived descriptive coding case study and a prospective validation plan. New model/Monte Carlo work remains deferred. It is not a submission-ready claim, a novelty certification, or external peer review.
 
+**21 September design follow-up:** the [literature/code audit](../docs/literature_design_review_20260921.md) and
+[prospective v2 protocol](../docs/experiment_protocol_v2.md) are reviewed repository deliverables, not yet new paper
+results. The [conditional-frame audit](../docs/theory_feedback_20260921_conditional_frame.md) reproduces the new
+worker arithmetic while correcting its target and variance-component interpretation. No validated interval or
+new observation follows. The existing 35-page PDF/TeX are unchanged; `validation.json` records their earlier build
+snapshot and should not be read as a hash validation of subsequently updated coordination documents. Readiness
+remains 55%, change 0 points, range 45–65%, with the same three gaps listed below.
+
 ## Delivered scope
 
 | Component | Status and boundary |

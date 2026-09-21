@@ -1,0 +1,161 @@
+{
+  "reviewed_sha": "981f7b9872164697ab79e413a50257c011f11e6f",
+  "scope": "Deterministic arithmetic from immutable archived numeric outcomes; not algebra-only, not an inference or interval-coverage validation.",
+  "command": "python3 scripts/audit_conditional_branch_frame_981f7b9.py",
+  "imports_experiment_code": false,
+  "executes_candidates_models_resampling_or_monte_carlo": false,
+  "inputs": {
+    "branch_plan": {
+      "path": "results/code_routing/branch/branch_plan.json",
+      "sha256": "59a384ac66c2b8d2e5e42c9828d7cc48757f802be9f4fa050eb22dac34367b35"
+    },
+    "branch_episodes": {
+      "path": "results/code_routing/branch/episodes.jsonl",
+      "sha256": "83bf00634fbeeb8af05cdfb546480fb3e72aa440a3b9d6b71f3d22dbc2c98413"
+    },
+    "log_episodes": {
+      "path": "results/code_routing/log/episodes.jsonl",
+      "sha256": "e643ee44c7ef658fff65efb5e17763ee78c990d21184d060f5823025a100414e"
+    },
+    "design": {
+      "path": "results/code_routing/design.json",
+      "sha256": "230638a757c581138d1a3611a9c5788ed79b80a655313d316cac63cbba4ff43d"
+    },
+    "worker_summary": {
+      "path": "results/code_routing/analysis/branch_frame_inference.json",
+      "sha256": "84f3a2a83c149f5531134ccd891d21f4a40ab1403c688115998c46f088f0f10e"
+    },
+    "worker_source": {
+      "path": "experiments/tools/branch_frame_inference.py",
+      "sha256": "4612dccb53f4141b1db7fb0a1280762012e9ae9f5e15d5fdc6fa92c5689f7ce9"
+    }
+  },
+  "counts": {
+    "retained_log_records": 4488,
+    "confirm_log_records": 2640,
+    "confirm_tasks": 330,
+    "eligible_prefixes": 564,
+    "selected_prefixes": 200,
+    "tasks_with_selected_prefixes": 103,
+    "branch_records": 800,
+    "replicates_per_prefix_per_arm": 2,
+    "same_arm_replicate_pairs": 400,
+    "discordant_same_arm_pairs": 32,
+    "discordance_fraction": 0.08
+  },
+  "source_pooled_totals": {
+    "large_numerator": 184,
+    "large_denominator": 570,
+    "small_numerator": 108,
+    "small_denominator": 574
+  },
+  "numeric_reconstruction": {
+    "N_eligible_prefixes": 564,
+    "m_sampled": 200,
+    "sampling_fraction": 0.3546099290780142,
+    "B_hat": 0.12,
+    "L_of_F": 0.13465370743933003,
+    "delta_hat": -0.014653707439330033,
+    "sample_variance_of_contrasts": 0.14884422110552764,
+    "mean_within_prefix_variance": 0.04,
+    "between_prefix_component": 0.0004803129120781211,
+    "execution_component": 7.092198581560284e-05,
+    "var_hat_frame": 0.000551234897893724,
+    "se_frame": 0.023478392148818965,
+    "prefixes_with_replicates_from_two_invocations": 2
+  },
+  "difference_from_archived_numeric_fields": {
+    "N_eligible_prefixes": 0,
+    "m_sampled": 0,
+    "sampling_fraction": 0.0,
+    "B_hat": 0.0,
+    "L_of_F": 0.0,
+    "delta_hat": 0.0,
+    "sample_variance_of_contrasts": 0.0,
+    "mean_within_prefix_variance": 0.0,
+    "between_prefix_component": 0.0,
+    "execution_component": 0.0,
+    "var_hat_frame": 0.0,
+    "se_frame": 0.0,
+    "prefixes_with_replicates_from_two_invocations": 0
+  },
+  "all_reconstructed_numeric_fields_match_within_1e_minus_12": true,
+  "variance_decomposition": {
+    "observed_contrast_sample_variance": {
+      "exact": "1481/9950",
+      "decimal": 0.14884422110552764
+    },
+    "mean_estimated_contrast_execution_variance": {
+      "exact": "1/25",
+      "decimal": 0.04
+    },
+    "estimated_latent_prefix_variance": {
+      "exact": "1083/9950",
+      "decimal": 0.10884422110552763
+    },
+    "estimator_first_summand": {
+      "exact": "134771/280590000",
+      "decimal": 0.0004803129120781211
+    },
+    "estimator_second_summand": {
+      "exact": "1/14100",
+      "decimal": 7.092198581560284e-05
+    },
+    "estimated_latent_between_component": {
+      "exact": "32851/93530000",
+      "decimal": 0.00035123489789372396
+    },
+    "estimated_execution_component": {
+      "exact": "1/5000",
+      "decimal": 0.0002
+    },
+    "estimated_latent_between_to_execution_ratio": {
+      "exact": "32851/18706",
+      "decimal": 1.7561744894686198
+    },
+    "first_to_second_summand_ratio": {
+      "exact": "134771/19900",
+      "decimal": 6.772412060301508
+    },
+    "total": {
+      "exact": "51557/93530000",
+      "decimal": 0.000551234897893724
+    },
+    "interpretation": "Component estimates use the conditional sampling/independent-execution assumptions; their ratio is descriptive, not an unbiased ratio estimator or a design optimum."
+  },
+  "contrast_histogram": {
+    "-1": 4,
+    "-1/2": 8,
+    "0": 145,
+    "1": 21,
+    "1/2": 22
+  },
+  "mixed_invocation_prefixes": [
+    {
+      "parent_episode_id": "log:humaneval/4#3",
+      "invocations": [
+        "0445024c72d2",
+        "8c343c83afdc"
+      ]
+    },
+    {
+      "parent_episode_id": "log:humaneval/46#3",
+      "invocations": [
+        "0445024c72d2",
+        "8c343c83afdc"
+      ]
+    }
+  ],
+  "archived_normal_interval_not_validated": [
+    -0.0606713560510152,
+    0.031363941172355136
+  ],
+  "scientific_boundaries": [
+    "The primary fixed-benchmark ratio-of-expected-source-totals target is unchanged.",
+    "The conditional-frame target mu_F-L(F) is secondary and does not supersede primary inference.",
+    "A justified conditional confidence set could test the frame-specific null Delta_F=0 by inversion; conditioning on L(F) does not prevent that test.",
+    "Kernel stability does not imply the realized frame-specific gap is zero.",
+    "The reported normal interval is archived arithmetic, not a validated confidence interval.",
+    "Distinct seeds, recorded restoration flags and reconstruction do not establish cross-prefix/arm independence, unchanged execution laws across invocations, or outcome-independent recovery."
+  ]
+}

@@ -1,5 +1,35 @@
 # Experimental handoff
 
+**Latest lead decision, 21 September 2026 UTC, author-requested literature/design review:** read the
+[source review](literature_design_review_20260921.md), [v2 protocol](experiment_protocol_v2.md), and
+[conditional-frame correction](theory_feedback_20260921_conditional_frame.md). Reviewed `981f7b9`; independently
+reconstructed all conditional-frame arithmetic, but reject primary-target supersession and the 7:1 decomposition.
+The primary fixed-benchmark inference target remains unchanged. No new valid empirical interval is established.
+
+**Concrete next requests, in order (no new compute):**
+1. Supply the corrected source-bound A6 report and evidence/unknowns for source blocks, fresh pairs and recovery;
+   acceptance is exact agreement with the pinned lead audits, unchanged cohorts/endpoints and no unsupported
+   oracle, power, calibration or independence claims.
+2. Map pinned mini-swe-agent/SWE-bench and local RouteLLM sources to the v2 adapter contract: two assignments,
+   full histories, retries, budget eligibility, explicit submissions, evaluator failures, unique evaluation IDs,
+   dependency/license records. Acceptance is an inspectable hook/field map and planned deterministic fixtures;
+   do not claim installation or launch models, containers, verifiers or Monte Carlo.
+3. Specify the finite simulation transition/observation tables, fixed-policy catalog, two exact-truth paths and
+   complete fixed-task block generator. Acceptance is the analytic positive/negative controls and unchanged
+   target under logger-only changes; lead reviews inference and final numerical precision/resource choices.
+
+Use existing open-source harness/evaluator code instead of reimplementing the environment. Primary comparison
+isolates history information at decision 2 with initial S fixed; RouteLLM choose-once transfer is secondary.
+Keep all prior adverse results. This task's GPU/model/Monte Carlo deferral continues; separately authorized work
+elsewhere is unaffected. Every new commit: **Yukang Zeng <ykzeng2019@gmail.com>**, author and committer, direct main,
+no PR or AI/vendor coauthor trailers. No API key needed for this design work.
+
+**Full readiness 55%, change 0 points, judgment range 45–65%.** No new observations; the 35-page PDF remains preserved.
+Largest gaps: useful validated inference/adequate comparisons; remaining statistical validation and final empirical
+synthesis; independent reproducibility, author metadata and submission packaging. Earlier dated replies below
+remain historical.
+
+
 **Latest lead reply, 20 September 2026, 21:54 UTC cycle:** read the
 [case-study integration and scientific correction](theory_feedback_20260920_case_study.md). The `aac69b5`
 retraction is partly accepted, but its partition ceiling, .0199 comparator, selected 61-task analysis and initial

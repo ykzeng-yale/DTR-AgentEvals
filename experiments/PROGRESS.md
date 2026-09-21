@@ -1,5 +1,17 @@
 # Progress log — experiments workstream
 
+**Latest lead review, 21 September 2026 UTC:** the new `981f7b9` conditional variance arithmetic is reproduced,
+but it answers a secondary realized-frame question and does not half-discharge the primary fixed-benchmark B2.
+Its estimated latent-between/execution ratio is 1.76, not 7; a conditional test is possible in principle, while
+stable kernels do not force that realized-frame gap to zero. See the
+[correction](../docs/theory_feedback_20260921_conditional_frame.md). The older “no study numbers” statement below
+is stale: the 35-page paper already includes the descriptive case. Stages 75/75/50/25/25 give **55.00**, not 54.25.
+The author-requested [literature/code review](../docs/literature_design_review_20260921.md) and
+[v2 design](../docs/experiment_protocol_v2.md) now govern future work. They are source-reviewed plans, not runs.
+Readiness **55%, change 0 points, range 45–65%**; useful inference/comparisons, remaining statistical/empirical
+synthesis and independent reproduction/metadata/package remain open. Historical entries below are preserved.
+
+
 **Lead review, 20 September 2026, 21:54 UTC cycle:** the 16:45 EDT correction below remains historical and is
 partly rejected. Upward bias is not an observed upper bound, .0199 is the wrong comparator, and selecting 61
 both-arms/both-stages tasks changes the estimand. See the [current review](../docs/theory_feedback_20260920_case_study.md)

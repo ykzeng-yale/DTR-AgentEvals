@@ -1,6 +1,10 @@
 # Theory-paper positioning and claim map
 
-**Scope frozen for drafting: 19 September 2026.** The current manuscript develops theory and a prospective evaluation protocol. Existing repository pilot and feasibility records are preserved, but their numbers are not manuscript evidence. The introduction and discussion do not claim completed confirmatory experiments, improved task success, lower evaluation cost, or submission readiness. The search supplements the broader [literature audit](literature.md); it is not an exhaustive novelty certification.
+**Updated 21 September 2026.** The 35-page manuscript contains theory and an archived descriptive coding case,
+including unfavorable and unresolved comparisons. It does not claim validated confirmatory improvement, lower
+evaluation cost or submission readiness. The [new experimental-design review](literature_design_review_20260921.md)
+supplements the broader [literature audit](literature.md); neither is an exhaustive novelty certification.
+The [v2 protocol](experiment_protocol_v2.md) is prospective and unrun.
 
 ## Scientific contribution and audience
 
@@ -24,7 +28,7 @@ This sentence describes the paper's scope without claiming a new g-formula, infl
 | Target-prefix branch score (B) | Importance weighting and augmented inverse-probability estimation under selective observation. | For known prefix ratio `w`, known positive branch-selection probability `e`, a frozen augmentation `m`, and paired live contrast `D`, use `U = w[m + S/e (D-m)]` for the target-prefix continuation contrast. | Selection must be conditionally independent of the potential branch contrast given the recorded prefix; moments and prefix support are required. Arbitrary branch collections do not identify full root-to-terminal policy values. |
 | Branch variance and allocation (B) | Classical variance/cost allocation (Neyman); prior optimal policy-evaluation data collection (Li et al.); sampling design matters in OPE (Kallus et al.). | Explicit variance `Var(w mu) + E[w²{v/e + (1/e - 1)(mu-m)²}]`, where `mu = E[D|H]` and `v = Var(D|H)`, and constrained selection minimizing it. | Oracle allocation is proportional to `|w| sqrt({v + (mu-m)²}/c)`, clipped to the declared floor/cap; when `m=mu`, this reduces to `|w| sqrt(v/c)`. Do not claim globally optimal sequential exploration or a new efficiency bound for arbitrary branch trees. |
 | Execution-kernel sensitivity (C) | Simulation-lemma and coupling arguments (Kearns and Singh; Lobel and Parr). | For a common initial law and target policy, bounded complete-trace payoff range `R`, and stagewise uniform kernel-TV bounds `epsilon_j`, value drift is at most `R[1-product_j(1-epsilon_j)]`. | A finite-horizon full-history adaptation. It propagates specified discrepancies; it does not estimate them or identify unseen model versions. A local empirical discrepancy is not automatically a uniform bound. |
-| Empirical usefulness | No theoretical argument alone determines real-agent precision, cost, or performance. | Planned tests compare estimators with known truth and fresh policy executions; branch restoration and support are audited. | Use future/conditional language. Preserve null results and failures when the studies are conducted. |
+| Empirical usefulness | No theoretical argument alone determines real-agent precision, cost, or performance. | Archived descriptive comparisons are in the paper; revised known-truth and fresh-policy validation remain planned. | Separate observed numbers from validated inference. Preserve adverse results and restrict new claims to the tested class, harness and precision. |
 
 ## Closest comparisons to keep visible
 

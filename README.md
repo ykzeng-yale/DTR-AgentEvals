@@ -12,9 +12,16 @@ The proposed contribution is a sequentially randomized evaluation design with ve
 
 **20 September 2026:** the [35-page manuscript](manuscript/README.md) now combines the scoped theory and proofs with a critical descriptive coding-agent case study, including unfavorable results and unresolved inference. [Read the paper PDF](manuscript/DTR_Agent_Regimes_Theory_Draft.pdf) or [edit the LaTeX source](manuscript/main.tex). New model/GPU and Monte Carlo studies remain deferred. Archived observations are preserved; descriptive integration does not establish confirmatory validation or adaptive improvement.
 
+**21 September design update:** a [primary-literature and official-code review](docs/literature_design_review_20260921.md)
+now informs the [v2 prospective protocol](docs/experiment_protocol_v2.md): separate evaluator calibration from
+history-dependent improvement, reuse mini-swe-agent/SWE-bench and a local RouteLLM baseline, and require explicit
+feedback, failure, support and precision gates. The new conditional branch analysis is independently reconstructed
+and [corrected](docs/theory_feedback_20260921_conditional_frame.md); primary inference remains unresolved.
+These are reviewed plans and retrospective checks, with no new model or Monte Carlo execution.
+
 The new [extension proofs](docs/theory_extensions.md) cover prospective routing opportunities, selectively measured branch contrasts, oracle allocation of branch costs, and execution-kernel sensitivity. The [independent internal review](docs/theory_review_20260919.md) records conditions, corrections, and exact checks; the [claim map](docs/paper_positioning.md) separates inherited theory from the project-specific formulation.
 
-[Full-project readiness](docs/readiness.md) is reported after each update using a stable milestone rubric. The initial 19 September estimate is **about 50%** (judgment range 45–60%); subsequent checkpoints and remaining work are recorded in [the coordination issue](https://github.com/ykzeng-yale/DTR-AgentEvals/issues/4).
+[Full-project readiness](docs/readiness.md) is **55% (change 0 percentage points; judgment range 45–65%)** at this checkpoint. Remaining milestones are useful validated inference/adequate comparisons, remaining statistical validation and final empirical synthesis, and independent reproducibility/author metadata/submission packaging. The stable rubric and earlier estimates are recorded in [the coordination issue](https://github.com/ykzeng-yale/DTR-AgentEvals/issues/4).
 
 ## Research package
 
@@ -23,7 +30,7 @@ The new [extension proofs](docs/theory_extensions.md) cover prospective routing 
 | [Research proposal](docs/research_proposal.md) | Scientific question, contribution boundary, target trial, aims, hypotheses and manuscript abstract |
 | [Literature audit](docs/literature.md) | Original 22-source audit plus a [five-source theory supplement](docs/paper_positioning.md), nearest-work comparisons, corrected source claims, search log and availability audit |
 | [Theory and proofs](docs/theory.md) | Identification, policy-ratio IPW, fixed-policy EIF, exact DR remainder, inference, clusters, Bellman recursion, finite-class improvement and incremental routing |
-| [Experiment protocol](docs/experiment_protocol.md) | Simulation grid, open-model benchmark design, splits, sample-size planning, logging and success criteria |
+| [Experiment protocol v2](docs/experiment_protocol_v2.md) | Literature-informed prospective design, exact-truth controls, two-decision repair study, baselines, resource and inference gates; [v0.1](docs/experiment_protocol.md) retained |
 | [Executed results](docs/experiment_results.md) | What actually ran, numerical results, failed pilot attempts and limitations |
 | [Next-agent handoff](docs/experiment_handoff.md) | Commands, owned artifacts, current limitations and concrete next experiments |
 | [External data audit](docs/external_data_audit.md) | Direct inspection of 896 released Replay Gap records spanning 56 distinct tasks |
