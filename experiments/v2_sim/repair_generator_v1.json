@@ -1,0 +1,6460 @@
+{
+ "request": "DTR-REQ-003 slice 3: finite multi-opportunity repair generator, kernel tables and exact truth",
+ "status": "PROPOSED tables for lead review; exact rational enumeration and DP; no Monte Carlo, no model",
+ "tables": {
+  "P_HARD": "1/2",
+  "P0": {
+   "0": "3/5",
+   "1": "1/5"
+  },
+  "FALSE_PASS": {
+   "0": "1/10",
+   "1": "1/5"
+  },
+  "DEEP0": {
+   "0": "3/10",
+   "1": "7/10"
+  },
+  "KAPPA": {
+   "informative": "9/10",
+   "weak": "3/5"
+  },
+  "REPAIR": {
+   "no_crossing": {
+    "U0_A0": "1/2",
+    "U0_A1": "3/5",
+    "U1_A0": "1/10",
+    "U1_A1": "2/5"
+   },
+   "crossing": {
+    "U0_A0": "3/5",
+    "U0_A1": "2/5",
+    "U1_A0": "1/10",
+    "U1_A1": "1/2"
+   },
+   "U_irrelevant_negative_control": {
+    "U0_A0": "3/10",
+    "U0_A1": "2/5",
+    "U1_A0": "3/10",
+    "U1_A1": "2/5"
+   }
+  },
+  "STAY_DEEP": {
+   "U1_A0": "9/10",
+   "U1_A1": "3/5",
+   "U0_A0": "1/5",
+   "U0_A1": "1/10"
+  },
+  "STAY_DEEP_for_U_irrelevant": "1/2 for every (U, A)",
+  "COST": {
+   "0": "1/100",
+   "1": "3/100"
+  },
+  "strata": "S observed at start (0 easy, 1 hard); reported values mix strata 1/2 : 1/2",
+  "stopping": "first visible pass (true or false) or after K repair opportunities",
+  "endpoint": "hidden correctness of the final candidate; utility = success - total call cost incl. common first call"
+ },
+ "cells": [
+  {
+   "K": 2,
+   "action_effect": "no_crossing",
+   "feedback": "informative",
+   "kappa": "9/10",
+   "policies": {
+    "fixed_SS": {
+     "success": {
+      "exact": "379653/625000",
+      "decimal": 0.6074448
+     },
+     "cost": {
+      "exact": "45003/2500000",
+      "decimal": 0.0180012
+     },
+     "utility": {
+      "exact": "1473609/2500000",
+      "decimal": 0.5894436
+     },
+     "repair_calls": {
+      "exact": "20003/25000",
+      "decimal": 0.80012
+     },
+     "false_pass_stop": {
+      "exact": "125203/625000",
+      "decimal": 0.2003248
+     },
+     "reach_opportunity": [
+      "1/2",
+      "7503/25000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "248961/312500",
+       "utility": "976333/1250000"
+      },
+      "hard": {
+       "success": "32673/78125",
+       "utility": "124319/312500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_SL": {
+     "success": {
+      "exact": "1695411/2500000",
+      "decimal": 0.6781644
+     },
+     "cost": {
+      "exact": "60009/2500000",
+      "decimal": 0.0240036
+     },
+     "utility": {
+      "exact": "817701/1250000",
+      "decimal": 0.6541608
+     },
+     "repair_calls": {
+      "exact": "20003/25000",
+      "decimal": 0.80012
+     },
+     "false_pass_stop": {
+      "exact": "940997/5000000",
+      "decimal": 0.1881994
+     },
+     "reach_opportunity": [
+      "1/2",
+      "7503/25000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "1046307/1250000",
+       "utility": "510887/625000"
+      },
+      "hard": {
+       "success": "40569/78125",
+       "utility": "153407/312500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_LS": {
+     "success": {
+      "exact": "893667/1250000",
+      "decimal": 0.7149336
+     },
+     "cost": {
+      "exact": "67819/2500000",
+      "decimal": 0.0271276
+     },
+     "utility": {
+      "exact": "343903/500000",
+      "decimal": 0.687806
+     },
+     "repair_calls": {
+      "exact": "17819/25000",
+      "decimal": 0.71276
+     },
+     "false_pass_stop": {
+      "exact": "83339/500000",
+      "decimal": 0.166678
+     },
+     "reach_opportunity": [
+      "1/2",
+      "5319/25000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "532059/625000",
+       "utility": "207251/250000"
+      },
+      "hard": {
+       "success": "45201/78125",
+       "utility": "34163/62500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_LL": {
+     "success": {
+      "exact": "471333/625000",
+      "decimal": 0.7541328
+     },
+     "cost": {
+      "exact": "78457/2500000",
+      "decimal": 0.0313828
+     },
+     "utility": {
+      "exact": "2891/4000",
+      "decimal": 0.72275
+     },
+     "repair_calls": {
+      "exact": "17819/25000",
+      "decimal": 0.71276
+     },
+     "false_pass_stop": {
+      "exact": "20003/125000",
+      "decimal": 0.160024
+     },
+     "reach_opportunity": [
+      "1/2",
+      "5319/25000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "273441/312500",
+       "utility": "42487/50000"
+      },
+      "hard": {
+       "success": "49473/78125",
+       "utility": "7447/12500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "prompt_only_large_if_hard": {
+     "success": {
+      "exact": "446853/625000",
+      "decimal": 0.7149648
+     },
+     "cost": {
+      "exact": "66379/2500000",
+      "decimal": 0.0265516
+     },
+     "utility": {
+      "exact": "1721033/2500000",
+      "decimal": 0.6884132
+     },
+     "repair_calls": {
+      "exact": "18467/25000",
+      "decimal": 0.73868
+     },
+     "false_pass_stop": {
+      "exact": "104083/625000",
+      "decimal": 0.1665328
+     },
+     "reach_opportunity": [
+      "1/2",
+      "5967/25000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "248961/312500",
+       "utility": "976333/1250000"
+      },
+      "hard": {
+       "success": "49473/78125",
+       "utility": "7447/12500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "history_large_after_exception": {
+     "success": {
+      "exact": "180345957/250000000",
+      "decimal": 0.721383828
+     },
+     "cost": {
+      "exact": "7828359/312500000",
+      "decimal": 0.0250507488
+     },
+     "utility": {
+      "exact": "870416349/1250000000",
+      "decimal": 0.6963330792
+     },
+     "repair_calls": {
+      "exact": "92089/125000",
+      "decimal": 0.736712
+     },
+     "false_pass_stop": {
+      "exact": "84420911/500000000",
+      "decimal": 0.168841822
+     },
+     "reach_opportunity": [
+      "1/2",
+      "29589/125000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "105986469/125000000",
+       "utility": "518002733/625000000"
+      },
+      "hard": {
+       "success": "1161867/1953125",
+       "utility": "22025851/39062500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "history_S_or_exception": {
+     "success": {
+      "exact": "185143269/250000000",
+      "decimal": 0.740573076
+     },
+     "cost": {
+      "exact": "8840903/312500000",
+      "decimal": 0.0282908896
+     },
+     "utility": {
+      "exact": "890352733/1250000000",
+      "decimal": 0.7122821864
+     },
+     "repair_calls": {
+      "exact": "90553/125000",
+      "decimal": 0.724424
+     },
+     "false_pass_stop": {
+      "exact": "406365931/2500000000",
+      "decimal": 0.1625463724
+     },
+     "reach_opportunity": [
+      "1/2",
+      "28053/125000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "105986469/125000000",
+       "utility": "518002733/625000000"
+      },
+      "hard": {
+       "success": "49473/78125",
+       "utility": "7447/12500"
+      }
+     },
+     "paths_agree_exactly": true
+    }
+   },
+   "both_truth_paths_agree_exactly": true,
+   "best_fixed": {
+    "policy": "fixed_LL",
+    "utility": {
+     "exact": "2891/4000",
+     "decimal": 0.72275
+    }
+   },
+   "best_prompt_only_utility": {
+    "exact": "2891/4000",
+    "decimal": 0.72275
+   },
+   "best_observed_history_utility": {
+    "exact": "2891/4000",
+    "decimal": 0.72275
+   },
+   "history_advantage_over_best_fixed": {
+    "exact": "0",
+    "decimal": 0.0
+   },
+   "history_advantage_over_best_prompt_only": {
+    "exact": "0",
+    "decimal": 0.0
+   },
+   "dp_dominates_catalog": true
+  },
+  {
+   "K": 2,
+   "action_effect": "no_crossing",
+   "feedback": "weak",
+   "kappa": "3/5",
+   "policies": {
+    "fixed_SS": {
+     "success": {
+      "exact": "379653/625000",
+      "decimal": 0.6074448
+     },
+     "cost": {
+      "exact": "45003/2500000",
+      "decimal": 0.0180012
+     },
+     "utility": {
+      "exact": "1473609/2500000",
+      "decimal": 0.5894436
+     },
+     "repair_calls": {
+      "exact": "20003/25000",
+      "decimal": 0.80012
+     },
+     "false_pass_stop": {
+      "exact": "125203/625000",
+      "decimal": 0.2003248
+     },
+     "reach_opportunity": [
+      "1/2",
+      "7503/25000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "248961/312500",
+       "utility": "976333/1250000"
+      },
+      "hard": {
+       "success": "32673/78125",
+       "utility": "124319/312500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_SL": {
+     "success": {
+      "exact": "1695411/2500000",
+      "decimal": 0.6781644
+     },
+     "cost": {
+      "exact": "60009/2500000",
+      "decimal": 0.0240036
+     },
+     "utility": {
+      "exact": "817701/1250000",
+      "decimal": 0.6541608
+     },
+     "repair_calls": {
+      "exact": "20003/25000",
+      "decimal": 0.80012
+     },
+     "false_pass_stop": {
+      "exact": "940997/5000000",
+      "decimal": 0.1881994
+     },
+     "reach_opportunity": [
+      "1/2",
+      "7503/25000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "1046307/1250000",
+       "utility": "510887/625000"
+      },
+      "hard": {
+       "success": "40569/78125",
+       "utility": "153407/312500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_LS": {
+     "success": {
+      "exact": "893667/1250000",
+      "decimal": 0.7149336
+     },
+     "cost": {
+      "exact": "67819/2500000",
+      "decimal": 0.0271276
+     },
+     "utility": {
+      "exact": "343903/500000",
+      "decimal": 0.687806
+     },
+     "repair_calls": {
+      "exact": "17819/25000",
+      "decimal": 0.71276
+     },
+     "false_pass_stop": {
+      "exact": "83339/500000",
+      "decimal": 0.166678
+     },
+     "reach_opportunity": [
+      "1/2",
+      "5319/25000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "532059/625000",
+       "utility": "207251/250000"
+      },
+      "hard": {
+       "success": "45201/78125",
+       "utility": "34163/62500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_LL": {
+     "success": {
+      "exact": "471333/625000",
+      "decimal": 0.7541328
+     },
+     "cost": {
+      "exact": "78457/2500000",
+      "decimal": 0.0313828
+     },
+     "utility": {
+      "exact": "2891/4000",
+      "decimal": 0.72275
+     },
+     "repair_calls": {
+      "exact": "17819/25000",
+      "decimal": 0.71276
+     },
+     "false_pass_stop": {
+      "exact": "20003/125000",
+      "decimal": 0.160024
+     },
+     "reach_opportunity": [
+      "1/2",
+      "5319/25000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "273441/312500",
+       "utility": "42487/50000"
+      },
+      "hard": {
+       "success": "49473/78125",
+       "utility": "7447/12500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "prompt_only_large_if_hard": {
+     "success": {
+      "exact": "446853/625000",
+      "decimal": 0.7149648
+     },
+     "cost": {
+      "exact": "66379/2500000",
+      "decimal": 0.0265516
+     },
+     "utility": {
+      "exact": "1721033/2500000",
+      "decimal": 0.6884132
+     },
+     "repair_calls": {
+      "exact": "18467/25000",
+      "decimal": 0.73868
+     },
+     "false_pass_stop": {
+      "exact": "104083/625000",
+      "decimal": 0.1665328
+     },
+     "reach_opportunity": [
+      "1/2",
+      "5967/25000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "248961/312500",
+       "utility": "976333/1250000"
+      },
+      "hard": {
+       "success": "49473/78125",
+       "utility": "7447/12500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "history_large_after_exception": {
+     "success": {
+      "exact": "43612053/62500000",
+      "decimal": 0.697792848
+     },
+     "cost": {
+      "exact": "15743133/625000000",
+      "decimal": 0.0251890128
+     },
+     "utility": {
+      "exact": "420377397/625000000",
+      "decimal": 0.6726038352
+     },
+     "repair_calls": {
+      "exact": "187877/250000",
+      "decimal": 0.751508
+     },
+     "false_pass_stop": {
+      "exact": "22017929/125000000",
+      "decimal": 0.176143432
+     },
+     "reach_opportunity": [
+      "1/2",
+      "62877/250000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "26322501/31250000",
+       "utility": "256872349/312500000"
+      },
+      "hard": {
+       "success": "1080597/1953125",
+       "utility": "20438131/39062500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "history_S_or_exception": {
+     "success": {
+      "exact": "46111701/62500000",
+      "decimal": 0.737787216
+     },
+     "cost": {
+      "exact": "18069661/625000000",
+      "decimal": 0.0289114576
+     },
+     "utility": {
+      "exact": "443047349/625000000",
+      "decimal": 0.7088757584
+     },
+     "repair_calls": {
+      "exact": "181349/250000",
+      "decimal": 0.725396
+     },
+     "false_pass_stop": {
+      "exact": "101826349/625000000",
+      "decimal": 0.1629221584
+     },
+     "reach_opportunity": [
+      "1/2",
+      "56349/250000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "26322501/31250000",
+       "utility": "256872349/312500000"
+      },
+      "hard": {
+       "success": "49473/78125",
+       "utility": "7447/12500"
+      }
+     },
+     "paths_agree_exactly": true
+    }
+   },
+   "both_truth_paths_agree_exactly": true,
+   "best_fixed": {
+    "policy": "fixed_LL",
+    "utility": {
+     "exact": "2891/4000",
+     "decimal": 0.72275
+    }
+   },
+   "best_prompt_only_utility": {
+    "exact": "2891/4000",
+    "decimal": 0.72275
+   },
+   "best_observed_history_utility": {
+    "exact": "2891/4000",
+    "decimal": 0.72275
+   },
+   "history_advantage_over_best_fixed": {
+    "exact": "0",
+    "decimal": 0.0
+   },
+   "history_advantage_over_best_prompt_only": {
+    "exact": "0",
+    "decimal": 0.0
+   },
+   "dp_dominates_catalog": true
+  },
+  {
+   "K": 2,
+   "action_effect": "crossing",
+   "feedback": "informative",
+   "kappa": "9/10",
+   "policies": {
+    "fixed_SS": {
+     "success": {
+      "exact": "629793/1000000",
+      "decimal": 0.629793
+     },
+     "cost": {
+      "exact": "17811/1000000",
+      "decimal": 0.017811
+     },
+     "utility": {
+      "exact": "305991/500000",
+      "decimal": 0.611982
+     },
+     "repair_calls": {
+      "exact": "7811/10000",
+      "decimal": 0.7811
+     },
+     "false_pass_stop": {
+      "exact": "388751/2000000",
+      "decimal": 0.1943755
+     },
+     "reach_opportunity": [
+      "1/2",
+      "2811/10000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "410241/500000",
+       "utility": "8051/10000"
+      },
+      "hard": {
+       "success": "6861/15625",
+       "utility": "26179/62500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_SL": {
+     "success": {
+      "exact": "3467067/5000000",
+      "decimal": 0.6934134
+     },
+     "cost": {
+      "exact": "23433/1000000",
+      "decimal": 0.023433
+     },
+     "utility": {
+      "exact": "1674951/2500000",
+      "decimal": 0.6699804
+     },
+     "repair_calls": {
+      "exact": "7811/10000",
+      "decimal": 0.7811
+     },
+     "false_pass_stop": {
+      "exact": "1827757/10000000",
+      "decimal": 0.1827757
+     },
+     "reach_opportunity": [
+      "1/2",
+      "2811/10000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "2107419/2500000",
+       "utility": "1030027/1250000"
+      },
+      "hard": {
+       "success": "42489/78125",
+       "utility": "161231/312500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_LS": {
+     "success": {
+      "exact": "11324/15625",
+      "decimal": 0.724736
+     },
+     "cost": {
+      "exact": "136401/5000000",
+      "decimal": 0.0272802
+     },
+     "utility": {
+      "exact": "3487279/5000000",
+      "decimal": 0.6974558
+     },
+     "repair_calls": {
+      "exact": "36401/50000",
+      "decimal": 0.72802
+     },
+     "false_pass_stop": {
+      "exact": "82817/500000",
+      "decimal": 0.165634
+     },
+     "reach_opportunity": [
+      "1/2",
+      "11401/50000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "13191/15625",
+       "utility": "2053943/2500000"
+      },
+      "hard": {
+       "success": "9457/15625",
+       "utility": "179167/312500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_LL": {
+     "success": {
+      "exact": "908729/1250000",
+      "decimal": 0.7269832
+     },
+     "cost": {
+      "exact": "159203/5000000",
+      "decimal": 0.0318406
+     },
+     "utility": {
+      "exact": "3475713/5000000",
+      "decimal": 0.6951426
+     },
+     "repair_calls": {
+      "exact": "36401/50000",
+      "decimal": 0.72802
+     },
+     "false_pass_stop": {
+      "exact": "12861/78125",
+      "decimal": 0.1646208
+     },
+     "reach_opportunity": [
+      "1/2",
+      "11401/50000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "520593/625000",
+       "utility": "2016521/2500000"
+      },
+      "hard": {
+       "success": "48517/78125",
+       "utility": "182399/312500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "prompt_only_large_if_hard": {
+     "success": {
+      "exact": "3603749/5000000",
+      "decimal": 0.7207498
+     },
+     "cost": {
+      "exact": "131807/5000000",
+      "decimal": 0.0263614
+     },
+     "utility": {
+      "exact": "1735971/2500000",
+      "decimal": 0.6943884
+     },
+     "repair_calls": {
+      "exact": "36239/50000",
+      "decimal": 0.72478
+     },
+     "false_pass_stop": {
+      "exact": "8246007/50000000",
+      "decimal": 0.16492014
+     },
+     "reach_opportunity": [
+      "1/2",
+      "11239/50000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "410241/500000",
+       "utility": "8051/10000"
+      },
+      "hard": {
+       "success": "48517/78125",
+       "utility": "182399/312500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "history_large_after_exception": {
+     "success": {
+      "exact": "95368059/125000000",
+      "decimal": 0.762944472
+     },
+     "cost": {
+      "exact": "7624827/312500000",
+      "decimal": 0.0243994464
+     },
+     "utility": {
+      "exact": "461590641/625000000",
+      "decimal": 0.7385450256
+     },
+     "repair_calls": {
+      "exact": "43931/62500",
+      "decimal": 0.702896
+     },
+     "false_pass_stop": {
+      "exact": "39092209/250000000",
+      "decimal": 0.156368836
+     },
+     "reach_opportunity": [
+      "1/2",
+      "12681/62500"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "54707163/62500000",
+       "utility": "267707737/312500000"
+      },
+      "hard": {
+       "success": "1270653/1953125",
+       "utility": "24235363/39062500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "history_S_or_exception": {
+     "success": {
+      "exact": "93520763/125000000",
+      "decimal": 0.748166104
+     },
+     "cost": {
+      "exact": "8748539/312500000",
+      "decimal": 0.0279953248
+     },
+     "utility": {
+      "exact": "450106737/625000000",
+      "decimal": 0.7201707792
+     },
+     "repair_calls": {
+      "exact": "44347/62500",
+      "decimal": 0.709552
+     },
+     "false_pass_stop": {
+      "exact": "200819637/1250000000",
+      "decimal": 0.1606557096
+     },
+     "reach_opportunity": [
+      "1/2",
+      "13097/62500"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "54707163/62500000",
+       "utility": "267707737/312500000"
+      },
+      "hard": {
+       "success": "48517/78125",
+       "utility": "182399/312500"
+      }
+     },
+     "paths_agree_exactly": true
+    }
+   },
+   "both_truth_paths_agree_exactly": true,
+   "best_fixed": {
+    "policy": "fixed_LS",
+    "utility": {
+     "exact": "3487279/5000000",
+     "decimal": 0.6974558
+    }
+   },
+   "best_prompt_only_utility": {
+    "exact": "1759623/2500000",
+    "decimal": 0.7038492
+   },
+   "best_observed_history_utility": {
+    "exact": "461590641/625000000",
+    "decimal": 0.7385450256
+   },
+   "history_advantage_over_best_fixed": {
+    "exact": "12840383/312500000",
+    "decimal": 0.0410892256
+   },
+   "history_advantage_over_best_prompt_only": {
+    "exact": "21684891/625000000",
+    "decimal": 0.0346958256
+   },
+   "dp_dominates_catalog": true
+  },
+  {
+   "K": 2,
+   "action_effect": "crossing",
+   "feedback": "weak",
+   "kappa": "3/5",
+   "policies": {
+    "fixed_SS": {
+     "success": {
+      "exact": "629793/1000000",
+      "decimal": 0.629793
+     },
+     "cost": {
+      "exact": "17811/1000000",
+      "decimal": 0.017811
+     },
+     "utility": {
+      "exact": "305991/500000",
+      "decimal": 0.611982
+     },
+     "repair_calls": {
+      "exact": "7811/10000",
+      "decimal": 0.7811
+     },
+     "false_pass_stop": {
+      "exact": "388751/2000000",
+      "decimal": 0.1943755
+     },
+     "reach_opportunity": [
+      "1/2",
+      "2811/10000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "410241/500000",
+       "utility": "8051/10000"
+      },
+      "hard": {
+       "success": "6861/15625",
+       "utility": "26179/62500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_SL": {
+     "success": {
+      "exact": "3467067/5000000",
+      "decimal": 0.6934134
+     },
+     "cost": {
+      "exact": "23433/1000000",
+      "decimal": 0.023433
+     },
+     "utility": {
+      "exact": "1674951/2500000",
+      "decimal": 0.6699804
+     },
+     "repair_calls": {
+      "exact": "7811/10000",
+      "decimal": 0.7811
+     },
+     "false_pass_stop": {
+      "exact": "1827757/10000000",
+      "decimal": 0.1827757
+     },
+     "reach_opportunity": [
+      "1/2",
+      "2811/10000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "2107419/2500000",
+       "utility": "1030027/1250000"
+      },
+      "hard": {
+       "success": "42489/78125",
+       "utility": "161231/312500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_LS": {
+     "success": {
+      "exact": "11324/15625",
+      "decimal": 0.724736
+     },
+     "cost": {
+      "exact": "136401/5000000",
+      "decimal": 0.0272802
+     },
+     "utility": {
+      "exact": "3487279/5000000",
+      "decimal": 0.6974558
+     },
+     "repair_calls": {
+      "exact": "36401/50000",
+      "decimal": 0.72802
+     },
+     "false_pass_stop": {
+      "exact": "82817/500000",
+      "decimal": 0.165634
+     },
+     "reach_opportunity": [
+      "1/2",
+      "11401/50000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "13191/15625",
+       "utility": "2053943/2500000"
+      },
+      "hard": {
+       "success": "9457/15625",
+       "utility": "179167/312500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_LL": {
+     "success": {
+      "exact": "908729/1250000",
+      "decimal": 0.7269832
+     },
+     "cost": {
+      "exact": "159203/5000000",
+      "decimal": 0.0318406
+     },
+     "utility": {
+      "exact": "3475713/5000000",
+      "decimal": 0.6951426
+     },
+     "repair_calls": {
+      "exact": "36401/50000",
+      "decimal": 0.72802
+     },
+     "false_pass_stop": {
+      "exact": "12861/78125",
+      "decimal": 0.1646208
+     },
+     "reach_opportunity": [
+      "1/2",
+      "11401/50000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "520593/625000",
+       "utility": "2016521/2500000"
+      },
+      "hard": {
+       "success": "48517/78125",
+       "utility": "182399/312500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "prompt_only_large_if_hard": {
+     "success": {
+      "exact": "3603749/5000000",
+      "decimal": 0.7207498
+     },
+     "cost": {
+      "exact": "131807/5000000",
+      "decimal": 0.0263614
+     },
+     "utility": {
+      "exact": "1735971/2500000",
+      "decimal": 0.6943884
+     },
+     "repair_calls": {
+      "exact": "36239/50000",
+      "decimal": 0.72478
+     },
+     "false_pass_stop": {
+      "exact": "8246007/50000000",
+      "decimal": 0.16492014
+     },
+     "reach_opportunity": [
+      "1/2",
+      "11239/50000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "410241/500000",
+       "utility": "8051/10000"
+      },
+      "hard": {
+       "success": "48517/78125",
+       "utility": "182399/312500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "history_large_after_exception": {
+     "success": {
+      "exact": "22265121/31250000",
+      "decimal": 0.712483872
+     },
+     "cost": {
+      "exact": "15609759/625000000",
+      "decimal": 0.0249756144
+     },
+     "utility": {
+      "exact": "429692661/625000000",
+      "decimal": 0.6875082576
+     },
+     "repair_calls": {
+      "exact": "185411/250000",
+      "decimal": 0.741644
+     },
+     "false_pass_stop": {
+      "exact": "5358743/31250000",
+      "decimal": 0.171479776
+     },
+     "reach_opportunity": [
+      "1/2",
+      "60411/250000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "13218297/15625000",
+       "utility": "258026077/312500000"
+      },
+      "hard": {
+       "success": "1130853/1953125",
+       "utility": "21458323/39062500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "history_S_or_exception": {
+     "success": {
+      "exact": "22921697/31250000",
+      "decimal": 0.733494304
+     },
+     "cost": {
+      "exact": "18008863/625000000",
+      "decimal": 0.0288141808
+     },
+     "utility": {
+      "exact": "440425077/625000000",
+      "decimal": 0.7046801232
+     },
+     "repair_calls": {
+      "exact": "180547/250000",
+      "decimal": 0.722188
+     },
+     "false_pass_stop": {
+      "exact": "25529139/156250000",
+      "decimal": 0.1633864896
+     },
+     "reach_opportunity": [
+      "1/2",
+      "55547/250000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "13218297/15625000",
+       "utility": "258026077/312500000"
+      },
+      "hard": {
+       "success": "48517/78125",
+       "utility": "182399/312500"
+      }
+     },
+     "paths_agree_exactly": true
+    }
+   },
+   "both_truth_paths_agree_exactly": true,
+   "best_fixed": {
+    "policy": "fixed_LS",
+    "utility": {
+     "exact": "3487279/5000000",
+     "decimal": 0.6974558
+    }
+   },
+   "best_prompt_only_utility": {
+    "exact": "1759623/2500000",
+    "decimal": 0.7038492
+   },
+   "best_observed_history_utility": {
+    "exact": "441461073/625000000",
+    "decimal": 0.7063377168
+   },
+   "history_advantage_over_best_fixed": {
+    "exact": "2775599/312500000",
+    "decimal": 0.0088819168
+   },
+   "history_advantage_over_best_prompt_only": {
+    "exact": "1555323/625000000",
+    "decimal": 0.0024885168
+   },
+   "dp_dominates_catalog": true
+  },
+  {
+   "K": 2,
+   "action_effect": "U_irrelevant_negative_control",
+   "feedback": "informative",
+   "kappa": "9/10",
+   "policies": {
+    "fixed_SS": {
+     "success": {
+      "exact": "31889/50000",
+      "decimal": 0.63778
+     },
+     "cost": {
+      "exact": "8963/500000",
+      "decimal": 0.017926
+     },
+     "utility": {
+      "exact": "309927/500000",
+      "decimal": 0.619854
+     },
+     "repair_calls": {
+      "exact": "3963/5000",
+      "decimal": 0.7926
+     },
+     "false_pass_stop": {
+      "exact": "95213/500000",
+      "decimal": 0.190426
+     },
+     "reach_opportunity": [
+      "1/2",
+      "1463/5000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "19401/25000",
+       "utility": "190043/250000"
+      },
+      "hard": {
+       "success": "1561/3125",
+       "utility": "29971/62500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_SL": {
+     "success": {
+      "exact": "4169/6250",
+      "decimal": 0.66704
+     },
+     "cost": {
+      "exact": "11889/500000",
+      "decimal": 0.023778
+     },
+     "utility": {
+      "exact": "321631/500000",
+      "decimal": 0.643262
+     },
+     "repair_calls": {
+      "exact": "3963/5000",
+      "decimal": 0.7926
+     },
+     "false_pass_stop": {
+      "exact": "46427/250000",
+      "decimal": 0.185708
+     },
+     "reach_opportunity": [
+      "1/2",
+      "1463/5000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "2496/3125",
+       "utility": "194579/250000"
+      },
+      "hard": {
+       "success": "1673/3125",
+       "utility": "31763/62500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_LS": {
+     "success": {
+      "exact": "16881/25000",
+      "decimal": 0.67524
+     },
+     "cost": {
+      "exact": "6877/250000",
+      "decimal": 0.027508
+     },
+     "utility": {
+      "exact": "161933/250000",
+      "decimal": 0.647732
+     },
+     "repair_calls": {
+      "exact": "1877/2500",
+      "decimal": 0.7508
+     },
+     "false_pass_stop": {
+      "exact": "44377/250000",
+      "decimal": 0.177508
+     },
+     "reach_opportunity": [
+      "1/2",
+      "627/2500"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "10029/12500",
+       "utility": "97447/125000"
+      },
+      "hard": {
+       "success": "1713/3125",
+       "utility": "32243/62500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_LL": {
+     "success": {
+      "exact": "4377/6250",
+      "decimal": 0.70032
+     },
+     "cost": {
+      "exact": "8131/250000",
+      "decimal": 0.032524
+     },
+     "utility": {
+      "exact": "166949/250000",
+      "decimal": 0.667796
+     },
+     "repair_calls": {
+      "exact": "1877/2500",
+      "decimal": 0.7508
+     },
+     "false_pass_stop": {
+      "exact": "21683/125000",
+      "decimal": 0.173464
+     },
+     "reach_opportunity": [
+      "1/2",
+      "627/2500"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "2568/3125",
+       "utility": "99391/125000"
+      },
+      "hard": {
+       "success": "1809/3125",
+       "utility": "33779/62500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "prompt_only_large_if_hard": {
+     "success": {
+      "exact": "33873/50000",
+      "decimal": 0.67746
+     },
+     "cost": {
+      "exact": "13571/500000",
+      "decimal": 0.027142
+     },
+     "utility": {
+      "exact": "325159/500000",
+      "decimal": 0.650318
+     },
+     "repair_calls": {
+      "exact": "767/1000",
+      "decimal": 0.767
+     },
+     "false_pass_stop": {
+      "exact": "17737/100000",
+      "decimal": 0.17737
+     },
+     "reach_opportunity": [
+      "1/2",
+      "267/1000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "19401/25000",
+       "utility": "190043/250000"
+      },
+      "hard": {
+       "success": "1809/3125",
+       "utility": "33779/62500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "history_large_after_exception": {
+     "success": {
+      "exact": "3359043/5000000",
+      "decimal": 0.6718086
+     },
+     "cost": {
+      "exact": "323149/12500000",
+      "decimal": 0.02585192
+     },
+     "utility": {
+      "exact": "16148917/25000000",
+      "decimal": 0.64595668
+     },
+     "repair_calls": {
+      "exact": "192549/250000",
+      "decimal": 0.770196
+     },
+     "false_pass_stop": {
+      "exact": "361353/2000000",
+      "decimal": 0.1806765
+     },
+     "reach_opportunity": [
+      "1/2",
+      "67549/250000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "1989411/2500000",
+       "utility": "9692509/12500000"
+      },
+      "hard": {
+       "success": "42801/78125",
+       "utility": "807051/1562500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "history_S_or_exception": {
+     "success": {
+      "exact": "3436611/5000000",
+      "decimal": 0.6873222
+     },
+     "cost": {
+      "exact": "367373/12500000",
+      "decimal": 0.02938984
+     },
+     "utility": {
+      "exact": "16448309/25000000",
+      "decimal": 0.65793236
+     },
+     "repair_calls": {
+      "exact": "190373/250000",
+      "decimal": 0.761492
+     },
+     "false_pass_stop": {
+      "exact": "8791649/50000000",
+      "decimal": 0.17583298
+     },
+     "reach_opportunity": [
+      "1/2",
+      "65373/250000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "1989411/2500000",
+       "utility": "9692509/12500000"
+      },
+      "hard": {
+       "success": "1809/3125",
+       "utility": "33779/62500"
+      }
+     },
+     "paths_agree_exactly": true
+    }
+   },
+   "both_truth_paths_agree_exactly": true,
+   "best_fixed": {
+    "policy": "fixed_LL",
+    "utility": {
+     "exact": "166949/250000",
+     "decimal": 0.667796
+    }
+   },
+   "best_prompt_only_utility": {
+    "exact": "166949/250000",
+    "decimal": 0.667796
+   },
+   "best_observed_history_utility": {
+    "exact": "166949/250000",
+    "decimal": 0.667796
+   },
+   "history_advantage_over_best_fixed": {
+    "exact": "0",
+    "decimal": 0.0
+   },
+   "history_advantage_over_best_prompt_only": {
+    "exact": "0",
+    "decimal": 0.0
+   },
+   "dp_dominates_catalog": true
+  },
+  {
+   "K": 2,
+   "action_effect": "U_irrelevant_negative_control",
+   "feedback": "weak",
+   "kappa": "3/5",
+   "policies": {
+    "fixed_SS": {
+     "success": {
+      "exact": "31889/50000",
+      "decimal": 0.63778
+     },
+     "cost": {
+      "exact": "8963/500000",
+      "decimal": 0.017926
+     },
+     "utility": {
+      "exact": "309927/500000",
+      "decimal": 0.619854
+     },
+     "repair_calls": {
+      "exact": "3963/5000",
+      "decimal": 0.7926
+     },
+     "false_pass_stop": {
+      "exact": "95213/500000",
+      "decimal": 0.190426
+     },
+     "reach_opportunity": [
+      "1/2",
+      "1463/5000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "19401/25000",
+       "utility": "190043/250000"
+      },
+      "hard": {
+       "success": "1561/3125",
+       "utility": "29971/62500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_SL": {
+     "success": {
+      "exact": "4169/6250",
+      "decimal": 0.66704
+     },
+     "cost": {
+      "exact": "11889/500000",
+      "decimal": 0.023778
+     },
+     "utility": {
+      "exact": "321631/500000",
+      "decimal": 0.643262
+     },
+     "repair_calls": {
+      "exact": "3963/5000",
+      "decimal": 0.7926
+     },
+     "false_pass_stop": {
+      "exact": "46427/250000",
+      "decimal": 0.185708
+     },
+     "reach_opportunity": [
+      "1/2",
+      "1463/5000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "2496/3125",
+       "utility": "194579/250000"
+      },
+      "hard": {
+       "success": "1673/3125",
+       "utility": "31763/62500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_LS": {
+     "success": {
+      "exact": "16881/25000",
+      "decimal": 0.67524
+     },
+     "cost": {
+      "exact": "6877/250000",
+      "decimal": 0.027508
+     },
+     "utility": {
+      "exact": "161933/250000",
+      "decimal": 0.647732
+     },
+     "repair_calls": {
+      "exact": "1877/2500",
+      "decimal": 0.7508
+     },
+     "false_pass_stop": {
+      "exact": "44377/250000",
+      "decimal": 0.177508
+     },
+     "reach_opportunity": [
+      "1/2",
+      "627/2500"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "10029/12500",
+       "utility": "97447/125000"
+      },
+      "hard": {
+       "success": "1713/3125",
+       "utility": "32243/62500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_LL": {
+     "success": {
+      "exact": "4377/6250",
+      "decimal": 0.70032
+     },
+     "cost": {
+      "exact": "8131/250000",
+      "decimal": 0.032524
+     },
+     "utility": {
+      "exact": "166949/250000",
+      "decimal": 0.667796
+     },
+     "repair_calls": {
+      "exact": "1877/2500",
+      "decimal": 0.7508
+     },
+     "false_pass_stop": {
+      "exact": "21683/125000",
+      "decimal": 0.173464
+     },
+     "reach_opportunity": [
+      "1/2",
+      "627/2500"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "2568/3125",
+       "utility": "99391/125000"
+      },
+      "hard": {
+       "success": "1809/3125",
+       "utility": "33779/62500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "prompt_only_large_if_hard": {
+     "success": {
+      "exact": "33873/50000",
+      "decimal": 0.67746
+     },
+     "cost": {
+      "exact": "13571/500000",
+      "decimal": 0.027142
+     },
+     "utility": {
+      "exact": "325159/500000",
+      "decimal": 0.650318
+     },
+     "repair_calls": {
+      "exact": "767/1000",
+      "decimal": 0.767
+     },
+     "false_pass_stop": {
+      "exact": "17737/100000",
+      "decimal": 0.17737
+     },
+     "reach_opportunity": [
+      "1/2",
+      "267/1000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "19401/25000",
+       "utility": "190043/250000"
+      },
+      "hard": {
+       "success": "1809/3125",
+       "utility": "33779/62500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "history_large_after_exception": {
+     "success": {
+      "exact": "3352617/5000000",
+      "decimal": 0.6705234
+     },
+     "cost": {
+      "exact": "319231/12500000",
+      "decimal": 0.02553848
+     },
+     "utility": {
+      "exact": "16124623/25000000",
+      "decimal": 0.64498492
+     },
+     "repair_calls": {
+      "exact": "192831/250000",
+      "decimal": 0.771324
+     },
+     "false_pass_stop": {
+      "exact": "363003/2000000",
+      "decimal": 0.1815015
+     },
+     "reach_opportunity": [
+      "1/2",
+      "67831/250000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "1996809/2500000",
+       "utility": "9719671/12500000"
+      },
+      "hard": {
+       "success": "42369/78125",
+       "utility": "800619/1562500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "history_S_or_exception": {
+     "success": {
+      "exact": "3444009/5000000",
+      "decimal": 0.6888018
+     },
+     "cost": {
+      "exact": "372287/12500000",
+      "decimal": 0.02978296
+     },
+     "utility": {
+      "exact": "16475471/25000000",
+      "decimal": 0.65901884
+     },
+     "repair_calls": {
+      "exact": "189887/250000",
+      "decimal": 0.759548
+     },
+     "false_pass_stop": {
+      "exact": "8774531/50000000",
+      "decimal": 0.17549062
+     },
+     "reach_opportunity": [
+      "1/2",
+      "64887/250000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "1996809/2500000",
+       "utility": "9719671/12500000"
+      },
+      "hard": {
+       "success": "1809/3125",
+       "utility": "33779/62500"
+      }
+     },
+     "paths_agree_exactly": true
+    }
+   },
+   "both_truth_paths_agree_exactly": true,
+   "best_fixed": {
+    "policy": "fixed_LL",
+    "utility": {
+     "exact": "166949/250000",
+     "decimal": 0.667796
+    }
+   },
+   "best_prompt_only_utility": {
+    "exact": "166949/250000",
+    "decimal": 0.667796
+   },
+   "best_observed_history_utility": {
+    "exact": "166949/250000",
+    "decimal": 0.667796
+   },
+   "history_advantage_over_best_fixed": {
+    "exact": "0",
+    "decimal": 0.0
+   },
+   "history_advantage_over_best_prompt_only": {
+    "exact": "0",
+    "decimal": 0.0
+   },
+   "dp_dominates_catalog": true
+  },
+  {
+   "K": 4,
+   "action_effect": "no_crossing",
+   "feedback": "informative",
+   "kappa": "9/10",
+   "policies": {
+    "fixed_SSSS": {
+     "success": {
+      "exact": "836822228853/1250000000000",
+      "decimal": 0.6694577830824
+     },
+     "cost": {
+      "exact": "26502804807/1250000000000",
+      "decimal": 0.0212022438456
+     },
+     "utility": {
+      "exact": "405159712023/625000000000",
+      "decimal": 0.6482555392368
+     },
+     "repair_calls": {
+      "exact": "14002804807/12500000000",
+      "decimal": 1.12022438456
+     },
+     "false_pass_stop": {
+      "exact": "3045644789831/12500000000000",
+      "decimal": 0.24365158318648
+     },
+     "reach_opportunity": [
+      "1/2",
+      "7503/25000",
+      "15018/78125",
+      "1598424807/12500000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "527933656437/625000000000",
+       "utility": "258420801367/312500000000"
+      },
+      "hard": {
+       "success": "603297993/1220703125",
+       "utility": "2292795479/4882812500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_SSSL": {
+     "success": {
+      "exact": "1756050110343/2500000000000",
+      "decimal": 0.7024200441372
+     },
+     "cost": {
+      "exact": "29699654421/1250000000000",
+      "decimal": 0.0237597235368
+     },
+     "utility": {
+      "exact": "1696650801501/2500000000000",
+      "decimal": 0.6786603206004
+     },
+     "repair_calls": {
+      "exact": "14002804807/12500000000",
+      "decimal": 1.12022438456
+     },
+     "false_pass_stop": {
+      "exact": "5953441970161/25000000000000",
+      "decimal": 0.23813767880644
+     },
+     "reach_opportunity": [
+      "1/2",
+      "7503/25000",
+      "15018/78125",
+      "1598424807/12500000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "1082831008647/1250000000000",
+       "utility": "1058473294429/1250000000000"
+      },
+      "hard": {
+       "success": "657440529/1220703125",
+       "utility": "2492880887/4882812500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_SSLS": {
+     "success": {
+      "exact": "900069359331/1250000000000",
+      "decimal": 0.7200554874648
+     },
+     "cost": {
+      "exact": "61619190567/2500000000000",
+      "decimal": 0.0246476762268
+     },
+     "utility": {
+      "exact": "347703905619/500000000000",
+      "decimal": 0.695407811238
+     },
+     "repair_calls": {
+      "exact": "27007670567/25000000000",
+      "decimal": 1.08030682268
+     },
+     "false_pass_stop": {
+      "exact": "2854865651387/12500000000000",
+      "decimal": 0.22838925211096
+     },
+     "reach_opportunity": [
+      "1/2",
+      "7503/25000",
+      "15018/78125",
+      "2198910567/25000000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "546980150499/625000000000",
+       "utility": "213786567251/250000000000"
+      },
+      "hard": {
+       "success": "689627361/1220703125",
+       "utility": "523114603/976562500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_SSLL": {
+     "success": {
+      "exact": "461113525419/625000000000",
+      "decimal": 0.7377816406704
+     },
+     "cost": {
+      "exact": "66017011701/2500000000000",
+      "decimal": 0.0264068046804
+     },
+     "utility": {
+      "exact": "71137483599/100000000000",
+      "decimal": 0.71137483599
+     },
+     "repair_calls": {
+      "exact": "27007670567/25000000000",
+      "decimal": 1.08030682268
+     },
+     "false_pass_stop": {
+      "exact": "352236604297/1562500000000",
+      "decimal": 0.22543142675008
+     },
+     "reach_opportunity": [
+      "1/2",
+      "7503/25000",
+      "15018/78125",
+      "2198910567/25000000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "277161358251/312500000000",
+       "utility": "43284114511/50000000000"
+      },
+      "hard": {
+       "success": "718563153/1220703125",
+       "utility": "108802223/195312500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_SLSS": {
+     "success": {
+      "exact": "461534280153/625000000000",
+      "decimal": 0.7384548482448
+     },
+     "cost": {
+      "exact": "32635482189/1250000000000",
+      "decimal": 0.0261083857512
+     },
+     "utility": {
+      "exact": "890433078117/1250000000000",
+      "decimal": 0.7123464624936
+     },
+     "repair_calls": {
+      "exact": "12632482189/12500000000",
+      "decimal": 1.01059857512
+     },
+     "false_pass_stop": {
+      "exact": "1332927541681/6250000000000",
+      "decimal": 0.21326840666896
+     },
+     "reach_opportunity": [
+      "1/2",
+      "7503/25000",
+      "668181/5000000",
+      "960529689/12500000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "275662162137/312500000000",
+       "utility": "538155038693/625000000000"
+      },
+      "hard": {
+       "success": "726062961/1220703125",
+       "utility": "2752172183/4882812500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_SLSL": {
+     "success": {
+      "exact": "118104175221/156250000000",
+      "decimal": 0.7558667214144
+     },
+     "cost": {
+      "exact": "34556541567/1250000000000",
+      "decimal": 0.0276452332536
+     },
+     "utility": {
+      "exact": "910276860201/1250000000000",
+      "decimal": 0.7282214881608
+     },
+     "repair_calls": {
+      "exact": "12632482189/12500000000",
+      "decimal": 1.01059857512
+     },
+     "false_pass_stop": {
+      "exact": "657405501659/3125000000000",
+      "decimal": 0.21036976053088
+     },
+     "reach_opportunity": [
+      "1/2",
+      "7503/25000",
+      "668181/5000000",
+      "960529689/12500000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "69827616309/78125000000",
+       "utility": "544778210729/625000000000"
+      },
+      "hard": {
+       "success": "754321233/1220703125",
+       "utility": "2855458199/4882812500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_SLLS": {
+     "success": {
+      "exact": "119472684999/156250000000",
+      "decimal": 0.7646251839936
+     },
+     "cost": {
+      "exact": "4463133459/156250000000",
+      "decimal": 0.0285640541376
+     },
+     "utility": {
+      "exact": "5750477577/7812500000",
+      "decimal": 0.736061129856
+     },
+     "repair_calls": {
+      "exact": "772572667/781250000",
+      "decimal": 0.98889301376
+     },
+     "false_pass_stop": {
+      "exact": "320674744273/1562500000000",
+      "decimal": 0.20523183633472
+     },
+     "reach_opportunity": [
+      "1/2",
+      "7503/25000",
+      "668181/5000000",
+      "172302543/3125000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "70170376071/78125000000",
+       "utility": "3419709533/3906250000"
+      },
+      "hard": {
+       "success": "770348577/1220703125",
+       "utility": "582692011/976562500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_SLLL": {
+     "success": {
+      "exact": "121001585127/156250000000",
+      "decimal": 0.7744101448128
+     },
+     "cost": {
+      "exact": "2317718001/78125000000",
+      "decimal": 0.0296667904128
+     },
+     "utility": {
+      "exact": "930929193/1250000000",
+      "decimal": 0.7447433544
+     },
+     "repair_calls": {
+      "exact": "772572667/781250000",
+      "decimal": 0.98889301376
+     },
+     "false_pass_stop": {
+      "exact": "318137834929/1562500000000",
+      "decimal": 0.20360821435456
+     },
+     "reach_opportunity": [
+      "1/2",
+      "7503/25000",
+      "668181/5000000",
+      "172302543/3125000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "70691266983/78125000000",
+       "utility": "550831097/625000000"
+      },
+      "hard": {
+       "success": "786098721/1220703125",
+       "utility": "23756131/39062500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_LSSS": {
+     "success": {
+      "exact": "238093989339/312500000000",
+      "decimal": 0.7619007658848
+     },
+     "cost": {
+      "exact": "18149267107/625000000000",
+      "decimal": 0.0290388273712
+     },
+     "utility": {
+      "exact": "458038711571/625000000000",
+      "decimal": 0.7328619385136
+     },
+     "repair_calls": {
+      "exact": "5649267107/6250000000",
+      "decimal": 0.90388273712
+     },
+     "false_pass_stop": {
+      "exact": "595677415163/3125000000000",
+      "decimal": 0.19061677285216
+     },
+     "reach_opportunity": [
+      "1/2",
+      "5319/25000",
+      "295971/2500000",
+      "454589607/6250000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "138853587291/156250000000",
+       "utility": "270318876499/312500000000"
+      },
+      "hard": {
+       "success": "775315641/1220703125",
+       "utility": "2933122423/4882812500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_LSSL": {
+     "success": {
+      "exact": "121785135771/156250000000",
+      "decimal": 0.7794248689344
+     },
+     "cost": {
+      "exact": "19058446321/625000000000",
+      "decimal": 0.0304935141136
+     },
+     "utility": {
+      "exact": "468082096763/625000000000",
+      "decimal": 0.7489313548208
+     },
+     "repair_calls": {
+      "exact": "5649267107/6250000000",
+      "decimal": 0.90388273712
+     },
+     "false_pass_stop": {
+      "exact": "18331410877/97656250000",
+      "decimal": 0.18771364738048
+     },
+     "reach_opportunity": [
+      "1/2",
+      "5319/25000",
+      "295971/2500000",
+      "454589607/6250000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "70366942299/78125000000",
+       "utility": "273752693947/312500000000"
+      },
+      "hard": {
+       "success": "803409273/1220703125",
+       "utility": "3036396919/4882812500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_LSLS": {
+     "success": {
+      "exact": "30799943241/39062500000",
+      "decimal": 0.7884785469696
+     },
+     "cost": {
+      "exact": "4873626499/156250000000",
+      "decimal": 0.0311912095936
+     },
+     "utility": {
+      "exact": "23665229293/31250000000",
+      "decimal": 0.757287337376
+     },
+     "repair_calls": {
+      "exact": "1378662749/1562500000",
+      "decimal": 0.88234415936
+     },
+     "false_pass_stop": {
+      "exact": "17829972043/97656250000",
+      "decimal": 0.18257891372032
+     },
+     "reach_opportunity": [
+      "1/2",
+      "5319/25000",
+      "295971/2500000",
+      "39996687/781250000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "17684076729/19531250000",
+       "utility": "13754265917/15625000000"
+      },
+      "hard": {
+       "success": "819741657/1220703125",
+       "utility": "619435211/976562500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_LSLL": {
+     "success": {
+      "exact": "62352960411/78125000000",
+      "decimal": 0.7981178932608
+     },
+     "cost": {
+      "exact": "5033613247/156250000000",
+      "decimal": 0.0322151247808
+     },
+     "utility": {
+      "exact": "4786892303/6250000000",
+      "decimal": 0.76590276848
+     },
+     "repair_calls": {
+      "exact": "1378662749/1562500000",
+      "decimal": 0.88234415936
+     },
+     "false_pass_stop": {
+      "exact": "141396337487/781250000000",
+      "decimal": 0.18098731198336
+     },
+     "reach_opportunity": [
+      "1/2",
+      "5319/25000",
+      "295971/2500000",
+      "39996687/781250000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "35630862459/39062500000",
+       "utility": "2769536287/3125000000"
+      },
+      "hard": {
+       "success": "835065561/1220703125",
+       "utility": "126084751/195312500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_LLSS": {
+     "success": {
+      "exact": "62318673237/78125000000",
+      "decimal": 0.7976790174336
+     },
+     "cost": {
+      "exact": "2554845503/78125000000",
+      "decimal": 0.0327020224384
+     },
+     "utility": {
+      "exact": "29881913867/39062500000",
+      "decimal": 0.7649769949952
+     },
+     "repair_calls": {
+      "exact": "659908003/781250000",
+      "decimal": 0.84468224384
+     },
+     "false_pass_stop": {
+      "exact": "136407411479/781250000000",
+      "decimal": 0.17460148669312
+     },
+     "reach_opportunity": [
+      "1/2",
+      "5319/25000",
+      "13413/156250",
+      "35999253/781250000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "35502208053/39062500000",
+       "utility": "17238815023/19531250000"
+      },
+      "hard": {
+       "success": "838014537/1220703125",
+       "utility": "3160774711/4882812500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_LLSL": {
+     "success": {
+      "exact": "126147460947/156250000000",
+      "decimal": 0.8073437500608
+     },
+     "cost": {
+      "exact": "2626844009/78125000000",
+      "decimal": 0.0336236033152
+     },
+     "utility": {
+      "exact": "120893772929/156250000000",
+      "decimal": 0.7737201467456
+     },
+     "repair_calls": {
+      "exact": "659908003/781250000",
+      "decimal": 0.84468224384
+     },
+     "false_pass_stop": {
+      "exact": "270328770949/1562500000000",
+      "decimal": 0.17301041340736
+     },
+     "reach_opportunity": [
+      "1/2",
+      "5319/25000",
+      "13413/156250",
+      "35999253/781250000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "71538593043/78125000000",
+       "utility": "69435978001/78125000000"
+      },
+      "hard": {
+       "success": "853263561/1220703125",
+       "utility": "3216112183/4882812500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_LLLS": {
+     "success": {
+      "exact": "63435676359/78125000000",
+      "decimal": 0.8119766573952
+     },
+     "cost": {
+      "exact": "5358769063/156250000000",
+      "decimal": 0.0342961220032
+     },
+     "utility": {
+      "exact": "24302516731/31250000000",
+      "decimal": 0.777680535392
+     },
+     "repair_calls": {
+      "exact": "1300634063/1562500000",
+      "decimal": 0.83240580032
+     },
+     "false_pass_stop": {
+      "exact": "132959564903/781250000000",
+      "decimal": 0.17018824307584
+     },
+     "reach_opportunity": [
+      "1/2",
+      "5319/25000",
+      "13413/156250",
+      "52816563/1562500000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "35863093671/39062500000",
+       "utility": "13917534539/15625000000"
+      },
+      "hard": {
+       "success": "861643209/1220703125",
+       "utility": "649061387/976562500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_LLLL": {
+     "success": {
+      "exact": "31936065891/39062500000",
+      "decimal": 0.8175632868096
+     },
+     "cost": {
+      "exact": "5464402189/156250000000",
+      "decimal": 0.0349721740096
+     },
+     "utility": {
+      "exact": "978238891/1250000000",
+      "decimal": 0.7825911128
+     },
+     "repair_calls": {
+      "exact": "1300634063/1562500000",
+      "decimal": 0.83240580032
+     },
+     "false_pass_stop": {
+      "exact": "16530487693/97656250000",
+      "decimal": 0.16927219397632
+     },
+     "reach_opportunity": [
+      "1/2",
+      "5319/25000",
+      "13413/156250",
+      "52816563/1562500000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "18010170579/19531250000",
+       "utility": "558899579/625000000"
+      },
+      "hard": {
+       "success": "870368457/1220703125",
+       "utility": "26208707/39062500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "prompt_only_large_if_hard": {
+     "success": {
+      "exact": "973562306421/1250000000000",
+      "decimal": 0.7788498451368
+     },
+     "cost": {
+      "exact": "37381391687/1250000000000",
+      "decimal": 0.0299051133496
+     },
+     "utility": {
+      "exact": "468090457367/625000000000",
+      "decimal": 0.7489447317872
+     },
+     "repair_calls": {
+      "exact": "11521833031/12500000000",
+      "decimal": 0.92174664248
+     },
+     "false_pass_stop": {
+      "exact": "455194055899/2500000000000",
+      "decimal": 0.1820776223596
+     },
+     "reach_opportunity": [
+      "1/2",
+      "5967/25000",
+      "9258/78125",
+      "807053031/12500000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "527933656437/625000000000",
+       "utility": "258420801367/312500000000"
+      },
+      "hard": {
+       "success": "870368457/1220703125",
+       "utility": "26208707/39062500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "history_large_after_exception": {
+     "success": {
+      "exact": "19841650379707011/25000000000000000",
+      "decimal": 0.7936660151882804
+     },
+     "cost": {
+      "exact": "438425594167341/15625000000000000",
+      "decimal": 0.028059238026709826
+     },
+     "utility": {
+      "exact": "95700847145196327/125000000000000000",
+      "decimal": 0.7656067771615707
+     },
+     "repair_calls": {
+      "exact": "22426193004959/25000000000000",
+      "decimal": 0.89704772019836
+     },
+     "false_pass_stop": {
+      "exact": "45767277315465877/250000000000000000",
+      "decimal": 0.1830691092618635
+     },
+     "reach_opportunity": [
+      "1/2",
+      "29589/125000",
+      "2195487/20000000",
+      "1264034254959/25000000000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "11309448829792899/12500000000000000",
+       "utility": "55213401817205543/62500000000000000"
+      },
+      "hard": {
+       "success": "1041528509511/1525878906250",
+       "utility": "9884630207029/15258789062500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "history_S_or_exception": {
+     "success": {
+      "exact": "20222021829472899/25000000000000000",
+      "decimal": 0.808880873178916
+     },
+     "cost": {
+      "exact": "495347016269869/15625000000000000",
+      "decimal": 0.03170220904127161
+     },
+     "utility": {
+      "exact": "97147333017205543/125000000000000000",
+      "decimal": 0.7771786641376444
+     },
+     "repair_calls": {
+      "exact": "21570815420831/25000000000000",
+      "decimal": 0.86283261683324
+     },
+     "false_pass_stop": {
+      "exact": "43295779247678101/250000000000000000",
+      "decimal": 0.1731831169907124
+     },
+     "reach_opportunity": [
+      "1/2",
+      "28053/125000",
+      "242201379/2500000000",
+      "1038201630831/25000000000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "11309448829792899/12500000000000000",
+       "utility": "55213401817205543/62500000000000000"
+      },
+      "hard": {
+       "success": "870368457/1220703125",
+       "utility": "26208707/39062500"
+      }
+     },
+     "paths_agree_exactly": true
+    }
+   },
+   "both_truth_paths_agree_exactly": true,
+   "best_fixed": {
+    "policy": "fixed_LLLL",
+    "utility": {
+     "exact": "978238891/1250000000",
+     "decimal": 0.7825911128
+    }
+   },
+   "best_prompt_only_utility": {
+    "exact": "978238891/1250000000",
+    "decimal": 0.7825911128
+   },
+   "best_observed_history_utility": {
+    "exact": "978238891/1250000000",
+    "decimal": 0.7825911128
+   },
+   "history_advantage_over_best_fixed": {
+    "exact": "0",
+    "decimal": 0.0
+   },
+   "history_advantage_over_best_prompt_only": {
+    "exact": "0",
+    "decimal": 0.0
+   },
+   "dp_dominates_catalog": true
+  },
+  {
+   "K": 4,
+   "action_effect": "no_crossing",
+   "feedback": "weak",
+   "kappa": "3/5",
+   "policies": {
+    "fixed_SSSS": {
+     "success": {
+      "exact": "836822228853/1250000000000",
+      "decimal": 0.6694577830824
+     },
+     "cost": {
+      "exact": "26502804807/1250000000000",
+      "decimal": 0.0212022438456
+     },
+     "utility": {
+      "exact": "405159712023/625000000000",
+      "decimal": 0.6482555392368
+     },
+     "repair_calls": {
+      "exact": "14002804807/12500000000",
+      "decimal": 1.12022438456
+     },
+     "false_pass_stop": {
+      "exact": "3045644789831/12500000000000",
+      "decimal": 0.24365158318648
+     },
+     "reach_opportunity": [
+      "1/2",
+      "7503/25000",
+      "15018/78125",
+      "1598424807/12500000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "527933656437/625000000000",
+       "utility": "258420801367/312500000000"
+      },
+      "hard": {
+       "success": "603297993/1220703125",
+       "utility": "2292795479/4882812500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_SSSL": {
+     "success": {
+      "exact": "1756050110343/2500000000000",
+      "decimal": 0.7024200441372
+     },
+     "cost": {
+      "exact": "29699654421/1250000000000",
+      "decimal": 0.0237597235368
+     },
+     "utility": {
+      "exact": "1696650801501/2500000000000",
+      "decimal": 0.6786603206004
+     },
+     "repair_calls": {
+      "exact": "14002804807/12500000000",
+      "decimal": 1.12022438456
+     },
+     "false_pass_stop": {
+      "exact": "5953441970161/25000000000000",
+      "decimal": 0.23813767880644
+     },
+     "reach_opportunity": [
+      "1/2",
+      "7503/25000",
+      "15018/78125",
+      "1598424807/12500000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "1082831008647/1250000000000",
+       "utility": "1058473294429/1250000000000"
+      },
+      "hard": {
+       "success": "657440529/1220703125",
+       "utility": "2492880887/4882812500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_SSLS": {
+     "success": {
+      "exact": "900069359331/1250000000000",
+      "decimal": 0.7200554874648
+     },
+     "cost": {
+      "exact": "61619190567/2500000000000",
+      "decimal": 0.0246476762268
+     },
+     "utility": {
+      "exact": "347703905619/500000000000",
+      "decimal": 0.695407811238
+     },
+     "repair_calls": {
+      "exact": "27007670567/25000000000",
+      "decimal": 1.08030682268
+     },
+     "false_pass_stop": {
+      "exact": "2854865651387/12500000000000",
+      "decimal": 0.22838925211096
+     },
+     "reach_opportunity": [
+      "1/2",
+      "7503/25000",
+      "15018/78125",
+      "2198910567/25000000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "546980150499/625000000000",
+       "utility": "213786567251/250000000000"
+      },
+      "hard": {
+       "success": "689627361/1220703125",
+       "utility": "523114603/976562500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_SSLL": {
+     "success": {
+      "exact": "461113525419/625000000000",
+      "decimal": 0.7377816406704
+     },
+     "cost": {
+      "exact": "66017011701/2500000000000",
+      "decimal": 0.0264068046804
+     },
+     "utility": {
+      "exact": "71137483599/100000000000",
+      "decimal": 0.71137483599
+     },
+     "repair_calls": {
+      "exact": "27007670567/25000000000",
+      "decimal": 1.08030682268
+     },
+     "false_pass_stop": {
+      "exact": "352236604297/1562500000000",
+      "decimal": 0.22543142675008
+     },
+     "reach_opportunity": [
+      "1/2",
+      "7503/25000",
+      "15018/78125",
+      "2198910567/25000000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "277161358251/312500000000",
+       "utility": "43284114511/50000000000"
+      },
+      "hard": {
+       "success": "718563153/1220703125",
+       "utility": "108802223/195312500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_SLSS": {
+     "success": {
+      "exact": "461534280153/625000000000",
+      "decimal": 0.7384548482448
+     },
+     "cost": {
+      "exact": "32635482189/1250000000000",
+      "decimal": 0.0261083857512
+     },
+     "utility": {
+      "exact": "890433078117/1250000000000",
+      "decimal": 0.7123464624936
+     },
+     "repair_calls": {
+      "exact": "12632482189/12500000000",
+      "decimal": 1.01059857512
+     },
+     "false_pass_stop": {
+      "exact": "1332927541681/6250000000000",
+      "decimal": 0.21326840666896
+     },
+     "reach_opportunity": [
+      "1/2",
+      "7503/25000",
+      "668181/5000000",
+      "960529689/12500000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "275662162137/312500000000",
+       "utility": "538155038693/625000000000"
+      },
+      "hard": {
+       "success": "726062961/1220703125",
+       "utility": "2752172183/4882812500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_SLSL": {
+     "success": {
+      "exact": "118104175221/156250000000",
+      "decimal": 0.7558667214144
+     },
+     "cost": {
+      "exact": "34556541567/1250000000000",
+      "decimal": 0.0276452332536
+     },
+     "utility": {
+      "exact": "910276860201/1250000000000",
+      "decimal": 0.7282214881608
+     },
+     "repair_calls": {
+      "exact": "12632482189/12500000000",
+      "decimal": 1.01059857512
+     },
+     "false_pass_stop": {
+      "exact": "657405501659/3125000000000",
+      "decimal": 0.21036976053088
+     },
+     "reach_opportunity": [
+      "1/2",
+      "7503/25000",
+      "668181/5000000",
+      "960529689/12500000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "69827616309/78125000000",
+       "utility": "544778210729/625000000000"
+      },
+      "hard": {
+       "success": "754321233/1220703125",
+       "utility": "2855458199/4882812500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_SLLS": {
+     "success": {
+      "exact": "119472684999/156250000000",
+      "decimal": 0.7646251839936
+     },
+     "cost": {
+      "exact": "4463133459/156250000000",
+      "decimal": 0.0285640541376
+     },
+     "utility": {
+      "exact": "5750477577/7812500000",
+      "decimal": 0.736061129856
+     },
+     "repair_calls": {
+      "exact": "772572667/781250000",
+      "decimal": 0.98889301376
+     },
+     "false_pass_stop": {
+      "exact": "320674744273/1562500000000",
+      "decimal": 0.20523183633472
+     },
+     "reach_opportunity": [
+      "1/2",
+      "7503/25000",
+      "668181/5000000",
+      "172302543/3125000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "70170376071/78125000000",
+       "utility": "3419709533/3906250000"
+      },
+      "hard": {
+       "success": "770348577/1220703125",
+       "utility": "582692011/976562500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_SLLL": {
+     "success": {
+      "exact": "121001585127/156250000000",
+      "decimal": 0.7744101448128
+     },
+     "cost": {
+      "exact": "2317718001/78125000000",
+      "decimal": 0.0296667904128
+     },
+     "utility": {
+      "exact": "930929193/1250000000",
+      "decimal": 0.7447433544
+     },
+     "repair_calls": {
+      "exact": "772572667/781250000",
+      "decimal": 0.98889301376
+     },
+     "false_pass_stop": {
+      "exact": "318137834929/1562500000000",
+      "decimal": 0.20360821435456
+     },
+     "reach_opportunity": [
+      "1/2",
+      "7503/25000",
+      "668181/5000000",
+      "172302543/3125000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "70691266983/78125000000",
+       "utility": "550831097/625000000"
+      },
+      "hard": {
+       "success": "786098721/1220703125",
+       "utility": "23756131/39062500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_LSSS": {
+     "success": {
+      "exact": "238093989339/312500000000",
+      "decimal": 0.7619007658848
+     },
+     "cost": {
+      "exact": "18149267107/625000000000",
+      "decimal": 0.0290388273712
+     },
+     "utility": {
+      "exact": "458038711571/625000000000",
+      "decimal": 0.7328619385136
+     },
+     "repair_calls": {
+      "exact": "5649267107/6250000000",
+      "decimal": 0.90388273712
+     },
+     "false_pass_stop": {
+      "exact": "595677415163/3125000000000",
+      "decimal": 0.19061677285216
+     },
+     "reach_opportunity": [
+      "1/2",
+      "5319/25000",
+      "295971/2500000",
+      "454589607/6250000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "138853587291/156250000000",
+       "utility": "270318876499/312500000000"
+      },
+      "hard": {
+       "success": "775315641/1220703125",
+       "utility": "2933122423/4882812500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_LSSL": {
+     "success": {
+      "exact": "121785135771/156250000000",
+      "decimal": 0.7794248689344
+     },
+     "cost": {
+      "exact": "19058446321/625000000000",
+      "decimal": 0.0304935141136
+     },
+     "utility": {
+      "exact": "468082096763/625000000000",
+      "decimal": 0.7489313548208
+     },
+     "repair_calls": {
+      "exact": "5649267107/6250000000",
+      "decimal": 0.90388273712
+     },
+     "false_pass_stop": {
+      "exact": "18331410877/97656250000",
+      "decimal": 0.18771364738048
+     },
+     "reach_opportunity": [
+      "1/2",
+      "5319/25000",
+      "295971/2500000",
+      "454589607/6250000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "70366942299/78125000000",
+       "utility": "273752693947/312500000000"
+      },
+      "hard": {
+       "success": "803409273/1220703125",
+       "utility": "3036396919/4882812500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_LSLS": {
+     "success": {
+      "exact": "30799943241/39062500000",
+      "decimal": 0.7884785469696
+     },
+     "cost": {
+      "exact": "4873626499/156250000000",
+      "decimal": 0.0311912095936
+     },
+     "utility": {
+      "exact": "23665229293/31250000000",
+      "decimal": 0.757287337376
+     },
+     "repair_calls": {
+      "exact": "1378662749/1562500000",
+      "decimal": 0.88234415936
+     },
+     "false_pass_stop": {
+      "exact": "17829972043/97656250000",
+      "decimal": 0.18257891372032
+     },
+     "reach_opportunity": [
+      "1/2",
+      "5319/25000",
+      "295971/2500000",
+      "39996687/781250000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "17684076729/19531250000",
+       "utility": "13754265917/15625000000"
+      },
+      "hard": {
+       "success": "819741657/1220703125",
+       "utility": "619435211/976562500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_LSLL": {
+     "success": {
+      "exact": "62352960411/78125000000",
+      "decimal": 0.7981178932608
+     },
+     "cost": {
+      "exact": "5033613247/156250000000",
+      "decimal": 0.0322151247808
+     },
+     "utility": {
+      "exact": "4786892303/6250000000",
+      "decimal": 0.76590276848
+     },
+     "repair_calls": {
+      "exact": "1378662749/1562500000",
+      "decimal": 0.88234415936
+     },
+     "false_pass_stop": {
+      "exact": "141396337487/781250000000",
+      "decimal": 0.18098731198336
+     },
+     "reach_opportunity": [
+      "1/2",
+      "5319/25000",
+      "295971/2500000",
+      "39996687/781250000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "35630862459/39062500000",
+       "utility": "2769536287/3125000000"
+      },
+      "hard": {
+       "success": "835065561/1220703125",
+       "utility": "126084751/195312500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_LLSS": {
+     "success": {
+      "exact": "62318673237/78125000000",
+      "decimal": 0.7976790174336
+     },
+     "cost": {
+      "exact": "2554845503/78125000000",
+      "decimal": 0.0327020224384
+     },
+     "utility": {
+      "exact": "29881913867/39062500000",
+      "decimal": 0.7649769949952
+     },
+     "repair_calls": {
+      "exact": "659908003/781250000",
+      "decimal": 0.84468224384
+     },
+     "false_pass_stop": {
+      "exact": "136407411479/781250000000",
+      "decimal": 0.17460148669312
+     },
+     "reach_opportunity": [
+      "1/2",
+      "5319/25000",
+      "13413/156250",
+      "35999253/781250000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "35502208053/39062500000",
+       "utility": "17238815023/19531250000"
+      },
+      "hard": {
+       "success": "838014537/1220703125",
+       "utility": "3160774711/4882812500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_LLSL": {
+     "success": {
+      "exact": "126147460947/156250000000",
+      "decimal": 0.8073437500608
+     },
+     "cost": {
+      "exact": "2626844009/78125000000",
+      "decimal": 0.0336236033152
+     },
+     "utility": {
+      "exact": "120893772929/156250000000",
+      "decimal": 0.7737201467456
+     },
+     "repair_calls": {
+      "exact": "659908003/781250000",
+      "decimal": 0.84468224384
+     },
+     "false_pass_stop": {
+      "exact": "270328770949/1562500000000",
+      "decimal": 0.17301041340736
+     },
+     "reach_opportunity": [
+      "1/2",
+      "5319/25000",
+      "13413/156250",
+      "35999253/781250000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "71538593043/78125000000",
+       "utility": "69435978001/78125000000"
+      },
+      "hard": {
+       "success": "853263561/1220703125",
+       "utility": "3216112183/4882812500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_LLLS": {
+     "success": {
+      "exact": "63435676359/78125000000",
+      "decimal": 0.8119766573952
+     },
+     "cost": {
+      "exact": "5358769063/156250000000",
+      "decimal": 0.0342961220032
+     },
+     "utility": {
+      "exact": "24302516731/31250000000",
+      "decimal": 0.777680535392
+     },
+     "repair_calls": {
+      "exact": "1300634063/1562500000",
+      "decimal": 0.83240580032
+     },
+     "false_pass_stop": {
+      "exact": "132959564903/781250000000",
+      "decimal": 0.17018824307584
+     },
+     "reach_opportunity": [
+      "1/2",
+      "5319/25000",
+      "13413/156250",
+      "52816563/1562500000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "35863093671/39062500000",
+       "utility": "13917534539/15625000000"
+      },
+      "hard": {
+       "success": "861643209/1220703125",
+       "utility": "649061387/976562500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_LLLL": {
+     "success": {
+      "exact": "31936065891/39062500000",
+      "decimal": 0.8175632868096
+     },
+     "cost": {
+      "exact": "5464402189/156250000000",
+      "decimal": 0.0349721740096
+     },
+     "utility": {
+      "exact": "978238891/1250000000",
+      "decimal": 0.7825911128
+     },
+     "repair_calls": {
+      "exact": "1300634063/1562500000",
+      "decimal": 0.83240580032
+     },
+     "false_pass_stop": {
+      "exact": "16530487693/97656250000",
+      "decimal": 0.16927219397632
+     },
+     "reach_opportunity": [
+      "1/2",
+      "5319/25000",
+      "13413/156250",
+      "52816563/1562500000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "18010170579/19531250000",
+       "utility": "558899579/625000000"
+      },
+      "hard": {
+       "success": "870368457/1220703125",
+       "utility": "26208707/39062500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "prompt_only_large_if_hard": {
+     "success": {
+      "exact": "973562306421/1250000000000",
+      "decimal": 0.7788498451368
+     },
+     "cost": {
+      "exact": "37381391687/1250000000000",
+      "decimal": 0.0299051133496
+     },
+     "utility": {
+      "exact": "468090457367/625000000000",
+      "decimal": 0.7489447317872
+     },
+     "repair_calls": {
+      "exact": "11521833031/12500000000",
+      "decimal": 0.92174664248
+     },
+     "false_pass_stop": {
+      "exact": "455194055899/2500000000000",
+      "decimal": 0.1820776223596
+     },
+     "reach_opportunity": [
+      "1/2",
+      "5967/25000",
+      "9258/78125",
+      "807053031/12500000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "527933656437/625000000000",
+       "utility": "258420801367/312500000000"
+      },
+      "hard": {
+       "success": "870368457/1220703125",
+       "utility": "26208707/39062500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "history_large_after_exception": {
+     "success": {
+      "exact": "302041574856159/390625000000000",
+      "decimal": 0.7732264316317671
+     },
+     "cost": {
+      "exact": "28328460487281/976562500000000",
+      "decimal": 0.029008343538975745
+     },
+     "utility": {
+      "exact": "1453550953306233/1953125000000000",
+      "decimal": 0.7442180880927913
+     },
+     "repair_calls": {
+      "exact": "735000347983/781250000000",
+      "decimal": 0.94080044541824
+     },
+     "false_pass_stop": {
+      "exact": "761647499887213/3906250000000000",
+      "decimal": 0.19498175997112652
+     },
+     "reach_opportunity": [
+      "1/2",
+      "62877/250000",
+      "3151593/25000000",
+      "49397441733/781250000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "175462171640031/195312500000000",
+       "utility": "854839852346297/976562500000000"
+      },
+      "hard": {
+       "success": "494450793813/762939453125",
+       "utility": "9354860952499/15258789062500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "history_S_or_exception": {
+     "success": {
+      "exact": "314721124760031/390625000000000",
+      "decimal": 0.8056860793856794
+     },
+     "cost": {
+      "exact": "31774048226929/976562500000000",
+      "decimal": 0.032536625384375295
+     },
+     "utility": {
+      "exact": "1510057527346297/1953125000000000",
+      "decimal": 0.7731494540013041
+     },
+     "repair_calls": {
+      "exact": "678824948047/781250000000",
+      "decimal": 0.86889593350016
+     },
+     "false_pass_stop": {
+      "exact": "680113000143469/3906250000000000",
+      "decimal": 0.17410892803672806
+     },
+     "reach_opportunity": [
+      "1/2",
+      "56349/250000",
+      "62056641/625000000",
+      "34538521797/781250000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "175462171640031/195312500000000",
+       "utility": "854839852346297/976562500000000"
+      },
+      "hard": {
+       "success": "870368457/1220703125",
+       "utility": "26208707/39062500"
+      }
+     },
+     "paths_agree_exactly": true
+    }
+   },
+   "both_truth_paths_agree_exactly": true,
+   "best_fixed": {
+    "policy": "fixed_LLLL",
+    "utility": {
+     "exact": "978238891/1250000000",
+     "decimal": 0.7825911128
+    }
+   },
+   "best_prompt_only_utility": {
+    "exact": "978238891/1250000000",
+    "decimal": 0.7825911128
+   },
+   "best_observed_history_utility": {
+    "exact": "978238891/1250000000",
+    "decimal": 0.7825911128
+   },
+   "history_advantage_over_best_fixed": {
+    "exact": "0",
+    "decimal": 0.0
+   },
+   "history_advantage_over_best_prompt_only": {
+    "exact": "0",
+    "decimal": 0.0
+   },
+   "dp_dominates_catalog": true
+  },
+  {
+   "K": 4,
+   "action_effect": "crossing",
+   "feedback": "informative",
+   "kappa": "9/10",
+   "policies": {
+    "fixed_SSSS": {
+     "success": {
+      "exact": "687589974561/1000000000000",
+      "decimal": 0.687589974561
+     },
+     "cost": {
+      "exact": "20728179843/1000000000000",
+      "decimal": 0.020728179843
+     },
+     "utility": {
+      "exact": "333430897359/500000000000",
+      "decimal": 0.666861794718
+     },
+     "repair_calls": {
+      "exact": "10728179843/10000000000",
+      "decimal": 1.0728179843
+     },
+     "false_pass_stop": {
+      "exact": "2341786624267/10000000000000",
+      "decimal": 0.2341786624267
+     },
+     "reach_opportunity": [
+      "1/2",
+      "2811/10000",
+      "351663/2000000",
+      "1158864843/10000000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "430905555489/500000000000",
+       "utility": "211154902991/250000000000"
+      },
+      "hard": {
+       "success": "125334189/244140625",
+       "utility": "477640603/976562500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_SSSL": {
+     "success": {
+      "exact": "3608814794619/5000000000000",
+      "decimal": 0.7217629589238
+     },
+     "cost": {
+      "exact": "23045909529/1000000000000",
+      "decimal": 0.023045909529
+     },
+     "utility": {
+      "exact": "1746792623487/2500000000000",
+      "decimal": 0.6987170493948
+     },
+     "repair_calls": {
+      "exact": "10728179843/10000000000",
+      "decimal": 1.0728179843
+     },
+     "false_pass_stop": {
+      "exact": "11417607018593/50000000000000",
+      "decimal": 0.22835214037186
+     },
+     "reach_opportunity": [
+      "1/2",
+      "2811/10000",
+      "351663/2000000",
+      "1158864843/10000000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "2204931518331/2500000000000",
+       "utility": "1079146292863/1250000000000"
+      },
+      "hard": {
+       "success": "685489881/1220703125",
+       "utility": "2607993479/4882812500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_SSLS": {
+     "success": {
+      "exact": "92690467299/125000000000",
+      "decimal": 0.741523738392
+     },
+     "cost": {
+      "exact": "119236645497/5000000000000",
+      "decimal": 0.0238473290994
+     },
+     "utility": {
+      "exact": "3588382046463/5000000000000",
+      "decimal": 0.7176764092926
+     },
+     "repair_calls": {
+      "exact": "51653495497/50000000000",
+      "decimal": 1.03306990994
+     },
+     "false_pass_stop": {
+      "exact": "544972252711/2500000000000",
+      "decimal": 0.2179889010844
+     },
+     "reach_opportunity": [
+      "1/2",
+      "2811/10000",
+      "351663/2000000",
+      "3806920497/50000000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "55677466851/62500000000",
+       "utility": "2179280210687/2500000000000"
+      },
+      "hard": {
+       "success": "144582033/244140625",
+       "utility": "2752152023/4882812500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_SSLL": {
+     "success": {
+      "exact": "935130006363/1250000000000",
+      "decimal": 0.7481040050904
+     },
+     "cost": {
+      "exact": "126850486491/5000000000000",
+      "decimal": 0.0253700972982
+     },
+     "utility": {
+      "exact": "3613669538961/5000000000000",
+      "decimal": 0.7227339077922
+     },
+     "repair_calls": {
+      "exact": "51653495497/50000000000",
+      "decimal": 1.03306990994
+     },
+     "false_pass_stop": {
+      "exact": "1355187339043/6250000000000",
+      "decimal": 0.21682997424688
+     },
+     "reach_opportunity": [
+      "1/2",
+      "2811/10000",
+      "351663/2000000",
+      "3806920497/50000000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "558738749787/625000000000",
+       "utility": "2184571539089/2500000000000"
+      },
+      "hard": {
+       "success": "735139173/1220703125",
+       "utility": "2791207031/4882812500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_SLSS": {
+     "success": {
+      "exact": "189683013717/250000000000",
+      "decimal": 0.758732054868
+     },
+     "cost": {
+      "exact": "6326649519/250000000000",
+      "decimal": 0.025306598076
+     },
+     "utility": {
+      "exact": "91678182099/125000000000",
+      "decimal": 0.733425456792
+     },
+     "repair_calls": {
+      "exact": "2421149519/2500000000",
+      "decimal": 0.9684598076
+     },
+     "false_pass_stop": {
+      "exact": "507764452999/2500000000000",
+      "decimal": 0.2031057811996
+     },
+     "reach_opportunity": [
+      "1/2",
+      "2811/10000",
+      "1238109/10000000",
+      "158872269/2500000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "111770459733/125000000000",
+       "utility": "54618130451/62500000000"
+      },
+      "hard": {
+       "success": "152172957/244140625",
+       "utility": "579063307/976562500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_SLSL": {
+     "success": {
+      "exact": "963019556223/1250000000000",
+      "decimal": 0.7704156449784
+     },
+     "cost": {
+      "exact": "6644394057/250000000000",
+      "decimal": 0.026577576228
+     },
+     "utility": {
+      "exact": "464898792969/625000000000",
+      "decimal": 0.7438380687504
+     },
+     "repair_calls": {
+      "exact": "2421149519/2500000000",
+      "decimal": 0.9684598076
+     },
+     "false_pass_stop": {
+      "exact": "2513846066381/12500000000000",
+      "decimal": 0.20110768531048
+     },
+     "reach_opportunity": [
+      "1/2",
+      "2811/10000",
+      "1238109/10000000",
+      "158872269/2500000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "563085075327/625000000000",
+       "utility": "274924228681/312500000000"
+      },
+      "hard": {
+       "success": "781122033/1220703125",
+       "utility": "2968352567/4882812500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_SLLS": {
+     "success": {
+      "exact": "193609274409/250000000000",
+      "decimal": 0.774437097636
+     },
+     "cost": {
+      "exact": "17327195997/625000000000",
+      "decimal": 0.0277235135952
+     },
+     "utility": {
+      "exact": "933391980051/1250000000000",
+      "decimal": 0.7467135840408
+     },
+     "repair_calls": {
+      "exact": "6015809747/6250000000",
+      "decimal": 0.96252955952
+     },
+     "false_pass_stop": {
+      "exact": "498027821263/2500000000000",
+      "decimal": 0.1992111285052
+     },
+     "reach_opportunity": [
+      "1/2",
+      "2811/10000",
+      "1238109/10000000",
+      "180058311/3125000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "112758438441/125000000000",
+       "utility": "550031985299/625000000000"
+      },
+      "hard": {
+       "success": "157911789/244140625",
+       "utility": "2994999959/4882812500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_SLLL": {
+     "success": {
+      "exact": "966280320279/1250000000000",
+      "decimal": 0.7730242562232
+     },
+     "cost": {
+      "exact": "18047429241/625000000000",
+      "decimal": 0.0288758867856
+     },
+     "utility": {
+      "exact": "930185461797/1250000000000",
+      "decimal": 0.7441483694376
+     },
+     "repair_calls": {
+      "exact": "6015809747/6250000000",
+      "decimal": 0.96252955952
+     },
+     "false_pass_stop": {
+      "exact": "2492354456513/12500000000000",
+      "decimal": 0.19938835652104
+     },
+     "reach_opportunity": [
+      "1/2",
+      "2811/10000",
+      "1238109/10000000",
+      "180058311/3125000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "562475438871/625000000000",
+       "utility": "548158911653/625000000000"
+      },
+      "hard": {
+       "success": "788681409/1220703125",
+       "utility": "2984582423/4882812500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_LSSS": {
+     "success": {
+      "exact": "193435780527/250000000000",
+      "decimal": 0.773743122108
+     },
+     "cost": {
+      "exact": "7252170941/250000000000",
+      "decimal": 0.029008683764
+     },
+     "utility": {
+      "exact": "93091804793/125000000000",
+      "decimal": 0.744734438344
+     },
+     "repair_calls": {
+      "exact": "2252170941/2500000000",
+      "decimal": 0.9008683764
+     },
+     "false_pass_stop": {
+      "exact": "464571748389/2500000000000",
+      "decimal": 0.1858286993556
+     },
+     "reach_opportunity": [
+      "1/2",
+      "11401/50000",
+      "10963/100000",
+      "158045941/2500000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "110996788143/125000000000",
+       "utility": "53998455737/62500000000"
+      },
+      "hard": {
+       "success": "161013657/244140625",
+       "utility": "610833579/976562500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_LSSL": {
+     "success": {
+      "exact": "985826014133/1250000000000",
+      "decimal": 0.7886608113064
+     },
+     "cost": {
+      "exact": "7568262823/250000000000",
+      "decimal": 0.030273051292
+     },
+     "utility": {
+      "exact": "473992350009/625000000000",
+      "decimal": 0.7583877600144
+     },
+     "repair_calls": {
+      "exact": "2252170941/2500000000",
+      "decimal": 0.9008683764
+     },
+     "false_pass_stop": {
+      "exact": "2291891698031/12500000000000",
+      "decimal": 0.18335133584248
+     },
+     "reach_opportunity": [
+      "1/2",
+      "11401/50000",
+      "10963/100000",
+      "158045941/2500000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "561311119797/625000000000",
+       "utility": "272846549881/312500000000"
+      },
+      "hard": {
+       "success": "829130653/1220703125",
+       "utility": "3142903127/4882812500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_LSLS": {
+     "success": {
+      "exact": "194282156/244140625",
+      "decimal": 0.795779710976
+     },
+     "cost": {
+      "exact": "38835248479/1250000000000",
+      "decimal": 0.0310681987832
+     },
+     "utility": {
+      "exact": "955889390241/1250000000000",
+      "decimal": 0.7647115121928
+     },
+     "repair_calls": {
+      "exact": "11094498479/12500000000",
+      "decimal": 0.88755987832
+     },
+     "false_pass_stop": {
+      "exact": "112361031787/625000000000",
+      "decimal": 0.1797776508592
+     },
+     "reach_opportunity": [
+      "1/2",
+      "11401/50000",
+      "10963/100000",
+      "623873479/12500000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "220071183/244140625",
+       "utility": "547354478369/625000000000"
+      },
+      "hard": {
+       "success": "168493129/244140625",
+       "utility": "3191678999/4882812500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_LSLL": {
+     "success": {
+      "exact": "248974680791/312500000000",
+      "decimal": 0.7967189785312
+     },
+     "cost": {
+      "exact": "40082995437/1250000000000",
+      "decimal": 0.0320663963496
+     },
+     "utility": {
+      "exact": "955815727727/1250000000000",
+      "decimal": 0.7646525821816
+     },
+     "repair_calls": {
+      "exact": "11094498479/12500000000",
+      "decimal": 0.88755987832
+     },
+     "false_pass_stop": {
+      "exact": "8768126733/48828125000",
+      "decimal": 0.17957123549184
+     },
+     "reach_opportunity": [
+      "1/2",
+      "11401/50000",
+      "10963/100000",
+      "623873479/12500000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "140787551319/156250000000",
+       "utility": "546590344943/625000000000"
+      },
+      "hard": {
+       "success": "845211949/1220703125",
+       "utility": "3197073303/4882812500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_LLSS": {
+     "success": {
+      "exact": "198794331781/250000000000",
+      "decimal": 0.795177327124
+     },
+     "cost": {
+      "exact": "8351175967/250000000000",
+      "decimal": 0.033404703868
+     },
+     "utility": {
+      "exact": "95221577907/125000000000",
+      "decimal": 0.761772623256
+     },
+     "repair_calls": {
+      "exact": "2211075967/2500000000",
+      "decimal": 0.8844303868
+     },
+     "false_pass_stop": {
+      "exact": "446287231767/2500000000000",
+      "decimal": 0.1785148927068
+     },
+     "reach_opportunity": [
+      "1/2",
+      "11401/50000",
+      "27099/250000",
+      "120035967/2500000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "112125572229/125000000000",
+       "utility": "54329611763/62500000000"
+      },
+      "hard": {
+       "success": "169274921/244140625",
+       "utility": "638936971/976562500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_LLSL": {
+     "success": {
+      "exact": "999952769639/1250000000000",
+      "decimal": 0.7999622157112
+     },
+     "cost": {
+      "exact": "8591247901/250000000000",
+      "decimal": 0.034364991604
+     },
+     "utility": {
+      "exact": "478498265067/625000000000",
+      "decimal": 0.7655972241072
+     },
+     "repair_calls": {
+      "exact": "2211075967/2500000000",
+      "decimal": 0.8844303868
+     },
+     "false_pass_stop": {
+      "exact": "2221400548773/12500000000000",
+      "decimal": 0.17771204390184
+     },
+     "reach_opportunity": [
+      "1/2",
+      "11401/50000",
+      "27099/250000",
+      "120035967/2500000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "562554472551/625000000000",
+       "utility": "272341609003/312500000000"
+      },
+      "hard": {
+       "success": "854293549/1220703125",
+       "utility": "3221197751/4882812500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_LLLS": {
+     "success": {
+      "exact": "49947809653/62500000000",
+      "decimal": 0.799164954448
+     },
+     "cost": {
+      "exact": "44523405017/1250000000000",
+      "decimal": 0.0356187240136
+     },
+     "utility": {
+      "exact": "954432788043/1250000000000",
+      "decimal": 0.7635462304344
+     },
+     "repair_calls": {
+      "exact": "11113005017/12500000000",
+      "decimal": 0.88904040136
+     },
+     "false_pass_stop": {
+      "exact": "13935481497/78125000000",
+      "decimal": 0.1783741631616
+     },
+     "reach_opportunity": [
+      "1/2",
+      "11401/50000",
+      "27099/250000",
+      "657805017/12500000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "28080773877/31250000000",
+       "utility": "543042230987/625000000000"
+      },
+      "hard": {
+       "success": "170836217/244140625",
+       "utility": "3213988727/4882812500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_LLLL": {
+     "success": {
+      "exact": "62126607017/78125000000",
+      "decimal": 0.7952205698176
+     },
+     "cost": {
+      "exact": "45839015051/1250000000000",
+      "decimal": 0.0366712120408
+     },
+     "utility": {
+      "exact": "948186697221/1250000000000",
+      "decimal": 0.7585493577768
+     },
+     "repair_calls": {
+      "exact": "11113005017/12500000000",
+      "decimal": 0.88904040136
+     },
+     "false_pass_stop": {
+      "exact": "559194985101/3125000000000",
+      "decimal": 0.17894239523232
+     },
+     "reach_opportunity": [
+      "1/2",
+      "11401/50000",
+      "27099/250000",
+      "657805017/12500000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "34928588553/39062500000",
+       "utility": "539658605189/625000000000"
+      },
+      "hard": {
+       "success": "849938077/1220703125",
+       "utility": "3191625719/4882812500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "prompt_only_large_if_hard": {
+     "success": {
+      "exact": "3895200959141/5000000000000",
+      "decimal": 0.7790401918282
+     },
+     "cost": {
+      "exact": "149539561103/5000000000000",
+      "decimal": 0.0299079122206
+     },
+     "utility": {
+      "exact": "1872830699019/2500000000000",
+      "decimal": 0.7491322796076
+     },
+     "repair_calls": {
+      "exact": "45165685391/50000000000",
+      "decimal": 0.90331370782
+     },
+     "false_pass_stop": {
+      "exact": "9099388183863/50000000000000",
+      "decimal": 0.18198776367726
+     },
+     "reach_opportunity": [
+      "1/2",
+      "11239/50000",
+      "5716503/50000000",
+      "3210182391/50000000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "430905555489/500000000000",
+       "utility": "211154902991/250000000000"
+      },
+      "hard": {
+       "success": "849938077/1220703125",
+       "utility": "3191625719/4882812500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "history_large_after_exception": {
+     "success": {
+      "exact": "10281105489538503/12500000000000000",
+      "decimal": 0.8224884391630802
+     },
+     "cost": {
+      "exact": "828591690309309/31250000000000000",
+      "decimal": 0.026514934089897888
+     },
+     "utility": {
+      "exact": "49748344067073897/62500000000000000",
+      "decimal": 0.7959735050731823
+     },
+     "repair_calls": {
+      "exact": "10193105314129/12500000000000",
+      "decimal": 0.81544842513032
+     },
+     "false_pass_stop": {
+      "exact": "20617696768366241/125000000000000000",
+      "decimal": 0.16494157414692992
+     },
+     "reach_opportunity": [
+      "1/2",
+      "12681/62500",
+      "20171673/250000000",
+      "398321664129/12500000000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "5761863254306247/6250000000000000",
+       "utility": "28177277567381353/31250000000000000"
+      },
+      "hard": {
+       "success": "551665311918/762939453125",
+       "utility": "10532747314303/15258789062500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "history_S_or_exception": {
+     "success": {
+      "exact": "10113546208546247/12500000000000000",
+      "decimal": 0.8090836966836997
+     },
+     "cost": {
+      "exact": "982024436874941/31250000000000000",
+      "decimal": 0.03142478197999811
+     },
+     "utility": {
+      "exact": "48603682168981353/62500000000000000",
+      "decimal": 0.7776589147037016
+     },
+     "repair_calls": {
+      "exact": "10514900599121/12500000000000",
+      "decimal": 0.84119204792968
+     },
+     "false_pass_stop": {
+      "exact": "21596405900334753/125000000000000000",
+      "decimal": 0.17277124720267803
+     },
+     "reach_opportunity": [
+      "1/2",
+      "13097/62500",
+      "113972733/1250000000",
+      "505773269121/12500000000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "5761863254306247/6250000000000000",
+       "utility": "28177277567381353/31250000000000000"
+      },
+      "hard": {
+       "success": "849938077/1220703125",
+       "utility": "3191625719/4882812500"
+      }
+     },
+     "paths_agree_exactly": true
+    }
+   },
+   "both_truth_paths_agree_exactly": true,
+   "best_fixed": {
+    "policy": "fixed_LLSL",
+    "utility": {
+     "exact": "478498265067/625000000000",
+     "decimal": 0.7655972241072
+    }
+   },
+   "best_prompt_only_utility": {
+    "exact": "962345297427/1250000000000",
+    "decimal": 0.7698762379416
+   },
+   "best_observed_history_utility": {
+    "exact": "49748344067073897/62500000000000000",
+    "decimal": 0.7959735050731823
+   },
+   "history_advantage_over_best_fixed": {
+    "exact": "1898517560373897/62500000000000000",
+    "decimal": 0.03037628096598235
+   },
+   "history_advantage_over_best_prompt_only": {
+    "exact": "1631079195723897/62500000000000000",
+    "decimal": 0.026097267131582353
+   },
+   "dp_dominates_catalog": true
+  },
+  {
+   "K": 4,
+   "action_effect": "crossing",
+   "feedback": "weak",
+   "kappa": "3/5",
+   "policies": {
+    "fixed_SSSS": {
+     "success": {
+      "exact": "687589974561/1000000000000",
+      "decimal": 0.687589974561
+     },
+     "cost": {
+      "exact": "20728179843/1000000000000",
+      "decimal": 0.020728179843
+     },
+     "utility": {
+      "exact": "333430897359/500000000000",
+      "decimal": 0.666861794718
+     },
+     "repair_calls": {
+      "exact": "10728179843/10000000000",
+      "decimal": 1.0728179843
+     },
+     "false_pass_stop": {
+      "exact": "2341786624267/10000000000000",
+      "decimal": 0.2341786624267
+     },
+     "reach_opportunity": [
+      "1/2",
+      "2811/10000",
+      "351663/2000000",
+      "1158864843/10000000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "430905555489/500000000000",
+       "utility": "211154902991/250000000000"
+      },
+      "hard": {
+       "success": "125334189/244140625",
+       "utility": "477640603/976562500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_SSSL": {
+     "success": {
+      "exact": "3608814794619/5000000000000",
+      "decimal": 0.7217629589238
+     },
+     "cost": {
+      "exact": "23045909529/1000000000000",
+      "decimal": 0.023045909529
+     },
+     "utility": {
+      "exact": "1746792623487/2500000000000",
+      "decimal": 0.6987170493948
+     },
+     "repair_calls": {
+      "exact": "10728179843/10000000000",
+      "decimal": 1.0728179843
+     },
+     "false_pass_stop": {
+      "exact": "11417607018593/50000000000000",
+      "decimal": 0.22835214037186
+     },
+     "reach_opportunity": [
+      "1/2",
+      "2811/10000",
+      "351663/2000000",
+      "1158864843/10000000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "2204931518331/2500000000000",
+       "utility": "1079146292863/1250000000000"
+      },
+      "hard": {
+       "success": "685489881/1220703125",
+       "utility": "2607993479/4882812500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_SSLS": {
+     "success": {
+      "exact": "92690467299/125000000000",
+      "decimal": 0.741523738392
+     },
+     "cost": {
+      "exact": "119236645497/5000000000000",
+      "decimal": 0.0238473290994
+     },
+     "utility": {
+      "exact": "3588382046463/5000000000000",
+      "decimal": 0.7176764092926
+     },
+     "repair_calls": {
+      "exact": "51653495497/50000000000",
+      "decimal": 1.03306990994
+     },
+     "false_pass_stop": {
+      "exact": "544972252711/2500000000000",
+      "decimal": 0.2179889010844
+     },
+     "reach_opportunity": [
+      "1/2",
+      "2811/10000",
+      "351663/2000000",
+      "3806920497/50000000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "55677466851/62500000000",
+       "utility": "2179280210687/2500000000000"
+      },
+      "hard": {
+       "success": "144582033/244140625",
+       "utility": "2752152023/4882812500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_SSLL": {
+     "success": {
+      "exact": "935130006363/1250000000000",
+      "decimal": 0.7481040050904
+     },
+     "cost": {
+      "exact": "126850486491/5000000000000",
+      "decimal": 0.0253700972982
+     },
+     "utility": {
+      "exact": "3613669538961/5000000000000",
+      "decimal": 0.7227339077922
+     },
+     "repair_calls": {
+      "exact": "51653495497/50000000000",
+      "decimal": 1.03306990994
+     },
+     "false_pass_stop": {
+      "exact": "1355187339043/6250000000000",
+      "decimal": 0.21682997424688
+     },
+     "reach_opportunity": [
+      "1/2",
+      "2811/10000",
+      "351663/2000000",
+      "3806920497/50000000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "558738749787/625000000000",
+       "utility": "2184571539089/2500000000000"
+      },
+      "hard": {
+       "success": "735139173/1220703125",
+       "utility": "2791207031/4882812500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_SLSS": {
+     "success": {
+      "exact": "189683013717/250000000000",
+      "decimal": 0.758732054868
+     },
+     "cost": {
+      "exact": "6326649519/250000000000",
+      "decimal": 0.025306598076
+     },
+     "utility": {
+      "exact": "91678182099/125000000000",
+      "decimal": 0.733425456792
+     },
+     "repair_calls": {
+      "exact": "2421149519/2500000000",
+      "decimal": 0.9684598076
+     },
+     "false_pass_stop": {
+      "exact": "507764452999/2500000000000",
+      "decimal": 0.2031057811996
+     },
+     "reach_opportunity": [
+      "1/2",
+      "2811/10000",
+      "1238109/10000000",
+      "158872269/2500000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "111770459733/125000000000",
+       "utility": "54618130451/62500000000"
+      },
+      "hard": {
+       "success": "152172957/244140625",
+       "utility": "579063307/976562500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_SLSL": {
+     "success": {
+      "exact": "963019556223/1250000000000",
+      "decimal": 0.7704156449784
+     },
+     "cost": {
+      "exact": "6644394057/250000000000",
+      "decimal": 0.026577576228
+     },
+     "utility": {
+      "exact": "464898792969/625000000000",
+      "decimal": 0.7438380687504
+     },
+     "repair_calls": {
+      "exact": "2421149519/2500000000",
+      "decimal": 0.9684598076
+     },
+     "false_pass_stop": {
+      "exact": "2513846066381/12500000000000",
+      "decimal": 0.20110768531048
+     },
+     "reach_opportunity": [
+      "1/2",
+      "2811/10000",
+      "1238109/10000000",
+      "158872269/2500000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "563085075327/625000000000",
+       "utility": "274924228681/312500000000"
+      },
+      "hard": {
+       "success": "781122033/1220703125",
+       "utility": "2968352567/4882812500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_SLLS": {
+     "success": {
+      "exact": "193609274409/250000000000",
+      "decimal": 0.774437097636
+     },
+     "cost": {
+      "exact": "17327195997/625000000000",
+      "decimal": 0.0277235135952
+     },
+     "utility": {
+      "exact": "933391980051/1250000000000",
+      "decimal": 0.7467135840408
+     },
+     "repair_calls": {
+      "exact": "6015809747/6250000000",
+      "decimal": 0.96252955952
+     },
+     "false_pass_stop": {
+      "exact": "498027821263/2500000000000",
+      "decimal": 0.1992111285052
+     },
+     "reach_opportunity": [
+      "1/2",
+      "2811/10000",
+      "1238109/10000000",
+      "180058311/3125000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "112758438441/125000000000",
+       "utility": "550031985299/625000000000"
+      },
+      "hard": {
+       "success": "157911789/244140625",
+       "utility": "2994999959/4882812500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_SLLL": {
+     "success": {
+      "exact": "966280320279/1250000000000",
+      "decimal": 0.7730242562232
+     },
+     "cost": {
+      "exact": "18047429241/625000000000",
+      "decimal": 0.0288758867856
+     },
+     "utility": {
+      "exact": "930185461797/1250000000000",
+      "decimal": 0.7441483694376
+     },
+     "repair_calls": {
+      "exact": "6015809747/6250000000",
+      "decimal": 0.96252955952
+     },
+     "false_pass_stop": {
+      "exact": "2492354456513/12500000000000",
+      "decimal": 0.19938835652104
+     },
+     "reach_opportunity": [
+      "1/2",
+      "2811/10000",
+      "1238109/10000000",
+      "180058311/3125000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "562475438871/625000000000",
+       "utility": "548158911653/625000000000"
+      },
+      "hard": {
+       "success": "788681409/1220703125",
+       "utility": "2984582423/4882812500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_LSSS": {
+     "success": {
+      "exact": "193435780527/250000000000",
+      "decimal": 0.773743122108
+     },
+     "cost": {
+      "exact": "7252170941/250000000000",
+      "decimal": 0.029008683764
+     },
+     "utility": {
+      "exact": "93091804793/125000000000",
+      "decimal": 0.744734438344
+     },
+     "repair_calls": {
+      "exact": "2252170941/2500000000",
+      "decimal": 0.9008683764
+     },
+     "false_pass_stop": {
+      "exact": "464571748389/2500000000000",
+      "decimal": 0.1858286993556
+     },
+     "reach_opportunity": [
+      "1/2",
+      "11401/50000",
+      "10963/100000",
+      "158045941/2500000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "110996788143/125000000000",
+       "utility": "53998455737/62500000000"
+      },
+      "hard": {
+       "success": "161013657/244140625",
+       "utility": "610833579/976562500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_LSSL": {
+     "success": {
+      "exact": "985826014133/1250000000000",
+      "decimal": 0.7886608113064
+     },
+     "cost": {
+      "exact": "7568262823/250000000000",
+      "decimal": 0.030273051292
+     },
+     "utility": {
+      "exact": "473992350009/625000000000",
+      "decimal": 0.7583877600144
+     },
+     "repair_calls": {
+      "exact": "2252170941/2500000000",
+      "decimal": 0.9008683764
+     },
+     "false_pass_stop": {
+      "exact": "2291891698031/12500000000000",
+      "decimal": 0.18335133584248
+     },
+     "reach_opportunity": [
+      "1/2",
+      "11401/50000",
+      "10963/100000",
+      "158045941/2500000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "561311119797/625000000000",
+       "utility": "272846549881/312500000000"
+      },
+      "hard": {
+       "success": "829130653/1220703125",
+       "utility": "3142903127/4882812500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_LSLS": {
+     "success": {
+      "exact": "194282156/244140625",
+      "decimal": 0.795779710976
+     },
+     "cost": {
+      "exact": "38835248479/1250000000000",
+      "decimal": 0.0310681987832
+     },
+     "utility": {
+      "exact": "955889390241/1250000000000",
+      "decimal": 0.7647115121928
+     },
+     "repair_calls": {
+      "exact": "11094498479/12500000000",
+      "decimal": 0.88755987832
+     },
+     "false_pass_stop": {
+      "exact": "112361031787/625000000000",
+      "decimal": 0.1797776508592
+     },
+     "reach_opportunity": [
+      "1/2",
+      "11401/50000",
+      "10963/100000",
+      "623873479/12500000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "220071183/244140625",
+       "utility": "547354478369/625000000000"
+      },
+      "hard": {
+       "success": "168493129/244140625",
+       "utility": "3191678999/4882812500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_LSLL": {
+     "success": {
+      "exact": "248974680791/312500000000",
+      "decimal": 0.7967189785312
+     },
+     "cost": {
+      "exact": "40082995437/1250000000000",
+      "decimal": 0.0320663963496
+     },
+     "utility": {
+      "exact": "955815727727/1250000000000",
+      "decimal": 0.7646525821816
+     },
+     "repair_calls": {
+      "exact": "11094498479/12500000000",
+      "decimal": 0.88755987832
+     },
+     "false_pass_stop": {
+      "exact": "8768126733/48828125000",
+      "decimal": 0.17957123549184
+     },
+     "reach_opportunity": [
+      "1/2",
+      "11401/50000",
+      "10963/100000",
+      "623873479/12500000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "140787551319/156250000000",
+       "utility": "546590344943/625000000000"
+      },
+      "hard": {
+       "success": "845211949/1220703125",
+       "utility": "3197073303/4882812500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_LLSS": {
+     "success": {
+      "exact": "198794331781/250000000000",
+      "decimal": 0.795177327124
+     },
+     "cost": {
+      "exact": "8351175967/250000000000",
+      "decimal": 0.033404703868
+     },
+     "utility": {
+      "exact": "95221577907/125000000000",
+      "decimal": 0.761772623256
+     },
+     "repair_calls": {
+      "exact": "2211075967/2500000000",
+      "decimal": 0.8844303868
+     },
+     "false_pass_stop": {
+      "exact": "446287231767/2500000000000",
+      "decimal": 0.1785148927068
+     },
+     "reach_opportunity": [
+      "1/2",
+      "11401/50000",
+      "27099/250000",
+      "120035967/2500000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "112125572229/125000000000",
+       "utility": "54329611763/62500000000"
+      },
+      "hard": {
+       "success": "169274921/244140625",
+       "utility": "638936971/976562500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_LLSL": {
+     "success": {
+      "exact": "999952769639/1250000000000",
+      "decimal": 0.7999622157112
+     },
+     "cost": {
+      "exact": "8591247901/250000000000",
+      "decimal": 0.034364991604
+     },
+     "utility": {
+      "exact": "478498265067/625000000000",
+      "decimal": 0.7655972241072
+     },
+     "repair_calls": {
+      "exact": "2211075967/2500000000",
+      "decimal": 0.8844303868
+     },
+     "false_pass_stop": {
+      "exact": "2221400548773/12500000000000",
+      "decimal": 0.17771204390184
+     },
+     "reach_opportunity": [
+      "1/2",
+      "11401/50000",
+      "27099/250000",
+      "120035967/2500000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "562554472551/625000000000",
+       "utility": "272341609003/312500000000"
+      },
+      "hard": {
+       "success": "854293549/1220703125",
+       "utility": "3221197751/4882812500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_LLLS": {
+     "success": {
+      "exact": "49947809653/62500000000",
+      "decimal": 0.799164954448
+     },
+     "cost": {
+      "exact": "44523405017/1250000000000",
+      "decimal": 0.0356187240136
+     },
+     "utility": {
+      "exact": "954432788043/1250000000000",
+      "decimal": 0.7635462304344
+     },
+     "repair_calls": {
+      "exact": "11113005017/12500000000",
+      "decimal": 0.88904040136
+     },
+     "false_pass_stop": {
+      "exact": "13935481497/78125000000",
+      "decimal": 0.1783741631616
+     },
+     "reach_opportunity": [
+      "1/2",
+      "11401/50000",
+      "27099/250000",
+      "657805017/12500000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "28080773877/31250000000",
+       "utility": "543042230987/625000000000"
+      },
+      "hard": {
+       "success": "170836217/244140625",
+       "utility": "3213988727/4882812500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_LLLL": {
+     "success": {
+      "exact": "62126607017/78125000000",
+      "decimal": 0.7952205698176
+     },
+     "cost": {
+      "exact": "45839015051/1250000000000",
+      "decimal": 0.0366712120408
+     },
+     "utility": {
+      "exact": "948186697221/1250000000000",
+      "decimal": 0.7585493577768
+     },
+     "repair_calls": {
+      "exact": "11113005017/12500000000",
+      "decimal": 0.88904040136
+     },
+     "false_pass_stop": {
+      "exact": "559194985101/3125000000000",
+      "decimal": 0.17894239523232
+     },
+     "reach_opportunity": [
+      "1/2",
+      "11401/50000",
+      "27099/250000",
+      "657805017/12500000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "34928588553/39062500000",
+       "utility": "539658605189/625000000000"
+      },
+      "hard": {
+       "success": "849938077/1220703125",
+       "utility": "3191625719/4882812500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "prompt_only_large_if_hard": {
+     "success": {
+      "exact": "3895200959141/5000000000000",
+      "decimal": 0.7790401918282
+     },
+     "cost": {
+      "exact": "149539561103/5000000000000",
+      "decimal": 0.0299079122206
+     },
+     "utility": {
+      "exact": "1872830699019/2500000000000",
+      "decimal": 0.7491322796076
+     },
+     "repair_calls": {
+      "exact": "45165685391/50000000000",
+      "decimal": 0.90331370782
+     },
+     "false_pass_stop": {
+      "exact": "9099388183863/50000000000000",
+      "decimal": 0.18198776367726
+     },
+     "reach_opportunity": [
+      "1/2",
+      "11239/50000",
+      "5716503/50000000",
+      "3210182391/50000000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "430905555489/500000000000",
+       "utility": "211154902991/250000000000"
+      },
+      "hard": {
+       "success": "849938077/1220703125",
+       "utility": "3191625719/4882812500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "history_large_after_exception": {
+     "success": {
+      "exact": "76731232395831/97656250000000",
+      "decimal": 0.7857278197333094
+     },
+     "cost": {
+      "exact": "55510928256099/1953125000000000",
+      "decimal": 0.02842159526712269
+     },
+     "utility": {
+      "exact": "1479113719660521/1953125000000000",
+      "decimal": 0.7573062244661868
+     },
+     "repair_calls": {
+      "exact": "713521855471/781250000000",
+      "decimal": 0.91330797500288
+     },
+     "false_pass_stop": {
+      "exact": "45796312995583/244140625000000",
+      "decimal": 0.18758169802990796
+     },
+     "reach_opportunity": [
+      "1/2",
+      "60411/250000",
+      "453267/3906250",
+      "43459080471/781250000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "44064667216119/48828125000000",
+       "utility": "859009058181929/976562500000000"
+      },
+      "hard": {
+       "success": "510415080933/762939453125",
+       "utility": "9689135335603/15258789062500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "history_S_or_exception": {
+     "success": {
+      "exact": "78062190296119/97656250000000",
+      "decimal": 0.7993568286322585
+     },
+     "cost": {
+      "exact": "63909603940451/1953125000000000",
+      "decimal": 0.03272171721751091
+     },
+     "utility": {
+      "exact": "1497334201981929/1953125000000000",
+      "decimal": 0.7666351114147476
+     },
+     "repair_calls": {
+      "exact": "683050218479/781250000000",
+      "decimal": 0.87430427965312
+     },
+     "false_pass_stop": {
+      "exact": "43226356733439/244140625000000",
+      "decimal": 0.17705515718016615
+     },
+     "reach_opportunity": [
+      "1/2",
+      "55547/250000",
+      "2014047/19531250",
+      "38278963479/781250000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "44064667216119/48828125000000",
+       "utility": "859009058181929/976562500000000"
+      },
+      "hard": {
+       "success": "849938077/1220703125",
+       "utility": "3191625719/4882812500"
+      }
+     },
+     "paths_agree_exactly": true
+    }
+   },
+   "both_truth_paths_agree_exactly": true,
+   "best_fixed": {
+    "policy": "fixed_LLSL",
+    "utility": {
+     "exact": "478498265067/625000000000",
+     "decimal": 0.7655972241072
+    }
+   },
+   "best_prompt_only_utility": {
+    "exact": "962345297427/1250000000000",
+    "decimal": 0.7698762379416
+   },
+   "best_observed_history_utility": {
+    "exact": "6026172388898421/7812500000000000",
+    "decimal": 0.7713500657789979
+   },
+   "history_advantage_over_best_fixed": {
+    "exact": "44944075560921/7812500000000000",
+    "decimal": 0.005752841671797888
+   },
+   "history_advantage_over_best_prompt_only": {
+    "exact": "11514279979671/7812500000000000",
+    "decimal": 0.001473827837397888
+   },
+   "dp_dominates_catalog": true
+  },
+  {
+   "K": 4,
+   "action_effect": "U_irrelevant_negative_control",
+   "feedback": "informative",
+   "kappa": "9/10",
+   "policies": {
+    "fixed_SSSS": {
+     "success": {
+      "exact": "359839937/500000000",
+      "decimal": 0.719679874
+     },
+     "cost": {
+      "exact": "103279979/5000000000",
+      "decimal": 0.0206559958
+     },
+     "utility": {
+      "exact": "3495119391/5000000000",
+      "decimal": 0.6990238782
+     },
+     "repair_calls": {
+      "exact": "53279979/50000000",
+      "decimal": 1.06559958
+     },
+     "false_pass_stop": {
+      "exact": "220494409/1000000000",
+      "decimal": 0.220494409
+     },
+     "reach_opportunity": [
+      "1/2",
+      "1463/5000",
+      "85897/500000",
+      "5060279/50000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "211477569/250000000",
+       "utility": "2069283167/2500000000"
+      },
+      "hard": {
+       "success": "1159081/1953125",
+       "utility": "22278691/39062500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_SSSL": {
+     "success": {
+      "exact": "45612527/62500000",
+      "decimal": 0.729800432
+     },
+     "cost": {
+      "exact": "113400537/5000000000",
+      "decimal": 0.0226801074
+     },
+     "utility": {
+      "exact": "3535601623/5000000000",
+      "decimal": 0.7071203246
+     },
+     "repair_calls": {
+      "exact": "53279979/50000000",
+      "decimal": 1.06559958
+     },
+     "false_pass_stop": {
+      "exact": "109460191/500000000",
+      "decimal": 0.218920382
+     },
+     "reach_opportunity": [
+      "1/2",
+      "1463/5000",
+      "85897/500000",
+      "5060279/50000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "26715999/31250000",
+       "utility": "2087286551/2500000000"
+      },
+      "hard": {
+       "success": "1181033/1953125",
+       "utility": "22629923/39062500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_SSLS": {
+     "success": {
+      "exact": "183130473/250000000",
+      "decimal": 0.732521892
+     },
+     "cost": {
+      "exact": "59868241/2500000000",
+      "decimal": 0.0239472964
+     },
+     "utility": {
+      "exact": "1771436489/2500000000",
+      "decimal": 0.7085745956
+     },
+     "repair_calls": {
+      "exact": "26278541/25000000",
+      "decimal": 1.05114164
+     },
+     "false_pass_stop": {
+      "exact": "108099461/500000000",
+      "decimal": 0.216198922
+     },
+     "reach_opportunity": [
+      "1/2",
+      "1463/5000",
+      "85897/500000",
+      "2168691/25000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "107042601/125000000",
+       "utility": "1044268393/1250000000"
+      },
+      "hard": {
+       "success": "1188873/1953125",
+       "utility": "22724003/39062500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_SSLL": {
+     "success": {
+      "exact": "46324791/62500000",
+      "decimal": 0.741196656
+     },
+     "cost": {
+      "exact": "64205623/2500000000",
+      "decimal": 0.0256822492
+     },
+     "utility": {
+      "exact": "1788786017/2500000000",
+      "decimal": 0.7155144068
+     },
+     "repair_calls": {
+      "exact": "26278541/25000000",
+      "decimal": 1.05114164
+     },
+     "false_pass_stop": {
+      "exact": "53712439/250000000",
+      "decimal": 0.214849756
+     },
+     "reach_opportunity": [
+      "1/2",
+      "1463/5000",
+      "85897/500000",
+      "2168691/25000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "27001767/31250000",
+       "utility": "1051984129/1250000000"
+      },
+      "hard": {
+       "success": "1207689/1953125",
+       "utility": "23025059/39062500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_SLSS": {
+     "success": {
+      "exact": "184309973/250000000",
+      "decimal": 0.737239892
+     },
+     "cost": {
+      "exact": "65294991/2500000000",
+      "decimal": 0.0261179964
+     },
+     "utility": {
+      "exact": "1777804739/2500000000",
+      "decimal": 0.7111218956
+     },
+     "repair_calls": {
+      "exact": "25664991/25000000",
+      "decimal": 1.02659964
+     },
+     "false_pass_stop": {
+      "exact": "105740461/500000000",
+      "decimal": 0.211480922
+     },
+     "reach_opportunity": [
+      "1/2",
+      "1463/5000",
+      "36813/250000",
+      "2168691/25000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "107326101/125000000",
+       "utility": "1045260643/1250000000"
+      },
+      "hard": {
+       "success": "1202873/1953125",
+       "utility": "22892003/39062500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_SLSL": {
+     "success": {
+      "exact": "23309833/31250000",
+      "decimal": 0.745914656
+     },
+     "cost": {
+      "exact": "69632373/2500000000",
+      "decimal": 0.0278529492
+     },
+     "utility": {
+      "exact": "1795154267/2500000000",
+      "decimal": 0.7180617068
+     },
+     "repair_calls": {
+      "exact": "25664991/25000000",
+      "decimal": 1.02659964
+     },
+     "false_pass_stop": {
+      "exact": "52532939/250000000",
+      "decimal": 0.210131756
+     },
+     "reach_opportunity": [
+      "1/2",
+      "1463/5000",
+      "36813/250000",
+      "2168691/25000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "13536321/15625000",
+       "utility": "1052976379/1250000000"
+      },
+      "hard": {
+       "success": "1221689/1953125",
+       "utility": "23193059/39062500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_SLLS": {
+     "success": {
+      "exact": "93530917/125000000",
+      "decimal": 0.748247336
+     },
+     "cost": {
+      "exact": "36173889/1250000000",
+      "decimal": 0.0289391112
+     },
+     "utility": {
+      "exact": "899135281/1250000000",
+      "decimal": 0.7193082248
+     },
+     "repair_calls": {
+      "exact": "12677589/12500000",
+      "decimal": 1.01420712
+     },
+     "false_pass_stop": {
+      "exact": "51949769/250000000",
+      "decimal": 0.207799076
+     },
+     "reach_opportunity": [
+      "1/2",
+      "1463/5000",
+      "36813/250000",
+      "929439/12500000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "54221829/62500000",
+       "utility": "526756097/625000000"
+      },
+      "hard": {
+       "success": "1228409/1953125",
+       "utility": "23273699/39062500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_SLLL": {
+     "success": {
+      "exact": "23615089/31250000",
+      "decimal": 0.755682848
+     },
+     "cost": {
+      "exact": "38032767/1250000000",
+      "decimal": 0.0304262136
+     },
+     "utility": {
+      "exact": "906570793/1250000000",
+      "decimal": 0.7252566344
+     },
+     "repair_calls": {
+      "exact": "12677589/12500000",
+      "decimal": 1.01420712
+     },
+     "false_pass_stop": {
+      "exact": "25830331/125000000",
+      "decimal": 0.206642648
+     },
+     "reach_opportunity": [
+      "1/2",
+      "1463/5000",
+      "36813/250000",
+      "929439/12500000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "13658793/15625000",
+       "utility": "530062841/625000000"
+      },
+      "hard": {
+       "success": "1244537/1953125",
+       "utility": "23531747/39062500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_LSSS": {
+     "success": {
+      "exact": "186359973/250000000",
+      "decimal": 0.745439892
+     },
+     "cost": {
+      "exact": "74619991/2500000000",
+      "decimal": 0.0298479964
+     },
+     "utility": {
+      "exact": "1788979739/2500000000",
+      "decimal": 0.7155918956
+     },
+     "repair_calls": {
+      "exact": "24619991/25000000",
+      "decimal": 0.98479964
+     },
+     "false_pass_stop": {
+      "exact": "101640461/500000000",
+      "decimal": 0.203280922
+     },
+     "reach_opportunity": [
+      "1/2",
+      "627/2500",
+      "36813/250000",
+      "2168691/25000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "107776101/125000000",
+       "utility": "1046835643/1250000000"
+      },
+      "hard": {
+       "success": "1227873/1953125",
+       "utility": "23192003/39062500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_LSSL": {
+     "success": {
+      "exact": "23566083/31250000",
+      "decimal": 0.754114656
+     },
+     "cost": {
+      "exact": "78957373/2500000000",
+      "decimal": 0.0315829492
+     },
+     "utility": {
+      "exact": "1806329267/2500000000",
+      "decimal": 0.7225317068
+     },
+     "repair_calls": {
+      "exact": "24619991/25000000",
+      "decimal": 0.98479964
+     },
+     "false_pass_stop": {
+      "exact": "50482939/250000000",
+      "decimal": 0.201931756
+     },
+     "reach_opportunity": [
+      "1/2",
+      "627/2500",
+      "36813/250000",
+      "2168691/25000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "13592571/15625000",
+       "utility": "1054551379/1250000000"
+      },
+      "hard": {
+       "success": "1246689/1953125",
+       "utility": "23493059/39062500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_LSLS": {
+     "success": {
+      "exact": "94555917/125000000",
+      "decimal": 0.756447336
+     },
+     "cost": {
+      "exact": "40836389/1250000000",
+      "decimal": 0.0326691112
+     },
+     "utility": {
+      "exact": "904722781/1250000000",
+      "decimal": 0.7237782248
+     },
+     "repair_calls": {
+      "exact": "12155089/12500000",
+      "decimal": 0.97240712
+     },
+     "false_pass_stop": {
+      "exact": "49899769/250000000",
+      "decimal": 0.199599076
+     },
+     "reach_opportunity": [
+      "1/2",
+      "627/2500",
+      "36813/250000",
+      "929439/12500000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "54446829/62500000",
+       "utility": "527543597/625000000"
+      },
+      "hard": {
+       "success": "1253409/1953125",
+       "utility": "23573699/39062500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_LSLL": {
+     "success": {
+      "exact": "23871339/31250000",
+      "decimal": 0.763882848
+     },
+     "cost": {
+      "exact": "42695267/1250000000",
+      "decimal": 0.0341562136
+     },
+     "utility": {
+      "exact": "912158293/1250000000",
+      "decimal": 0.7297266344
+     },
+     "repair_calls": {
+      "exact": "12155089/12500000",
+      "decimal": 0.97240712
+     },
+     "false_pass_stop": {
+      "exact": "24805331/125000000",
+      "decimal": 0.198442648
+     },
+     "reach_opportunity": [
+      "1/2",
+      "627/2500",
+      "36813/250000",
+      "929439/12500000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "13715043/15625000",
+       "utility": "530850341/625000000"
+      },
+      "hard": {
+       "success": "1269537/1953125",
+       "utility": "23831747/39062500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_LLSS": {
+     "success": {
+      "exact": "95061417/125000000",
+      "decimal": 0.760491336
+     },
+     "cost": {
+      "exact": "43162139/1250000000",
+      "decimal": 0.0345297112
+     },
+     "utility": {
+      "exact": "907452031/1250000000",
+      "decimal": 0.7259616248
+     },
+     "repair_calls": {
+      "exact": "11892139/12500000",
+      "decimal": 0.95137112
+     },
+     "false_pass_stop": {
+      "exact": "48888769/250000000",
+      "decimal": 0.195555076
+     },
+     "reach_opportunity": [
+      "1/2",
+      "627/2500",
+      "15777/125000",
+      "929439/12500000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "54568329/62500000",
+       "utility": "527968847/625000000"
+      },
+      "hard": {
+       "success": "1265409/1953125",
+       "utility": "23717699/39062500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_LLSL": {
+     "success": {
+      "exact": "11998857/15625000",
+      "decimal": 0.767926848
+     },
+     "cost": {
+      "exact": "45021017/1250000000",
+      "decimal": 0.0360168136
+     },
+     "utility": {
+      "exact": "914887543/1250000000",
+      "decimal": 0.7319100344
+     },
+     "repair_calls": {
+      "exact": "11892139/12500000",
+      "decimal": 0.95137112
+     },
+     "false_pass_stop": {
+      "exact": "24299831/125000000",
+      "decimal": 0.194398648
+     },
+     "reach_opportunity": [
+      "1/2",
+      "627/2500",
+      "15777/125000",
+      "929439/12500000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "6872709/7812500",
+       "utility": "531275591/625000000"
+      },
+      "hard": {
+       "success": "1281537/1953125",
+       "utility": "23975747/39062500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_LLLS": {
+     "success": {
+      "exact": "48120393/62500000",
+      "decimal": 0.769926288
+     },
+     "cost": {
+      "exact": "23092381/625000000",
+      "decimal": 0.0369478096
+     },
+     "utility": {
+      "exact": "458111549/625000000",
+      "decimal": 0.7329784784
+     },
+     "repair_calls": {
+      "exact": "5879681/6250000",
+      "decimal": 0.94074896
+     },
+     "false_pass_stop": {
+      "exact": "24049901/125000000",
+      "decimal": 0.192399208
+     },
+     "reach_opportunity": [
+      "1/2",
+      "627/2500",
+      "15777/125000",
+      "398331/6250000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "27523641/31250000",
+       "utility": "265752613/312500000"
+      },
+      "hard": {
+       "success": "1287297/1953125",
+       "utility": "24044867/39062500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_LLLL": {
+     "success": {
+      "exact": "12129681/15625000",
+      "decimal": 0.776299584
+     },
+     "cost": {
+      "exact": "23889043/625000000",
+      "decimal": 0.0382224688
+     },
+     "utility": {
+      "exact": "461298197/625000000",
+      "decimal": 0.7380771152
+     },
+     "repair_calls": {
+      "exact": "5879681/6250000",
+      "decimal": 0.94074896
+     },
+     "false_pass_stop": {
+      "exact": "11962999/62500000",
+      "decimal": 0.191407984
+     },
+     "reach_opportunity": [
+      "1/2",
+      "627/2500",
+      "15777/125000",
+      "398331/6250000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "6925197/7812500",
+       "utility": "267169789/312500000"
+      },
+      "hard": {
+       "success": "1301121/1953125",
+       "utility": "24266051/39062500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "prompt_only_large_if_hard": {
+     "success": {
+      "exact": "378021057/500000000",
+      "decimal": 0.756042114
+     },
+     "cost": {
+      "exact": "157900139/5000000000",
+      "decimal": 0.0315800278
+     },
+     "utility": {
+      "exact": "3622310431/5000000000",
+      "decimal": 0.7244620862
+     },
+     "repair_calls": {
+      "exact": "9925679/10000000",
+      "decimal": 0.9925679
+     },
+     "false_pass_stop": {
+      "exact": "63557/320000",
+      "decimal": 0.198615625
+     },
+     "reach_opportunity": [
+      "1/2",
+      "267/1000",
+      "14517/100000",
+      "803979/10000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "211477569/250000000",
+       "utility": "2069283167/2500000000"
+      },
+      "hard": {
+       "success": "1301121/1953125",
+       "utility": "24266051/39062500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "history_large_after_exception": {
+     "success": {
+      "exact": "150344486891/200000000000",
+      "decimal": 0.751722434455
+     },
+     "cost": {
+      "exact": "15209212413/500000000000",
+      "decimal": 0.030418424826
+     },
+     "utility": {
+      "exact": "721304009629/1000000000000",
+      "decimal": 0.721304009629
+     },
+     "repair_calls": {
+      "exact": "9985212413/10000000000",
+      "decimal": 0.9985212413
+     },
+     "false_pass_stop": {
+      "exact": "407712341977/2000000000000",
+      "decimal": 0.2038561709885
+     },
+     "reach_opportunity": [
+      "1/2",
+      "67549/250000",
+      "1475149/10000000",
+      "808103413/10000000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "86579251179/100000000000",
+       "utility": "420713612701/500000000000"
+      },
+      "hard": {
+       "success": "31135369/48828125",
+       "utility": "587090619/976562500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "history_S_or_exception": {
+     "success": {
+      "exact": "153196646379/200000000000",
+      "decimal": 0.765983231895
+     },
+     "cost": {
+      "exact": "17332083197/500000000000",
+      "decimal": 0.034664166394
+     },
+     "utility": {
+      "exact": "731319065501/1000000000000",
+      "decimal": 0.731319065501
+     },
+     "repair_calls": {
+      "exact": "9706495997/10000000000",
+      "decimal": 0.9706495997
+     },
+     "false_pass_stop": {
+      "exact": "390859366361/2000000000000",
+      "decimal": 0.1954296831805
+     },
+     "reach_opportunity": [
+      "1/2",
+      "65373/250000",
+      "6842241/50000000",
+      "723127797/10000000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "86579251179/100000000000",
+       "utility": "420713612701/500000000000"
+      },
+      "hard": {
+       "success": "1301121/1953125",
+       "utility": "24266051/39062500"
+      }
+     },
+     "paths_agree_exactly": true
+    }
+   },
+   "both_truth_paths_agree_exactly": true,
+   "best_fixed": {
+    "policy": "fixed_LLLL",
+    "utility": {
+     "exact": "461298197/625000000",
+     "decimal": 0.7380771152
+    }
+   },
+   "best_prompt_only_utility": {
+    "exact": "461298197/625000000",
+    "decimal": 0.7380771152
+   },
+   "best_observed_history_utility": {
+    "exact": "461298197/625000000",
+    "decimal": 0.7380771152
+   },
+   "history_advantage_over_best_fixed": {
+    "exact": "0",
+    "decimal": 0.0
+   },
+   "history_advantage_over_best_prompt_only": {
+    "exact": "0",
+    "decimal": 0.0
+   },
+   "dp_dominates_catalog": true
+  },
+  {
+   "K": 4,
+   "action_effect": "U_irrelevant_negative_control",
+   "feedback": "weak",
+   "kappa": "3/5",
+   "policies": {
+    "fixed_SSSS": {
+     "success": {
+      "exact": "359839937/500000000",
+      "decimal": 0.719679874
+     },
+     "cost": {
+      "exact": "103279979/5000000000",
+      "decimal": 0.0206559958
+     },
+     "utility": {
+      "exact": "3495119391/5000000000",
+      "decimal": 0.6990238782
+     },
+     "repair_calls": {
+      "exact": "53279979/50000000",
+      "decimal": 1.06559958
+     },
+     "false_pass_stop": {
+      "exact": "220494409/1000000000",
+      "decimal": 0.220494409
+     },
+     "reach_opportunity": [
+      "1/2",
+      "1463/5000",
+      "85897/500000",
+      "5060279/50000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "211477569/250000000",
+       "utility": "2069283167/2500000000"
+      },
+      "hard": {
+       "success": "1159081/1953125",
+       "utility": "22278691/39062500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_SSSL": {
+     "success": {
+      "exact": "45612527/62500000",
+      "decimal": 0.729800432
+     },
+     "cost": {
+      "exact": "113400537/5000000000",
+      "decimal": 0.0226801074
+     },
+     "utility": {
+      "exact": "3535601623/5000000000",
+      "decimal": 0.7071203246
+     },
+     "repair_calls": {
+      "exact": "53279979/50000000",
+      "decimal": 1.06559958
+     },
+     "false_pass_stop": {
+      "exact": "109460191/500000000",
+      "decimal": 0.218920382
+     },
+     "reach_opportunity": [
+      "1/2",
+      "1463/5000",
+      "85897/500000",
+      "5060279/50000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "26715999/31250000",
+       "utility": "2087286551/2500000000"
+      },
+      "hard": {
+       "success": "1181033/1953125",
+       "utility": "22629923/39062500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_SSLS": {
+     "success": {
+      "exact": "183130473/250000000",
+      "decimal": 0.732521892
+     },
+     "cost": {
+      "exact": "59868241/2500000000",
+      "decimal": 0.0239472964
+     },
+     "utility": {
+      "exact": "1771436489/2500000000",
+      "decimal": 0.7085745956
+     },
+     "repair_calls": {
+      "exact": "26278541/25000000",
+      "decimal": 1.05114164
+     },
+     "false_pass_stop": {
+      "exact": "108099461/500000000",
+      "decimal": 0.216198922
+     },
+     "reach_opportunity": [
+      "1/2",
+      "1463/5000",
+      "85897/500000",
+      "2168691/25000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "107042601/125000000",
+       "utility": "1044268393/1250000000"
+      },
+      "hard": {
+       "success": "1188873/1953125",
+       "utility": "22724003/39062500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_SSLL": {
+     "success": {
+      "exact": "46324791/62500000",
+      "decimal": 0.741196656
+     },
+     "cost": {
+      "exact": "64205623/2500000000",
+      "decimal": 0.0256822492
+     },
+     "utility": {
+      "exact": "1788786017/2500000000",
+      "decimal": 0.7155144068
+     },
+     "repair_calls": {
+      "exact": "26278541/25000000",
+      "decimal": 1.05114164
+     },
+     "false_pass_stop": {
+      "exact": "53712439/250000000",
+      "decimal": 0.214849756
+     },
+     "reach_opportunity": [
+      "1/2",
+      "1463/5000",
+      "85897/500000",
+      "2168691/25000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "27001767/31250000",
+       "utility": "1051984129/1250000000"
+      },
+      "hard": {
+       "success": "1207689/1953125",
+       "utility": "23025059/39062500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_SLSS": {
+     "success": {
+      "exact": "184309973/250000000",
+      "decimal": 0.737239892
+     },
+     "cost": {
+      "exact": "65294991/2500000000",
+      "decimal": 0.0261179964
+     },
+     "utility": {
+      "exact": "1777804739/2500000000",
+      "decimal": 0.7111218956
+     },
+     "repair_calls": {
+      "exact": "25664991/25000000",
+      "decimal": 1.02659964
+     },
+     "false_pass_stop": {
+      "exact": "105740461/500000000",
+      "decimal": 0.211480922
+     },
+     "reach_opportunity": [
+      "1/2",
+      "1463/5000",
+      "36813/250000",
+      "2168691/25000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "107326101/125000000",
+       "utility": "1045260643/1250000000"
+      },
+      "hard": {
+       "success": "1202873/1953125",
+       "utility": "22892003/39062500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_SLSL": {
+     "success": {
+      "exact": "23309833/31250000",
+      "decimal": 0.745914656
+     },
+     "cost": {
+      "exact": "69632373/2500000000",
+      "decimal": 0.0278529492
+     },
+     "utility": {
+      "exact": "1795154267/2500000000",
+      "decimal": 0.7180617068
+     },
+     "repair_calls": {
+      "exact": "25664991/25000000",
+      "decimal": 1.02659964
+     },
+     "false_pass_stop": {
+      "exact": "52532939/250000000",
+      "decimal": 0.210131756
+     },
+     "reach_opportunity": [
+      "1/2",
+      "1463/5000",
+      "36813/250000",
+      "2168691/25000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "13536321/15625000",
+       "utility": "1052976379/1250000000"
+      },
+      "hard": {
+       "success": "1221689/1953125",
+       "utility": "23193059/39062500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_SLLS": {
+     "success": {
+      "exact": "93530917/125000000",
+      "decimal": 0.748247336
+     },
+     "cost": {
+      "exact": "36173889/1250000000",
+      "decimal": 0.0289391112
+     },
+     "utility": {
+      "exact": "899135281/1250000000",
+      "decimal": 0.7193082248
+     },
+     "repair_calls": {
+      "exact": "12677589/12500000",
+      "decimal": 1.01420712
+     },
+     "false_pass_stop": {
+      "exact": "51949769/250000000",
+      "decimal": 0.207799076
+     },
+     "reach_opportunity": [
+      "1/2",
+      "1463/5000",
+      "36813/250000",
+      "929439/12500000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "54221829/62500000",
+       "utility": "526756097/625000000"
+      },
+      "hard": {
+       "success": "1228409/1953125",
+       "utility": "23273699/39062500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_SLLL": {
+     "success": {
+      "exact": "23615089/31250000",
+      "decimal": 0.755682848
+     },
+     "cost": {
+      "exact": "38032767/1250000000",
+      "decimal": 0.0304262136
+     },
+     "utility": {
+      "exact": "906570793/1250000000",
+      "decimal": 0.7252566344
+     },
+     "repair_calls": {
+      "exact": "12677589/12500000",
+      "decimal": 1.01420712
+     },
+     "false_pass_stop": {
+      "exact": "25830331/125000000",
+      "decimal": 0.206642648
+     },
+     "reach_opportunity": [
+      "1/2",
+      "1463/5000",
+      "36813/250000",
+      "929439/12500000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "13658793/15625000",
+       "utility": "530062841/625000000"
+      },
+      "hard": {
+       "success": "1244537/1953125",
+       "utility": "23531747/39062500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_LSSS": {
+     "success": {
+      "exact": "186359973/250000000",
+      "decimal": 0.745439892
+     },
+     "cost": {
+      "exact": "74619991/2500000000",
+      "decimal": 0.0298479964
+     },
+     "utility": {
+      "exact": "1788979739/2500000000",
+      "decimal": 0.7155918956
+     },
+     "repair_calls": {
+      "exact": "24619991/25000000",
+      "decimal": 0.98479964
+     },
+     "false_pass_stop": {
+      "exact": "101640461/500000000",
+      "decimal": 0.203280922
+     },
+     "reach_opportunity": [
+      "1/2",
+      "627/2500",
+      "36813/250000",
+      "2168691/25000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "107776101/125000000",
+       "utility": "1046835643/1250000000"
+      },
+      "hard": {
+       "success": "1227873/1953125",
+       "utility": "23192003/39062500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_LSSL": {
+     "success": {
+      "exact": "23566083/31250000",
+      "decimal": 0.754114656
+     },
+     "cost": {
+      "exact": "78957373/2500000000",
+      "decimal": 0.0315829492
+     },
+     "utility": {
+      "exact": "1806329267/2500000000",
+      "decimal": 0.7225317068
+     },
+     "repair_calls": {
+      "exact": "24619991/25000000",
+      "decimal": 0.98479964
+     },
+     "false_pass_stop": {
+      "exact": "50482939/250000000",
+      "decimal": 0.201931756
+     },
+     "reach_opportunity": [
+      "1/2",
+      "627/2500",
+      "36813/250000",
+      "2168691/25000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "13592571/15625000",
+       "utility": "1054551379/1250000000"
+      },
+      "hard": {
+       "success": "1246689/1953125",
+       "utility": "23493059/39062500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_LSLS": {
+     "success": {
+      "exact": "94555917/125000000",
+      "decimal": 0.756447336
+     },
+     "cost": {
+      "exact": "40836389/1250000000",
+      "decimal": 0.0326691112
+     },
+     "utility": {
+      "exact": "904722781/1250000000",
+      "decimal": 0.7237782248
+     },
+     "repair_calls": {
+      "exact": "12155089/12500000",
+      "decimal": 0.97240712
+     },
+     "false_pass_stop": {
+      "exact": "49899769/250000000",
+      "decimal": 0.199599076
+     },
+     "reach_opportunity": [
+      "1/2",
+      "627/2500",
+      "36813/250000",
+      "929439/12500000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "54446829/62500000",
+       "utility": "527543597/625000000"
+      },
+      "hard": {
+       "success": "1253409/1953125",
+       "utility": "23573699/39062500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_LSLL": {
+     "success": {
+      "exact": "23871339/31250000",
+      "decimal": 0.763882848
+     },
+     "cost": {
+      "exact": "42695267/1250000000",
+      "decimal": 0.0341562136
+     },
+     "utility": {
+      "exact": "912158293/1250000000",
+      "decimal": 0.7297266344
+     },
+     "repair_calls": {
+      "exact": "12155089/12500000",
+      "decimal": 0.97240712
+     },
+     "false_pass_stop": {
+      "exact": "24805331/125000000",
+      "decimal": 0.198442648
+     },
+     "reach_opportunity": [
+      "1/2",
+      "627/2500",
+      "36813/250000",
+      "929439/12500000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "13715043/15625000",
+       "utility": "530850341/625000000"
+      },
+      "hard": {
+       "success": "1269537/1953125",
+       "utility": "23831747/39062500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_LLSS": {
+     "success": {
+      "exact": "95061417/125000000",
+      "decimal": 0.760491336
+     },
+     "cost": {
+      "exact": "43162139/1250000000",
+      "decimal": 0.0345297112
+     },
+     "utility": {
+      "exact": "907452031/1250000000",
+      "decimal": 0.7259616248
+     },
+     "repair_calls": {
+      "exact": "11892139/12500000",
+      "decimal": 0.95137112
+     },
+     "false_pass_stop": {
+      "exact": "48888769/250000000",
+      "decimal": 0.195555076
+     },
+     "reach_opportunity": [
+      "1/2",
+      "627/2500",
+      "15777/125000",
+      "929439/12500000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "54568329/62500000",
+       "utility": "527968847/625000000"
+      },
+      "hard": {
+       "success": "1265409/1953125",
+       "utility": "23717699/39062500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_LLSL": {
+     "success": {
+      "exact": "11998857/15625000",
+      "decimal": 0.767926848
+     },
+     "cost": {
+      "exact": "45021017/1250000000",
+      "decimal": 0.0360168136
+     },
+     "utility": {
+      "exact": "914887543/1250000000",
+      "decimal": 0.7319100344
+     },
+     "repair_calls": {
+      "exact": "11892139/12500000",
+      "decimal": 0.95137112
+     },
+     "false_pass_stop": {
+      "exact": "24299831/125000000",
+      "decimal": 0.194398648
+     },
+     "reach_opportunity": [
+      "1/2",
+      "627/2500",
+      "15777/125000",
+      "929439/12500000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "6872709/7812500",
+       "utility": "531275591/625000000"
+      },
+      "hard": {
+       "success": "1281537/1953125",
+       "utility": "23975747/39062500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_LLLS": {
+     "success": {
+      "exact": "48120393/62500000",
+      "decimal": 0.769926288
+     },
+     "cost": {
+      "exact": "23092381/625000000",
+      "decimal": 0.0369478096
+     },
+     "utility": {
+      "exact": "458111549/625000000",
+      "decimal": 0.7329784784
+     },
+     "repair_calls": {
+      "exact": "5879681/6250000",
+      "decimal": 0.94074896
+     },
+     "false_pass_stop": {
+      "exact": "24049901/125000000",
+      "decimal": 0.192399208
+     },
+     "reach_opportunity": [
+      "1/2",
+      "627/2500",
+      "15777/125000",
+      "398331/6250000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "27523641/31250000",
+       "utility": "265752613/312500000"
+      },
+      "hard": {
+       "success": "1287297/1953125",
+       "utility": "24044867/39062500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "fixed_LLLL": {
+     "success": {
+      "exact": "12129681/15625000",
+      "decimal": 0.776299584
+     },
+     "cost": {
+      "exact": "23889043/625000000",
+      "decimal": 0.0382224688
+     },
+     "utility": {
+      "exact": "461298197/625000000",
+      "decimal": 0.7380771152
+     },
+     "repair_calls": {
+      "exact": "5879681/6250000",
+      "decimal": 0.94074896
+     },
+     "false_pass_stop": {
+      "exact": "11962999/62500000",
+      "decimal": 0.191407984
+     },
+     "reach_opportunity": [
+      "1/2",
+      "627/2500",
+      "15777/125000",
+      "398331/6250000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "6925197/7812500",
+       "utility": "267169789/312500000"
+      },
+      "hard": {
+       "success": "1301121/1953125",
+       "utility": "24266051/39062500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "prompt_only_large_if_hard": {
+     "success": {
+      "exact": "378021057/500000000",
+      "decimal": 0.756042114
+     },
+     "cost": {
+      "exact": "157900139/5000000000",
+      "decimal": 0.0315800278
+     },
+     "utility": {
+      "exact": "3622310431/5000000000",
+      "decimal": 0.7244620862
+     },
+     "repair_calls": {
+      "exact": "9925679/10000000",
+      "decimal": 0.9925679
+     },
+     "false_pass_stop": {
+      "exact": "63557/320000",
+      "decimal": 0.198615625
+     },
+     "reach_opportunity": [
+      "1/2",
+      "267/1000",
+      "14517/100000",
+      "803979/10000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "211477569/250000000",
+       "utility": "2069283167/2500000000"
+      },
+      "hard": {
+       "success": "1301121/1953125",
+       "utility": "24266051/39062500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "history_large_after_exception": {
+     "success": {
+      "exact": "150131237729/200000000000",
+      "decimal": 0.750656188645
+     },
+     "cost": {
+      "exact": "15058748247/500000000000",
+      "decimal": 0.030117496494
+     },
+     "utility": {
+      "exact": "720538692151/1000000000000",
+      "decimal": 0.720538692151
+     },
+     "repair_calls": {
+      "exact": "10002748247/10000000000",
+      "decimal": 1.0002748247
+     },
+     "false_pass_stop": {
+      "exact": "409759321963/2000000000000",
+      "decimal": 0.2048796609815
+     },
+     "reach_opportunity": [
+      "1/2",
+      "67831/250000",
+      "1479751/10000000",
+      "809757247/10000000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "86748994401/100000000000",
+       "utility": "421205259319/500000000000"
+      },
+      "hard": {
+       "success": "30948361/48828125",
+       "utility": "584635611/976562500"
+      }
+     },
+     "paths_agree_exactly": true
+    },
+    "history_S_or_exception": {
+     "success": {
+      "exact": "153366389601/200000000000",
+      "decimal": 0.766831948005
+     },
+     "cost": {
+      "exact": "17510617943/500000000000",
+      "decimal": 0.035021235886
+     },
+     "utility": {
+      "exact": "731810712119/1000000000000",
+      "decimal": 0.731810712119
+     },
+     "repair_calls": {
+      "exact": "9669030743/10000000000",
+      "decimal": 0.9669030743
+     },
+     "false_pass_stop": {
+      "exact": "389940318059/2000000000000",
+      "decimal": 0.1949701590295
+     },
+     "reach_opportunity": [
+      "1/2",
+      "64887/250000",
+      "6785379/50000000",
+      "716474943/10000000000"
+     ],
+     "by_stratum": {
+      "easy": {
+       "success": "86748994401/100000000000",
+       "utility": "421205259319/500000000000"
+      },
+      "hard": {
+       "success": "1301121/1953125",
+       "utility": "24266051/39062500"
+      }
+     },
+     "paths_agree_exactly": true
+    }
+   },
+   "both_truth_paths_agree_exactly": true,
+   "best_fixed": {
+    "policy": "fixed_LLLL",
+    "utility": {
+     "exact": "461298197/625000000",
+     "decimal": 0.7380771152
+    }
+   },
+   "best_prompt_only_utility": {
+    "exact": "461298197/625000000",
+    "decimal": 0.7380771152
+   },
+   "best_observed_history_utility": {
+    "exact": "461298197/625000000",
+    "decimal": 0.7380771152
+   },
+   "history_advantage_over_best_fixed": {
+    "exact": "0",
+    "decimal": 0.0
+   },
+   "history_advantage_over_best_prompt_only": {
+    "exact": "0",
+    "decimal": 0.0
+   },
+   "dp_dominates_catalog": true
+  }
+ ],
+ "not_yet": [
+  "logger layer: floors .5/.2, IPW expectation and logger-invariance checks",
+  "fixed-task block generator (n in {250, 1000}) and archive-matching branch module",
+  "stress cells (severe overlap, zero support, hidden confounding, non-Markov coarsening, drift)"
+ ]
+}

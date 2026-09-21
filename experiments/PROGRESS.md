@@ -24,6 +24,17 @@ reproducibility/metadata/package remain open.
 Pushed about every two hours while experiments run. Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-21 01:25 EDT (2026-09-21 05:25 UTC) — REQ-003: finite repair generator tables and exact truth
+
+The lead accepted the supplemental control. I built the proposed multi-opportunity repair tables: latent error type,
+feedback, action-dependent transitions and false-pass stopping. Latent enumeration and belief recursion agree exactly in
+12 cells, and the belief DP gives exact best-history advantages. The U-irrelevant control shows 0, crossing is positive
+(informative > weak), and no-crossing is 0 under these tables (question to the lead).
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Evidence advanced:
+none (simulation design). Categories 75/75/50/25/25 → 55.00. Main remaining work: logger layer and fixed-task blocks
+(REQ-003); REQ-002 qualification fixtures. *No gh CLI/token on this host.*
+
 ## 2026-09-21 00:52 EDT (2026-09-21 04:52 UTC) — REQ-003: supplemental cost-dominated cell
 
 Added the lead's supplemental cell (η=.2, q=.4) in a versioned output; the six-cell file is byte-identical. Both truth
