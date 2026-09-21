@@ -1224,3 +1224,19 @@ execution when describing it. Do not duplicate the permission request or treat e
 Continue independent M03 work within that host's permissions; report precisely what remains blocked. No new
 installation, runtime workload or compute is requested here. Readiness remains **55%, 0-point change, 45–65%**;
 this additional fixture evidence does not close a scientific or empirical milestone.
+
+## Worker checkpoint — 2026-09-21T09:54:38Z (host clock; local 2026-09-21 05:54 EDT)
+
+Code/config commit at checkpoint start: `d3425bf`. Last lead checkpoint read: `d3425bf` (09:18 cycle; issue #4 09:48 UTC says no change). **Authorized runs: none.** Gate `log live branch` verified; no runner; servers healthy; foreign load `[]`.
+
+**Acknowledged:** REQ-001 is completed; REQ-002 is running (M02 fixtures accepted); REQ-003 is running for the remaining implementation and inference work. Your gate-table scope repairs are taken. **Correction to my framing:** the **primary joint target is Δ = θ − ν₁ + ν₀**; θ is only its branch component. My A6 report and branch notes called θ "the primary target", and future text will say Δ. The existing finite bound is vacuous for the archive under unverified assumptions.
+
+| Request | Status | Artifact / reason |
+|---|---|---|
+| DTR-REQ-001 (P0) | completed | — |
+| DTR-REQ-002 (P1) | **running: M03 static part delivered; M01 and the M03 conformance run await user permission** | **Grading rule.** [`grading_conformance.py`](../experiments/v2_adapter/grading_conformance.py) encodes the **declared rule**: resolved only if every declared F2P and P2P test is observed PASSED. Evaluator failures and empty parsed output are *unknown*, never passing. It has **11 fixtures (G01–G11)**. Each carries the `f7bbbb2` **source-derived** upstream outcome as cited data (grading.py L27–35, L123–137, L199–211, L61–76); upstream was not executed. **Four cases count as a pass upstream but not under the declared rule:** G05 one F2P SKIPPED; G06 **all F2P SKIPPED, vacuously resolved** (SKIPPED is dropped from the denominator and 0/0 scores 1); G07 P2P SKIPPED; G08 F2P XFAIL (upstream counts XFAIL as passed). G10 and G11 differ only in label (unresolved upstream, unknown in our contract). FAIL_ONLY mode affects only three JavaScript repos (`constants/__init__.py` L129–133), none in Verified; M01 should assert that on the real rows. **Checkout regression.** [`eval_script_check.py`](../experiments/v2_adapter/eval_script_check.py) statically checks the new-file-only fix (#518/#539, diff read at `f7bbbb2`). R1: no bare `git checkout <base>`. R2: checkout paths equal the patch's modified files. R3: new files are removed with `rm -f`, and nothing else is removed. R4: resets happen before the patch is applied and after the test output. The pre-fix construction fails R1 and R3, the post-fix one passes, and touching an unrelated setup file (tox.ini) fails R2. **18 cases pass; 214 tests pass.** M01 (the 500 real rows and generated scripts) and the M03 conformance run need the dataset download and execution of upstream code, which await the user's permission; I asked on 21 September. |
+| DTR-REQ-003 (P1) | running | gate table `22c5224` (scope repaired by you in `d3425bf`) |
+
+**Questions for the lead (your grading decisions; I have not chosen):**
+1. **SKIPPED required tests.** Upstream silently drops them and can resolve vacuously when all F2P tests are skipped. Should the adapter re-grade each report from its parsed status map under the declared rule? That would make any SKIPPED F2P or P2P test unresolved. Or should affected instances be excluded at qualification?
+2. **XFAIL.** Upstream counts XFAIL as passed. Should a declared F2P test observed as XFAIL count as resolved (following upstream) or not (strict)?

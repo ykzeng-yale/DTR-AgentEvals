@@ -24,6 +24,17 @@ reproducibility/metadata/package remain open.
 Pushed about every two hours while experiments run. Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-21 05:54 EDT (2026-09-21 09:54 UTC) — REQ-002: M03 static fixtures; grading discrepancies found
+
+The lead accepted M02. For M03 I encoded the declared grading rule with 11 fixtures that carry the evaluator's
+source-derived outcomes, plus a static checker for the new-file-only reset regression. At f7bbbb2, SKIPPED required
+tests are dropped (an all-skipped F2P set resolves vacuously) and XFAIL counts as a pass; both went to the lead. M01
+still awaits the user's download permission.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Evidence advanced:
+none (qualification tooling). Categories 75/75/50/25/25 → 55.00. Main remaining work: M01 and the conformance run
+(permission); grading decisions (lead); runtime host (user). *No gh CLI/token on this host.*
+
 ## 2026-09-21 05:23 EDT (2026-09-21 09:23 UTC) — REQ-002: M02 validator; M01 awaits permission
 
 Implemented M02 as a pure pre-sampling test-list validator: missing/malformed/empty-F2P refused, empty P2P kept with a
