@@ -24,6 +24,16 @@ reproducibility/metadata/package remain open.
 Pushed about every two hours while experiments run. Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-21 05:23 EDT (2026-09-21 09:23 UTC) — REQ-002: M02 validator; M01 awaits permission
+
+Implemented M02 as a pure pre-sampling test-list validator: missing/malformed/empty-F2P refused, empty P2P kept with a
+limitation. 29 deterministic cases pass. M01 needs a 2.1 MB dataset download and the upstream evaluator code; I asked
+the user for permission.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Evidence advanced:
+none (qualification tooling). Categories 75/75/50/25/25 → 55.00. Main remaining work: M01 (permission), M03;
+runtime host (user); REQ-003 inference gates. *No gh CLI/token on this host.*
+
 ## 2026-09-21 04:53 EDT (2026-09-21 08:53 UTC) — REQ-003 handoff table; switching to REQ-002
 
 The lead accepted the occupancy sensitivity. I published the consolidated table: 12 accepted artifacts with commits,

@@ -1162,3 +1162,15 @@ Code/config commit at checkpoint start: `c25bee0`. Last lead checkpoint read: `1
 | DTR-REQ-003 (P1) | **running: consolidated handoff delivered** | [`v2_gate_table_20260921.md`](v2_gate_table_20260921.md) lists **12 accepted artifacts** across REQ-001/002/003. Each has its exact path, worker commit, lead review commit and document, independent audit, and boundary. It also lists **12 open gates** with owner and acceptance/dependency. The explicitly open items are: the full sampler (Monte Carlo not authorized); DR, outcome-regression and failure controls; interval coverage; independent fresh on-policy reference uncertainty and a two-log design; the belief-oracle in catalog checks; precision and resource choices; M01–M03; image and dependency locks and execution controls; the RouteLLM calibration split; and the primary θ interval. All 26 cited commits and 13 cited audit files were checked to exist. |
 
 No question for the lead this tick.
+
+## Worker checkpoint — 2026-09-21T09:23:42Z (host clock; local 2026-09-21 05:23 EDT)
+
+Code/config commit at checkpoint start: `22c5224`. Last lead checkpoint read: `13c1b91`; issue #4's latest comment (08:52 UTC) is the same review. **Authorized runs: none.** Gate `log live branch` verified; no runner; servers healthy; foreign load `[]`.
+
+| Request | Status | Artifact / reason |
+|---|---|---|
+| DTR-REQ-001 (P0) | completed | — |
+| DTR-REQ-002 (P1) | **running: M02 implemented; M01 blocked on user permission** | **M02** is [`qualify_instances.py`](../experiments/v2_adapter/qualify_instances.py), a pure pre-sampling validator that never rewrites content. It **refuses** a missing FAIL_TO_PASS, a missing **PASS_TO_PASS**, malformed lists (non-list, invalid JSON, a JSON object, non-string or empty ids, `null`), an empty FAIL_TO_PASS (vacuous grading), and a missing or empty identity field. It **keeps** an explicitly empty PASS_TO_PASS, recording a regression-coverage limitation. It records a content hash and never coerces a missing key to `[]`, as the evaluator would. **29 deterministic cases pass** (`experiments/tools/test_v2_qualify_instances.py`); 196 tests pass. It has not been run on the real rows. **M01 is blocked.** It needs `data/test-00000-of-00001.parquet` (**2,096,679 bytes**) from `princeton-nlp/SWE-bench_Verified@c104f84` plus the SWE-bench `f7bbbb2` source in an isolated environment (that commit changes `test_spec/python.py` and `utils.py`). Downloading a file and executing upstream code both need the **user's** explicit permission under my operating rules, which I have asked for; I will not proceed without it. **M03** (grading equivalence plus the new-file-only regression case) is next. |
+| DTR-REQ-003 (P1) | running (not this tick's priority) | gate table `22c5224` |
+
+**No question for the lead.** The M01 blocker is a user permission, not a design decision.
