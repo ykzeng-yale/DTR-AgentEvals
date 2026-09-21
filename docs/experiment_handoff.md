@@ -1022,3 +1022,17 @@ Code/config commit at checkpoint start: `60c251e`. Last lead checkpoint read: `d
 **Question for the lead (your design choice).** "Archive-matching" here matches the design structure, not occupancy. With the proposed P0A, a first-failure prefix occurs in 44.8% of episodes: E[N] = 895 over 2,000 episodes at n=250, which is 3.6 per task. The archive had 564 prefixes over 2,640 episodes, 21.4%, or 1.7 per task. The sampling fraction is therefore about .22 here, against .35 in the archive. Should P0A be retuned to archive-like occupancy, for example raising the first-call pass probabilities, or is structural matching enough for development?
 
 **Next:** exact shared-log score covariances for the history-vs-prompt and history-vs-best-fixed contrasts. Acceptance: the direct contrast second moment matches the covariance formula, the identical-policy contrast is zero, and the covariance is PSD.
+
+## Worker checkpoint — 2026-09-21T07:54:15Z (host clock; local 2026-09-21 03:54 EDT)
+
+Code/config commit at checkpoint start: `9202019`. Last lead checkpoint read: `dd898b5`; issue #4's latest comment (07:22 UTC) is the same review. **Authorized runs: none.** Gate `log live branch` verified; no runner; servers healthy; foreign load `[]`.
+
+| Request | Status | Artifact / reason |
+|---|---|---|
+| DTR-REQ-001 (P0) | completed | — |
+| DTR-REQ-002 (P1) | running; qualification queued | evaluator `f7bbbb2` selected |
+| DTR-REQ-003 (P1) | **running: shared-log contrast covariances delivered** | [`contrast_covariance.py`](../experiments/v2_sim/contrast_covariance.py) writes [`contrast_covariance_v1.json`](../experiments/v2_sim/contrast_covariance_v1.json). One enumeration over every logger branch computes the trajectory-IPW utility scores of all compared policies **on the same logged episode**. It covers 8 core kernel cells × 2 core loggers. **All three acceptance checks hold exactly:** the direct contrast second moment equals Σ_ii + Σ_jj − 2Σ_ij + (V_i − V_j)² in every row; every per-stratum covariance matrix is PSD (all principal minors ≥ 0, exact); and the identical-policy contrast has zero mean and zero variance. **Contrasts reported:** the catalog history rule against (a) the catalog prompt rule, (b) **the best prompt-only stratum-specific schedule** (your definition; for example SL for easy and LL for hard in the crossing cells), (c) the best fixed schedule, and (d) itself. The fixed-benchmark contrast variance uses r=4 and the frozen lists. **Shared-log effect:** contrast SE is .70–.98 of what independent scores would give. Example: K=2 crossing/informative, n=250, uniform logger gives history rule minus best stratum schedule = +.0347 with exact SE .0282. Seven tests pass, including an **independent** joint-moment enumerator; 163 tests pass. |
+
+**Labelling caution, no decision needed.** The history policy in these contrasts is the frozen **catalog rule** "large after exception". It is not the belief-DP optimum, which is outside the catalog. Several contrasts are therefore negative, for example no-crossing −.0264 against best fixed, and crossing/weak −.0163 against the best stratum schedule. These are exact contrasts of these particular frozen rules, not statements about the value of history. None of this is a power or coverage claim.
+
+**Question still open (from `9202019`):** should P0A be retuned to archive-like prefix occupancy (21.4% against 44.8% now)?
