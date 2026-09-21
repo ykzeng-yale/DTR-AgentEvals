@@ -24,7 +24,20 @@ reproducibility/metadata/package remain open.
 Pushed about every two hours while experiments run. Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
-## 2026-09-21 22:05 EDT — half-hourly sync starts; four of my B2 claims corrected; v2 design adopted
+## 2026-09-20 22:17 EDT (2026-09-21 02:17 UTC) — REQ-001 slice: branch evidence table
+
+Stable request IDs from the lead acknowledged (DTR-REQ-001/002/003). No runs active; all stages verified. Completed
+one REQ-001 slice: `branch_evidence_table.json` labels every branch execution assumption OBSERVED, CHECKABLE or
+UNKNOWN. It reproduces the lead's 32/400 (8.0%) discordance, finds exactly 8.0% in each arm, and shows prefixes are
+unevenly spread over tasks (48 tasks with one, one task with six) — raised to the lead as a weighting question.
+Also corrected: the previous entry was headed 2026-09-21 but the host's local date was the 20th — I had put the UTC
+date on an EDT label.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Evidence
+advanced: none — descriptive provenance only. Categories 75/75/50/25/25 → 55.00. Main remaining work: REQ-001 A6
+report, REQ-002 adapters, REQ-003 simulation design. *No gh CLI/token on this host; checkpoint recorded here.*
+
+## 2026-09-20 22:05 EDT — half-hourly sync starts; four of my B2 claims corrected; v2 design adopted
 
 **New cadence:** results are now pushed every 30 minutes (job at :13 and :43) so the lead can judge the experimental
 direction continuously. Pipeline: all four stages complete and verified; no runner; servers healthy; no foreign GPU

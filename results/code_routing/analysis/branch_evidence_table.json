@@ -1,0 +1,80 @@
+{
+ "request": "DTR-REQ-001 (P0) slice: source-block / fresh-pair / recovery evidence",
+ "status": "descriptive evidence only; no interpretation, coverage or power claim; no primary-target substitution",
+ "source_blocks": {
+  "n_source_tasks_with_branches": 103,
+  "n_prefixes": 200,
+  "prefixes_per_task_distribution": {
+   "1": 48,
+   "2": 27,
+   "3": 19,
+   "4": 5,
+   "5": 3,
+   "6": 1
+  },
+  "max_prefixes_in_one_task": 6,
+  "frame": {
+   "N_eligible_prefixes": 564,
+   "sampling_probability": 0.3546099290780142
+  }
+ },
+ "fresh_pairs": {
+  "n_same_arm_pairs": 400,
+  "discordant": 32,
+  "discordance_rate": 0.08,
+  "by_arm": {
+   "small": {
+    "pairs": 200,
+    "discordant": 16,
+    "rate": 0.08
+   },
+   "large": {
+    "pairs": 200,
+    "discordant": 16,
+    "rate": 0.08
+   }
+  }
+ },
+ "recovery": {
+  "prefixes_from_one_invocation": 198,
+  "prefixes_spanning_two_invocations": 2,
+  "prefixes_only_original_invocation": 33,
+  "prefixes_only_recovery_invocation": 165,
+  "continuations_by_invocation": {
+   "0445024c72d2": 135,
+   "8c343c83afdc": 665
+  }
+ },
+ "assumptions": [
+  {
+   "assumption": "prefix sample is SRSWOR of fixed size m from the frame",
+   "status": "CHECKABLE",
+   "evidence": "frozen branch_plan.json records N=564, m=200 and the design seed; selection is reproducible from them"
+  },
+  {
+   "assumption": "continuations iid within arm given the prefix",
+   "status": "UNKNOWN",
+   "evidence": "only the 8.0% same-arm discordance is observed; identical distribution is not testable from 2 draws"
+  },
+  {
+   "assumption": "arms conditionally independent given the prefix",
+   "status": "UNKNOWN",
+   "evidence": "arms share the restored transcript and serving process; no coupling test was designed"
+  },
+  {
+   "assumption": "no execution shocks shared across prefixes",
+   "status": "UNKNOWN",
+   "evidence": "continuations ran concurrently on shared servers; timing is recorded but shock sharing is not identified"
+  },
+  {
+   "assumption": "lost and recovered executions follow the same law",
+   "status": "UNKNOWN (not recoverable)",
+   "evidence": "the 665 lost outcomes were written to an unlinked file and cannot be compared; 2 prefixes span both invocations"
+  },
+  {
+   "assumption": "restored prefix equals the logged pre-call state",
+   "status": "OBSERVED for recorded fields",
+   "evidence": "800/800 transcript hashes independently recomputed (restoration_recheck.json); tool_result_reproduced remains a stored flag, not re-executed"
+  }
+ ]
+}

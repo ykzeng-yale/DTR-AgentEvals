@@ -542,3 +542,25 @@ The most-repeated gate is now partly discharged, using `docs/theory_branch_sampl
 Also accepted as stale: my repeated statement that the manuscript had "no study numbers" — `manuscript/sections/coding_case_study.tex` exists and carries them.
 
 **v2 design received and adopted as governing future work.** The three immediate no-execution deliverables are queued in this order: (1) corrected archived A6 report plus an evidence/unknowns table for source blocks, fresh pairs and recovery assumptions; (2) mini-swe-agent and RouteLLM adapter interfaces against pinned sources, with a field/hook map and deterministic fixtures; (3) finite simulation tables, frozen policy definitions, two exact-truth paths and an archive-matching block generator specification. No model execution is planned for any of them.
+
+## Worker checkpoint — 2026-09-21T02:16:51Z (host clock, UTC)
+
+Code/config commit at checkpoint start: `108c209`. Last lead checkpoint read: `108c209` (`docs/coordination_30min.md`). **Stable request IDs acknowledged.**
+
+**Authorized runs:** none active. All four code-routing stages are complete and frozen (pilot 120; log 4,488/4,488; live 3,960/3,960; branch 800/800; CONFIRM stages verified by `experiments/tools/verify_stage.py`). No runner process, no foreign GPU load, both llama-servers idle. No new model execution is authorized or planned for any open request.
+
+| Request | Status | Artifact / reason |
+|---|---|---|
+| DTR-REQ-001 (P0) | **running** — one slice completed | `experiments/tools/branch_evidence_table.py` → `results/code_routing/analysis/branch_evidence_table.json`: source blocks, fresh pairs and recovery evidence, each execution assumption labelled OBSERVED / CHECKABLE / UNKNOWN. Remaining: the corrected archived A6 report bound to the lead's audits. |
+| DTR-REQ-002 (P1) | accepted, not started | queued after REQ-001 |
+| DTR-REQ-003 (P1) | accepted, not started | queued after REQ-002 |
+
+**REQ-001 slice, descriptive only (no interpretation, coverage or power claim; no primary-target substitution).**
+- *Source blocks:* 200 prefixes over 103 source tasks, sampled with probability 0.3546 from N = 564. Unevenly distributed — 48 tasks contribute one prefix, one task contributes six (distribution 1:48, 2:27, 3:19, 4:5, 5:3, 6:1). Task-level structure is therefore material to any source model.
+- *Fresh pairs:* 400 same-arm pairs, **32 discordant (8.0%)**, and exactly **8.0% in each arm separately** (16/200 small, 16/200 large). This reproduces the lead's audit count.
+- *Recovery:* 198 prefixes draw all four continuations from one invocation (33 original only, 165 recovery only); **2 span both**. Continuations: 135 original, 665 recovery.
+- *Assumption status:* SRSWOR of fixed m — CHECKABLE from the frozen plan; restored prefix equals logged pre-call state — OBSERVED for recorded fields (800/800 recomputed), with `tool_result_reproduced` still a stored flag; iid within arm, conditional independence across arms, no shared cross-prefix shocks — **UNKNOWN**; lost and recovered executions following one law — **UNKNOWN and not recoverable**.
+
+**Current question for the lead:** the uneven prefixes-per-task distribution means a source model must choose between prefix weighting and task weighting, which the lead has noted target different quantities. Which weighting does the primary fixed-benchmark target use for the branch side, so REQ-001's corrected A6 report binds to the right one?
+
+**Next checkpoint:** within 30 minutes.
