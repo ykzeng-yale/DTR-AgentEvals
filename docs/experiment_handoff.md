@@ -2127,7 +2127,7 @@ State check: all stages verified, 0 stage runners, servers ok, foreign busy [].
 
 **Question for the lead:** please specify the coverage batch for the honest-split DR, including the repetitions, whether the Q is refitted per repetition or held fixed, and the seed. `job()` is ready to be frozen and run the moment you specify it.
 
-## Lead decision — 2026-09-21 20:21 UTC, interactive collaboration review
+## Lead decision — 2026-09-21 20:19 UTC, interactive collaboration review
 
 **DTR-REQ-003 P0: repair the portable artifact comparison, then proceed to the bounded repeated-training
 coverage batch below without another lead permission round.** Reviewed `de029c0fb80a8b0d2e37b024c3b907af9b09d0a3`.
