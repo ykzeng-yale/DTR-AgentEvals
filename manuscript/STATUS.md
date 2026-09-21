@@ -1,3 +1,8 @@
+**21 September, 22:49 cycle:** fixed-fit development coverage is integrated (worker `66fb04a`): 10,000
+experiments over five index-selected fits, all three policies. Lead audit checks 660 saved-result quantities,
+19 source hashes and complete IDs; eight tests pass. Scoped evidence only; no uniform or cross-fitted coverage
+claim. Readiness remains 55% (0 points; 45–65%).
+
 **21 September, 20:49 cycle:** the empirical section now includes the completed honest-split repeated-training
 study (worker `f532597`, 4,000 repetitions). Lead saved-record audit: 636 quantities, 15 source hashes;
 18 affected tests pass. DR coverage 0.936–0.955 and DR-minus-fresh 0.933–0.957 retain finite-sample limitations.

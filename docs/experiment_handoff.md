@@ -2551,3 +2551,47 @@ Code/config commit at checkpoint start: `ffef6fd` (freeze). Last lead checkpoint
 | DTR-REQ-003 (P0) | correction accepted (`c97a232`); **fixed-fit conditional coverage study completed; awaiting your review** | frozen `ffef6fd`; results this commit |
 
 **Question for the lead:** how do you interpret this, and what is the next REQ-003 step? I will freeze and run it as soon as it is specified.
+
+## Lead decision — 2026-09-21 22:49 cycle
+
+**DTR-REQ-003: accept the five-fit study as scoped development evidence; close this diagnostic sequence and
+hold further sampling. Proceed to consolidated evidence reporting.** Reviewed `66fb04a` and freeze `ffef6fd`.
+Eight tests and the worker's asserted 480-comparison recompute pass. Lead independently verifies 10,000 unique
+expected fit/evaluation IDs, 19 source hashes and 660 numerical/count comparisons. Audit:
+`scripts/audit_fixed_fit_66fb04a.py`, `docs/audits/fixed_fit_66fb04a.json`. This is independent saved-record
+arithmetic, not regeneration of all trajectories. Reported 403-second completion and no failures agree with
+the committed status. Latest worker checkpoint is 22:31 UTC, about 18 minutes old; scheduler unverified.
+
+Interpretation: for these five index-selected fits, DR Wald and exact-variance coverage are close, while prompt
+IPW studentization shortfalls recur (paired differences down to -0.034). This supports the specified honest-split
+baseline in this cell at the studied sizes, not uniform validity, overlapping cross-fitted inference or a general
+superiority claim. DR coverage 0.9435–0.9600 and discrepancy 0.9395–0.9615 remain reported with per-row MCSE.
+Fresh exact-variance coverage 0.9330–0.9560 shows that replacing estimated variance does not force nominal
+finite-sample coverage. It does not prove every discrepancy is Monte Carlo noise. The earlier repeated-training
+undercoverage and OR biases stay in the evidence record. Exact conditional mean identities and audited scores
+argue against a demonstrated estimand/implementation defect; finite-sample shape and random-fit heterogeneity
+remain limitations, not resolved universal mechanisms. Counting selected rows outside two MCSE is descriptive,
+not a multiplicity-adjusted calibration test. No interval retuning or additional seed sweep is requested.
+
+**Next DTR-REQ-003 deliverable (P0, no new sampling):** consolidate the completed K=2 inference evidence in one
+source-linked table in the existing results documentation. Include original cross-fitted point-estimation,
+honest-split repeated-training, five-fit conditional coverage, IPW/fresh controls, training costs, all unfavorable
+ranges, Monte Carlo denominators/uncertainty and exact archive/manifest commits. Separate independently checked
+arithmetic from independently rerun estimators/trajectories, and state which broader protocol cells remain
+planned. Acceptance: every number links to an immutable artifact; retain the fixed scientific target and do
+not label development diagnostics CONFIRM. Cite already existing summaries rather than rerunning them.
+The manuscript now includes the five-fit findings and limitations; this reporting task reconciles the experiment
+handoff with the paper, not another request for a new estimator or validation loop.
+
+**DTR-REQ-002 (P1) next real-agent dependency:** in the same short checkpoint, identify the exact existing
+runtime/conformance checklist artifact and which author/host action is still required, distinguishing upstream
+execution permission from runtime availability. Reuse existing M01/M03 work; if the checklist already provides
+commands, link them instead of rebuilding it. Do not claim a compatible runtime, install system software or
+execute upstream code under an unresolved host hold. This is to expose the actual blocker to the declared
+real-agent scope, not to substitute more synthetic sweeps for it. No new inference/model/GPU/paid work authorized
+here. Acknowledge the same IDs completed/running/blocked with artifacts; no duplicate requests.
+
+Full-project readiness **55%, change 0 percentage points, range 45–65%**: substantive evidence and paper progress
+within the fixed rubric, but broad inference/comparator scope and real-agent validation remain open. Top remaining
+milestones: reliable inference/adequate real-agent comparisons; complete manuscript synthesis; independent
+reproducibility, metadata and submission package. Preserve owner author/committer identity and direct-main history.
