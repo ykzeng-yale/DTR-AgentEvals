@@ -3,11 +3,11 @@
  "status": "POST-HOC reporting; every numeric row re-derived from raw records and matched to a pinned lead audit (tolerance 1e-12) or, where no audit pins it, to the archived file it reproduces",
  "classes": {
   "whole_policy": "Root-to-terminal outcome of a fixed policy on all 330 CONFIRM tasks; equal task weight over the planned repeated executions (2 live runs per task per policy).",
-  "initial_action_logger_continued": "Root-to-terminal contrast of the two initial actions, each followed by the randomized logger; all 330 CONFIRM tasks, equal task weight. NOT a whole-policy contrast. Worker label: none of the four named classes fits; the lead may reclassify.",
+  "initial_action_logger_continued": "Root-to-terminal contrast of the two initial actions, each followed by the randomized logger; all 330 CONFIRM tasks, equal task weight. Final-outcome rows compare two stochastic regimes (force the initial action, then use the logger), not the all-large/all-small live policies. First-candidate rows end before any continuation.",
   "pooled_repair": "Contrast at a repair decision among histories the logger reached, pooled over episodes or prefixes; weights are realized eligible counts, not tasks.",
   "realized_frame": "Conditional on the realized 564-prefix frame F and the realized log. SECONDARY target.",
   "selected_cohort": "Restricted to tasks selected on realized action support or realized denominators; changes cohort and weights. Exploratory only.",
-  "descriptive": "Counts or occupancy of realized records; no contrast target. Worker label, as above."
+  "descriptive": "Counts or occupancy of realized records; no causal contrast target."
  },
  "primary_target": {
   "name": "theta = sum_g E(T_g) / sum_g E(M_g) over all 330 source task blocks (expected-prefix task weights)",
@@ -514,8 +514,8 @@
   {
    "id": "I-success_first_candidate-humaneval",
    "endpoint": "hidden success of the first candidate",
-   "target": "E_task[Y(A0=large, logger later) - Y(A0=small, logger later)], within humaneval",
-   "comparator": "initial small arm, same logger continuation",
+   "target": "E_task[Y_first(A0=large) - Y_first(A0=small)], within humaneval",
+   "comparator": "initial small arm, before any continuation",
    "denominator": "91 tasks x (4 initial-large + 4 initial-small logger episodes); task-paired; equal task weight",
    "estimate": 0.18956043956043955,
    "uncertainty": {
@@ -545,8 +545,8 @@
   {
    "id": "I-success_first_candidate-mbpp",
    "endpoint": "hidden success of the first candidate",
-   "target": "E_task[Y(A0=large, logger later) - Y(A0=small, logger later)], within mbpp",
-   "comparator": "initial small arm, same logger continuation",
+   "target": "E_task[Y_first(A0=large) - Y_first(A0=small)], within mbpp",
+   "comparator": "initial small arm, before any continuation",
    "denominator": "239 tasks x (4 initial-large + 4 initial-small logger episodes); task-paired; equal task weight",
    "estimate": 0.10669456066945607,
    "uncertainty": {
@@ -576,8 +576,8 @@
   {
    "id": "I-success_first_candidate-pooled",
    "endpoint": "hidden success of the first candidate",
-   "target": "E_task[Y(A0=large, logger later) - Y(A0=small, logger later)], all 330 tasks",
-   "comparator": "initial small arm, same logger continuation",
+   "target": "E_task[Y_first(A0=large) - Y_first(A0=small)], all 330 tasks",
+   "comparator": "initial small arm, before any continuation",
    "denominator": "330 tasks x (4 initial-large + 4 initial-small logger episodes); task-paired; equal task weight",
    "estimate": 0.12954545454545455,
    "uncertainty": {
@@ -1352,7 +1352,7 @@
     {
      "condition": "conditional uniform prefix selection independent of fresh noise",
      "evidence_row": "prefix sample is SRSWOR of fixed size m from the frame",
-     "status": "OBSERVED: frozen draw reproduced from the design seed and complete log"
+     "status": "REPRODUCED: documented SRSWOR draw; fresh-noise independence and selection-invariant laws remain assumptions"
     },
     {
      "condition": "selection-invariant fresh replicate pairs independent across prefix/replicate indices",
@@ -1392,7 +1392,7 @@
     {
      "condition": "unbiased prefix contrasts",
      "evidence_row": "restored prefix equals the logged pre-call state",
-     "status": "OBSERVED for recorded fields"
+     "status": "UNKNOWN for unbiasedness: recorded-field restoration is observed, but alone does not establish the intended continuation law or outcome-independent retention/recovery"
     },
     {
      "condition": "independent prefix noise with selection-invariant laws",
@@ -1412,7 +1412,7 @@
     {
      "condition": "fixed-size SRSWOR from the frame",
      "evidence_row": "prefix sample is SRSWOR of fixed size m from the frame",
-     "status": "OBSERVED: frozen draw reproduced from the design seed and complete log"
+     "status": "REPRODUCED: documented SRSWOR draw; fresh-noise independence and selection-invariant laws remain assumptions"
     }
    ],
    "boundary": "Covers no source-frame randomness and establishes no Wald coverage."
@@ -1442,7 +1442,7 @@
    "boundary": "Task-paired SEs are reproduced arithmetic only."
   },
   {
-   "result": "Initial-action rows (worker-added mapping, same boundary as whole-policy)",
+   "result": "Initial-action rows (lead-accepted reporting class)",
    "doc": "(none)",
    "applies_to": [
     "I-success-humaneval",
@@ -1458,9 +1458,9 @@
    ],
    "conditions": [
     {
-     "condition": "root-to-terminal fixed-task contrast under logger continuation",
+     "condition": "fixed-task endpoint-specific contrasts; final outcomes under logger continuation, first-candidate outcomes before continuation",
      "evidence_row": "(none)",
-     "status": "UNRESOLVED: no branch result applies; the lead may reclassify"
+     "status": "UNRESOLVED: no branch result supplies interval justification"
     }
    ],
    "boundary": "Arithmetic only."
@@ -1478,7 +1478,8 @@
   "earliest_branch_start_utc": "2026-09-20T01:11:55Z",
   "plan_created_not_after_first_start": true,
   "git_order_note": "branch_plan.json and branch/episodes.jsonl were first committed together (ac3ca83), and the plan time equals the first continuation start at one-second resolution, so neither commit order nor timestamps strictly order the draw before execution.",
-  "reading": "The evidence is the redraw: the frozen sample and continuation seeds are reproduced from the design seed and the complete log alone, so the selection is a function of pre-branch inputs only and cannot depend on fresh continuation outcomes. One realized draw cannot test uniformity; that rests on the documented mechanism (numpy Generator.choice without replacement)."
+  "design_freeze_commit": "cb9481d77567b7b14e3ceb6c1f0a6b534c67edcb",
+  "reading": "The design seed and sampling code occur in the earlier design-freeze commit cb9481d; its design.json is byte-identical to the current pinned design. The exact redraw supports compliance with the documented SRSWOR mechanism (numpy Generator.choice without replacement). It does not alone prove execution independence, absence of unrecorded selection, or selection-invariant continuation laws. Uniformity is a property of the specified randomization mechanism, not an empirical test from one draw."
  },
  "source_binding": {
   "results/code_routing/log/episodes.jsonl": {

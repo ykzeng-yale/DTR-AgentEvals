@@ -49,14 +49,15 @@ CLASSES = {
     'whole_policy': 'Root-to-terminal outcome of a fixed policy on all 330 CONFIRM tasks; equal task weight over the '
                     'planned repeated executions (2 live runs per task per policy).',
     'initial_action_logger_continued': 'Root-to-terminal contrast of the two initial actions, each followed by the '
-                    'randomized logger; all 330 CONFIRM tasks, equal task weight. NOT a whole-policy contrast. '
-                    'Worker label: none of the four named classes fits; the lead may reclassify.',
+                    'randomized logger; all 330 CONFIRM tasks, equal task weight. Final-outcome rows compare two '
+                    'stochastic regimes (force the initial action, then use the logger), not the all-large/all-small '
+                    'live policies. First-candidate rows end before any continuation.',
     'pooled_repair': 'Contrast at a repair decision among histories the logger reached, pooled over episodes or '
                      'prefixes; weights are realized eligible counts, not tasks.',
     'realized_frame': 'Conditional on the realized 564-prefix frame F and the realized log. SECONDARY target.',
     'selected_cohort': 'Restricted to tasks selected on realized action support or realized denominators; changes '
                        'cohort and weights. Exploratory only.',
-    'descriptive': 'Counts or occupancy of realized records; no contrast target. Worker label, as above.',
+    'descriptive': 'Counts or occupancy of realized records; no causal contrast target.',
 }
 
 
@@ -182,10 +183,12 @@ def reproduce_branch_plan(log_raw):
         git_order_note='branch_plan.json and branch/episodes.jsonl were first committed together (ac3ca83), and the '
                        'plan time equals the first continuation start at one-second resolution, so neither commit order '
                        'nor timestamps strictly order the draw before execution.',
-        reading='The evidence is the redraw: the frozen sample and continuation seeds are reproduced from the design seed '
-                'and the complete log alone, so the selection is a function of pre-branch inputs only and cannot depend '
-                'on fresh continuation outcomes. One realized draw cannot test uniformity; that rests on the documented '
-                'mechanism (numpy Generator.choice without replacement).')
+        design_freeze_commit='cb9481d77567b7b14e3ceb6c1f0a6b534c67edcb',
+        reading='The design seed and sampling code occur in the earlier design-freeze commit cb9481d; its design.json '
+                'is byte-identical to the current pinned design. The exact redraw supports compliance with the '
+                'documented SRSWOR mechanism (numpy Generator.choice without replacement). It does not alone prove '
+                'execution independence, absence of unrecorded selection, or selection-invariant continuation laws. '
+                'Uniformity is a property of the specified randomization mechanism, not an empirical test from one draw.')
 
 
 def build(audits=None, root=ROOT):
@@ -301,9 +304,11 @@ def build(audits=None, root=ROOT):
             row(id='I-%s-%s' % (out, bench), cls='initial_action_logger_continued',
                 endpoint={'success': 'final hidden success after all eligible decisions',
                           'utility': 'frozen utility', 'success_first_candidate': 'hidden success of the first candidate'}[out],
-                target='E_task[Y(A0=large, logger later) - Y(A0=small, logger later)], %s' %
-                       ('all 330 tasks' if bench == 'pooled' else 'within ' + bench),
-                comparator='initial small arm, same logger continuation',
+                target=(('E_task[Y_first(A0=large) - Y_first(A0=small)], ' if out == 'success_first_candidate' else
+                         'E_task[Y(A0=large, logger later) - Y(A0=small, logger later)], ') +
+                        ('all 330 tasks' if bench == 'pooled' else 'within ' + bench)),
+                comparator=('initial small arm, before any continuation' if out == 'success_first_candidate' else
+                            'initial small arm, same logger continuation'),
                 denominator='%d tasks x (4 initial-large + 4 initial-small logger episodes); task-paired; equal task weight' % s['n'],
                 estimate=s['mean'], uncertainty=dict(value=s['se'], label='SD(task differences)/sqrt(tasks) arithmetic; '
                                                      'interval validity unresolved'),
@@ -514,7 +519,7 @@ def build(audits=None, root=ROOT):
         return dict(evidence_row=text, status=evidence[text])
 
     plan_check = reproduce_branch_plan(log_raw)
-    selection_status = ('OBSERVED: frozen draw reproduced from the design seed and complete log'
+    selection_status = ('REPRODUCED: documented SRSWOR draw; fresh-noise independence and selection-invariant laws remain assumptions'
                         if plan_check['redrawn_equals_frozen_plan'] and plan_check['plan_log_sha256_matches_current_log']
                         else 'NOT REPRODUCED; see branch_plan_reproduction')
     theorem_map = [
@@ -536,7 +541,10 @@ def build(audits=None, root=ROOT):
         dict(result='Secondary conditional-frame variance, section 1', doc='docs/theory_branch_sampling.md',
              applies_to=['R-conditional-frame'],
              conditions=[
-                 dict(condition='unbiased prefix contrasts', **ev('restored prefix equals the logged pre-call state')),
+                 dict(condition='unbiased prefix contrasts',
+                      evidence_row='restored prefix equals the logged pre-call state',
+                      status='UNKNOWN for unbiasedness: recorded-field restoration is observed, but alone does not establish '
+                             'the intended continuation law or outcome-independent retention/recovery'),
                  dict(condition='independent prefix noise with selection-invariant laws', **ev('continuations iid within arm given the prefix')),
                  dict(condition='(same) no shared prefix shocks; otherwise extra covariance terms', **ev('no execution shocks shared across prefixes')),
                  dict(condition='archived variance estimate: independent within-arm replicates and independent arms',
@@ -549,10 +557,10 @@ def build(audits=None, root=ROOT):
              conditions=[dict(condition='separate root-to-terminal fixed-task estimands with their own inference requirements',
                               evidence_row='(none)', status='UNRESOLVED: neither branch result supplies their interval justification')],
              boundary='Task-paired SEs are reproduced arithmetic only.'),
-        dict(result='Initial-action rows (worker-added mapping, same boundary as whole-policy)', doc='(none)',
+        dict(result='Initial-action rows (lead-accepted reporting class)', doc='(none)',
              applies_to=[r['id'] for r in rows if r['class'] == 'initial_action_logger_continued'],
-             conditions=[dict(condition='root-to-terminal fixed-task contrast under logger continuation', evidence_row='(none)',
-                              status='UNRESOLVED: no branch result applies; the lead may reclassify')],
+             conditions=[dict(condition='fixed-task endpoint-specific contrasts; final outcomes under logger continuation, first-candidate outcomes before continuation',
+                              evidence_row='(none)', status='UNRESOLVED: no branch result supplies interval justification')],
              boundary='Arithmetic only.'),
     ]
 

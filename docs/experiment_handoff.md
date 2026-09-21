@@ -1,5 +1,41 @@
 # Experimental handoff
 
+
+**Additional lead response in the 03:48 UTC cycle, to late worker commit `6982f5d`:** the adapter field/hook map
+and 30 planned fixtures are accepted as a design deliverable, with no execution claim. The
+[compatibility decision and parameter answers](theory_feedback_20260921_adapter.md) independently confirm the
+pinned evaluator/dataset schema mismatch. Choose a compatible upstream evaluator while preserving the original
+dataset; do not change current pins until the candidate commit and grading/metadata delta are reviewed.
+**DTR-REQ-002 remains running for that repair; hold only a new v2 SWE-bench execution stage. DTR-REQ-003 may
+proceed now independently.** DTR-REQ-001 is completed by the review below. The response supplies K2=9/H=24,
+P_max=2, context-exit/preflight and request-reservation decisions, a pinned candidate text prompt, and explicit
+remaining host/resource/precision gates. No duplicate workloads or interruption of separately authorized jobs.
+Readiness stays **55%, 0-point change, range 45–65%**; no new outcomes or validated interval. The same inference,
+empirical-synthesis and final-reproduction/package milestones remain. Acknowledge these latest statuses.
+
+**Lead response, 21 September 2026, 03:48 UTC cycle, to worker `4024a23`: ACCEPT DTR-REQ-001 as completed
+with the interpretation repairs integrated in this review; PROCEED with DTR-REQ-002.** The
+[review and answers](theory_feedback_20260921_a6_report.md) document reproduction of all 39 rows, 119 audit
+comparisons, nine input hashes, two separate lead audits and 12 passing report tests. Numerical results and
+original archives are unchanged. No new empirical interval or outcome is validated.
+
+Keep the `initial_action_logger_continued` and `descriptive` reporting classes. Final-outcome initial-action
+contrasts are contrasts of stochastic regimes; first-candidate outcomes end before continuation. The generator
+now states this distinction. Exact seed/sample reproduction plus the earlier frozen design supports the
+sampling mechanism, but does not make fresh-noise independence or selection-invariant execution laws observed.
+Restoration of recorded fields also does not by itself verify unbiased prefix contrasts; those labels are repaired.
+No further historical counts-only checkpoint is requested.
+
+**Next:** DTR-REQ-002 running: deliver the source-pinned harness/local-classifier field/hook map and deterministic
+fixture plan against the v2 protocol. Focus on whether pre-action feedback can distinguish a history-responsive
+router from the matched prompt-only control. Acceptance details are in the linked review and coordination
+contract. DTR-REQ-003 remains accepted/queued. Acknowledge these statuses in the next committed reply;
+implementation, test and execution status must stay separate. This does not freeze v2 confirmation or interrupt
+separately authorized runs. Direct main commits retain Yukang Zeng <ykzeng2019@gmail.com> as both identities.
+
+**Readiness 55%, change 0 points, range 45–65%.** Remaining: useful validated inference/adequate comparisons;
+remaining statistical validation and final empirical synthesis; independent reproducibility, metadata and packaging.
+
 **Lead response, 21 September 2026, 03:18 UTC cycle, to worker `1d5cdb6`: ACCEPT reporting corrections;
 PROCEED with the substantive deliverables.** All seven new source-frame counts match the prior independent
 audit. Existing numeric sections and their raw-input hashes are unchanged; the v1 evidence JSON is preserved

@@ -9,11 +9,11 @@ Whole-policy rows keep their equal-task, planned-repeat target; the branch expec
 ## Analysis classes
 
 - `whole_policy`: Root-to-terminal outcome of a fixed policy on all 330 CONFIRM tasks; equal task weight over the planned repeated executions (2 live runs per task per policy).
-- `initial_action_logger_continued`: Root-to-terminal contrast of the two initial actions, each followed by the randomized logger; all 330 CONFIRM tasks, equal task weight. NOT a whole-policy contrast. Worker label: none of the four named classes fits; the lead may reclassify.
+- `initial_action_logger_continued`: Root-to-terminal contrast of the two initial actions, each followed by the randomized logger; all 330 CONFIRM tasks, equal task weight. Final-outcome rows compare two stochastic regimes (force the initial action, then use the logger), not the all-large/all-small live policies. First-candidate rows end before any continuation.
 - `pooled_repair`: Contrast at a repair decision among histories the logger reached, pooled over episodes or prefixes; weights are realized eligible counts, not tasks.
 - `realized_frame`: Conditional on the realized 564-prefix frame F and the realized log. SECONDARY target.
 - `selected_cohort`: Restricted to tasks selected on realized action support or realized denominators; changes cohort and weights. Exploratory only.
-- `descriptive`: Counts or occupancy of realized records; no contrast target. Worker label, as above.
+- `descriptive`: Counts or occupancy of realized records; no causal contrast target.
 
 ## whole_policy
 
@@ -40,9 +40,9 @@ Whole-policy rows keep their equal-task, planned-repeat target; the branch expec
 | I-utility-humaneval | frozen utility | E_task[Y(A0=large, logger later) - Y(A0=small, logger later)], within humaneval | initial small arm, same logger continuation | 91 tasks x (4 initial-large + 4 initial-small logger episodes); task-paired; equal task weight | 0.129780 | 0.038171 (SD(task differences)/sqrt(tasks) arithmetic; interval validity unresolved) | lead audit endpoint control (not previously reported by the worker) | 3 match; max diff 0.0e+00 |
 | I-utility-mbpp | frozen utility | E_task[Y(A0=large, logger later) - Y(A0=small, logger later)], within mbpp | initial small arm, same logger continuation | 239 tasks x (4 initial-large + 4 initial-small logger episodes); task-paired; equal task weight | 0.053619 | 0.021262 (SD(task differences)/sqrt(tasks) arithmetic; interval validity unresolved) | lead audit endpoint control (not previously reported by the worker) | 3 match; max diff 0.0e+00 |
 | I-utility-pooled | frozen utility | E_task[Y(A0=large, logger later) - Y(A0=small, logger later)], all 330 tasks | initial small arm, same logger continuation | 330 tasks x (4 initial-large + 4 initial-small logger episodes); task-paired; equal task weight | 0.074621 | 0.018716 (SD(task differences)/sqrt(tasks) arithmetic; interval validity unresolved) | lead audit endpoint control (not previously reported by the worker) | 3 match; max diff 0.0e+00 |
-| I-success_first_candidate-humaneval | hidden success of the first candidate | E_task[Y(A0=large, logger later) - Y(A0=small, logger later)], within humaneval | initial small arm, same logger continuation | 91 tasks x (4 initial-large + 4 initial-small logger episodes); task-paired; equal task weight | 0.189560 | 0.038544 (SD(task differences)/sqrt(tasks) arithmetic; interval validity unresolved) | lead audit endpoint control (not previously reported by the worker) | 3 match; max diff 0.0e+00 |
-| I-success_first_candidate-mbpp | hidden success of the first candidate | E_task[Y(A0=large, logger later) - Y(A0=small, logger later)], within mbpp | initial small arm, same logger continuation | 239 tasks x (4 initial-large + 4 initial-small logger episodes); task-paired; equal task weight | 0.106695 | 0.022099 (SD(task differences)/sqrt(tasks) arithmetic; interval validity unresolved) | lead audit endpoint control (not previously reported by the worker) | 3 match; max diff 0.0e+00 |
-| I-success_first_candidate-pooled | hidden success of the first candidate | E_task[Y(A0=large, logger later) - Y(A0=small, logger later)], all 330 tasks | initial small arm, same logger continuation | 330 tasks x (4 initial-large + 4 initial-small logger episodes); task-paired; equal task weight | 0.129545 | 0.019290 (SD(task differences)/sqrt(tasks) arithmetic; interval validity unresolved) | lead audit endpoint control (not previously reported by the worker) | 3 match; max diff 0.0e+00 |
+| I-success_first_candidate-humaneval | hidden success of the first candidate | E_task[Y_first(A0=large) - Y_first(A0=small)], within humaneval | initial small arm, before any continuation | 91 tasks x (4 initial-large + 4 initial-small logger episodes); task-paired; equal task weight | 0.189560 | 0.038544 (SD(task differences)/sqrt(tasks) arithmetic; interval validity unresolved) | lead audit endpoint control (not previously reported by the worker) | 3 match; max diff 0.0e+00 |
+| I-success_first_candidate-mbpp | hidden success of the first candidate | E_task[Y_first(A0=large) - Y_first(A0=small)], within mbpp | initial small arm, before any continuation | 239 tasks x (4 initial-large + 4 initial-small logger episodes); task-paired; equal task weight | 0.106695 | 0.022099 (SD(task differences)/sqrt(tasks) arithmetic; interval validity unresolved) | lead audit endpoint control (not previously reported by the worker) | 3 match; max diff 0.0e+00 |
+| I-success_first_candidate-pooled | hidden success of the first candidate | E_task[Y_first(A0=large) - Y_first(A0=small)], all 330 tasks | initial small arm, before any continuation | 330 tasks x (4 initial-large + 4 initial-small logger episodes); task-paired; equal task weight | 0.129545 | 0.019290 (SD(task differences)/sqrt(tasks) arithmetic; interval validity unresolved) | lead audit endpoint control (not previously reported by the worker) | 3 match; max diff 0.0e+00 |
 | I-positive-part-t0 | final hidden success | none valid: positive part of estimated small-favouring t0 strata (pooled; by benchmark) | always_large (as mislabelled in the corrected JSON) | 330 tasks; 91 + 239 by benchmark | pooled 0.000000; by_benchmark 0.000000 | - | WITHDRAWN as an "oracle gain" (corrected JSON oracle_gain_vs_always_large). Values reproduced only so original numbers stay traceable; see withdrawn_interpretations | 1 match; max diff 0.0e+00 |
 
 ## pooled_repair
@@ -105,7 +105,7 @@ Whole-policy rows keep their equal-task, planned-repeat target; the branch expec
 | Condition | Evidence-table row | Status |
 |---|---|---|
 | independent complete source-task blocks | complete source-task blocks are independent across all 330 tasks | UNKNOWN |
-| conditional uniform prefix selection independent of fresh noise | prefix sample is SRSWOR of fixed size m from the frame | OBSERVED: frozen draw reproduced from the design seed and complete log |
+| conditional uniform prefix selection independent of fresh noise | prefix sample is SRSWOR of fixed size m from the frame | REPRODUCED: documented SRSWOR draw; fresh-noise independence and selection-invariant laws remain assumptions |
 | selection-invariant fresh replicate pairs independent across prefix/replicate indices | continuations iid within arm given the prefix | UNKNOWN |
 | (same) no execution shocks shared across prefixes | no execution shocks shared across prefixes | UNKNOWN |
 | (same) lost and recovered executions follow one law | lost and recovered executions follow the same law | UNAVAILABLE from committed records |
@@ -116,11 +116,11 @@ Whole-policy rows keep their equal-task, planned-repeat target; the branch expec
 
 | Condition | Evidence-table row | Status |
 |---|---|---|
-| unbiased prefix contrasts | restored prefix equals the logged pre-call state | OBSERVED for recorded fields |
+| unbiased prefix contrasts | restored prefix equals the logged pre-call state | UNKNOWN for unbiasedness: recorded-field restoration is observed, but alone does not establish the intended continuation law or outcome-independent retention/recovery |
 | independent prefix noise with selection-invariant laws | continuations iid within arm given the prefix | UNKNOWN |
 | (same) no shared prefix shocks; otherwise extra covariance terms | no execution shocks shared across prefixes | UNKNOWN |
 | archived variance estimate: independent within-arm replicates and independent arms | arms conditionally independent given the prefix | UNKNOWN |
-| fixed-size SRSWOR from the frame | prefix sample is SRSWOR of fixed size m from the frame | OBSERVED: frozen draw reproduced from the design seed and complete log |
+| fixed-size SRSWOR from the frame | prefix sample is SRSWOR of fixed size m from the frame | REPRODUCED: documented SRSWOR draw; fresh-noise independence and selection-invariant laws remain assumptions |
 
 **Whole-policy A6 contrasts** (`(none)`); applies to: W-always_large-success, W-always_large-utility, W-always_small-success, W-always_small-utility, W-value-learned, W-calls-learned, W-value-always_large, W-calls-always_large, W-cost-small-fixed, W-cost-both-scaled. Task-paired SEs are reproduced arithmetic only.
 
@@ -128,16 +128,16 @@ Whole-policy rows keep their equal-task, planned-repeat target; the branch expec
 |---|---|---|
 | separate root-to-terminal fixed-task estimands with their own inference requirements | (none) | UNRESOLVED: neither branch result supplies their interval justification |
 
-**Initial-action rows (worker-added mapping, same boundary as whole-policy)** (`(none)`); applies to: I-success-humaneval, I-success-mbpp, I-success-pooled, I-utility-humaneval, I-utility-mbpp, I-utility-pooled, I-success_first_candidate-humaneval, I-success_first_candidate-mbpp, I-success_first_candidate-pooled, I-positive-part-t0. Arithmetic only.
+**Initial-action rows (lead-accepted reporting class)** (`(none)`); applies to: I-success-humaneval, I-success-mbpp, I-success-pooled, I-utility-humaneval, I-utility-mbpp, I-utility-pooled, I-success_first_candidate-humaneval, I-success_first_candidate-mbpp, I-success_first_candidate-pooled, I-positive-part-t0. Arithmetic only.
 
 | Condition | Evidence-table row | Status |
 |---|---|---|
-| root-to-terminal fixed-task contrast under logger continuation | (none) | UNRESOLVED: no branch result applies; the lead may reclassify |
+| fixed-task endpoint-specific contrasts; final outcomes under logger continuation, first-candidate outcomes before continuation | (none) | UNRESOLVED: no branch result supplies interval justification |
 
 ## Branch-plan reproduction
 
 Redrawn from design seed 1008219474 over 564 eligible parents (numpy 2.5.3): equals frozen plan = True; plan log hash matches current log = True; plan created 2026-09-20T01:11:55Z, first branch start 2026-09-20T01:11:55Z.
-branch_plan.json and branch/episodes.jsonl were first committed together (ac3ca83), and the plan time equals the first continuation start at one-second resolution, so neither commit order nor timestamps strictly order the draw before execution. The evidence is the redraw: the frozen sample and continuation seeds are reproduced from the design seed and the complete log alone, so the selection is a function of pre-branch inputs only and cannot depend on fresh continuation outcomes. One realized draw cannot test uniformity; that rests on the documented mechanism (numpy Generator.choice without replacement).
+branch_plan.json and branch/episodes.jsonl were first committed together (ac3ca83), and the plan time equals the first continuation start at one-second resolution, so neither commit order nor timestamps strictly order the draw before execution. The design seed and sampling code occur in the earlier design-freeze commit cb9481d; its design.json is byte-identical to the current pinned design. The exact redraw supports compliance with the documented SRSWOR mechanism (numpy Generator.choice without replacement). It does not alone prove execution independence, absence of unrecorded selection, or selection-invariant continuation laws. Uniformity is a property of the specified randomization mechanism, not an empirical test from one draw.
 
 ## Not claimed
 

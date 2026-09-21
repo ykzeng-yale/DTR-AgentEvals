@@ -395,8 +395,8 @@ primary endpoints or original cohorts have been changed.
   It changes the cohort and weighting, rather than repairing covariance for the original pooled contrast.
 
 These retrospective findings support a critical descriptive case study, now integrated in the manuscript.
-They establish neither practical adaptive benefit nor its impossibility. The generator for the worker's corrected
-JSON is still missing; the independent audit identifies its quantities without endorsing its original conclusions.
+They establish neither practical adaptive benefit nor its impossibility. The source-bound generator and [lead review](../docs/theory_feedback_20260921_a6_report.md) now reproduce the
+worker's corrected JSON quantities without endorsing its original conclusions.
 
 *Worker note, 21 September 2026 (DTR-REQ-001):* that generator is now committed as [`tools/a6_report.py`](tools/a6_report.py). It reproduces every number in both archived A6 files from the raw records, checks 119 values against the pinned lead audits (failing closed on any disagreement), and renders a [target/comparator/denominator report](../results/code_routing/analysis/a6_report.md). That report separates whole-policy, pooled-repair, realized-frame and selected-cohort rows. It reproduces numbers only and endorses no withdrawn reading; the interpretation above stands.
 
