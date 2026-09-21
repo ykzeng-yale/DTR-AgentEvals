@@ -1284,3 +1284,30 @@ Code/config commit at checkpoint start: `bfed7e1`. Last lead checkpoint read: `d
 | DTR-REQ-003 (P1) | **running: fresh on-policy reference uncertainty delivered** | [`fresh_reference.py`](../experiments/v2_sim/fresh_reference.py) writes [`fresh_reference_v1.json`](../experiments/v2_sim/fresh_reference_v1.json). It covers the open "worker computes" gate: the exact on-policy per-episode utility variance under separate fresh blocks, for 24 rows (8 core cells × history rule, prompt rule and best fixed). It is derived two ways that agree **exactly**: a direct policy enumeration, and the IPW second moment under a policy-copying logger. With r_fresh = 4 (a **proposal**; you specify the design), fresh-mean SE is .0117–.0141 at n=250 and .0058–.0071 at n=1000. The SE of the log-minus-fresh calibration discrepancy with independent blocks is .021–.073 at n=250. The **IPW/on-policy per-episode variance ratio is 1.47–71.6** across all 96 (row, logger, stratum) entries. The minimum is the history rule under the aligned feedback-dependent logger; the maximum is K=4 always-large under that same logger. Every ratio is ≥ 1, as the matched-path weight argument requires, and this is tested. Ranges were computed from the full JSON. Four tests pass; 228 tests pass. Moments only; no power or coverage claim. |
 
 M01 and the upstream conformance run remain blocked on the user's download/execution permission, which I have already requested. No duplicate request is made.
+
+
+## Lead review — 2026-09-21 10:48 UTC cycle: checker repair and fresh-reference moments
+
+Reviewed `57baf69696ef9c4907657b8265c2aa3881cb4ed8`; [full scientific decision](theory_feedback_20260921_fresh_reference.md).
+**REQ-002: accept the requested M03 reset-checker repair within the stated grammar.** All 28 M03 cases passed
+lead rerun, including both prior bad probes and unrelated-path controls. Actual generated scripts, parser
+conformance and isolated execution remain open. The strict grading acknowledgement is accepted.
+
+**REQ-003: accept the 24-row exact fresh-reference artifact.** A separate backward utility-moment reconstruction
+without worker imports passed 360 checks; the four worker reference tests also passed. Independent internal
+mathematical review confirms the raw trajectory-IPW variance ordering only for deterministic supported targets
+and the independence-based variance sum. The 1.469055–71.637511 variance ratios are adverse for single-policy raw
+IPW at equal episode counts; they establish neither DR performance, resource efficiency nor real routing benefit.
+Adopt four fresh replicates only as the synthetic validation baseline, not as a real-study precision choice or
+new run authorization. All comparisons remain known-kernel moments, not coverage/power evidence.
+
+REQ-002 qualification remains priority when its reported host permission is resolved. While blocked, proceed on
+the already queued REQ-003 complete-block sampler/estimator wiring with deterministic scripted-draw fixtures;
+see the linked acceptance criteria for independent streams, costs, absorption, fixed task retention and branch
+zero-denominator handling. Do not expand the control catalog or duplicate accepted moment audits. No new
+Monte Carlo/model run is requested; separately authorized work is unaffected. Acknowledge REQ-001 completed,
+REQ-002 running (specific repair accepted; remaining qualification open/blocked), REQ-003 running.
+
+**Readiness 55%, change 0 points, range 45–65%.** Same rubric. Top milestones: useful validated inference/adequate
+comparisons; statistical validation and final empirical synthesis; independent reproducibility, author metadata
+and submission packaging. No new observations or paper pages.
