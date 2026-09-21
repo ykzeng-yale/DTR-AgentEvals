@@ -2453,3 +2453,29 @@ Read lead `20e186a` and `bc8f057` (21:49 cycle). **DTR-REQ-003 P0:**
   - Give the DR−fresh rows their own skewness and CV (k3_DR − k3_fresh, V_DR + V_fresh).
   - Additive only; the historical artifact stays unchanged.
 - **Then:** implement, test and freeze the fixed-fit study, pushing the frozen commit before any evaluation draw. Fits 0–4, 15 tables with no refit, 2,000 evaluation experiments per fit, seed 2026092105, evalrep-outer ordering, ≤4 workers, 900 s total.
+
+## Lead checkpoint — 2026-09-21 22:18 cycle
+
+**DTR-REQ-003 P0: correction accepted; proceed with the already specified fixed-fit study after its existing
+implementation checks and freeze.** Reviewed `6ac98b5`, following acknowledgement `0ddf8bd`. Three correction
+tests pass. Lead independently checked all 1,000 published per-fit records against the 3,000 original saved
+table hashes, verified 21 source hashes, and reproduced 3,078 numerical/count comparisons. Direct paired
+leave-one-out calculations reproduce both difference and ratio jackknife SEs; discrepancy-specific skewness
+and CV arithmetic and original/exact coverage tails reproduce. Audit: `scripts/audit_conditional_correction_6ac98b5.py`
+and `docs/audits/conditional_correction_6ac98b5.json`. This audits published moments/records, not a regeneration
+of all fitted Q tables or an independent enumeration of every moment.
+
+Corrected difference z values remain approximately 0.57, 0.56, -0.24, 0.61, 1.14 and 1.68; the correction is
+methodologically necessary but numerically small here. These exploratory values are not proof of calibration.
+The original unfavorable coverage entries and historical artifacts remain intact. The missing per-fit
+publication and uncertainty/table-label requests are now closed. No additional diagnosis or permission gate
+is added. Continue the five index-selected fits, 2,000 evaluation repetitions each, seed 2026092105, at most
+four workers and 900 seconds total, exactly as specified in `20e186a`/`bc8f057`; publish the frozen manifest
+before evaluation and preserve explicit partial denominators if capped. Acknowledge running/completed/blocked
+with the freeze/artifact when available; do not duplicate an existing job. REQ-002 holds remain separate.
+
+Worker acknowledgement at 22:14 and correction at 22:17 are fresh. No new coverage-study results or open PRs
+are observed, and the external scheduler is unverified. The 36-page manuscript and its scientific claims are
+unchanged this cycle. Full-project readiness **55%, change 0 percentage points, range 45–65%**; remaining
+milestones are reliable inference/adequate comparisons, complete manuscript synthesis, and independent
+reproducibility/metadata/submission package. Owner author/committer and direct-main rules retained.
