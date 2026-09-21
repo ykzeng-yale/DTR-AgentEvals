@@ -1,3 +1,13 @@
+**Current lead status — 21 September, 23:19 UTC:** the 11-row consolidated K=2 evidence table is accepted
+(commit `c62c564`; regeneration test and all 35 immutable artifact links checked). REQ-003's scoped diagnostic
+and reporting deliverables are completed; broader planned protocol scope remains open and further sampling is
+held. REQ-002 static qualification is completed as reported; container-based harness controls still require the
+worker-host execution approval and a compatible runtime. Earlier paragraphs saying downloads/M01 are blocked
+are historical. M01 did execute upstream Python to construct specs; it did not execute generated evaluation
+scripts or benchmark containers. The manuscript already includes scoped repeated-training and fixed-fit DR
+coverage results, with remaining limitations; older blanket statements about absent DR interval evidence are
+historical. Readiness 55%, change 0 points, range 45–65%.
+
 # Completed experiments and their interpretation
 
 The original result sections below were generated on 2026-09-18; later checkpoints are dated explicitly. Synthetic results, real open-weight model observations, and remaining publication work are separated. The tests establish implementation identities and numerical correctness; they do not replace statistical assumptions or benchmark validation.
@@ -447,7 +457,7 @@ Validation levels: **W** worker-computed (with recompute checker where linked); 
   credentials.
 - The [M03 decision](theory_feedback_20260921_m03.md).
 
-**Done without execution:**
+**Static qualification completed (upstream Python used; no eval-script/container benchmark execution):**
 - M01: 500/500 specs, 0 external URLs, replay identical (`21cd872`).
 - M02: 500/500 eligible, 11 with empty PASS_TO_PASS.
 - M03 static part: grading fixtures G01–G11 and the reset checker at 500/500.

@@ -2632,3 +2632,33 @@ Code/config commit at checkpoint start: `d8a47b3` (status). Last lead checkpoint
 | DTR-REQ-003 (P0) | diagnostic sequence closed; sampling **held**; **consolidated evidence table completed; awaiting your review** | `results/v2_sim/evidence_table_20260921.{md,json}`, this commit |
 
 **Question for the lead:** does the evidence table meet your acceptance criteria? Is there a REQ-003 item you want before the real-agent dependency is resolved?
+
+## Lead acceptance — 2026-09-21 23:19 cycle
+
+**DTR-REQ-003: consolidated evidence table accepted; current scoped diagnostic/reporting deliverable completed.**
+Reviewed `c62c564`. Its regeneration test passes, and all 35 commit-pinned artifact links resolve to existing Git
+objects. The 11 rows retain adverse results, scoped validation levels and the broader unrun protocol cells.
+This is reporting/provenance verification, not another independent experiment rerun. No new REQ-003 item or
+simulation is requested before the real-agent dependency is resolved. Do not equate closing this deliverable
+with completing every planned v2 cell, branch inference or policy-selection study.
+
+**DTR-REQ-002: blocker statement accepted; runtime qualification remains blocked.** The existing checklist and
+M01/M02/M03-static records are identified. Download permission does not by itself settle the separate worker-host
+request to execute the pinned no-change/reference-patch harness controls. Runtime availability is also separate;
+the selected specs require a compatible x86_64 container execution environment. Neither a supplied compatible
+host nor its execution approval has been verified here. The historical “nothing upstream executed” phrasing is
+corrected: M01 used upstream Python, while generated eval scripts/containers were not run. Current results-status
+note now supersedes stale blocked-download/M01 and absent-DR-evidence statements without deleting the history.
+
+Next permissible REQ-002 preparation, if not already present: a concise, nonexecuting command/runbook template
+for those two controls against the pinned evaluator, with explicit runtime/image/task placeholders, required
+input artifacts and expected acceptance records. This makes the eventual execution request reviewable; it must
+not claim tested commands or guessed host/image digests. Link an existing equivalent instead of duplicating it.
+Do not install runtimes, purchase resources, run upstream controls or launch new model/simulation work under
+this preparation request. Keep status blocked on the two actual external dependencies; do not add lead review
+as a third blocker. Acknowledge completed/blocked with artifact at the next checkpoint; unchanged ticks may be short.
+
+Worker checkpoint at 23:19 UTC is fresh. No new results, issue questions or PRs beyond the reporting delivery.
+The 36-page manuscript remains unchanged. Full-project readiness **55%, change 0 percentage points, range
+45–65%**: remaining milestones are reliable inference/adequate real-agent comparisons; complete manuscript
+synthesis; independent reproducibility, metadata and submission package. Direct-main and owner identity retained.
