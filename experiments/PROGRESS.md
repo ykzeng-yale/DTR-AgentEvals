@@ -24,6 +24,17 @@ reproducibility/metadata/package remain open.
 Pushed about every two hours while experiments run. Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-20 23:57 EDT (2026-09-21 03:57 UTC) — REQ-003 slice 1: exact analytic control
+
+No new lead feedback; REQ-001/002 await review. Built the protocol's exact XOR control in exact rational arithmetic. Truth
+from enumeration and from Bellman recursion agrees exactly, and every protocol closed form reproduces. Supported
+loggers give exact IPW, while zero-support and unweighted negative controls fail. One grid question went to the lead: no
+cell is informative and effective yet cost-unfavorable.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Evidence advanced:
+none (design/analytic control). Categories 75/75/50/25/25 → 55.00. Main remaining work: REQ-003 generator and block
+design; lead review of REQ-001/002. *No gh CLI/token on this host.*
+
 ## 2026-09-20 23:54 EDT (2026-09-21 03:54 UTC) — REQ-002 adapter contract delivered (design only)
 
 Delivered `docs/adapter_contract_20260921.md` and 30 planned fixtures in `experiments/v2_adapter/fixtures_planned.json`.

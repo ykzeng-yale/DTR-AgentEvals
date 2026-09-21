@@ -1,0 +1,1649 @@
+{
+ "request": "DTR-REQ-003 slice 1: exact analytic control (experiment_protocol_v2.md section 2)",
+ "status": "EXACT rational enumeration; no Monte Carlo, no model; analytic diagnostic, not an agent model or a new theorem",
+ "model": "U~Bern(1/2); F=U xor E, E~Bern(q); P(Y=1|A,U)=1/2+eta(2A-1)(2U-1); cost c*A; one repair decision",
+ "policies": {
+  "const_0": "F-measurable",
+  "const_1": "F-measurable",
+  "observe_F": "F-measurable",
+  "observe_not_F": "F-measurable",
+  "oracle_U": "uses latent U: reference only, unavailable to learner"
+ },
+ "loggers": {
+  "uniform_floor_0.5": {
+   "P(A=1|F=0)": "1/2",
+   "P(A=1|F=1)": "1/2"
+  },
+  "state_dependent_floor_0.2": {
+   "P(A=1|F=0)": "1/5",
+   "P(A=1|F=1)": "4/5"
+  },
+  "zero_support_negative_control": {
+   "P(A=1|F=0)": "1/2",
+   "P(A=1|F=1)": "1"
+  }
+ },
+ "checks": {
+  "all_bellman_equal_enumeration": true,
+  "all_closed_forms_match": true,
+  "supported_loggers_ipw_exact": true,
+  "zero_support_fails_somewhere": true,
+  "unweighted_fails_somewhere": true,
+  "truth_independent_of_logger": "by construction: truth_enumeration and truth_bellman take no logger argument"
+ },
+ "cells": [
+  {
+   "eta": "0",
+   "q": "0",
+   "c": "1/10",
+   "policies": {
+    "const_0": {
+     "success": {
+      "exact": "1/2",
+      "decimal": 0.5
+     },
+     "cost": {
+      "exact": "0",
+      "decimal": 0.0
+     },
+     "utility": {
+      "exact": "1/2",
+      "decimal": 0.5
+     },
+     "enumeration_equals_closed_form": true,
+     "learnable": true,
+     "bellman_equals_enumeration": true,
+     "loggers": {
+      "uniform_floor_0.5": {
+       "ipw_expectation": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "ipw_equals_truth": true,
+       "unweighted_matched_mean": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "unweighted_equals_truth": true
+      },
+      "state_dependent_floor_0.2": {
+       "ipw_expectation": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "ipw_equals_truth": true,
+       "unweighted_matched_mean": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "unweighted_equals_truth": true
+      },
+      "zero_support_negative_control": {
+       "ipw_expectation": {
+        "exact": "1/4",
+        "decimal": 0.25
+       },
+       "ipw_equals_truth": false,
+       "unweighted_matched_mean": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "unweighted_equals_truth": true
+      }
+     }
+    },
+    "const_1": {
+     "success": {
+      "exact": "1/2",
+      "decimal": 0.5
+     },
+     "cost": {
+      "exact": "1/10",
+      "decimal": 0.1
+     },
+     "utility": {
+      "exact": "2/5",
+      "decimal": 0.4
+     },
+     "enumeration_equals_closed_form": true,
+     "learnable": true,
+     "bellman_equals_enumeration": true,
+     "loggers": {
+      "uniform_floor_0.5": {
+       "ipw_expectation": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "ipw_equals_truth": true,
+       "unweighted_matched_mean": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "unweighted_equals_truth": true
+      },
+      "state_dependent_floor_0.2": {
+       "ipw_expectation": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "ipw_equals_truth": true,
+       "unweighted_matched_mean": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "unweighted_equals_truth": true
+      },
+      "zero_support_negative_control": {
+       "ipw_expectation": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "ipw_equals_truth": true,
+       "unweighted_matched_mean": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "unweighted_equals_truth": true
+      }
+     }
+    },
+    "observe_F": {
+     "success": {
+      "exact": "1/2",
+      "decimal": 0.5
+     },
+     "cost": {
+      "exact": "1/20",
+      "decimal": 0.05
+     },
+     "utility": {
+      "exact": "9/20",
+      "decimal": 0.45
+     },
+     "enumeration_equals_closed_form": true,
+     "learnable": true,
+     "bellman_equals_enumeration": true,
+     "loggers": {
+      "uniform_floor_0.5": {
+       "ipw_expectation": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "ipw_equals_truth": true,
+       "unweighted_matched_mean": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "unweighted_equals_truth": true
+      },
+      "state_dependent_floor_0.2": {
+       "ipw_expectation": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "ipw_equals_truth": true,
+       "unweighted_matched_mean": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "unweighted_equals_truth": true
+      },
+      "zero_support_negative_control": {
+       "ipw_expectation": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "ipw_equals_truth": true,
+       "unweighted_matched_mean": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "unweighted_equals_truth": true
+      }
+     }
+    },
+    "observe_not_F": {
+     "success": {
+      "exact": "1/2",
+      "decimal": 0.5
+     },
+     "cost": {
+      "exact": "1/20",
+      "decimal": 0.05
+     },
+     "utility": {
+      "exact": "9/20",
+      "decimal": 0.45
+     },
+     "enumeration_equals_closed_form": true,
+     "learnable": true,
+     "bellman_equals_enumeration": true,
+     "loggers": {
+      "uniform_floor_0.5": {
+       "ipw_expectation": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "ipw_equals_truth": true,
+       "unweighted_matched_mean": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "unweighted_equals_truth": true
+      },
+      "state_dependent_floor_0.2": {
+       "ipw_expectation": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "ipw_equals_truth": true,
+       "unweighted_matched_mean": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "unweighted_equals_truth": true
+      },
+      "zero_support_negative_control": {
+       "ipw_expectation": {
+        "exact": "1/4",
+        "decimal": 0.25
+       },
+       "ipw_equals_truth": false,
+       "unweighted_matched_mean": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "unweighted_equals_truth": true
+      }
+     }
+    },
+    "oracle_U": {
+     "success": {
+      "exact": "1/2",
+      "decimal": 0.5
+     },
+     "cost": {
+      "exact": "1/20",
+      "decimal": 0.05
+     },
+     "utility": {
+      "exact": "9/20",
+      "decimal": 0.45
+     },
+     "enumeration_equals_closed_form": true,
+     "learnable": false
+    }
+   },
+   "observe_F_utility_gain_over_const_0": {
+    "exact": "-1/20",
+    "decimal": -0.05
+   },
+   "best_fixed": {
+    "policy": "const_0",
+    "utility": {
+     "exact": "1/2",
+     "decimal": 0.5
+    }
+   },
+   "best_observed_history": {
+    "policy": "const_0",
+    "utility": {
+     "exact": "1/2",
+     "decimal": 0.5
+    }
+   },
+   "exact_adaptive_advantage": {
+    "exact": "0",
+    "decimal": 0.0
+   },
+   "action_effect_present": false,
+   "feedback_informative": true,
+   "utility_gain_sign": -1
+  },
+  {
+   "eta": "0",
+   "q": "1/4",
+   "c": "1/10",
+   "policies": {
+    "const_0": {
+     "success": {
+      "exact": "1/2",
+      "decimal": 0.5
+     },
+     "cost": {
+      "exact": "0",
+      "decimal": 0.0
+     },
+     "utility": {
+      "exact": "1/2",
+      "decimal": 0.5
+     },
+     "enumeration_equals_closed_form": true,
+     "learnable": true,
+     "bellman_equals_enumeration": true,
+     "loggers": {
+      "uniform_floor_0.5": {
+       "ipw_expectation": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "ipw_equals_truth": true,
+       "unweighted_matched_mean": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "unweighted_equals_truth": true
+      },
+      "state_dependent_floor_0.2": {
+       "ipw_expectation": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "ipw_equals_truth": true,
+       "unweighted_matched_mean": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "unweighted_equals_truth": true
+      },
+      "zero_support_negative_control": {
+       "ipw_expectation": {
+        "exact": "1/4",
+        "decimal": 0.25
+       },
+       "ipw_equals_truth": false,
+       "unweighted_matched_mean": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "unweighted_equals_truth": true
+      }
+     }
+    },
+    "const_1": {
+     "success": {
+      "exact": "1/2",
+      "decimal": 0.5
+     },
+     "cost": {
+      "exact": "1/10",
+      "decimal": 0.1
+     },
+     "utility": {
+      "exact": "2/5",
+      "decimal": 0.4
+     },
+     "enumeration_equals_closed_form": true,
+     "learnable": true,
+     "bellman_equals_enumeration": true,
+     "loggers": {
+      "uniform_floor_0.5": {
+       "ipw_expectation": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "ipw_equals_truth": true,
+       "unweighted_matched_mean": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "unweighted_equals_truth": true
+      },
+      "state_dependent_floor_0.2": {
+       "ipw_expectation": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "ipw_equals_truth": true,
+       "unweighted_matched_mean": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "unweighted_equals_truth": true
+      },
+      "zero_support_negative_control": {
+       "ipw_expectation": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "ipw_equals_truth": true,
+       "unweighted_matched_mean": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "unweighted_equals_truth": true
+      }
+     }
+    },
+    "observe_F": {
+     "success": {
+      "exact": "1/2",
+      "decimal": 0.5
+     },
+     "cost": {
+      "exact": "1/20",
+      "decimal": 0.05
+     },
+     "utility": {
+      "exact": "9/20",
+      "decimal": 0.45
+     },
+     "enumeration_equals_closed_form": true,
+     "learnable": true,
+     "bellman_equals_enumeration": true,
+     "loggers": {
+      "uniform_floor_0.5": {
+       "ipw_expectation": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "ipw_equals_truth": true,
+       "unweighted_matched_mean": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "unweighted_equals_truth": true
+      },
+      "state_dependent_floor_0.2": {
+       "ipw_expectation": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "ipw_equals_truth": true,
+       "unweighted_matched_mean": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "unweighted_equals_truth": true
+      },
+      "zero_support_negative_control": {
+       "ipw_expectation": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "ipw_equals_truth": true,
+       "unweighted_matched_mean": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "unweighted_equals_truth": true
+      }
+     }
+    },
+    "observe_not_F": {
+     "success": {
+      "exact": "1/2",
+      "decimal": 0.5
+     },
+     "cost": {
+      "exact": "1/20",
+      "decimal": 0.05
+     },
+     "utility": {
+      "exact": "9/20",
+      "decimal": 0.45
+     },
+     "enumeration_equals_closed_form": true,
+     "learnable": true,
+     "bellman_equals_enumeration": true,
+     "loggers": {
+      "uniform_floor_0.5": {
+       "ipw_expectation": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "ipw_equals_truth": true,
+       "unweighted_matched_mean": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "unweighted_equals_truth": true
+      },
+      "state_dependent_floor_0.2": {
+       "ipw_expectation": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "ipw_equals_truth": true,
+       "unweighted_matched_mean": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "unweighted_equals_truth": true
+      },
+      "zero_support_negative_control": {
+       "ipw_expectation": {
+        "exact": "1/4",
+        "decimal": 0.25
+       },
+       "ipw_equals_truth": false,
+       "unweighted_matched_mean": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "unweighted_equals_truth": true
+      }
+     }
+    },
+    "oracle_U": {
+     "success": {
+      "exact": "1/2",
+      "decimal": 0.5
+     },
+     "cost": {
+      "exact": "1/20",
+      "decimal": 0.05
+     },
+     "utility": {
+      "exact": "9/20",
+      "decimal": 0.45
+     },
+     "enumeration_equals_closed_form": true,
+     "learnable": false
+    }
+   },
+   "observe_F_utility_gain_over_const_0": {
+    "exact": "-1/20",
+    "decimal": -0.05
+   },
+   "best_fixed": {
+    "policy": "const_0",
+    "utility": {
+     "exact": "1/2",
+     "decimal": 0.5
+    }
+   },
+   "best_observed_history": {
+    "policy": "const_0",
+    "utility": {
+     "exact": "1/2",
+     "decimal": 0.5
+    }
+   },
+   "exact_adaptive_advantage": {
+    "exact": "0",
+    "decimal": 0.0
+   },
+   "action_effect_present": false,
+   "feedback_informative": true,
+   "utility_gain_sign": -1
+  },
+  {
+   "eta": "0",
+   "q": "1/2",
+   "c": "1/10",
+   "policies": {
+    "const_0": {
+     "success": {
+      "exact": "1/2",
+      "decimal": 0.5
+     },
+     "cost": {
+      "exact": "0",
+      "decimal": 0.0
+     },
+     "utility": {
+      "exact": "1/2",
+      "decimal": 0.5
+     },
+     "enumeration_equals_closed_form": true,
+     "learnable": true,
+     "bellman_equals_enumeration": true,
+     "loggers": {
+      "uniform_floor_0.5": {
+       "ipw_expectation": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "ipw_equals_truth": true,
+       "unweighted_matched_mean": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "unweighted_equals_truth": true
+      },
+      "state_dependent_floor_0.2": {
+       "ipw_expectation": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "ipw_equals_truth": true,
+       "unweighted_matched_mean": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "unweighted_equals_truth": true
+      },
+      "zero_support_negative_control": {
+       "ipw_expectation": {
+        "exact": "1/4",
+        "decimal": 0.25
+       },
+       "ipw_equals_truth": false,
+       "unweighted_matched_mean": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "unweighted_equals_truth": true
+      }
+     }
+    },
+    "const_1": {
+     "success": {
+      "exact": "1/2",
+      "decimal": 0.5
+     },
+     "cost": {
+      "exact": "1/10",
+      "decimal": 0.1
+     },
+     "utility": {
+      "exact": "2/5",
+      "decimal": 0.4
+     },
+     "enumeration_equals_closed_form": true,
+     "learnable": true,
+     "bellman_equals_enumeration": true,
+     "loggers": {
+      "uniform_floor_0.5": {
+       "ipw_expectation": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "ipw_equals_truth": true,
+       "unweighted_matched_mean": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "unweighted_equals_truth": true
+      },
+      "state_dependent_floor_0.2": {
+       "ipw_expectation": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "ipw_equals_truth": true,
+       "unweighted_matched_mean": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "unweighted_equals_truth": true
+      },
+      "zero_support_negative_control": {
+       "ipw_expectation": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "ipw_equals_truth": true,
+       "unweighted_matched_mean": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "unweighted_equals_truth": true
+      }
+     }
+    },
+    "observe_F": {
+     "success": {
+      "exact": "1/2",
+      "decimal": 0.5
+     },
+     "cost": {
+      "exact": "1/20",
+      "decimal": 0.05
+     },
+     "utility": {
+      "exact": "9/20",
+      "decimal": 0.45
+     },
+     "enumeration_equals_closed_form": true,
+     "learnable": true,
+     "bellman_equals_enumeration": true,
+     "loggers": {
+      "uniform_floor_0.5": {
+       "ipw_expectation": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "ipw_equals_truth": true,
+       "unweighted_matched_mean": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "unweighted_equals_truth": true
+      },
+      "state_dependent_floor_0.2": {
+       "ipw_expectation": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "ipw_equals_truth": true,
+       "unweighted_matched_mean": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "unweighted_equals_truth": true
+      },
+      "zero_support_negative_control": {
+       "ipw_expectation": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "ipw_equals_truth": true,
+       "unweighted_matched_mean": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "unweighted_equals_truth": true
+      }
+     }
+    },
+    "observe_not_F": {
+     "success": {
+      "exact": "1/2",
+      "decimal": 0.5
+     },
+     "cost": {
+      "exact": "1/20",
+      "decimal": 0.05
+     },
+     "utility": {
+      "exact": "9/20",
+      "decimal": 0.45
+     },
+     "enumeration_equals_closed_form": true,
+     "learnable": true,
+     "bellman_equals_enumeration": true,
+     "loggers": {
+      "uniform_floor_0.5": {
+       "ipw_expectation": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "ipw_equals_truth": true,
+       "unweighted_matched_mean": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "unweighted_equals_truth": true
+      },
+      "state_dependent_floor_0.2": {
+       "ipw_expectation": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "ipw_equals_truth": true,
+       "unweighted_matched_mean": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "unweighted_equals_truth": true
+      },
+      "zero_support_negative_control": {
+       "ipw_expectation": {
+        "exact": "1/4",
+        "decimal": 0.25
+       },
+       "ipw_equals_truth": false,
+       "unweighted_matched_mean": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "unweighted_equals_truth": true
+      }
+     }
+    },
+    "oracle_U": {
+     "success": {
+      "exact": "1/2",
+      "decimal": 0.5
+     },
+     "cost": {
+      "exact": "1/20",
+      "decimal": 0.05
+     },
+     "utility": {
+      "exact": "9/20",
+      "decimal": 0.45
+     },
+     "enumeration_equals_closed_form": true,
+     "learnable": false
+    }
+   },
+   "observe_F_utility_gain_over_const_0": {
+    "exact": "-1/20",
+    "decimal": -0.05
+   },
+   "best_fixed": {
+    "policy": "const_0",
+    "utility": {
+     "exact": "1/2",
+     "decimal": 0.5
+    }
+   },
+   "best_observed_history": {
+    "policy": "const_0",
+    "utility": {
+     "exact": "1/2",
+     "decimal": 0.5
+    }
+   },
+   "exact_adaptive_advantage": {
+    "exact": "0",
+    "decimal": 0.0
+   },
+   "action_effect_present": false,
+   "feedback_informative": false,
+   "utility_gain_sign": -1
+  },
+  {
+   "eta": "1/5",
+   "q": "0",
+   "c": "1/10",
+   "policies": {
+    "const_0": {
+     "success": {
+      "exact": "1/2",
+      "decimal": 0.5
+     },
+     "cost": {
+      "exact": "0",
+      "decimal": 0.0
+     },
+     "utility": {
+      "exact": "1/2",
+      "decimal": 0.5
+     },
+     "enumeration_equals_closed_form": true,
+     "learnable": true,
+     "bellman_equals_enumeration": true,
+     "loggers": {
+      "uniform_floor_0.5": {
+       "ipw_expectation": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "ipw_equals_truth": true,
+       "unweighted_matched_mean": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "unweighted_equals_truth": true
+      },
+      "state_dependent_floor_0.2": {
+       "ipw_expectation": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "ipw_equals_truth": true,
+       "unweighted_matched_mean": {
+        "exact": "31/50",
+        "decimal": 0.62
+       },
+       "unweighted_equals_truth": false
+      },
+      "zero_support_negative_control": {
+       "ipw_expectation": {
+        "exact": "7/20",
+        "decimal": 0.35
+       },
+       "ipw_equals_truth": false,
+       "unweighted_matched_mean": {
+        "exact": "7/10",
+        "decimal": 0.7
+       },
+       "unweighted_equals_truth": false
+      }
+     }
+    },
+    "const_1": {
+     "success": {
+      "exact": "1/2",
+      "decimal": 0.5
+     },
+     "cost": {
+      "exact": "1/10",
+      "decimal": 0.1
+     },
+     "utility": {
+      "exact": "2/5",
+      "decimal": 0.4
+     },
+     "enumeration_equals_closed_form": true,
+     "learnable": true,
+     "bellman_equals_enumeration": true,
+     "loggers": {
+      "uniform_floor_0.5": {
+       "ipw_expectation": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "ipw_equals_truth": true,
+       "unweighted_matched_mean": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "unweighted_equals_truth": true
+      },
+      "state_dependent_floor_0.2": {
+       "ipw_expectation": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "ipw_equals_truth": true,
+       "unweighted_matched_mean": {
+        "exact": "31/50",
+        "decimal": 0.62
+       },
+       "unweighted_equals_truth": false
+      },
+      "zero_support_negative_control": {
+       "ipw_expectation": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "ipw_equals_truth": true,
+       "unweighted_matched_mean": {
+        "exact": "17/30",
+        "decimal": 0.5666666666666667
+       },
+       "unweighted_equals_truth": false
+      }
+     }
+    },
+    "observe_F": {
+     "success": {
+      "exact": "7/10",
+      "decimal": 0.7
+     },
+     "cost": {
+      "exact": "1/20",
+      "decimal": 0.05
+     },
+     "utility": {
+      "exact": "13/20",
+      "decimal": 0.65
+     },
+     "enumeration_equals_closed_form": true,
+     "learnable": true,
+     "bellman_equals_enumeration": true,
+     "loggers": {
+      "uniform_floor_0.5": {
+       "ipw_expectation": {
+        "exact": "7/10",
+        "decimal": 0.7
+       },
+       "ipw_equals_truth": true,
+       "unweighted_matched_mean": {
+        "exact": "7/10",
+        "decimal": 0.7
+       },
+       "unweighted_equals_truth": true
+      },
+      "state_dependent_floor_0.2": {
+       "ipw_expectation": {
+        "exact": "7/10",
+        "decimal": 0.7
+       },
+       "ipw_equals_truth": true,
+       "unweighted_matched_mean": {
+        "exact": "7/10",
+        "decimal": 0.7
+       },
+       "unweighted_equals_truth": true
+      },
+      "zero_support_negative_control": {
+       "ipw_expectation": {
+        "exact": "7/10",
+        "decimal": 0.7
+       },
+       "ipw_equals_truth": true,
+       "unweighted_matched_mean": {
+        "exact": "7/10",
+        "decimal": 0.7
+       },
+       "unweighted_equals_truth": true
+      }
+     }
+    },
+    "observe_not_F": {
+     "success": {
+      "exact": "3/10",
+      "decimal": 0.3
+     },
+     "cost": {
+      "exact": "1/20",
+      "decimal": 0.05
+     },
+     "utility": {
+      "exact": "1/4",
+      "decimal": 0.25
+     },
+     "enumeration_equals_closed_form": true,
+     "learnable": true,
+     "bellman_equals_enumeration": true,
+     "loggers": {
+      "uniform_floor_0.5": {
+       "ipw_expectation": {
+        "exact": "3/10",
+        "decimal": 0.3
+       },
+       "ipw_equals_truth": true,
+       "unweighted_matched_mean": {
+        "exact": "3/10",
+        "decimal": 0.3
+       },
+       "unweighted_equals_truth": true
+      },
+      "state_dependent_floor_0.2": {
+       "ipw_expectation": {
+        "exact": "3/10",
+        "decimal": 0.3
+       },
+       "ipw_equals_truth": true,
+       "unweighted_matched_mean": {
+        "exact": "3/10",
+        "decimal": 0.3
+       },
+       "unweighted_equals_truth": true
+      },
+      "zero_support_negative_control": {
+       "ipw_expectation": {
+        "exact": "3/20",
+        "decimal": 0.15
+       },
+       "ipw_equals_truth": false,
+       "unweighted_matched_mean": {
+        "exact": "3/10",
+        "decimal": 0.3
+       },
+       "unweighted_equals_truth": true
+      }
+     }
+    },
+    "oracle_U": {
+     "success": {
+      "exact": "7/10",
+      "decimal": 0.7
+     },
+     "cost": {
+      "exact": "1/20",
+      "decimal": 0.05
+     },
+     "utility": {
+      "exact": "13/20",
+      "decimal": 0.65
+     },
+     "enumeration_equals_closed_form": true,
+     "learnable": false
+    }
+   },
+   "observe_F_utility_gain_over_const_0": {
+    "exact": "3/20",
+    "decimal": 0.15
+   },
+   "best_fixed": {
+    "policy": "const_0",
+    "utility": {
+     "exact": "1/2",
+     "decimal": 0.5
+    }
+   },
+   "best_observed_history": {
+    "policy": "observe_F",
+    "utility": {
+     "exact": "13/20",
+     "decimal": 0.65
+    }
+   },
+   "exact_adaptive_advantage": {
+    "exact": "3/20",
+    "decimal": 0.15
+   },
+   "action_effect_present": true,
+   "feedback_informative": true,
+   "utility_gain_sign": 1
+  },
+  {
+   "eta": "1/5",
+   "q": "1/4",
+   "c": "1/10",
+   "policies": {
+    "const_0": {
+     "success": {
+      "exact": "1/2",
+      "decimal": 0.5
+     },
+     "cost": {
+      "exact": "0",
+      "decimal": 0.0
+     },
+     "utility": {
+      "exact": "1/2",
+      "decimal": 0.5
+     },
+     "enumeration_equals_closed_form": true,
+     "learnable": true,
+     "bellman_equals_enumeration": true,
+     "loggers": {
+      "uniform_floor_0.5": {
+       "ipw_expectation": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "ipw_equals_truth": true,
+       "unweighted_matched_mean": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "unweighted_equals_truth": true
+      },
+      "state_dependent_floor_0.2": {
+       "ipw_expectation": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "ipw_equals_truth": true,
+       "unweighted_matched_mean": {
+        "exact": "14/25",
+        "decimal": 0.56
+       },
+       "unweighted_equals_truth": false
+      },
+      "zero_support_negative_control": {
+       "ipw_expectation": {
+        "exact": "3/10",
+        "decimal": 0.3
+       },
+       "ipw_equals_truth": false,
+       "unweighted_matched_mean": {
+        "exact": "3/5",
+        "decimal": 0.6
+       },
+       "unweighted_equals_truth": false
+      }
+     }
+    },
+    "const_1": {
+     "success": {
+      "exact": "1/2",
+      "decimal": 0.5
+     },
+     "cost": {
+      "exact": "1/10",
+      "decimal": 0.1
+     },
+     "utility": {
+      "exact": "2/5",
+      "decimal": 0.4
+     },
+     "enumeration_equals_closed_form": true,
+     "learnable": true,
+     "bellman_equals_enumeration": true,
+     "loggers": {
+      "uniform_floor_0.5": {
+       "ipw_expectation": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "ipw_equals_truth": true,
+       "unweighted_matched_mean": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "unweighted_equals_truth": true
+      },
+      "state_dependent_floor_0.2": {
+       "ipw_expectation": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "ipw_equals_truth": true,
+       "unweighted_matched_mean": {
+        "exact": "14/25",
+        "decimal": 0.56
+       },
+       "unweighted_equals_truth": false
+      },
+      "zero_support_negative_control": {
+       "ipw_expectation": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "ipw_equals_truth": true,
+       "unweighted_matched_mean": {
+        "exact": "8/15",
+        "decimal": 0.5333333333333333
+       },
+       "unweighted_equals_truth": false
+      }
+     }
+    },
+    "observe_F": {
+     "success": {
+      "exact": "3/5",
+      "decimal": 0.6
+     },
+     "cost": {
+      "exact": "1/20",
+      "decimal": 0.05
+     },
+     "utility": {
+      "exact": "11/20",
+      "decimal": 0.55
+     },
+     "enumeration_equals_closed_form": true,
+     "learnable": true,
+     "bellman_equals_enumeration": true,
+     "loggers": {
+      "uniform_floor_0.5": {
+       "ipw_expectation": {
+        "exact": "3/5",
+        "decimal": 0.6
+       },
+       "ipw_equals_truth": true,
+       "unweighted_matched_mean": {
+        "exact": "3/5",
+        "decimal": 0.6
+       },
+       "unweighted_equals_truth": true
+      },
+      "state_dependent_floor_0.2": {
+       "ipw_expectation": {
+        "exact": "3/5",
+        "decimal": 0.6
+       },
+       "ipw_equals_truth": true,
+       "unweighted_matched_mean": {
+        "exact": "3/5",
+        "decimal": 0.6
+       },
+       "unweighted_equals_truth": true
+      },
+      "zero_support_negative_control": {
+       "ipw_expectation": {
+        "exact": "3/5",
+        "decimal": 0.6
+       },
+       "ipw_equals_truth": true,
+       "unweighted_matched_mean": {
+        "exact": "3/5",
+        "decimal": 0.6
+       },
+       "unweighted_equals_truth": true
+      }
+     }
+    },
+    "observe_not_F": {
+     "success": {
+      "exact": "2/5",
+      "decimal": 0.4
+     },
+     "cost": {
+      "exact": "1/20",
+      "decimal": 0.05
+     },
+     "utility": {
+      "exact": "7/20",
+      "decimal": 0.35
+     },
+     "enumeration_equals_closed_form": true,
+     "learnable": true,
+     "bellman_equals_enumeration": true,
+     "loggers": {
+      "uniform_floor_0.5": {
+       "ipw_expectation": {
+        "exact": "2/5",
+        "decimal": 0.4
+       },
+       "ipw_equals_truth": true,
+       "unweighted_matched_mean": {
+        "exact": "2/5",
+        "decimal": 0.4
+       },
+       "unweighted_equals_truth": true
+      },
+      "state_dependent_floor_0.2": {
+       "ipw_expectation": {
+        "exact": "2/5",
+        "decimal": 0.4
+       },
+       "ipw_equals_truth": true,
+       "unweighted_matched_mean": {
+        "exact": "2/5",
+        "decimal": 0.4
+       },
+       "unweighted_equals_truth": true
+      },
+      "zero_support_negative_control": {
+       "ipw_expectation": {
+        "exact": "1/5",
+        "decimal": 0.2
+       },
+       "ipw_equals_truth": false,
+       "unweighted_matched_mean": {
+        "exact": "2/5",
+        "decimal": 0.4
+       },
+       "unweighted_equals_truth": true
+      }
+     }
+    },
+    "oracle_U": {
+     "success": {
+      "exact": "7/10",
+      "decimal": 0.7
+     },
+     "cost": {
+      "exact": "1/20",
+      "decimal": 0.05
+     },
+     "utility": {
+      "exact": "13/20",
+      "decimal": 0.65
+     },
+     "enumeration_equals_closed_form": true,
+     "learnable": false
+    }
+   },
+   "observe_F_utility_gain_over_const_0": {
+    "exact": "1/20",
+    "decimal": 0.05
+   },
+   "best_fixed": {
+    "policy": "const_0",
+    "utility": {
+     "exact": "1/2",
+     "decimal": 0.5
+    }
+   },
+   "best_observed_history": {
+    "policy": "observe_F",
+    "utility": {
+     "exact": "11/20",
+     "decimal": 0.55
+    }
+   },
+   "exact_adaptive_advantage": {
+    "exact": "1/20",
+    "decimal": 0.05
+   },
+   "action_effect_present": true,
+   "feedback_informative": true,
+   "utility_gain_sign": 1
+  },
+  {
+   "eta": "1/5",
+   "q": "1/2",
+   "c": "1/10",
+   "policies": {
+    "const_0": {
+     "success": {
+      "exact": "1/2",
+      "decimal": 0.5
+     },
+     "cost": {
+      "exact": "0",
+      "decimal": 0.0
+     },
+     "utility": {
+      "exact": "1/2",
+      "decimal": 0.5
+     },
+     "enumeration_equals_closed_form": true,
+     "learnable": true,
+     "bellman_equals_enumeration": true,
+     "loggers": {
+      "uniform_floor_0.5": {
+       "ipw_expectation": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "ipw_equals_truth": true,
+       "unweighted_matched_mean": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "unweighted_equals_truth": true
+      },
+      "state_dependent_floor_0.2": {
+       "ipw_expectation": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "ipw_equals_truth": true,
+       "unweighted_matched_mean": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "unweighted_equals_truth": true
+      },
+      "zero_support_negative_control": {
+       "ipw_expectation": {
+        "exact": "1/4",
+        "decimal": 0.25
+       },
+       "ipw_equals_truth": false,
+       "unweighted_matched_mean": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "unweighted_equals_truth": true
+      }
+     }
+    },
+    "const_1": {
+     "success": {
+      "exact": "1/2",
+      "decimal": 0.5
+     },
+     "cost": {
+      "exact": "1/10",
+      "decimal": 0.1
+     },
+     "utility": {
+      "exact": "2/5",
+      "decimal": 0.4
+     },
+     "enumeration_equals_closed_form": true,
+     "learnable": true,
+     "bellman_equals_enumeration": true,
+     "loggers": {
+      "uniform_floor_0.5": {
+       "ipw_expectation": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "ipw_equals_truth": true,
+       "unweighted_matched_mean": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "unweighted_equals_truth": true
+      },
+      "state_dependent_floor_0.2": {
+       "ipw_expectation": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "ipw_equals_truth": true,
+       "unweighted_matched_mean": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "unweighted_equals_truth": true
+      },
+      "zero_support_negative_control": {
+       "ipw_expectation": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "ipw_equals_truth": true,
+       "unweighted_matched_mean": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "unweighted_equals_truth": true
+      }
+     }
+    },
+    "observe_F": {
+     "success": {
+      "exact": "1/2",
+      "decimal": 0.5
+     },
+     "cost": {
+      "exact": "1/20",
+      "decimal": 0.05
+     },
+     "utility": {
+      "exact": "9/20",
+      "decimal": 0.45
+     },
+     "enumeration_equals_closed_form": true,
+     "learnable": true,
+     "bellman_equals_enumeration": true,
+     "loggers": {
+      "uniform_floor_0.5": {
+       "ipw_expectation": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "ipw_equals_truth": true,
+       "unweighted_matched_mean": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "unweighted_equals_truth": true
+      },
+      "state_dependent_floor_0.2": {
+       "ipw_expectation": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "ipw_equals_truth": true,
+       "unweighted_matched_mean": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "unweighted_equals_truth": true
+      },
+      "zero_support_negative_control": {
+       "ipw_expectation": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "ipw_equals_truth": true,
+       "unweighted_matched_mean": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "unweighted_equals_truth": true
+      }
+     }
+    },
+    "observe_not_F": {
+     "success": {
+      "exact": "1/2",
+      "decimal": 0.5
+     },
+     "cost": {
+      "exact": "1/20",
+      "decimal": 0.05
+     },
+     "utility": {
+      "exact": "9/20",
+      "decimal": 0.45
+     },
+     "enumeration_equals_closed_form": true,
+     "learnable": true,
+     "bellman_equals_enumeration": true,
+     "loggers": {
+      "uniform_floor_0.5": {
+       "ipw_expectation": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "ipw_equals_truth": true,
+       "unweighted_matched_mean": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "unweighted_equals_truth": true
+      },
+      "state_dependent_floor_0.2": {
+       "ipw_expectation": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "ipw_equals_truth": true,
+       "unweighted_matched_mean": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "unweighted_equals_truth": true
+      },
+      "zero_support_negative_control": {
+       "ipw_expectation": {
+        "exact": "1/4",
+        "decimal": 0.25
+       },
+       "ipw_equals_truth": false,
+       "unweighted_matched_mean": {
+        "exact": "1/2",
+        "decimal": 0.5
+       },
+       "unweighted_equals_truth": true
+      }
+     }
+    },
+    "oracle_U": {
+     "success": {
+      "exact": "7/10",
+      "decimal": 0.7
+     },
+     "cost": {
+      "exact": "1/20",
+      "decimal": 0.05
+     },
+     "utility": {
+      "exact": "13/20",
+      "decimal": 0.65
+     },
+     "enumeration_equals_closed_form": true,
+     "learnable": false
+    }
+   },
+   "observe_F_utility_gain_over_const_0": {
+    "exact": "-1/20",
+    "decimal": -0.05
+   },
+   "best_fixed": {
+    "policy": "const_0",
+    "utility": {
+     "exact": "1/2",
+     "decimal": 0.5
+    }
+   },
+   "best_observed_history": {
+    "policy": "const_0",
+    "utility": {
+     "exact": "1/2",
+     "decimal": 0.5
+    }
+   },
+   "exact_adaptive_advantage": {
+    "exact": "0",
+    "decimal": 0.0
+   },
+   "action_effect_present": true,
+   "feedback_informative": false,
+   "utility_gain_sign": -1
+  }
+ ],
+ "unresolved": [
+  "finite repair generator tables (multi-opportunity, false-pass stopping) not yet specified",
+  "fixed-benchmark block generator and archive-matching branch module not yet specified",
+  "no estimator variance, interval or coverage is addressed by this slice"
+ ]
+}
