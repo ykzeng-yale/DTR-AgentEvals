@@ -12,6 +12,59 @@ reproducibility/metadata/package remain open.
 Pushed about every two hours while experiments run. Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-20 20:25 EDT — scheduled check: B2 half-discharged, declared target replaces the added SEs
+
+**Stage status: nothing to advance.** All four stages complete and verified: pilot 120, log **4,488/4,488**, live
+**3,960/3,960**, branch **800/800**; 0 unresolved, 0 torn. No runner alive, both llama-servers healthy on
+8191/8193, no foreign llama-server generating at any episode start.
+
+**Worked the top blocking item (B2) rather than small reactive fixes**, as the retargeted schedule now requires.
+
+**Target declared — finite frame.** Conditioning on the source frame F (realized task set, realized randomized log,
+and the N = 564 eligible first-failure prefixes), the target is Δ_F = μ_F − L(F), where L(F) is the pooled Hájek log
+contrast and is **measurable with respect to F**. That single choice settles the standing objection: since L(F) is
+then a constant, **Var(Δ̂ | F) = Var(B̂ | F) exactly**, so the log side contributes no variance. Both earlier
+attempts were answering a different question — the published independence sum (0.0572) and our influence-function
+scale (0.0484) each attributed randomness to a quantity the target conditions on.
+
+Applying the Proposition in `docs/theory_branch_sampling.md` (SRSWOR of m = 200 from N = 564, r = 2 continuations
+per arm) gives an unbiased estimator of that conditional variance:
+
+| quantity | value |
+|---|---:|
+| Δ̂ = B̂ − L(F) | **−0.014654** (unchanged; the point estimate was never at issue) |
+| between-prefix sampling component | 0.000480 |
+| execution-noise component | 0.000071 |
+| **frame-conditional SE** | **0.0235** |
+| 95% normal interval | **[−0.0607, +0.0314]** |
+
+Sampling dominates execution noise about 7:1. As an internal check, the mean within-prefix variance of 0.04 implies
+an **8% same-arm replicate disagreement**, which matches the independently measured 8% from 400 pairs — the
+execution-noise term reproduces a number derived a different way. Arithmetic re-derived by hand.
+
+**Deliberately not claimed.** The interval is uncertainty *around* Δ_F and does **not** test Δ_F = 0, because the
+realized log estimate is conditioned on. It is **not** the unconditional task-population claim, which needs
+Var{μ_F − L(F)} from a source model — that is the **open half of B2** and belongs with the theory lead.
+Unbiasedness does not confer nominal coverage without a limit theorem.
+
+**An execution assumption checked rather than assumed.** The Proposition needs iid continuations within arm. All 200
+prefixes carry the planned 2 + 2 continuations, but **2 of 200 draw their replicates from two different
+invocations** (the lost run and its recovery), so for those the assumption spans two execution epochs. Recorded
+rather than waved through.
+
+**Problems:** none new. **101 tests pass**; all three stages verify unchanged.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Evidence advanced:
+the branch comparison now has a declared target and an unbiased conditional variance in place of an
+independence-assuming SE — a genuine methodological step, but it resolves the *conditional* half of one blocking
+item while the source-model half stays open, and it adds no new empirical evidence. Categories unchanged at
+75/75/50/25/25, weighted 54.25 → 55%. I am not raising "core evidence" for a variance derivation. Main remaining
+work: (1) the unconditional source model and joint limit, then the design-aware interval (B3); (2) manuscript
+integration (B4) — `main.tex` still carries a placeholder author and no study numbers, tables or figures;
+(3) independent reproduction (B5), the two publication-gate items (B6), and the documentation sweep plus silently
+dropped items (B1). *This workstream cannot post to GitHub issue #4 (no GitHub CLI or token on the experiment host),
+so the checkpoint is recorded here.*
+
 ## 2026-09-20 16:45 EDT — scheduled check: my own diagnosis over-claimed; retracted and rescoped
 
 **Stage status: nothing to advance.** All stages complete and verified: pilot 120, log **4,488/4,488**, live
