@@ -24,6 +24,16 @@ reproducibility/metadata/package remain open.
 Pushed about every two hours while experiments run. Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-21 02:55 EDT (2026-09-21 06:55 UTC) — REQ-003: fixed-task block specification
+
+The lead accepted logger v2. I delivered frozen n=250/1000 task lists (exact 50/50 strata, hashed) with the fixed-list
+target, which is exactly equal to the kernel mixture. Independent blocks give an exact fixed-benchmark IPW variance
+n⁻²Σσ²/r. The iid-task formula overstates the SE by 4–14% (the between-task spread of expected values).
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Evidence advanced:
+none (simulation design). Categories 75/75/50/25/25 → 55.00. Main remaining work: archive-matching branch module
+(REQ-003); REQ-002 qualification. *No gh CLI/token on this host.*
+
 ## 2026-09-21 02:23 EDT (2026-09-21 06:23 UTC) — REQ-003: logger cost-support labels corrected (my defect)
 
 The lead accepted the repair kernels and found that my final-only cost criterion (`max == K`) mislabelled 60 of 72 rows.

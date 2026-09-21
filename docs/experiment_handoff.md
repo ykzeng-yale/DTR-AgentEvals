@@ -951,3 +951,26 @@ specification. No new model/verifier/Monte Carlo work launched by this review; s
 not interrupted. Commit directly to main as Yukang Zeng <ykzeng2019@gmail.com>, author and committer.
 **Full-project readiness: 55%, delta 0 percentage points, range 45–65%.** Main gaps: useful validated inference
 and comparisons; statistical validation and empirical synthesis; independent reproduction/metadata/package.
+
+## Worker checkpoint — 2026-09-21T06:55:30Z (host clock; local 2026-09-21 02:55 EDT)
+
+Code/config commit at checkpoint start: `facd4a8`. Last lead checkpoint read: `c847751` (06:50 UTC), which arrived during this tick. **Authorized runs: none.** Gate `log live branch` verified; no runner; servers healthy; foreign load `[]`.
+
+**Acknowledged (`c847751`):** the logger v2 repair is accepted. REQ-002 qualification stays queued, and REQ-001 is completed. **Wording correction:** my previous checkpoint said the per-decision cost estimator misses the 108 earlier-missing rows "as it must". That overstates. The loss is specific to these positive-cost, positive-continuation tables; missing support does not always force numerical bias. The catalog checks also exclude the belief-dependent oracle, as you note.
+
+| Request | Status | Artifact / reason |
+|---|---|---|
+| DTR-REQ-001 (P0) | completed | — |
+| DTR-REQ-002 (P1) | running; qualification queued | evaluator `f7bbbb2` selected |
+| DTR-REQ-003 (P1) | **running: fixed-task block specification delivered** | [`fixed_task_blocks.py`](../experiments/v2_sim/fixed_task_blocks.py) writes [`fixed_task_blocks_v1.json`](../experiments/v2_sim/fixed_task_blocks_v1.json). **Frozen task lists:** n=250 has 125/125 strata (SHA-256 `cc3a03d0…`) and n=1000 has 500/500 (`08fb07c9…`); the rule is task g = `t%04d`, stratum g mod 2. **Target:** θ_n(π) = mean of task-specific expectations over the fixed list, checked **exactly equal** to the accepted 1/2:1/2 mixture in all 96 rows. **Blocks:** one independent complete block per task per repetition, with r logged episodes and its own randomization/execution stream. Task identities stay fixed, and fresh policy-reference blocks are separate. **Exact fixed-benchmark variance** of the trajectory-IPW utility mean is Var(V̂) = n⁻² Σ_g σ²(S_g)/r, from exact per-episode second moments. It covers the 8 core kernel cells × 2 core loggers × 2 task counts, for the history router, the prompt-only rule and each cell's best fixed schedule. The within-block replicate estimator is unbiased for r ≥ 2. The **iid-task formula** overstates by exactly the between-task spread of expected values, (V_hard − V_easy)²/(4(n−1)). That is an SE ratio of 1.04–1.14 for the history router, independent of n. Example: K=2 crossing/informative, n=250, r=4 gives exact SE .0265 under the uniform logger and .0169 under the feedback-dependent logger. Eight tests pass. The production IPW moments match an **independent** enumerator that branches on all logger actions (zero weight after a mismatch). 144 tests pass. |
+
+**Covariance assumptions and unresolved items (in the JSON):**
+- Blocks are assumed independent across tasks. Shared execution-period or server effects would need cross-task terms or a justified block model, and within-block replicates cannot identify those terms.
+- Episodes are assumed independent within a block.
+- Normal-approximation coverage is not validated by these exact moments.
+
+**Questions for the lead (your design choices):**
+1. **r = 4** logged episodes per block is my proposal. The archive used 8 per task, but that design had a different initial-action structure. Accept, or set r?
+2. Tasks are identical in law within a stratum, so the fixed-list target has no within-stratum task heterogeneity. Keep that for development, or add task-level difficulty?
+
+**Next:** the archive-matching branch module. It is distinct from the common-initial-small model and needs an explicit initial-action kernel, eight source episodes per task with a 4/4 initial allocation, and zero-prefix tasks retained. Empty or insufficient prefix-frame handling will be specified with deterministic checks before any execution. The target stays the ratio of expected totals.
