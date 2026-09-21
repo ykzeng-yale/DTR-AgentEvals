@@ -1465,3 +1465,31 @@ Code/config commit at checkpoint start: `f3034c3`. Last lead checkpoint read: `7
 | DTR-REQ-003 (P1) | **running: boundary guard repaired, then branch slice 2 delivered** | **Repair ([`sampler.py`](../experiments/v2_sim/sampler.py)).** `validate_manifest` is now a **mandatory** argument pair (`tasks`, `r`) of both estimators. It requires exactly the frozen task × stratum × replicate keys: no missing, extra or duplicate records, a wrong stratum is rejected, and a utility must be present. Violations raise `ManifestError`; nothing is dropped or fabricated. Your four probes are regressions read from the audit file: the complete set keeps 3/4 for both estimators, and all three bad cases raise for both. Streams are now namespaced as `cfg=<config>\|rep=<b>\|<role>\|<logger or fresh policy>\|<task>\|<rep>`. A log block must name its logger and a fresh block names its policy. The docstring states that distinct labels are identities, not proof of independence. **Branch slice 2 ([`branch_sampler.py`](../experiments/v2_sim/branch_sampler.py)).** This is the archive 4/4 source design, distinct from the repair model and with the same namespaced streams. The allocation is always exactly 4 small and 4 large (sequential remaining-count draws). A prefix exists iff the first feedback is not a pass, and zero-prefix tasks are retained. Source repairs are logged with probability ½ and W_a follows bound-doc equation 1. `frame_rule` gives the whole range [−2,2] when N=0 or an observed D_a=0, a census when N ≤ m_max, and otherwise SRSWOR by sequential uniform draws. Two fresh replicate pairs per selected prefix run from the ideal full restored state, and Δ̂ = B̂ − ν̂₁ + ν̂₀. **Fixtures:** 4/4 allocation under two draw orders; all-first-call-pass giving N=0, the whole range and both tasks retained; D_small=0 giving the whole range; the census path (N=8); the SRSWOR path (m_max=3, three distinct selections, `…\|bsel` draws); namespaced role streams with 8×2×2 distinct fresh streams. **Exhaustive, non-Monte-Carlo wiring checks:** source-episode M, D_a and U_a match `branch_module.per_episode` exactly for 2 kernel cells × 2 strata × 2 initial arms, and stay continuations match `stay_value`. **19 sampler/branch cases pass; 264 tests pass.** **Still unwired:** DR/OR, per-decision cost in sampled form, variance/interval/covariance estimators, a manifest check for the branch study's analysis boundary beyond task retention, and any seeded source. |
 
 No question for the lead.
+
+
+## Lead intervention — 2026-09-21 12:40 UTC: end the repair-only cycle
+
+The author challenged the lack of scientific results. Feedback was posted approximately half-hourly and the
+worker acknowledged it, but the lead owns the ineffective prioritization and ambiguity in the blanket v2
+"no Monte Carlo" wording. **The theory task's deferral does not halt the separately authorized experiment
+worker.** [Protocol section 7](experiment_protocol_v2.md#7-lead-priority-reset-21-september-2026-1240-utc) now
+gives the concrete bounded CPU development batch and its reporting/acceptance criteria. No new CPU/GPU job
+was launched by the lead; this is a direction to the existing experiment workstream, not a duplicate job.
+
+**REQ-003 is P0:** after the existing target/weight/completeness tests pass, deliver the four-cell K=2
+IPW-versus-fresh development table (250 fixed tasks, r=4, 200 complete repetitions/cell, seed 2026092101,
+15-minute CPU cap) before more peripheral checks. Publish exact truth, bias/MCSE, RMSE, empirical versus
+exact SD, discrepancy/MCSE and resource/completeness counts. Freeze the manifest first. No coverage or
+real-agent superiority claim; the final study scope is unchanged. Then reuse the existing absorbing
+DR/OR implementation with explicit observation mapping and task folds. SWE-bench/Docker permission and
+secondary branch development do not block this primary evaluation path.
+
+New worker commit `e3a76c0ea0a4d101a6d70d5830e3d3ecf0875de1` is received: its manifest guard and branch sampler
+are delivered, not yet fully reviewed here. No blanket approval of its branch inference is implied.
+REQ-002 remains open/blocked: give the exact action and host rule/request status, not a general permission
+placeholder. Continue authorized work between scheduled updates. Acknowledge this priority override and
+name the next results artifact or precise remaining execution blocker. Preserve all archived/null results.
+
+Readiness remains **55%, change 0 points, range 45–65%**. No new experiment results or manuscript changes
+are claimed by this intervention. Top milestones remain validated inference/comparisons, empirical synthesis,
+and reproducibility/metadata/submission packaging.

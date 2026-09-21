@@ -1,6 +1,6 @@
 # Revised experimental design: evaluation, adaptation and feedback
 
-**21 September 2026 UTC. Lead decision; prospective draft, not run authorization.** This replaces the future-design defaults in [v0.1](experiment_protocol.md); it does not retrospectively amend any archived experiment or CONFIRM outcome. New model, verifier and Monte Carlo execution remains deferred. The [literature/code review](literature_design_review_20260921.md) supplies sources and implementation boundaries. Exact resource, task and analysis manifests must pass the gates below before future collection.
+**21 September 2026 UTC. Lead decision; prospective draft, not run authorization.** This replaces the future-design defaults in [v0.1](experiment_protocol.md); it does not retrospectively amend any archived experiment or CONFIRM outcome. The theory workstream continues to defer new model, verifier and Monte Carlo execution. This is not a global stop on the author's separately authorized experiment worker. The bounded CPU development validation specified in the 21 September lead reset below may proceed in that worker; real-agent execution and final validation retain their existing gates. The [literature/code review](literature_design_review_20260921.md) supplies sources and implementation boundaries. Exact resource, task and analysis manifests must pass the gates below before future collection.
 
 ## 1. Scientific questions and possible negative conclusions
 
@@ -49,7 +49,7 @@ checks reproduce all 12 oracle values and 156 catalog values. This does not vali
 
 **Outcomes of each simulated study:** bias, MSE, interval coverage/length, inference/denominator failures, false improvement decisions, selected-policy regret, exact adaptive potential, opportunity occupancy and weight second moments. Report paired differences between methods with Monte Carlo uncertainty. Count a failed interval as noncoverage for the primary operating-characteristic summary unless the predeclared method returns a valid conservative fallback; also report failures separately. Do not hide failures by complete-case averaging.
 
-Plan final nominal-95% coverage/type-I summaries with 2,000 independent complete repetitions: MCSE is about .0049 near .95/.05, but about .0112 near .5. If precision of .005 is required uniformly, use 10,000, subject to a separately approved compute plan. Report binomial uncertainty; neither number is a power calculation for the live study. Bias MCSE is sd(error)/sqrt(R); MSE MCSE is sd(error²)/sqrt(R). No sweep starts under this document.
+Plan final nominal-95% coverage/type-I summaries with 2,000 independent complete repetitions: MCSE is about .0049 near .95/.05, but about .0112 near .5. If precision of .005 is required uniformly, use 10,000, subject to a separately approved compute plan. Report binomial uncertainty; neither number is a power calculation for the live study. Bias MCSE is sd(error)/sqrt(R); MSE MCSE is sd(error²)/sqrt(R). The final 2,000-repetition validation sweep does not start under this document; the separately specified bounded development batch below is a preliminary implementation check, not that final study.
 
 ## 3. Substantive agent study: two decisions inside repository repair
 
@@ -95,6 +95,54 @@ Report all denominators, second-decision occupancy, feedback variation, success/
 
 1. Produce the corrected archived A6 report and an evidence/unknowns table for source blocks, fresh pairs and recovery assumptions. Accept only source-bound agreement with the lead's audits and preservation of all original outcomes. Apply the [conditional-frame correction](theory_feedback_20260921_conditional_frame.md); do not close primary B2 by changing its target.
 2. Draft the mini-swe-agent and RouteLLM adapter interfaces against the pinned sources: histories, two assignment points, retry semantics, caps, IDs, terminal records and exact license/dependency inventory. Acceptance: a field/hook map and deterministic fixtures specified; no claims of installation or execution. Use upstream harness/evaluator code rather than rebuilding them.
-3. Provide explicit finite simulation tables, frozen policy definitions, two exact-truth paths and an archive-matching block generator specification. Acceptance: the analytic controls above and target-invariance checks can be independently checked; list every unresolved inference assumption. No Monte Carlo yet.
+3. Provide explicit finite simulation tables, frozen policy definitions, two exact-truth paths and an archive-matching block generator specification. Acceptance: the analytic controls above and target-invariance checks can be independently checked; list every unresolved inference assumption. The initial no-Monte-Carlo design phase is superseded for the experiment worker only by the bounded development batch below; the theory worker still launches none.
 
 The lead will review these artifacts and select the numerical precision/resource plan. All commits use Yukang Zeng <ykzeng2019@gmail.com> as author and committer, direct main, no PRs. Design progress alone leaves full-project readiness at **55%, change 0 points, judgment range 45–65%**. Largest gaps: useful validated inference/adequate comparisons; remaining statistical validation and final empirical synthesis; independent reproducibility, author metadata and submission package.
+
+
+## 7. Lead priority reset, 21 September 2026, 12:40 UTC
+
+The author asked why repeated half-hour exchanges produced no new experimental results. Feedback was being
+published and acknowledged, but the lead let repair cycles and an overbroad compute-deferral sentence obstruct
+end-to-end scientific validation. This section corrects the work order, not the frozen primary targets.
+
+**DTR-REQ-003, P0 next deliverable: one end-to-end CPU development results table.** The separately authorized
+experiment worker should complete its existing runner/seeded draw source and run this bounded batch on its
+existing CPU resources; no GPU, model calls, paid services or compute purchase. Freeze and commit the execution
+manifest/code before the batch. Do not wait for SWE-bench/Docker permission, the secondary branch module, or
+all DR/OR methods to be ready before reporting the initial IPW/fresh baseline.
+
+- Existing common-first-small repair generator, K=2, crossing effects, informative and weak feedback; each
+  with uniform-floor-.5 and feedback-dependent-floor-.2 logger: four existing design cells, no new cells.
+- Existing fixed 250-task balanced list, four logged repetitions/task and four independent fresh repetitions
+  per task/policy; policies: frozen history-large-after-exception, prompt-only-large-if-hard and the existing
+  exact-table best fixed schedule (label this last comparator as known-kernel selected, not learned).
+- Exactly 200 complete development repetitions/cell, root seed 2026092101 and stable independent namespaces
+  for repetition/cell/role/policy/task/replicate. CPU wall-time cap 15 minutes for this first batch; if exhausted,
+  publish the completed counts and resource limit, without extrapolating success or changing the batch based
+  on outcomes. No branch execution or final confirmatory claim in this batch.
+- Report exact truth, empirical bias with its Monte Carlo SE, RMSE, empirical sampling SD against the
+  accepted exact SD, mean log-minus-fresh discrepancy with Monte Carlo SE, costs, complete/failed counts and
+  seeds/source hashes. Publish unfavorable and partial results. This checks distributional wiring; it does
+  not establish interval coverage, adaptation benefit or resource efficiency. A discrepancy unexplained by
+  Monte Carlo uncertainty triggers a focused diagnosis, not extra runs to obtain agreement.
+- Required before launch: existing transition/weight tests and complete-manifest regressions pass; no known
+  defect affecting this batch's endpoint, assignment probabilities or denominators. Unrelated adapter
+  hardening and the secondary branch study must not block this batch.
+
+**Next scientific comparison after that baseline:** wire task-split DR/OR using the existing
+`experiments/code_routing/estimators_absorbing.py` where compatible. Document observation/history mapping and
+check absorption, target probabilities and task folds; do not leak latent U into fitted observed-history
+features. Known-kernel Q is a separately labeled positive control. Preserve the final 2,000-repetition coverage
+plan; learned nuisance fitting and actual intervals must be checked before any final coverage claim.
+
+**DTR-REQ-002:** actual benchmark qualification remains open. At the next checkpoint, report the precise
+external-host action blocked and the applicable permission rule/request status, separating passive public-file
+retrieval from upstream code execution and system installation. The lead cannot waive another host's rules.
+Do not hold the CPU simulation path for that blocker or repeat a vague request for general approval.
+
+The 30-minute update is an exchange interval, not a work slice or an instruction to stop between checkpoints.
+Continue authorized work across ticks. Each update must lead with a results artifact and counts, or an exact
+blocking action and the independent work proceeding; test counts alone are implementation progress. The lead
+owns the scientific acceptance and manuscript synthesis. Current readiness stays 55%, change 0 points, range
+45–65%, until the evidence changes. Nothing here is an empirical result or submission authorization.
