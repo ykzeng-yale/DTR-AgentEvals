@@ -2126,3 +2126,63 @@ State check: all stages verified, 0 stage runners, servers ok, foreign busy [].
 | DTR-REQ-003 (P0) | validation, sensitivity, diagnosis and replay accepted; **honest-split DR wiring and exact checks completed; awaiting your review** | `results/v2_sim/honest_split_dr_20260921/`, this commit |
 
 **Question for the lead:** please specify the coverage batch for the honest-split DR, including the repetitions, whether the Q is refitted per repetition or held fixed, and the seed. `job()` is ready to be frozen and run the moment you specify it.
+
+## Lead decision — 2026-09-21 20:21 UTC, interactive collaboration review
+
+**DTR-REQ-003 P0: repair the portable artifact comparison, then proceed to the bounded repeated-training
+coverage batch below without another lead permission round.** Reviewed `de029c0fb80a8b0d2e37b024c3b907af9b09d0a3`.
+The worker's publication-gap explanation is received: a long internal review ran without an interim checkpoint.
+The 18:20 lead guidance was read and implemented; this gap was not a missing scientific decision. Publish a short
+status before long review/execution and at the half-hour opportunities, including partial work. Preserve the
+reported-versus-observed cadence distinction; no external scheduler verification is claimed.
+
+Validation: independent reviewer found no scientific blocker in frozen-Q scoring, training isolation or variance,
+and ran nine focused tests. Lead ran all eleven new tests: **10 passed, 1 failed**, because the artifact regeneration
+test demands exact float equality. Recursive comparison found 111 numerical differences, maximum 4.44e-16,
+no structural/nonnumeric differences and none outside absolute/relative 1e-12. The lead separately checked 144
+saved mean/variance/SE identities. Evidence and exact artifact hash: `docs/audits/honest_split_review_de029c0.json`.
+These are deterministic code/algebra checks, not interval-coverage evidence. Keep the committed artifact unchanged.
+
+Before freezing the batch, replace strict equality of computed floating-point summaries with a recursive
+comparison at abs/rel 1e-12; retain exact keys, list lengths/order, IDs, counts, hashes, and other nonfloating
+metadata. Demonstrate a material numerical perturbation (e.g. 1e-6) still fails, then run the affected tests.
+Also describe `nuisance_sha256` as a Q/fallback-table hash: it does not hash feature map, policy or training IDs.
+Pin those separately in the batch manifest together with every imported scoring/generator source hash.
+These are scoped fixes, not a request for another broad review cycle.
+
+**Declared study: DEVELOPMENT repeated-training operating characteristics.** Use all four existing K=2 crossing
+cells and the same three frozen policies. Root seed **2026092104**; repetitions **0..999 per cell** (4,000 jobs).
+Each repetition draws its own training cohort (250 balanced tasks ×4), refits Q/fallback per policy, freezes them,
+and evaluates on 250 distinct balanced tasks ×4, with independent fresh reference ×4. Retain the existing disjoint
+train/eval/fresh namespaces and exact manifests. Q is **refitted per repetition**, not held across repetitions.
+This answers whether the full honest-split procedure is calibrated over repeated training/evaluation samples;
+it does not establish conditional coverage for every particular training fit. With known correct logging,
+the conditional DR mean is the same fixed target for every fit, so there is no additional between-fit mean
+variance component. This justification does not transfer to overlapping cross-fitted scores or incorrect logging.
+
+Use z=1.959963984540054 with the existing within-task variance for DR and independent fresh, and their sum for
+DR-minus-fresh. Add trajectory IPW and its variance on the **same evaluation records** as a paired comparator;
+report IPW-minus-fresh too. No extra episodes for the comparator. OR point estimates may be retained descriptively,
+without an OR coverage claim. Training cost remains separate: this is not equal-total-budget superiority evidence.
+Primary report: DR coverage about fixed truth and DR-minus-fresh coverage about zero for every cell/policy;
+report all rows regardless of direction, MCSE and Wilson uncertainty, lower/upper misses, bias with MCSE,
+RMSE, empirical variance and mean estimated variance, interval lengths, variance CV and error–variance correlation,
+failed/zero intervals, paired DR/IPW squared-error differences and their MCSE, counts and training resource use.
+At 1,000 completed repetitions, nominal-coverage MCSE is about 0.0069; no multiplicity-adjusted certification or
+uniform-calibration claim follows from this diagnostic batch. Do not reuse a fixed-Q exact variance as the exact
+variance across random refits. A separate conditional fixed-fit coverage grid is deferred until this result is read.
+
+Freeze code/config/analysis and immutable manifest on main before execution. On the worker's existing resources,
+use at most four CPU workers and a **900-second total batch wall budget**; no paid resources, GPU or model calls.
+The cap is an administrative bound, not outcome-driven stopping. Preserve all completed and failed repetition
+records and exact requested/completed denominators; a capped batch is incomplete, not a smaller confirmatory design.
+Do not silently extend the cap, change seeds, tune intervals, omit failed records or replace unfavorable results.
+Use the existing writer lock, atomic finalization and safe publication path; do not stash active-writer outputs.
+Publish accepted/running/completed/blocked status plus the frozen commit and artifacts; return partial results
+if capped. This authorizes the specified worker study after the scoped fixes/tests and freeze, with no further
+lead approval needed. Lead launches no duplicate workload. REQ-002 upstream execution/runtime holds remain separate.
+
+The 36-page manuscript is unchanged; fitted-DR interval validation is still pending. Full-project readiness
+**55%, change 0 percentage points, range 45–65%** under the unchanged rubric. Top remaining milestones: reliable
+inference/adequate comparisons; remaining manuscript synthesis; independent reproducibility, metadata and
+submission packaging. Owner author/committer identity and direct-main workflow retained.
