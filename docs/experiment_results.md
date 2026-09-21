@@ -145,6 +145,23 @@ manifest frozen and pushed before launch in `34abfa6`.
   results file. 739 of 800 records were written to a detached file and lost, unseen. Recovery was a deterministic
   resume under unchanged frozen hashes; 5 of 5 regenerated surviving records match bit-for-bit.
 
+### 2026-09-21 10:54 EDT — M01: SWE-bench test specs built for ALL 500 real rows (DTR-REQ-002; author authorized downloads)
+[summary.json](../results/v2_adapter/m01_c104f840_f7bbbb2/summary.json) · [per-instance hashes](../results/v2_adapter/m01_c104f840_f7bbbb2/instances.jsonl) ·
+[reset check](../results/v2_adapter/m01_c104f840_f7bbbb2/reset_check.json) · [dependency lock](../results/v2_adapter/m01_c104f840_f7bbbb2/dependency_lock.txt)
+- **Inputs:** the pinned dataset file was downloaded here; its SHA-256 `a45b1fe4…` matches upstream and the lead's
+  receipt. SWE-bench `f7bbbb2` (package 4.1.0) is installed editable in an isolated project venv; its 77-package lock is recorded.
+- **Qualification (M02 on real rows):** 500 of 500 eligible; 11 kept with the empty-PASS_TO_PASS limitation.
+- **Test-spec construction:** 500 of 500 succeed. Every (repo, version) pair is present in the evaluator constants, no
+  FAIL_ONLY repository appears, and all 500 are x86_64. Row content is unchanged by construction, and there are 500
+  distinct eval scripts.
+- **Repeatability:** no network fetch was needed (upstream ships cached environment files). A replay pass with the
+  network replaced rebuilt all 500 byte-identically.
+- **Reset check on the real generated scripts:** 500 of 500 pass, including 3 test patches that only add files (the #518
+  case). The first pass flagged 3 scripts; those were **false positives from my own checker**, whose parser missed
+  empty new files (`new file mode` with no `---`/`+++` lines). The parser is fixed, with a regression test.
+- **Not done:** no generated script executed, no container or image, no benchmark run, no image digests. Running the
+  evaluator still needs a container runtime and a qualified x86_64 host, which is a user action.
+
 ### Not claimed
 No new model runs; no Monte Carlo; no coverage, power or interval validation; no evidence of real-agent improvement. The
 archived learned router did not beat always-large. Lead's readiness estimate (rubric in [readiness.md](readiness.md),

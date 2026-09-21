@@ -24,6 +24,17 @@ reproducibility/metadata/package remain open.
 Pushed about every two hours while experiments run. Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-21 10:54 EDT (2026-09-21 14:54 UTC) — REQ-002 M01 on all 500 real rows
+
+With the author's download authorization, I fetched the pinned dataset (checksum matches) and SWE-bench f7bbbb2 into
+an isolated venv. 500/500 rows qualify and 500/500 test specs build, repeatable offline. The reset checker passes on all
+500 real scripts after I fixed an empty-new-file blind spot in my own parser. Nothing was executed; the runtime host
+remains the user's action.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Evidence advanced:
+real-row evaluator qualification (static; the lead judges any stage change). Categories 75/75/50/25/25 → 55.00. Main
+remaining work: runtime host and execution controls (user); the frozen inference/coverage study.
+
 ## 2026-09-21 10:49 EDT (2026-09-21 14:49 UTC) — REQ-003 stage-2-Q intervention; a write-loss incident (recovered)
 
 The authorized oracle diagnostic reproduced IPW and standard OR exactly. The exact second-stage Q removes most of the

@@ -21,7 +21,9 @@ import re
 
 
 def patch_files(test_patch):
-    """(modified, new) file paths from unified-diff headers; new files have source /dev/null."""
+    """(modified, new) file paths. Pass 1 (original grammar): each `--- SRC` / `+++ DST` pair; SRC /dev/null means new.
+    Pass 2: `diff --git a/X b/Y` blocks with a `new file mode` line and NO ---/+++ lines are EMPTY new files, a shape
+    found on real SWE-bench Verified patches (e.g. django__django-13837) that pass 1 cannot see."""
     modified, new = [], []
     lines = test_patch.splitlines()
     for i, line in enumerate(lines):
@@ -31,6 +33,18 @@ def patch_files(test_patch):
                 new.append(dst[2:] if dst.startswith('b/') else dst)
             else:
                 modified.append(src[2:] if src.startswith('a/') else src)
+    blocks, cur = [], None
+    for line in lines:
+        if line.startswith('diff --git '):
+            cur = [line]; blocks.append(cur)
+        elif cur is not None:
+            cur.append(line)
+    for b in blocks:
+        if any(l.startswith('new file mode') for l in b) and not any(l.startswith('--- ') for l in b):
+            head = b[0][len('diff --git '):]
+            dst = head.split(' b/', 1)[1] if ' b/' in head else head.split(' ')[-1]
+            if dst not in new:
+                new.append(dst)
     return modified, new
 
 

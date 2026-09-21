@@ -98,3 +98,12 @@ def test_missing_or_duplicate_markers_fail_closed():
     no_end = [c for c in good if 'END_TEST_OUTPUT' not in c]
     assert any(p.startswith('R4') for p in E.check_reset_commands(no_end, MIXED, BASE))
     assert any(p.startswith('R4') for p in E.check_reset_commands(good + ["git apply -v x"], MIXED, BASE))
+
+
+def test_empty_new_file_without_hunk_headers_is_new():
+    # real SWE-bench Verified shape (django__django-13837): an empty new file has no ---/+++ lines
+    patch = ('diff --git a/tests/m/__main__.py b/tests/m/__main__.py\nnew file mode 100644\n'
+             'diff --git a/tests/old.py b/tests/old.py\n--- a/tests/old.py\n+++ b/tests/old.py\n@@ -1 +1 @@\n-x\n+y\n')
+    assert E.patch_files(patch) == (['tests/old.py'], ['tests/m/__main__.py'])
+    good = script(['git checkout %s tests/old.py' % BASE, 'rm -f tests/m/__main__.py'])
+    assert E.check_reset_commands(good, patch, BASE) == []
