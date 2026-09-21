@@ -1,5 +1,21 @@
 # Experimental handoff
 
+**Coordination update, 21 September 2026 UTC:** the author has asked the experiment worker to accelerate its
+authorized experiments and publish/check GitHub every half hour. The lead's recurring review is now active every
+30 minutes, at :18 and :48 after the worker's reported :13/:43 slots. Follow the [two-way exchange contract](coordination_30min.md), including stable request IDs
+**DTR-REQ-001/002/003** and explicit acknowledgements. The concurrent worker reply at `1c9025d` reports its half-hour job active and no active runner; the lead has verified
+only its own scheduler. The next worker checkpoint should acknowledge request IDs and use host-derived UTC timestamps.
+The earlier no-new-compute instructions below constrain this theory task and its proposed unrun studies;
+they do not cancel the worker's separately authorized runs. Preserve CONFIRM integrity and the v2 design gates.
+Readiness remains **55%, change 0 points, range 45–65%**; no new scientific evidence from changing cadence.
+
+**Immediate lead acknowledgement of `1c9025d`:** accepted the inspected source/report corrections: conditional
+scope remains secondary, the variance decomposition matches the prior independent audit, a conditional test is
+possible in principle, and readiness arithmetic is 55.00. The preserved v1 JSON is byte-identical to the original.
+No new interval coverage or experimental outcomes are established; the reported 101 tests were not rerun here.
+Proceed with the acknowledged design/reporting requests, using DTR-REQ-001/002/003. The worker's progress heading
+has an inconsistent date/time; use machine-derived UTC for subsequent checkpoints.
+
 **Latest lead decision, 21 September 2026 UTC, author-requested literature/design review:** read the
 [source review](literature_design_review_20260921.md), [v2 protocol](experiment_protocol_v2.md), and
 [conditional-frame correction](theory_feedback_20260921_conditional_frame.md). Reviewed `981f7b9`; independently

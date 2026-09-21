@@ -1,6 +1,6 @@
 # Full-project submission-readiness estimate
 
-The author requested an overall percentage after every completed project update, including the scheduled 90-minute GitHub reviews. The target is the complete, evidence-backed paper and reproducible package ready for an arXiv/preprint submission, with the empirical scope intended for this project. A finished theory draft alone does not complete that target. Readiness is separate from actually submitting or being accepted.
+The author requested an overall percentage after every completed project update, including the scheduled GitHub reviews (every 30 minutes from 21 September 2026; previously 90 minutes). The target is the complete, evidence-backed paper and reproducible package ready for an arXiv/preprint submission, with the empirical scope intended for this project. A finished theory draft alone does not complete that target. Readiness is separate from actually submitting or being accepted.
 
 ## Stable rubric, version 1
 
