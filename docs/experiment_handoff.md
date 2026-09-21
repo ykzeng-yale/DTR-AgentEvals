@@ -641,3 +641,26 @@ Code/config commit at checkpoint start: `ac1d89e`. Last lead checkpoint read: `a
 2. Should the evidence table's SRSWOR row be upgraded from CHECKABLE to OBSERVED (selection function of pre-branch inputs; uniformity by mechanism) on the strength of the redraw? I have not changed the accepted table.
 
 Next checkpoint within 30 minutes: REQ-002 field/hook map.
+
+## Worker checkpoint — 2026-09-21T03:54:47Z (host clock; local 2026-09-20 23:54 EDT)
+
+Code/config commit at checkpoint start: `4024a23`. Last lead checkpoint read: `ac1d89e`. **Authorized runs: none.** Stages verified; no runner, no foreign GPU load; both llama-servers healthy and idle.
+
+| Request | Status | Artifact / reason |
+|---|---|---|
+| DTR-REQ-001 (P0) | delivered in `4024a23`, awaiting review | [`a6_report.md`](../results/code_routing/analysis/a6_report.md); two classification questions above |
+| DTR-REQ-002 (P1) | **delivered for review (design only)** | [`adapter_contract_20260921.md`](adapter_contract_20260921.md) gives the hook/field map, the ledger schema, and the evaluator and RouteLLM mappings. It also lists license/dependency facts and five hazards. [`fixtures_planned.json`](../experiments/v2_adapter/fixtures_planned.json) holds **30 planned deterministic fixtures**: 12 contract, 13 harness, 5 RouteLLM. Every upstream line cited was re-read at its pinned commit, and all matched. **Nothing is installed, implemented or executed.** |
+| DTR-REQ-003 (P1) | accepted, next | after review of REQ-002, or in parallel if you prefer |
+
+**Design facts you may want before deciding (details in the contract, section 6):**
+- **Blocking pin inconsistency (H-1).** The pinned SWE-bench evaluator `02e7a74` requires instance fields `image`, `log_parser`, `eval_type` and `eval_script` (`utils.py` L255–270). Its loader neither enriches instances nor pins a revision. The pinned `princeton-nlp/SWE-bench_Verified@c104f84` declares none of these fields. Reading the source, this pair fails at `make_test_spec`; nothing was executed. Options:
+  - (a) re-pin the data to `SWE-bench/SWE-bench_Verified@78f471bf`, which has all four fields (500 rows, license field absent);
+  - (b) re-pin the evaluator.
+  Your choice.
+- **Workspace and evaluator images can diverge.** mini-swe-agent's runner never reads `image` and otherwise falls back to a mutable `:latest` x86_64 tag. The adapter will pass one digest-pinned image to both.
+- **Host.** This host is arm64 with no container runtime. The evaluator needs Docker and x86_64 images. I will not install system software; that is the user's decision.
+- **Retries and cost.** Upstream default retries are 10, and nothing upstream counts attempts. litellm and OpenAI-client retry layers lie outside the pins. Local-model cost tracking raises unless `ignore_errors` is set. All three are covered by fixtures.
+- **Unrecorded choices.** The default SWE-bench config uses parallel tool calls, so the contract uses the single-action text parser. Format errors consume logical calls, so K2 counts them. `ContextWindowExceededError` is an unretried exit and needs a declared endpoint treatment.
+- **RouteLLM.** The score is float32 `1 − (p1+p2)`, and routing is strong iff `>=` the threshold. Importing `routellm.routers` constructs an `OpenAI()` client, and the package requires `numpy<2`. So the adapter re-states the six scoring lines instead of importing upstream.
+
+Open parameters for you: K2 and H; P_max; the reserve() rule and its context check; the wall-time and evaluator time limits; the H-1 re-pin; the text prompt config; and the threshold calibration set. Next checkpoint within 30 minutes: REQ-003 unless you redirect.

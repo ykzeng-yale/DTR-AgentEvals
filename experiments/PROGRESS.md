@@ -24,6 +24,18 @@ reproducibility/metadata/package remain open.
 Pushed about every two hours while experiments run. Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-20 23:54 EDT (2026-09-21 03:54 UTC) — REQ-002 adapter contract delivered (design only)
+
+Delivered `docs/adapter_contract_20260921.md` and 30 planned fixtures in `experiments/v2_adapter/fixtures_planned.json`.
+Every cited upstream line was re-read at its pinned commit (mini-swe-agent `04d809c`, SWE-bench `02e7a74`, RouteLLM
+`0b64fdaf`). Nothing was installed or run. Blocking finding for the lead: the pinned evaluator requires dataset fields
+(`image`, `eval_script`, `log_parser`, `eval_type`) that the pinned Verified revision lacks, so one of the two pins
+must change. This host also has no container runtime and is arm64, while the evaluator images are x86_64.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Evidence advanced:
+none (design artifact). Categories 75/75/50/25/25 → 55.00. Main remaining work: lead review of REQ-001/002; REQ-003.
+*No gh CLI/token on this host; checkpoint recorded here.*
+
 ## 2026-09-20 23:31 EDT (2026-09-21 03:31 UTC) — REQ-001: source-bound A6 report delivered; REQ-002 started
 
 The lead accepted `1d5cdb6`, narrowed REQ-001 to the A6 report plus the theorem-to-assumption map, and unblocked REQ-002.

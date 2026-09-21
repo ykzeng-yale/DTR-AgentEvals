@@ -1,0 +1,346 @@
+{
+ "request": "DTR-REQ-002: planned deterministic fixtures for the v2 routing/logging adapter",
+ "status": "PLANNED: specified only. No adapter, fixture runner, upstream package, container, model or evaluator has been installed, implemented or executed.",
+ "governing_documents": [
+  "docs/experiment_protocol_v2.md",
+  "docs/literature_harness_design_20260921.md",
+  "docs/literature_routing_design_20260921.md",
+  "docs/adapter_contract_20260921.md"
+ ],
+ "symbols": {
+  "K2": "logical call index before which decision 2 is offered (proposed 9; open for the lead)",
+  "H": "logical-call cap (proposed 24; open)",
+  "P_max": "cap on physical attempts per logical call summed over ALL retry layers (open; protocol sizing assumes 2)",
+  "reserve(backend, state)": "common pre-action token/request reservation rule (form and numbers open for the lead)",
+  "fake_backend": "scripted in-process stand-in that returns fixed completions or raises fixed transport errors; no model is loaded"
+ },
+ "fixtures": [
+  {
+   "id": "A01-persist-before-invoke",
+   "contract": "assignment is durably written before the first physical request of its logical call; a resume never redraws",
+   "setup": "decision 1; fake_backend raises a simulated crash after the assignment row is fsynced and before any request; then resume",
+   "expected": {
+    "assignment_rows_k1": 1,
+    "physical_requests_before_crash": 0,
+    "draws_after_resume": 1,
+    "backend_after_resume": "same as persisted"
+   }
+  },
+  {
+   "id": "A02-retry-keeps-backend",
+   "contract": "transport retries keep the assigned backend and are counted per layer",
+   "setup": "P_max = 3; fake_backend fails with a retryable transport error twice, then succeeds, at logical call 1",
+   "expected": {
+    "physical_request_rows": 3,
+    "attempt_indices": [
+     1,
+     2,
+     3
+    ],
+    "backends": [
+     "A1",
+     "A1",
+     "A1"
+    ],
+    "logical_calls_consumed": 1,
+    "fallback_backend_invoked": false
+   }
+  },
+  {
+   "id": "A03-retry-cap-exit",
+   "contract": "exhausting P_max ends the episode as an infrastructure exit that stays in the denominator",
+   "setup": "fake_backend fails P_max times at logical call 4",
+   "expected": {
+    "exit_class": "infrastructure_retry_exhausted",
+    "in_denominator": true,
+    "primary_endpoint": 0,
+    "evaluation_requested": false
+   }
+  },
+  {
+   "id": "A04-absorbed-before-decision-2",
+   "contract": "decision 2 is offered only if the episode is still active before logical call K2",
+   "setup": "fake_backend submits at logical call 5",
+   "expected": {
+    "assignment_rows": [
+     1
+    ],
+    "decision_2_offered": false,
+    "in_denominator": true
+   }
+  },
+  {
+   "id": "A05-decision-2-at-K2",
+   "contract": "decision 2 is drawn before call K2 from the recorded pre-action history and retained through H",
+   "setup": "fake_backend never submits; H reached",
+   "expected": {
+    "assignment_rows": [
+     1,
+     2
+    ],
+    "k2_prehistory_sha256": "hash of the message list after call K2-1's observation",
+    "backend_calls_1_to_K2_minus_1": "A1",
+    "backend_calls_K2_to_H": "A2",
+    "exit_class": "limits_exceeded"
+   }
+  },
+  {
+   "id": "A06-budget-ineligible-terminates",
+   "contract": "if either backend fails reserve() at a decision point, no draw is made and the episode terminates; the same rule applies under every target policy",
+   "setup": "remaining budget before call K2 is below reserve() for the large backend only",
+   "expected": {
+    "draw_made": false,
+    "exit_class": "budget_ineligible_terminated",
+    "forced_action_recorded": false,
+    "in_denominator": true
+   }
+  },
+  {
+   "id": "A07-identical-prehistory",
+   "contract": "no policy identity, probability or schedule label enters the model-visible history",
+   "setup": "render the pre-call-1 messages for the same instance under SS, SL, LS, LL, the history router and the RouteLLM baseline",
+   "expected": {
+    "distinct_prehistory_sha256": 1
+   }
+  },
+  {
+   "id": "A08-no-hidden-leakage",
+   "contract": "hidden test patches, reference patches and grading logs never enter histories or router features",
+   "setup": "plant unique sentinel strings in the instance's test_patch, patch (reference) and a synthetic grading log",
+   "expected": {
+    "sentinel_hits_in_messages": 0,
+    "sentinel_hits_in_router_inputs": 0,
+    "sentinel_hits_in_ledger_features": 0
+   }
+  },
+  {
+   "id": "A09-empty-submission-zero",
+   "contract": "limits/format exits with an empty submission score zero on the primary operational endpoint; no workspace salvage",
+   "setup": "episode ends by the step limit with no explicit submission while the workspace has a non-empty diff",
+   "expected": {
+    "primary_endpoint": 0,
+    "evaluation_requested": false,
+    "salvaged_patch": null,
+    "exit_reason_retained": true
+   }
+  },
+  {
+   "id": "A10-evaluator-failure-unknown",
+   "contract": "evaluator timeout or missing report is UNKNOWN correctness, not failure; at most one retry on the identical patch hash",
+   "setup": "scripted evaluator returns timeout, then timeout again on the single allowed retry",
+   "expected": {
+    "evaluation_attempts": 2,
+    "patch_sha256_identical": true,
+    "evaluation_status": "unknown_evaluator_failure",
+    "primary_endpoint": 0,
+    "secondary_algorithmic_bounds": [
+     0,
+     1
+    ],
+    "regenerated_solution": false
+   }
+  },
+  {
+   "id": "A11-unique-evaluation-id",
+   "contract": "each task x policy x replicate x invocation x patch hash gets its own evaluation identity; cached reports are never substituted",
+   "setup": "two episodes of different policies produce byte-identical patches for one instance; a report for that instance already exists under another run id",
+   "expected": {
+    "distinct_evaluation_ids": 2,
+    "reports_read_from_other_run_ids": 0
+   }
+  },
+  {
+   "id": "A12-weight-bound",
+   "contract": "with logging probability 1/2 at each offered decision, a deterministic target's path ratio is 0, 2 or 4",
+   "setup": "logged paths: (one decision, match), (two decisions, both match), (two decisions, first mismatch)",
+   "expected": {
+    "ratios": [
+     2,
+     4,
+     0
+    ],
+    "max_ratio": 4
+   }
+  },
+  {
+   "id": "H01-format-error-is-logical-call",
+   "contract": "FormatError steps consume logical calls (n_calls rises before parsing, default.py L148); K2 counts them",
+   "setup": "fake_backend returns zero fenced actions at logical call 3, valid actions otherwise",
+   "expected": {
+    "logical_call_after_format_error": 4,
+    "ledger_index_equals_agent_n_calls": true,
+    "format_error_message_in_history": true
+   }
+  },
+  {
+   "id": "H02-single-action-parser",
+   "contract": "the text-based regex accepts exactly one fenced action (actions_text.py L24-27)",
+   "setup": "responses with 0, 1 and 2 mswea_bash_command blocks",
+   "expected": {
+    "0": "FormatError",
+    "1": "parsed",
+    "2": "FormatError"
+   }
+  },
+  {
+   "id": "H03-submit-sentinel",
+   "contract": "submission requires first output line COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT with returncode 0 (docker.py L142-149)",
+   "setup": "scripted environment outputs: sentinel + rc 0; sentinel + rc 1",
+   "expected": {
+    "rc0": "Submitted, submission = remaining lines",
+    "rc1": "not submitted; episode continues"
+   }
+  },
+  {
+   "id": "H04-step-limit-exit",
+   "contract": "step_limit = H produces LimitsExceeded with empty submission (default.py L132-139)",
+   "setup": "fake_backend never submits",
+   "expected": {
+    "exit_status": "LimitsExceeded",
+    "submission": "",
+    "logical_calls": "H",
+    "primary_endpoint": 0
+   }
+  },
+  {
+   "id": "H05-context-window-exit",
+   "contract": "ContextWindowExceededError is not retried (litellm_model.py L54) and ends the episode as an uncaught-exception exit",
+   "setup": "fake transport raises ContextWindowExceededError at logical call 12",
+   "expected": {
+    "physical_attempts_at_call_12": 1,
+    "exit_status": "ContextWindowExceededError",
+    "in_denominator": true,
+    "primary_endpoint": 0
+   }
+  },
+  {
+   "id": "H06-server-side-request-count",
+   "contract": "ledger physical attempts equal requests received by the server across all retry layers",
+   "setup": "counting stub OpenAI-compatible server returns 503 twice then 200; MSWEA_MODEL_RETRY_STOP_AFTER_ATTEMPT=P_max; litellm/OpenAI internal retries disabled",
+   "expected": {
+    "server_received_requests": 3,
+    "ledger_attempt_rows": 3
+   }
+  },
+  {
+   "id": "H07-cost-tracking-off",
+   "contract": "local backends run with cost_tracking ignore_errors and cost_limit 0, so no pricing RuntimeError and no cost exit (litellm_model.py L113-116)",
+   "setup": "fake_backend with unknown model name",
+   "expected": {
+    "runtime_error": false,
+    "cost_exit": false,
+    "tokens_recorded": true
+   }
+  },
+  {
+   "id": "H08-evaluator-log-path",
+   "contract": "evaluation identity maps to a unique logs/evaluation/<run_id>/<model>/<instance> path (run_evaluation.py L253-257)",
+   "setup": "two identities for one instance",
+   "expected": {
+    "distinct_log_dirs": 2,
+    "cached_report_reused": false
+   }
+  },
+  {
+   "id": "H09-empty-patch-not-evaluated",
+   "contract": "empty submissions are never sent to the evaluator, matching its empty_patch_ids filter (run_evaluation.py L627-639)",
+   "setup": "episode with submission ''",
+   "expected": {
+    "evaluator_invocations": 0,
+    "evaluation_status": "not_evaluated_empty"
+   }
+  },
+  {
+   "id": "H10-evaluator-error-bucket",
+   "contract": "evaluator timeout/error (no report.json) maps to unknown_evaluator_failure, never unresolved (run_evaluation.py L375-381; reporting error_ids)",
+   "setup": "scripted evaluator raising EvaluationError",
+   "expected": {
+    "evaluation_status": "unknown_evaluator_failure"
+   }
+  },
+  {
+   "id": "H11-single-image",
+   "contract": "agent workspace and evaluator use the same digest-pinned image (swebench.py L70-75 never reads 'image')",
+   "setup": "instance whose 'image' differs from the runner's derived name",
+   "expected": {
+    "run_refused_on_mismatch": true,
+    "recorded_architecture": "x86_64"
+   }
+  },
+  {
+   "id": "H12-vacuous-grading-guard",
+   "contract": "qualification rejects empty FAIL_TO_PASS (grading.py L293-294 scores it 1); empty PASS_TO_PASS allowed with a disclosed limitation",
+   "setup": "instances with F2P=[] and with P2P=[]",
+   "expected": {
+    "F2P_empty": "excluded before sampling",
+    "P2P_empty": "kept; regression-coverage limitation recorded"
+   }
+  },
+  {
+   "id": "H13-hook-after-limit-checks",
+   "contract": "the routing decision runs after upstream limit checks (default.py L132-147), so no draw occurs on a call that upstream would stop",
+   "setup": "step_limit reached exactly at logical call K2",
+   "expected": {
+    "draw_made": false,
+    "exit_status": "LimitsExceeded"
+   }
+  },
+  {
+   "id": "R01-score-semantics",
+   "contract": "the RouteLLM score is upstream's float32 1 - sum(softmax(logits)[-2:]) (routers.py L123-L130), not a float64 p0",
+   "setup": "feed fixed logits to the adapter's scoring function (no model loaded)",
+   "expected": {
+    "logits [0,0,0]": 0.3333333134651184,
+    "logits [2,1,0]": 0.6652409434318542,
+    "logits [-1.5,0.25,3]": 0.010333657264709473,
+    "dtype": "float32"
+   }
+  },
+  {
+   "id": "R02-threshold-boundary",
+   "contract": "route strong iff score >= threshold (routers.py L42); thresholds outside [0,1] are rejected (controller.py L88)",
+   "setup": "logits [0,0,0]; thresholds 0.3333333134651184, 0.33333331346511846, 1.5",
+   "expected": {
+    "0.3333333134651184": "strong",
+    "0.33333331346511846": "weak",
+    "1.5": "RoutingError"
+   }
+  },
+  {
+   "id": "R03-choose-once",
+   "contract": "the initial-only baseline scores one string once per episode and keeps that backend for every call",
+   "setup": "episode reaching H under the RouteLLM target policy",
+   "expected": {
+    "router_invocations": 1,
+    "router_input": "messages[-1]['content'] of the pre-call-1 history (controller.py L110 convention)",
+    "decision_2_target_action": "equals decision-1 action"
+   }
+  },
+  {
+   "id": "R04-no-network-no-openai",
+   "contract": "the adapter does not import routellm.routers (it builds OpenAI() at import: similarity_weighted/utils.py L11) and loads the checkpoint by pinned revision offline",
+   "setup": "run scoring with network disabled and no OPENAI_API_KEY",
+   "expected": {
+    "imports_routellm_routers": false,
+    "network_requests": 0,
+    "checkpoint_revision": "86237e3df400762178ea98379477b8296e66d5e4"
+   }
+  },
+  {
+   "id": "R05-truncation-recorded",
+   "contract": "tokenization follows upstream (padding=True, truncation=True, no max_length) and the effective limit/side are recorded",
+   "setup": "a 2,000-token prompt",
+   "expected": {
+    "input_ids_length": 512,
+    "recorded_model_max_length": 512,
+    "recorded_truncation_side": "value read from the loaded tokenizer, frozen before CONFIRM"
+   }
+  }
+ ],
+ "upstream_pins": {
+  "mini-swe-agent": "04d809ceab9df28f9adaed044884180159172930",
+  "SWE-bench": "02e7a74ffd0b707aab73d203fe87bdc7c76afc8e",
+  "RouteLLM": "0b64fdafe049e596a3f5657c219329f24af24198",
+  "router_checkpoint": "routellm/bert_gpt4_augmented@86237e3df400762178ea98379477b8296e66d5e4"
+ }
+}
