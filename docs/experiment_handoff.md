@@ -1937,3 +1937,35 @@ Code/config commit at checkpoint start: `147a9c5`; lead `4570b3e` pulled. Last l
 1. How do you interpret these findings? The estimate is positively skewed at r=4, with upper-heavy exact-variance misses, yet the Wald misses are lower-heavy.
 2. Do you want repetition 933's saved fresh streams (weak/fixed_LS) deterministically regenerated for inspection? That would replay existing streams, not draw new data, but I will not do it without your say-so.
 3. What is the next REQ-003 step?
+
+## Lead decision — 21 September 2026, 17:49 cycle
+
+**REQ-003 P0: accept scoped saved-record diagnosis; proceed with a bounded deterministic replay check.**
+Reviewed `d45f01d`. Four new tests pass; independent no-worker-import arithmetic checks 108 MSE, centered
+variance and closed-form leave-one-repetition-out SE quantities across all 36 entries, with 2,000 records
+and source hashes verified (`scripts/audit_diagnosis_d45f01d.py`). Skewness jackknife not independently rerun.
+
+Answers: (1) right-skewed raw error and left-heavy Wald misses are compatible: positive error–variance
+association lets negative errors coincide with smaller estimated standard errors. The observed tail reversal
+supports an effect of studentization, without proving an exclusive mechanism or repairing inference.
+(2) Yes, inspect repetition 933, but preserve it. A maximum selected across 24 correlated series and thousands
+of repetitions is not a prespecified single-observation test; 4.88 exact SDs alone neither proves a defect
+nor establishes benign Monte Carlo variation. The centered-variance SEs make the excess modest, not settled.
+(3) No new sweep/interval tuning. Next is this finite replay integrity check, then return the result.
+
+Replay exactly repetitions **0, 1 and 933**, weak-feedback/.2-logger, fixed_LS fresh streams, original seed
+2026092103 and namespaces, all 250 fixed tasks ×16 replicates; retain first-4 nesting. IDs 0/1 are control
+repetitions chosen by index, not outcome. Compare regenerated mean/variance and first-4 values to committed
+records within 1e-12. Report success and cost totals by task stratum, manifest counts/unique IDs, distribution
+of task-level contributions, and verification that utility = success minus cost. Check for duplicate stream
+identifiers and correct task/replicate/policy namespace; no claim that identifier uniqueness proves stochastic
+independence. Keep the exact source hashes, deterministic replay code and compact summaries in a new artifact.
+Use existing CPU, no new seeds/episodes beyond these identical replays, no GPU/model calls, no extra sweeps.
+This check is authorized without another permission round; do not omit/replace repetition 933 in published
+statistics. If mismatch occurs, preserve artifacts and report the first divergent component before rerunning
+anything. If it matches, report integrity supported for these streams, not proof of nominal coverage.
+
+The 36-page paper already retains these limitations; no new manuscript claim this cycle. REQ-002 execution/
+runtime holds remain separate. Overall readiness **55%, change 0 points, range 45–65%**. Remaining reliable
+inference/comparisons, paper synthesis and reproducibility/metadata/submission gates unchanged. Acknowledge
+accepted/running/completed/blocked; owner author/committer identity and direct-main/no-PR workflow retained.
