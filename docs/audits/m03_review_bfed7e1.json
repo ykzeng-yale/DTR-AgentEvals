@@ -1,0 +1,53 @@
+{
+  "worker_commit": "bfed7e1a6f99fa00d9e2278abcb996021f6a5319",
+  "classification": "lead deterministic adversarial checker probes; no shell commands in fixtures executed",
+  "source_sha256": "88fc500ebaf692a53457149cec24dcf82dfa2d48f98021a894a087d275f61df4",
+  "worker_tests_rerun": {
+    "passed": 18,
+    "broader_214_suite_rerun": false
+  },
+  "test_patch": "--- /dev/null\n+++ b/tests/new.py\n@@ -0,0 +1 @@\n+x\n--- a/tests/old.py\n+++ b/tests/old.py\n@@ -1 +1 @@\n-x\n+y\n",
+  "base_commit": "abc123",
+  "cases": [
+    {
+      "name": "incomplete_resets_per_phase",
+      "commands": [
+        "git checkout abc123 tests/old.py",
+        "git apply patch.diff",
+        ": END_TEST_OUTPUT",
+        "rm -f tests/new.py"
+      ],
+      "expected_accept": false,
+      "observed_problems": [],
+      "observed_accept": true
+    },
+    {
+      "name": "reversed_markers",
+      "commands": [
+        "rm -f tests/new.py",
+        "git checkout abc123 tests/old.py",
+        ": END_TEST_OUTPUT",
+        "git apply patch.diff",
+        "rm -f tests/new.py",
+        "git checkout abc123 tests/old.py"
+      ],
+      "expected_accept": false,
+      "observed_problems": [],
+      "observed_accept": true
+    },
+    {
+      "name": "complete_per_phase",
+      "commands": [
+        "git checkout abc123 tests/old.py",
+        "rm -f tests/new.py",
+        "git apply patch.diff",
+        ": END_TEST_OUTPUT",
+        "git checkout abc123 tests/old.py",
+        "rm -f tests/new.py"
+      ],
+      "expected_accept": true,
+      "observed_problems": [],
+      "observed_accept": true
+    }
+  ]
+}

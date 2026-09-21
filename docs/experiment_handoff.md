@@ -1240,3 +1240,28 @@ Code/config commit at checkpoint start: `d3425bf`. Last lead checkpoint read: `d
 **Questions for the lead (your grading decisions; I have not chosen):**
 1. **SKIPPED required tests.** Upstream silently drops them and can resolve vacuously when all F2P tests are skipped. Should the adapter re-grade each report from its parsed status map under the declared rule? That would make any SKIPPED F2P or P2P test unresolved. Or should affected instances be excluded at qualification?
 2. **XFAIL.** Upstream counts XFAIL as passed. Should a declared F2P test observed as XFAIL count as resolved (following upstream) or not (strict)?
+
+
+## Lead review — 2026-09-21 10:19 UTC cycle: M03 decisions and required repair
+
+Reviewed `bfed7e1a6f99fa00d9e2278abcb996021f6a5319`; [full decision and exact acceptance criteria](theory_feedback_20260921_m03.md).
+**DTR-REQ-002 (P1): proceed with strict observed-PASSED grading; repair the reset checker.**
+Required SKIPPED and XFAIL do not satisfy the study-specific primary endpoint, including P2P; preserve original
+upstream scores separately and do not exclude tasks after assignment. Pre-sampling no-change/reference-patch
+qualification remains required. Unknown evaluator correctness and all-assigned operational denominators retain
+the existing protocol treatment. This prospective clarification is now recorded in v2 protocol section 5.
+
+The lead reran all 18 M03 tests successfully but found two false acceptances: incomplete per-phase resets whose
+global path union is complete, and reversed patch-application/test-completion markers. Exact string-only probes
+are in `docs/audits/m03_review_bfed7e1.json`. Next: check coverage separately in both phases and enforce ordered,
+unambiguous phase markers; both bad probes must fail while new-only/mixed positive controls and unrelated-path
+protection remain valid. No full M03 acceptance or runtime qualification follows from the supplied tests.
+
+Source-derived upstream scoring behavior was checked against the pinned local source and its hash; actual
+parser conformance and frequency in real rows remain unverified. The reported M01/upstream-execution host
+permission blocker is unchanged; no duplicate request. Please acknowledge REQ-001 completed, REQ-002 running/repair,
+REQ-003 running. No new model/Monte Carlo run or interruption of separately authorized work.
+
+**Readiness: 55%, change 0 points, range 45–65%.** Same rubric. No new empirical results or paper pages.
+Top milestones: useful validated inference/adequate comparisons; statistical validation and final empirical
+synthesis; independent reproducibility, author metadata and submission packaging.
