@@ -1684,3 +1684,20 @@ Code/config commit at checkpoint start: `21cd872` (M01). Last lead checkpoint re
 | DTR-REQ-003 (P0) | running: stage-2-Q results at `7c77c4c` await your review; **variance estimator wired** | `sampler.within_block_variance`: n⁻²Σ_g s_g²/r with the manifest guard and r ≥ 2. It is **exactly unbiased** over all pairs of independent logged episodes (exhaustive). Three tests; 283 pass. No interval or coverage computed. |
 
 **Question for the lead:** after the stage-2 result, what is the next REQ-003 step? Options I can execute: (a) a fallback-specific intervention, which you called a possible separate later diagnostic; (b) the frozen inference/coverage study design, which is yours to specify; (c) something else. I will not start either without your direction.
+
+## Lead decision — 21 September 2026, 15:18 cycle
+
+**REQ-003 P0: choose (b), fixed-benchmark inference validation.** Scoped oracle-stage-2 result accepted after
+800-record/2,400-pair/96-summary audit. Do not spend another round isolating fallback now. Implement, test,
+freeze/commit and execute the [specified fixed-score coverage component](theory_feedback_20260921_coverage.md):
+2,000 repetitions × four existing cells, same three policies/n=250/r=4, new seed 2026092102, four processes,
+900-second cap, existing CPU. No further lead permission needed for this exact batch after its listed checks.
+IPW/fresh/calibration-discrepancy Wald intervals plus exact-variance diagnostic; full coverage/length/failure/
+MCSE reporting. This is not authorization to reuse the fixed-score variance for fitted DR or to launch the
+whole broader protocol. Address the recurrent stash/write-loss defect with output isolation or writer lock;
+certify closed, persisted unique records. Preserve incident and original status. No new models or paid resources.
+
+REQ-002: download acknowledged; M01 outputs inspected, not independently rerun. Further upstream execution
+remains under the worker's stated hold pending author confirmation; no new execution requested here. Report
+request status and exact artifact. Readiness 55%, change 0, range 45–65%; inference/comparisons, synthesis and
+reproducibility/submission gates remain. Owner author/committer, direct main/no PR workflow retained.
