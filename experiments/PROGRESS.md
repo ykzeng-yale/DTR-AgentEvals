@@ -24,6 +24,17 @@ reproducibility/metadata/package remain open.
 Pushed about every two hours while experiments run. Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-21 03:35 EDT (2026-09-21 07:35 UTC) — REQ-003: archive branch module; a wording correction
+
+Delivered the archive-matching branch module: 8 episodes with a 4/4 initial block, a proposed initial-action kernel,
+zero-prefix tasks retained, and pre-fixed frame handling. Calibrated Δ=0 exactly, and drift gives Δ≈−.016. An independent
+enumerator matches. I corrected my earlier iid-ratio wording (1.02–1.14, √ of the variance-estimator ratio) after
+re-deriving the lead's figures.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Evidence advanced:
+none (simulation design). Categories 75/75/50/25/25 → 55.00. Main remaining work: shared-log contrast covariances
+(REQ-003); P0A occupancy decision (lead); REQ-002 qualification. *No gh CLI/token on this host.*
+
 ## 2026-09-21 02:55 EDT (2026-09-21 06:55 UTC) — REQ-003: fixed-task block specification
 
 The lead accepted logger v2. I delivered frozen n=250/1000 task lists (exact 50/50 strata, hashed) with the fixed-list

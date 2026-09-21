@@ -1,0 +1,330 @@
+{
+ "request": "DTR-REQ-003 item 3: archive-matching branch module (accepted repair kernels, K = 2 repairs)",
+ "status": "SPECIFICATION with exact expectations; no Monte Carlo, no model. P0A is a PROPOSED initial-action kernel",
+ "design": {
+  "episodes_per_task": 8,
+  "initial_allocation": "permuted block: exactly 4 small, 4 large",
+  "repairs": 2,
+  "source_repair_assignment": "large w.p. 1/2 at each eligible repair (known)",
+  "prefix": "first-failure: the first call is not a visible pass",
+  "m": "min(200, N) SRSWOR; census if N <= 200",
+  "replicate_pairs": 2,
+  "restored_continuations": "stay-small and stay-large from the restored latent state"
+ },
+ "initial_action_kernel": {
+  "P0A[S][A0]": {
+   "easy": {
+    "small": "3/5",
+    "large": "7/10"
+   },
+   "hard": {
+    "small": "1/5",
+    "large": "7/20"
+   }
+  },
+  "DEEP0[S] given incorrect": "unchanged from the accepted tables, independent of A0 (modeling choice)"
+ },
+ "target": "theta = sum_g E T_g / sum_g E M_g (ratio of expected totals over ALL fixed tasks); nu_a = sum E U_ga / sum E D_ga; Delta = theta - nu_1 + nu_0",
+ "frame_handling": [
+  "zero-prefix tasks retained with zero contributions",
+  "N > 200: SRSWOR of 200",
+  "0 < N <= 200: census",
+  "N = 0 or observed D_a = 0: whole range [-2, 2] for Delta; no deletion, no substitute target"
+ ],
+ "assumptions": [
+  "source blocks independent across tasks; episodes independent within a task given the 4/4 allocation (true in this simulator; the bound itself allows within-task dependence)",
+  "selection independent of fresh continuation noise",
+  "replicate pairs independent across prefixes and replicates",
+  "calibrated rows: restored-execution law equals the source law (Delta = 0); drift rows violate it"
+ ],
+ "rows": [
+  {
+   "action_effect": "no_crossing",
+   "feedback": "informative",
+   "restored_law": "calibrated",
+   "n": 250,
+   "theta": "32928/111875",
+   "theta_decimal": 0.2943284916201117,
+   "nu_large": "1583179/2237500",
+   "nu_small": "924619/2237500",
+   "Delta": "0",
+   "Delta_decimal": 0.0,
+   "expected_weight_equals_expected_prefixes": true,
+   "E_N": "895",
+   "E_N_decimal": 895.0,
+   "P_N_zero_exact_log10": -546.4767138763914,
+   "P_census_N_le_200_float": 2.3034382286993003e-272,
+   "P_D_arm_zero_log10": {
+    "small": -149.21609919418756,
+    "large": -170.2554919736132
+   }
+  },
+  {
+   "action_effect": "no_crossing",
+   "feedback": "informative",
+   "restored_law": "calibrated",
+   "n": 1000,
+   "theta": "32928/111875",
+   "theta_decimal": 0.2943284916201117,
+   "nu_large": "1583179/2237500",
+   "nu_small": "924619/2237500",
+   "Delta": "0",
+   "Delta_decimal": 0.0,
+   "expected_weight_equals_expected_prefixes": true,
+   "E_N": "3580",
+   "E_N_decimal": 3580.0,
+   "P_N_zero_exact_log10": -2185.9068555055655,
+   "P_census_N_le_200_float": 0.0,
+   "P_D_arm_zero_log10": {
+    "small": -596.8643967767503,
+    "large": -681.0219678944528
+   }
+  },
+  {
+   "action_effect": "no_crossing",
+   "feedback": "informative",
+   "restored_law": "drifted_restoration_positive_control",
+   "n": 250,
+   "theta": "24784101/89500000",
+   "theta_decimal": 0.27691732960893856,
+   "nu_large": "1583179/2237500",
+   "nu_small": "924619/2237500",
+   "Delta": "-1558299/89500000",
+   "Delta_decimal": -0.017411162011173185,
+   "expected_weight_equals_expected_prefixes": true,
+   "E_N": "895",
+   "E_N_decimal": 895.0
+  },
+  {
+   "action_effect": "no_crossing",
+   "feedback": "informative",
+   "restored_law": "drifted_restoration_positive_control",
+   "n": 1000,
+   "theta": "24784101/89500000",
+   "theta_decimal": 0.27691732960893856,
+   "nu_large": "1583179/2237500",
+   "nu_small": "924619/2237500",
+   "Delta": "-1558299/89500000",
+   "Delta_decimal": -0.017411162011173185,
+   "expected_weight_equals_expected_prefixes": true,
+   "E_N": "3580",
+   "E_N_decimal": 3580.0
+  },
+  {
+   "action_effect": "no_crossing",
+   "feedback": "weak",
+   "restored_law": "calibrated",
+   "n": 250,
+   "theta": "32928/111875",
+   "theta_decimal": 0.2943284916201117,
+   "nu_large": "1583179/2237500",
+   "nu_small": "924619/2237500",
+   "Delta": "0",
+   "Delta_decimal": 0.0,
+   "expected_weight_equals_expected_prefixes": true,
+   "E_N": "895",
+   "E_N_decimal": 895.0,
+   "P_N_zero_exact_log10": -546.4767138763914,
+   "P_census_N_le_200_float": 2.3034382286993003e-272,
+   "P_D_arm_zero_log10": {
+    "small": -149.21609919418756,
+    "large": -170.2554919736132
+   }
+  },
+  {
+   "action_effect": "no_crossing",
+   "feedback": "weak",
+   "restored_law": "calibrated",
+   "n": 1000,
+   "theta": "32928/111875",
+   "theta_decimal": 0.2943284916201117,
+   "nu_large": "1583179/2237500",
+   "nu_small": "924619/2237500",
+   "Delta": "0",
+   "Delta_decimal": 0.0,
+   "expected_weight_equals_expected_prefixes": true,
+   "E_N": "3580",
+   "E_N_decimal": 3580.0,
+   "P_N_zero_exact_log10": -2185.9068555055655,
+   "P_census_N_le_200_float": 0.0,
+   "P_D_arm_zero_log10": {
+    "small": -596.8643967767503,
+    "large": -681.0219678944528
+   }
+  },
+  {
+   "action_effect": "no_crossing",
+   "feedback": "weak",
+   "restored_law": "drifted_restoration_positive_control",
+   "n": 250,
+   "theta": "24784101/89500000",
+   "theta_decimal": 0.27691732960893856,
+   "nu_large": "1583179/2237500",
+   "nu_small": "924619/2237500",
+   "Delta": "-1558299/89500000",
+   "Delta_decimal": -0.017411162011173185,
+   "expected_weight_equals_expected_prefixes": true,
+   "E_N": "895",
+   "E_N_decimal": 895.0
+  },
+  {
+   "action_effect": "no_crossing",
+   "feedback": "weak",
+   "restored_law": "drifted_restoration_positive_control",
+   "n": 1000,
+   "theta": "24784101/89500000",
+   "theta_decimal": 0.27691732960893856,
+   "nu_large": "1583179/2237500",
+   "nu_small": "924619/2237500",
+   "Delta": "-1558299/89500000",
+   "Delta_decimal": -0.017411162011173185,
+   "expected_weight_equals_expected_prefixes": true,
+   "E_N": "3580",
+   "E_N_decimal": 3580.0
+  },
+  {
+   "action_effect": "crossing",
+   "feedback": "informative",
+   "restored_law": "calibrated",
+   "n": 250,
+   "theta": "3515353/17900000",
+   "theta_decimal": 0.19638843575418993,
+   "nu_large": "2926887/4475000",
+   "nu_small": "1638439/3580000",
+   "Delta": "0",
+   "Delta_decimal": 0.0,
+   "expected_weight_equals_expected_prefixes": true,
+   "E_N": "895",
+   "E_N_decimal": 895.0,
+   "P_N_zero_exact_log10": -546.4767138763914,
+   "P_census_N_le_200_float": 2.3034382286993003e-272,
+   "P_D_arm_zero_log10": {
+    "small": -153.5595370594089,
+    "large": -167.04638568019158
+   }
+  },
+  {
+   "action_effect": "crossing",
+   "feedback": "informative",
+   "restored_law": "calibrated",
+   "n": 1000,
+   "theta": "3515353/17900000",
+   "theta_decimal": 0.19638843575418993,
+   "nu_large": "2926887/4475000",
+   "nu_small": "1638439/3580000",
+   "Delta": "0",
+   "Delta_decimal": 0.0,
+   "expected_weight_equals_expected_prefixes": true,
+   "E_N": "3580",
+   "E_N_decimal": 3580.0,
+   "P_N_zero_exact_log10": -2185.9068555055655,
+   "P_census_N_le_200_float": 0.0,
+   "P_D_arm_zero_log10": {
+    "small": -614.2381482376356,
+    "large": -668.1855427207663
+   }
+  },
+  {
+   "action_effect": "crossing",
+   "feedback": "informative",
+   "restored_law": "drifted_restoration_positive_control",
+   "n": 250,
+   "theta": "323977293/1790000000",
+   "theta_decimal": 0.18099290111731844,
+   "nu_large": "2926887/4475000",
+   "nu_small": "1638439/3580000",
+   "Delta": "-27558007/1790000000",
+   "Delta_decimal": -0.015395534636871508,
+   "expected_weight_equals_expected_prefixes": true,
+   "E_N": "895",
+   "E_N_decimal": 895.0
+  },
+  {
+   "action_effect": "crossing",
+   "feedback": "informative",
+   "restored_law": "drifted_restoration_positive_control",
+   "n": 1000,
+   "theta": "323977293/1790000000",
+   "theta_decimal": 0.18099290111731844,
+   "nu_large": "2926887/4475000",
+   "nu_small": "1638439/3580000",
+   "Delta": "-27558007/1790000000",
+   "Delta_decimal": -0.015395534636871508,
+   "expected_weight_equals_expected_prefixes": true,
+   "E_N": "3580",
+   "E_N_decimal": 3580.0
+  },
+  {
+   "action_effect": "crossing",
+   "feedback": "weak",
+   "restored_law": "calibrated",
+   "n": 250,
+   "theta": "3515353/17900000",
+   "theta_decimal": 0.19638843575418993,
+   "nu_large": "2926887/4475000",
+   "nu_small": "1638439/3580000",
+   "Delta": "0",
+   "Delta_decimal": 0.0,
+   "expected_weight_equals_expected_prefixes": true,
+   "E_N": "895",
+   "E_N_decimal": 895.0,
+   "P_N_zero_exact_log10": -546.4767138763914,
+   "P_census_N_le_200_float": 2.3034382286993003e-272,
+   "P_D_arm_zero_log10": {
+    "small": -153.5595370594089,
+    "large": -167.04638568019158
+   }
+  },
+  {
+   "action_effect": "crossing",
+   "feedback": "weak",
+   "restored_law": "calibrated",
+   "n": 1000,
+   "theta": "3515353/17900000",
+   "theta_decimal": 0.19638843575418993,
+   "nu_large": "2926887/4475000",
+   "nu_small": "1638439/3580000",
+   "Delta": "0",
+   "Delta_decimal": 0.0,
+   "expected_weight_equals_expected_prefixes": true,
+   "E_N": "3580",
+   "E_N_decimal": 3580.0,
+   "P_N_zero_exact_log10": -2185.9068555055655,
+   "P_census_N_le_200_float": 0.0,
+   "P_D_arm_zero_log10": {
+    "small": -614.2381482376356,
+    "large": -668.1855427207663
+   }
+  },
+  {
+   "action_effect": "crossing",
+   "feedback": "weak",
+   "restored_law": "drifted_restoration_positive_control",
+   "n": 250,
+   "theta": "323977293/1790000000",
+   "theta_decimal": 0.18099290111731844,
+   "nu_large": "2926887/4475000",
+   "nu_small": "1638439/3580000",
+   "Delta": "-27558007/1790000000",
+   "Delta_decimal": -0.015395534636871508,
+   "expected_weight_equals_expected_prefixes": true,
+   "E_N": "895",
+   "E_N_decimal": 895.0
+  },
+  {
+   "action_effect": "crossing",
+   "feedback": "weak",
+   "restored_law": "drifted_restoration_positive_control",
+   "n": 1000,
+   "theta": "323977293/1790000000",
+   "theta_decimal": 0.18099290111731844,
+   "nu_large": "2926887/4475000",
+   "nu_small": "1638439/3580000",
+   "Delta": "-27558007/1790000000",
+   "Delta_decimal": -0.015395534636871508,
+   "expected_weight_equals_expected_prefixes": true,
+   "E_N": "3580",
+   "E_N_decimal": 3580.0
+  }
+ ]
+}

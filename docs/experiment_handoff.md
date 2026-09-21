@@ -1004,3 +1004,21 @@ REQ-003 remains running; REQ-002 qualification queued; REQ-001 completed. Acknow
 corrections in the next committed response. Use Yukang Zeng <ykzeng2019@gmail.com> for author and committer,
 direct main. **Full-project readiness 55%, change 0 points, range 45–65%.** Main gaps: validated inference and
 comparisons; statistical validation/empirical synthesis; independent reproducibility/metadata/package.
+
+## Worker checkpoint — 2026-09-21T07:35:03Z (host clock; local 2026-09-21 03:35 EDT)
+
+Code/config commit at checkpoint start: `60c251e`. Last lead checkpoint read: `dd898b5` (07:18 UTC), which arrived during this tick. **Authorized runs: none.** Gate `log live branch` verified; no runner; servers healthy; foreign load `[]`.
+
+**Acknowledged (`dd898b5`):** the fixed-task moments are accepted. r=4 is fixed for the synthetic core, and the homogeneous-within-stratum kernels stay, which answers both my questions. The grid will not be enlarged.
+
+**Your correction, re-derived before conceding.** From `fixed_task_blocks_v1.json`, history-rule rows: 1.019542–1.144032 at n=250 and 1.019484–1.143627 at n=1000. My "1.04–1.14" used only the K=2 rows. My "independent of n" was also wrong: the ratio depends slightly on n through n/(n−1). The quantity is √(E[iid variance estimator]/true variance), not an SE ratio and not a coverage statement. Marginal policy SEs do not set power for a shared-log contrast. The artifacts are unchanged; this text corrects my 06:55 checkpoint wording.
+
+| Request | Status | Artifact / reason |
+|---|---|---|
+| DTR-REQ-001 (P0) | completed | — |
+| DTR-REQ-002 (P1) | running; qualification queued | evaluator `f7bbbb2` selected |
+| DTR-REQ-003 (P1) | **running: archive branch module delivered for review** | [`branch_module.py`](../experiments/v2_sim/branch_module.py) writes [`branch_module_v1.json`](../experiments/v2_sim/branch_module_v1.json). It is kept distinct from the common-initial-small model. **Design:** 8 source episodes per task with a permuted 4 small / 4 large initial block, then up to 2 repairs assigned large with probability ½, and stopping at the first visible pass. Fresh stay-small and stay-large continuations run from the restored latent state, and zero-prefix tasks stay in every sum. **Proposed initial-action kernel** P0A[S][A0]: easy .6 small / .7 large; hard .2 small / .35 large. DEEP0 given incorrect is unchanged and independent of A0; that is a stated modeling choice. **Primary target:** θ = ΣE T_g / ΣE M_g over all fixed tasks, with ν_a and Δ as in bound-doc equation 2. **Exact results on the 4 accepted K=2 kernel cells:** calibrated Δ = 0 **exactly** and E[D_a] = E[M] exactly. The drifted-restoration positive control (repair probabilities × .9) gives Δ = −.0174 (no crossing) and −.0154 (crossing). θ = .29433 (no crossing) and .19639 (crossing), identical across feedback quality, because stay continuations do not use feedback. **Frame handling, fixed in advance** as `frame_rule` with 6 deterministic cases: N=0 or observed D_a=0 returns the whole range [−2, 2]; 0<N≤200 is a census; N>200 is SRSWOR of 200. There is no deletion and no substitute target. **Support at the frozen sizes:** E[N] = 895 (n=250) and 3,580 (n=1000). log₁₀P(N=0) is exactly −546.5; P(N≤200) ≈ 2×10⁻²⁷², a float convolution labelled not exact; log₁₀P(D_a=0) ≤ −149. **Twelve tests pass**, including an **independent full-tree episode enumerator** that reproduces M, T, U_a and D_a exactly and checks E[W_a \| prefix] = 1 arm by arm. 156 tests pass. |
+
+**Question for the lead (your design choice).** "Archive-matching" here matches the design structure, not occupancy. With the proposed P0A, a first-failure prefix occurs in 44.8% of episodes: E[N] = 895 over 2,000 episodes at n=250, which is 3.6 per task. The archive had 564 prefixes over 2,640 episodes, 21.4%, or 1.7 per task. The sampling fraction is therefore about .22 here, against .35 in the archive. Should P0A be retuned to archive-like occupancy, for example raising the first-call pass probabilities, or is structural matching enough for development?
+
+**Next:** exact shared-log score covariances for the history-vs-prompt and history-vs-best-fixed contrasts. Acceptance: the direct contrast second moment matches the covariance formula, the identical-policy contrast is zero, and the covariance is PSD.
