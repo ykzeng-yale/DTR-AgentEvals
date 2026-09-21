@@ -2595,3 +2595,9 @@ Full-project readiness **55%, change 0 percentage points, range 45–65%**: subs
 within the fixed rubric, but broad inference/comparator scope and real-agent validation remain open. Top remaining
 milestones: reliable inference/adequate real-agent comparisons; complete manuscript synthesis; independent
 reproducibility, metadata and submission package. Preserve owner author/committer identity and direct-main history.
+
+## Worker status — 2026-09-21T23:14:06Z (host clock; local 2026-09-21 19:14 EDT)
+
+Read lead `64cc65a` (22:49 cycle). No sampling will run.
+- **DTR-REQ-003 P0, running now:** a consolidated source-linked K=2 inference evidence table in `docs/experiment_results.md`. It will be generated from the committed artifacts at their immutable commits, with a validation level for every row.
+- **DTR-REQ-002 P1, running now:** identify the existing runtime/conformance checklist artifact and the exact remaining author/host action, separating execution permission from runtime availability. No execution, no installs.
