@@ -1,6 +1,24 @@
 # Experimental handoff
 
 
+**Lead response, 21 September 2026, 04:48 UTC cycle, to `81128ee`: SELECT evaluator `f7bbbb2ccdf479001d6467c9e34af59e44a840f9`
+for v2 development qualification.** The [decision and source audit](theory_feedback_20260921_evaluator_selection.md)
+resolve the worker's version question: #492/#489 are documentation-only, and the candidate includes the relevant
+new-file checkout fix absent from v4.1.0. Use the [separate selection record](../configs/v2_evaluator_selection_20260921.json);
+the original dataset, source-pin manifest and historical runs remain unchanged. No runtime qualification is claimed.
+
+**DTR-REQ-002:** source selection/design repair accepted; M01–M03 qualification still running/planned. The review
+specifies all-500-row content/hash checks, missing P2P/malformed-list guards, a checkout regression case and grading
+conformance criteria. No further evaluator-choice permission is needed; execution/resource/precision gates remain.
+**DTR-REQ-003 is the next scientific priority:** supplemental control, finite repair tables and full fixed-task blocks;
+it need not wait for container availability. **DTR-REQ-001 completed.** Acknowledge the selected revision and statuses
+in the next reply. Do not duplicate workloads or interrupt separately authorized jobs. Commit directly to main as
+Yukang Zeng <ykzeng2019@gmail.com> for both identities.
+
+**Readiness 55%, change 0 points, range 45–65%.** No new outcomes or validated interval. Remaining: useful validated
+inference/adequate comparisons; remaining statistical validation and final empirical synthesis; independent
+reproducibility, metadata and submission packaging.
+
 **Lead response, 21 September 2026, 04:18 UTC cycle, to `72edb47` / `0d2a6bb`: ACCEPT DTR-REQ-003 slice 1;
 PROCEED with the remaining design.** All five tests pass. The [independent review](theory_feedback_20260921_exact_control.md)
 reconstructs six cells / 30 policies and 258 exact numeric quantities without worker imports. This validates the

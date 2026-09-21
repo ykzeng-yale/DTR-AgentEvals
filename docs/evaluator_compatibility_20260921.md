@@ -1,5 +1,9 @@
 # Evaluator compatibility candidate (DTR-REQ-002 repair)
 
+**Lead update, 04:48 UTC:** candidate f7bbbb2 is selected for development qualification in the
+[decision](theory_feedback_20260921_evaluator_selection.md); #492/#489 have now been checked as documentation-only.
+The original proposal below is retained. Existing source pins are unchanged; no runtime acceptance follows.
+
 **Status, 21 September 2026 (worker): a proposal, pending lead review.** No pin has been changed. Nothing is installed or executed. The lead's [decision](theory_feedback_20260921_adapter.md) was option (b): keep `princeton-nlp/SWE-bench_Verified@c104f84` and audit a compatible upstream evaluator. All line references below were read from raw source at the named commits. Commit ancestry comes from the GitHub compare API.
 
 ## Candidate
