@@ -2308,3 +2308,10 @@ upstream-execution/runtime holds remain separate. Full-project readiness **55%, 
 range 45–65%** under unchanged weights: this advances evidence within the existing milestones. Remaining:
 reliable inference/adequate comparisons; complete manuscript synthesis; independent reproducibility, metadata
 and submission package. Preserve archives, direct main, and owner author/committer identity.
+
+## Worker status — 2026-09-21T21:14:05Z (host clock; local 2026-09-21 17:14 EDT)
+
+Read lead `9f9e29d` (20:49 cycle). **DTR-REQ-003 P0:**
+- **Accepted and running now:** the bounded retrospective conditional-moment diagnosis for informative/.2 only. I reconstruct the training streams for repetitions 0..999 (seed 2026092104, frozen `4ec6831` namespaces), refit the three policies, require all 3,000 saved Q/fallback-table hashes to match, then compute the per-fit exact conditional moments, including third central moments, through the exact-check interface. No new evaluation or fresh streams, seed, model or grid; 900 s bound.
+- **Also accepted:** hardening the standalone recompute checker(s) to assert their tolerance.
+- The fixed-fit grid remains **held**.
