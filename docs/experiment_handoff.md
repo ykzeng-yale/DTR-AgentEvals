@@ -1901,3 +1901,39 @@ paper now. No uniform 95% inference or real-agent superiority claim. REQ-002's s
 is unchanged. Overall readiness 55%, change 0 points, range 45–65%; reliable inference/comparisons, remaining
 paper synthesis and independent reproducibility/metadata/submission gates stay open. Acknowledge status;
 owner author/committer identity, direct main and archive preservation remain required.
+
+## Worker checkpoint — 2026-09-21T17:47:33Z (host clock; local 2026-09-21 13:47 EDT)
+
+Code/config commit at checkpoint start: `147a9c5`; lead `4570b3e` pulled. Last lead checkpoint read: the 17:18 cycle (`4570b3e`; issue #4 at 17:21 UTC). **Authorized this tick:** the bounded saved-record diagnosis only; I ran no new episodes, seeds or sweeps. No simulation stage is active (held per your decision). State check: all stages verified, 0 stage runners, servers ok, foreign busy []. 304 tests pass.
+
+**Acknowledged:** the sensitivity evidence is accepted in scope, and the new simulation stage is held. The saved-record diagnosis is **completed**. Code: [`sensitivity_diagnosis.py`](../experiments/v2_sim/sensitivity_diagnosis.py), with 4 tests (jackknife against closed forms; the committed output keeps all IDs and reproduces the published counts). Output: [`diagnosis_retrospective.md`](../results/v2_sim/replication_sensitivity_20260921/diagnosis_retrospective.md) and [`.json`](../results/v2_sim/replication_sensitivity_20260921/diagnosis_retrospective.json).
+
+*Scope and acceptance checks*
+- Covers 2 cells × 3 policies × {IPW, fresh, D} × {r=4, r=16} = 36 entries, over all 1,000 repetitions each.
+- The inputs match the published `reps_sha256` and `manifest_sha256`, and the IDs are exactly the manifest's.
+- All 36 published Wald and exact-variance covered counts are reproduced exactly.
+- The jackknife unit is the repetition, so each repetition's paired policies and methods stay together.
+- MSE (about the exact target, with empirical MCSE) and centered variance (about the Monte Carlo mean, with jackknife SE) are reported as separate targets.
+
+*Findings*
+- **MSE and centered variance.** MSE/exact is 0.905–1.104 and centered variance/exact is 0.904–1.105. They nearly coincide because the bias is negligible: |bias/MCSE| is at most 2.2 in this batch, from the published summary.
+- **Entries with |z| > 2:** 2 of 36, both D at r=16 in the weak cell, in opposite directions: history 0.905 (z −2.43) and fixed_LS 1.102 (z +2.10).
+- **Weak/fixed_LS at r=16**, centered variance/exact (jackknife SE): IPW 1.083 (0.047), fresh 1.105 (0.054), D 1.102 (0.049).
+- **Tails.** For the four prompt/fixed_LS IPW rows at r=4:
+  - Exact-variance misses are upper-heavy: 0.027–0.040 upper against 0.015–0.022 lower.
+  - Error skewness is +0.196 to +0.336. Eight entries exceed 2 jackknife SEs, all IPW or D at r=4.
+  - Wald misses are lower-heavy: 0.037–0.066 lower against 0.010–0.019 upper.
+- **Tails at r=16.** Skewness is 0.038–0.149; exact-variance misses are 0.023–0.029 lower and 0.027–0.034 upper.
+- **Weak/fixed_LS, five largest squared-error contributions.** All are listed with repetition IDs and kept in every summary. Each method/r list accounts for 4.8–6.0% of the summed squared error.
+- **Repetition 933, fresh.** This error is +4.88 exact SDs at r=16 (share 2.16%) and +3.81 in its nested first-4 block. It is the largest standardized error across all 24 IPW/fresh series; the next is 4.19. Its estimated fresh variance is 0.93 × exact. I have not interpreted it or inspected its episodes.
+
+| Request | Status | Artifact / reason |
+|---|---|---|
+| DTR-REQ-001 (P0) | completed | — |
+| DTR-REQ-002 (P1) | running: M01 done; further upstream execution **held pending the author's explicit confirmation**; runtime host blocked (author) | `21cd872` |
+| DTR-REQ-003 (P0) | validation (`b2ad9a3`) and sensitivity batch (`c8a028b`) accepted; new simulation stage **held**; **saved-record diagnosis completed; awaiting your review** | `diagnosis_retrospective.{md,json}` in this commit |
+
+**Questions for the lead:**
+1. How do you interpret these findings? The estimate is positively skewed at r=4, with upper-heavy exact-variance misses, yet the Wald misses are lower-heavy.
+2. Do you want repetition 933's saved fresh streams (weak/fixed_LS) deterministically regenerated for inspection? That would replay existing streams, not draw new data, but I will not do it without your say-so.
+3. What is the next REQ-003 step?

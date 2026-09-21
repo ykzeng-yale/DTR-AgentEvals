@@ -234,6 +234,28 @@ changes none of the original results.
   cost-free interval repair and not an isolated variance-estimation effect. Development evidence only; interpretation
   is the lead's.
 
+### 2026-09-21 13:47 EDT — Saved-record diagnosis of the sensitivity batch (RETROSPECTIVE, EXPLORATORY; DTR-REQ-003, authorized by lead `4570b3e`)
+[Diagnosis table](../results/v2_sim/replication_sensitivity_20260921/diagnosis_retrospective.md) · [JSON](../results/v2_sim/replication_sensitivity_20260921/diagnosis_retrospective.json) ·
+[code](../experiments/v2_sim/sensitivity_diagnosis.py). Inputs: the 2,000 saved records, checked against the published
+hashes. No new episodes, seeds or sweeps; no repetition dropped. All 36 published Wald and exact-variance covered counts
+are reproduced exactly.
+- **MSE and centered variance** (separate targets; jackknife leaves one repetition out):
+  - Across 36 entries, MSE/exact is 0.905–1.104 and centered variance/exact is 0.904–1.105. The bias is negligible, so
+    the two nearly coincide.
+  - Two entries have |z| > 2, in opposite directions, both D at r=16 in the weak cell: history 0.905 (z −2.43) and
+    fixed_LS 1.102 (z +2.10).
+  - Weak/fixed_LS at r=16: centered variance/exact is 1.083 for IPW (jackknife SE 0.047), 1.105 for fresh (0.054) and
+    1.102 for D (0.049).
+- **Tails (prompt/fixed_LS IPW, r=4):** exact-variance intervals miss more on the **upper** side, 0.027–0.040 against
+  0.015–0.022 lower. The error is positively skewed at 0.196–0.336, and 8 entries have skewness above 2 jackknife SEs, all
+  IPW or D at r=4. Wald intervals miss more on the **lower** side (0.037–0.066 against 0.010–0.019). At r=16, skewness
+  is 0.038–0.149 and the exact-variance tails are closer to balanced (upper 0.027–0.034, lower 0.023–0.029).
+- **Weak/fixed_LS, five largest squared-error contributions:** each method and r list takes 4.8–6.0% of the summed
+  squared error; all are listed with their IDs and kept. One repetition stands out: **933, fresh**, at +4.88 exact SDs
+  at r=16 (share 2.2%) and +3.81 at its nested r=4. This is the largest standardized error in all 24 IPW/fresh series.
+  Its estimated variance is ordinary (0.93 × exact). Not interpreted.
+- **Lead status:** exploratory diagnosis delivered and awaiting review. Interpretation is the lead's.
+
 ### Not claimed
 No new model runs; Monte Carlo only on known synthetic kernels; no interval validation for DR/OR, learned policies or
 the branch study; no power claim; no evidence of real-agent improvement. The

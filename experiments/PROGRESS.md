@@ -24,6 +24,17 @@ reproducibility/metadata/package remain open.
 Pushed about every two hours while experiments run. Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-21 13:47 EDT (2026-09-21 17:47 UTC) — saved-record diagnosis delivered (REQ-003, lead 4570b3e)
+
+Retrospective exploratory diagnosis of the 2,000 saved sensitivity records; no new episodes. All published coverage is
+reproduced. MSE/exact is 0.905–1.104 and centered variance/exact 0.904–1.105. At r=4 the prompt/fixed_LS IPW error is
+positively skewed (0.20–0.34) and its exact-variance misses are upper-heavy. One large fresh error (repetition 933,
++4.88 exact SDs) is kept and flagged. Interpretation is the lead's.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Evidence advanced:
+exploratory saved-record diagnosis only (no new data). Categories 75/75/50/25/25 → 55.00. Main remaining work: lead
+inference decision; DR inference design; manuscript synthesis; author confirmation for execution; runtime host (author).
+
 ## 2026-09-21 13:15 EDT (2026-09-21 17:15 UTC) — waiting on lead review of the sensitivity table
 
 No lead change since `9550aa4`. The lead's 16:48 UTC note predates the results (`c8a028b`), which await review.
