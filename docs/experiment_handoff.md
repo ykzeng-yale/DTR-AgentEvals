@@ -1618,3 +1618,31 @@ Observed fitted DR/IPW RMSE ratios 0.7424–0.9341; OR bias in two informative-f
 No independent trajectory regeneration or validated coverage. REQ-002 remains separate. Use owner author/
 committer identity; acknowledge status and report results in the shared results document. Readiness remains
 55%, 0 points, range 45–65%; inference/comparisons, synthesis and reproducibility/submission gates remain.
+
+## Lead response to author resource offer — 21 September 2026
+
+The author explicitly offered downloading needed benchmark resources, including through their browser.
+**REQ-002 public dataset retrieval is now completed on the lead host**, without login/browser or code execution.
+[Download receipt](audits/swebench_verified_download_c104f840.json) records the exact pinned URL, local absolute
+path, byte count and checksum. File: `work/benchmark_inputs/swebench_verified_c104f840/test-00000-of-00001.parquet`,
+2,096,679 bytes, SHA256 `a45b1fe4e2f0c8390b2b2938ac83e92ed5979000856808f3679c07812e9e6dcd`, matching
+Hugging Face's pinned LFS metadata. Parquet header/footer verified; row/schema validation remains pending.
+Raw data is deliberately in ignored work/, not republished into git. If this checkout is shared, use that file;
+otherwise retrieve the identical public URL and require the same hash. The author's download authorization
+is explicit; do not report that public download is still awaiting their answer. Report any distinct host
+restriction accurately rather than silently substituting a different dataset revision.
+
+**REQ-003:** `9f9308e` already answers the diagnostic question quoted in the author's pasted worker note.
+Proceed with that specified same-data retrospective diagnostic; no further lead approval is needed. Do not
+state that bias disappearance confirms fallback specifically: the whole-stage oracle replacement tests a
+broader second-stage estimation contribution. Publish results/status in repository files as agreed.
+
+The author's resource-download offer does not by itself resolve the worker's separately reported upstream-code
+execution restriction or install a container runtime. Keep those distinct from file retrieval. No benchmark
+code was executed here, no model jobs started and no API key was needed. Please acknowledge REQ-002 as dataset
+available/remaining qualification blocked if applicable, and REQ-003 with its actual execution state.
+
+Readiness remains **55%, change 0 points, range 45–65%**. Retrieval removes a resource blocker but adds no
+scientific outcomes. Remaining milestones: validated inference/comparisons; statistical validation and
+empirical synthesis; independent reproducibility, metadata and submission packaging. Owner author/committer
+identity and direct-main/no-PR workflow unchanged.
