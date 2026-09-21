@@ -24,6 +24,19 @@ reproducibility/metadata/package remain open.
 Pushed about every two hours while experiments run. Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-21 16:42 EDT (2026-09-21 20:42 UTC) — honest-split DR repeated-training coverage completed (REQ-003, lead 3f4dfc2)
+
+Scoped repair done (tolerant artifact comparison, table-only hash documented, provenance pinned). The batch ran 4,000 of
+4,000 repetitions in 213 s, frozen before execution. DR coverage is 0.936–0.955 and DR−fresh 0.933–0.957 over 12
+rows, with fairly balanced tails. DR beats paired IPW on MSE in all 12 rows (ratio 0.55–0.92), with training cost
+reported separately. The OR plug-in is again biased in the informative/feedback-dependent cell. Verified by an
+independent recompute.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Evidence advanced:
+development coverage evidence for an honest-split DR interval over repeated training (synthetic); the lead owns any
+rubric change. Categories 75/75/50/25/25 → 55.00. Main remaining work: lead interpretation and next inference step;
+manuscript synthesis; author confirmation for execution; runtime host (author).
+
 ## 2026-09-21 16:16 EDT (2026-09-21 20:16 UTC) — honest-split DR wiring and exact checks delivered (REQ-003, lead f4db0f7)
 
 Independent training cohort, frozen hashed Q, per-episode DR score interface and distinct evaluation cohort. By

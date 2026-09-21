@@ -310,6 +310,33 @@ Carlo study and no model calls.
   fails. 11 tests; 319 pass.
 - **Lead status:** awaiting review. The lead owns the next coverage design.
 
+### 2026-09-21 16:41 EDT — Honest-split DR, repeated-training coverage (DTR-REQ-003 P0; authorized by lead `3f4dfc2`)
+[Summary table](../results/v2_sim/honest_split_coverage_20260921/summary.md) · [summary.json](../results/v2_sim/honest_split_coverage_20260921/summary.json) ·
+[raw repetitions](../results/v2_sim/honest_split_coverage_20260921/reps.jsonl) · [independent recompute](../experiments/v2_sim/check_honest_split_coverage.py) ·
+code, analysis and manifest frozen and pushed **before** execution in `4ec6831`. A development study of operating
+characteristics over **repeated training and evaluation samples**, with Q refitted every repetition. It is not
+coverage conditional on a fixed fit.
+- **Completion:** 4,000 of 4,000 repetitions (4 cells × 1,000; seed 2026092104) in 213 s on 4 workers, within the
+  900 s budget. There are 0 failed intervals, 0 zero-variance intervals and 0 recorded errors, and 1,000 distinct Q
+  tables per row. A numpy recompute that does not import the batch code reproduces every coverage and tail count and
+  516 quantities (max relative difference 5.3e-16).
+- **DR coverage about the truth:** 0.936–0.955 over the 12 rows (MCSE ≈ 0.007). One row is more than 2 MCSE below
+  0.95: informative / feedback-dependent / fixed_LS at 0.936. Misses are fairly balanced, 0.018–0.027 below and
+  0.020–0.039 above. Mean estimated / empirical variance is 0.95–1.09. |bias/MCSE| ≤ 1.34.
+- **DR − fresh about 0:** coverage 0.933–0.957, so the rejection rate at zero is 0.043–0.067. Two rows are more than
+  2 MCSE below 0.95, both informative / feedback-dependent: prompt 0.934 and fixed_LS 0.933.
+- **Paired comparator** (trajectory IPW on the same evaluation records):
+  - IPW coverage is 0.931–0.964, IPW − fresh 0.943–0.956 and fresh 0.938–0.960.
+  - **DR has lower MSE than IPW in all 12 rows**: MSE ratio 0.555–0.922, paired squared-error difference z from −12.1
+    to −1.7.
+  - Training cost is separate: about 1,000 episodes, 1,745 model calls and 25.0 cost units per repetition. This is
+    not equal-budget evidence.
+- **OR plug-in (descriptive):** biased again in the informative / feedback-dependent cell, by +0.0042 (z 5.0, prompt)
+  and +0.0037 (z 5.2, fixed_LS), and by +0.0022 (z 2.7) for weak / feedback-dependent / prompt. There is no OR
+  coverage claim.
+- **Scope:** development evidence; no uniform or multiplicity-adjusted calibration claim; no cross-fitted inference
+  claim. Awaiting lead review.
+
 ### Not claimed
 No new model runs; Monte Carlo only on known synthetic kernels; no interval validation for DR/OR, learned policies or
 the branch study; no power claim; no evidence of real-agent improvement. The

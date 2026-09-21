@@ -2193,3 +2193,54 @@ Read lead `3f4dfc2` and `342f2f6` (20:20 UTC review). **DTR-REQ-003 P0 status:**
 - **Accepted:** the scoped repair. Recursive abs/rel 1e-12 artifact comparison with exact metadata, keys, IDs, counts and hashes; a 1e-6 perturbation-rejection test; `nuisance_sha256` described as a Q/fallback-table hash; provenance pinned separately in the batch manifest. The committed `exact_checks.json` stays unchanged.
 - **Running now:** implementation and tests of the repeated-training coverage batch. 4 cells × 3 policies, repetitions 0..999, seed 2026092104, Q refitted per repetition, paired trajectory IPW on the same evaluation records, ≤4 workers, 900 s total cap, writer lock and atomic finalize.
 - **Next:** I freeze and push the code, config, analysis and manifest **before** execution, then publish partial or complete results. Status updates follow at each step.
+
+## Worker checkpoint — 2026-09-21T20:42:09Z (host clock; local 2026-09-21 16:42 EDT)
+
+Code/config commit at checkpoint start: `6d619ef` (status); frozen `4ec6831`. Last lead checkpoint read: 20:21 UTC (`3f4dfc2` / `342f2f6`). **Authorized runs:** the repeated-training honest-split DR coverage batch as specified in `3f4dfc2`. It has completed. State check: all stages verified, no stage runner, servers ok, foreign busy []. 326 tests pass.
+
+**Scoped repair: completed** (`4ec6831`).
+- The artifact regeneration test now compares recursively at abs/rel 1e-12. Keys, list lengths and order, IDs, counts, hashes and other non-float metadata must match exactly.
+- A new test shows that a 1e-6 perturbation fails, as do a changed hash, count or policy, a dropped row and a dropped fixture.
+- The committed `exact_checks.json` is **unchanged**.
+- `nuisance_sha256` is documented as a Q/fallback-table hash only. Provenance (feature map, policies, training ids, and the source hashes of all 15 imported scoring and generator files) is pinned separately in the batch manifest.
+
+**Repeated-training coverage batch: completed.**
+- Code: [`honest_split_coverage.py`](../experiments/v2_sim/honest_split_coverage.py), with 6 tests. These reproduce DR and paired IPW from an independent regeneration, check disjoint cohorts, per-repetition refit, memo identity and recorded failures, and check that a capped or incomplete output keeps the requested denominator and is labelled INCOMPLETE.
+- Results: [`summary.md`](../results/v2_sim/honest_split_coverage_20260921/summary.md), [`summary.json`](../results/v2_sim/honest_split_coverage_20260921/summary.json), [`reps.jsonl`](../results/v2_sim/honest_split_coverage_20260921/reps.jsonl) and [`run_status.json`](../results/v2_sim/honest_split_coverage_20260921/run_status.json).
+- Independent recompute: [`check_honest_split_coverage.py`](../experiments/v2_sim/check_honest_split_coverage.py).
+
+*Run*
+- 4,000/4,000 repetitions, 213 s wall on 4 workers, cap not reached.
+- Finalize certified 4,000 unique expected IDs with 0 missing.
+- 0 failed intervals, 0 zero-variance intervals and 0 recorded errors; 1,000 distinct Q/fallback tables per row.
+- The numpy recompute, which does not import the batch code, reproduces all coverage and tail counts and 516 quantities (max relative difference 5.3e-16).
+
+*Results* (MCSE ≈ 0.0069 at 0.95; all 60 row×estimand entries are in the summary)
+- **DR:**
+  - Coverage 0.936–0.955; 1/12 rows beyond 2 MCSE: informative / feedback-dependent / fixed_LS, 0.936.
+  - Misses 0.018–0.027 below and 0.020–0.039 above.
+  - Mean estimated / empirical variance 0.953–1.094; |bias/MCSE| ≤ 1.34.
+  - Variance CV 0.049–0.521.
+  - Error–variance correlation −0.723 to −0.045. It is negative in every row, whereas paired IPW's ranges from −0.364 to +0.707.
+- **DR − fresh:**
+  - Coverage 0.933–0.957, so rejection at zero is 0.043–0.067.
+  - 2/12 rows beyond 2 MCSE, both informative / feedback-dependent: prompt 0.934 and fixed_LS 0.933.
+- **Paired IPW on the same evaluation records:**
+  - Coverage 0.931–0.964; two entries are beyond 2 MCSE (0.931 and 0.964).
+  - Misses 0.016–0.052 below and 0.004–0.044 above.
+- **IPW − fresh and fresh:** IPW − fresh 0.943–0.956 and fresh 0.938–0.960; none beyond 2 MCSE.
+- **Efficiency (paired, same records):** DR MSE is lower than IPW's in **all 12 rows**. The MSE ratio is 0.555–0.922, and the paired squared-error difference z runs from −12.07 to −1.71; the −1.71 row is informative / feedback-dependent / prompt.
+- **Training resources**, separate and not equal-budget: per repetition, 1,000 training episodes, 1,744.8 model calls and 24.99 cost units.
+- **Fallback:** hit on 0.04–1.13% of evaluation episodes on average.
+- **OR plug-in** (descriptive, no coverage claim): biased in informative / feedback-dependent, by +0.00421 (z 4.99, prompt) and +0.00374 (z 5.21, fixed_LS), and in weak / feedback-dependent / prompt by +0.00223 (z 2.66). This is the same cells and direction as the earlier cross-fitted OR finding.
+- **Scope:** operating characteristics over repeated training and evaluation samples only. No fixed-fit conditional coverage, cross-fitted inference, equal-budget superiority or uniform-calibration claim.
+
+| Request | Status | Artifact / reason |
+|---|---|---|
+| DTR-REQ-001 (P0) | completed | — |
+| DTR-REQ-002 (P1) | running: M01 done; further upstream execution **held pending the author's explicit confirmation**; runtime host blocked (author) | `21cd872` |
+| DTR-REQ-003 (P0) | honest-split wiring accepted with scoped repair (**repair completed**); **repeated-training coverage batch completed; awaiting your review** | frozen `4ec6831`; results this commit |
+
+**Questions for the lead:**
+1. How do you interpret the DR and DR − fresh rows in the informative / feedback-dependent cell, which fall 2–2.5 MCSE below 0.95?
+2. Should the deferred conditional fixed-fit coverage grid proceed next? If so, please specify its design, which I will freeze and run as soon as it is given.
