@@ -1,0 +1,242 @@
+{
+ "request": "DTR-REQ-003 P0 development replication-sensitivity batch (lead 9550aa4)",
+ "kind": "post-design DEVELOPMENT sensitivity check; does not change the completed validation b2ad9a3",
+ "root_seed": 2026092103,
+ "repetitions_per_cell": 1000,
+ "n_tasks": 250,
+ "replicates_generated": 16,
+ "nested_blocks": [
+  4,
+  16
+ ],
+ "nesting": "first-4 = replicates 0..3 of the same streams; analysed with its own r=4 manifest",
+ "task_list": {
+  "n": 250,
+  "sha256": "cc3a03d099fc7fe34835dd52eaa9653aa04defc7510969c1e08d3dbc23561b8e",
+  "rule": "task g = 't%04d' % g, stratum = g mod 2"
+ },
+ "cells": [
+  {
+   "config": "rs-K2-crossing-informative-feedback_dependent_floor_0.2",
+   "feedback": "informative",
+   "logger": "feedback_dependent_floor_0.2",
+   "policies": [
+    "history_large_after_exception",
+    "prompt_only_large_if_hard",
+    "fixed_LS"
+   ],
+   "best_fixed_label": "known-kernel selected (exact table), not learned"
+  },
+  {
+   "config": "rs-K2-crossing-weak-feedback_dependent_floor_0.2",
+   "feedback": "weak",
+   "logger": "feedback_dependent_floor_0.2",
+   "policies": [
+    "history_large_after_exception",
+    "prompt_only_large_if_hard",
+    "fixed_LS"
+   ],
+   "best_fixed_label": "known-kernel selected (exact table), not learned"
+  }
+ ],
+ "workers": 4,
+ "cpu_wall_cap_seconds": 900,
+ "z": 1.959963984540054,
+ "stream_namespace": "cfg=<rs-config>|rep=<b>|<log|fresh>|<logger name or policy>|<task>|<replicate 0..15>",
+ "draw_source": "sampler.SeededDraws: numpy SeedSequence(root_seed, spawn_key=sha256(stream)[:16] as 4 uint32)",
+ "estimators": {
+  "ipw": "sampler.ipw_estimate on the block",
+  "fresh": "sampler.fresh_estimate on the block",
+  "variance": "sampler.within_block_variance on fixed per-episode scores W*Z and Z (exact, then float)",
+  "ipw_minus_fresh": "IPW - fresh, summed variance, target 0",
+  "interval": "estimate +/- z*sqrt(variance); diagnostic: estimate +/- z*sqrt(exact variance)",
+  "failures": "missing/nonfinite/negative variance = failed, noncovering; finite zero variance = point interval"
+ },
+ "reported": [
+  "bias/MCSE",
+  "MSE/MCSE",
+  "empirical SD",
+  "mean estimated and empirical variance / exact",
+  "Wald and exact-variance coverage with binomial MCSE and Wilson",
+  "average length",
+  "lower/upper tail misses",
+  "error-variance correlation",
+  "variance CV",
+  "failures/zero variance",
+  "paired r16-minus-r4 coverage differences with MCSE",
+  "completion fraction"
+ ],
+ "exact_table": {
+  "rs-K2-crossing-informative-feedback_dependent_floor_0.2|history_large_after_exception": {
+   "4": {
+    "truth": 0.7385450256,
+    "ipw_var": 0.00028473012250975193,
+    "fresh_var": 0.00017024575204475196,
+    "d_var": 0.0004549758745545039,
+    "exact": {
+     "truth": "461590641/625000000",
+     "ipw_var": "22244540821074371/78125000000000000000",
+     "fresh_var": "6650224689248123/39062500000000000000",
+     "d_var": "35544990199570617/78125000000000000000"
+    }
+   },
+   "16": {
+    "truth": 0.7385450256,
+    "ipw_var": 7.118253062743798e-05,
+    "fresh_var": 4.256143801118799e-05,
+    "d_var": 0.00011374396863862597,
+    "exact": {
+     "truth": "461590641/625000000",
+     "ipw_var": "22244540821074371/312500000000000000000",
+     "fresh_var": "6650224689248123/156250000000000000000",
+     "d_var": "35544990199570617/312500000000000000000"
+    }
+   }
+  },
+  "rs-K2-crossing-informative-feedback_dependent_floor_0.2|prompt_only_large_if_hard": {
+   "4": {
+    "truth": 0.6943884,
+    "ipw_var": 0.00101052770215213,
+    "fresh_var": 0.00019400209357088,
+    "d_var": 0.00120452979572301,
+    "exact": {
+     "truth": "1735971/2500000",
+     "ipw_var": "101052770215213/100000000000000000",
+     "fresh_var": "606256542409/3125000000000000",
+     "d_var": "120452979572301/100000000000000000"
+    }
+   },
+   "16": {
+    "truth": 0.6943884,
+    "ipw_var": 0.0002526319255380325,
+    "fresh_var": 4.850052339272e-05,
+    "d_var": 0.0003011324489307525,
+    "exact": {
+     "truth": "1735971/2500000",
+     "ipw_var": "101052770215213/400000000000000000",
+     "fresh_var": "606256542409/12500000000000000",
+     "d_var": "120452979572301/400000000000000000"
+    }
+   }
+  },
+  "rs-K2-crossing-informative-feedback_dependent_floor_0.2|fixed_LS": {
+   "4": {
+    "truth": 0.6974558,
+    "ipw_var": 0.00103119332788965,
+    "fresh_var": 0.0001880229031084,
+    "d_var": 0.00121921623099805,
+    "exact": {
+     "truth": "3487279/5000000",
+     "ipw_var": "20623866557793/20000000000000000",
+     "fresh_var": "470057257771/2500000000000000",
+     "d_var": "24384324619961/20000000000000000"
+    }
+   },
+   "16": {
+    "truth": 0.6974558,
+    "ipw_var": 0.0002577983319724125,
+    "fresh_var": 4.70057257771e-05,
+    "d_var": 0.0003048040577495125,
+    "exact": {
+     "truth": "3487279/5000000",
+     "ipw_var": "20623866557793/80000000000000000",
+     "fresh_var": "470057257771/10000000000000000",
+     "d_var": "24384324619961/80000000000000000"
+    }
+   }
+  },
+  "rs-K2-crossing-weak-feedback_dependent_floor_0.2|history_large_after_exception": {
+   "4": {
+    "truth": 0.6875082576,
+    "ipw_var": 0.0002914857858068964,
+    "fresh_var": 0.0001900709229318964,
+    "d_var": 0.0004815567087387928,
+    "exact": {
+     "truth": "429692661/625000000",
+     "ipw_var": "22772327016163781/78125000000000000000",
+     "fresh_var": "7424645427027203/39062500000000000000",
+     "d_var": "37621617870218187/78125000000000000000"
+    }
+   },
+   "16": {
+    "truth": 0.6875082576,
+    "ipw_var": 7.28714464517241e-05,
+    "fresh_var": 4.75177307329741e-05,
+    "d_var": 0.0001203891771846982,
+    "exact": {
+     "truth": "429692661/625000000",
+     "ipw_var": "22772327016163781/312500000000000000000",
+     "fresh_var": "7424645427027203/156250000000000000000",
+     "d_var": "37621617870218187/312500000000000000000"
+    }
+   }
+  },
+  "rs-K2-crossing-weak-feedback_dependent_floor_0.2|prompt_only_large_if_hard": {
+   "4": {
+    "truth": 0.6943884,
+    "ipw_var": 0.00124989517249588,
+    "fresh_var": 0.00019400209357088,
+    "d_var": 0.00144389726606676,
+    "exact": {
+     "truth": "1735971/2500000",
+     "ipw_var": "31247379312397/25000000000000000",
+     "fresh_var": "606256542409/3125000000000000",
+     "d_var": "36097431651669/25000000000000000"
+    }
+   },
+   "16": {
+    "truth": 0.6943884,
+    "ipw_var": 0.00031247379312397,
+    "fresh_var": 4.850052339272e-05,
+    "d_var": 0.00036097431651669,
+    "exact": {
+     "truth": "1735971/2500000",
+     "ipw_var": "31247379312397/100000000000000000",
+     "fresh_var": "606256542409/12500000000000000",
+     "d_var": "36097431651669/100000000000000000"
+    }
+   }
+  },
+  "rs-K2-crossing-weak-feedback_dependent_floor_0.2|fixed_LS": {
+   "4": {
+    "truth": 0.6974558,
+    "ipw_var": 0.0013261198918584,
+    "fresh_var": 0.0001880229031084,
+    "d_var": 0.0015141427949668,
+    "exact": {
+     "truth": "3487279/5000000",
+     "ipw_var": "1657649864823/1250000000000000",
+     "fresh_var": "470057257771/2500000000000000",
+     "d_var": "3785356987417/2500000000000000"
+    }
+   },
+   "16": {
+    "truth": 0.6974558,
+    "ipw_var": 0.0003315299729646,
+    "fresh_var": 4.70057257771e-05,
+    "d_var": 0.0003785356987417,
+    "exact": {
+     "truth": "3487279/5000000",
+     "ipw_var": "1657649864823/5000000000000000",
+     "fresh_var": "470057257771/10000000000000000",
+     "d_var": "3785356987417/10000000000000000"
+    }
+   }
+  }
+ },
+ "output_isolation": "records written under work/runs (git-ignored) with a writer lock; atomic finalize to results/",
+ "not_for": "fitted DR/OR scores; interval repair claims; changing the completed validation",
+ "source_sha256": {
+  "experiments/v2_sim/replication_sensitivity.py": "2e1851c7ce24e87302dd4be23adf948241406f68b69b1d9f83ff551081fa3606",
+  "experiments/v2_sim/coverage_batch.py": "a7f9f40d494b72a78b71dc465cdaa742ebe2cc28ab1957d8ad8ed2fdbc60ca13",
+  "experiments/v2_sim/writer_lock.py": "dc15bb2228e2575368619257175fbb45ef88858125fc65cea6ad797f03f7ef7d",
+  "experiments/v2_sim/sampler.py": "6826551ef65a821eebfabd4f74c9ede4e38da50e8bc6b40e72e23f0bd2926c13",
+  "experiments/v2_sim/repair_generator.py": "ffd6878afdf208f8c32ef75feda5fa324ab01b3387adcfeea96fe08d14017ecd",
+  "experiments/v2_sim/repair_logger.py": "d0305470c9e02b3c6cd5afe274a6e081a6d32cacb970887a4a332dae41276344",
+  "experiments/v2_sim/fixed_task_blocks.py": "fafa3bc90da3114c8ff858a979476617dd4e47aabac6ca9d8fe7343d9b42dfa1",
+  "experiments/v2_sim/dev_batch.py": "d4d85208a1534b9f3326fecdcfa6fc338fe02b86b5e0138993874846f7473062",
+  "experiments/v2_sim/repair_generator_v1.json": "22e9f31057fabb9b65d80502d263827dbdbc1e6a90c41b758972f0f5c0d969f4",
+  "experiments/v2_sim/fixed_task_blocks_v1.json": "f57a2fc8d291d3af48095727c9188976b782a96144a9b7c46e135b4c2f83fc10",
+  "experiments/v2_sim/fresh_reference_v1.json": "9f48f0dfa41903294242a64362f3afe10d424964037fbaca650bcf2821e0c637"
+ }
+}
