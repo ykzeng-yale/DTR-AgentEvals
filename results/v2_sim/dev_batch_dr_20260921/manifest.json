@@ -1,0 +1,86 @@
+{
+ "request": "DTR-REQ-003 DR/OR development batch paired on the dev_batch logs (requires lead authorization)",
+ "paired_with": "results/v2_sim/dev_batch_20260921 (35b2f36)",
+ "root_seed": 2026092101,
+ "repetitions_per_cell": 200,
+ "logged_per_task": 4,
+ "n_tasks": 250,
+ "cells": [
+  {
+   "config": "K2-crossing-informative-uniform_floor_0.5",
+   "feedback": "informative",
+   "logger": "uniform_floor_0.5",
+   "policies": [
+    "history_large_after_exception",
+    "prompt_only_large_if_hard",
+    "fixed_LS"
+   ],
+   "best_fixed_label": "known-kernel selected (exact table), not learned"
+  },
+  {
+   "config": "K2-crossing-informative-feedback_dependent_floor_0.2",
+   "feedback": "informative",
+   "logger": "feedback_dependent_floor_0.2",
+   "policies": [
+    "history_large_after_exception",
+    "prompt_only_large_if_hard",
+    "fixed_LS"
+   ],
+   "best_fixed_label": "known-kernel selected (exact table), not learned"
+  },
+  {
+   "config": "K2-crossing-weak-uniform_floor_0.5",
+   "feedback": "weak",
+   "logger": "uniform_floor_0.5",
+   "policies": [
+    "history_large_after_exception",
+    "prompt_only_large_if_hard",
+    "fixed_LS"
+   ],
+   "best_fixed_label": "known-kernel selected (exact table), not learned"
+  },
+  {
+   "config": "K2-crossing-weak-feedback_dependent_floor_0.2",
+   "feedback": "weak",
+   "logger": "feedback_dependent_floor_0.2",
+   "policies": [
+    "history_large_after_exception",
+    "prompt_only_large_if_hard",
+    "fixed_LS"
+   ],
+   "best_fixed_label": "known-kernel selected (exact table), not learned"
+  }
+ ],
+ "folds": 3,
+ "fold_seed": "repetition index",
+ "cpu_wall_cap_seconds": 900,
+ "workers": 4,
+ "estimators": [
+  "trajectory IPW (reproduction check)",
+  "per-decision IPW (pdis)",
+  "cross-fitted task-split DR",
+  "OR plug-in (g-computation)",
+  "known-kernel-Q DR (POSITIVE CONTROL, not fitted)"
+ ],
+ "not_claimed": [
+  "interval coverage",
+  "adaptation benefit",
+  "resource efficiency",
+  "real-agent evidence"
+ ],
+ "source_sha256": {
+  "experiments/v2_sim/dev_batch.py": "d4d85208a1534b9f3326fecdcfa6fc338fe02b86b5e0138993874846f7473062",
+  "experiments/v2_sim/sampler.py": "78e31c0cef35c0d12348c95df88f2594e426f6454944e50363ee858377885aea",
+  "experiments/v2_sim/repair_generator.py": "ffd6878afdf208f8c32ef75feda5fa324ab01b3387adcfeea96fe08d14017ecd",
+  "experiments/v2_sim/repair_logger.py": "d0305470c9e02b3c6cd5afe274a6e081a6d32cacb970887a4a332dae41276344",
+  "experiments/v2_sim/fixed_task_blocks.py": "fafa3bc90da3114c8ff858a979476617dd4e47aabac6ca9d8fe7343d9b42dfa1",
+  "experiments/v2_sim/repair_generator_v1.json": "22e9f31057fabb9b65d80502d263827dbdbc1e6a90c41b758972f0f5c0d969f4",
+  "experiments/v2_sim/fixed_task_blocks_v1.json": "f57a2fc8d291d3af48095727c9188976b782a96144a9b7c46e135b4c2f83fc10",
+  "experiments/v2_sim/fresh_reference_v1.json": "9f48f0dfa41903294242a64362f3afe10d424964037fbaca650bcf2821e0c637",
+  "experiments/v2_sim/dev_batch_dr.py": "06845017e7747bd38ab24998ccbda6e2a7558136733909dd8a6d7981035b3e8c",
+  "experiments/v2_sim/dr_bridge.py": "6e8732334b33cbdd99106fc52c8dfb8fa8e2cbc87cd933cc035cf9741316a032",
+  "experiments/code_routing/estimators_absorbing.py": "791fad5ad2ad8944599864cf37a82d18d3cadda165c70b73a44ca6104714a403",
+  "results/v2_sim/dev_batch_20260921/reps.jsonl": "9f42c80912c92f82282abc1d25af5495f4ec24a4779ec7f9271db07bf5219618",
+  "results/v2_sim/dev_batch_20260921/manifest.json": "3c35cdc461ca9b0e4245b535cfd3f605cc0ab7ade34bdb619be731be625f45f3"
+ }
+}
