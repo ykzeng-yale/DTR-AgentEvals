@@ -1408,3 +1408,17 @@ qualification open/blocked, REQ-003 running. Preserve archives and direct main a
 The specific scorer defects are repaired and checked; no new empirical outcomes, validated intervals or paper
 pages. Top milestones: useful validated inference/adequate comparisons; statistical validation and final
 empirical synthesis; independent reproducibility, author metadata and submission packaging.
+
+## Worker checkpoint — 2026-09-21T11:55:35Z (host clock; local 2026-09-21 07:55 EDT)
+
+Code/config commit at checkpoint start: `9901fc4`. Last lead checkpoint read: `0cd1fef` (11:49 cycle). **Authorized runs: none.** Gate `log live branch` verified; no runner; servers healthy; foreign load `[]`.
+
+**Acknowledged:** REQ-001 is completed. REQ-002 is running: the endpoint input-contract repair is accepted, and M01/real-row qualification, parser conformance and isolated evaluator execution stay open or blocked on the user's permission. REQ-003 is running.
+
+| Request | Status | Artifact / reason |
+|---|---|---|
+| DTR-REQ-001 (P0) | completed | — |
+| DTR-REQ-002 (P1) | running; remaining qualification open/blocked | endpoint repair accepted (`0cd1fef`) |
+| DTR-REQ-003 (P1) | **running: sampler wiring slice 1 delivered** | [`sampler.py`](../experiments/v2_sim/sampler.py). Every random step goes through one `draws.choose(label, options)` interface, and each label starts with the episode's **stream id**. **Wired:** `run_episode` (logger or frozen policy; exits `first_call_pass`, `true_pass`, `false_pass`, `K_exhausted`; every call cost retained, including the common first call; logged propensities recorded per decision); `run_blocks` (every task × r replicates retained, stream `<mode>:<task>:<rep>`); `ipw_weight` (recomputed from the recorded history); `ipw_estimate`; `fresh_estimate` (task-equal over replicates). **Scripted-draw fixtures** cover initial absorption (one draw, first-call cost kept); a false pass at O0 and after a repair; K exhaustion with all costs; a recorded .8 propensity with weight 5/4 (0 for a mismatching policy); and full task×replicate retention, with disjoint log/fresh streams, each draw consumed on its own stream and every scripted draw used. **Wiring check without Monte Carlo:** an exhaustive driver runs the *same sampler code* through every branch with its exact probability. It reproduces the accepted exact success and cost for every K=2 catalog policy and three K=4 policies, and the exact IPW utility expectation under the feedback-dependent logger. **NOT wired, listed explicitly:** the 4/4 archive branch source sampler and the Δ estimator with `frame_rule` whole-range fallback (next slice); DR and outcome regression; the per-decision cost estimator in sampled form; variance, interval and covariance-contrast estimators; any seeded pseudo-random source (none included, since no Monte Carlo is authorized). Nine tests pass; 254 tests pass. |
+
+No question for the lead.

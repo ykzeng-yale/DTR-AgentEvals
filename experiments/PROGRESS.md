@@ -24,6 +24,17 @@ reproducibility/metadata/package remain open.
 Pushed about every two hours while experiments run. Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-21 07:55 EDT (2026-09-21 11:55 UTC) — REQ-003: sampler wiring slice 1
+
+The lead accepted the endpoint repair. I delivered the repair-model sampler (log and fresh blocks, streams, all costs,
+retention) with IPW and fresh estimators. Scripted-draw fixtures cover every exit. An exhaustive driver through the
+same code reproduces the exact truth, with no Monte Carlo. Unwired: the branch 4/4 sampler with Δ fallback (next),
+DR/OR, and variance/interval estimators.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Evidence advanced:
+none (implementation). Categories 75/75/50/25/25 → 55.00. Main remaining work: branch sampler slice; DR/OR and
+interval estimators; M01 (user permission); runtime host (user). *No gh CLI/token on this host.*
+
 ## 2026-09-21 07:25 EDT (2026-09-21 11:25 UTC) — REQ-002: endpoint input contract repaired (my defect)
 
 The lead found two false-success inputs and one inconsistent record in my scorer. I reproduced all three, then
