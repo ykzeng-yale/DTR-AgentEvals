@@ -1,0 +1,177 @@
+{
+ "request": "DTR-REQ-003 P0 repeated-training honest-split DR coverage (lead 3f4dfc2)",
+ "kind": "DEVELOPMENT operating characteristics over repeated training/evaluation samples; not fixed-fit conditional coverage",
+ "root_seed": 2026092104,
+ "repetitions_per_cell": 1000,
+ "workers": 4,
+ "total_wall_budget_seconds": 900,
+ "z": 1.959963984540054,
+ "cells": [
+  {
+   "config": "hsc-K2-crossing-informative-uniform_floor_0.5",
+   "feedback": "informative",
+   "logger": "uniform_floor_0.5",
+   "policies": [
+    "history_large_after_exception",
+    "prompt_only_large_if_hard",
+    "fixed_LS"
+   ],
+   "best_fixed_label": "known-kernel selected (exact table), not learned"
+  },
+  {
+   "config": "hsc-K2-crossing-informative-feedback_dependent_floor_0.2",
+   "feedback": "informative",
+   "logger": "feedback_dependent_floor_0.2",
+   "policies": [
+    "history_large_after_exception",
+    "prompt_only_large_if_hard",
+    "fixed_LS"
+   ],
+   "best_fixed_label": "known-kernel selected (exact table), not learned"
+  },
+  {
+   "config": "hsc-K2-crossing-weak-uniform_floor_0.5",
+   "feedback": "weak",
+   "logger": "uniform_floor_0.5",
+   "policies": [
+    "history_large_after_exception",
+    "prompt_only_large_if_hard",
+    "fixed_LS"
+   ],
+   "best_fixed_label": "known-kernel selected (exact table), not learned"
+  },
+  {
+   "config": "hsc-K2-crossing-weak-feedback_dependent_floor_0.2",
+   "feedback": "weak",
+   "logger": "feedback_dependent_floor_0.2",
+   "policies": [
+    "history_large_after_exception",
+    "prompt_only_large_if_hard",
+    "fixed_LS"
+   ],
+   "best_fixed_label": "known-kernel selected (exact table), not learned"
+  }
+ ],
+ "truths": {
+  "hsc-K2-crossing-informative-uniform_floor_0.5|history_large_after_exception": {
+   "exact": "461590641/625000000",
+   "float": 0.7385450256
+  },
+  "hsc-K2-crossing-informative-uniform_floor_0.5|prompt_only_large_if_hard": {
+   "exact": "1735971/2500000",
+   "float": 0.6943884
+  },
+  "hsc-K2-crossing-informative-uniform_floor_0.5|fixed_LS": {
+   "exact": "3487279/5000000",
+   "float": 0.6974558
+  },
+  "hsc-K2-crossing-informative-feedback_dependent_floor_0.2|history_large_after_exception": {
+   "exact": "461590641/625000000",
+   "float": 0.7385450256
+  },
+  "hsc-K2-crossing-informative-feedback_dependent_floor_0.2|prompt_only_large_if_hard": {
+   "exact": "1735971/2500000",
+   "float": 0.6943884
+  },
+  "hsc-K2-crossing-informative-feedback_dependent_floor_0.2|fixed_LS": {
+   "exact": "3487279/5000000",
+   "float": 0.6974558
+  },
+  "hsc-K2-crossing-weak-uniform_floor_0.5|history_large_after_exception": {
+   "exact": "429692661/625000000",
+   "float": 0.6875082576
+  },
+  "hsc-K2-crossing-weak-uniform_floor_0.5|prompt_only_large_if_hard": {
+   "exact": "1735971/2500000",
+   "float": 0.6943884
+  },
+  "hsc-K2-crossing-weak-uniform_floor_0.5|fixed_LS": {
+   "exact": "3487279/5000000",
+   "float": 0.6974558
+  },
+  "hsc-K2-crossing-weak-feedback_dependent_floor_0.2|history_large_after_exception": {
+   "exact": "429692661/625000000",
+   "float": 0.6875082576
+  },
+  "hsc-K2-crossing-weak-feedback_dependent_floor_0.2|prompt_only_large_if_hard": {
+   "exact": "1735971/2500000",
+   "float": 0.6943884
+  },
+  "hsc-K2-crossing-weak-feedback_dependent_floor_0.2|fixed_LS": {
+   "exact": "3487279/5000000",
+   "float": 0.6974558
+  }
+ },
+ "cohorts": {
+  "train": {
+   "tasks": "t0000..t0249",
+   "sha256": "cc3a03d099fc7fe34835dd52eaa9653aa04defc7510969c1e08d3dbc23561b8e",
+   "replicates": 4
+  },
+  "eval": {
+   "tasks": "t0250..t0499",
+   "sha256": "e2898c5857b72940af50986c794c0bfdc16c681f73dfdf48b9b35a424d7ca502",
+   "replicates": 4
+  },
+  "fresh": {
+   "tasks": "evaluation tasks",
+   "replicates": 4
+  }
+ },
+ "stream_namespace": "cfg=<hsc-config>|rep=<b>|cohort=<train|eval|fresh>|<log|fresh>|<logger or policy>|<task>|<replicate>",
+ "nuisance": {
+  "refit": "per repetition and policy, on that repetition's training cohort only",
+  "fit": "estimators_absorbing.fit_q via honest_split_dr.fit_frozen_q",
+  "feature_map": "dr_bridge.state_key(observed_state) = (stratum S, stage t, observations so far, earlier actions); no latent U",
+  "policies": "catalog policies by name (repair_generator.catalog(2))",
+  "table_hash": "q_fallback_table_sha256 covers Q/fallback tables ONLY; provenance = this manifest + source hashes"
+ },
+ "estimands": {
+  "dr": "honest_split_dr.dr_estimate_and_variance",
+  "ipw": "sampler.ipw_estimate + within_block_variance(W*Z) on the same evaluation records",
+  "or_plugin": "descriptive only",
+  "fresh": "sampler.fresh_estimate + within_block_variance",
+  "dr_minus_fresh": "summed variance, target 0",
+  "ipw_minus_fresh": "summed variance, target 0"
+ },
+ "failures": "missing/nonfinite/negative variance = failed, noncovering; finite zero variance = point interval; errors recorded, never dropped",
+ "reported": [
+  "coverage + MCSE + Wilson",
+  "lower/upper misses",
+  "bias + MCSE",
+  "RMSE",
+  "empirical and mean estimated variance",
+  "average length",
+  "variance CV",
+  "error-variance correlation",
+  "failed/zero intervals",
+  "paired DR-minus-IPW squared-error difference + MCSE",
+  "OR bias/RMSE (descriptive)",
+  "training resource use",
+  "requested/completed denominators"
+ ],
+ "not_claimed": [
+  "fixed-fit conditional coverage",
+  "cross-fitted inference",
+  "equal-total-budget superiority",
+  "multiplicity-adjusted or uniform calibration"
+ ],
+ "output_isolation": "records under work/runs (git-ignored) with a writer lock; atomic finalize to results/",
+ "source_sha256": {
+  "experiments/v2_sim/honest_split_coverage.py": "861313849d6050b053c3b21a1ef23e3016496c2f40fab6ea93add910c1a7e62b",
+  "experiments/v2_sim/honest_split_dr.py": "7a06898afdc6a2c23901cfeb005391901c6ed7cf3ad822f7bad52bdf0424bc42",
+  "experiments/v2_sim/dr_bridge.py": "6e8732334b33cbdd99106fc52c8dfb8fa8e2cbc87cd933cc035cf9741316a032",
+  "experiments/code_routing/estimators_absorbing.py": "791fad5ad2ad8944599864cf37a82d18d3cadda165c70b73a44ca6104714a403",
+  "experiments/v2_sim/sampler.py": "6826551ef65a821eebfabd4f74c9ede4e38da50e8bc6b40e72e23f0bd2926c13",
+  "experiments/v2_sim/repair_generator.py": "ffd6878afdf208f8c32ef75feda5fa324ab01b3387adcfeea96fe08d14017ecd",
+  "experiments/v2_sim/repair_logger.py": "d0305470c9e02b3c6cd5afe274a6e081a6d32cacb970887a4a332dae41276344",
+  "experiments/v2_sim/fixed_task_blocks.py": "fafa3bc90da3114c8ff858a979476617dd4e47aabac6ca9d8fe7343d9b42dfa1",
+  "experiments/v2_sim/dev_batch.py": "d4d85208a1534b9f3326fecdcfa6fc338fe02b86b5e0138993874846f7473062",
+  "experiments/v2_sim/coverage_batch.py": "a7f9f40d494b72a78b71dc465cdaa742ebe2cc28ab1957d8ad8ed2fdbc60ca13",
+  "experiments/v2_sim/replication_sensitivity.py": "2e1851c7ce24e87302dd4be23adf948241406f68b69b1d9f83ff551081fa3606",
+  "experiments/v2_sim/writer_lock.py": "dc15bb2228e2575368619257175fbb45ef88858125fc65cea6ad797f03f7ef7d",
+  "experiments/v2_sim/repair_generator_v1.json": "22e9f31057fabb9b65d80502d263827dbdbc1e6a90c41b758972f0f5c0d969f4",
+  "experiments/v2_sim/fixed_task_blocks_v1.json": "f57a2fc8d291d3af48095727c9188976b782a96144a9b7c46e135b4c2f83fc10",
+  "experiments/v2_sim/fresh_reference_v1.json": "9f48f0dfa41903294242a64362f3afe10d424964037fbaca650bcf2821e0c637"
+ }
+}

@@ -229,10 +229,46 @@ def test_job_wiring_on_a_small_block_is_deterministic_and_reports_training_cost(
         assert math.isclose(p['d_var'], p['dr_var'] + p['fresh_var']) and math.isclose(p['d'], p['dr'] - p['fresh'])
 
 
+def close_tree(a, b, tol=1e-12, path='$'):
+    """Recursive comparison (lead 3f4dfc2): dict keys, list lengths/order and every NON-float value (ids, counts, hashes,
+    strings, booleans, ints) must match exactly; floats must agree within abs OR rel 1e-12. Returns a list of problems."""
+    if isinstance(a, bool) or isinstance(b, bool) or not (isinstance(a, float) or isinstance(b, float)):
+        if isinstance(a, dict) and isinstance(b, dict):
+            if list(a) != list(b):
+                return ['%s: keys %s != %s' % (path, list(a), list(b))]
+            return [x for k in a for x in close_tree(a[k], b[k], tol, '%s.%s' % (path, k))]
+        if isinstance(a, list) and isinstance(b, list):
+            if len(a) != len(b):
+                return ['%s: length %d != %d' % (path, len(a), len(b))]
+            return [x for i, (u, v) in enumerate(zip(a, b)) for x in close_tree(u, v, tol, '%s[%d]' % (path, i))]
+        return [] if (type(a) is type(b) and a == b) else ['%s: %r != %r' % (path, a, b)]
+    if not (isinstance(a, (int, float)) and isinstance(b, (int, float))) or isinstance(a, bool) or isinstance(b, bool):
+        return ['%s: %r != %r' % (path, a, b)]
+    d = abs(a - b)
+    return [] if (d <= tol or d <= tol * max(abs(a), abs(b))) else ['%s: %r != %r (diff %.3g)' % (path, a, b, d)]
+
+
+def test_close_tree_accepts_rounding_and_rejects_material_or_metadata_changes():
+    import copy
+    base = json.loads((H.OUT / 'exact_checks.json').read_text())
+    assert close_tree(base, copy.deepcopy(base)) == []
+    tiny = copy.deepcopy(base); tiny['rows'][0]['fixtures']['zero_q']['strata']['easy']['variance'] *= (1 + 4e-16)
+    assert close_tree(base, tiny) == []                                   # platform-level rounding accepted
+    for mutate in (lambda x: x['rows'][0]['fixtures']['zero_q']['strata']['easy'].__setitem__('variance', x['rows'][0]['fixtures']['zero_q']['strata']['easy']['variance'] + 1e-6),
+                   lambda x: x['rows'][0]['fixtures']['zero_q'].__setitem__('nuisance_sha256', '0' * 64),
+                   lambda x: x['rows'][0]['fixtures']['zero_q']['strata']['easy'].__setitem__('branches', 474),
+                   lambda x: x['rows'][0].__setitem__('policy', 'fixed_SS'),
+                   lambda x: x['rows'].pop(),
+                   lambda x: x['rows'][0]['fixtures'].pop('zero_q')):
+        bad = copy.deepcopy(base); mutate(bad)
+        assert close_tree(base, bad), 'a material or metadata change was accepted'
+
+
 def test_exact_check_artifact_regenerates_and_matches_independent_moments():
     committed = json.loads((H.OUT / 'exact_checks.json').read_text())
     out = H.exact_checks()
-    assert json.loads(json.dumps(out['rows'])) == committed['rows']
+    problems = close_tree(json.loads(json.dumps(out['rows'])), committed['rows'])
+    assert problems == [], problems[:5]
     assert committed['all_conditional_dr_means_exact'] and committed['max_abs_diff_conditional_dr_mean_vs_truth'] <= 1e-12
     assert committed['max_rel_diff_expected_within_task_estimator_vs_exact_variance'] <= 1e-12
     assert len(committed['rows']) == 12 and all(len(r['fixtures']) == 4 for r in committed['rows'])

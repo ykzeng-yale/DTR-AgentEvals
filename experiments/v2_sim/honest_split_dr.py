@@ -72,7 +72,10 @@ class LeakageError(RuntimeError):
 @dataclass(frozen=True)
 class FrozenNuisance:
     """Immutable fitted nuisance: per-stage Q tables {key: {a: value}}, per-stage fallback {a: value}, the feature map
-    description, the policy name, the training task ids and a content hash. Built only from training episodes."""
+    description, the policy name and the training task ids. Built only from training episodes.
+    `sha256` is a Q/FALLBACK-TABLE hash only (canonical JSON of the tables): it does NOT cover the feature map, the
+    policy, the training ids or the code; that provenance is pinned separately (batch manifests record it with the
+    source hashes of every imported scoring/generator module). Records call it q_fallback_table_sha256."""
     policy: str
     Q: tuple
     fallback: tuple
@@ -168,7 +171,7 @@ def job(cell_spec, b, root_seed, n=N_TASKS):
         fv = float(S.within_block_variance(fresh, lambda e: e['utility'], eval_t, R_FRESH))
         fe = float(S.fresh_estimate(fresh, eval_t, R_FRESH))
         rec['policies'][name] = dict(dr=dr['estimate'], dr_var=dr['variance'], or_plugin=dr['or_plugin'], fresh=fe, fresh_var=fv,
-                                     d=dr['estimate'] - fe, d_var=dr['variance'] + fv, nuisance_sha256=nu.sha256,
+                                     d=dr['estimate'] - fe, d_var=dr['variance'] + fv, nuisance_sha256=nu.sha256,  # Q/fallback-table hash only
                                      missing_q_cells_in_training=nu.missing_q_cells_in_training)
     return rec
 
