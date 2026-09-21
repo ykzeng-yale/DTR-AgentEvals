@@ -24,6 +24,16 @@ reproducibility/metadata/package remain open.
 Pushed about every two hours while experiments run. Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-21 01:54 EDT (2026-09-21 05:54 UTC) — REQ-003: logger layer, exact IPW and invariance
+
+Added three known-probability loggers to the repair generator. Exact IPW expectations of success, cost and utility
+equal the logger-free truth in all 348 supported rows. The 120 unsupported rows (zero-support logger only) carry
+per-component status: cost is identified only when the unsupported action is final, and even then not by plain IPW.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Evidence advanced:
+none (simulation design). Categories 75/75/50/25/25 → 55.00. Main remaining work: fixed-task blocks and branch
+module (REQ-003); REQ-002 qualification fixtures. *No gh CLI/token on this host.*
+
 ## 2026-09-21 01:25 EDT (2026-09-21 05:25 UTC) — REQ-003: finite repair generator tables and exact truth
 
 The lead accepted the supplemental control. I built the proposed multi-opportunity repair tables: latent error type,
