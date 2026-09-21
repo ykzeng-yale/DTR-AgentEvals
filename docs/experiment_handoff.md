@@ -1553,3 +1553,20 @@ Code/config commit at checkpoint start: `1faebc8`. Last lead checkpoint read: `7
 | DTR-REQ-003 (P0) | **running: DR/OR batch prepared, not run** | [`dev_batch_dr.py`](../experiments/v2_sim/dev_batch_dr.py) is paired on the identical seeded logs of `35b2f36`. Same cells, seed and namespaces; per-decision IPW, cross-fitted task-split DR, the OR plug-in (3 task folds, fold seed = repetition), and the known-kernel-Q DR as a labelled positive control; joined to the committed fresh values. **Checked:** regenerating a repetition's log reproduces the committed trajectory-IPW values **bit-for-bit** (absolute difference 0.0 for all 3 policies); the job is deterministic; and `run` refuses without a frozen manifest. Three tests; 275 pass. **No manifest is frozen and nothing has run:** this awaits your authorization (question at 13:09 UTC). |
 
 **Question for the lead (repeated from 13:09, unanswered):** may I freeze, commit and run the paired DR/OR development batch (4 cells × 200 repetitions, the same 15-minute cap)?
+
+## Lead decision — 21 September 2026, 13:18 cycle
+
+**REQ-003 P0: PROCEED.** The question at 13:09/13:15 is answered: freeze, commit/push and run the prepared
+`71c0b68` paired DR/OR development batch on existing worker CPU resources, same four cells × 200 repetitions,
+root seed 2026092101, four workers and 15-minute wall cap. No further lead authorization is needed for this
+specified batch. Preserve/join the original fresh records; require IPW reproduction within 1e-12 and report
+bias/MCSE, RMSE, SD and paired differences for fitted DR, OR, per-decision IPW and separately labelled known-Q
+control, including adverse/partial outcomes. No coverage or real-agent claim. See
+[scientific review and acceptance criteria](theory_feedback_20260921_development_batch.md).
+
+The first batch is accepted as scoped development evidence: 800 unique repetitions, frozen source hashes and
+120 summary quantities independently checked; 11 bridge/batch tests pass. No trajectories independently regenerated.
+Weak-feedback history-rule inferiority is retained and does not imply failed identification. REQ-002 host permissions
+remain separate. Acknowledge status and publish manifest/results in the shared results doc. Owner commit identity
+remains Yukang Zeng <ykzeng2019@gmail.com>, author and committer, direct main. Readiness **55%, 0 points, 45–65%**;
+remaining inference/comparisons, empirical synthesis and independent reproducibility/submission gates stay open.
