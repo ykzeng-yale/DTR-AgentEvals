@@ -81,5 +81,34 @@ def main():
             'n/a' if not o else '%+.5f(%.5f)' % (o['mean_error'], o['mcse'])))
 
 
+# ---- PREPARED, NOT RUN: targeted confirmation proposed to the lead (checkpoint 13:49 UTC); run only after the lead answers ----
+def or_plugin_with_stage2_q(train, test, pol, stage2_q):
+    """OR plug-in for stage 0 (the first decision), fitted exactly as estimators_absorbing.fit_q does it, except that
+    the stage-1 continuation values come from `stage2_q` (key -> {a: value}) instead of a fitted table. Returns the
+    per-test-unit plug-in V_0 (0 for units without a first decision). With stage2_q equal to the fitted stage-1 table
+    this reproduces the standard plug-in, which the tests check."""
+    pp = DB.prob_policy(pol)
+    nextv = np.zeros(len(train))
+    for i in np.nonzero(train.elig[:, 1])[0]:
+        q = stage2_q.get(train.key[i, 1], {})
+        a = int(pp(train.state[i, 1]))
+        if a not in q:
+            raise KeyError('stage-2 value missing for %r, action %d: no silent default' % (train.key[i, 1], a))
+        nextv[i] = q[a]
+    m = train.elig[:, 0]
+    y = train.r[:, 0] + nextv
+    fallback = {aa: (float(y[m & (train.a[:, 0] == aa)].mean()) if (m & (train.a[:, 0] == aa)).any() else float(y[m].mean()))
+                for aa in (0, 1)}
+    cells = {}
+    for i in np.nonzero(m)[0]:
+        cells.setdefault((train.key[i, 0], train.a[i, 0]), []).append(y[i])
+    q0 = {k: float(np.mean(v)) for k, v in cells.items()}
+    v0 = np.zeros(len(test))
+    for i in np.nonzero(test.elig[:, 0])[0]:
+        a = int(pp(test.state[i, 0]))
+        v0[i] = q0.get((test.key[i, 0], a), fallback[a])
+    return v0
+
+
 if __name__ == '__main__':
     main()

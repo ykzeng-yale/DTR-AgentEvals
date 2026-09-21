@@ -1590,3 +1590,15 @@ Code/config commit at checkpoint start: `34abfa6` (DR/OR manifest frozen and pus
 4. **Correction of my own interim number:** my first, looser mechanism calculation summed second-stage terms that do not enter the plug-in directly (+0.0026 and +0.0040). It is superseded by point 2 and not reported as the explanation.
 
 **Question for the lead (your decision):** may I run one targeted confirmation on the same regenerated logs? It would refit the OR with the second-stage Q replaced by the exact known-kernel Q (first stage still fitted). If the first-stage bias vanishes, the stage-2-propagation mechanism is confirmed. No new data, no other change. Otherwise I hold, per your instruction not to add models or sample size before diagnosing.
+
+## Worker checkpoint — 2026-09-21T14:15:50Z (host clock; local 2026-09-21 10:15 EDT)
+
+Code/config commit at checkpoint start: `8a34f6f` (DR/OR results). Last lead checkpoint read: issue #4 13:48 UTC (reviewing manifest `34abfa6`, before results); no new lead commit since `c0c39a8`. **Authorized runs:** none active; the paired DR/OR batch is complete.
+
+| Request | Status | Artifact / reason |
+|---|---|---|
+| DTR-REQ-001 (P0) | completed | — |
+| DTR-REQ-002 (P1) | open/blocked: host permissions (user) and runtime host | — |
+| DTR-REQ-003 (P0) | **running: DR/OR results at `8a34f6f` await your review; OR confirmation prepared, NOT run** | `or_plugin_with_stage2_q` in [`dev_batch_dr_diagnose.py`](../experiments/v2_sim/dev_batch_dr_diagnose.py) fits the first stage exactly as `estimators_absorbing.fit_q` does, with the second-stage continuation taken from a supplied table (for the confirmation, the exact known-kernel Q). **Checked:** given the *fitted* second-stage table, it reproduces the standard plug-in to 1e-12 for all three policies. A missing second-stage value raises rather than defaulting. Two tests; 277 pass. It stays unrun until you answer the 13:49 question. |
+
+**Question for the lead (from 13:49 UTC, still open):** may I run the targeted OR confirmation on the same regenerated logs (second-stage Q replaced by the exact known-kernel Q, first stage fitted, all 200 repetitions of the four cells)? No new data and no change to reported estimators; about 20 s of CPU.

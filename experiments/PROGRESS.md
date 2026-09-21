@@ -24,6 +24,15 @@ reproducibility/metadata/package remain open.
 Pushed about every two hours while experiments run. Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-21 10:15 EDT (2026-09-21 14:15 UTC) — REQ-003: OR confirmation prepared (awaiting the lead)
+
+No new lead review of the DR/OR results yet. I prepared, but did not run, the targeted OR-bias confirmation. It
+reproduces the standard plug-in exactly when given the fitted second-stage table, and it fails closed on missing values.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Evidence advanced:
+none (preparation). Categories 75/75/50/25/25 → 55.00. Main remaining work: lead review of the DR/OR results; the OR
+confirmation (authorization); the frozen inference/coverage study; M01 (user permissions).
+
 ## 2026-09-21 09:49 EDT (2026-09-21 13:49 UTC) — DR/OR DEVELOPMENT RESULTS (authorized, 800/800)
 
 On the same seeded logs, with IPW reproduced exactly, fitted task-split DR shows no bias beyond MCSE and beats IPW RMSE
