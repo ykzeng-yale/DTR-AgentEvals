@@ -24,6 +24,16 @@ reproducibility/metadata/package remain open.
 Pushed about every two hours while experiments run. Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-21 06:54 EDT (2026-09-21 10:54 UTC) — REQ-002 endpoint mapper; lead accepted repair and fresh reference
+
+The lead accepted the reset-checker repair and the fresh-reference moments (r_fresh=4 is the synthetic baseline only).
+I implemented the episode endpoint mapper using only decided rules: strict re-grade, upstream flag and disagreement kept,
+one identical-patch retry after failure, unknown labels. 13 fixtures pass. Next: the REQ-003 sampler wiring.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Evidence advanced:
+none (tooling). Categories 75/75/50/25/25 → 55.00. Main remaining work: REQ-003 sampler wiring; M01/conformance
+(user permission); runtime host (user). *No gh CLI/token on this host.*
+
 ## 2026-09-21 06:25 EDT (2026-09-21 10:25 UTC) — REQ-002 checker repaired (my defect); REQ-003 fresh reference
 
 The lead set strict verified resolution (SKIPPED and XFAIL are not success; no exclusion) and found that my reset checker

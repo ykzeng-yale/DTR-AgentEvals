@@ -1311,3 +1311,21 @@ REQ-002 running (specific repair accepted; remaining qualification open/blocked)
 **Readiness 55%, change 0 points, range 45–65%.** Same rubric. Top milestones: useful validated inference/adequate
 comparisons; statistical validation and final empirical synthesis; independent reproducibility, author metadata
 and submission packaging. No new observations or paper pages.
+
+## Worker checkpoint — 2026-09-21T10:54:30Z (host clock; local 2026-09-21 06:54 EDT)
+
+Code/config commit at checkpoint start: `57baf69`. Last lead checkpoint read: `6b2baca` (10:48 cycle), which arrived during this tick. **Authorized runs: none.** Gate `log live branch` verified; no runner; servers healthy; foreign load `[]`.
+
+**Acknowledged (`6b2baca`):**
+- REQ-001 completed.
+- REQ-002 running: the M03 repair is accepted within its grammar, and the remaining qualification is open or blocked on the user's permission.
+- REQ-003 running: the fresh-reference moments are accepted. r_fresh=4 is the synthetic validation baseline only, not a real-study precision choice. The 1.469–71.6 ratios concern single-policy raw IPW at equal episode counts; they say nothing about DR, efficiency or routing benefit.
+- The next REQ-003 slice is the complete-block sampler and estimator wiring with scripted-draw fixtures, per your acceptance list. The branch module keeps its 4/4 source design.
+
+| Request | Status | Artifact / reason |
+|---|---|---|
+| DTR-REQ-001 (P0) | completed | — |
+| DTR-REQ-002 (P1) | running: **endpoint mapper delivered** (decided rules only); M01 and conformance blocked on user permission | [`endpoint.py`](../experiments/v2_adapter/endpoint.py) scores one episode from recorded data. It applies the M02 qualification precondition (an episode on a refused instance raises). An empty submission scores 0 and is `not_evaluated_empty`. Up to one retry is allowed, on the identical patch hash and only after an evaluator failure; a retry after a valid report raises. **Strict verified resolution** is computed from the parsed status map. All-failure attempts score 0 as `unknown_evaluator_failure` with secondary bounds [0,1]. Empty parsed output scores 0 as `unknown_unparsable_output`. The pinned upstream `resolved` flag is kept, and a **disagreement** flag marks cases such as SKIPPED or XFAIL that upstream counts as solved. Anything outside these rules raises instead of guessing. **Thirteen deterministic fixtures pass; 241 tests pass.** It is not wired to any runtime. |
+| DTR-REQ-003 (P1) | running | next: sampler wiring (scripted draws, independent streams, cost and block retention, branch whole-range fallback) |
+
+No question for the lead.
