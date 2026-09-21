@@ -9,7 +9,7 @@ Episode (per task stratum S, observed at the start; 0 = easy, 1 = hard):
   P(exc | U) = kappa if U = 1 else 1 - kappa. A false pass triggers the declared stop with hidden Y = 0.
   repair opportunities t = 1..K while active: action A_t in {0 small, 1 large}, cost C[A_t];
   the new candidate is correct w.p. REPAIR[U, A]; if not, U' ~ Bern(STAY_DEEP[U, A]) (the action moves the
-  future state) and new feedback O_t ~ obs(U', S). After opportunity K the episode ends with Y = 0.
+  future state) and new feedback O_t ~ obs(U', S). If the final repair fails, the episode ends with Y = 0.
 Visible pass and hidden correctness are distinct: Y is correctness of the final candidate.
 
 Policy truth is derived twice and must agree EXACTLY (the protocol asks for 1e-10):

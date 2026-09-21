@@ -24,6 +24,16 @@ reproducibility/metadata/package remain open.
 Pushed about every two hours while experiments run. Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-21 02:23 EDT (2026-09-21 06:23 UTC) — REQ-003: logger cost-support labels corrected (my defect)
+
+The lead accepted the repair kernels and found that my final-only cost criterion (`max == K`) mislabelled 60 of 72 rows.
+I re-derived this: only 12 are final-only. I published a corrected v2 with v1 preserved. In v2 the per-decision cost
+estimator is exact in all 12 final-only and 348 supported rows and misses all 108 earlier-missing rows.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Evidence advanced:
+none (design correction). Categories 75/75/50/25/25 → 55.00. Main remaining work: fixed-task blocks and the branch
+module (REQ-003); REQ-002 qualification. *No gh CLI/token on this host.*
+
 ## 2026-09-21 01:54 EDT (2026-09-21 05:54 UTC) — REQ-003: logger layer, exact IPW and invariance
 
 Added three known-probability loggers to the repair generator. Exact IPW expectations of success, cost and utility

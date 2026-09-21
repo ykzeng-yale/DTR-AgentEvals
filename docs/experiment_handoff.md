@@ -902,3 +902,26 @@ All five logger tests pass locally, but the support test repeats the production 
 suite does not validate that label. Independent internal review confirms the defect. Also rename/document
 `unweighted_matched_success` as an equal-stratum standardized matched mean: its current code averages two
 conditional ratios, not the pooled matched ratio. Keep either summary's definition explicit.
+
+## Worker checkpoint — 2026-09-21T06:23:42Z (host clock; local 2026-09-21 02:23 EDT)
+
+Code/config commit at checkpoint start: `6b2cb71`. Last lead checkpoint read: `935fabd` (05:50 UTC review; issue #4 06:19 UTC says no change since). **Authorized runs: none.** Gate `log live branch` verified; no runner; servers healthy; foreign load `[]`.
+
+**Acknowledged:**
+- Repair kernels accepted as the fixed development artifact. The zero-gain no-crossing cells are retained unchanged, so my table question is answered.
+- There are 8 core kernel cells, with U-irrelevant as 4 auxiliary controls.
+- `false_pass_stop` includes a false pass at the final cap; it is not an avoidable-failure measure.
+- The generator docstring is repaired: "If the final repair fails, the episode ends with Y = 0." This is a wording change only; the output JSON is unchanged.
+
+**Your logger challenge, re-derived before conceding.** From my own v1 output: 120 unsupported rows, 72 labelled final-only, **only 12** with the unsupported set equal to {K}, so **60 labels were wrong**. K=2 fixed SS had times [1, 2]. My classifier and my test both used `max == K`. **You were right**; the defect was mine.
+
+| Request | Status | Artifact / reason |
+|---|---|---|
+| DTR-REQ-001 (P0) | completed | — |
+| DTR-REQ-002 (P1) | running; qualification queued behind REQ-003 | evaluator `f7bbbb2` selected |
+| DTR-REQ-003 (P1) | **running: logger repair delivered for review** | [`repair_logger_v2.json`](../experiments/v2_sim/repair_logger_v2.json), with `repair_logger_v1.json` preserved byte-for-byte (hash pinned in a test). The criterion is now a nonempty unsupported set equal to {K}. Classifier tests cover [K], [K,K], [1,K], [1], [2] and [1,2,3] independently of the data, and a second test recomputes every label with its own set rule. Supported 348, unsupported 120, **final-only 12**, matching your audit. The **per-decision cost estimator** (weights through previous actions, then the known cost of the policy's current action) has an **exact expectation equal to truth in all 348 supported and all 12 final-only rows**. Plain trajectory IPW misses in those 12. The per-decision estimator misses in all 108 rows with earlier missing support, as it must. The identification model is stated in the JSON: known deterministic costs and logging probabilities, with unrestricted and unknown transitions. The explicit logger tables cover every opportunity and state that no draw occurs after a visible pass or the K-th repair. The negative control is relabelled as an equal-stratum standardized matched mean, and a pooled matched ratio is added; both fail under the feedback-dependent logger. The one-decision zero-cost exception is not inherited. Eight tests; 136 pass. |
+
+**Next:** your items 2 and 3.
+- Frozen n=250/1000 task lists and stratum counts, with the target as the mean of task-specific expectations.
+- Complete independent assignment/execution blocks and their covariance assumptions.
+- The archive-matching branch module, kept distinct from the common-initial-small model, with its own initial-action kernel resolved, and the ratio-of-expected-totals target retained.
