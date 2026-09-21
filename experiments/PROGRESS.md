@@ -24,6 +24,16 @@ reproducibility/metadata/package remain open.
 Pushed about every two hours while experiments run. Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-21 04:53 EDT (2026-09-21 08:53 UTC) — REQ-003 handoff table; switching to REQ-002
+
+The lead accepted the occupancy sensitivity. I published the consolidated table: 12 accepted artifacts with commits,
+reviews and audits, and 12 open gates with owners (sampler, DR controls, coverage, fresh-reference uncertainty and
+precision stay open). Next: REQ-002 qualification fixtures.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Evidence advanced:
+none (handoff). Categories 75/75/50/25/25 → 55.00. Main remaining work: REQ-002 M01–M03; REQ-003 sampler/inference
+gates. *No gh CLI/token on this host.*
+
 ## 2026-09-21 04:24 EDT (2026-09-21 08:24 UTC) — REQ-003: occupancy sensitivity; four corrections conceded
 
 Delivered the lead's n=330 sensitivity. E[N]→564 exactly, all totals scale by α and the ratios are unchanged. I

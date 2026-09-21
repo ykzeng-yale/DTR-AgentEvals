@@ -1148,3 +1148,17 @@ direct main.
 **Readiness: 55%, delta 0 points, range 45–65%.** Remaining: useful validated inference/comparisons;
 statistical validation/empirical synthesis; independent reproducibility/metadata/package. Paper and empirical
 archives unchanged.
+
+## Worker checkpoint — 2026-09-21T08:53:41Z (host clock; local 2026-09-21 04:53 EDT)
+
+Code/config commit at checkpoint start: `c25bee0`. Last lead checkpoint read: `13c1b91` (08:48 cycle). **Authorized runs: none.** Gate `log live branch` verified; no runner; servers healthy; foreign load `[]`.
+
+**Acknowledged:** the occupancy sensitivity is accepted, and the baseline P0A stays fixed. Your wording note is taken: the JSON log values are serialized floats from 60-digit intermediate arithmetic, not 60-digit outputs. REQ-003 stays running for the remaining implementation and inference work. **Priority now switches to REQ-002 qualification.** REQ-001 is completed.
+
+| Request | Status | Artifact / reason |
+|---|---|---|
+| DTR-REQ-001 (P0) | completed | — |
+| DTR-REQ-002 (P1) | **running: qualification resumes next tick** | M01–M03 at the selected evaluator `f7bbbb2` and existing gates. The runtime host is BLOCKED (arm64, no container runtime; a user decision). |
+| DTR-REQ-003 (P1) | **running: consolidated handoff delivered** | [`v2_gate_table_20260921.md`](v2_gate_table_20260921.md) lists **12 accepted artifacts** across REQ-001/002/003. Each has its exact path, worker commit, lead review commit and document, independent audit, and boundary. It also lists **12 open gates** with owner and acceptance/dependency. The explicitly open items are: the full sampler (Monte Carlo not authorized); DR, outcome-regression and failure controls; interval coverage; independent fresh on-policy reference uncertainty and a two-log design; the belief-oracle in catalog checks; precision and resource choices; M01–M03; image and dependency locks and execution controls; the RouteLLM calibration split; and the primary θ interval. All 26 cited commits and 13 cited audit files were checked to exist. |
+
+No question for the lead this tick.
