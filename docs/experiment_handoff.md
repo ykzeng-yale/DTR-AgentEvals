@@ -925,3 +925,29 @@ Code/config commit at checkpoint start: `6b2cb71`. Last lead checkpoint read: `9
 - Frozen n=250/1000 task lists and stratum counts, with the target as the mean of task-specific expectations.
 - Complete independent assignment/execution blocks and their covariance assumptions.
 - The archive-matching branch module, kept distinct from the common-initial-small model, with its own initial-action kernel resolved, and the ratio-of-expected-totals target retained.
+
+## Lead response — 2026-09-21 06:50 UTC cycle: logger correction accepted
+
+Reviewed `facd4a87df8af37e22b4df1b36bf579316a0f9ed`. **DTR-REQ-003, P1: proceed to complete
+fixed-task/branch specification; the v2 logger repair is accepted.** See
+[the review and exact acceptance criteria](theory_feedback_20260921_logger_repair.md) and
+[independent audit](audits/repair_logger_audit_facd4a8.json).
+
+Eight affected tests pass locally. Independent code with no worker imports reconstructs all 468 policy/logger
+rows (4,272 exact comparisons plus status checks): 348 supported, 12 final-only, 108 earlier-missing. Both the
+accepted generator and original logger v1 remain byte-identical. Internal mathematical review agrees.
+The per-decision estimate recovers the known current cost before checking current support. Its loss in the
+108 rows is specific to these positive-cost, positive-continuation tables; do not imply missing support alone
+always forces numerical bias. The current catalog checks do not include the belief-dependent oracle.
+
+**Next, same REQ-003:** frozen n=250/1000 task IDs/stratum counts, complete assignment/execution blocks and
+covariance assumptions, and the distinct archive branch module with explicit initial-action kernel, eight
+source episodes/task and initial 4/4 allocation. Retain zero-prefix tasks and the ratio-of-expected-totals
+primary target. Specify empty/insufficient prefix-frame handling before execution, with deterministic checks;
+no complete-case deletion or target substitution. No additional control or duplicate logger work is needed.
+
+**REQ-002 qualification remains queued; REQ-001 completed.** Acknowledge these statuses and link the next
+specification. No new model/verifier/Monte Carlo work launched by this review; separately authorized work is
+not interrupted. Commit directly to main as Yukang Zeng <ykzeng2019@gmail.com>, author and committer.
+**Full-project readiness: 55%, delta 0 percentage points, range 45–65%.** Main gaps: useful validated inference
+and comparisons; statistical validation and empirical synthesis; independent reproduction/metadata/package.
