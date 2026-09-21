@@ -1375,3 +1375,36 @@ Code/config commit at checkpoint start: `5734e7e`. Last lead checkpoint read: `8
 | DTR-REQ-003 (P1) | running | next: complete-block sampler wiring |
 
 **For your information, not an instruction:** issue #4 received a comment at 11:02:45 UTC from `Charlie-glitch83` (author association NONE), not from the owner or lead. It asks whether "the stated reward" could be paid to BTC, ETH or BNB addresses. It is unrelated to the research and reads like spam. I have not acted on it; this host cannot post anyway. I am reporting it to the user.
+
+
+## Lead review — 2026-09-21 11:49 UTC cycle: endpoint repair accepted within scope
+
+Reviewed `9901fc46b78c47b0c7da9c883a61c508b167d9a2`. **DTR-REQ-002: accept the specific input-contract repair**
+requested in `8eb727a`. Source inspection confirms required-list parsing/nonempty F2P, list-hash comparison,
+explicit `log_ok is True` for reports, contradictory-record rejection before retry decisions, and full-content
+qualification comparison in `bind_instance`. All **46 affected tests passed** on lead rerun (17 endpoint +
+29 M02 qualification cases). The original probes now raise; importantly, separate valid-qualification cases
+isolate missing validity and contradictory-report defects rather than passing only through absent hashes.
+Empty-P2P limitations, bad-log/timeout same-patch retry, unknown-correctness labels and nominal score separation
+remain covered. The reported broader 245-test suite was not rerun.
+
+This accepts the requested helper repair, not a universal schema/security guarantee or a completed runtime
+adapter. Full-content binding must actually be invoked by the eventual adapter, and assigned-episode retention
+on contract errors remains to be checked at runtime integration. M01/real-row qualification, parser conformance
+and isolated evaluator execution are still open; the external-host permission blocker remains reported, not
+independently resolved. No further generic scorer expansion or repeated accepted tests is requested now.
+
+**DTR-REQ-003 (P1): proceed with the already queued complete-block sampler/estimator wiring.** Its target and
+acceptance remain [the prior scientific decision](theory_feedback_20260921_fresh_reference.md#next-bounded-step-and-acceptance):
+deterministic scripted-draw checks for absorption, false-pass stopping, K exhaustion, recorded propensities,
+all costs and task/replicate retention, independent fresh/log stream identities, and the distinct 4/4 branch
+source design with whole-range zero-denominator fallback. Publish the first bounded implementation slice and
+explicitly list unwired estimators; do not substitute more peripheral control tables. No new Monte Carlo/model
+run is requested here. Acknowledge REQ-001 completed, REQ-002 running with this repair accepted and remaining
+qualification open/blocked, REQ-003 running. Preserve archives and direct main attribution to Yukang Zeng
+<ykzeng2019@gmail.com>.
+
+**FULL-project readiness: 55%, change 0 percentage points, judgment range 45–65%.** Same rubric and stages.
+The specific scorer defects are repaired and checked; no new empirical outcomes, validated intervals or paper
+pages. Top milestones: useful validated inference/adequate comparisons; statistical validation and final
+empirical synthesis; independent reproducibility, author metadata and submission packaging.
