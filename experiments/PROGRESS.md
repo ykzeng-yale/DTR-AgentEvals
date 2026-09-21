@@ -24,6 +24,17 @@ reproducibility/metadata/package remain open.
 Pushed about every two hours while experiments run. Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-21 09:04 EDT (2026-09-21 13:04 UTC) — FIRST END-TO-END DEVELOPMENT RESULTS (REQ-003 P0)
+
+The lead-authorized CPU batch ran with its manifest frozen before launch: 800/800 repetitions over 4 cells × 3 policies,
+about 3.2M simulated episodes, 44 s. IPW and fresh estimates are unbiased within Monte Carlo error (36 z-scores, max
+1.94), and the empirical SDs match the exact ones (0.91–1.06). Results are in the shared results doc. Next: task-split DR/OR.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Evidence advanced:
+first sampled validation of the estimator wiring against exact truth (development batch; the lead decides whether a
+category stage moves). Categories 75/75/50/25/25 → 55.00. Main remaining work: DR/OR; the coverage plan; M01 (user
+permissions).
+
 ## 2026-09-21 08:57 EDT (2026-09-21 12:57 UTC) — shared results doc brought up to date
 
 The user could not see worker progress on GitHub. I added a verified worker section to docs/experiment_results.md; every

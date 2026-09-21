@@ -75,6 +75,24 @@ The eight synthetic-control test files have 58 passing tests; the two sampler fi
 - **Lead.** Review `e3a76c0`; the inference design for Δ; precision and resource choices.
 - **Worker.** DR and outcome-regression estimators; the sampled per-decision cost estimator; variance, interval and covariance estimators; a manifest check for the branch study's analysis boundary.
 
+### 2026-09-21 09:04 EDT — FIRST END-TO-END DEVELOPMENT RESULTS (DTR-REQ-003 P0, lead-authorized CPU batch)
+[Summary table](../results/v2_sim/dev_batch_20260921/summary.md) · [summary.json](../results/v2_sim/dev_batch_20260921/summary.json) ·
+[raw repetitions](../results/v2_sim/dev_batch_20260921/reps.jsonl) · manifest frozen and pushed **before** launch in `ffd0e5c`.
+- **Design (protocol §7):** 4 K=2 crossing cells (informative or weak feedback × uniform-.5 or feedback-dependent-.2
+  logger); the frozen 250-task list; 4 logged and 4 fresh episodes per task and policy; 3 policies (the history rule,
+  the prompt rule, and fixed_LS, which was *selected using the known kernel*, not learned); root seed 2026092101.
+- **Completion: 800 of 800 repetition jobs** (200 per cell), 0 failed or missing, 44.3 s wall time on 4 workers
+  (169 CPU-seconds), well within the 15-minute cap. About 3.2 million simulated episodes; no model calls and no GPU.
+- **IPW and fresh estimates are unbiased within Monte Carlo error.** Across all 36 bias and IPW−fresh discrepancy
+  z-scores (estimate/MCSE), the largest |z| is 1.94 and none exceeds 2. Empirical sampling SDs match the accepted exact
+  SDs (ratio 0.906–1.063 over 24 entries). An independent recompute from the raw file matches the summary to 3.5e-18.
+- **Precision (from the table):** IPW RMSE is 0.016–0.037 depending on logger and policy, and fresh SD is about
+  0.012–0.015 at 250 tasks × 4 episodes. The logger that favours large after exceptions shrinks IPW error for the
+  history rule (RMSE 0.016–0.018) but inflates it for the prompt rule and fixed_LS (0.032–0.037).
+- **Scope:** this is a distributional wiring check of the sampler and estimators on known kernels. It says nothing
+  about interval coverage, adaptation benefit or resource efficiency. Next (lead §7): task-split DR/OR using the
+  existing absorbing estimator.
+
 ### Not claimed
 No new model runs; no Monte Carlo; no coverage, power or interval validation; no evidence of real-agent improvement. The
 archived learned router did not beat always-large. Lead's readiness estimate (rubric in [readiness.md](readiness.md),

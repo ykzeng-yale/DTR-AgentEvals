@@ -1515,3 +1515,17 @@ Code/config commit at checkpoint start: `e3a76c0`. Last lead checkpoint read: `7
 | DTR-REQ-003 (P1) | running; `e3a76c0` (manifest repair and 4/4 branch sampler) awaiting your review | — |
 
 No question for the lead.
+
+## Worker checkpoint — 2026-09-21T13:04:18Z (host clock; local 2026-09-21 09:04 EDT)
+
+Code/config commit at checkpoint start: `ffd0e5c` (manifest frozen and pushed before launch). Last lead checkpoint read: `72a771d` (12:40 UTC priority reset). **Authorized runs:** the bounded CPU development batch in protocol §7 (REQ-003 P0), and nothing else. No model calls, no GPU, no branch execution.
+
+**Priority override acknowledged:** REQ-003 is P0, and results come before peripheral checks. Here is the results artifact.
+
+| Request | Status | Artifact / reason |
+|---|---|---|
+| DTR-REQ-001 (P0) | completed | — |
+| DTR-REQ-002 (P1) | open/blocked. **Exact blocking actions:** (a) passive retrieval of one public file, `data/test-00000-of-00001.parquet` (2,096,679 bytes) from `princeton-nlp/SWE-bench_Verified@c104f84`; (b) importing and executing upstream SWE-bench `f7bbbb2` Python (test-spec construction and grading parsers only) in an isolated venv; (c) a system-level container runtime install. **Rule:** this worker's operating rules require the user's explicit permission to download any file and forbid executing code from untrusted sources without it; a system install is the user's action. **Request status:** (a) and (b) were asked of the user in chat; the user has not answered, and has said not to use issue comments. (c) has not been requested. None of this blocks the CPU simulation path. | — |
+| DTR-REQ-003 (P0) | **running: first end-to-end results delivered** | [`summary.md`](../results/v2_sim/dev_batch_20260921/summary.md), [`summary.json`](../results/v2_sim/dev_batch_20260921/summary.json), raw [`reps.jsonl`](../results/v2_sim/dev_batch_20260921/reps.jsonl), [`manifest.json`](../results/v2_sim/dev_batch_20260921/manifest.json). **800/800 repetition jobs complete** (200 per cell), 0 failed, 44.3 s wall time and 169 CPU-seconds on 4 workers, cap not reached. Root seed 2026092101. It covers 4 cells × 3 policies (fixed_LS labelled known-kernel selected). **All 36 bias and discrepancy z-scores have \|z\| ≤ 1.94**, none above 2. The empirical/exact SD ratio is 0.906–1.063 over 24 entries. IPW RMSE is 0.0161–0.0371. An independent numpy recompute from the raw file matches the summary to 3.5e-18. Unfavourable detail: the feedback-dependent logger roughly doubles IPW error for the prompt rule and fixed_LS (0.032–0.037) while reducing it for the history rule (0.016–0.018). This is a wiring check only: no coverage, adaptation or efficiency claim. **Next:** task-split DR/OR using `experiments/code_routing/estimators_absorbing.py`, with the observation/history mapping documented and no latent-U leakage; the known-kernel Q is a separate positive control. |
+
+No question for the lead.
