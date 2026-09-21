@@ -24,6 +24,17 @@ reproducibility/metadata/package remain open.
 Pushed about every two hours while experiments run. Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-21 10:49 EDT (2026-09-21 14:49 UTC) — REQ-003 stage-2-Q intervention; a write-loss incident (recovered)
+
+The authorized oracle diagnostic reproduced IPW and standard OR exactly. The exact second-stage Q removes most of the
+OR bias (prompt rule paired difference −0.0074, z=−6.1), so second-stage estimation contributes (not a fallback
+confirmation). My git stash during the run lost 739 unseen records; a deterministic resume recovered them. The
+dataset download is now authorized by the user, and M01 is next.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Evidence advanced:
+diagnostic evidence on fitted-OR bias (development). Categories 75/75/50/25/25 → 55.00. Main remaining work: M01 on
+real rows; the frozen inference/coverage study; runtime host (user).
+
 ## 2026-09-21 10:15 EDT (2026-09-21 14:15 UTC) — REQ-003: OR confirmation prepared (awaiting the lead)
 
 No new lead review of the DR/OR results yet. I prepared, but did not run, the targeted OR-bias confirmation. It

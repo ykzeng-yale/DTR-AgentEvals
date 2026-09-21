@@ -128,6 +128,23 @@ manifest frozen and pushed before launch in `34abfa6`.
   proposed to the lead.
 - **Scope:** development check only; no coverage, adaptation or efficiency claim. Lead review pending.
 
+### 2026-09-21 10:49 EDT — Stage-2-Q intervention on the fitted OR (retrospective oracle diagnostic; authorized by lead `9f9308e`)
+[Summary](../results/v2_sim/dev_batch_or_stage2_20260921/summary.md) · [summary.json](../results/v2_sim/dev_batch_or_stage2_20260921/summary.json) ·
+[incident record](../results/v2_sim/dev_batch_or_stage2_20260921/incident_20260921.json) · manifest frozen before launch in `4927dcb`.
+- **Reproduction on the regenerated logs:** IPW difference 0 and standard-OR difference ≤ 3.3e-16 (acceptance 1e-12),
+  across all 800 repetitions. No new random data.
+- **Result:** replacing the fitted second-stage Q with the exact known-kernel Q, with the first stage fitted identically,
+  removes most of the OR bias in the informative/feedback-dependent cell. For the prompt rule the error goes from +0.0082
+  to +0.0009, a paired difference of −0.0074 (MCSE 0.0012, **z = −6.1**). For fixed_LS it goes from +0.0045 to +0.0013,
+  a paired difference of −0.0032 (z = −2.8). Oracle-stage-2 OR has |z| ≤ 1.57 in all 12 rows; the other cells' paired
+  differences are not significant. The oracle version also has lower RMSE everywhere (0.60–0.79× standard OR).
+- **Conclusion allowed (lead wording):** second-stage estimation *contributes* to the fitted-OR bias in this
+  implementation. This does **not** confirm sparse-cell fallback specifically, because replacing the whole second-stage
+  table also changes non-fallback cells. It is an oracle intervention unavailable in deployment.
+- **Incident (worker error, recovered):** I ran `git stash`/`pull` while the batch was writing its untracked
+  results file. 739 of 800 records were written to a detached file and lost, unseen. Recovery was a deterministic
+  resume under unchanged frozen hashes; 5 of 5 regenerated surviving records match bit-for-bit.
+
 ### Not claimed
 No new model runs; no Monte Carlo; no coverage, power or interval validation; no evidence of real-agent improvement. The
 archived learned router did not beat always-large. Lead's readiness estimate (rubric in [readiness.md](readiness.md),

@@ -1646,3 +1646,15 @@ Readiness remains **55%, change 0 points, range 45–65%**. Retrieval removes a 
 scientific outcomes. Remaining milestones: validated inference/comparisons; statistical validation and
 empirical synthesis; independent reproducibility, metadata and submission packaging. Owner author/committer
 identity and direct-main/no-PR workflow unchanged.
+
+## Worker checkpoint — 2026-09-21T14:49:18Z (host clock; local 2026-09-21 10:49 EDT)
+
+Code/config commit at checkpoint start: `4927dcb` (intervention manifest frozen before launch). Last lead checkpoint read: `517e68e` (download receipt and guidance) and `9f9308e`. **Authorized runs:** the retrospective stage-2-Q intervention (`9f9308e`); it has completed. Nothing is running.
+
+| Request | Status | Artifact / reason |
+|---|---|---|
+| DTR-REQ-001 (P0) | completed | — |
+| DTR-REQ-002 (P1) | **running: dataset available; remaining qualification in progress.** Your download is on your host's ignored `work/`. The author has now told this worker directly to "download all you need", so I will retrieve the identical pinned URL, require SHA-256 `a45b1fe4…`, and proceed with M01. For M01 that means installing SWE-bench `f7bbbb2` in an isolated project venv and running only test-spec construction: no containers, no benchmark execution. The container runtime (a system install) remains the author's action. | — |
+| DTR-REQ-003 (P0) | **running: stage-2-Q intervention delivered** | [`summary.md`](../results/v2_sim/dev_batch_or_stage2_20260921/summary.md), [`summary.json`](../results/v2_sim/dev_batch_or_stage2_20260921/summary.json). IPW reproduces with difference 0 and standard OR within 3.3e-16 over 800 repetitions. In the biased cell the oracle second stage cuts the OR error for the prompt rule from +0.00823 to +0.00088 (paired −0.00735, MCSE 0.00121, z=−6.08) and for fixed_LS from +0.00446 to +0.00127 (paired −0.00320, z=−2.82). Oracle-stage-2 |z| ≤ 1.57 in all 12 rows; other paired differences are not significant; the oracle/standard RMSE ratio is 0.597–0.789. **Conclusion, in your wording:** second-stage estimation contributes to the fitted-OR bias in this implementation. It does not confirm fallback specifically. |
+
+**Incident, my error (recorded in [`incident_20260921.json`](../results/v2_sim/dev_batch_or_stage2_20260921/incident_20260921.json)).** To read `517e68e` while the batch was running, I ran `git stash -u`, `git pull` and `git stash pop`. That moved the untracked `reps.jsonl` the runner had open, so 739 of 800 records went to a detached file. `run_status.json` said 800 completed while only 61 survived; that first status file is preserved as `run_status_first_invocation_misleading.json`. The lost outcomes were never inspected. Recovery: the frozen hashes were unchanged, a deterministic resume appended exactly the 739 missing jobs, 800 unique records were confirmed, and 5 of 5 regenerated surviving records matched bit-for-bit. This is the same failure class as the earlier 665-continuation loss. From now on, no git working-tree operation runs while a writer is active.

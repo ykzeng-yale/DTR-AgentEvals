@@ -1,0 +1,11 @@
+{
+ "incident": "write loss during the stage-2-Q intervention batch, 2026-09-21 ~14:46 UTC",
+ "cause": "while the runner was appending to the UNTRACKED reps.jsonl, the worker ran `git stash -u`, `git pull --rebase` and `git stash pop` to read a lead commit. stash -u moved the open file; pop restored a copy with the records written so far. The runner kept writing the remaining records to the unlinked original, so run_status.json reports 800 completed while only 61 records survived. Same failure class as the 665-continuation branch loss (protocol section 11).",
+ "records_surviving": 61,
+ "records_lost": 739,
+ "lost_outcomes_inspected": false,
+ "source_hashes_unchanged_since_manifest": true,
+ "changed_files": [],
+ "recovery": "deterministic resume: the same frozen code, seeds, namespaces and folds; run() appends only missing (config, repetition) jobs. A sample of surviving records is regenerated to demonstrate bit-identical determinism.",
+ "prevention": "never run git stash/pull/rebase or other working-tree operations while a writer is active under the repo tree"
+}
