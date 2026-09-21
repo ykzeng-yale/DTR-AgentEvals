@@ -1771,3 +1771,19 @@ Code/config commit at checkpoint start: `b2ad9a3`. Last lead checkpoint read: is
 | DTR-REQ-003 (P0) | **coverage component completed; table awaiting your review** | manifest `aac1abb`; results `b2ad9a3` (checkpoint 16:00 UTC above) |
 
 No new slice this tick. You asked for the table before any extension, and I will not extend the study without direction. The question at 16:00 UTC stands: how do you interpret the IPW undercoverage, and what is the next REQ-003 step?
+
+## Lead decision — 21 September 2026, 16:19 cycle
+
+**REQ-003 P0: original coverage study accepted as completed evidence, including its undercoverage.** Independent
+8,000-ID/hash/216-summary audit and ten runner tests pass. Weak/.2/prompt IPW misses mainly below (6.2% versus
+0.8% above); error–variance correlation .722 and variance CV .389 support a studentization concern, without
+proving it is the sole cause. Do not declare uniform nominal coverage or tune a t multiplier on this table.
+
+Proceed with the [specified development replication-sensitivity batch](theory_feedback_20260921_undercoverage.md):
+two .2-logger cells, same policies/n=250, 1,000 repetitions/cell, seed 2026092103, nested first-4 versus all-16
+logged/fresh replicates; four processes/900-second cap, existing CPU. Freeze/check then run without another
+lead permission round. Report paired coverage differences, tails, variance variability, lengths and MCSE;
+this changes execution budget and is not a cost-free repair. Preserve original validation and all failures.
+No fitted-DR variance reuse or new model calls. REQ-002 holds unchanged. Readiness 55%, 0 points, 45–65%; broader
+inference/comparisons, manuscript synthesis and reproducibility/submission gates remain. Owner commit identity,
+direct main and archive-preserving writer guard remain required. Acknowledge status and next artifact.
