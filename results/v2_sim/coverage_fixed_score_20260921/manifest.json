@@ -1,0 +1,232 @@
+{
+ "request": "DTR-REQ-003 P0 fixed-score coverage component (lead f0b4fa2)",
+ "root_seed": 2026092102,
+ "repetitions_per_cell": 2000,
+ "n_tasks": 250,
+ "logged_per_task": 4,
+ "fresh_per_task_policy": 4,
+ "task_list": {
+  "n": 250,
+  "sha256": "cc3a03d099fc7fe34835dd52eaa9653aa04defc7510969c1e08d3dbc23561b8e",
+  "rule": "task g = 't%04d' % g, stratum = g mod 2"
+ },
+ "cells": [
+  {
+   "config": "cov-K2-crossing-informative-uniform_floor_0.5",
+   "feedback": "informative",
+   "logger": "uniform_floor_0.5",
+   "policies": [
+    "history_large_after_exception",
+    "prompt_only_large_if_hard",
+    "fixed_LS"
+   ],
+   "best_fixed_label": "known-kernel selected (exact table), not learned"
+  },
+  {
+   "config": "cov-K2-crossing-informative-feedback_dependent_floor_0.2",
+   "feedback": "informative",
+   "logger": "feedback_dependent_floor_0.2",
+   "policies": [
+    "history_large_after_exception",
+    "prompt_only_large_if_hard",
+    "fixed_LS"
+   ],
+   "best_fixed_label": "known-kernel selected (exact table), not learned"
+  },
+  {
+   "config": "cov-K2-crossing-weak-uniform_floor_0.5",
+   "feedback": "weak",
+   "logger": "uniform_floor_0.5",
+   "policies": [
+    "history_large_after_exception",
+    "prompt_only_large_if_hard",
+    "fixed_LS"
+   ],
+   "best_fixed_label": "known-kernel selected (exact table), not learned"
+  },
+  {
+   "config": "cov-K2-crossing-weak-feedback_dependent_floor_0.2",
+   "feedback": "weak",
+   "logger": "feedback_dependent_floor_0.2",
+   "policies": [
+    "history_large_after_exception",
+    "prompt_only_large_if_hard",
+    "fixed_LS"
+   ],
+   "best_fixed_label": "known-kernel selected (exact table), not learned"
+  }
+ ],
+ "workers": 4,
+ "cpu_wall_cap_seconds": 900,
+ "z": 1.959963984540054,
+ "stream_namespace": "cfg=<cov-config>|rep=<b>|<log|fresh>|<logger name or policy>|<task>|<replicate>",
+ "draw_source": "sampler.SeededDraws: numpy SeedSequence(root_seed, spawn_key=sha256(stream)[:16] as 4 uint32)",
+ "estimators": {
+  "ipw": "sampler.ipw_estimate: task-equal mean of W*Z on the shared log of the repetition",
+  "fresh": "sampler.fresh_estimate: task-equal mean of Z on independent fresh blocks per policy",
+  "variance": "sampler.within_block_variance on the fixed per-episode scores W*Z and Z (exact, then float)",
+  "ipw_minus_fresh": "estimate IPW - fresh, variance = sum of the two (independent logs), target 0",
+  "interval": "estimate +/- z * sqrt(variance); diagnostic: estimate +/- z * sqrt(exact variance)",
+  "failures": "missing/nonfinite/negative variance = failed, noncovering; finite zero variance = point interval"
+ },
+ "exact_table": {
+  "cov-K2-crossing-informative-uniform_floor_0.5|history_large_after_exception": {
+   "truth": 0.7385450256,
+   "ipw_var": 0.000700387656124752,
+   "fresh_var": 0.00017024575204475196,
+   "d_var": 0.0008706334081695039,
+   "exact": {
+    "truth": "461590641/625000000",
+    "ipw_var": "27358892817373123/39062500000000000000",
+    "fresh_var": "6650224689248123/39062500000000000000",
+    "d_var": "17004558753310623/19531250000000000000"
+   }
+  },
+  "cov-K2-crossing-informative-uniform_floor_0.5|prompt_only_large_if_hard": {
+   "truth": 0.6943884,
+   "ipw_var": 0.00065023675557088,
+   "fresh_var": 0.00019400209357088,
+   "d_var": 0.00084423884914176,
+   "exact": {
+    "truth": "1735971/2500000",
+    "ipw_var": "2031989861159/3125000000000000",
+    "fresh_var": "606256542409/3125000000000000",
+    "d_var": "164890400223/195312500000000"
+   }
+  },
+  "cov-K2-crossing-informative-uniform_floor_0.5|fixed_LS": {
+   "truth": 0.6974558,
+   "ipw_var": 0.0006614714211084,
+   "fresh_var": 0.0001880229031084,
+   "d_var": 0.0008494943242168,
+   "exact": {
+    "truth": "3487279/5000000",
+    "ipw_var": "1653678552771/2500000000000000",
+    "fresh_var": "470057257771/2500000000000000",
+    "d_var": "1061867905271/1250000000000000"
+   }
+  },
+  "cov-K2-crossing-informative-feedback_dependent_floor_0.2|history_large_after_exception": {
+   "truth": 0.7385450256,
+   "ipw_var": 0.00028473012250975193,
+   "fresh_var": 0.00017024575204475196,
+   "d_var": 0.0004549758745545039,
+   "exact": {
+    "truth": "461590641/625000000",
+    "ipw_var": "22244540821074371/78125000000000000000",
+    "fresh_var": "6650224689248123/39062500000000000000",
+    "d_var": "35544990199570617/78125000000000000000"
+   }
+  },
+  "cov-K2-crossing-informative-feedback_dependent_floor_0.2|prompt_only_large_if_hard": {
+   "truth": 0.6943884,
+   "ipw_var": 0.00101052770215213,
+   "fresh_var": 0.00019400209357088,
+   "d_var": 0.00120452979572301,
+   "exact": {
+    "truth": "1735971/2500000",
+    "ipw_var": "101052770215213/100000000000000000",
+    "fresh_var": "606256542409/3125000000000000",
+    "d_var": "120452979572301/100000000000000000"
+   }
+  },
+  "cov-K2-crossing-informative-feedback_dependent_floor_0.2|fixed_LS": {
+   "truth": 0.6974558,
+   "ipw_var": 0.00103119332788965,
+   "fresh_var": 0.0001880229031084,
+   "d_var": 0.00121921623099805,
+   "exact": {
+    "truth": "3487279/5000000",
+    "ipw_var": "20623866557793/20000000000000000",
+    "fresh_var": "470057257771/2500000000000000",
+    "d_var": "24384324619961/20000000000000000"
+   }
+  },
+  "cov-K2-crossing-weak-uniform_floor_0.5|history_large_after_exception": {
+   "truth": 0.6875082576,
+   "ipw_var": 0.0006652574993318964,
+   "fresh_var": 0.0001900709229318964,
+   "d_var": 0.0008553284222637928,
+   "exact": {
+    "truth": "429692661/625000000",
+    "ipw_var": "25986621067652203/39062500000000000000",
+    "fresh_var": "7424645427027203/39062500000000000000",
+    "d_var": "16705633247339703/19531250000000000000"
+   }
+  },
+  "cov-K2-crossing-weak-uniform_floor_0.5|prompt_only_large_if_hard": {
+   "truth": 0.6943884,
+   "ipw_var": 0.00065023675557088,
+   "fresh_var": 0.00019400209357088,
+   "d_var": 0.00084423884914176,
+   "exact": {
+    "truth": "1735971/2500000",
+    "ipw_var": "2031989861159/3125000000000000",
+    "fresh_var": "606256542409/3125000000000000",
+    "d_var": "164890400223/195312500000000"
+   }
+  },
+  "cov-K2-crossing-weak-uniform_floor_0.5|fixed_LS": {
+   "truth": 0.6974558,
+   "ipw_var": 0.0006614714211084,
+   "fresh_var": 0.0001880229031084,
+   "d_var": 0.0008494943242168,
+   "exact": {
+    "truth": "3487279/5000000",
+    "ipw_var": "1653678552771/2500000000000000",
+    "fresh_var": "470057257771/2500000000000000",
+    "d_var": "1061867905271/1250000000000000"
+   }
+  },
+  "cov-K2-crossing-weak-feedback_dependent_floor_0.2|history_large_after_exception": {
+   "truth": 0.6875082576,
+   "ipw_var": 0.0002914857858068964,
+   "fresh_var": 0.0001900709229318964,
+   "d_var": 0.0004815567087387928,
+   "exact": {
+    "truth": "429692661/625000000",
+    "ipw_var": "22772327016163781/78125000000000000000",
+    "fresh_var": "7424645427027203/39062500000000000000",
+    "d_var": "37621617870218187/78125000000000000000"
+   }
+  },
+  "cov-K2-crossing-weak-feedback_dependent_floor_0.2|prompt_only_large_if_hard": {
+   "truth": 0.6943884,
+   "ipw_var": 0.00124989517249588,
+   "fresh_var": 0.00019400209357088,
+   "d_var": 0.00144389726606676,
+   "exact": {
+    "truth": "1735971/2500000",
+    "ipw_var": "31247379312397/25000000000000000",
+    "fresh_var": "606256542409/3125000000000000",
+    "d_var": "36097431651669/25000000000000000"
+   }
+  },
+  "cov-K2-crossing-weak-feedback_dependent_floor_0.2|fixed_LS": {
+   "truth": 0.6974558,
+   "ipw_var": 0.0013261198918584,
+   "fresh_var": 0.0001880229031084,
+   "d_var": 0.0015141427949668,
+   "exact": {
+    "truth": "3487279/5000000",
+    "ipw_var": "1657649864823/1250000000000000",
+    "fresh_var": "470057257771/2500000000000000",
+    "d_var": "3785356987417/2500000000000000"
+   }
+  }
+ },
+ "output_isolation": "records written under work/runs (git-ignored) with a writer lock; atomic finalize to results/",
+ "not_for": "fitted DR/OR scores; the broader 2,000-repetition protocol beyond this component",
+ "source_sha256": {
+  "experiments/v2_sim/coverage_batch.py": "a7f9f40d494b72a78b71dc465cdaa742ebe2cc28ab1957d8ad8ed2fdbc60ca13",
+  "experiments/v2_sim/writer_lock.py": "dc15bb2228e2575368619257175fbb45ef88858125fc65cea6ad797f03f7ef7d",
+  "experiments/v2_sim/sampler.py": "6826551ef65a821eebfabd4f74c9ede4e38da50e8bc6b40e72e23f0bd2926c13",
+  "experiments/v2_sim/repair_generator.py": "ffd6878afdf208f8c32ef75feda5fa324ab01b3387adcfeea96fe08d14017ecd",
+  "experiments/v2_sim/repair_logger.py": "d0305470c9e02b3c6cd5afe274a6e081a6d32cacb970887a4a332dae41276344",
+  "experiments/v2_sim/fixed_task_blocks.py": "fafa3bc90da3114c8ff858a979476617dd4e47aabac6ca9d8fe7343d9b42dfa1",
+  "experiments/v2_sim/dev_batch.py": "d4d85208a1534b9f3326fecdcfa6fc338fe02b86b5e0138993874846f7473062",
+  "experiments/v2_sim/repair_generator_v1.json": "22e9f31057fabb9b65d80502d263827dbdbc1e6a90c41b758972f0f5c0d969f4",
+  "experiments/v2_sim/fixed_task_blocks_v1.json": "f57a2fc8d291d3af48095727c9188976b782a96144a9b7c46e135b4c2f83fc10",
+  "experiments/v2_sim/fresh_reference_v1.json": "9f48f0dfa41903294242a64362f3afe10d424964037fbaca650bcf2821e0c637"
+ }
+}
