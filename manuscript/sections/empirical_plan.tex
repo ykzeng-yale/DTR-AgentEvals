@@ -39,10 +39,28 @@ coverages were 0.940 and 0.934, respectively. These selected diagnostics require
 are not evidence that every residual departure has the same cause. Additional replication changes the
 execution budget and sampling distribution; it is not a cost-free interval correction.
 
-These studies do not validate fitted-regression confidence intervals, the joint branch discrepancy,
+An additional honest-split development study refitted observed-history regression on 250 independent
+training tasks with four logged executions each, then evaluated on 250 distinct balanced tasks with four
+logged and four independent on-policy executions per task. It used 1,000 repetitions per cell (4,000 total),
+with frozen regression and fallback tables within each repetition. The original three-fold estimator and
+its results were retained separately. Nominal 95\% Wald coverage over repeated training and evaluation
+samples ranged from 0.936 to 0.955 for honest-split doubly robust value estimates and from 0.933 to 0.957
+for their differences from fresh-policy estimates. Coverage Monte Carlo standard error is approximately
+0.0069 at 0.95 with 1,000 repetitions. In the informative-feedback, nonuniform-logging cell, fixed-schedule
+value coverage was 0.936; prompt-only and fixed-schedule discrepancy coverages were 0.934 and 0.933.
+These departures are retained without declaring uniform calibration or assigning a common cause.
+Doubly robust mean squared error was 0.555--0.922 times trajectory importance weighting on the same
+evaluation records. The weakest paired squared-error comparison was only 1.71 Monte Carlo standard errors
+below zero. Training required 1,000 additional episodes per repetition, shared across policy fits; thus
+these comparisons do not establish equal-total-budget superiority. No failed or zero-variance intervals
+were recorded. This study evaluates repeated-training operating characteristics, not coverage conditional
+on every fitted regression, and does not validate overlapping cross-fitted inference.
+
+The completed studies provide scoped fitted-regression operating characteristics with remaining coverage
+limitations; they do not establish general confidence-interval validity, calibrated joint branch inference,
 or real-agent policy improvement. The underlying manifests, per-repetition estimates, Monte Carlo uncertainty
 and retained failure records are available in the repository under
-\texttt{results/v2\_sim/}; the development, fixed-score validation, and replication-sensitivity artifacts
+\texttt{results/v2\_sim/}; the development, fixed-score validation, replication-sensitivity, and honest-split coverage artifacts
 remain separately identified. Final inference and broader empirical comparisons are still required.
 
 \subsection{Known-truth evaluation of the statistical claims}

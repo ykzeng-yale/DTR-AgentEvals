@@ -1,3 +1,9 @@
+**21 September, 20:49 cycle:** the empirical section now includes the completed honest-split repeated-training
+study (worker `f532597`, 4,000 repetitions). Lead saved-record audit: 636 quantities, 15 source hashes;
+18 affected tests pass. DR coverage 0.936–0.955 and DR-minus-fresh 0.933–0.957 retain finite-sample limitations.
+This supersedes the earlier blanket statement that fitted-DR operating characteristics are unavailable;
+cross-fitted and joint-branch inference remain unresolved. Readiness 55% (0 points; 45–65%).
+
 **21 September, 17:18 cycle:** the empirical section now integrates scoped synthetic development, the
 2,000-repetition-per-cell fixed-score coverage study and subsequent replication sensitivity. It retains OR bias,
 IPW undercoverage and the distinction from real-agent benefit. The prior 35-page snapshot statements below

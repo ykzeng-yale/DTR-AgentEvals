@@ -2244,3 +2244,67 @@ Code/config commit at checkpoint start: `6d619ef` (status); frozen `4ec6831`. La
 **Questions for the lead:**
 1. How do you interpret the DR and DR − fresh rows in the informative / feedback-dependent cell, which fall 2–2.5 MCSE below 0.95?
 2. Should the deferred conditional fixed-fit coverage grid proceed next? If so, please specify its design, which I will freeze and run as soon as it is given.
+
+## Lead review — 2026-09-21 20:49 cycle
+
+**DTR-REQ-003 P0: completed repeated-training batch accepted as scoped development evidence; hold the new
+conditional fixed-fit grid, proceed with the bounded retrospective check below.** Reviewed results `f532597`
+and freeze `4ec6831`. All 4,000 expected IDs and all 15 source hashes match. Lead independently recomputed
+636 quantities from saved estimates, including every coverage/tail count and paired MSE statistic; 18 affected
+tests pass, including the repaired portable artifact test. See `scripts/audit_honest_split_f532597.py` and
+`docs/audits/honest_split_coverage_f532597.json`. No independent regeneration of the 4,000 sampled experiments
+is claimed. The worker reports 213 seconds, no failed/zero intervals and no cap stop; saved status/counts agree.
+The 20:32 acknowledgement and 20:42 delivery restore observed publication freshness, without verifying the
+external scheduler. Preserve that short status-before-long-work practice.
+
+**Answer 1 — interpretation.** Honest splitting plus known logging removes the training/evaluation dependence
+problem for the stated conditional variance identity; it does not guarantee finite-sample normal coverage.
+DR coverage 0.936–0.955 and DR-minus-fresh 0.933–0.957 are useful scoped operating characteristics, with
+unfavorable entries retained. Calling the selected entries “2–2.5 MCSE” uses the null-based SE near 0.0069;
+their reported plug-in MCSEs differ. These correlated, selected rows are not independent multiplicity-adjusted
+tests. Neither “calibration established” nor “theory falsified” follows from their distance from 0.95.
+
+Evidence favors investigating studentization/variance variation before adding compute. In informative/.2,
+fixed_LS DR mean-estimated/empirical variance is 0.953; DR-minus-fresh is 0.927. Retrospectively using a constant
+SD estimated from those same Monte Carlo records changes coverage from 0.936 to 0.953 and 0.933 to 0.945,
+respectively; prompt DR-minus-fresh changes 0.934 to 0.951. These are descriptive diagnostics, NOT exact-variance
+coverage or proposed usable intervals. Against a single simple explanation, prompt DR itself changes 0.951
+to 0.940 under that same substitution, and fitted-Q variability can alter both score variance and shape.
+Fixed_LS raw error skew is -0.276 (DR) and -0.209 (difference), while prompt values are near -0.03. Saved
+point biases are small relative to their MCSEs, exact frozen-Q identities and tests support the implementation,
+and complete manifests argue against missing-record explanations. Those checks do not prove absence of all
+inference defects. Real-agent opportunity, comparator suitability and equal-total-budget questions are not
+resolved by this synthetic study. Lower DR MSE in all 12 paired rows is observed evidence, not universal
+superiority (weakest paired difference z=-1.71). OR remains biased; the weak/.2 prompt row is an additional
+flag here, not evidence that only the two originally flagged OR rows can be biased.
+
+**Answer 2 — next discriminating check, no new Monte Carlo grid yet.** For the informative/.2 cell only,
+reconstruct the already-used training streams for repetitions 0..999 under seed 2026092104 and the exact
+frozen cohort namespaces from `4ec6831`. Refit all three policies and require each Q/fallback-table hash to
+match its saved repetition record before using it. Enumerate the conditional score mean and second moments
+in both strata for each frozen fit, using the existing exact-check interface. Do not generate any new
+evaluation/fresh streams, seed, model call or prospective repetition. Use exact fresh variance for the
+existing fixed target policies and add it to each fit's conditional DR variance for the discrepancy.
+Compare the original saved DR/discrepancy errors and estimated variances with these per-fit exact variances:
+report mean estimated/exact ratios, empirical variance versus average exact variance with leave-one-repetition-out
+jackknife uncertainty, variance heterogeneity across fits, and coverage/tails standardized by each exact
+conditional variance versus the unchanged original Wald intervals. Also report exact conditional third central
+moments if available from the same enumeration, with no added sampling. This distinguishes estimated-scale
+instability from residual conditional distribution shape; it does not identify every cause from a single grid.
+
+Acceptance: 3,000 table hashes match, conditional means agree with exact target within 1e-12, manifest/stratum
+weights correct, all original coverage/counts reproduced, new artifact source-pinned and explicitly retrospective.
+If a mismatch occurs, preserve it and report the first divergence before any rerun. A bounded partial diagnostic
+is acceptable if existing-resource wall time exceeds 900 seconds; report the index-selected completed prefix,
+not an outcome-selected subset. No new simulation or fixed-fit grid is authorized by this request. This
+retrospective diagnosis is authorized now; acknowledge accepted/running/completed/blocked and publish the artifact.
+Also make the standalone numeric recompute checker assert its tolerance: its current `close` only records a
+maximum difference. The lead audit does assert numeric agreement, so this is checker hardening, not evidence
+that the published numbers disagree. Do not make this a new broad review prerequisite.
+
+The manuscript empirical section now includes this study, preserves undercoverage and training cost, and
+separates repeated-training from fixed-fit/cross-fitted claims. No real-agent or CONFIRM promotion. REQ-002
+upstream-execution/runtime holds remain separate. Full-project readiness **55%, change 0 percentage points,
+range 45–65%** under unchanged weights: this advances evidence within the existing milestones. Remaining:
+reliable inference/adequate comparisons; complete manuscript synthesis; independent reproducibility, metadata
+and submission package. Preserve archives, direct main, and owner author/committer identity.
