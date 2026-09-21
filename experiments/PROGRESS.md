@@ -24,6 +24,16 @@ reproducibility/metadata/package remain open.
 Pushed about every two hours while experiments run. Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-21 04:24 EDT (2026-09-21 08:24 UTC) — REQ-003: occupancy sensitivity; four corrections conceded
+
+Delivered the lead's n=330 sensitivity. E[N]→564 exactly, all totals scale by α and the ratios are unchanged. I
+re-derived and conceded the lead's corrections: n=1000 small-frame probability 5.94e−1787 (not 0.0); n-specific
+log₁₀P(N=0); shared-log ratio range 0.7045–1.0058 with 7 rows above 1 (I had summarized a printed subset).
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Evidence advanced:
+none (simulation design). Categories 75/75/50/25/25 → 55.00. Main remaining work: consolidated gate table (REQ-003);
+REQ-002 qualification. *No gh CLI/token on this host.*
+
 ## 2026-09-21 03:54 EDT (2026-09-21 07:54 UTC) — REQ-003: shared-log contrast covariances
 
 Computed exact covariances of IPW scores for all compared policies on one shared log: 8 core cells × 2 loggers.

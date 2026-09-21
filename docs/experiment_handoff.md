@@ -1103,3 +1103,25 @@ this range correction in the next reply. No model/verifier/Monte Carlo or duplic
 Commit directly to main as Yukang Zeng <ykzeng2019@gmail.com>, author and committer.
 **Readiness: 55%, change 0 points, range 45–65%.** Main gaps: validated inference/comparisons; statistical
 validation and empirical synthesis; independent reproduction/metadata/package. Paper and empirical archives unchanged.
+
+## Worker checkpoint — 2026-09-21T08:24:21Z (host clock; local 2026-09-21 04:24 EDT)
+
+Code/config commit at checkpoint start: `b4b074d`. Last lead checkpoints read: `7e04762` (07:49 cycle) and `9d31341` (08:19 cycle), the latter arriving during this tick. **Authorized runs: none.** Gate `log live branch` verified; no runner; servers healthy; foreign load `[]`.
+
+**Acknowledged:** the structural branch control and the covariance calculations are accepted. Baseline P0A is retained, with no core retuning. The adverse catalog-rule rows and the belief-oracle distinction are retained. After this handoff, REQ-002 qualification resumes at its existing gates. REQ-001 is completed.
+
+**Your corrections, each re-derived here before conceding** (60-digit `decimal`, since mpmath is not installed; nothing was installed):
+- log₁₀P(N=0) = −546.4767 at n=250 only; at n=1000 it is −2185.9069. My 07:35 text attributed −546.5 without distinguishing n.
+- At n=1000, P(N≤200) is 10^−1786.22625 ≈ 5.94×10⁻¹⁷⁸⁷. My reported 0.0 was float underflow. It is a **small-frame** probability, not a census-use probability, because the whole-range fallback takes precedence. All log₁₀ values are approximations of rational quantities.
+- The shared-log ratio over all **48** non-identical comparisons spans **0.704513–1.005759**, and **7 rows exceed 1**. My ".70–.98" summarized only the K=2 rows my script printed, the same error as the earlier iid ratio. I now quote ranges only from the full artifact. This is IPW with versus without covariance; it is neither an independent on-policy reference nor a resource-matched two-log design.
+- Restoration is **ideal full-state (including latent U)**. Branch noise is independent across arms, prefixes and replicates given the full state, and separate from source noise. These are simulator choices. A population Δ = 0 does not force a zero realized-frame gap or unbiased finite-sample ratios.
+
+The v1 artifacts are preserved; these corrections are carried in the new artifact below and in this text.
+
+| Request | Status | Artifact / reason |
+|---|---|---|
+| DTR-REQ-001 (P0) | completed | — |
+| DTR-REQ-002 (P1) | running; qualification resumes after the consolidated table | evaluator `f7bbbb2` selected |
+| DTR-REQ-003 (P1) | **running: n=330 occupancy sensitivity delivered** | [`branch_occupancy_sensitivity.py`](../experiments/v2_sim/branch_occupancy_sensitivity.py) writes [`branch_occupancy_sensitivity_v1.json`](../experiments/v2_sim/branch_occupancy_sensitivity_v1.json). With α = 940/1969, P0A_new is easy 1593/1969 (small) and 1687/1969 (large); hard 1217/1969 and 1358/1969. For 165+165 tasks, **E[N] goes from 5907/5 to exactly 564**. Every expected M, T, U_a and D_a total **scales by exactly α**, and θ, ν_a and Δ are **unchanged exactly**, in all 4 kernel cells. For the small frame, log₁₀P(N=0) moves from −721.35 to −279.91 and log₁₀P(N≤200) from −420.94 to −84.35 (60-digit approximations). The labels and caveats above are written into the JSON. Four tests pass, including an independent direct-formula E[N]=564 and a check that baseline P0A is restored; 167 tests pass. |
+
+**Next:** the one consolidated table of accepted artifacts and open gates. Sampler, DR/outcome-regression/failure controls, coverage, independent-reference uncertainty and precision choices stay explicitly open where undelivered. Then REQ-002 qualification.

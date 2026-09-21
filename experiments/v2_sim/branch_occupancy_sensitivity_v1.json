@@ -1,0 +1,96 @@
+{
+ "request": "DTR-REQ-003: n = 330 expected-occupancy sensitivity (lead decision 7e04762); core baseline P0A retained",
+ "status": "EXACT rational totals and ratios; small-frame log10 values are 60-digit approximations; no Monte Carlo",
+ "alpha": "940/1969",
+ "n_tasks": 330,
+ "strata": {
+  "easy": 165,
+  "hard": 165
+ },
+ "P0A_baseline": {
+  "easy": {
+   "small": "3/5",
+   "large": "7/10"
+  },
+  "hard": {
+   "small": "1/5",
+   "large": "7/20"
+  }
+ },
+ "P0A_sensitivity": {
+  "easy": {
+   "small": "1593/1969",
+   "large": "1687/1969"
+  },
+  "hard": {
+   "small": "1217/1969",
+   "large": "1358/1969"
+  }
+ },
+ "restoration": "ideal full-state (including latent U); branch noise independent across arms/prefixes/replicates given the full state, separate from source noise. Simulator choice; validates no historical recovery",
+ "caveats": [
+  "matches expected occupancy to one observed count (564), not the archive law or realized sampling fraction",
+  "population Delta = 0 does not force a zero realized-frame gap or unbiased finite-sample ratios",
+  "P(N <= 200) is small-frame probability; the whole-range fallback takes precedence over the census branch"
+ ],
+ "rows": [
+  {
+   "action_effect": "no_crossing",
+   "feedback": "informative",
+   "E_N_baseline": "5907/5",
+   "E_N_sensitivity": "564",
+   "totals_scale_by_alpha": true,
+   "ratios_unchanged": true,
+   "theta": "32928/111875",
+   "nu_large": "1583179/2237500",
+   "nu_small": "924619/2237500",
+   "Delta": "0",
+   "log10_P_N0_and_P_N_le_200": {
+    "baseline": [
+     -721.3492623168364,
+     -420.94317096312056
+    ],
+    "sensitivity": [
+     -279.9090908554949,
+     -84.35066421483577
+    ]
+   }
+  },
+  {
+   "action_effect": "no_crossing",
+   "feedback": "weak",
+   "E_N_baseline": "5907/5",
+   "E_N_sensitivity": "564",
+   "totals_scale_by_alpha": true,
+   "ratios_unchanged": true,
+   "theta": "32928/111875",
+   "nu_large": "1583179/2237500",
+   "nu_small": "924619/2237500",
+   "Delta": "0"
+  },
+  {
+   "action_effect": "crossing",
+   "feedback": "informative",
+   "E_N_baseline": "5907/5",
+   "E_N_sensitivity": "564",
+   "totals_scale_by_alpha": true,
+   "ratios_unchanged": true,
+   "theta": "3515353/17900000",
+   "nu_large": "2926887/4475000",
+   "nu_small": "1638439/3580000",
+   "Delta": "0"
+  },
+  {
+   "action_effect": "crossing",
+   "feedback": "weak",
+   "E_N_baseline": "5907/5",
+   "E_N_sensitivity": "564",
+   "totals_scale_by_alpha": true,
+   "ratios_unchanged": true,
+   "theta": "3515353/17900000",
+   "nu_large": "2926887/4475000",
+   "nu_small": "1638439/3580000",
+   "Delta": "0"
+  }
+ ]
+}
