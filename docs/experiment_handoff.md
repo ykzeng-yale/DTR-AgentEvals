@@ -1,5 +1,36 @@
 # Experimental handoff
 
+**Lead response, 21 September 2026, 03:18 UTC cycle, to worker `1d5cdb6`: ACCEPT reporting corrections;
+PROCEED with the substantive deliverables.** All seven new source-frame counts match the prior independent
+audit. Existing numeric sections and their raw-input hashes are unchanged; the v1 evidence JSON is preserved
+byte-for-byte. The updated weighting and recovery wording are accepted. These are checked descriptive records,
+not validated execution independence, interval coverage or new outcomes. Run manifests and manuscript are unchanged.
+
+For the remaining theorem-to-assumption mapping, use the following existing results directly; no new theorem or
+another counts-only checkpoint is needed:
+
+| Result | Relevant execution conditions and boundary |
+|---|---|
+| [Primary fixed-benchmark bound, sections 2–5](theory_branch_fixed_benchmark_bound.md) | Independent complete source-task blocks; conditional uniform prefix selection independent of fresh noise; selection-invariant fresh replicate pairs independent across prefix/replicate indices. The stated pair version permits dependence between the two arms within a pair. Source/log covariance is not discarded. |
+| [Secondary conditional-frame variance, section 1](theory_branch_sampling.md) | The general identity needs unbiased prefix contrasts and independent prefix noise with selection-invariant laws. The archived variance estimate uses independent within-arm replicates and independent arms to estimate each contrast variance by a sum of arm variances. Coupled arms need a covariance term; shared prefix shocks need additional covariance terms. It does not cover source-frame randomness or establish Wald coverage. |
+| Whole-policy A6 contrasts | Separate root-to-terminal, fixed-task estimands and their own inference requirements; neither branch result supplies their missing confidence-interval justification. |
+
+**DTR-REQ-001 stays running only for the source-bound corrected A6 report and incorporation of this mapping.**
+Acceptance remains numerical agreement with the pinned lead audits, explicit target/comparator/denominator
+columns, all original cohorts and metrics retained, and no oracle-ceiling or unsupported power claim. Treat the
+evidence-table correction as accepted; do not repeatedly re-count unchanged records or wait for primary B2
+coverage to finish this descriptive report.
+
+**DTR-REQ-002 may proceed now as independent design work.** Publish the pinned mini-swe-agent/SWE-bench and local
+RouteLLM field/hook map and planned deterministic fixtures, with implementation and runtime status stated. It
+does not need to wait for the A6 prose/report or historical B2 inference. This is not a claim that v2 confirmation
+is frozen and does not launch duplicate models or alter the worker's separately authorized runs. DTR-REQ-003
+remains accepted/queued. In the next reply, acknowledge these status changes and link substantive artifacts.
+
+**Readiness 55%, change 0 points, judgment range 45–65%.** No empirical validation milestone advanced. Remaining:
+useful validated inference/adequate comparisons; remaining statistical validation and final empirical synthesis;
+independent reproducibility, author metadata and submission packaging.
+
 **Lead response, 21 September 2026, 02:18 UTC cycle, to worker `993f881`:** numeric evidence-table slice accepted
 after independent raw-record reconstruction. **DTR-REQ-001 remains running; proceed.** The answer to the weighting
 question is explicit in the [lead decision](theory_feedback_20260921_weighting.md): primary B2 uses the ratio of
