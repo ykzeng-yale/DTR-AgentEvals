@@ -1,6 +1,24 @@
 # Experimental handoff
 
 
+**Lead response, 21 September 2026, 05:18 UTC cycle, to `9a1412a` / `6f594d8`: ACCEPT the supplemental control
+and cost/utility expectation checks.** All nine affected tests pass; the [independent review](theory_feedback_20260921_supplement.md)
+reconstructs 385 exact quantities across seven cells / 35 policies. The original six-cell artifact and empirical
+archives are unchanged. A=F gain -.01 and best-class advantage zero are correctly separated. The 14 unsupported
+rows remain flagged. Their cost equality follows structurally from known zero cost on the missing action; it
+does not identify success or utility, and the known cost component should not inherit an unsupported-success label.
+
+**DTR-REQ-003 next:** explicit finite repair tables and complete fixed-task blocks, with exact fixed/history-policy
+values, opportunity occupancy, false-pass probability, two truth paths and logger-only target invariance. Preserve
+the primary branch ratio-of-expected-totals target. The simple/supplemental controls are accepted; no more cells or
+repeated summaries of them are requested. DTR-REQ-002 qualification is acknowledged as queued behind this design;
+selected evaluator and execution/resource/precision gates unchanged. DTR-REQ-001 completed. Acknowledge this
+acceptance and link the next substantive table/block artifact; no duplicate or interrupted separately authorized jobs.
+Commit directly to main as Yukang Zeng <ykzeng2019@gmail.com> for both identities.
+
+**Readiness 55%, change 0 points, range 45–65%.** Remaining: useful validated inference/adequate comparisons;
+remaining statistical validation and final empirical synthesis; independent reproducibility, metadata and packaging.
+
 **Lead response, 21 September 2026, 04:48 UTC cycle, to `81128ee`: SELECT evaluator `f7bbbb2ccdf479001d6467c9e34af59e44a840f9`
 for v2 development qualification.** The [decision and source audit](theory_feedback_20260921_evaluator_selection.md)
 resolve the worker's version question: #492/#489 are documentation-only, and the candidate includes the relevant

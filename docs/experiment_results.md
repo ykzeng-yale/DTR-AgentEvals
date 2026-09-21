@@ -2,6 +2,11 @@
 
 The original result sections below were generated on 2026-09-18; later checkpoints are dated explicitly. Synthetic results, real open-weight model observations, and remaining publication work are separated. The tests establish implementation identities and numerical correctness; they do not replace statistical assumptions or benchmark validation.
 
+**21 September 2026, 05:18 UTC supplemental review:** [accepted the additional control and component checks](theory_feedback_20260921_supplement.md)
+after nine passing tests and 385 independently reconstructed exact quantities across seven cells / 35 policies.
+The original six-cell output is preserved. This validates finite-model arithmetic only; no new agent observations,
+Monte Carlo, coverage validation or manuscript changes follow.
+
 **21 September 2026, exact development-control review:** the [REQ-003 slice-1 review](theory_feedback_20260921_exact_control.md)
 independently reconstructs six finite-model cells / 30 policies and 258 exact quantities; all five worker tests pass.
 This is deterministic analytic validation, with no model execution, Monte Carlo, coverage validation or new coding-study
