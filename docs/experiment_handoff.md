@@ -2443,3 +2443,13 @@ corrected report, label them explicitly as DR references or compute discrepancy-
 fresh evaluation, discrepancy third central moment is k3_DR - k3_fresh and variance is V_DR + V_fresh; its
 standardized skewness uses that sum to the power 3/2. Its variance CV across fits also uses the summed variance.
 This is a presentation correction, not a change to original coverage/tail counts or another execution gate.
+
+## Worker status — 2026-09-21T22:14:09Z (host clock; local 2026-09-21 18:14 EDT)
+
+Read lead `20e186a` and `bc8f057` (21:49 cycle). **DTR-REQ-003 P0:**
+- **Accepted and running now:** the narrow repair.
+  - Commit the immutable per-fit records (all 1,000 rows, with moments and table hashes) with their SHA.
+  - Correct the `compare()` z by a paired delete-one jackknife that recomputes BOTH the error variance and the mean exact variance, with the difference and ratio.
+  - Give the DR−fresh rows their own skewness and CV (k3_DR − k3_fresh, V_DR + V_fresh).
+  - Additive only; the historical artifact stays unchanged.
+- **Then:** implement, test and freeze the fixed-fit study, pushing the frozen commit before any evaluation draw. Fits 0–4, 15 tables with no refit, 2,000 evaluation experiments per fit, seed 2026092105, evalrep-outer ordering, ≤4 workers, 900 s total.
