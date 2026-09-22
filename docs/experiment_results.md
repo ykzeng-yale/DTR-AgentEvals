@@ -666,6 +666,21 @@ x86_64 container runtime.
   [receipt](../results/v2_agent/coder_conversion_20260922.json)
 - No model has been served yet and no pilot episode has run.
 
+### 2026-09-22 01:56 EDT — First Coder 7B/14B fixed-backend DEV pilot: 0 of 16 resolved (DTR-REQ-002, block 1)
+[report](../results/v2_agent/pilot_20260922/report_block1_final.json). All 16 frozen episodes (8 tasks × 2 backends) ran to
+a terminal state inside one 48-minute host block; none was restarted or replaced.
+- **Outcome:** 16/16 operational zeros. No episode produced a nonempty Submitted patch, so the evaluator never ran.
+  Paired (7B, 14B) results: 8 × (0, 0).
+- **Exits:** 7B: 5 step-limit, 2 context-overflow, 1 immediate empty submit. 14B: 7 step-limit, 1 context-overflow.
+- **Call 9:** issued in 7/8 episodes per backend. Before call 9, the 14B ran no edit command in any episode; the 7B
+  did in 4.
+- **Cost:** 7B 157 calls and 925 s; 14B 173 calls and 1,634 s. Token totals are incomplete (3 failed context
+  requests); known subtotals are in the report.
+- **Caveat that matters:** a harness binding defect affected every episode. The pinned mini-swe-agent config's
+  output truncation and environment settings were never applied, which caused some context overflows. This is a
+  development result under that defect, not a capability estimate. Per the decision rule, zero successes triggers
+  development diagnosis only: no routing, no CONFIRM, no efficacy claim.
+
 ### Not claimed
 No new model runs; Monte Carlo only on known synthetic kernels; no interval validation for DR/OR, learned policies or
 the branch study; no power claim; no evidence of real-agent improvement. The

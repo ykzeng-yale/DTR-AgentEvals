@@ -3928,3 +3928,77 @@ final empirical/manuscript synthesis; independent reproducibility, author metada
   - Pass the full `cfg['environment']['env']`.
   - Add a fixture asserting that the effective observation, format-error templates and env equal the yaml's.
   - Whether to re-run the 16 assignments under the corrected binding, as a new labelled development run with block 1 retained, is **your call**. I will not start one without it.
+
+## Worker checkpoint — PILOT BLOCK 1 COMPLETE, RELEASED, GRADED (DTR-REQ-002 / REQ-004)
+
+**Execution.**
+- Block 1 ran from S = 05:06:57Z to its **release at 05:54:42Z**, against a hard end of 07:06:57Z. **All 16 assigned episodes are terminal:** 0 unstarted, 0 incomplete, 0 restarts.
+- 330 physical requests in total, against a 768 ceiling. Both preflights fit the declared limits. Last owned servers: PIDs 19747 (:8291) and 21163 (:8293), both stopped.
+- Check at 05:54:47Z: no llama-server/mlx/ollama and no listener on 8191/8193/8291/8293. MultiRound independently re-checked at 05:55:09Z.
+- Records: [`block_1.json`](../results/v2_agent/pilot_20260922/block_1.json) and 16 run directories, each with `episode.json`, `attempts.jsonl`, `trajectory.json`, `submission.diff`, `grade.json` and runner stdout, plus the 11 server logs.
+
+**Grading** (repaired `pilot_grade.py`, 05:55:12–05:55:13Z): **16/16 `operational_zero`**. No evaluator run was needed because there was no nonempty Submitted patch. Receipt: `grading_pass_20260922T055513-*.json`.
+
+**Report** (lead's repaired `pilot_report.py` plus the labelled block-1 legacy path from `8029edb`): [`report_block1_final.json`](../results/v2_agent/pilot_20260922/report_block1_final.json).
+
+| instance | backend | exit | logical calls | physical requests | call 9 issued | grade | wall s |
+|---|---|---|---|---|---|---|---|
+| astropy__astropy-12907 | large | LimitsExceeded | 24 | 24 | yes | operational_zero | 188 |
+| astropy__astropy-12907 | small | Submitted | 1 | 1 | no | operational_zero | 7 |
+| pytest-dev__pytest-10051 | small | LimitsExceeded | 24 | 24 | yes | operational_zero | 82 |
+| pytest-dev__pytest-10051 | large | LimitsExceeded | 24 | 24 | yes | operational_zero | 236 |
+| scikit-learn__scikit-learn-10297 | large | LimitsExceeded | 24 | 24 | yes | operational_zero | 199 |
+| scikit-learn__scikit-learn-10297 | small | LimitsExceeded | 24 | 24 | yes | operational_zero | 136 |
+| matplotlib__matplotlib-13989 | small | ContextWindowExceededError | 24 | 24 | yes | operational_zero | 198 |
+| matplotlib__matplotlib-13989 | large | LimitsExceeded | 24 | 24 | yes | operational_zero | 300 |
+| sympy__sympy-11618 | large | LimitsExceeded | 24 | 24 | yes | operational_zero | 195 |
+| sympy__sympy-11618 | small | ContextWindowExceededError | 12 | 12 | yes | operational_zero | 51 |
+| mwaskom__seaborn-3069 | large | ContextWindowExceededError | 5 | 5 | no | operational_zero | 29 |
+| mwaskom__seaborn-3069 | small | LimitsExceeded | 24 | 24 | yes | operational_zero | 76 |
+| sphinx-doc__sphinx-10323 | large | LimitsExceeded | 24 | 24 | yes | operational_zero | 281 |
+| sphinx-doc__sphinx-10323 | small | LimitsExceeded | 24 | 24 | yes | operational_zero | 219 |
+| psf__requests-1142 | small | LimitsExceeded | 24 | 24 | yes | operational_zero | 157 |
+| psf__requests-1142 | large | LimitsExceeded | 24 | 24 | yes | operational_zero | 207 |
+
+| | small (Coder-7B) | large (Coder-14B) |
+|---|---|---|
+| assigned / terminal | 8 / 8 | 8 / 8 |
+| exits | LimitsExceeded 5, ContextWindowExceeded 2, Submitted (empty) 1 | LimitsExceeded 7, ContextWindowExceeded 1 |
+| Submitted with a nonempty patch | 0 | 0 |
+| operational resolved (finite completion bounds, not CIs) | 0 / 8 [0, 0] | 0 / 8 [0, 0] |
+| secondary algorithmic endpoint | no eligible artifact (denominator 0) | no eligible artifact (denominator 0) |
+| call 9 issued (a second decision opportunity) | 7 / 8 | 7 / 8 |
+| before call 9: distinct histories / test command seen / edit command seen / nonzero return codes | 7 / 1 / **4** / 40 | 7 / 1 / **0** / 35 |
+| logical calls = physical requests | 157 | 173 |
+| failed physical attempts (context errors; never retried) | 2 | 1 |
+| prompt / completion tokens | total unknown (2 failed attempts); known subtotal 541,238 / 16,322 | total unknown (1 failed attempt); known subtotal 708,572 / 15,388 |
+| episode wall | 925 s | 1634 s |
+
+- **Paired (small, large):** 8 valid pairs, all **(0, 0)**. Summed paired differences, large minus small: +709 s wall time and +16 logical calls. The token differences are known for 5 of 8 pairs only.
+- **Infrastructure:** 0 hard kills, 0 infrastructure-suspect exits, 0 transport failures, max 1 attempt per call. Every command executed with a real return code.
+
+**Interpretation, bounded and descriptive only.** Under the spec's decision rule, **zero verified successes triggers further development diagnosis. There is no learned routing, no CONFIRM, and no efficacy claim.**
+1. **The harness binding defect** (finding `98895fe`) applies to all 16 episodes. The yaml's `model`/`environment` sections, including the 10k-character observation truncation, were never applied. At least 3 context exits followed untruncated file dumps: seaborn/large reached 31,179 tokens at call 5.
+2. **Deterministic loops dominate** (12/16 LimitsExceeded). For example, the 14B on astropy alternates between two failing commands from call 4 onward. Before call 9 the **14B issued no edit command in any episode**; the 7B did so in 4.
+3. The 7B submitted immediately without an edit once (astropy).
+4. These are fixed-binding development observations on 8 selected tasks. They are not capability estimates.
+
+**Proposed next development step, for the lead's decision; nothing is started.**
+- Fix the binding: apply `cfg['model']` and `cfg['environment']` with our decoding kwargs, plus a fixture asserting the effective templates and env equal the yaml.
+- Then re-run the same frozen 16 assignments as a **new labelled development run** (block 2, with the repaired runner/episode pair), keeping block 1 as the retained record.
+- Whether T=0 looping calls for a separately declared decoding or stopping change is a design question for the lead.
+
+**Provenance and privacy.**
+- 43 published text files had the home-directory prefix replaced by `~`: the Docker executable path, 3 tracebacks, runner stdout and server logs. Message contents, `episode.json`, the ledgers, patches and grades are unchanged.
+- Raw and published hashes are listed in [`sanitization_block1.json`](../results/v2_agent/pilot_20260922/sanitization_block1.json), and the raw copies are retained under `work/`. The report is byte-identical before and after sanitization.
+- **Deviation, already disclosed:** the child script was replaced on disk from 05:33:50 to 05:34:13Z, and no episode launched in that interval. Block 1 ran entirely on the `11a7344` pair. The repaired `a64d81e` pair is restored in the working tree for any next block.
+
+**Host coordination.**
+- ICLR planned a CPU-only compile after our release; it has its own check, and its own abort at 07:00Z.
+- MultiRound starts at 07:10:00Z and releases by 08:20:00Z.
+- DTR-AgentEvals has no heavy work planned before 08:20Z.
+
+| Request | Status | Artifact / reason |
+|---|---|---|
+| DTR-REQ-002 (P1) | fixed-backend DEV pilot block 1 **completed**: 16/16 terminal, graded and reported; binding-defect repair and a labelled re-run are **proposed, awaiting the lead's decision** | this commit |
+| DTR-REQ-004 (P0) | block 1 **completed and released** at 05:54:42Z; MultiRound window 07:10–08:20Z **acknowledged** | `block_1.json`, this commit |

@@ -131,6 +131,19 @@ reproducibility/metadata/package remain open.
 Current exchange cadence is approximately every 30 minutes (worker-reported :13/:43; lead :18/:48). Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-22 01:56 EDT (05:56 UTC) — FIRST Coder 7B/14B pilot block complete: 0/16 resolved (REQ-002)
+
+All 16 frozen development episodes ran in one block (05:06:57–05:54:42 UTC) and were graded. None produced a nonempty
+patch, so all are operational zeros. The dominant exits are step-limit loops (12/16) and context overflows (3). I
+found a harness binding defect common to both models: the pinned agent config's output truncation and environment
+settings were not applied. The fix and a labelled re-run are proposed to the lead. No infrastructure failures, and
+the servers were released.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Evidence advanced:
+first real-agent Coder comparison (descriptive, negative, harness-affected); the lead owns any rubric change.
+Categories 75/75/50/25/25 → 55.00. Main remaining work: binding fix → labelled re-run → development diagnosis;
+routing and CONFIRM stay blocked.
+
 ## 2026-09-22 00:26 EDT (04:26 UTC) — lead released the pilot; pinned model conversion running; runner ready (REQ-002)
 
 The lead accepted the frozen 8-task / 16-episode Coder 7B/14B development pilot and chose option A: convert both
