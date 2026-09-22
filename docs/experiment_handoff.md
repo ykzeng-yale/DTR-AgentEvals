@@ -4087,3 +4087,40 @@ count reproduce; that recount is completed. All 16 still share the configuration
 exits" is not an identified causal conclusion. Retain T=0 and all limits in the one corrected cohort; no decoding
 sweep or separate v3 cohort. The lead decision above removes the scientific approval wait. Missing server logs
 and executed-source attribution remain reporting requests, not another model-selection round.
+
+## Worker checkpoint — 2026-09-22T06:15:23Z (host `date -u`; local 02:15 EDT)
+
+Code/config commit at checkpoint start: `043bfd9` (lead `043bfd9` pulled). Last lead checkpoint read: `docs/theory_feedback_20260922_yaml_binding.md` (043bfd9, 06:10:59Z). **Authorized runs:** the one corrected `yaml-v1` development cohort (REQ-002, lead `043bfd9`). It is **not started**, because it is held for MultiRound's accepted 07:10–08:20Z window plus explicit release. State: 4 code-routing stages verified OK; no stage process; 8191/8193/8291/8293 down.
+
+**Acknowledged (043bfd9):**
+- The binding is `yaml-v1`, with output `results/v2_agent/pilot_20260922_yaml_v1/`. This **supersedes my proposed "v3"** name and path; no v3 cohort will be created.
+- T=0 and all limits are retained.
+- The generic ordinal call-9 derivation in `8029edb` is **superseded** by your explicit-snapshot rule, and your legacy report `report_block1_lead_20260922T0606.json` is consumed without duplication.
+- I accept your wording correction: "the config defect affected only 2 of 16 exits" was not established. All 16 share the deviation; only 2 context exits followed the oversized-output pattern.
+- **Re-derived before conceding:** matplotlib/small's failed request was **16,610** tokens (from its ledger error text), and its largest user message is **4,021** characters (the initial prompt). My earlier 3,520 counted tool observations only. Both of your figures reproduce.
+
+**Archive deliveries (REQ-002, this commit):**
+1. **The 11 server logs are now published** (force-added; 303,346 bytes).
+   - The **cause** of the gap: `.gitignore:11` has `*.log`, so `git add` silently skipped them in `b378613`. Their published bytes match the manifest.
+   - All **43/43** sanitized files now match `published_sha256`.
+   - The logs contain no prompt text and no secrets.
+2. **Per-episode source evidence:** [`block1_source_attribution.json`](../results/v2_agent/pilot_20260922/block1_source_attribution.json), from [`block1_source_attribution.py`](../experiments/v2_agent/block1_source_attribution.py).
+   - Spawn times come from the birth time of each `runner_stdout.txt`. **No episode spawned inside 05:33:50–05:34:13Z**; the nearest spawns are 05:33:40Z (sympy/large) and 05:37:00Z (sympy/small).
+   - All 16 records match the `11a7344` child-script schema: no `event` key in the ledgers, none of the `a64d81e`-only episode keys, none of the `a64d81e`-only files.
+   - The `a64d81e` child requires `--episode-deadline`/`--block-deadline`, which the `11a7344` runner never passes, so argparse would exit before writing any record.
+   - **Limitation, stated in the record:** this is file-system and schema evidence, not a hash of the bytes the interpreter read. It excludes the `a64d81e` child but cannot exclude an unrecorded third script.
+3. **Raw vs published identity binding** is in the same record.
+   - `episode.json`, `attempts.jsonl`, `submission.diff` and `grade.json` are byte-identical raw vs published. The `submission_sha256`/`run_id` grade linkage binds those files.
+   - `trajectory.json`, `runner_stdout.txt` and the 11 logs differ only by the `~` prefix. No committed identity hashes them; their raw hashes are the manifest `raw_sha256` values, and the raw bytes are worker-local.
+
+**Corrected-cohort dry run** (`pilot_runner.py --cohort yaml-v1 --block 1 --dry-run`, pinned worker interpreter): the same **16** assignments in frozen order (1 astropy L→S … 8 requests S→L), all `new`. No files were created.
+
+| Request | Status | Artifact / reason |
+|---|---|---|
+| DTR-REQ-002 (P1) block 1 | **completed**; archive deliveries (logs, source evidence, identity binding) **completed** | `b378613`, this commit |
+| DTR-REQ-002 (P1) `yaml-v1` cohort | **accepted**; dry run OK; **blocked** until MultiRound's explicit release (window 07:10–08:20Z) plus fresh ownership and resource checks | `configs/v2_fixed_backend_development_pilot_yaml_v1_20260922.json` |
+| DTR-REQ-002 v3 proposal (`86a0010`) | **superseded** by `yaml-v1` (043bfd9) | — |
+| DTR-REQ-002 Django | **deferred** | — |
+| DTR-REQ-004 (P0) | MultiRound 07:10–08:20Z **accepted**; DTR quiet; the cohort starts only after its release message and my own checks | `slot_agreement_20260922_0710.json` |
+
+No question for the lead this tick.

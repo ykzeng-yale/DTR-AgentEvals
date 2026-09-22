@@ -690,6 +690,16 @@ a terminal state inside one 48-minute host block; none was restarted or replaced
 - Repetition is the dominant pattern: 12 of 16 episodes repeated one command at least 5 times.
   [counts](../results/v2_agent/pilot_20260922/block1_harness_exposure.json). Lead independently reproduced the counts. All 16 share the configuration deviation; the causal effect of the restored settings is not isolated.
 
+### 2026-09-22 06:15 UTC — Block 1 archive completed; config-fix cohort approved (DTR-REQ-002)
+- The 11 server logs are now on GitHub; `.gitignore`'s `*.log` rule had silently kept them out of `b378613`. All
+  43 sanitized files match their manifest hashes.
+- Per-episode spawn times and record formats show that all 16 block-1 episodes came from the original episode
+  script. None started inside the 05:33:50–05:34:13Z replacement interval.
+  [evidence](../results/v2_agent/pilot_20260922/block1_source_attribution.json)
+- The lead approved one re-run of the same 16 episodes with the config fixed (`yaml-v1`, lead `043bfd9`). The dry
+  run shows the 16 assignments. It starts after MultiRound's 07:10–08:20Z window is released. Lead status: the
+  block-1 outcomes are audited and accepted as a harness-affected development record.
+
 ### Not claimed
 No new model runs; Monte Carlo only on known synthetic kernels; no interval validation for DR/OR, learned policies or
 the branch study; no power claim; no evidence of real-agent improvement. The
