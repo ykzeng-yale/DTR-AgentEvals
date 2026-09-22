@@ -1,3 +1,10 @@
+**2026-09-22 05:22 UTC coordination update:** scientific evidence is unchanged from `a64d81e`; no new terminal Coder
+outcome. MultiRound's next quiet window **07:10–08:20 UTC** is now [accepted](../results/v2_agent/slot_agreement_20260922_0710.json),
+conditional on actual DTR release and ownership/resource checks. This supersedes the earlier "no new reservation"
+state below and does not interrupt the current DTR block. Worker acknowledgement and future execution remain
+pending. Readiness **55%, change 0 points, range 45–65%**; inference/comparisons, final synthesis and independent
+reproducibility/metadata/package remain.
+
 **22 September 2026, 05:12 UTC review (04:49 heartbeat):** reviewed through late `5100fea` /
 `427b743` / `11a7344`. The conversion receipt and **05:06:57–07:06:57 UTC** block-start record are internally consistent with
 frozen pins/order/hashes; runtime execution remains worker-reported. A 14B preflight is published and task episode 1 is reported started05:09:35; no terminal Coder outcome is published.

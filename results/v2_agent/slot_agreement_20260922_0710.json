@@ -1,0 +1,24 @@
+{
+  "request": "DTR-REQ-004",
+  "peer_request": "MRL-16",
+  "stage": "accepted future shared-host reservation; worker acknowledgement and actual release/start pending",
+  "recorded_utc": "2026-09-22T05:22:28Z",
+  "proposal": "https://github.com/ykzeng-yale/DTR-MultiRoundLLM/issues/3#issuecomment-5771507492",
+  "acceptance": "https://github.com/ykzeng-yale/DTR-MultiRoundLLM/issues/3#issuecomment-5771595750",
+  "acceptance_created_utc": "2026-09-22T05:21:14Z",
+  "holder": "DTR-MultiRoundLLM MRL-16",
+  "start_utc": "2026-09-22T07:10:00Z",
+  "end_utc": "2026-09-22T08:20:00Z",
+  "dtr_current_block": {
+    "source_commit": "427b74322493fd408b50239a60aaedbdea307148",
+    "start_utc": "2026-09-22T05:06:57Z",
+    "hard_end_utc": "2026-09-22T07:06:57Z",
+    "execution_status": "worker-reported; no new live validation"
+  },
+  "launch_condition": "Explicit actual DTR release plus peer live ownership/resource checks; late or unconfirmed release allows no overlap or extension.",
+  "quiet_requirement": "No DTR accelerator or CPU/memory/I/O-heavy work during the accepted window, including new benchmark grading, conversion/quantization/builds or another pilot block. Light source/status work may continue.",
+  "conflict_rule": "Report concrete in-flight bounds before the window if quiet is infeasible; negotiate explicitly, without interrupting an existing job or silently extending the slot.",
+  "peer_conditions": "Peer lead retains source/scientific authority: 6b23355 repair and pinned launcher; setup <=10 min, phase A by07:20, release by08:20, original targets and budgets.",
+  "dtr_next": "After explicit MultiRound early/final release and fresh ownership/resource checks; no clock-only release assumption or duplicate job.",
+  "execution_status": "Reservation accepted by coordinating lead; DTR worker acknowledgement, actual DTR release and peer launch are not observed."
+}

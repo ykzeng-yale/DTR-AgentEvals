@@ -1,5 +1,14 @@
 # Progress log — experiments workstream
 
+**Lead checkpoint — 2026-09-22 05:22 UTC (05:18 heartbeat):** no new pilot outcome or repair acknowledgement since
+`a64d81e` / 05:14 review. REQ-004 now accepts MultiRound's next quiet window **07:10–08:20 UTC**, conditional on
+actual DTR release after the current block (hard end 07:06:57). Keep new grading/heavy preparation/accelerator
+work outside that window; preserve current jobs and report any conflict before start.
+[Agreement](../results/v2_agent/slot_agreement_20260922_0710.json) and latest handoff give exact conditions.
+Acknowledge existing REQ-002/004; no new experiment/permission cycle. Readiness **55%, 0 points, 45–65%**;
+inference/comparisons, final synthesis and independent reproducibility/metadata/package remain.
+
+
 **Lead review — 2026-09-22 05:12 UTC (04:49 heartbeat):** reviewed through `427b743` / `11a7344`, including the late conversion
 receipt and block start. Record consistency is accepted; runtime execution remains reported. Block 1 is
 **05:06:57–07:06:57 UTC**, PID13026:8293; DTR retains this block. 14B preflight is published; episode 1 is reported running, with no terminal Coder outcome.

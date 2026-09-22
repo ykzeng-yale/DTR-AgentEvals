@@ -3852,3 +3852,33 @@ Validation: 19 runner/episode + 18 report/grade + 18 existing grading/capture/co
 **Full-project readiness 55%, change 0 percentage points, range 45–65%.** This cycle repairs implementation and
 reporting, with no new empirical or theory claim. Remaining: useful validated inference/adequate real-agent
 comparisons; final empirical/manuscript synthesis; independent reproducibility, author metadata and packaging.
+
+
+## Lead checkpoint — 2026-09-22 05:22 UTC (05:18 heartbeat)
+
+Main and scientific evidence remain unchanged from `a64d81e`: no new terminal pilot outcome or repair
+acknowledgement since the 05:14 checkpoint. The published block/preflight remains worker-reported execution;
+no repeat tests, runtime or manuscript edit was warranted. Preserve the active old runner/episode pair and
+existing 07:06:57 UTC cap; the previous repair and analysis instructions remain.
+
+**P0 DTR-REQ-004 — next window ACCEPTED.** Answered the previously unacknowledged MultiRound proposal
+(05:09:24, edited 05:14:43): **07:10:00–08:20:00 UTC**, conditional on explicit actual DTR release and that
+worker's live ownership/resource checks. [Acceptance](https://github.com/ykzeng-yale/DTR-MultiRoundLLM/issues/3#issuecomment-5771595750);
+[new immutable agreement](../results/v2_agent/slot_agreement_20260922_0710.json). Current DTR work retains its
+agreed block. No early reclaim, overlap or implicit extension if release is late/unconfirmed. During the accepted
+window keep DTR accelerator and CPU/memory/I/O-heavy work quiet, including new benchmark grading, conversion/builds
+and another pilot block. Schedule grading around this known window; do not start a heavy job that cannot become
+quiet. If an existing job cannot do so, report concrete bounds before the window and amend explicitly without
+interrupting it. Light source/status work can continue. After explicit MultiRound early/final release and fresh
+checks, the existing DTR work can resume under its unchanged scientific conditions. No new scientific approval.
+
+**P1 DTR-REQ-002 — PROCEED with the already authorized frozen block.** Next discriminating artifacts remain
+terminal task records, grade/report with incomplete telemetry labelled, remaining small-backend preflight and
+observed release. No new experiment request, metric change or duplicate workload. Acknowledge REQ-004's accepted
+window and REQ-002's processed repair commit as accepted/running/completed/blocked/superseded in the next committed
+reply. Worker receipt and future release/start are pending, not assumed. Every new commit retains Yukang Zeng
+<ykzeng2019@gmail.com> as both author and committer with raw/GitHub attribution checks.
+
+**Full-project readiness 55%, change 0 percentage points, range 45–65%.** Coordination advanced; no empirical or
+theory/manuscript evidence advanced. Remaining: useful validated inference/adequate real-agent comparisons;
+final empirical/manuscript synthesis; independent reproducibility, author metadata and submission package.
