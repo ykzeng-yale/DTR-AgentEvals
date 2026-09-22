@@ -117,33 +117,87 @@ class ConflictingRecord(SystemExit):
     pass
 
 
-def task_state(out, iid):
-    """completed (validated summary; path, sha256) | incomplete (dir without summary) | new. Conflicts fail explicitly."""
+EVALUATOR_COMMIT = 'f7bbbb2ccdf479001d6467c9e34af59e44a840f9'
+LEGACY_MANIFEST = OUT / 'legacy_hash_manifest.json'
+
+
+def expected_identity(manifest_path=MANIFEST):
+    man = json.loads(Path(manifest_path).read_text())
+    return dict(manifest_sha256=sha(Path(manifest_path).read_bytes()), source_sha256=man['source_sha256'],
+                dataset_sha256=DATA_SHA, evaluator_commit=EVALUATOR_COMMIT)
+
+
+def is_terminal(rec):
+    """A finished qualification verdict (qualified + acceptance) or a finished diagnosis (stage_failed)."""
+    if rec.get('status') == 'running' or not rec.get('finished_utc'):
+        return False
+    return (isinstance(rec.get('qualified'), bool) and isinstance(rec.get('acceptance'), dict)) or bool(rec.get('stage_failed'))
+
+
+def task_state(out, iid, expected=None, legacy=None):
+    """completed (terminal record with verified identity, or listed by hash in the legacy manifest) | incomplete | new.
+    Unparsable, wrong-instance or wrong-source records fail explicitly BEFORE any execution (lead fd5f42c): a matching
+    instance ID alone is never enough."""
     d = Path(out) / iid
     if not d.exists():
         return 'new', None, None
-    summaries = [d / 'summary.json'] + sorted(d.glob('attempt-*/summary.json'))
-    for s in summaries:
-        if s.exists():
-            raw = s.read_bytes()
-            try:
-                rec = json.loads(raw)
-            except ValueError:
-                raise ConflictingRecord('unparsable summary %s: refusing to guess' % s)
-            if rec.get('instance_id') != iid:
-                raise ConflictingRecord('summary %s names %r, not %r' % (s, rec.get('instance_id'), iid))
-            return 'completed', s, hashlib.sha256(raw).hexdigest()
+    legacy_ok = {(e['instance_id'], e['sha256']) for e in (legacy or {}).get('records', [])}
+    for s in [d / 'summary.json'] + sorted(d.glob('attempt-*/summary.json')):
+        if not s.exists():
+            continue
+        raw = s.read_bytes()
+        try:
+            rec = json.loads(raw)
+        except ValueError:
+            raise ConflictingRecord('unparsable summary %s: refusing to guess' % s)
+        if rec.get('instance_id') != iid:
+            raise ConflictingRecord('summary %s names %r, not %r' % (s, rec.get('instance_id'), iid))
+        digest = hashlib.sha256(raw).hexdigest()
+        ev = rec.get('identity', {}).get('evaluator_commit') or rec.get('platform', {}).get('evaluator_commit')
+        if expected and ev and ev != expected['evaluator_commit']:
+            raise ConflictingRecord('summary %s names evaluator %s, expected %s' % (s, ev, expected['evaluator_commit']))
+        if not is_terminal(rec):
+            continue                                                # e.g. a running or ID-only record stays incomplete
+        if 'identity' in rec:
+            if expected and rec['identity'] != expected:
+                raise ConflictingRecord('summary %s has source/manifest identity %r, expected %r' % (s, rec['identity'], expected))
+            return 'completed', s, digest
+        if (iid, digest) in legacy_ok:                               # legacy record bound by an immutable hash manifest
+            return 'completed', s, digest
     return 'incomplete', d, None
 
 
-def run_queue(todo, out, qualify_fn, status, pause=None, free_fn=None, min_free=MIN_FREE_GB, stamp=None):
+def build_legacy_manifest(out, expected, path=None):
+    """Bind existing (pre-identity) terminal records by immutable SHA-256 without rewriting them; verified on re-read."""
+    path = Path(path or Path(out) / 'legacy_hash_manifest.json')
+    recs = []
+    for d in sorted(Path(out).iterdir()):
+        s = d / 'summary.json'
+        if d.is_dir() and s.exists():
+            raw = s.read_bytes(); rec = json.loads(raw)
+            if rec.get('instance_id') == d.name and is_terminal(rec) and 'identity' not in rec:
+                ev = rec.get('platform', {}).get('evaluator_commit')
+                if ev and ev != expected['evaluator_commit']:
+                    raise ConflictingRecord('legacy %s names evaluator %s' % (s, ev))
+                recs.append(dict(instance_id=d.name, summary='%s/summary.json' % d.name, sha256=hashlib.sha256(raw).hexdigest(),
+                                 terminal='qualified' if isinstance(rec.get('qualified'), bool) and rec.get('acceptance') else 'diagnosis'))
+    man = dict(note='immutable hash binding of legacy qualification records written before identity fields (lead fd5f42c); records not rewritten',
+               expected_identity=expected, records=recs)
+    with open(path, 'x') as fh:
+        fh.write(json.dumps(man, indent=1) + '\n')
+    for r in recs:                                                   # independent re-read check
+        assert hashlib.sha256((Path(out) / r['summary']).read_bytes()).hexdigest() == r['sha256']
+    return man
+
+
+def run_queue(todo, out, qualify_fn, status, pause=None, free_fn=None, min_free=MIN_FREE_GB, stamp=None, expected=None, legacy=None):
     """Restart-safe serial queue (lead e360831): completed tasks are validated and skipped BEFORE any execution; an
     incomplete prior attempt is retained and a new no-clobber attempt directory (with its own stock run ID, so no cached
     harness report is reused) is created before the stock run; conflicting records fail explicitly."""
     stamp = stamp or (lambda: time.strftime('%Y%m%dT%H%M%SZ', time.gmtime()))
     status.setdefault('completed', []); status.setdefault('skipped_completed', []); status.setdefault('incomplete_prior_attempts', [])
     for iid in todo:
-        state, path, digest = task_state(out, iid)
+        state, path, digest = task_state(out, iid, expected, legacy)
         if state == 'completed':
             status['skipped_completed'].append(dict(instance_id=iid, summary=str(Path(path).relative_to(out)), sha256=digest))
             continue
@@ -167,6 +221,8 @@ def run_queue(todo, out, qualify_fn, status, pause=None, free_fn=None, min_free=
             rec = dict(instance_id=iid, stage_failed='exception', error='%s: %s' % (type(e).__name__, str(e)[:500]),
                        traceback=traceback.format_exc()[-3000:])
         rec['vm_free_gb_before'] = free
+        if expected:
+            rec['identity'] = expected
         rec['finished_utc'] = time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime())
         with open(attempt_dir / 'summary.json', 'x') as fh:
             fh.write(json.dumps(rec, indent=1, default=str) + '\n')
@@ -204,7 +260,8 @@ def main():
         inst = {k: (v if not hasattr(v, 'item') else v.item()) for k, v in rows[iid].items()}
         return qualify(client, inst, m01[iid], platform_rec, attempt_dir, stock_run_id)
 
-    status = run_queue(todo, OUT, qualify_fn, status, pause=PAUSE, free_fn=vm_free_gb)
+    legacy = json.loads(LEGACY_MANIFEST.read_text()) if LEGACY_MANIFEST.exists() else None
+    status = run_queue(todo, OUT, qualify_fn, status, pause=PAUSE, free_fn=vm_free_gb, expected=expected_identity(), legacy=legacy)
     status['finished_utc'] = time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime())
     (OUT / 'status.json').write_text(json.dumps(status, indent=1, default=str) + '\n')
 

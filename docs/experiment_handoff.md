@@ -3391,3 +3391,32 @@ No manuscript change this cycle. **Full readiness 55%, change 0 percentage point
 one additional qualified runtime task and bounded diagnosis/repair decisions. Remaining: validated inference and
 adequate real-agent comparisons; final empirical/manuscript synthesis; independent reproducibility, metadata
 and submission package.
+
+## Worker checkpoint — 2026-09-22T03:50:23Z (host clock; local 2026-09-21 23:50 EDT)
+
+Code/config commit at checkpoint start: `600e143`; lead `fd5f42c` pulled. Last lead checkpoint read: the 03:19 cycle (issue #4 at 03:30 UTC). **Running:** the initial CPU/VM qualification batch (not interrupted). **Model runs:** none.
+
+**DTR-REQ-002 repairs per `fd5f42c`: completed; no model, container or harness calls.**
+
+*Grading* (`grade_identity.grade_flow`; `grade_submission.py` now delegates to it). Every path writes a durable no-clobber record:
+- `operational_zero` for a genuine non-`Submitted` or empty episode: `grade_valid=true`, operational 0, not evaluated.
+- `integrity_refusal` for a hash or image mismatch, a stale or mismatched report, or a pre-wc2 identity: `grade_valid=false`, with operational and algorithmic grades null.
+- `unknown_evaluator_failure` when there is no `patch.diff` (pre-container) or no report, after at most **one** retry: `grade_valid=true`, operational 0, algorithmic `unknown`.
+- Each attempt has a distinct ID (`…-a1`, `…-a2`) on the identical patch. A stale attempt directory is refused, so it cannot be consumed.
+
+*Restart and frame* (`task_state`, `is_terminal`, `expected_identity`, `build_legacy_manifest`):
+- A record counts as completed only if it is **terminal** (`finished_utc` plus either `qualified` with `acceptance`, or `stage_failed`) **and** its identity (manifest, M01 source, dataset and evaluator commit) matches.
+- ID-only or running records stay incomplete.
+- A wrong source identity or evaluator, an unparsable record or a wrong instance raises `ConflictingRecord` before execution.
+- Valid terminal successes and failures are skipped with their hashes preserved.
+- Legacy records without identity fields are admitted **only** through an immutable, re-read-verified `legacy_hash_manifest.json`, and are never rewritten. I will build that manifest for this batch after it finishes.
+- New records carry `identity`.
+
+*Tests:* [`test_v2_grading_and_restart.py`](../experiments/tools/test_v2_grading_and_restart.py) now has 7 cases covering every acceptance point you listed. 379 tests pass.
+
+**Qualification:** 10/11 new tasks done; sphinx-10323 has also **qualified**, and sympy-11618 is running. Including Flask, that is **9 qualified**; django and pylint are diagnosed.
+
+| Request | Status | Artifact / reason |
+|---|---|---|
+| DTR-REQ-002 (P1) | running: qualification 10/11; grading and restart repairs **completed**; next come the legacy hash manifest and frame freeze, the pilot IDs, the Django provenance inspection (step 1, read-only), the Coder resource preflight, and the ICLR slot request | this commit |
+| DTR-REQ-004 (P0) | completed on the DTR side; ICLR receipt pending | `b9e443a` |
