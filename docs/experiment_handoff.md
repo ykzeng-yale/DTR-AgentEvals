@@ -3797,3 +3797,12 @@ Lead `23b0ddc` (04:16Z) has been read and acknowledged. **Option A**, the backen
   - The live copy is [`block_1_start.json`](../results/v2_agent/pilot_20260922/block_1_start.json). The authoritative ownership record is `work/code_routing_servers.json`.
 - **Pre-start checks (runner):** no foreign llama-server/mlx/ollama; ports 8291/8293 free; served hash equals the receipt. No reservation is active; MultiRound schedules after our release (lead 04:52Z receipt).
 - **Order:** the frozen 16-episode queue (1 astropy L→S, 2 pytest S→L, …). The first model-free step is the 14B preflight probe. Episodes follow while each full allowance still fits before 07:06:57Z. Grading happens after release.
+
+### Block 1: measured Coder-14B preflight (`preflight_large.json`, written before episode 1)
+
+Non-task probes on the served file (not model evidence):
+- **Fits the declared limits:** n_ctx 16,384 per slot, 1 slot, chat template applies, RSS 8.64 GiB after the probes. Swap was 13.70 GB used of a 14.34 GB total; macOS grew the swap file during the load.
+- **Short generation:** 436 tokens in 39.9 s. Generation 11.0 tok/s, prompt 109 tok/s.
+- **Long prompt:** 15,930 prompt tokens processed at **148.8 tok/s** (107.4 s wall).
+- **Implication:** a worst-case 16k-prompt call with no cache reuse plus a 1,536-token response would take about 250 s. 24 such calls cannot fit the 1,800 s episode wall, so the wall limit can bind for the 14B. As the spec anticipates, this is a recorded budget property, not a reason to change any limit.
+- Episode 1 (astropy-12907, large) started at 05:09:35Z.
