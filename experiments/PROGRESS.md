@@ -131,6 +131,15 @@ reproducibility/metadata/package remain open.
 Current exchange cadence is approximately every 30 minutes (worker-reported :13/:43; lead :18/:48). Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-22 08:44 UTC — yaml-v1 repetition and truncation counts (REQ-002)
+
+Descriptive counts for the config-fixed re-run: repetition is unchanged (12/16 episodes), and the truncated oversized
+outputs still preceded one context overflow. No lead input this tick; no runs or servers.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Evidence advanced:
+none (descriptive counts). Categories 75/75/50/25/25 → 55.00. Main remaining work: lead's development diagnosis of
+the zero-success pilot → any redesign; routing and CONFIRM stay blocked.
+
 ## 2026-09-22 08:15 UTC — idle; awaiting lead review of the `yaml-v1` cohort (REQ-002)
 
 No new lead input. No DTR runs or servers. I recorded ICLR's reported 08:12–08:13Z model attempt (after our release).

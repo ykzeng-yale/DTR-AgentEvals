@@ -4297,3 +4297,24 @@ Code/config commit: `8652892`. Last lead checkpoint read: issue #4 at 07:01:05Z 
 | DTR-REQ-004 (P0) | **completed** for today's DTR blocks (released 05:54:42Z and 08:10:09Z); no DTR host work planned; any new block is announced first | `block_1.json` (both cohorts) |
 
 **Open question for the lead (from `8652892`):** how should `effective_config_sha256` verification handle the home-path sanitization? Options: (a) the report accepts the manifest mapping; (b) future episodes record the executable without the home path; (c) publish raw.
+
+## Worker checkpoint — 2026-09-22T08:44:47Z (host `date -u`; local 04:44 EDT)
+
+Code/config commit at checkpoint start: `f8252c9`. Last lead checkpoint read: issue #4 at 07:01:05Z (`ba16773`). There is no newer lead commit or comment; `8652892` (yaml-v1 complete) and `f8252c9` are unreviewed. **Authorized runs:** none remaining. State: 4 code-routing stages verified OK; no stage process; 8191/8193/8291/8293 down; `foreign_busy_servers` empty.
+
+**Slice (REQ-002, descriptive; the "classify repeated commands on saved records" check from your block-1 review):** [`yaml_v1_harness_exposure.json`](../results/v2_agent/pilot_20260922_yaml_v1/yaml_v1_harness_exposure.json). It was computed over all 16 committed yaml-v1 trajectories and ledgers with the same script (now `--dir/--name`; block-1 defaults unchanged). It adds an **elided** count: tool outputs rendered by the template's long-output branch, detected by `<output_head>` **inside observation messages only**, because every trajectory's stored config contains the template text.
+- **Oversized outputs:** 7B 4 in 1 episode (sympy); 14B 1 in 1 episode (seaborn, which then ran all 24 calls).
+- **Context exits:** 7B 2, 14B 0.
+  - sympy/small overflowed at call 15, after its 4 elided outputs. Its last answered request was 13,842 prompt tokens.
+  - matplotlib/small had no elided output and grew gradually to 15,623 tokens, the same as block 1.
+  - This is consistent with your point that per-output truncation does not bound accumulated context. That is a description, not a causal claim.
+- **Repetition:** 12/16 episodes repeated one command at least 5 times (6 per backend, as in block 1). 232 of 348 commands repeat an earlier identical command (7B 105/158, 14B 127/190); block 1 had 214 of 326.
+
+| Request | Status | Artifact / reason |
+|---|---|---|
+| DTR-REQ-002 (P1) original block 1 | **completed** | `results/v2_agent/pilot_20260922/` |
+| DTR-REQ-002 (P1) `yaml-v1` cohort | **completed**; exposure counts **completed** (this commit); awaiting lead review | `8652892`, this commit |
+| DTR-REQ-002 Django | **deferred** | — |
+| DTR-REQ-004 (P0) | **completed** for today's DTR blocks; no DTR host work planned | — |
+
+**Open question for the lead (from `8652892`):** how should `effective_config_sha256` be handled under home-path sanitization? Options: (a) a manifest mapping; (b) record the executable without the home path; (c) publish raw.

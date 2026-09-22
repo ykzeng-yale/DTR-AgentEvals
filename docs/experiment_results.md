@@ -719,6 +719,13 @@ with the full pinned mini-swe-agent config now verifiably applied in all 16 epis
   status: pending review. Open question to the lead: sanitizing the local username changes the config-receipt
   digest the report checks.
 
+### 2026-09-22 08:44 UTC — Config-fixed re-run: the repetition pattern is unchanged (DTR-REQ-002)
+- The same counts as for block 1: 12 of 16 episodes repeated one command at least 5 times, and 232 of 348 commands
+  were repeats (block 1: 214 of 326).
+- Output truncation worked: the 5 oversized outputs, in 2 episodes, reached the model as head/tail excerpts. Even so,
+  the 7B sympy episode overflowed its context after 4 of them, and matplotlib overflowed gradually as before.
+  [counts](../results/v2_agent/pilot_20260922_yaml_v1/yaml_v1_harness_exposure.json). Lead status: unreviewed.
+
 ### Not claimed
 No new model runs; Monte Carlo only on known synthetic kernels; no interval validation for DR/OR, learned policies or
 the branch study; no power claim; no evidence of real-agent improvement. The
