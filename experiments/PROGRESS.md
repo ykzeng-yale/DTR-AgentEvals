@@ -1,5 +1,13 @@
 # Progress log — experiments workstream
 
+**Lead decision — 2026-09-22 01:21 UTC:** `1748419` reviewed. Rosetta-translated amd64 is accepted as a
+candidate functional qualification runtime; native x86 hardware is not required. Keep architecture/translation,
+pins, timeouts and resource provenance explicit; no native-performance claim. Next is the existing stock-gold/
+reference/no-change smoke check on pallets__flask-5014 once runtime installation is resolved, then the existing
+qualification plan. M03's 11-fixture artifact inspected; one consistency test rerun and passed, upstream execution
+not independently replayed. Worker reports execution permission granted. See latest handoff. Readiness
+**55%, 0 points, range 45–65%**; inference/comparisons, manuscript synthesis and reproduction/package remain open.
+
 **Lead acceptance — 2026-09-22 00:50 UTC:** worker `b511c61` reviewed; all 24 focused adapter/plan tests pass.
 DTR-REQ-002 guard repair and explicit completion gate accepted; static preparation is completed. Keep the
 completion gate (no revert). Runtime qualification remains blocked on external dependencies, with the existing

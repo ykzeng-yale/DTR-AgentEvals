@@ -2902,3 +2902,45 @@ Code/config commit at checkpoint start: `b511c61`; lead `f3db5b6` pulled (repair
 | DTR-REQ-003 (P0) | scoped reporting completed; sampling held | — |
 
 **Question for the lead:** is Rosetta-translated amd64 on an arm64 Colima VM acceptable as the runtime for the reference-versus-stock-gold qualification, with arm64 emulation recorded as a runtime property? Or must qualification wait for a native x86_64 host?
+
+
+## Lead decision — 2026-09-22 01:21 UTC (01:18 cycle)
+
+Reviewed `1748419e4bb6b09f0f3d78fe00aaff43dcb86bff`; worker checkpoint 01:16:06 UTC is fresh.
+**DTR-REQ-002: proceed with Rosetta-translated amd64 as a candidate functional qualification runtime;
+a native x86_64 host is not a prerequisite.** This answers the worker's explicit question. Lima documents
+[Intel containers on an ARM VM using Rosetta](https://lima-vm.io/docs/config/multi-arch/); this establishes a
+supported mechanism, not compatibility of these particular benchmark images. Record host and VM architecture
+separately from image/userland architecture and translation mode. Do not pretend an ARM VM has an x86 kernel
+or make host `uname -m == x86_64` a mandatory gate. Keep the pinned amd64 images/scripts and declared timeouts;
+do not silently substitute ARM builds or expand timeouts after seeing failures.
+
+P1 next check under the same request: once the worker's runtime installation dependency is resolved, perform
+the already specified reference-adapter versus pinned stock-gold comparison and no-change control on the same
+task, image digest, runtime and resources. Start with the already selected `pallets__flask-5014` as an explicit
+runtime smoke check, not a representative benchmark sample; retain failures. Acceptance: pins and script hashes
+agree, stock/reference required-test maps and strict outcomes agree, reference passes required tests, and
+no-change meets the accepted failure/P2P/identity/completion rule. Preserve raw logs, both attempts, platform/
+translation versions, image digests and resource limits. A pass qualifies this task/environment only; expand
+through the existing qualification plan before claiming all-repository coverage. Translation/build failures
+are runtime diagnoses, not model errors. Timing and timeout incidence are specific to this environment;
+no native-performance or cross-platform equivalence claim. No model inference or CONFIRM launch follows
+from this smoke check alone. Update the runbook/template's native-host wording when implementing the binding.
+
+**M03 part 1: inspected and accepted at its stated scope.** The saved artifact reports 11/11 source-derived
+outcomes confirmed by upstream execution, including four SKIPPED/XFAIL discrepancies and the bad-marker gate.
+Lead read the driver and all fixture records and reran the one artifact-consistency test (pass); the upstream
+execution and broader 368 tests remain worker-reported, not independently replayed by this lead. Constructed
+pytest logs are not real runtime logs or validation of other repository parsers. Keep strict and upstream
+outcomes separate. No scientific benchmark outcome or manuscript change this cycle.
+
+The worker reports author execution permission granted; remove that old blocker from current reporting.
+Runtime installation remains worker-reported pending under its local download workflow. No installation or
+purchase was performed by the lead. No further scientific approval is needed for the translated candidate;
+acknowledge REQ-002 as accepted/running/blocked with the actual dependency and artifact. REQ-003 scoped reporting
+remains complete, its sampling held. Preserve existing pins, archives and owner author/committer identity
+Yukang Zeng <ykzeng2019@gmail.com>, direct to main.
+
+**Readiness 55%, change 0 percentage points, range 45–65%.** Grader conformance evidence advanced within the
+existing stage; no empirical milestone crossed. Remaining: reliable inference/adequate real-agent comparisons;
+complete manuscript synthesis; independent reproducibility, metadata and submission package.
