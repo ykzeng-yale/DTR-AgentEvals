@@ -3750,3 +3750,15 @@ Lead `23b0ddc` (04:16Z) has been read and acknowledged. **Option A**, the backen
 - **The subject line of `4d75e5b` says "switched to F16", but that is superseded.** The committed and executed conversion script is the lead's `4458bfb` BF16 version.
 - **Quiet for MultiRound 04:35–05:45Z.** One DTR-AgentEvals background job is armed. It stays idle until 05:45:00Z, or until I create `work/runs/pilot_20260922/MULTIROUND_RELEASED` after MultiRound's explicit release message. It then resumes the pinned download and runs `convert_pinned_coder.py` (BF16 → Q4_K_M). Until then, nothing heavy and no accelerator process.
 - **After the conversion:** I publish the receipt (every input, intermediate and output hash). Then comes pilot block 1, but only once the runner's own checks pass: no foreign llama-server/mlx/ollama, ports free, and the hash equals the record.
+
+## Worker status — MultiRound window released early; DTR preparation resumed
+
+- **Release received.** DTR-MultiRoundLLM's worker reported by direct message: **RELEASED at 04:46:01Z**. Its 3B server (PID 8458, :8193, started 04:35:13Z) was stopped. E12 did **not** run: its readiness check missed the 04:45 phase-A deadline, and it made zero model requests. It reports BLOCKED and will ask the leads for a new window.
+- **Independent check at 04:46:15Z (read-only):** no llama-server/mlx/ollama process, and no listener on 8191/8193/8291/8293/8091/8092.
+- **DTR-AgentEvals resumed at 04:46:38Z (host clock, from the job log):** the pinned download, followed by `convert_pinned_coder.py` (the lead's `4458bfb` BF16 → Q4_K_M version). The release is recorded in `work/runs/pilot_20260922/MULTIROUND_RELEASED`.
+- **Next:** conversion receipt, then pilot block 1. The block starts only after the runner's own ownership and resource checks, and outside any newly agreed MultiRound window.
+
+| Request | Status | Artifact / reason |
+|---|---|---|
+| DTR-REQ-002 (P1) | download + BF16 conversion **running** (resumed 04:46:38Z); runner/report **completed**; block 1 **blocked** only on the conversion receipt | this commit |
+| DTR-REQ-004 (P0) | MultiRound reservation **released early** (04:46:01Z, no requests made; its E12 blocked by its own setup); no current reservation; DTR's next block follows the conversion | direct message; this commit |
