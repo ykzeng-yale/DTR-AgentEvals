@@ -3472,3 +3472,42 @@ Manuscript unchanged. **Readiness 55%, change 0 percentage points, range 45–65
 runtime tasks and a resolved collection-failure mechanism; no new model-performance result. Remaining: useful
 validated inference/adequate real-agent comparisons; final empirical/manuscript synthesis; independent
 reproducibility, author metadata and submission package.
+
+## Worker checkpoint — 2026-09-22T04:05Z (host clock; local 2026-09-22 00:05 EDT)
+
+Lead `7cb2062` (03:56 cycle) has been read. Its three new boundary fixtures are handled in the next commit; this commit publishes only the frame. **Model runs:** none. **Running:** nothing (the qualification batch finished at 03:50:17Z).
+
+**Initial qualification frame: COMPLETE (12/12 terminal).** 10 tasks qualified: flask, astropy, matplotlib, seaborn, requests, xarray, pytest, sklearn, sphinx-10323 and sympy-11618. Django-10097 and pylint-4551 are diagnosed and unqualified. The last two records are sphinx and sympy, both qualified on all 5 criteria (sympy ran 03:46–03:50Z).
+- Legacy binding: [`legacy_hash_manifest.json`](../results/v2_adapter/qualification_20260922/legacy_hash_manifest.json) binds the 11 pre-identity records by SHA-256; the records were not rewritten. Each record was admitted only through `task_state` (terminal, evaluator and hash checks). Flask was reused from `smoke_flask_20260922/summary.json` and is bound by hash in the frame file.
+- I relabelled the manifest's `terminal` field from `'qualified'` to `'verdict'`/`'stage_failed'`, with an explicit `qualified` bool, because the old label called django's failed verdict "qualified". The fixture was updated to match.
+
+**Pilot frame FROZEN before any pilot model outcome:** [`results/v2_agent/pilot_frame_20260922.json`](../results/v2_agent/pilot_frame_20260922.json), produced by [`freeze_pilot_frame.py`](../experiments/v2_adapter/freeze_pilot_frame.py). Eligible = qualified tasks minus flask, **K = 9**; **N = min(8, K) = 8**. Tasks are ordered by SHA256(`dtr-fixed-backend-dev-20260922-01` + "\n" + instance_id), with ties broken by ID.
+
+| # | instance | rank hash | backend order | instance image |
+|---|---|---|---|---|
+| 1 | `astropy__astropy-12907` | `392419a84171…` | large → small | `beadc022542f…` |
+| 2 | `pytest-dev__pytest-10051` | `43a944c50bb0…` | small → large | `f361af4257dc…` |
+| 3 | `scikit-learn__scikit-learn-10297` | `6734951e570c…` | large → small | `adc94ee4331c…` |
+| 4 | `matplotlib__matplotlib-13989` | `6f4f67590fd6…` | small → large | `0d4a28de8b86…` |
+| 5 | `sympy__sympy-11618` | `70852a08944d…` | large → small | `c073cca08a52…` |
+| 6 | `mwaskom__seaborn-3069` | `90daf57c4d7e…` | large → small | `06ac5e509992…` |
+| 7 | `sphinx-doc__sphinx-10323` | `a1515367e3a8…` | large → small | `cfb39fa235b8…` |
+| 8 | `psf__requests-1142` | `c464d1f12aea…` | small → large | `d461c7c6e509…` |
+
+Not selected (rank 9): `pydata__xarray-2905`. Every selected local image ID equals the image digest in its qualification record.
+
+**Backend bit (worker binding; please confirm or override before launch).** The first backend is the low bit of SHA256(seed + "\n" + id + "\n" + `order`), where `order` is the literal word. Bit 0 → small (Coder-7B) first; bit 1 → large (Coder-14B) first. This gives 3 small-first and 5 large-first.
+
+**Django provenance, step 1:** [`django_provenance_20260922/provenance.json`](../results/v2_adapter/django_provenance_20260922/provenance.json). The image itself was not edited; only throwaway `--rm` containers were used.
+- **Missing packaged files: CONTRADICTED.** Both templates have identical SHA-256 in the checkout and in the image egg (`change_form` 13ecd491…, `delete_confirmation` ca89ab44…). The eval-time `setup.py install` log copies both into the new extracted egg (54 admin-template copy lines; 122/122 html).
+- **Static search path: CONTRADICTED in isolation.** `generic_inline_admin` alone passes **19/19**, including all 5 required tests that ERROR in the full suite. It passes with the image egg and again after the eval-time reinstall. `generic_views` alone passes 202/202.
+- **Order/state-dependent loader interference: CONSISTENT, NOT ISOLATED.**
+  - The eval script runs the **full unlabelled suite**. There, `TemplateDoesNotExist` hits 323 lines across 16 modules (only 5 in the required subset), while 207 `admin_views` tests pass.
+  - `runtests.get_test_modules` iterates `os.listdir`, which is unsorted, so module order depends on the filesystem.
+  - The polluting module is not identified, and I have not established whether the dataset's validation order differed. A Rosetta contribution is not excluded.
+- **Decision needed:** should I run step 2 (the alternate published image) or a bounded bisection of the full-suite order? Neither has been run. Django stays excluded from the pilot either way, per your rule.
+
+| Request | Status | Artifact / reason |
+|---|---|---|
+| DTR-REQ-002 (P1) | qualification **completed** (12/12); legacy binding and frame freeze **completed**; pilot IDs **published**; Django step 1 **completed** (missing-file hypothesis refuted); 7cb2062 boundary repairs **running** (next commit); Coder preflight **blocked** on the REQ-004 slot | this commit |
+| DTR-REQ-004 (P0) | DTR side completed; ICLR receipt pending. DTR requests a bounded accelerator slot (≤2 h) for the Coder 7B/14B preflight plus the pilot block; it will not start any llama-server until the slot is acknowledged | `b9e443a`, this checkpoint |

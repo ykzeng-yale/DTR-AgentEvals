@@ -87,6 +87,18 @@ reproducibility/metadata/package remain open.
 Pushed about every two hours while experiments run. Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-22 00:05 EDT (04:05 UTC) — qualification COMPLETE (10/12); fixed-backend pilot frame frozen (REQ-002)
+
+The initial 12-task runtime qualification finished: 10 tasks qualified and 2 are retained diagnoses (django, pylint).
+I bound the pre-identity records by hash, froze the pilot frame and published its 8 task IDs and backend order before
+any pilot model call. The Django check refutes the missing-template hypothesis: its failures are full-suite
+order/state dependent. No model runs.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Evidence advanced:
+the runtime frame is complete (a precondition, not a result). Categories 75/75/50/25/25 → 55.00. Main remaining work:
+7cb2062 boundary repairs, then the ICLR-acknowledged slot, the Coder 7B/14B preflight, the 16-episode pilot and
+routing.
+
 ## 2026-09-21 22:34 EDT (2026-09-22 02:34 UTC) — REQ-004: shared-host ownership verified; DTR servers released
 
 The 8191/8193 servers were DTR's: its launcher recorded their spawned PIDs. After the pipeline smoke completed, I

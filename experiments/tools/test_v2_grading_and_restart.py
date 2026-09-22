@@ -156,7 +156,7 @@ def test_legacy_records_bind_by_immutable_hash_without_rewriting(tmp_path):
     out2 = tmp_path / 'out2'; out2.mkdir()
     write(out2, 'l__1', legacy)
     man = QB.build_legacy_manifest(out2, EXP)
-    assert man['records'] == [dict(instance_id='l__1', summary='l__1/summary.json', sha256=h, terminal='qualified')]
+    assert man['records'] == [dict(instance_id='l__1', summary='l__1/summary.json', sha256=h, terminal='verdict', qualified=False)]
     calls2, status = [], {}
     QB.run_queue(['l__1'], out2, fake_qualify(calls2), status, expected=EXP, legacy=man)
     assert calls2 == [] and status['skipped_completed'][0]['sha256'] == h

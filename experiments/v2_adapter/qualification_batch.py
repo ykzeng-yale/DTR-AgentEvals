@@ -179,8 +179,9 @@ def build_legacy_manifest(out, expected, path=None):
                 ev = rec.get('platform', {}).get('evaluator_commit')
                 if ev and ev != expected['evaluator_commit']:
                     raise ConflictingRecord('legacy %s names evaluator %s' % (s, ev))
+                verdict = isinstance(rec.get('qualified'), bool) and isinstance(rec.get('acceptance'), dict)
                 recs.append(dict(instance_id=d.name, summary='%s/summary.json' % d.name, sha256=hashlib.sha256(raw).hexdigest(),
-                                 terminal='qualified' if isinstance(rec.get('qualified'), bool) and rec.get('acceptance') else 'diagnosis'))
+                                 terminal='verdict' if verdict else 'stage_failed', qualified=rec.get('qualified') if verdict else False))
     man = dict(note='immutable hash binding of legacy qualification records written before identity fields (lead fd5f42c); records not rewritten',
                expected_identity=expected, records=recs)
     with open(path, 'x') as fh:

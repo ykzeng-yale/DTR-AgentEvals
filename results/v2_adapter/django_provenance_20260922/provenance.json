@@ -1,0 +1,89 @@
+{
+ "request": "DTR-REQ-002",
+ "task": "django__django-10097",
+ "step": "1 (inspect existing image/build records; no environment edit to the image); plus two throwaway --rm single-module diagnostic runs",
+ "lead_review": "docs/theory_feedback_20260922_qualification.md (fd5f42c)",
+ "utc": "2026-09-22T03:56Z",
+ "image": {
+  "tag": "sweb.eval.x86_64.django__django-10097:latest",
+  "id": "sha256:46822ee04f96ea7e3fe29b05d0346e7503be0e67ccfeb946334fb46288e325ba",
+  "arch": "amd64 (Rosetta under colima vz)",
+  "created": "2026-09-21T22:51:40-04:00 (locally built by harness f7bbbb2)"
+ },
+ "versions": {
+  "python": "3.5.6",
+  "setuptools": "40.2.0",
+  "pip": "10.0.1",
+  "sqlite": "3.45.3",
+  "django_image_egg": "Django-2.2.dev20180625180104-py3.5.egg (directory)",
+  "django_eval_time_egg": "Django-2.2.dev20260922025131-py3.5.egg (extracted directory; not-zip-safe)"
+ },
+ "checkout": {
+  "head": "7fea4c62e2b3668e1ec73899c4aa339010bd6bc9 (harness \"SWE-bench\" commit 2026-09-22 02:51:31 +0000)",
+  "parent_base_commit": "b9cf764be62e77b4777b3a75ec256f6209a57671",
+  "setup_py": "include_package_data=True; MANIFEST.in present"
+ },
+ "eval_script": {
+  "test_command": "./tests/runtests.py --verbosity 2 --settings=test_sqlite --parallel 1 (NO labels: full Django suite)",
+  "reinstall": "python setup.py install at eval time (stock log line 293), Django imported from the eval-time egg",
+  "module_order": "tests/runtests.py get_test_modules iterates os.listdir (unsorted): filesystem-dependent; observed first entries null_fk_ordering, known_related_objects, model_formsets_regress, sessions_tests"
+ },
+ "templates": {
+  "admin/change_form.html": {
+   "checkout_sha256": "13ecd491dfce36b446d81c0713d9077b11a629bccb84e22ad7a6189606a93271",
+   "image_egg_sha256": "13ecd491dfce36b446d81c0713d9077b11a629bccb84e22ad7a6189606a93271",
+   "eval_time_egg": "copied into build/bdist egg per stock install log"
+  },
+  "admin/delete_confirmation.html": {
+   "checkout_sha256": "ca89ab44fbd507948e45b9f7f081a20294efbfbe515247b8847647a013ce1fc6",
+   "image_egg_sha256": "ca89ab44fbd507948e45b9f7f081a20294efbfbe515247b8847647a013ce1fc6",
+   "eval_time_egg": "copied into build/bdist egg per stock install log"
+  }
+ },
+ "eval_time_egg_build_log": {
+  "admin_template_copy_lines": 54,
+  "html_files_copied_into_bdist": 122,
+  "html_in_checkout": 122
+ },
+ "full_suite_stock_run": {
+  "TemplateDoesNotExist_lines": 323,
+  "required_subset_errors": 5,
+  "error_modules_in_run_order": [
+   "redirects_tests",
+   "fixtures",
+   "sites_tests",
+   "inspectdb",
+   "admin_docs",
+   "sitemaps_tests",
+   "flatpages_tests",
+   "generic_inline_admin",
+   "admin_widgets",
+   "generic_views",
+   "view_tests",
+   "settings_tests",
+   "admin_inlines",
+   "test_client_regress",
+   "test_utils",
+   "template_tests"
+  ],
+  "admin_views_tests_ok": 207
+ },
+ "isolated_runs": {
+  "generic_inline_admin with image egg": "19/19 OK (incl. all 5 required tests that ERROR in the full suite)",
+  "generic_views with image egg": "202/202 OK",
+  "generic_inline_admin after eval-time python setup.py install": "19/19 OK, Testing against Django-2.2.dev20260922025131 egg"
+ },
+ "raw": [
+  "isolated_module_runs.txt",
+  "isolated_after_reinstall.txt"
+ ],
+ "hypotheses": {
+  "missing packaged template files": "CONTRADICTED: both files present with identical SHA-256 in checkout and image egg, copied into the eval-time egg, and resolved in isolated runs with either egg",
+  "static wrong template search path / loader configuration": "CONTRADICTED for the module in isolation: the same settings, runner and both eggs resolve the templates",
+  "order/state-dependent template-loader interference in the full unlabelled suite": "CONSISTENT, NOT ISOLATED: failures occur only in the full run, span 16 modules, and module order is filesystem-dependent; the polluting module and whether the dataset validation order differs are not identified",
+  "architecture/translation (Rosetta) contribution": "NOT EXCLUDED (the isolated passes ran under the same translation, which weakens but does not exclude it)",
+  "mutable dependency drift (e.g. SQLite 3.45.3)": "NOT EXCLUDED for the non-template errors; not needed to explain the template errors"
+ },
+ "verdict": "Django stays excluded and unqualified in the initial frame (original outcome preserved). Missing files are ruled out; the template errors are full-suite order/state dependent. Step 2 (alternate published image) and any bisection of the polluting module are NOT run: awaiting lead decision.",
+ "scope": "no model call; no qualification control rerun; image unchanged (throwaway --rm containers only)"
+}

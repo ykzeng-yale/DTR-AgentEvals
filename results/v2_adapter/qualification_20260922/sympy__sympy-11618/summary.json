@@ -1,0 +1,188 @@
+{
+ "instance_id": "sympy__sympy-11618",
+ "repo": "sympy/sympy",
+ "version": "1.0",
+ "started_utc": "2026-09-22T03:46:24Z",
+ "limitations": [],
+ "stock_wall_seconds": 193.59072995185852,
+ "stock_exit": 0,
+ "image_digests": {
+  "base": "sha256:f7d1dba08fbc14f5232016debb02d9ace25c84e2a088ec8ec6c776fc3c2f07d5",
+  "env": "sha256:6fc9d7e4f5c01756c8a34abc202027f155f81df8a06126f0e356a223bcfa9257",
+  "instance": "sha256:c073cca08a52c8cd039b2c015aa19740ef235febbd5080c838c79fe93d905f28"
+ },
+ "image_userland_arch": {
+  "base": "amd64",
+  "env": "amd64",
+  "instance": "amd64"
+ },
+ "required_tests": {
+  "fail_to_pass": 1,
+  "pass_to_pass": 4
+ },
+ "stock": {
+  "resolved": true,
+  "strict_outcome": "resolved",
+  "get_logs_eval_found": true,
+  "required_status_counts": {
+   "PASSED": 5
+  }
+ },
+ "adapter_reference": {
+  "adapter_version": "control-adapter-v2 (lead 7f9673a; F2P allowlist and completion gate per c85173a)",
+  "adapter_source_sha256": "b81df0e7fb73c0ed2d60182c764a868ff6407629ba27e34072588e3070ab782d",
+  "instance_id": "sympy__sympy-11618",
+  "control_mode": "reference",
+  "prediction_identity": "dataset_reference_patch",
+  "patch_sha256": "2dcab4569a942fedbfd80ffa3d8b0a97f03a7b806d35698824dc38e767ebec84",
+  "eval_script_sha256": "48d97b2961099fadccbcf8db0ec3f78d96272493c567bd5ca9e51851daaad046",
+  "image_digests": {
+   "base": "sha256:f7d1dba08fbc14f5232016debb02d9ace25c84e2a088ec8ec6c776fc3c2f07d5",
+   "env": "sha256:6fc9d7e4f5c01756c8a34abc202027f155f81df8a06126f0e356a223bcfa9257",
+   "instance": "sha256:c073cca08a52c8cd039b2c015aa19740ef235febbd5080c838c79fe93d905f28"
+  },
+  "attempts": [
+   {
+    "attempt": 1,
+    "repo_state_pre": {
+     "head": "27cd079381676163ce57da911d1729d6c4d0fa12",
+     "diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "diff_bytes": 0
+    },
+    "patch_application": "applied",
+    "patch_output_sha256": "5f03f24a64eaec78ad4e207f1e95153c3b7c1ced65fab96e19d190a5a39c3aad",
+    "exit_code": null,
+    "timed_out": false,
+    "log_sha256": "d1393a7aab8817014b220711e633547a4e0a4cf765cbb657981388fc15989bf0",
+    "repo_state_post": {
+     "head": "27cd079381676163ce57da911d1729d6c4d0fa12",
+     "diff_sha256": "a6f923288c965c544524917f30a5843992001086edd030d1b22779870a8f58b9",
+     "diff_bytes": 956
+    },
+    "per_test_status": {
+     "sympy/geometry/tests/test_point.py:test_point": "FAILED",
+     "test_point": "ERROR",
+     "test_point3D": "PASSED",
+     "test_Point2D": "PASSED",
+     "test_issue_9214": "PASSED",
+     "test_issue_11617": "PASSED",
+     "test_transform": "PASSED"
+    },
+    "completion_ok": true,
+    "completion_note": "get_logs_eval found=True",
+    "evaluation_status": "completed",
+    "eval_runtime_seconds": 3.9654011726379395
+   }
+  ],
+  "report_scope": "qualification control with the dataset reference patch",
+  "qualification": "qualified",
+  "reason": "every required test PASSED",
+  "strict_verified_resolved": true,
+  "runtime_events": [
+   [
+    "start",
+    "fcb4a3f6848150542ba12b530112531c2bbd418e0ec02665876c74983d8fd6f1",
+    "sha256:c073cca08a52c8cd039b2c015aa19740ef235febbd5080c838c79fe93d905f28"
+   ],
+   [
+    "apply_patch",
+    "git apply --verbose",
+    0
+   ],
+   [
+    "stop",
+    "fcb4a3f6848150542ba12b530112531c2bbd418e0ec02665876c74983d8fd6f1"
+   ]
+  ]
+ },
+ "adapter_no_change": {
+  "adapter_version": "control-adapter-v2 (lead 7f9673a; F2P allowlist and completion gate per c85173a)",
+  "adapter_source_sha256": "b81df0e7fb73c0ed2d60182c764a868ff6407629ba27e34072588e3070ab782d",
+  "instance_id": "sympy__sympy-11618",
+  "control_mode": "no_change",
+  "prediction_identity": "no_prediction",
+  "patch_sha256": null,
+  "eval_script_sha256": "48d97b2961099fadccbcf8db0ec3f78d96272493c567bd5ca9e51851daaad046",
+  "image_digests": {
+   "base": "sha256:f7d1dba08fbc14f5232016debb02d9ace25c84e2a088ec8ec6c776fc3c2f07d5",
+   "env": "sha256:6fc9d7e4f5c01756c8a34abc202027f155f81df8a06126f0e356a223bcfa9257",
+   "instance": "sha256:c073cca08a52c8cd039b2c015aa19740ef235febbd5080c838c79fe93d905f28"
+  },
+  "attempts": [
+   {
+    "attempt": 1,
+    "repo_state_pre": {
+     "head": "27cd079381676163ce57da911d1729d6c4d0fa12",
+     "diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "diff_bytes": 0
+    },
+    "patch_application": "not_applicable",
+    "exit_code": null,
+    "timed_out": false,
+    "log_sha256": "628f687c1fecf76d59ba89b8c515743f76c1171679fb8d9c93fa65068eb374cb",
+    "repo_state_post": {
+     "head": "27cd079381676163ce57da911d1729d6c4d0fa12",
+     "diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "diff_bytes": 0
+    },
+    "per_test_status": {
+     "sympy/geometry/tests/test_point.py:test_point": "FAILED",
+     "sympy/geometry/tests/test_point.py:test_issue_11617": "FAILED",
+     "test_point": "ERROR",
+     "test_point3D": "PASSED",
+     "test_Point2D": "PASSED",
+     "test_issue_9214": "PASSED",
+     "test_issue_11617": "FAILED",
+     "test_transform": "PASSED"
+    },
+    "completion_ok": true,
+    "completion_note": "get_logs_eval found=True",
+    "evaluation_status": "completed",
+    "eval_runtime_seconds": 3.744960069656372
+   }
+  ],
+  "report_scope": "qualification control only: no prediction applied; not an official submission or model observation",
+  "qualification": "qualified",
+  "reason": "baseline F2P failure observed with P2P passing",
+  "strict_verified_resolved": false,
+  "runtime_events": [
+   [
+    "start",
+    "5c3639ccf83166559d6c903b116ba0af46571cb4519f6ad28c507278efa234a6",
+    "sha256:c073cca08a52c8cd039b2c015aa19740ef235febbd5080c838c79fe93d905f28"
+   ],
+   [
+    "stop",
+    "5c3639ccf83166559d6c903b116ba0af46571cb4519f6ad28c507278efa234a6"
+   ]
+  ]
+ },
+ "stock_vs_reference_required_status_differences": {},
+ "acceptance": {
+  "pins_and_script_hashes_agree": true,
+  "stock_reference_required_test_maps_agree": true,
+  "stock_reference_strict_outcomes_agree": true,
+  "reference_passes_required_tests": true,
+  "no_change_meets_rule": true
+ },
+ "qualified": true,
+ "platform": {
+  "host_arch": "arm64",
+  "vm_kernel_arch": "aarch64",
+  "vm_kernel": "6.8.0-117-generic",
+  "vm_os": "Ubuntu 24.04.4 LTS",
+  "docker_server": "29.5.2",
+  "translation_mode": "rosetta (colima vz)",
+  "resource_limits": {
+   "cpus": 6,
+   "mem_bytes": 16732983296
+  },
+  "declared_timeout_seconds": 1800,
+  "evaluator_commit": "f7bbbb2ccdf479001d6467c9e34af59e44a840f9",
+  "package": "4.1.0",
+  "adapter_version": "control-adapter-v2 (lead 7f9673a; F2P allowlist and completion gate per c85173a)",
+  "adapter_source_sha256": "b81df0e7fb73c0ed2d60182c764a868ff6407629ba27e34072588e3070ab782d"
+ },
+ "vm_free_gb_before": 83.03277587890625,
+ "finished_utc": "2026-09-22T03:50:17Z"
+}

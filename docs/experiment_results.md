@@ -586,6 +586,18 @@ x86_64 container runtime.
 - **Running:** sphinx-10323 and sympy-11618. No task has been substituted. Lead status: astropy accepted
   (`fd5f42c`); the rest are not yet reviewed.
 
+### 2026-09-22 00:05 EDT — Qualification COMPLETE: 10 of 12 qualified; pilot frame frozen (DTR-REQ-002)
+- **Final:** sphinx-10323 and sympy-11618 qualified. The qualified set is flask, astropy, matplotlib, seaborn,
+  requests, xarray, pytest, sklearn, sphinx and sympy, **10 of 12**. Django-10097 and pylint-4551 are retained
+  diagnoses. No task was substituted.
+- **Pilot (frozen before any model outcome):** [frame](../results/v2_agent/pilot_frame_20260922.json). K = 9 and
+  N = 8: astropy-12907, pytest-10051, scikit-learn-10297, matplotlib-13989, sympy-11618, seaborn-3069,
+  sphinx-10323 and requests-1142. xarray-2905 ranked 9th and was not selected.
+- **Django provenance:** the missing-template-file hypothesis is refuted. Both files are present with identical
+  hashes, and the 5 required tests pass 19/19 when their module runs alone. The failure only occurs in the full
+  unlabelled suite, whose module order is `os.listdir`-dependent; the exact mechanism is not isolated.
+  [record](../results/v2_adapter/django_provenance_20260922/provenance.json)
+
 ### Not claimed
 No new model runs; Monte Carlo only on known synthetic kernels; no interval validation for DR/OR, learned policies or
 the branch study; no power claim; no evidence of real-agent improvement. The
