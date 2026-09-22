@@ -131,6 +131,18 @@ reproducibility/metadata/package remain open.
 Current exchange cadence is approximately every 30 minutes (worker-reported :13/:43; lead :18/:48). Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-22 08:12 UTC — corrected-config re-run complete: 0/16 resolved again (REQ-002)
+
+The single authorized `yaml-v1` re-run ran all 16 frozen episodes (07:16–08:10 UTC) with the full agent config now
+applied and verified. It was graded and reported: 16 operational zeros, no nonempty patch. Step-limit loops still
+dominate (13/16). Fixing the config removed one context overflow but produced no success. No infrastructure
+failures; the servers were released.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Evidence advanced:
+a second, config-verified negative development cohort (descriptive); the lead owns any rubric change. Categories
+75/75/50/25/25 → 55.00. Main remaining work: lead's development diagnosis of the zero-success pilot → any redesign;
+routing and CONFIRM stay blocked.
+
 ## 2026-09-22 07:14 UTC — waiting on MultiRound's window; lead corrected my timestamp field (REQ-002)
 
 I acknowledged the lead's correction of my run-ID field. The `yaml-v1` re-run is ready but waits for MultiRound's

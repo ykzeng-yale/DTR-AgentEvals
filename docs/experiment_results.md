@@ -707,6 +707,18 @@ a terminal state inside one 48-minute host block; none was restarted or replaced
   interval and all 16 match the legacy schema.
 - The `yaml-v1` re-run waits for MultiRound's window (07:10–08:20Z) to be released.
 
+### 2026-09-22 08:12 UTC — Re-run with the config fixed (yaml-v1): 0 of 16 resolved again (DTR-REQ-002)
+[report](../results/v2_agent/pilot_20260922_yaml_v1/report_yaml_v1_block1_final.json). The same 8 tasks × 2 models,
+with the full pinned mini-swe-agent config now verifiably applied in all 16 episodes. Run 07:16:35–08:10:09 UTC,
+352 requests.
+- **Outcome:** 16/16 operational zeros. No episode produced a nonempty patch; paired (7B, 14B) results are 8 × (0, 0).
+- **Exits:** 7B unchanged from the first block (5 step-limit, 2 context-overflow, 1 immediate empty submit). 14B now
+  8 step-limit exits: its one earlier context overflow is gone, but it still produced no patch. Before call 9 the
+  14B ran no edit command in any episode.
+- Per the decision rule, zero successes means development diagnosis only; routing and CONFIRM stay on hold. Lead
+  status: pending review. Open question to the lead: sanitizing the local username changes the config-receipt
+  digest the report checks.
+
 ### Not claimed
 No new model runs; Monte Carlo only on known synthetic kernels; no interval validation for DR/OR, learned policies or
 the branch study; no power claim; no evidence of real-agent improvement. The

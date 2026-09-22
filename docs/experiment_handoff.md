@@ -4193,3 +4193,92 @@ No question for the lead.
 
 - **Binding check on episode 1:** `effective_config.json` records `yaml-v1`. The resolved model config has the 10,000-character truncating observation template and `drop_params=true`, and the environment has all 5 yaml vars. The episode-source SHA-256 `164b7878…` equals the on-disk `pilot_episode.py`. A `call9_history.json` snapshot is present.
 - No transport retries, and no nonempty patch so far. The frozen queue continues unchanged.
+
+## Worker checkpoint — 2026-09-22T08:12:15Z (host `date -u`; local 04:12 EDT) — yaml-v1 COHORT COMPLETE, RELEASED, GRADED (DTR-REQ-002 / REQ-004)
+
+Code/config commit at checkpoint start: `0f708a8`. Last lead checkpoint read: `ba16773` (issue #4, 07:01Z). **Authorized runs:** the `yaml-v1` cohort, now **completed**. No other run is authorized or active.
+
+**Execution.**
+- S = 07:16:35Z; **released at 08:10:09Z** (hard end would have been 09:16:35Z). **16/16 terminal**, 0 unstarted/incomplete, 0 restarts; **352** physical requests against this cohort's ceiling of 768.
+- Preflights fit for both backends. The last owned server was PID 44705 (:8293), stopped.
+- Check at 08:10:15Z: no llama-server/mlx/ollama/vllm, no listener on 8191/8193/8291/8293/8091/8092, 0 containers. Both peers were notified.
+- **The binding is verified in every episode:** configuration provenance is `validated` 16/16 on the raw bytes, and the episode-source SHA-256 `164b7878…` equals the on-disk `pilot_episode.py`.
+
+**Grading** (`pilot_grade.py --cohort yaml-v1`, 08:10:25–08:10:26Z): **16/16 `operational_zero`**. No evaluator run was needed because there was no nonempty Submitted patch.
+
+**Report:** [`report_yaml_v1_block1_final.json`](../results/v2_agent/pilot_20260922_yaml_v1/report_yaml_v1_block1_final.json), produced by the lead's `pilot_report.py yaml_v1_block1_final --cohort yaml-v1`.
+
+| instance | backend | exit | logical calls | call 9 issued | grade |
+|---|---|---|---|---|---|
+| astropy__astropy-12907 | large | LimitsExceeded | 24 | yes | operational_zero |
+| astropy__astropy-12907 | small | Submitted | 1 | no | operational_zero |
+| matplotlib__matplotlib-13989 | large | LimitsExceeded | 24 | yes | operational_zero |
+| matplotlib__matplotlib-13989 | small | ContextWindowExceededError | 24 | yes | operational_zero |
+| mwaskom__seaborn-3069 | large | LimitsExceeded | 24 | yes | operational_zero |
+| mwaskom__seaborn-3069 | small | LimitsExceeded | 24 | yes | operational_zero |
+| psf__requests-1142 | large | LimitsExceeded | 24 | yes | operational_zero |
+| psf__requests-1142 | small | LimitsExceeded | 24 | yes | operational_zero |
+| pytest-dev__pytest-10051 | large | LimitsExceeded | 24 | yes | operational_zero |
+| pytest-dev__pytest-10051 | small | LimitsExceeded | 24 | yes | operational_zero |
+| scikit-learn__scikit-learn-10297 | large | LimitsExceeded | 24 | yes | operational_zero |
+| scikit-learn__scikit-learn-10297 | small | LimitsExceeded | 24 | yes | operational_zero |
+| sphinx-doc__sphinx-10323 | large | LimitsExceeded | 24 | yes | operational_zero |
+| sphinx-doc__sphinx-10323 | small | LimitsExceeded | 24 | yes | operational_zero |
+| sympy__sympy-11618 | large | LimitsExceeded | 24 | yes | operational_zero |
+| sympy__sympy-11618 | small | ContextWindowExceededError | 15 | yes | operational_zero |
+
+| | small (Coder-7B) | large (Coder-14B) |
+|---|---|---|
+| exits | {'Submitted': 1, 'LimitsExceeded': 5, 'ContextWindowExceededError': 2} | {'LimitsExceeded': 8} |
+| Submitted with a nonempty patch / operational resolved (completion bounds, not CIs) | 0 / 0 of 8 [0, 0] | 0 / 0 of 8 [0, 0] |
+| secondary algorithmic endpoint | no eligible artifact (denominator 0) | no eligible artifact (denominator 0) |
+| call 9 issued / feedback known from pre-call-9 snapshots / distinct histories | 7 / 7 / 7 | 8 / 8 / 8 |
+| before call 9: test-command pattern / edit-command pattern / nonzero return codes | 1 / 4 / 40 | 1 / 0 / 38 |
+
+Paired (small, large): **8 × (0, 0)**. Infrastructure: 0 hard kills, 0 infrastructure-suspect exits, max 1 attempt per call.
+
+**Costs: separate and cumulative task episodes** (computed from both committed reports; non-task preflight probes and evaluator work excluded; evaluator runs = 0 in both cohorts):
+
+| backend | quantity | original block 1 | yaml-v1 | cumulative |
+|---|---|---|---|---|
+| Coder-7B | physical requests | 157 | 160 | 317 |
+| Coder-7B | failed physical attempts | 2 | 2 | 4 |
+| Coder-7B | prompt tokens (total) | unknown | unknown | unknown |
+| Coder-7B | prompt tokens (known subtotal) | 541,238 | 571,964 | 1,113,202 |
+| Coder-7B | completion tokens (total) | unknown | unknown | unknown |
+| Coder-7B | completion tokens (known subtotal) | 16,322 | 16,652 | 32,974 |
+| Coder-7B | episode wall s | 925.2 | 915.8 | 1,841.0 |
+| Coder-14B | physical requests | 173 | 192 | 365 |
+| Coder-14B | failed physical attempts | 1 | 0 | 1 |
+| Coder-14B | prompt tokens (total) | unknown | 845,839 | unknown |
+| Coder-14B | prompt tokens (known subtotal) | 708,572 | 845,839 | 1,554,411 |
+| Coder-14B | completion tokens (total) | unknown | 17,679 | unknown |
+| Coder-14B | completion tokens (known subtotal) | 15,388 | 17,679 | 33,067 |
+| Coder-14B | episode wall s | 1,634.4 | 1,838.3 | 3,472.7 |
+
+Non-task work per cohort: 2 preflights (1 per model), each with one short-generation probe and one ~16k-token prompt probe; timings are in `preflight_*`. Total task requests across both cohorts: **682**.
+
+**Descriptive comparison with the original block** (the same assignments; not a causal estimate of the repair):
+- The 7B exit profile is identical: 5 step-limit, 2 context, 1 immediate empty submit. Both context exits recur: matplotlib at call 24, and sympy now at call 15 rather than 12, with truncation active.
+- The 14B's single context exit (seaborn, call 5, after a 129,699-character output) became a 24-call step-limit exit, still with no patch.
+- The 14B still issued no edit-pattern command before call 9 in any episode.
+- Zero verified successes again, so under the spec's decision rule: development diagnosis only; HOLD routing and CONFIRM.
+
+**Provenance and privacy.**
+- 59 published text files had the home prefix replaced by `~`: 16 trajectories, 16 runner stdouts, 11 server logs and **16 `effective_config.json`**. The Docker CLI path sat in `environment.executable`.
+- Manifest: [`sanitization_yaml_v1_block1.json`](../results/v2_agent/pilot_20260922_yaml_v1/sanitization_yaml_v1_block1.json). Raw copies are worker-local.
+- **Question for the lead (reproducibility conflict):** `effective_config_sha256` (recorded in `episode.json` and in the file) is the canonical digest of the RAW payload, and your report recomputes it. The report above was computed **before** sanitization (validated 16/16), and its bytes are unchanged afterwards. Recomputing it over the published sanitized files yields `invalid` for all 16.
+  - The manifest gives, per file, the recorded raw digest and the canonical digest of the published payload.
+  - Options:
+    - (a) the report accepts a sanitization manifest mapping published-payload digest to recorded digest;
+    - (b) future episodes record `executable` as `~/…` or a basename before hashing;
+    - (c) publish the raw `effective_config.json`, which exposes the local username.
+  - For now I published the sanitized files with that manifest and did not change your code. Which option do you want?
+- The server logs were force-added (`*.log` is git-ignored), with the same practice as block 1.
+
+| Request | Status | Artifact / reason |
+|---|---|---|
+| DTR-REQ-002 (P1) original block 1 | **completed** | `results/v2_agent/pilot_20260922/` |
+| DTR-REQ-002 (P1) `yaml-v1` cohort | **completed**: 16/16 terminal, graded, reported; a provenance/sanitization reconciliation question is open | `results/v2_agent/pilot_20260922_yaml_v1/`, this commit |
+| DTR-REQ-002 Django | **deferred** | — |
+| DTR-REQ-004 (P0) | `yaml-v1` block **completed and released** at 08:10:09Z; ICLR started a -j2 rebuild at 08:10:49Z (its report, CPU only) and plans a bounded 8091 model attempt after it, which it will announce; DTR has no host work planned | `block_1.json` |
