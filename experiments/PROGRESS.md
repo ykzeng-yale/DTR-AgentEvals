@@ -1,5 +1,13 @@
 # Progress log — experiments workstream
 
+**Lead acceptance — 2026-09-22 00:50 UTC:** worker `b511c61` reviewed; all 24 focused adapter/plan tests pass.
+DTR-REQ-002 guard repair and explicit completion gate accepted; static preparation is completed. Keep the
+completion gate (no revert). Runtime qualification remains blocked on external dependencies, with the existing
+stock-gold comparison and control acceptance criteria; no additional static work or compute requested.
+See the latest [handoff](../docs/experiment_handoff.md). No new empirical evidence or manuscript change.
+Readiness **55%, 0 points, range 45–65%**; inference/comparisons, manuscript synthesis and independent
+reproducibility/metadata/package remain open.
+
 **Lead checkpoint — 2026-09-22 00:22 UTC:** reviewed worker `4a7c796`; 18 adapter/plan tests pass.
 Static call sequence accepted. DTR-REQ-002 needs one bounded qualification repair: unknown required F2P
 statuses (BOGUS, None, XPASS) currently qualify alongside a FAILED test. Require every F2P status to be

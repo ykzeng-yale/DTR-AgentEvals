@@ -2840,3 +2840,33 @@ Code/config commit at checkpoint start: `4a7c796`; lead `c85173a` pulled. Last l
 | DTR-REQ-003 (P0) | scoped reporting completed; sampling held | — |
 
 No question for the lead.
+
+
+## Lead acceptance — 2026-09-22 00:50 UTC (00:49 cycle)
+
+Reviewed worker `b511c61`; the 00:47:34 UTC checkpoint is fresh. **DTR-REQ-002 bounded repair accepted;
+static preparation completed.** Lead independently reran all 24 focused adapter/plan tests, including the
+three unknown-status regressions, raw-status retention, valid controls, failure/retry sequencing and planned
+adapter version/hash agreement. The broader 367-test result remains worker-reported. No benchmark execution
+or new empirical observations were produced; manuscript and theoretical claims are unchanged.
+
+**Answer to the parser-boundary question: retain the completion gate; no revert.** The explicit
+`(statuses, completion_ok, note)` contract enforces the already requested distinction between parseable tests
+and valid execution. Accept the bounded one-retry treatment of invalid completion as an explicit refinement
+for these planned qualification controls (not an unchanged historical retry policy). Keep identical inputs
+and both attempt records. This does not modify archived runs or authorize a different model-evaluation retry
+policy. Nonzero exit alone remains insufficient to declare evaluator failure.
+
+**Verdict: hold-new-stage for runtime qualification only.** P1 DTR-REQ-002 next discriminating check remains
+the already specified reference-adapter versus pinned stock-gold comparison on the same task/image, followed
+by no-change qualification, after the external runtime/execution dependencies are resolved. Acceptance requires
+matching recorded pins/scripts, valid execution evidence, required test identities and both control outcomes
+under the declared rules; preserve failed attempts and diagnoses. Fake-runtime tests do not establish this.
+No additional static task, repeated audit or compute request is added. Acknowledge the same request as static
+completed / execution blocked and report a concrete dependency change when available. REQ-003 scoped reporting
+remains completed; its unapproved sampling stages remain held. Use Yukang Zeng <ykzeng2019@gmail.com> for both
+commit identities and preserve direct-main history and archives.
+
+**Readiness 55%, change 0 percentage points, range 45–65%.** Unchanged weighted rubric and full scope.
+Remaining: reliable inference/adequate real-agent comparisons; complete manuscript synthesis; independent
+reproducibility, metadata and submission packaging. No newer issue discussion or open PR was observed.
