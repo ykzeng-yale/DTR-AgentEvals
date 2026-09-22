@@ -3,7 +3,8 @@
   * evaluator run ID = eval-<immutable episode run_id>-<first 16 hex of the submission SHA-256>, so two episodes of
     the same task/backend with different patches can never share predictions, harness logs, reports or grades
   * eligibility: only an explicit Submitted episode with a non-empty submission whose SHA-256 equals the episode
-    record, and whose pinned image ID equals the image the evaluator will use
+    record, and whose pinned image ID equals the image the evaluator will use; the hash is checked BEFORE the
+    empty/non-Submitted zero decision, so a tampered file is an integrity refusal, never a valid zero (lead 7cb2062)
   * no-clobber preflight: the predictions file, the harness log directory for that run ID and the grade file must not
     already exist (a cached report can therefore never be reused)
   * report acceptance: the harness's own patch.diff in that run's log directory must hash to the submission and the
@@ -40,9 +41,18 @@ def evaluator_run_id(episode, submission):
     return 'eval-%s-%s' % (episode['run_id'], sha(submission)[:16])
 
 
-def eligibility(episode, submission, current_image_id):
+def hash_check(episode, submission):
     if sha(submission) != episode.get('submission_sha256'):
         raise IntegrityRefusal('saved submission hash differs from the episode record')
+
+
+def image_check(episode, current_image_id):
+    if episode.get('pins', {}).get('image_id') != current_image_id:
+        raise IntegrityRefusal('image identity mismatch: episode %s vs evaluator %s' % (episode.get('pins', {}).get('image_id'), current_image_id))
+
+
+def eligibility(episode, submission, current_image_id):
+    hash_check(episode, submission)
     if episode.get('pins', {}).get('image_id') != current_image_id:
         raise IntegrityRefusal('image identity mismatch: episode %s vs evaluator %s' % (episode.get('pins', {}).get('image_id'), current_image_id))
 
@@ -69,10 +79,21 @@ def accept_report(harness_log_dir, instance_id, submission):
         raise IntegrityRefusal('stale or mismatched report: evaluated patch differs from the submission')
     if not rp.exists():
         raise EvaluatorUnknown('no report.json: evaluator failure after patch application')
-    rep = json.loads(rp.read_text())
-    if instance_id not in rep:
-        raise GradeRefused('report is not keyed by %s' % instance_id)
+    try:
+        rep = json.loads(rp.read_text())
+    except ValueError as e:
+        raise EvaluatorUnknown('malformed report.json (%s): algorithmic correctness unknown' % type(e).__name__)
+    if not isinstance(rep, dict) or instance_id not in rep:
+        raise IntegrityRefusal('report is not keyed by %s (keys %s): not this instance\'s grade' % (
+            instance_id, sorted(rep)[:5] if isinstance(rep, dict) else type(rep).__name__))
     return rep
+
+
+def diagnostics(harness_log_dir):
+    """Raw evidence kept with every attempt: name, size and SHA-256 of each file the evaluator left (never parsed)."""
+    d = Path(harness_log_dir)
+    return {f.name: dict(bytes=f.stat().st_size, sha256=hashlib.sha256(f.read_bytes()).hexdigest())
+            for f in sorted(d.glob('*')) if f.is_file()} if d.is_dir() else {}
 
 
 def grade_flow(episode, submission, image_id, work, grade_path, run_harness, strict_fn, alias, max_attempts=2):
@@ -86,17 +107,23 @@ def grade_flow(episode, submission, image_id, work, grade_path, run_harness, str
         with open(grade_path, 'x') as fh:
             fh.write(json.dumps(g, indent=1, default=str) + '\n')
         return g
+    def refuse(e):
+        return write(dict(base, classification='integrity_refusal', grade_valid=False, evaluated=False, operational_resolved=None,
+                          algorithmic_correctness=None, reason=str(e)))
+    try:
+        hash_check(episode, submission)          # BEFORE the empty-zero decision (lead 7cb2062): a tampered-empty file is not a zero
+    except IntegrityRefusal as e:
+        return refuse(e)
     try:
         operational(episode, submission)
     except OperationalZero as e:
         return write(dict(base, classification='operational_zero', grade_valid=True, evaluated=False, operational_resolved=0,
                           algorithmic_correctness='not_evaluated', reason=str(e)))
     try:
-        eligibility(episode, submission, image_id)
+        image_check(episode, image_id)
         root_id = evaluator_run_id(episode, submission)
     except IntegrityRefusal as e:
-        return write(dict(base, classification='integrity_refusal', grade_valid=False, evaluated=False, operational_resolved=None,
-                          algorithmic_correctness=None, reason=str(e)))
+        return refuse(e)
     work = Path(work)
     attempts = []
     for a in range(1, max_attempts + 1):
@@ -110,10 +137,12 @@ def grade_flow(episode, submission, image_id, work, grade_path, run_harness, str
         try:
             report = accept_report(logd, iid, submission)
         except EvaluatorUnknown as e:
-            attempts.append(dict(attempt=a, evaluator_run_id=rid, status='unknown_evaluator_failure', reason=str(e), harness=hres))
+            attempts.append(dict(attempt=a, evaluator_run_id=rid, status='unknown_evaluator_failure', reason=str(e), harness=hres,
+                                 raw=diagnostics(logd)))
             continue
         except IntegrityRefusal as e:
-            attempts.append(dict(attempt=a, evaluator_run_id=rid, status='integrity_refusal', reason=str(e), harness=hres))
+            attempts.append(dict(attempt=a, evaluator_run_id=rid, status='integrity_refusal', reason=str(e), harness=hres,
+                                 raw=diagnostics(logd)))
             return write(dict(base, classification='integrity_refusal', grade_valid=False, evaluated=True, operational_resolved=None,
                               algorithmic_correctness=None, reason=str(e), attempts=attempts))
         strict, required = strict_fn(logd)

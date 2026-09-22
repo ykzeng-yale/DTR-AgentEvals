@@ -138,10 +138,12 @@ def task_state(out, iid, expected=None, legacy=None):
     """completed (terminal record with verified identity, or listed by hash in the legacy manifest) | incomplete | new.
     Unparsable, wrong-instance or wrong-source records fail explicitly BEFORE any execution (lead fd5f42c): a matching
     instance ID alone is never enough."""
+    check_legacy(legacy, expected)
     d = Path(out) / iid
     if not d.exists():
         return 'new', None, None
     legacy_ok = {(e['instance_id'], e['sha256']) for e in (legacy or {}).get('records', [])}
+    unbound = None
     for s in [d / 'summary.json'] + sorted(d.glob('attempt-*/summary.json')):
         if not s.exists():
             continue
@@ -164,7 +166,20 @@ def task_state(out, iid, expected=None, legacy=None):
             return 'completed', s, digest
         if (iid, digest) in legacy_ok:                               # legacy record bound by an immutable hash manifest
             return 'completed', s, digest
+        unbound = unbound or s
+    if unbound is not None:                                          # terminal but not bound: reconcile, never rerun (lead 7cb2062)
+        raise ConflictingRecord('terminal record %s has no identity and no valid legacy hash binding: needs reconciliation, '
+                                'not an automatic rerun' % unbound)
     return 'incomplete', d, None
+
+
+def check_legacy(legacy, expected):
+    """A legacy hash manifest is admissible only if its FULL expected_identity equals the current expected identity."""
+    if legacy is None:
+        return
+    if not expected or legacy.get('expected_identity') != expected:
+        raise ConflictingRecord('legacy hash manifest identity %r does not match expected %r: stale manifest refused'
+                                % (legacy.get('expected_identity'), expected))
 
 
 def build_legacy_manifest(out, expected, path=None):
@@ -197,8 +212,9 @@ def run_queue(todo, out, qualify_fn, status, pause=None, free_fn=None, min_free=
     harness report is reused) is created before the stock run; conflicting records fail explicitly."""
     stamp = stamp or (lambda: time.strftime('%Y%m%dT%H%M%SZ', time.gmtime()))
     status.setdefault('completed', []); status.setdefault('skipped_completed', []); status.setdefault('incomplete_prior_attempts', [])
+    states = {iid: task_state(out, iid, expected, legacy) for iid in todo}   # every conflict raises before ANY execution
     for iid in todo:
-        state, path, digest = task_state(out, iid, expected, legacy)
+        state, path, digest = states[iid]
         if state == 'completed':
             status['skipped_completed'].append(dict(instance_id=iid, summary=str(Path(path).relative_to(out)), sha256=digest))
             continue

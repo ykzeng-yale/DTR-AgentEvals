@@ -3511,3 +3511,30 @@ Not selected (rank 9): `pydata__xarray-2905`. Every selected local image ID equa
 |---|---|---|
 | DTR-REQ-002 (P1) | qualification **completed** (12/12); legacy binding and frame freeze **completed**; pilot IDs **published**; Django step 1 **completed** (missing-file hypothesis refuted); 7cb2062 boundary repairs **running** (next commit); Coder preflight **blocked** on the REQ-004 slot | this commit |
 | DTR-REQ-004 (P0) | DTR side completed; ICLR receipt pending. DTR requests a bounded accelerator slot (≤2 h) for the Coder 7B/14B preflight plus the pilot block; it will not start any llama-server until the slot is acknowledged | `b9e443a`, this checkpoint |
+
+## Worker checkpoint — 2026-09-22T04:20Z (host clock; local 00:20 EDT)
+
+**The three `7cb2062` boundary repairs are completed.** No model, container or evaluator call was made.
+
+1. **Report failures leave durable classified records.**
+   - A report keyed to another instance (or a non-dict) is now an `IntegrityRefusal`, recorded as `integrity_refusal`: `grade_valid=false`, with operational and algorithmic grades null.
+   - Malformed `report.json` is now `EvaluatorUnknown`. It gets at most one identical-patch retry with a distinct `-a2` ID, then ends as a durable `unknown_evaluator_failure`.
+   - Every attempt keeps raw diagnostics: the name, size and SHA-256 of each file the evaluator left, which are never parsed.
+   - No-clobber is unchanged, and a stale report is never accepted.
+2. **Hash is checked before the empty-zero decision.** `grade_flow` now runs `hash_check` → `operational` → `image_check`.
+   - A tampered-empty file is `integrity_refusal`, for both a Submitted and a non-Submitted record.
+   - A genuine matching-hash empty submission stays `operational_zero`, and neither case invokes the evaluator.
+3. **Legacy manifests must match the full identity.**
+   - `check_legacy` requires the manifest's full `expected_identity` to equal the current expected identity; a stale source or manifest raises `ConflictingRecord`.
+   - A terminal record without identity and without a valid binding now raises `ConflictingRecord` ("needs reconciliation"). It is no longer treated as incomplete and rerun.
+   - `run_queue` computes every task state **before any execution**, so a conflict anywhere in the queue means zero executions, even for new tasks.
+   - Bound terminal successes and failures are skipped with their hashes kept. A nonterminal record still gets a new attempt directory.
+
+*Tests:* [`test_v2_grading_and_restart.py`](../experiments/tools/test_v2_grading_and_restart.py) now has 10 cases (3 new, 1 changed from rerun to conflict). **382 pass.**
+
+*Frame re-validation under the repaired code:* all 12 frozen frame records are still admitted with unchanged SHA-256, and a stale expected identity is refused. The frozen pilot frame (`109ee5a`) needs no change.
+
+| Request | Status | Artifact / reason |
+|---|---|---|
+| DTR-REQ-002 (P1) | 7cb2062 boundary repairs **completed**; frame and pilot IDs **completed** (`109ee5a`); Coder preflight **blocked** on the REQ-004 slot (static part next) | this commit |
+| DTR-REQ-004 (P0) | DTR side completed; ICLR receipt and the DTR slot acknowledgement pending | `109ee5a` |

@@ -25,7 +25,8 @@ def episode(run_id, patch, exit_status='Submitted', image=IMG, iid='t__x'):
 
 
 def harness(behaviour):
-    """behaviour: list per call of 'pre_container' | 'ok' | 'stale'; writes what the pinned evaluator would write."""
+    """behaviour: list per call of 'pre_container' | 'ok' | 'stale' | 'wrong_instance' | 'malformed'; writes what the
+    pinned evaluator would write."""
     calls = []
 
     def run(run_id, preds):
@@ -36,8 +37,9 @@ def harness(behaviour):
         if kind == 'pre_container':
             return dict(returncode=1)                       # failed before the container: no patch.diff, no report
         d.mkdir(parents=True)
-        (d / 'patch.diff').write_text(patch if kind == 'ok' else 'diff --git a/x b/x\n+STALE\n')
-        (d / 'report.json').write_text(json.dumps({'t__x': {'resolved': True, 'patch_successfully_applied': True}}))
+        (d / 'patch.diff').write_text('diff --git a/x b/x\n+STALE\n' if kind == 'stale' else patch)
+        report = {('o__y' if kind == 'wrong_instance' else 't__x'): {'resolved': True, 'patch_successfully_applied': True}}
+        (d / 'report.json').write_text('{"t__x": {"resolved": tr' if kind == 'malformed' else json.dumps(report))
         (d / 'test_output.txt').write_text('log')
         return dict(returncode=0)
     return run, calls
@@ -151,15 +153,71 @@ def test_legacy_records_bind_by_immutable_hash_without_rewriting(tmp_path):
     legacy = dict(instance_id='l__1', qualified=False, acceptance=dict(ok=False), finished_utc='x', platform=dict(evaluator_commit=QB.EVALUATOR_COMMIT))
     h = write(out, 'l__1', legacy)
     calls = []
-    QB.run_queue(['l__1'], out, fake_qualify(calls), {}, expected=EXP, stamp=lambda: 'T0')   # unbound legacy: not admitted
-    assert calls == [('l__1', 'attempt-T0', 'qual-stock-gold-T0')]
+    with pytest.raises(QB.ConflictingRecord):                                               # unbound terminal: reconcile,
+        QB.run_queue(['n__0', 'l__1'], out, fake_qualify(calls), {}, expected=EXP)           # never rerun (lead 7cb2062)
+    assert calls == [] and not (out / 'n__0').exists()                                       # zero executions, even for new
     out2 = tmp_path / 'out2'; out2.mkdir()
     write(out2, 'l__1', legacy)
     man = QB.build_legacy_manifest(out2, EXP)
     assert man['records'] == [dict(instance_id='l__1', summary='l__1/summary.json', sha256=h, terminal='verdict', qualified=False)]
+    for stale in (dict(EXP, source_sha256='x' * 64), dict(EXP, manifest_sha256='y' * 64)):      # hash matches, identity stale
+        calls0 = []
+        with pytest.raises(QB.ConflictingRecord):
+            QB.run_queue(['n__0', 'l__1'], out2, fake_qualify(calls0), {}, expected=EXP, legacy=dict(man, expected_identity=stale))
+        assert calls0 == []
     calls2, status = [], {}
     QB.run_queue(['l__1'], out2, fake_qualify(calls2), status, expected=EXP, legacy=man)
     assert calls2 == [] and status['skipped_completed'][0]['sha256'] == h
     assert hashlib.sha256((out2 / 'l__1' / 'summary.json').read_bytes()).hexdigest() == h   # not rewritten
     with pytest.raises(FileExistsError):
         QB.build_legacy_manifest(out2, EXP)                                                  # immutable
+
+
+def test_wrong_instance_and_malformed_reports_leave_durable_classified_records(tmp_path):
+    """lead 7cb2062 case 1: a report keyed to another instance is integrity-invalid/null; malformed JSON is an
+    evaluator-unknown attempt followed by at most one identical-patch retry; raw diagnostics kept; nothing overwritten."""
+    run, calls = harness(['wrong_instance'])
+    g = GI.grade_flow(episode('w1', P1), P1, IMG, tmp_path, tmp_path / 'w.json', run, strict, 'alias')
+    assert g['classification'] == 'integrity_refusal' and g['grade_valid'] is False and g['operational_resolved'] is None
+    assert len(calls) == 1 and 'report.json' in g['attempts'][0]['raw'] and 'patch.diff' in g['attempts'][0]['raw']
+    run, calls = harness(['malformed', 'malformed'])
+    m = GI.grade_flow(episode('m1', P1), P1, IMG, tmp_path, tmp_path / 'm.json', run, strict, 'alias')
+    assert m['classification'] == 'unknown_evaluator_failure' and m['algorithmic_correctness'] == 'unknown'
+    assert [c[0][-3:] for c in calls] == ['-a1', '-a2'] and len(calls) == 2                  # one retry, distinct IDs
+    assert all(a['raw']['report.json']['bytes'] > 0 for a in m['attempts'])
+    run, calls = harness(['malformed', 'ok'])
+    r = GI.grade_flow(episode('m2', P1), P1, IMG, tmp_path, tmp_path / 'r.json', run, strict, 'alias')
+    assert r['classification'] == 'evaluated' and [a['status'] for a in r['attempts']] == ['unknown_evaluator_failure', 'completed']
+    for f in ('w', 'm', 'r'):
+        with pytest.raises((GI.GradeRefused, FileExistsError)):
+            GI.grade_flow(episode(f + '1', P1), P1, IMG, tmp_path, tmp_path / (f + '.json'), harness(['ok'])[0], strict, 'alias')
+
+
+def test_hash_is_checked_before_the_empty_zero_decision(tmp_path):
+    """lead 7cb2062 case 2: a Submitted record hashing a nonempty patch with an empty saved file is invalid/null;
+    a genuine matching-hash empty submission stays a valid zero; neither invokes grading."""
+    run, calls = harness([])
+    tampered = GI.grade_flow(episode('e1', P1), '', IMG, tmp_path, tmp_path / 't.json', run, strict, 'alias')
+    assert tampered['classification'] == 'integrity_refusal' and tampered['grade_valid'] is False
+    assert tampered['operational_resolved'] is None and tampered['algorithmic_correctness'] is None
+    tampered_ns = GI.grade_flow(episode('e2', P1, exit_status='LimitsExceeded'), '', IMG, tmp_path, tmp_path / 'u.json', run, strict, 'alias')
+    assert tampered_ns['classification'] == 'integrity_refusal'
+    genuine = GI.grade_flow(episode('e3', ''), '', IMG, tmp_path, tmp_path / 'g.json', run, strict, 'alias')
+    assert genuine['classification'] == 'operational_zero' and genuine['grade_valid'] is True and genuine['operational_resolved'] == 0
+    assert calls == [] and not list(tmp_path.glob('*.preds.json'))
+
+
+def test_bound_success_and_failure_are_skipped_and_nonterminal_gets_a_new_attempt_under_a_valid_manifest(tmp_path):
+    """lead 7cb2062 case 3, positive side: a manifest with the matching identity admits bound terminal success and
+    failure (hashes kept, no controls); a nonterminal record keeps the accepted new-attempt behaviour."""
+    out = tmp_path / 'out'; out.mkdir()
+    ok = dict(instance_id='s__1', qualified=True, acceptance=dict(ok=True), finished_utc='x', platform=dict(evaluator_commit=QB.EVALUATOR_COMMIT))
+    bad = dict(instance_id='d__2', qualified=False, acceptance=dict(ok=False), finished_utc='x')
+    h1, h2 = write(out, 's__1', ok), write(out, 'd__2', bad)
+    man = QB.build_legacy_manifest(out, EXP)
+    write(out, 'i__3', dict(instance_id='i__3', status='running'))
+    calls, status = [], {}
+    QB.run_queue(['s__1', 'd__2', 'i__3'], out, fake_qualify(calls), status, expected=EXP, legacy=man, stamp=lambda: 'T2')
+    assert [c[0] for c in calls] == ['i__3'] and calls[0][1] == 'attempt-T2'
+    assert {x['instance_id']: x['sha256'] for x in status['skipped_completed']} == {'s__1': h1, 'd__2': h2}
+    assert [hashlib.sha256((out / i / 'summary.json').read_bytes()).hexdigest() for i in ('s__1', 'd__2')] == [h1, h2]
