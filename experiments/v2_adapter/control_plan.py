@@ -39,7 +39,9 @@ CONTROLS = dict(   # lead decision 7f9673a: one separately versioned adapter (co
                                'predictions, run_evaluation.py L458-L470)'))
 
 RECORD = dict(  # expected acceptance record per instance x control (every field required; placeholders until executed)
-    run_id=PH('RUN_ID'), instance_id=None, control=None, host_id=PH('HOST_ID'), host_arch_uname_m=PH('MUST_EQUAL_x86_64'),
+    run_id=PH('RUN_ID'), instance_id=None, control=None, host_id=PH('HOST_ID'), host_arch=PH('HOST_ARCH (e.g. arm64)'), vm_kernel_arch=PH('VM_KERNEL_ARCH'),
+    image_userland_arch='amd64 (pinned M01 images; no ARM substitution)', translation_mode=PH('rosetta <version> | none (native)'),
+    resource_limits=PH('CPU/MEM/DISK fixed before the run'), declared_timeout_seconds=1800,
     container_runtime=PH('RUNTIME_NAME_AND_VERSION'), evaluator_commit='f7bbbb2ccdf479001d6467c9e34af59e44a840f9',
     dataset_parquet_sha256=PINS['dataset_parquet_sha256'], dependency_lock_sha256=PH('SHA256_OF_LOCK_ON_HOST'),
     eval_script_sha256_expected=None, eval_script_sha256_observed=PH('FROM_TEST_SPEC_ON_HOST'),
@@ -57,12 +59,13 @@ RECORD = dict(  # expected acceptance record per instance x control (every field
     report_scope=PH('explicit scope statement; no fabricated upstream success markers'), qualification_reason=PH('TEXT'),
     stock_gold_path_comparison=PH('reference only: agreement/disagreement with the unmodified --predictions_path gold run'))
 
-COMMAND_TEMPLATES = dict(  # UNTESTED; flags read from run_evaluation.py L583-L674 at f7bbbb2; run only on a verified x86_64 host
+COMMAND_TEMPLATES = dict(  # UNTESTED; flags read from run_evaluation.py L583-L674 at f7bbbb2; run only on the approved runtime
+    # (native x86_64 or Rosetta-translated amd64 in an arm64 VM, lead bae161f)
     reference='python -m swebench.harness.run_evaluation --dataset_name <PATH_TO_SHA_VERIFIED_PARQUET> --split train '
               '--predictions_path gold --instance_ids <INSTANCE_ID ...> --run_id <RUN_ID> --namespace none --max_workers <N> '
               '--timeout 1800 --cache_level env --report_dir <REPORT_DIR>',
     no_change='control_adapter.run_control(mode="no_change", ...) with an approved Runtime binding (NOT YET WRITTEN; '
-              'written only on the approved x86_64 host); the unmodified CLI cannot run it (drops empty predictions)',
+              'written only on the approved runtime); the unmodified CLI cannot run it (drops empty predictions)',
     reference_adapter='control_adapter.run_control(mode="reference", reference_patch=<dataset patch>, ...) - compared with '
                       'the stock CLI gold command above on the same task/image',
     notes=['a local .parquet is loaded with split="train" by load_swebench_dataset (utils.py L147-L148); --split is then unused',
@@ -92,8 +95,19 @@ def main():
     rows, eligible, recs = plan()
     art = dict(request='DTR-REQ-002 non-executing control-plan template (lead 180d74e)',
                status='TEMPLATE ONLY: nothing executed; commands untested; host/runtime/digests are placeholders',
-               blockers=['(a) author execution permission for the harness controls (unanswered since 2026-09-21 15:16 UTC)',
-                         '(b) an x86_64 host with a container runtime (this host: arm64, no docker/podman/colima)'],
+               blockers=['(b) a container runtime: native x86_64, or Rosetta-translated amd64 in an arm64 Lima/Colima VM (candidate '
+                         'accepted by lead bae161f); installation pending the author\'s download approval (this host: arm64, none installed)'],
+               resolved_blockers=['(a) author execution permission: GRANTED 2026-09-22 (author "yes" in chat; recorded in the handoff)'],
+               smoke_check=dict(task='pallets__flask-5014', role='explicit runtime smoke check, not a representative sample (lead bae161f)',
+                                sequence=['stock --predictions_path gold', 'adapter reference', 'adapter no_change'],
+                                same=['task', 'image digests', 'runtime', 'resource limits', 'declared timeout'],
+                                acceptance=['pins and eval-script hashes agree', 'stock and reference required-test maps agree',
+                                            'stock and reference strict outcomes agree', 'reference passes every required test',
+                                            'no_change meets the accepted failure/P2P/identity/completion rule'],
+                                record=['raw logs', 'both attempts', 'host/VM/image architectures', 'translation version',
+                                        'image digests', 'resource limits'],
+                                scope='a pass qualifies this task/environment only; translation/build failures are runtime diagnoses; '
+                                      'no native-performance or cross-platform equivalence claim; no model inference or CONFIRM follows'),
                resolved_lead_decision='7f9673a: separately versioned control adapter (control_adapter.py); no-change bypasses only '
                                       'prediction application; qualification requires completed interpretable execution',
                planned_adapter=dict(path='experiments/v2_adapter/control_adapter.py', version=ADAPTER['version'],

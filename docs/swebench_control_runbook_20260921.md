@@ -8,10 +8,11 @@ expected records (500 instances × {no-change, reference} = 1,000 records, place
 
 ## Blockers
 There are two, and both are external:
-- (a) The author's **execution permission** for these harness controls. It was asked on 21 Sep at 15:16 UTC and is
-  unanswered.
-- (b) An **x86_64 host with a container runtime**. This host reports `uname -m` = arm64 and has no
-  docker/podman/colima.
+- (a) The author's **execution permission** for these harness controls. **Granted on 2026-09-22** (the author's
+  "yes" in chat, recorded in the handoff).
+- (b) A **container runtime**: native x86_64, *or* Rosetta-translated amd64 in an arm64 Lima/Colima VM, which the lead
+  accepted as a candidate functional runtime in `bae161f`. None is installed on this host, which is arm64; the install
+  is pending the author's download approval.
 
 The lead's review is not a blocker.
 
@@ -37,7 +38,10 @@ The lead's review is not a blocker.
 
 ## Host verification (record before any control)
 - `<HOST_ID>`
-- `uname -m` must equal `x86_64`
+- host architecture, VM kernel architecture, image/userland architecture (pinned amd64; no ARM substitution) and
+  translation mode (`rosetta <version>` or native), each recorded **separately**. The host's `uname -m` is **not** a
+  gate, and an ARM VM is never reported as having an x86 kernel (lead `bae161f`).
+- fixed resource limits and the declared 1,800 s timeout, which is not expanded after failures
 - `<RUNTIME_NAME_AND_VERSION>`
 - free disk `<DISK>`
 - CPU/memory `<CPU>`/`<MEM>`
@@ -64,7 +68,7 @@ python -m swebench.harness.run_evaluation --dataset_name <PATH_TO_SHA_VERIFIED_P
   the script applies the test patch itself.
 - No fabricated patch, no empty `git apply`, no test edits. The report states its scope, and no upstream success
   markers are fabricated.
-- The Runtime binding is **not yet written**; it is written only on the approved x86_64 host.
+- The Runtime binding is **not yet written**; it is written only on the approved runtime (native or Rosetta-translated).
 
 **Adapter reference mode.** The same adapter applies the dataset reference patch and then runs the identical script
 once. On the approved runtime it must be compared with the stock gold command above on the same task and image, with
@@ -102,3 +106,20 @@ The schema is in the JSON (`record_schema`). It covers:
 
 Denominators: 500 eligible instances, 11 of which carry the empty-PASS_TO_PASS limitation; nothing is dropped after
 assignment.
+
+## First execution: runtime smoke check (lead `bae161f`)
+The first task is `pallets__flask-5014`, an explicit smoke check, **not** a representative sample. On the same task,
+image digests, runtime, resources and timeout, run in order:
+1. the stock `--predictions_path gold`;
+2. adapter `reference`;
+3. adapter `no_change`.
+
+Acceptance requires all of:
+- pins and eval-script hashes agree;
+- the stock and reference required-test maps agree, and so do their strict outcomes;
+- the reference passes every required test;
+- the no-change run meets the accepted failure, P2P, identity and completion rule.
+
+Record the raw logs, both attempts, the architectures, the translation version, the image digests and the resource
+limits. A pass qualifies this task and environment only. Translation or build failures are runtime diagnoses, not
+model errors. No native-performance claim, and no model inference or CONFIRM, follows from this check.

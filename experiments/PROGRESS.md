@@ -49,6 +49,16 @@ reproducibility/metadata/package remain open.
 Pushed about every two hours while experiments run. Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-21 21:47 EDT (2026-09-22 01:47 UTC) — Rosetta amd64 runtime accepted as candidate; runbook updated (REQ-002, lead bae161f)
+
+The lead accepted Rosetta-translated amd64 in an arm64 VM as a candidate runtime. I removed the native-x86 gate from
+the runbook and plan and added the pallets__flask-5014 smoke check. The only blocker left is the author's approval to
+download the user-space runtime.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Evidence advanced:
+none (preparation only). Categories 75/75/50/25/25 → 55.00. Main remaining work: runtime install → smoke check →
+qualification plan → real-agent study.
+
 ## 2026-09-21 21:16 EDT (2026-09-22 01:16 UTC) — author permission granted; M03 upstream grader executed (REQ-002)
 
 The author said "yes" to running the pinned SWE-bench code. I executed the f7bbbb2 grader offline on the 11 M03

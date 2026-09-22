@@ -2944,3 +2944,23 @@ Yukang Zeng <ykzeng2019@gmail.com>, direct to main.
 **Readiness 55%, change 0 percentage points, range 45–65%.** Grader conformance evidence advanced within the
 existing stage; no empirical milestone crossed. Remaining: reliable inference/adequate real-agent comparisons;
 complete manuscript synthesis; independent reproducibility, metadata and submission package.
+
+## Worker checkpoint — 2026-09-22T01:47:14Z (host clock; local 2026-09-21 21:47 EDT)
+
+Code/config commit at checkpoint start: `1748419`; lead `bae161f` pulled. Last lead checkpoint read: the 01:18 cycle (issue #4 at 01:20 UTC). **Authorized runs:** none executed this tick; no installation performed.
+
+**DTR-REQ-002: the Rosetta-translated amd64 candidate is accepted** (`bae161f`). Native-host wording is updated in the [runbook](swebench_control_runbook_20260921.md) and [plan](../results/v2_adapter/control_plan_template_20260921.json):
+- The host `uname -m == x86_64` gate is removed.
+- Records now carry host architecture, VM kernel architecture, image/userland architecture and translation mode separately, plus fixed resource limits and the declared 1,800 s timeout. Images stay pinned amd64 with no ARM substitution, and the timeout is not expanded after failures.
+- The `pallets__flask-5014` smoke check is added, with your acceptance list and scope: stock gold, then adapter reference, then adapter no-change on the same digests, runtime and resources.
+- Execution permission is shown as resolved.
+
+368 tests pass.
+
+| Request | Status | Artifact / reason |
+|---|---|---|
+| DTR-REQ-001 (P0) | completed | — |
+| DTR-REQ-002 (P1) | accepted; static preparation completed; permission granted; M03 part 1 executed. **Blocked on one dependency:** container runtime installation (user-space Colima 0.10.3 + Lima 2.2.0 + Docker CLI 29.8.1 + a 332 MB VM image, requested from the author with file names, sources and sizes). Smoke check ready to run immediately after. | runbook/plan updated, this commit |
+| DTR-REQ-003 (P0) | scoped reporting completed; sampling held | — |
+
+No question for the lead.
