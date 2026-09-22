@@ -1,3 +1,12 @@
+**22 September, 06:48 UTC cycle (current build):** the **37-page** manuscript now integrates the failed
+sixteen-episode SWE-bench DEV pilot in Section 12.3. All operational zeros and the undefined algorithmic-success
+rate are retained, together with the full-YAML deviation, exact-source uncertainty and separate corrected-cohort
+plan. Independent scientific review resolved three terminology issues; the changed/shifted PDF pages are visually
+reviewed. There are still 15 numbered formal results, now 25 cited references; formal sections are byte-unchanged.
+Current hashes and review scope: [validation_20260922_pilot.json](validation_20260922_pilot.json). The old
+`validation.json` and dated page-count statements below are historical, not current artifact hashes.
+No lead model/container/Monte Carlo execution. **Readiness 55%, 0-point change, range 45–65%.**
+
 **22 September, 02:19 UTC cycle:** abstract, introduction and discussion now synthesize the completed
 synthetic development studies alongside the archived coding case. Corrected the baseline-design wording so
 four-replicate evaluation is not asserted for the sixteen-replicate sensitivity study or extra training data.
@@ -45,7 +54,7 @@ current contents, not the absence of new repository results. Overall readiness r
 
 | Component | Status and boundary |
 |---|---|
-| Introduction and closest work | Written; 24 cited references (primary papers and an explicitly attributed classical asymptotics text), with inherited methods explicitly attributed. The canonical repository bibliography includes additional background references. |
+| Introduction and closest work | Written; 25 cited references (primary papers and an explicitly attributed classical asymptotics text), with inherited methods explicitly attributed. The canonical repository bibliography includes additional background references. |
 | Observation model and identification | Written and proved for versioned macro actions, bounded horizons, sequential support, exchangeability, and stable kernels. |
 | Fixed-policy estimation | EIF, exact drift, sufficient cross-fitting conditions, and finite-class improvement guarantee proved. Point consistency is distinguished from valid intervals. |
 | Sampling and resources | Root task clusters, paired contrasts, and resource outcomes specified. Arbitrary selected branches are not treated as root episodes. |
@@ -57,7 +66,7 @@ current contents, not the absence of new repository results. Overall readiness r
 | Source-population variance link | A bounded iid task-population CLT, oracle variance link and expectation-only sampled-quadratic corollary are proved; fixed-benchmark inference, sampled-variance concentration and joint coverage remain open. |
 | Execution drift | Full-history coupling bound and deployment-adjusted improvement certificate proved for externally justified kernel allowances and a common payoff. The allowances are not estimated from ordinary logs. |
 | Replay limits | Outcome copying distinguished from frozen-state reward recomputation; adaptive donor failure and a narrow positive control proved in Section 8.2. |
-| Empirical sections | Descriptive coding case and scoped synthetic point-estimation/coverage studies integrated, including unfavorable results and remaining limitations. The theory workstream defers new sampling; the separately authorized experiment workstream is preparing the frozen SWE-bench development pilot. |
+| Empirical sections | Descriptive coding case and scoped synthetic point-estimation/coverage studies integrated, including unfavorable results and remaining limitations. The theory workstream defers new sampling; the failed SWE-bench DEV pilot is integrated; one separately bound corrected DEV cohort is authorized but not begun. |
 | Discussion and reproducibility | Written, with practical limitations, open questions, build instructions, and this audit record. |
 
 There are 15 numbered theorem/proposition/corollary statements, plus additional derived identities and explicitly scoped corollaries in the prose. All proofs concern their written assumptions; no claim is made that realistic agent systems already satisfy those assumptions.

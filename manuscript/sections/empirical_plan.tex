@@ -3,8 +3,8 @@
 
 \paragraph{Status.}
 Section~\ref{sec:coding-case-study} now reports a descriptive analysis of the existing coding-study archive.
-A scoped known-truth validation is now available, as summarized below; the broader validation grid and a new
-prospective agent evaluation remain incomplete. This section separates those results from the remaining plan. The archived comparisons and retrospective diagnoses do not substitute
+Scoped known-truth validation and an unsuccessful repository-repair development pilot are now available,
+as summarized below; the broader validation grid and prospective routing evaluation remain incomplete. This section separates those results from the remaining plan. The archived comparisons and retrospective diagnoses do not substitute
 for prespecified validation of the final method, nor authorize new model or Monte Carlo runs.
 
 \subsection{Scoped synthetic validation and finite-sample limitations}
@@ -84,8 +84,35 @@ The replay implementation will first be checked against both positive and adapti
 
 The primary statistical outputs will be bias, root mean squared error, confidence-interval coverage and length, false improvement declarations, and computation. Weight tails, zero-match rates, stage-specific effective sample sizes, empty nuisance-fit cells, and numerical failures will be retained. Monte Carlo uncertainty will accompany performance summaries. An interval that fails under misspecification will be reported as a failure under the relevant assumptions rather than hidden by selective reporting or undeclared truncation.
 
+\subsection{Repository-repair development pilot and configuration deviation}
+A separate development pilot used eight SWE-bench Verified repository-repair tasks
+\citep{jimenez2023swebench}. The task list was frozen before model outcomes from a feasibility-qualified
+frame; it is not a representative benchmark sample. Each task received one fixed-backend episode with
+Qwen2.5-Coder-7B and one with Qwen2.5-Coder-14B, using the same Q4\_K\_M conversion scheme,
+mini-swe-agent, pinned task images, temperature zero, a 24-logical-call limit and a 16,384-token context window.
+All sixteen episodes terminated: twelve reached the call limit, three exceeded context capacity,
+and one returned an empty submission. No episode produced a nonempty submitted patch.
+Under the frozen endpoint definitions, all sixteen were operational failures; none was eligible for
+the separate algorithmic-success endpoint, so that rate is undefined, rather than zero.
+No hidden-test evaluation was run because no episode yielded an eligible nonempty submitted patch.
+
+Retrospective source and serialized-configuration inspection found that the driver applied the YAML
+agent settings but omitted its model and environment sections, including the prescribed observation truncation and
+format-error template. All sixteen episodes had this configuration deviation. Two of the three context
+failures followed oversized tool observations; the third occurred with accumulated history without
+a comparable oversized observation. This evidence identifies a concrete harness defect but does not
+establish that it caused every failure or that correcting it will produce successful repairs.
+The original cohort is retained as negative evidence about the executed system, with no model-capability,
+routing-benefit or intended-configuration performance claim. The archived records do not independently
+attest the exact remote script bytes executed. The archive and retrospective audit are available under
+\texttt{results/v2\_agent/pilot\_20260922/} and
+\texttt{docs/audits/pilot\_block1\_20260922\_lead.json}.
+A separate corrected development cohort is authorized with the same tasks, model pins, decoding and
+limits; it has not begun at this revision. Its results will remain separate from the original cohort.
+These exposed development tasks cannot supply confirmatory evidence for a subsequently selected router.
+
 \subsection{Prospective open-weight agent experiment}
-The empirical agent study will fix a model pool, prompts, decoding settings, tool interface, execution environment, stopping rules, and objective verifier. Development tasks will establish a feasible configuration and a nondegenerate outcome distribution. Before collection, the protocol will also set adequacy thresholds for visible-feedback informativeness, consequential routing opportunities and per-action support, with checks on development tasks. Handling of tasks with zero usable visible checks will be specified prospectively; the archived evaluation cohort will not be filtered retrospectively. After that choice, all evaluation tasks will be newly drawn or held out at the task-family level. Model weights and framework software will have separately documented licenses and immutable version identifiers.
+The subsequent routing study will fix a model pool, prompts, decoding settings, tool interface, execution environment, stopping rules, and objective verifier. Development tasks will establish a feasible configuration and a nondegenerate outcome distribution. Before collection, the protocol will also set adequacy thresholds for visible-feedback informativeness, consequential routing opportunities and per-action support, with checks on development tasks. Handling of tasks with zero usable visible checks will be specified prospectively; the archived evaluation cohort will not be filtered retrospectively. After that choice, all evaluation tasks will be newly drawn or held out at the task-family level. Model weights and framework software will have separately documented licenses and immutable version identifiers.
 
 Routing opportunities will be defined prospectively. Known assignment probabilities will be persisted before generation, including availability and budget restrictions. Candidate policies will include always-small, always-large, an observable fixed-time switch, error-triggered escalation, a supported stochastic policy, and a competitive learned router. Each rule will specify its behavior when a trigger never occurs or an action becomes infeasible. A successful episode, a budget-limited failure, and an infrastructure loss of the outcome will remain distinct statuses.
 

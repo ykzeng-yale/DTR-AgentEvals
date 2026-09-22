@@ -1599,3 +1599,22 @@ count reproduce; that recount is completed. All 16 still share the configuration
 exits" is not an identified causal conclusion. Retain T=0 and all limits in the one corrected cohort; no decoding
 sweep or separate v3 cohort. The lead decision above removes the scientific approval wait. Missing server logs
 and executed-source attribution remain reporting requests, not another model-selection round.
+
+## Lead receipt — 2026-09-22 06:48 UTC review cycle
+
+Reviewed worker `e9e735f` / host checkpoint 06:15:23; its `043bfd9` acknowledgement is accepted.
+**REQ-002 P1 archive delivery COMPLETED:** all 43 published hashes match, including 11 logs (303,346 bytes).
+No new cohort result. The lead corrected timestamp parsing and provenance overclaims in an additive report;
+raw-byte equality and exact executed-script bytes remain unverified. Original artifacts are unchanged.
+See [review and acceptance criteria](../docs/theory_feedback_20260922_pilot_integration.md).
+
+**REQ-002: PROCEED** the one authorized `yaml-v1` DEV cohort under existing host conditions;
+**HOLD learned routing/CONFIRM**. Same 16 assignments/order/pins/T=0/limits, complete immutable receipts and
+retained failures, separate/cumulative costs; no v3, pooling or extra tuning. Consume the lead correction;
+do not repeat the legacy audit or run. **REQ-004 P0:** preserve 07:10–08:20 quiet window and explicit peer
+release plus fresh checks. No new scientific permission is needed. Acknowledge existing IDs/status and
+processed SHA; retain Yukang Zeng <ykzeng2019@gmail.com> for both commit identities.
+
+Actual paper progress: failed DEV cohort integrated with independent review; no new mathematical claim.
+Readiness **55%, 0-point change, range 45–65%**. Remaining: useful inference/adequate comparisons;
+final empirical synthesis; independent reproducibility/metadata/submission package.

@@ -1,8 +1,8 @@
 # Dynamic Agent Regimes — full theory-first manuscript
 
-**Working draft, updated 22 September 2026 (36 pages).** [Read the current PDF](DTR_Agent_Regimes_Theory_Draft.pdf), [edit the source](main.tex), or read the [validation and status record](STATUS.md).
+**Working draft, updated 22 September 2026 (37 pages).** [Read the current PDF](DTR_Agent_Regimes_Theory_Draft.pdf), [edit the source](main.tex), or read the [validation and status record](STATUS.md).
 
-The current paper develops the theory, complete proofs for its stated results, introduction, related-work positioning, discussion, and prospective empirical methods. The archived coding experiment is now integrated as a descriptive case study, including all six live-policy comparisons, limited feedback/repair opportunities, the fixed learned schedule, unfavorable replay comparison and unresolved calibration/inference. The empirical section, abstract and discussion also report scoped synthetic development, fixed-score coverage, replication sensitivity, honest-split repeated-training and five-fixed-fit diagnostics; broader inference validation and new model evaluation remain incomplete. Historical arithmetic pilots are not treated as confirmatory evidence.
+The current paper develops the theory, complete proofs for its stated results, introduction, related-work positioning, discussion, and prospective empirical methods. The archived coding experiment is now integrated as a descriptive case study, including all six live-policy comparisons, limited feedback/repair opportunities, the fixed learned schedule, unfavorable replay comparison and unresolved calibration/inference. The empirical section, abstract and discussion also report scoped synthetic development, fixed-score coverage, replication sensitivity, honest-split repeated-training and five-fixed-fit diagnostics; the unsuccessful sixteen-episode repository-repair DEV pilot and its configuration deviation are now integrated in Section 12.3. Broader inference validation and prospective routing evaluation remain incomplete. Historical arithmetic pilots are not treated as confirmatory evidence.
 
 ## Mathematical content
 
@@ -60,3 +60,9 @@ independent mathematical review and deterministic checks. It makes the pooled-pr
 convention explicit, retains zero-contribution tasks and returns the entire possible gap range at the archived
 sample size. It is not integrated into the PDF, does not validate the archived execution assumptions or derivative
 band, and leaves informative joint inference open. No new model/GPU or Monte Carlo run was made.
+
+**22 September, 06:48 UTC cycle:** Section 12.3 retains all pilot operational failures and the undefined
+algorithmic-success rate, with a scoped retrospective configuration diagnosis. Independent scientific and visual
+review completed; formal theory unchanged. The current 37-page build and sources are recorded in
+[validation_20260922_pilot.json](validation_20260922_pilot.json); `validation.json` remains the historical snapshot.
+Readiness 55% (0 points; 45–65%); the corrected cohort is planned, not completed.

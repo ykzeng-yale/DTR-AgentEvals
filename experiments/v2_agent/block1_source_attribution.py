@@ -1,72 +1,119 @@
-"""DTR-REQ-002 block 1: per-episode execution-source evidence for the disclosed child-script replacement interval
-(05:33:50Z-05:34:13Z, pilot_episode.py briefly replaced on disk under the live 11a7344 runner), plus the raw/published
-identity binding of the sanitized files (lead 043bfd9 requests). Evidence only; nothing is re-run or rewritten.
+"""Correct saved block-1 attribution without recreating worker filesystem evidence.
 
-Per episode:
-  * spawn time: filesystem birth time of runner_stdout.txt (created by the runner immediately before Popen) and the
-    run-ID timestamp
-  * schema markers that distinguish the two child-script versions:
-      - 11a7344 child (SHA-256 780c945a...): attempts.jsonl has one completed-attempt record per line, NO 'event' key;
-        episode.json has no known_prompt_tokens/container_cleanup/cleanup_error/incomplete_attempt_results keys;
-        no container_ownership.json / container_cleanup.json / call9_history.json files
-      - a64d81e child (SHA-256 cabcaae9...): requires --episode-deadline/--block-deadline, which the 11a7344 runner
-        never passes (argparse would exit 2 before any episode record), and writes start/result 'event' records,
-        the extra episode keys and the extra files above
+Reads the immutable worker report and published episode artifacts only. Worker-reported
+stdout-file birth times precede Popen in the pinned runner; they are not observed process
+execution times. Run-ID timestamps likewise describe recorded naming, not interpreter reads.
+The output is additive and write-once; neither original attribution nor episodes are changed.
 """
-import hashlib, json, subprocess
+from __future__ import annotations
+import argparse
+import datetime as dt
+import hashlib
+import json
+import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 OUT = ROOT / 'results/v2_agent/pilot_20260922'
-NEW_KEYS = ('known_prompt_tokens', 'known_completion_tokens', 'container_cleanup', 'cleanup_error', 'incomplete_attempt_results', 'yaml_binding')
+SOURCE = OUT / 'block1_source_attribution.json'
+CORRECTED = OUT / 'block1_source_attribution_correction.json'
+NEW_KEYS = ('known_prompt_tokens', 'known_completion_tokens', 'container_cleanup', 'cleanup_error', 'incomplete_attempt_results')
 NEW_FILES = ('container_ownership.json', 'container_cleanup.json', 'call9_history.json')
-REPLACED = ('2026-09-22T05:33:50Z', '2026-09-22T05:34:13Z')
+SOURCE_PINS = {
+    '11a7344': {'pilot_episode.py': '780c945aa0c5254b34540bde3e83d50a4f4aef3e2a9558acaf780e15e3c6faee',
+                'pilot_runner.py': 'ecd84068e111edd4dad758314cacf179d324ca2a716feee8c9b73598b340c02f'},
+    'a64d81e': {'pilot_episode.py': 'cabcaae90da863fcbac107df6514198c4e8d5530cc5f77f97267650d8a286935'}
+}
 
 
-def birth_utc(p):
-    out = subprocess.run(['stat', '-f', '%B', str(p)], capture_output=True, text=True, check=True).stdout.strip()
-    import time
-    return time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime(int(out)))
+def run_id_timestamp(run_id):
+    """The final double-underscore segment holds timestamp-randomsuffix, not the stage label."""
+    match = re.fullmatch(r'(\d{8}T\d{6}Z)-[0-9a-f]+', run_id.rsplit('__', 1)[-1])
+    if match is None:
+        raise ValueError('run ID lacks a final timestamp-randomsuffix segment: ' + run_id)
+    stamp = match.group(1)
+    utc = dt.datetime.strptime(stamp, '%Y%m%dT%H%M%SZ').strftime('%Y-%m-%dT%H:%M:%SZ')
+    return stamp, utc
 
 
-def main():
-    rows = []
-    for d in sorted(x for x in OUT.iterdir() if x.is_dir() and (x / 'episode.json').exists()):
-        ep = json.loads((d / 'episode.json').read_text())
-        ledger = [json.loads(l) for l in (d / 'attempts.jsonl').read_text().splitlines() if l.strip()]
-        spawn = birth_utc(d / 'runner_stdout.txt')
-        rows.append(dict(run_id=d.name, instance_id=ep['instance_id'], backend=ep['backend'], spawn_utc_runner_stdout_birth=spawn,
-                         run_id_timestamp=d.name.split('__')[3][:16],
-                         spawned_inside_replacement_interval=REPLACED[0] <= spawn <= REPLACED[1],
-                         ledger_records=len(ledger), ledger_has_event_key=any('event' in r for r in ledger),
-                         episode_has_a64d81e_only_keys=[k for k in NEW_KEYS if k in ep],
-                         a64d81e_only_files_present=[f for f in NEW_FILES if (d / f).exists()],
-                         consistent_with_11a7344_child=(not any('event' in r for r in ledger) and not any(k in ep for k in NEW_KEYS)
-                                                        and not any((d / f).exists() for f in NEW_FILES))))
-    raw = OUT / 'sanitization_block1.json'
-    man = json.loads(raw.read_text())
-    unchanged = sorted({str(p.relative_to(OUT)) for p in OUT.rglob('*') if p.is_file()} - {f['file'] for f in man['files']}
-                       - {'sanitization_block1.json', 'block1_source_attribution.json'})
-    rec = dict(request='DTR-REQ-002', kind='block-1 execution-source evidence and raw/published identity binding (evidence only)',
-               replacement_interval_utc=REPLACED,
-               child_scripts=dict(block1_11a7344='780c945aa0c5254b (SHA-256 prefix)', a64d81e='cabcaae90da863fc (SHA-256 prefix)'),
-               runner_11a7344_passes_deadline_args=False,
-               episodes=rows, all_16_consistent_with_11a7344_child=len(rows) == 16 and all(r['consistent_with_11a7344_child'] for r in rows),
-               episodes_spawned_inside_interval=[r['run_id'] for r in rows if r['spawned_inside_replacement_interval']],
-               limitation='Birth times and output schema are file-system/record evidence; they do not hash the bytes the interpreter '
-                          'read. They exclude the a64d81e child for every episode (that child cannot run under the 11a7344 runner '
-                          'arguments and would leave different records) but cannot exclude a third, unrecorded script.',
-               identity_binding=dict(
-                   published_equals_raw=unchanged,
-                   published_differs_from_raw={f['file']: dict(raw_sha256=f['raw_sha256'], published_sha256=f['published_sha256']) for f in man['files']},
-                   bindings=('episode.json submission_sha256 binds submission.diff bytes; grade.json binds episode run_id and submission_sha256; '
-                             'attempts.jsonl, episode.json, submission.diff and grade.json are byte-identical raw vs published. '
-                             'trajectory.json, runner_stdout.txt and the 11 server logs differ ONLY by the home-directory prefix -> "~"; '
-                             'no committed identity hashes those files, so their raw hashes are the manifest raw_sha256 values and the raw '
-                             'bytes stay worker-local under work/runs/pilot_20260922/raw_block1_prepublication.')))
-    with open(OUT / 'block1_source_attribution.json', 'x') as fh:
-        fh.write(json.dumps(rec, indent=1) + '\n')
-    print(rec['all_16_consistent_with_11a7344_child'], rec['episodes_spawned_inside_interval'], len(unchanged), 'unchanged files')
+def inspect_archive(directory):
+    episode = json.loads((directory / 'episode.json').read_text())
+    ledger = [json.loads(line) for line in (directory / 'attempts.jsonl').read_text().splitlines() if line.strip()]
+    grade = json.loads((directory / 'grade.json').read_text())
+    patch_sha = hashlib.sha256((directory / 'submission.diff').read_bytes()).hexdigest()
+    keys = [key for key in NEW_KEYS if key in episode]
+    files = [name for name in NEW_FILES if (directory / name).exists()]
+    event = any('event' in record for record in ledger)
+    return dict(instance_id=episode['instance_id'], backend=episode['backend'], ledger_records=len(ledger),
+                ledger_has_event_key=event, episode_has_a64d81e_only_keys=keys, a64d81e_only_files_present=files,
+                consistent_with_11a7344_child_schema=not event and not keys and not files,
+                episode_run_id_matches=episode.get('run_id') == directory.name,
+                submission_hash_matches=episode.get('submission_sha256') == patch_sha,
+                grade_identity_matches=(grade.get('episode_run_id') == directory.name and
+                                        grade.get('submission_sha256') == patch_sha and
+                                        grade.get('instance_id') == episode['instance_id'] and
+                                        grade.get('backend') == episode['backend']))
+
+
+def correct_saved_attribution(saved, archive, source_sha256):
+    """Recheck published schemas; keep unavailable raw/worker filesystem evidence explicitly reported."""
+    archive = Path(archive)
+    rows = saved['episodes']
+    run_ids = [row['run_id'] for row in rows]
+    actual = {d.name for d in archive.iterdir() if d.is_dir() and (d / 'episode.json').exists()}
+    if len(run_ids) != len(set(run_ids)) or set(run_ids) != actual:
+        raise ValueError('saved attribution episode IDs do not match the published terminal archive')
+    interval = saved['replacement_interval_utc']
+    corrected = []
+    for row in rows:
+        run_id = row['run_id']
+        stamp, utc = run_id_timestamp(run_id)
+        birth = row.get('spawn_utc_runner_stdout_birth')
+        observed = inspect_archive(archive / run_id)
+        if any(row.get(key) != observed[key] for key in ('instance_id', 'backend', 'ledger_records', 'ledger_has_event_key')):
+            raise ValueError('saved attribution disagrees with published episode: ' + run_id)
+        corrected.append(dict(run_id=run_id, run_id_timestamp=stamp, run_id_timestamp_utc=utc,
+                              run_id_timestamp_inside_reported_replacement_interval=interval[0] <= utc <= interval[1],
+                              worker_reported_stdout_file_birth_utc=birth,
+                              worker_reported_stdout_file_birth_inside_interval=None if birth is None else interval[0] <= birth <= interval[1],
+                              **observed))
+    # The original field was a set complement, not a comparison with raw files.
+    unlisted = saved['identity_binding']['published_equals_raw']
+    raw_claims = [name for name in unlisted if Path(name).parent.name in actual and
+                  Path(name).name in ('episode.json', 'attempts.jsonl', 'submission.diff', 'grade.json')]
+    return dict(request='DTR-REQ-002', kind='additive retrospective correction of block-1 source-attribution evidence',
+                supersedes_claims_in='block1_source_attribution.json', original_attribution_sha256=source_sha256,
+                source_pins_inspected=SOURCE_PINS, worker_reported_replacement_interval_utc=interval,
+                episodes=corrected,
+                all_16_consistent_with_11a7344_child_schema=len(corrected) == 16 and all(r['consistent_with_11a7344_child_schema'] for r in corrected),
+                run_ids_timestamped_inside_reported_interval=[r['run_id'] for r in corrected if r['run_id_timestamp_inside_reported_replacement_interval']],
+                worker_reported_stdout_births_inside_interval=[r['run_id'] for r in corrected if r['worker_reported_stdout_file_birth_inside_interval']],
+                evidence_boundary=dict(
+                    published_archive='Episode IDs, legacy schemas, and local episode/submission/grade identity fields are independently inspectable.',
+                    timestamps='Run-ID timestamps are recorded naming times. Stdout-file birth times and replacement interval are worker-reported, not independently verified here. The pinned runner creates stdout before Popen; neither timestamp establishes when the interpreter read the child source.',
+                    source_inference='Conditional on the pinned 11a7344 runner launch arguments and unaltered output artifacts, the exact a64d81e child cannot explain these records: required --episode-deadline/--block-deadline arguments are absent, so argparse exits before its episode output. This supports legacy-schema consistency, not exact executed-byte attribution; a third or modified source is not excluded.',
+                    raw_identity='Raw worker-local files were not available for independent comparison. Absence from a sanitization manifest does not prove raw/published equality; later derived reports are not raw episode artifacts.'),
+                identity_binding=dict(
+                    files_not_listed_for_sanitization=unlisted,
+                    worker_reported_unchanged_episode_artifact_paths=raw_claims,
+                    worker_reported_sanitized_file_hashes=saved['identity_binding']['published_differs_from_raw'],
+                    raw_bytes_independently_compared=False, sanitization_transform_independently_verified=False))
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--source-attribution', type=Path, default=SOURCE)
+    parser.add_argument('--archive', type=Path, default=OUT)
+    parser.add_argument('--out', type=Path, default=CORRECTED)
+    args = parser.parse_args(argv)
+    if args.out.resolve() == args.source_attribution.resolve():
+        raise ValueError('correction must not overwrite the source attribution')
+    raw = args.source_attribution.read_bytes()
+    corrected = correct_saved_attribution(json.loads(raw), args.archive, hashlib.sha256(raw).hexdigest())
+    with args.out.open('x') as fh:
+        fh.write(json.dumps(corrected, indent=1) + '\n')
+    print(json.dumps(dict(episodes=len(corrected['episodes']),
+                         all_16_consistent_with_11a7344_child_schema=corrected['all_16_consistent_with_11a7344_child_schema'])))
 
 
 if __name__ == '__main__':
