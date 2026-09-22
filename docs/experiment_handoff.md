@@ -2870,3 +2870,35 @@ commit identities and preserve direct-main history and archives.
 **Readiness 55%, change 0 percentage points, range 45–65%.** Unchanged weighted rubric and full scope.
 Remaining: reliable inference/adequate real-agent comparisons; complete manuscript synthesis; independent
 reproducibility, metadata and submission packaging. No newer issue discussion or open PR was observed.
+
+## Worker checkpoint — 2026-09-22T01:16:06Z (host clock; local 2026-09-21 21:16 EDT)
+
+Code/config commit at checkpoint start: `b511c61`; lead `f3db5b6` pulled (repair accepted; static preparation closed). Last lead checkpoint read: the 00:49 cycle (issue #4 at 00:51 UTC).
+
+**Concrete dependency change for DTR-REQ-002: blocker (a) resolved.**
+- The author replied in chat on 2026-09-22 (quoted verbatim): *"yes and you shodu rieclty do all possbiel here scitiaicanlly rather wait for my decision"*.
+- This answers my pending request: *"A yes or no on running the SWE-bench checks, which execute test scripts inside containers."*
+- The worker-host execution permission for the pinned harness controls is therefore granted.
+
+**Executed under that permission (offline, no container):** M03 part 1.
+- Code: [`m03_upstream_grader_run.py`](../experiments/v2_adapter/m03_upstream_grader_run.py), in the isolated `f7bbbb2` venv. Artifact: [`summary.json`](../results/v2_adapter/m03_upstream_grader_run_20260922/summary.json).
+- Setup: a real TestSpec for `pallets__flask-5014`, the first eligible instance in dataset order whose repo uses the stock `parse_log_pytest`. Each G01–G11 status map was graded directly (`get_eval_tests_report` → `get_resolution_status`) and via a constructed log through `get_logs_eval`.
+- **11/11 source-derived upstream outcomes are confirmed.** The parsed maps equal the fixtures.
+- The four counts-as-pass discrepancies (G05–G08: SKIPPED/XFAIL) are confirmed by execution.
+- G10 (TESTS_ERROR marker): found=False → unresolved, although direct grading of the same map would be FULL. The marker gate works.
+- The constructed logs are fixtures, not recorded runtime logs. The runtime part of M03 and the other repo parsers remain.
+- A test on the artifact confirms it matches the pre-registered discrepancy list. 368 tests pass.
+
+**Remaining blocker (b): a container runtime.**
+- Re-checked thoroughly: no docker, podman, colima, lima, nerdctl or Apple `container` on the PATH; no Docker.app, OrbStack, Podman Desktop, Rancher or UTM installed.
+- This host can run a user-space runtime: macOS 26.5.2, Apple M5, 32 GB, 248 GB free, hypervisor support, Rosetta running.
+- Proposed (awaiting the author's explicit download approval, per this worker's download rule): Colima 0.10.3 + Lima 2.2.0 + Docker CLI 29.8.1 from their official release pages. It installs to a user directory and needs no admin rights. It runs amd64 images through Rosetta in an arm64 VM (`--vm-type vz --vz-rosetta`).
+- Whether Rosetta-translated SWE-bench images build and pass is **untested**. It would itself be recorded as a runtime-qualification finding, and your stock-gold comparison applies.
+
+| Request | Status | Artifact / reason |
+|---|---|---|
+| DTR-REQ-001 (P0) | completed | — |
+| DTR-REQ-002 (P1) | static preparation completed; (a) permission **granted**; M03 part 1 **executed** (11/11 confirmed); execution of controls **blocked on (b)**: container runtime install awaiting the author's download approval | this commit |
+| DTR-REQ-003 (P0) | scoped reporting completed; sampling held | — |
+
+**Question for the lead:** is Rosetta-translated amd64 on an arm64 Colima VM acceptable as the runtime for the reference-versus-stock-gold qualification, with arm64 emulation recorded as a runtime property? Or must qualification wait for a native x86_64 host?

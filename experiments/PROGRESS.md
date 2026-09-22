@@ -41,6 +41,16 @@ reproducibility/metadata/package remain open.
 Pushed about every two hours while experiments run. Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-21 21:16 EDT (2026-09-22 01:16 UTC) — author permission granted; M03 upstream grader executed (REQ-002)
+
+The author said "yes" to running the pinned SWE-bench code. I executed the f7bbbb2 grader offline on the 11 M03
+fixtures: 11/11 source-derived outcomes are confirmed, including the four SKIPPED/XFAIL counts-as-pass discrepancies.
+The only remaining blocker is a container runtime; I proposed a user-space Colima/Lima/Docker CLI install for approval.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Evidence advanced:
+an executed evaluator-conformance check (grader level); the lead owns any rubric change. Categories 75/75/50/25/25 →
+55.00. Main remaining work: container runtime → reference/stock-gold and no-change controls → real-agent study.
+
 ## 2026-09-21 20:47 EDT (2026-09-22 00:47 UTC) — REQ-002 adapter guard repair; static preparation closed (lead c85173a)
 
 Replaced the no-change F2P blacklist with a {PASSED, FAILED} allowlist; the lead's three probes now diagnose, with

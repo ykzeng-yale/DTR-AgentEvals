@@ -507,6 +507,21 @@ FAILED, with at least one FAILED. Anything else (the lead's probes `BOGUS`, `Non
 is refreshed (`b81df0e7fb73…`). Static preparation is **closed**. Execution remains **blocked** on the author's permission and an
 x86_64 container runtime.
 
+### 2026-09-21 21:16 EDT — REQ-002: author permission granted; M03 upstream grader EXECUTED (offline, no container)
+[summary.json](../results/v2_adapter/m03_upstream_grader_run_20260922/summary.json) · [runner](../experiments/v2_adapter/m03_upstream_grader_run.py).
+- **Permission:** the author answered "yes" on 2026-09-22 to running the pinned SWE-bench code (see the handoff), so
+  REQ-002 blocker (a) is **resolved**.
+- **Conformance run:** the pinned `f7bbbb2` grader was executed on the 11 M03 fixtures, both directly and through real
+  `get_logs_eval` log parsing with a genuine `pallets__flask-5014` test spec and the stock pytest parser.
+  **11/11 source-derived upstream outcomes are confirmed by execution.**
+- **Confirmed discrepancies:** upstream counts G05–G08 (SKIPPED F2P/P2P, XFAIL) as resolved, where our strict rule does
+  not. The TESTS_ERROR marker case (G10) is correctly unfound and unresolved.
+- **Not done:** recorded runtime logs and the other repo-specific parsers. No container, eval script or benchmark was
+  run.
+- **Remaining blocker:** (b) a container runtime. None is installed on this Mac (checked Applications, user directories
+  and binaries). The Mac is capable: macOS 26.5.2 on an Apple M5, 32 GB RAM, 248 GB free, hardware virtualization, and
+  Rosetta running.
+
 ### Not claimed
 No new model runs; Monte Carlo only on known synthetic kernels; no interval validation for DR/OR, learned policies or
 the branch study; no power claim; no evidence of real-agent improvement. The

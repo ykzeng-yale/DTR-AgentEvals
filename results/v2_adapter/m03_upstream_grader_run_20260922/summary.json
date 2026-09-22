@@ -1,0 +1,202 @@
+{
+ "request": "DTR-REQ-002 M03 part 1 executed: pinned upstream grader on G01-G11 (offline, no container)",
+ "authorization": "author, 2026-09-22 (\"yes\" to running the pinned SWE-bench code)",
+ "evaluator": {
+  "commit": "f7bbbb2ccdf479001d6467c9e34af59e44a840f9",
+  "package_version": "4.1.0"
+ },
+ "dataset": {
+  "sha256": "a45b1fe4e2f0c8390b2b2938ac83e92ed5979000856808f3679c07812e9e6dcd"
+ },
+ "instance_used": {
+  "instance_id": "pallets__flask-5014",
+  "repo": "pallets/flask",
+  "version": "2.3",
+  "parser": "parse_log_pytest (stock)"
+ },
+ "fixtures": 11,
+ "source_derived_upstream_confirmed": 11,
+ "counts_as_pass_upstream_but_not_declared": [
+  "G05-one-f2p-skipped",
+  "G06-all-f2p-skipped",
+  "G07-p2p-skipped",
+  "G08-f2p-xfail"
+ ],
+ "rows": [
+  {
+   "id": "G01-all-pass",
+   "status_map": {
+    "t::a": "PASSED",
+    "t::b": "PASSED",
+    "t::c": "PASSED"
+   },
+   "log_ok": true,
+   "declared_rule": "resolved",
+   "upstream_source_derived": "resolved",
+   "upstream_executed_direct": true,
+   "upstream_executed_via_log": true,
+   "log_found": true,
+   "parsed_equals_fixture": true,
+   "source_derived_confirmed": true
+  },
+  {
+   "id": "G02-f2p-failed",
+   "status_map": {
+    "t::a": "FAILED",
+    "t::b": "PASSED",
+    "t::c": "PASSED"
+   },
+   "log_ok": true,
+   "declared_rule": "unresolved",
+   "upstream_source_derived": "unresolved",
+   "upstream_executed_direct": false,
+   "upstream_executed_via_log": false,
+   "log_found": true,
+   "parsed_equals_fixture": true,
+   "source_derived_confirmed": true
+  },
+  {
+   "id": "G03-f2p-missing",
+   "status_map": {
+    "t::b": "PASSED",
+    "t::c": "PASSED"
+   },
+   "log_ok": true,
+   "declared_rule": "unresolved",
+   "upstream_source_derived": "unresolved",
+   "upstream_executed_direct": false,
+   "upstream_executed_via_log": false,
+   "log_found": true,
+   "parsed_equals_fixture": true,
+   "source_derived_confirmed": true
+  },
+  {
+   "id": "G04-f2p-error",
+   "status_map": {
+    "t::a": "ERROR",
+    "t::b": "PASSED",
+    "t::c": "PASSED"
+   },
+   "log_ok": true,
+   "declared_rule": "unresolved",
+   "upstream_source_derived": "unresolved",
+   "upstream_executed_direct": false,
+   "upstream_executed_via_log": false,
+   "log_found": true,
+   "parsed_equals_fixture": true,
+   "source_derived_confirmed": true
+  },
+  {
+   "id": "G05-one-f2p-skipped",
+   "status_map": {
+    "t::a": "SKIPPED",
+    "t::b": "PASSED",
+    "t::c": "PASSED"
+   },
+   "log_ok": true,
+   "declared_rule": "unresolved",
+   "upstream_source_derived": "resolved",
+   "upstream_executed_direct": true,
+   "upstream_executed_via_log": true,
+   "log_found": true,
+   "parsed_equals_fixture": true,
+   "source_derived_confirmed": true
+  },
+  {
+   "id": "G06-all-f2p-skipped",
+   "status_map": {
+    "t::a": "SKIPPED",
+    "t::b": "SKIPPED",
+    "t::c": "PASSED"
+   },
+   "log_ok": true,
+   "declared_rule": "unresolved",
+   "upstream_source_derived": "resolved",
+   "upstream_executed_direct": true,
+   "upstream_executed_via_log": true,
+   "log_found": true,
+   "parsed_equals_fixture": true,
+   "source_derived_confirmed": true
+  },
+  {
+   "id": "G07-p2p-skipped",
+   "status_map": {
+    "t::a": "PASSED",
+    "t::b": "PASSED",
+    "t::c": "SKIPPED"
+   },
+   "log_ok": true,
+   "declared_rule": "unresolved",
+   "upstream_source_derived": "resolved",
+   "upstream_executed_direct": true,
+   "upstream_executed_via_log": true,
+   "log_found": true,
+   "parsed_equals_fixture": true,
+   "source_derived_confirmed": true
+  },
+  {
+   "id": "G08-f2p-xfail",
+   "status_map": {
+    "t::a": "XFAIL",
+    "t::b": "PASSED",
+    "t::c": "PASSED"
+   },
+   "log_ok": true,
+   "declared_rule": "unresolved",
+   "upstream_source_derived": "resolved",
+   "upstream_executed_direct": true,
+   "upstream_executed_via_log": true,
+   "log_found": true,
+   "parsed_equals_fixture": true,
+   "source_derived_confirmed": true
+  },
+  {
+   "id": "G09-p2p-missing",
+   "status_map": {
+    "t::a": "PASSED",
+    "t::b": "PASSED"
+   },
+   "log_ok": true,
+   "declared_rule": "unresolved",
+   "upstream_source_derived": "unresolved",
+   "upstream_executed_direct": false,
+   "upstream_executed_via_log": false,
+   "log_found": true,
+   "parsed_equals_fixture": true,
+   "source_derived_confirmed": true
+  },
+  {
+   "id": "G10-bad-log-marker",
+   "status_map": {
+    "t::a": "PASSED",
+    "t::b": "PASSED",
+    "t::c": "PASSED"
+   },
+   "log_ok": false,
+   "declared_rule": "unknown_evaluator_failure",
+   "upstream_source_derived": "unresolved (found=False; report resolved False)",
+   "upstream_executed_direct": true,
+   "upstream_executed_via_log": false,
+   "log_found": false,
+   "parsed_equals_fixture": null,
+   "source_derived_confirmed": true
+  },
+  {
+   "id": "G11-empty-parsed-map",
+   "status_map": {},
+   "log_ok": true,
+   "declared_rule": "unknown_unparsable_output",
+   "upstream_source_derived": "unresolved (all tests missing)",
+   "upstream_executed_direct": false,
+   "upstream_executed_via_log": false,
+   "log_found": true,
+   "parsed_equals_fixture": true,
+   "source_derived_confirmed": true
+  }
+ ],
+ "not_done": [
+  "recorded runtime logs (M03 runtime part)",
+  "other repo-specific parsers (django, sympy, astropy, ...)",
+  "any container, generated eval script or benchmark"
+ ]
+}
