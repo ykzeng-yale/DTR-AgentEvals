@@ -13,7 +13,7 @@ from __future__ import annotations
 import os
 os.environ['MSWEA_MODEL_RETRY_STOP_AFTER_ATTEMPT'] = '2'
 os.environ['MSWEA_COST_TRACKING'] = 'ignore_errors'
-import argparse, hashlib, json, platform, subprocess, sys, time
+import argparse, hashlib, json, platform, re, signal, subprocess, sys, time
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -32,6 +32,64 @@ def sha(b):
     return hashlib.sha256(b if isinstance(b, bytes) else b.encode()).hexdigest()
 
 
+class EpisodeDeadline(TimeoutError):
+    pass
+
+
+def request_timeout(deadline, now=None):
+    left = deadline - (time.time() if now is None else now)
+    if left <= 0:
+        raise EpisodeDeadline('episode inference deadline reached')
+    return min(REQUEST_TIMEOUT_S, left)
+
+
+def append_attempt(path, record):
+    """A start is durable before dispatch, and its result is a separate append; interrupted requests stay visible."""
+    with Path(path).open('a') as fh:
+        fh.write(json.dumps(record) + '\n')
+        fh.flush()
+        os.fsync(fh.fileno())
+
+
+def cleanup_owned_container(container_id, deadline, run=None):
+    """Synchronously stop only the recorded episode container; an observed stopped/absent state confirms release."""
+    rec = dict(container_id=container_id, confirmed=False, state='unknown', commands=[])
+    if not isinstance(container_id, str) or not re.fullmatch(r'[0-9a-f]{64}', container_id):
+        return dict(rec, reason='no verified full episode-owned container ID')
+    run = subprocess.run if run is None else run
+    def call(args, limit):
+        left = deadline - time.time()
+        if left <= 0:
+            rec['reason'] = 'cleanup deadline exhausted'
+            return None
+        try:
+            result = run([DOCKER, *args], capture_output=True, text=True, timeout=min(left, limit))
+            rec['commands'].append(dict(args=args, returncode=result.returncode, stdout=result.stdout[-300:], stderr=result.stderr[-300:]))
+            return result
+        except Exception as e:
+            rec['commands'].append(dict(args=args, error=type(e).__name__, detail=str(e)[:300]))
+            return None
+    def inspect():
+        result = call(['container', 'inspect', '--format', '{{.State.Running}}', container_id], 10)
+        if result is None:
+            return False
+        if result.returncode == 0 and result.stdout.strip() == 'false':
+            rec.update(confirmed=True, state='stopped')
+        elif result.returncode != 0 and container_id in result.stderr and any(
+                s in result.stderr.lower() for s in ('no such container', 'no such object')):
+            rec.update(confirmed=True, state='absent')
+        elif result.returncode == 0 and result.stdout.strip() == 'true':
+            rec['state'] = 'running'
+        return rec['confirmed']
+    call(['stop', '--time', '10', container_id], 20)
+    if not inspect():
+        call(['rm', '-f', container_id], 20)
+        inspect()
+    if not rec['confirmed']:
+        rec.setdefault('reason', 'container termination could not be confirmed before cleanup deadline')
+    return rec
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--instance', required=True)
@@ -42,7 +100,15 @@ def main():
     ap.add_argument('--run-id', required=True)
     ap.add_argument('--expected-image', required=True)
     ap.add_argument('--served', required=True, help='JSON: served model file name/sha256/load record from the runner')
+    ap.add_argument('--episode-deadline', required=True, type=float)
+    ap.add_argument('--block-deadline', required=True, type=float)
     args = ap.parse_args()
+    deadline = min(args.episode_deadline, args.block_deadline)
+    def alarm(_signum, _frame):
+        raise EpisodeDeadline('absolute inference deadline reached; cleanup only')
+    signal.signal(signal.SIGALRM, alarm)
+    request_timeout(deadline)
+    signal.setitimer(signal.ITIMER_REAL, max(1e-6, deadline - time.time()))
     import pandas as pd
     import requests
     import yaml
@@ -51,6 +117,8 @@ def main():
     from minisweagent.models.litellm_textbased_model import LitellmTextbasedModel
 
     run_dir = Path(args.run_dir)
+    attempts_path = run_dir / 'attempts.jsonl'
+    WC.write_once(attempts_path, '')
     cfg_path = MSWEA / 'src/minisweagent/config/default.yaml'
     if sha(cfg_path.read_bytes()) != DEFAULT_YAML_SHA:
         raise SystemExit('default.yaml differs from the lead pin')
@@ -65,29 +133,36 @@ def main():
 
     class AccountedModel(LitellmTextbasedModel):
         """Logs every PHYSICAL attempt; the logical call index is the agent's model.query count."""
+        abort_exceptions = LitellmTextbasedModel.abort_exceptions + [EpisodeDeadline]
         def __init__(self, **kw):
             super().__init__(**kw)
             self.logical = 0
             self.attempt = 0
 
         def query(self, messages, **kw):
+            request_timeout(deadline)
             self.logical += 1
             self.attempt = 0
+            if self.logical == 9:
+                WC.write_once(run_dir / 'call9_history.json', json.dumps(dict(call=9, messages=messages, captured_at=time.time())) + '\n')
             return super().query(messages, **kw)
 
         def _query(self, messages, **kw):
+            timeout = request_timeout(deadline)
             self.attempt += 1
-            rec = dict(call=self.logical, attempt=self.attempt, t_start=time.time())
+            rec = dict(call=self.logical, attempt=self.attempt, t_start=time.time(), request_timeout_s=timeout)
+            append_attempt(attempts_path, dict(rec, event='start'))
+            attempts.append(rec)
             try:
-                r = super()._query(messages, **kw)
+                r = super()._query(messages, **dict(kw, timeout=request_timeout(deadline)))
             except BaseException as e:  # noqa: BLE001  logged, then re-raised to the unmodified retry/agent logic
                 rec.update(t_end=time.time(), ok=False, error=type(e).__name__, detail=str(e)[:300])
-                attempts.append(rec)
+                append_attempt(attempts_path, dict(rec, event='result'))
                 raise
             u = getattr(r, 'usage', None)
             rec.update(t_end=time.time(), ok=True, prompt_tokens=getattr(u, 'prompt_tokens', None),
                        completion_tokens=getattr(u, 'completion_tokens', None), finish_reason=r.choices[0].finish_reason)
-            attempts.append(rec)
+            append_attempt(attempts_path, dict(rec, event='result'))
             return r
 
     model = AccountedModel(model_name='openai/' + args.alias, cost_tracking='ignore_errors',
@@ -96,6 +171,16 @@ def main():
 
     class ContainerPlatformDockerEnvironment(DockerEnvironment):
         """cp2 binding (accepted): the CONTAINER's uname in the prompt templates, not the macOS host's."""
+        def _start_container(self):
+            super()._start_container()
+            WC.write_once(run_dir / 'container_ownership.json', json.dumps(dict(container_id=self.container_id, run_id=args.run_id)) + '\n')
+
+        def cleanup(self):
+            if not hasattr(self, '_cleanup_receipt'):
+                self._cleanup_receipt = cleanup_owned_container(getattr(self, 'container_id', None), deadline + 120)
+                WC.write_once(run_dir / 'container_cleanup.json', json.dumps(self._cleanup_receipt) + '\n')
+            return self._cleanup_receipt       # upstream __del__ is now idempotent and never launches an async shell
+
         def container_platform(self):
             if not hasattr(self, '_cplat'):
                 self._cplat = {k: self.execute({'command': 'uname -%s' % f}).get('output', '').strip() for k, f in
@@ -131,13 +216,17 @@ def main():
                     exit_status, capture_error = 'SubmissionCaptureFailed', 'final: %s' % e
     except Exception as e:  # noqa: BLE001  retained, never dropped
         exit_status, err = type(e).__name__, str(e)[:500]
+    signal.setitimer(signal.ITIMER_REAL, 0)          # no inference remains; runner retains the separate cleanup bound
     wall = time.time() - t0
+    cleanup_error = None
+    container_cleanup = dict(confirmed=False, state='unknown')
     try:
-        env.cleanup()
-    except Exception:  # noqa: BLE001
-        pass
+        container_cleanup = env.cleanup()
+        if not container_cleanup['confirmed']:
+            cleanup_error = container_cleanup.get('reason', 'container cleanup unconfirmed')
+    except Exception as e:  # noqa: BLE001
+        cleanup_error = '%s: %s' % (type(e).__name__, str(e)[:500])
     agent.save(run_dir / 'trajectory.json', {'info': {'exit_status': exit_status, 'error': err}})
-    WC.write_once(run_dir / 'attempts.jsonl', ''.join(json.dumps(a) + '\n' for a in attempts))
     WC.write_once(run_dir / 'submission.diff', submission)
     per_call = {}
     for a in attempts:
@@ -154,13 +243,17 @@ def main():
                              command_timeout_s=CMD_TIMEOUT, physical_attempts_per_call_max=ATTEMPTS_PER_CALL, request_timeout_s=REQUEST_TIMEOUT_S,
                              max_consecutive_format_errors=agent_cfg.get('max_consecutive_format_errors')),
                workspace_binding='wc2', template_platform_binding='cp2', container_platform=env.container_platform(),
-               base_tree=base_tree, final_tree=final_tree, capture_error=capture_error,
+               base_tree=base_tree, final_tree=final_tree, capture_error=capture_error, cleanup_error=cleanup_error,
+               container_cleanup=container_cleanup,
                host=dict(arch=platform.machine(), os=platform.platform()),
                exit_status=exit_status, error=err, n_model_calls=getattr(agent, 'n_calls', None), wall_seconds=wall,
                physical_requests=len(attempts), max_attempts_on_one_call=max(per_call.values()) if per_call else 0,
-               failed_attempts=sum(not a['ok'] for a in attempts),
-               prompt_tokens=sum(a.get('prompt_tokens') or 0 for a in attempts),
-               completion_tokens=sum(a.get('completion_tokens') or 0 for a in attempts),
+               failed_attempts=sum(a.get('ok') is False for a in attempts),
+               prompt_tokens=(sum(a['prompt_tokens'] for a in attempts) if all(a.get('prompt_tokens') is not None for a in attempts) else None),
+               completion_tokens=(sum(a['completion_tokens'] for a in attempts) if all(a.get('completion_tokens') is not None for a in attempts) else None),
+               known_prompt_tokens=sum(a.get('prompt_tokens') or 0 for a in attempts),
+               known_completion_tokens=sum(a.get('completion_tokens') or 0 for a in attempts),
+               incomplete_attempt_results=sum('ok' not in a for a in attempts),
                submission_sha256=sha(submission), submission_bytes=len(submission), submission_empty=not submission.strip())
     WC.write_once(run_dir / 'episode.json', json.dumps(rec, indent=1) + '\n')
     print(json.dumps({k: rec[k] for k in ('instance_id', 'backend', 'exit_status', 'n_model_calls', 'physical_requests', 'wall_seconds', 'submission_bytes')}))

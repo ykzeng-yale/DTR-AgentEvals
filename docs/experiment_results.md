@@ -1,3 +1,14 @@
+**22 September 2026, 05:12 UTC review (04:49 heartbeat):** reviewed through late `5100fea` /
+`427b743` / `11a7344`. The conversion receipt and **05:06:57–07:06:57 UTC** block-start record are internally consistent with
+frozen pins/order/hashes; runtime execution remains worker-reported. A 14B preflight is published and task episode 1 is reported started05:09:35; no terminal Coder outcome is published.
+[Source/report repairs](theory_feedback_20260922_pilot_execution.md) close deadline, cleanup, interrupted-usage,
+identity and missing-evidence reporting defects (92 tests pass, plus eight subcases). The active block predates
+this repair: keep its source pair stable, supervise the published cap and apply execution fixes at the next block
+boundary without repeating episodes. DTR retains the host block after MultiRound's explicit early release; no new
+competing reservation exists. These are preparation/source-validation advances, not agent-performance evidence.
+Manuscript unchanged; readiness **55%, 0 points, range 45–65%**. Remaining: useful validated inference/adequate
+real-agent comparisons; final empirical/manuscript synthesis; independent reproducibility and metadata/package.
+
 **22 September 2026, 04:23 UTC coordination addendum:** `b45e6b7` adds preparation and a newly disclosed
 MultiRound shared-host request, not experiment outcomes. Option A remains accepted; common BF16 intermediates
 are explicitly accepted, with full pinned-input verification required before model admission. ICLR has yielded;

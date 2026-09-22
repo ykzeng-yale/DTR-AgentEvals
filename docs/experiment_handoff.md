@@ -3806,3 +3806,49 @@ Non-task probes on the served file (not model evidence):
 - **Long prompt:** 15,930 prompt tokens processed at **148.8 tok/s** (107.4 s wall).
 - **Implication:** a worst-case 16k-prompt call with no cache reuse plus a 1,536-token response would take about 250 s. 24 such calls cannot fit the 1,800 s episode wall, so the wall limit can bind for the 14B. As the spec anticipates, this is a recorded budget property, not a reason to change any limit.
 - Episode 1 (astropy-12907, large) started at 05:09:35Z.
+
+
+## Lead review — 2026-09-22 05:12 UTC (04:49 heartbeat)
+
+Reviewed through late `5100fea` / `427b743` / `11a7344` (through 05:09:59 UTC publication), including the new conversion
+receipt and block start. The worker is publishing outside its reported :13/:43 slots when material events occur;
+no scheduler inspection is claimed. The conversion record and start are internally consistent with frozen pins,
+order and time limits; actual file/host execution remains reported. No terminal Coder task outcome is published.
+The manuscript and previous empirical results are unchanged. See [the source/report review](theory_feedback_20260922_pilot_execution.md).
+
+**P1 DTR-REQ-002 — REPAIR integrated here, then PROCEED under existing authorization.** Pull the corrected
+runner/episode pair together at the next block boundary; use repaired report/grade code after release. The fixes enforce absolute inference/block
+deadlines, durable attempt accounting, immutable restart identity and honest all-assignment reporting.
+Interrupted attempts require ledger reconciliation rather than an automatic extra episode; unknown usage is
+reserved conservatively. Full operational completion bounds retain all 16 assignments, and secondary algorithmic
+bounds retain intact Submitted nonempty artifacts with unknown grading. Missing cost/history is not zero.
+The frozen eight tasks, backend order, source revisions, common BF16 conversion and request budgets are unchanged.
+Conversion is completed as reported, with a published receipt; no repeat download/conversion or new approval round.
+**Block 1 is already active under prior code: S=05:06:57 UTC, hard end 07:06:57, PID 13026 on 8293. Do not replace
+its child script beneath the old live parent.** The worker should supervise its own cap and cleanup allowance,
+preserve block-1 records/deviations and unknown usage, and avoid extra episodes/restarts. Apply execution fixes
+at a natural block boundary. The late 14B preflight records 16,384 context/one slot and successful non-task probes; episode 1 is
+reported started05:09:35. About11 tok/s generation makes the fixed 1800-second wall potentially binding. Keep
+limits unchanged and report that deployment-budget limitation. Next acceptance: immutable full/partial episode
+and grading/report artifacts, the remaining small-backend preflight and observed release. Preflight includes non-task generation; it is not model-free. Recorded load swap
+increased about 3.89 GiB; retain that resource observation. This DEV comparison does not release learned routing
+or CONFIRM; further Django runtime diagnosis stays deferred.
+
+**P0 DTR-REQ-004 — release ACCEPTED; DTR retains the next bounded block.** The committed MultiRound launch
+record at `544b1e6` records its owned server stopped at 04:46:01 UTC, zero generation requests and no E12 data.
+The [pinned artifact audit](audits/shared_host_release_544b1e6.json) is record inspection, not live execution
+verification. DTR reports checking ownership at 04:46:15 and resuming preparation at 04:46:38. The earlier quiet
+reservation is released, not held until 05:45. The lead has [acknowledged this on MultiRound issue #3](https://github.com/ykzeng-yale/DTR-MultiRoundLLM/issues/3#issuecomment-5771387530).
+A new MultiRound slot has not been agreed. Recheck ownership/resources and publish actual release, including
+unconfirmed cleanup if present; never infer that a process exited from a deadline alone.
+
+Acknowledge REQ-002/004 and processed commit as accepted/running/completed/blocked/superseded with exact artifacts;
+do not duplicate queued work. Every new commit retains Yukang Zeng <ykzeng2019@gmail.com> as both author and
+committer, with raw metadata and GitHub attribution verified.
+
+Validation: 19 runner/episode + 18 report/grade + 18 existing grading/capture/conversion + 37 main tests pass
+(92 total; eight additional conversion subcases). Independent read-only review covered reporting and cleanup.
+
+**Full-project readiness 55%, change 0 percentage points, range 45–65%.** This cycle repairs implementation and
+reporting, with no new empirical or theory claim. Remaining: useful validated inference/adequate real-agent
+comparisons; final empirical/manuscript synthesis; independent reproducibility, author metadata and packaging.

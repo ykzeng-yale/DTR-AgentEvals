@@ -5,7 +5,7 @@ Declared before launch (no outcome exists yet):
   * queue = the frozen frame's 8 tasks in position order, each task's two backends in its frozen backend_order
     (16 episodes); nothing is replaced, reordered or stopped on outcomes
   * restart: an episode with a terminal episode.json is skipped (hash recorded); an interrupted run directory is
-    retained and the episode is re-run in a NEW run directory; a run directory naming another task/backend conflicts
+    retained and requires explicit ledger reconciliation before any execution; a run directory naming another task/backend conflicts
     BEFORE any execution; the whole queue is validated first
   * block: actual start S, hard end S+7200 s. An episode starts only if its full wall allowance (1,800 s + 300 s
     kill margin + 300 s model-switch allowance when the backend changes) ends before S+7200, so the block ends by
@@ -38,12 +38,37 @@ EPISODE = Path(__file__).resolve().parent / 'pilot_episode.py'
 PORTS = dict(small=8291, large=8293)
 ALIAS = dict(small='qwen2.5-coder-7b-instruct-c03e6d3-q4_k_m', large='qwen2.5-coder-14b-instruct-aedcc2d-q4_k_m')
 BLOCK_CAP, EPISODE_WALL, KILL_MARGIN, SWITCH_ALLOWANCE = 7200, 1800, 300, 300
+CHILD_CLEANUP_GRACE, SERVER_CLEANUP_RESERVE = 120, 90
 MAX_PHYSICAL_TOTAL = 768
 FOREIGN = ('llama-server', 'mlx_lm', 'ollama')
+HARNESS_PIN = '04d809ceab9df28f9adaed044884180159172930'
+DEFAULT_YAML_PIN = '112aa58328f478a41cc2630702a4b89ef459e912870e05065157ed221f56701f'
+FROZEN_SETTINGS = dict(step_limit=24, cost_limit=0.0, wall_time_limit_seconds=1800, temperature=0.0, max_tokens=1536,
+                       command_timeout_s=60, physical_attempts_per_call_max=2, request_timeout_s=900)
 
 
 class Conflict(RuntimeError):
     pass
+
+
+class DeadlineReached(TimeoutError):
+    pass
+
+
+def remaining(deadline, limit=None):
+    left = deadline - time.time()
+    if left <= 0:
+        raise DeadlineReached('absolute work deadline reached; releasing the shared host')
+    return left if limit is None else min(left, limit)
+
+
+def request_count(rec):
+    count = rec.get('physical_requests')
+    if count is None:
+        return 48                         # unknown consumption retains the full episode reservation
+    if type(count) is not int or not 0 <= count <= 48:
+        raise Conflict('invalid physical_requests %r; reconcile the ledger before execution' % count)
+    return count
 
 
 def sha_file(p, bs=1 << 24):
@@ -66,7 +91,7 @@ def episode_queue(frame):
     return q
 
 
-def episode_state(out, item):
+def episode_state(out, item, expected_models=None):
     """completed (terminal episode.json) | incomplete (run dir(s) without one) | new; conflicts raise."""
     prefix = '%s__%s__' % (item['instance_id'], item['backend'])
     dirs = sorted(d for d in Path(out).glob(prefix + '*') if d.is_dir()) if Path(out).exists() else []
@@ -85,10 +110,20 @@ def episode_state(out, item):
             raise Conflict('%s names %s/%s/%s' % (e, rec.get('instance_id'), rec.get('backend'), rec.get('run_id')))
         if not rec.get('exit_status'):
             raise Conflict('%s has no exit_status' % e)
+        if expected_models is not None and (rec.get('pins', {}).get('image_id') != item['image'] or
+                rec.get('served', {}).get('model_sha256') != expected_models[item['backend']]):
+            raise Conflict('%s has missing/conflicting frozen image or served-model identity; reconcile before reuse' % e)
+        if expected_models is not None and (
+                rec.get('pins', {}).get('mini_swe_agent') != HARNESS_PIN or
+                rec.get('pins', {}).get('default_yaml_sha256') != DEFAULT_YAML_PIN or
+                rec.get('workspace_binding') != 'wc2' or rec.get('template_platform_binding') != 'cp2' or
+                any(rec.get('settings', {}).get(k) != v for k, v in FROZEN_SETTINGS.items())):
+            raise Conflict('%s has missing/conflicting frozen harness/settings/binding identity; reconcile before reuse' % e)
         if done is not None:
             raise Conflict('two terminal episodes for %s/%s: %s and %s' % (item['instance_id'], item['backend'], done[0], d.name))
         done = (d.name, hashlib.sha256(raw).hexdigest(), rec)
     if done:
+        request_count(done[2])
         return 'completed', done, partial
     return ('incomplete' if partial else 'new'), None, partial
 
@@ -98,18 +133,27 @@ def plan_start(now, block_start, switching, cap=BLOCK_CAP, wall=EPISODE_WALL, ma
     return now + wall + margin + (switch if switching else 0) <= block_start + cap
 
 
-def run_block(queue, out, serve, run_episode, status, clock=time.time, block_start=None, pause=None, physical_so_far=0):
+def run_block(queue, out, serve, run_episode, status, clock=time.time, block_start=None, pause=None, physical_so_far=0,
+              expected_models=None):
     """serve(backend) makes that backend the ONE live server (stopping the other); run_episode(item) returns the
     terminal record. Every task state is validated before any execution."""
     block_start = clock() if block_start is None else block_start
-    states = [(it, episode_state(out, it)) for it in queue]
+    states = [(it, episode_state(out, it, expected_models)) for it in queue]
+    incomplete = [dict(instance_id=it['instance_id'], backend=it['backend'], run_dirs=state[2])
+                  for it, state in states if state[2]]
+    if incomplete:
+        raise Conflict('interrupted run directories need explicit ledger reconciliation; no automatic episode rerun: %s' % incomplete)
+    if type(physical_so_far) is not int or physical_so_far < 0:
+        raise Conflict('invalid prior request accounting')
+    physical = physical_so_far + sum(request_count(done[2]) for _, (state, done, _) in states if state == 'completed')
+    if physical > MAX_PHYSICAL_TOTAL:
+        raise Conflict('whole-cohort request accounting exceeds the declared ceiling or is invalid')
     status.update(block_start_utc=utc(block_start), block_hard_end_utc=utc(block_start + BLOCK_CAP), skipped_completed=[],
                   retained_incomplete=[], ran=[], unstarted=[], stopped=None)
-    current, physical = None, physical_so_far
+    current = None
     for i, (it, (state, done, partial)) in enumerate(states):
         key = dict(position=it['position'], order=it['order'], instance_id=it['instance_id'], backend=it['backend'])
         if state == 'completed':
-            physical += done[2].get('physical_requests') or 0
             status['skipped_completed'].append(dict(key, run_id=done[0], episode_sha256=done[1]))
             continue
         reason = None
@@ -129,8 +173,13 @@ def run_block(queue, out, serve, run_episode, status, clock=time.time, block_sta
         if it['backend'] != current:
             serve(it['backend'])
             current = it['backend']
+        if not plan_start(clock(), block_start, False):
+            status['stopped'] = 'block time cap after setup: full episode plus cleanup reserve no longer fits'
+            status['unstarted'] = [dict(position=x['position'], order=x['order'], instance_id=x['instance_id'], backend=x['backend'])
+                                   for x, (s, _, _) in states[i:] if s != 'completed']
+            break
         rec = run_episode(it)
-        physical += rec.get('physical_requests') or 0
+        physical += request_count(rec)
         status['ran'].append(dict(key, run_id=rec.get('run_id'), exit_status=rec.get('exit_status'), wall_seconds=rec.get('wall_seconds'),
                                   physical_requests=rec.get('physical_requests')))
     status['physical_requests_total'] = physical
@@ -172,6 +221,10 @@ class Servers:
         self.conv, self.block, self.log_dir = conv, block, Path(log_dir)
         self.live = None            # dict(backend, pid, port, proc)
         self.events = []
+        self.unconfirmed_episode_pids = []
+        self.unconfirmed_container_runs = []
+        self.hard_deadline = block['hard_deadline_epoch']
+        self.work_deadline = self.hard_deadline - KILL_MARGIN
 
     def _record(self):
         rec = dict(holder='DTR-AgentEvals worker (REQ-002 pilot)', block=self.block, block_start_utc=self.block['block_start_utc'],
@@ -180,6 +233,8 @@ class Servers:
                                                           alias=ALIAS[self.live['backend']], model_file=self.live['model_file'],
                                                           model_sha256=self.live['model_sha256'], started_utc=self.live['started_utc'],
                                                           cmd=self.live['cmd'])],
+                   unconfirmed_episode_pids=self.unconfirmed_episode_pids, unconfirmed_container_runs=self.unconfirmed_container_runs,
+                   release_confirmed=self.live is None and not self.unconfirmed_episode_pids and not self.unconfirmed_container_runs,
                    events=self.events)
         tmp = SERVERS.with_suffix('.tmp')
         tmp.write_text(json.dumps(rec, indent=1) + '\n')
@@ -189,21 +244,39 @@ class Servers:
         if not self.live:
             return
         pid, port = self.live['pid'], self.live['port']
+        if self.live['proc'].poll() is not None:
+            self.live = None
+            self._record()
+            return
         lp = listener_pid(port)
         if lp not in (pid, None):
             raise Conflict('port %d listener is %r, not our recorded PID %d: refusing to signal' % (port, lp, pid))
-        os.kill(pid, signal.SIGTERM)
         try:
-            self.live['proc'].wait(timeout=60)
+            os.kill(pid, signal.SIGTERM)
+        except ProcessLookupError:
+            pass
+        try:
+            self.live['proc'].wait(timeout=max(0, min(60, self.hard_deadline - time.time())))
         except subprocess.TimeoutExpired:
-            os.kill(pid, signal.SIGKILL)
-            self.live['proc'].wait(timeout=30)
+            try:
+                os.kill(pid, signal.SIGKILL)
+            except ProcessLookupError:
+                pass
+            try:
+                self.live['proc'].wait(timeout=max(0, min(30, self.hard_deadline - time.time())))
+            except subprocess.TimeoutExpired:
+                pass                      # SIGKILL sent; never wait beyond the block hard end
+        if self.live['proc'].poll() is None:
+            self.events.append(dict(event='termination_unconfirmed', role=self.live['backend'], pid=pid, port=port, utc=utc()))
+            self._record()                # retain ownership; a sent signal is not confirmation of exit
+            raise Conflict('server PID %d termination remains unconfirmed; ownership retained' % pid)
         self.events.append(dict(event='stopped', role=self.live['backend'], pid=pid, port=port, utc=utc()))
         self.live = None
         self._record()
 
     def serve(self, backend):
         import requests
+        remaining(self.work_deadline)
         self.stop()
         foreign = [p for p in host_processes()]
         if foreign:
@@ -217,6 +290,7 @@ class Servers:
                '-ngl', '99', '-np', '1', '-c', '16384']
         t0 = time.time()
         got = sha_file(model)
+        remaining(self.work_deadline)
         if got != be['q4_k_m']['sha256']:
             raise Conflict('served file hash %s != conversion record %s' % (got, be['q4_k_m']['sha256']))
         swap0 = swap_used()
@@ -228,10 +302,11 @@ class Servers:
         t1 = time.time()
         ok = False
         while time.time() - t1 < 600:
+            remaining(self.work_deadline)
             if proc.poll() is not None:
                 break
             try:
-                if requests.get('http://127.0.0.1:%d/health' % port, timeout=5).status_code == 200:
+                if requests.get('http://127.0.0.1:%d/health' % port, timeout=remaining(self.work_deadline, 5)).status_code == 200:
                     ok = True
                     break
             except requests.RequestException:
@@ -246,30 +321,31 @@ class Servers:
         return ev
 
 
-def preflight(backend, ev, out):
+def preflight(backend, ev, out, deadline, block):
     """Measured non-task probes on the freshly loaded server; write-once per backend."""
     import requests
-    p = Path(out) / ('preflight_%s.json' % backend)
+    p = Path(out) / ('preflight_%s_block%d.json' % (backend, block['block']))
     if p.exists():
-        return json.loads(p.read_text())
+        raise Conflict('preflight receipt already exists for this block: %s' % p)
     base = 'http://127.0.0.1:%d' % PORTS[backend]
-    props = requests.get(base + '/props', timeout=10).json()
-    tmpl = requests.post(base + '/apply-template', json=dict(messages=[dict(role='user', content='hello')]), timeout=30).json()
+    props = requests.get(base + '/props', timeout=remaining(deadline, 10)).json()
+    tmpl = requests.post(base + '/apply-template', json=dict(messages=[dict(role='user', content='hello')]), timeout=remaining(deadline, 30)).json()
     probes = {}
     long_text = ' '.join('line %d: the quick brown fox jumps over the lazy dog.' % i for i in range(1000))   # ~12k tokens
     for name, content, n in (('short_gen', 'Write a Python function that returns the n-th Fibonacci number, with a docstring.', 512),
                              ('long_prompt', long_text + '\nHow many lines are above? Answer with one number.', 32)):
         t0 = time.time()
         r = requests.post(base + '/v1/chat/completions', json=dict(model=ALIAS[backend], messages=[dict(role='user', content=content)],
-                                                                   temperature=0, max_tokens=n), timeout=900)
+                                                                   temperature=0, max_tokens=n), timeout=remaining(deadline, 900))
         j = r.json()
         probes[name] = dict(http=r.status_code, wall_seconds=round(time.time() - t0, 2), usage=j.get('usage'), timings=j.get('timings'),
                             finish_reason=(j.get('choices') or [{}])[0].get('finish_reason'))
     pid = ev['pid']
-    rec = dict(request='DTR-REQ-002', backend=backend, alias=ALIAS[backend], utc=utc(), load=ev, rss_kb_after_probes=rss_kb(pid),
+    rec = dict(request='DTR-REQ-002', backend=backend, block=block['block'], alias=ALIAS[backend], utc=utc(), load=ev, rss_kb_after_probes=rss_kb(pid),
                swap_after_probes=swap_used(), n_ctx_per_slot=props.get('default_generation_settings', {}).get('n_ctx'),
                total_slots=props.get('total_slots'), model_file=Path(props.get('model_path') or '').name,
                chat_template_applies=bool(tmpl.get('prompt')), probes=probes,
+               non_task_probe_requests=len(probes), probe_accounting='separate from the 768 episode-request ceiling',
                fits_declared_limits=props.get('default_generation_settings', {}).get('n_ctx') == 16384 and props.get('total_slots') == 1
                and all(v['http'] == 200 for v in probes.values()),
                note='non-task probes only; throughput is descriptive, not a native-performance claim')
@@ -280,29 +356,88 @@ def preflight(backend, ev, out):
 
 def make_episode_runner(out, servers):
     def run(item):
+        if remaining(servers.work_deadline) < EPISODE_WALL:
+            raise DeadlineReached('full episode allowance no longer fits after setup')
         run_id, run_dir = WC.new_run_dir(out, item['instance_id'], item['backend'], 'pilot-cp2-wc2')
         live = servers.live
         served = dict(model_file=live['model_file'], model_sha256=live['model_sha256'], server_pid=live['pid'],
                       server_started_utc=live['started_utc'], llama_cpp='4fea119de30f6a923992780f6fd5ccb0bee5d47d')
         cmd = [str(MSWEA_PY), str(EPISODE), '--instance', item['instance_id'], '--backend', item['backend'], '--port', str(PORTS[item['backend']]),
                '--alias', ALIAS[item['backend']], '--run-dir', str(run_dir), '--run-id', run_id, '--expected-image', item['image'],
-               '--served', json.dumps(served)]
+               '--served', json.dumps(served), '--episode-deadline', str(time.time() + EPISODE_WALL),
+               '--block-deadline', str(servers.work_deadline)]
         log = open(run_dir / 'runner_stdout.txt', 'x')
         proc = subprocess.Popen(cmd, stdout=log, stderr=subprocess.STDOUT, start_new_session=True)
+        servers.unconfirmed_episode_pids.append(proc.pid)
+        servers.unconfirmed_container_runs.append(run_id)
+        wall_timeout = False
         try:
-            proc.wait(timeout=EPISODE_WALL + KILL_MARGIN)
-        except subprocess.TimeoutExpired:
-            os.killpg(proc.pid, signal.SIGKILL)
-            proc.wait()
+            proc.wait(timeout=min(EPISODE_WALL, remaining(servers.work_deadline)))
+        except (subprocess.TimeoutExpired, DeadlineReached):
+            wall_timeout = True
+            if proc.poll() is None:
+                # Its absolute alarm has ended inference; do not interrupt cleanup with a duplicate alarm.
+                grace = max(0, min(CHILD_CLEANUP_GRACE, servers.hard_deadline - time.time() - SERVER_CLEANUP_RESERVE))
+                try:
+                    proc.wait(timeout=grace)
+                except subprocess.TimeoutExpired:
+                    pass
+        finally:
+            if proc.poll() is None:
+                try:
+                    os.killpg(proc.pid, signal.SIGKILL)
+                except ProcessLookupError:
+                    pass
+                try:
+                    proc.wait(timeout=max(0, min(30, servers.hard_deadline - time.time() - SERVER_CLEANUP_RESERVE)))
+                except subprocess.TimeoutExpired:
+                    pass
+        confirmed = proc.poll() is not None
+        if confirmed:
+            servers.unconfirmed_episode_pids.remove(proc.pid)
+        WC.write_once(run_dir / 'runner_cleanup.json', json.dumps(dict(pid=proc.pid, wall_timeout=wall_timeout,
+                       termination_confirmed=confirmed, utc=utc())) + '\n')
+        if not confirmed:
+            servers.events.append(dict(event='episode_termination_unconfirmed', pid=proc.pid, run_id=run_id, utc=utc()))
+        ownership_path, cleanup_path = run_dir / 'container_ownership.json', run_dir / 'container_cleanup.json'
+        def receipt(path):
+            try:
+                value = json.loads(path.read_text())
+                return value if isinstance(value, dict) else {}
+            except (OSError, ValueError):
+                return {}
+        ownership = receipt(ownership_path)
+        owned_id = ownership.get('container_id') if ownership.get('run_id') == run_id else None
+        container_cleanup = receipt(cleanup_path)
+        if not (owned_id and container_cleanup.get('container_id') == owned_id and container_cleanup.get('confirmed') is True):
+            from pilot_episode import cleanup_owned_container
+            container_cleanup = cleanup_owned_container(owned_id, servers.hard_deadline - SERVER_CLEANUP_RESERVE)
+            WC.write_once(run_dir / 'runner_container_cleanup.json', json.dumps(container_cleanup) + '\n')
+        if container_cleanup.get('confirmed') is not True:
+            servers.events.append(dict(event='container_termination_unconfirmed', run_id=run_id, container_id=owned_id, utc=utc()))
+        else:
+            servers.unconfirmed_container_runs.remove(run_id)
         e = run_dir / 'episode.json'
         if not e.exists():   # hard kill or crash: durable terminal record, empty submission (budget/infrastructure exit)
-            WC.write_once(run_dir / 'submission.diff', '')
+            submission = run_dir / 'submission.diff'
+            if not submission.exists():
+                WC.write_once(submission, '')
             rec = dict(kind='runner terminal record (episode process produced no episode.json)', instance_id=item['instance_id'],
                        backend=item['backend'], backend_alias=ALIAS[item['backend']], run_id=run_id, served=served,
-                       pins=dict(image_id=item['image']), exit_status='RunnerHardKill' if proc.returncode in (-9, None) else 'EpisodeProcessError',
-                       returncode=proc.returncode, infrastructure_suspect=True, submission_sha256=hashlib.sha256(b'').hexdigest(),
-                       submission_bytes=0, submission_empty=True, physical_requests=None)
+                       pins=dict(image_id=item['image'], mini_swe_agent=HARNESS_PIN, default_yaml_sha256=DEFAULT_YAML_PIN),
+                       settings=dict(FROZEN_SETTINGS), workspace_binding='wc2', template_platform_binding='cp2',
+                       contract_scope='declared invocation; child produced no observed episode record',
+                       exit_status='EpisodeWallLimit' if wall_timeout else
+                       ('RunnerHardKill' if proc.returncode in (-9, None) else 'EpisodeProcessError'),
+                       returncode=proc.returncode, infrastructure_suspect=True, submission_sha256=sha_file(submission),
+                       submission_bytes=submission.stat().st_size, submission_empty=not submission.read_text().strip(), physical_requests=None,
+                       request_accounting='unknown terminal reserves 48; durable attempts retained for reconciliation',
+                       container_cleanup=container_cleanup)
             WC.write_once(e, json.dumps(rec, indent=1) + '\n')
+        if not confirmed:
+            raise Conflict('episode PID %d termination unconfirmed; no subsequent episode permitted' % proc.pid)
+        if container_cleanup.get('confirmed') is not True:
+            raise Conflict('episode container cleanup unconfirmed; no subsequent episode permitted')
         return json.loads(e.read_text())
     return run
 
@@ -325,26 +460,41 @@ def main():
         raise SystemExit('block %d already recorded' % args.block)
     status = dict(block=args.block, frame_sha256=sha_file(FRAME), conversion_record_sha256=sha_file(CONV))
     S = time.time()
-    block = dict(block=args.block, block_start_utc=utc(S), block_hard_end_utc=utc(S + BLOCK_CAP))
+    block = dict(block=args.block, block_start_utc=utc(S), block_hard_end_utc=utc(S + BLOCK_CAP), hard_deadline_epoch=S + BLOCK_CAP)
     servers = Servers(conv, block, OUT)
     done_pre = set()
 
     def serve(backend):
         ev = servers.serve(backend)
         if backend not in done_pre:
-            fits = preflight(backend, ev, OUT)['fits_declared_limits']
+            receipt = preflight(backend, ev, OUT, servers.work_deadline, block)
+            fits = receipt['fits_declared_limits']
             status.setdefault('preflight', {})[backend] = fits
+            status['non_task_probe_requests'] = status.get('non_task_probe_requests', 0) + receipt['non_task_probe_requests']
             done_pre.add(backend)
             if not fits:
                 raise Conflict('%s preflight does not fit the declared limits: recorded, no episode on this backend' % backend)
+    def alarm(_signum, _frame):
+        raise DeadlineReached('block work deadline reached; cleanup reserve begins')
+    old_handler = signal.signal(signal.SIGALRM, alarm)
+    signal.setitimer(signal.ITIMER_REAL, remaining(servers.work_deadline))
     try:
-        run_block(queue, OUT, serve, make_episode_runner(OUT, servers), status, block_start=S, pause=OUT / 'PAUSE')
+        run_block(queue, OUT, serve, make_episode_runner(OUT, servers), status, block_start=S, pause=OUT / 'PAUSE',
+                  expected_models={be: conv['backends'][be]['q4_k_m']['sha256'] for be in PORTS})
     except Exception as e:  # noqa: BLE001  recorded; the block still releases its own server
         status['stopped'] = 'error: %s: %s' % (type(e).__name__, str(e)[:500])
     finally:
-        servers.stop()
+        signal.setitimer(signal.ITIMER_REAL, 0)
+        try:
+            servers.stop()
+        except Exception as e:
+            status['cleanup_error'] = '%s: %s' % (type(e).__name__, str(e)[:500])
+        finally:
+            signal.signal(signal.SIGALRM, old_handler)
         status['server_events'] = servers.events
-        status['released_utc'] = utc()
+        status['unconfirmed_episode_pids'] = servers.unconfirmed_episode_pids
+        status['unconfirmed_container_runs'] = servers.unconfirmed_container_runs
+        status['released_utc'] = utc() if servers.live is None and not servers.unconfirmed_episode_pids and not servers.unconfirmed_container_runs else None
         with open(bpath, 'x') as fh:
             fh.write(json.dumps(status, indent=1) + '\n')
     print(json.dumps({k: status.get(k) for k in ('stopped', 'physical_requests_total', 'released_utc')}))

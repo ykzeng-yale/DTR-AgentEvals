@@ -1,26 +1,15 @@
-"""DTR-REQ-002 fixed-backend DEV pilot: descriptive report (spec "report" list). Written and committed BEFORE any pilot
-outcome exists; its rules are declared here and not tuned on results.
+"""Finite descriptive DEV report for every frozen task/backend assignment.
 
-Denominator: all 16 assigned task/backend episodes of the frozen frame. Each is terminal (episode.json), unstarted,
-or incomplete (a run directory with no terminal record); unstarted and incomplete episodes are listed and never
-counted as zeros or dropped. Per terminal episode:
-  * exit_status as recorded (Submitted, LimitsExceeded, TimeExceeded, RepeatedFormatError, capture failure,
-    transport/context exceptions, RunnerHardKill ...); nonempty_patch = Submitted with a nonempty wc2 submission
-  * grade classification from grade.json: operational_zero | evaluated | integrity_refusal | unknown_evaluator_failure,
-    or 'ungraded' if absent. operational_resolved = 1 only for an evaluated strict 'resolved'. Integrity refusals are
-    invalid (excluded from valid-grade counts and listed); unknown evaluator failures are reported separately, with
-    the worst-case 0/1 bounds for the secondary algorithmic endpoint
-  * call-9 eligibility: active before logical call 9, i.e. the agent issued its 9th logical call (n_model_calls >= 9)
-  * visible feedback before call 9 (history the second decision would condition on): observations in calls 1-8,
-    nonzero return codes, whether a test command ran (pytest|unittest|runtests|tox|nose|py.test|manage.py test),
-    whether an edit command ran (sed -i|patch|git apply|tee|cat >|> file|python -c writes are not detected), and the
-    SHA-256 of that visible history, to count distinct histories per backend
-  * logical calls, physical requests, failed attempts, max attempts on one call, prompt/completion tokens, wall time
-Paired table: per task, (small, large) operational outcome; counts of (1,1), (1,0), (0,1), (0,0) among tasks with both
-valid grades; descriptive differences in resolved counts, tokens and wall time. No efficacy, precision or routing claim.
+Pending, ungraded and invalid records remain explicit. Completion bounds are not
+confidence intervals. Algorithmic bounds concern integrity-valid Submitted,
+nonempty artifacts only; non-submissions are not algorithmic failures. Usage
+totals require complete telemetry, otherwise only known subtotals are reported.
 """
 from __future__ import annotations
-import hashlib, json, re, sys
+import hashlib
+import json
+import re
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -28,114 +17,303 @@ FRAME = ROOT / 'results/v2_agent/pilot_frame_20260922.json'
 OUT = ROOT / 'results/v2_agent/pilot_20260922'
 TEST_RE = re.compile(r'\b(pytest|py\.test|unittest|runtests|tox|nosetests|nose|manage\.py\s+test)\b')
 EDIT_RE = re.compile(r"(sed\s+-i|\bpatch\b|git\s+apply|\btee\b|cat\s+>|cat\s+<<|>\s*[\w./-]+\.(py|txt|cfg|toml|rst|ini))")
+METRICS = ('logical_calls', 'physical_requests', 'failed_attempts', 'prompt_tokens', 'completion_tokens', 'wall_seconds')
+
+
+class ReportIntegrityError(ValueError):
+    pass
+
+
+def read_json(path):
+    try:
+        return json.loads(Path(path).read_text())
+    except (ValueError, OSError) as exc:
+        raise ReportIntegrityError('cannot read %s: %s' % (path, exc)) from exc
 
 
 def visible_before_call(messages, k=9):
-    """Messages visible when logical call k would be issued: everything before the k-th assistant message."""
+    """Legacy display helper; assistant ordinals do NOT identify logical calls."""
     n, vis = 0, []
-    for m in messages:
-        if m.get('role') == 'assistant':
+    for message in messages:
+        if message.get('role') == 'assistant':
             n += 1
             if n == k:
-                break
-        vis.append(m)
-    return vis if n >= k else None
+                return vis
+        vis.append(message)
+    return None
 
 
 def feedback_features(visible):
-    obs = [m for m in visible if m.get('role') in ('user', 'tool') and isinstance(m.get('extra'), dict) and 'returncode' in m['extra']]
+    obs = [m for m in visible if m.get('role') in ('user', 'tool')
+           and isinstance(m.get('extra'), dict) and 'returncode' in m['extra']]
     cmds = [a.get('command', '') for m in visible if m.get('role') == 'assistant'
             for a in ((m.get('extra') or {}).get('actions') or []) if isinstance(a, dict)]
     text = json.dumps([dict(role=m.get('role'), content=m.get('content')) for m in visible], sort_keys=True)
-    return dict(observations=len(obs), nonzero_returncodes=sum(1 for m in obs if m['extra'].get('returncode') not in (0, '0')),
-                ran_tests=any(TEST_RE.search(c or '') for c in cmds), ran_edit=any(EDIT_RE.search(c or '') for c in cmds),
+    return dict(observations=len(obs), nonzero_returncodes=sum(m['extra'].get('returncode') not in (0, '0') for m in obs),
+                test_command_pattern_seen=any(TEST_RE.search(c or '') for c in cmds),
+                edit_command_pattern_seen=any(EDIT_RE.search(c or '') for c in cmds),
                 history_sha256=hashlib.sha256(text.encode()).hexdigest())
 
 
-def episode_summary(d):
-    ep = json.loads((d / 'episode.json').read_text())
-    g = json.loads((d / 'grade.json').read_text()) if (d / 'grade.json').exists() else None
-    traj = json.loads((d / 'trajectory.json').read_text()) if (d / 'trajectory.json').exists() else {'messages': []}
-    n_calls = ep.get('n_model_calls') or 0
-    vis = visible_before_call(traj.get('messages') or [], 9)
-    cls = g['classification'] if g else 'ungraded'
-    return dict(instance_id=ep['instance_id'], backend=ep['backend'], run_id=ep['run_id'], exit_status=ep.get('exit_status'),
-                nonempty_patch=ep.get('exit_status') == 'Submitted' and not ep.get('submission_empty', True),
-                classification=cls, grade_valid=(g or {}).get('grade_valid'), operational_resolved=(g or {}).get('operational_resolved'),
-                algorithmic_correctness=(g or {}).get('algorithmic_correctness'),
-                call9_eligible=n_calls >= 9, call9_feedback=feedback_features(vis) if vis is not None else None,
-                logical_calls=n_calls, physical_requests=ep.get('physical_requests'), failed_attempts=ep.get('failed_attempts'),
-                max_attempts_on_one_call=ep.get('max_attempts_on_one_call'), prompt_tokens=ep.get('prompt_tokens'),
-                completion_tokens=ep.get('completion_tokens'), wall_seconds=ep.get('wall_seconds'),
-                infrastructure_suspect=bool(ep.get('infrastructure_suspect')))
+def attempt_telemetry(directory, episode):
+    """Prefer durable start/result records; never assign zero tokens to a failed request."""
+    values = {k: episode.get('n_model_calls' if k == 'logical_calls' else k) for k in METRICS}
+    subtotals = {k: values[k] for k in METRICS}
+    for metric in ('prompt_tokens', 'completion_tokens'):
+        if values[metric] is None:
+            subtotals[metric] = episode.get('known_' + metric)
+    detail = dict(source='episode_record', unresolved_attempts=None,
+                  prompt_tokens_missing_attempts=None, completion_tokens_missing_attempts=None)
+    path = directory / 'attempts.jsonl'
+    starts, results = {}, {}
+    if path.exists():
+        try:
+            records = [json.loads(line) for line in path.read_text().splitlines() if line.strip()]
+        except ValueError as exc:
+            raise ReportIntegrityError('invalid attempt ledger: %s' % path) from exc
+        for record in records:
+            if record.get('event') not in ('start', 'result'):
+                raise ReportIntegrityError('attempt ledger requires durable start/result events: %s' % path)
+            key = (record.get('call'), record.get('attempt'))
+            if any(type(n) is not int or n < 1 for n in key):
+                raise ReportIntegrityError('invalid logical call/attempt in %s' % path)
+            target = starts if record['event'] == 'start' else results
+            if key in target:
+                raise ReportIntegrityError('duplicate %s event in %s' % (record['event'], path))
+            target[key] = record
+        if not results.keys() <= starts.keys():
+            raise ReportIntegrityError('attempt result without durable start: %s' % path)
+        if starts and sorted({k[0] for k in starts}) != list(range(1, max(k[0] for k in starts) + 1)):
+            raise ReportIntegrityError('noncontiguous dispatched logical calls: %s' % path)
+        detail.update(source='durable_attempt_ledger', unresolved_attempts=len(starts.keys() - results.keys()))
+        if values['logical_calls'] is None:
+            subtotals['logical_calls'] = len({call for call, _ in starts})
+        values['physical_requests'] = subtotals['physical_requests'] = len(starts)
+        failures = sum(result.get('ok') is False for result in results.values())
+        subtotals['failed_attempts'] = failures
+        values['failed_attempts'] = failures if not detail['unresolved_attempts'] else None
+        for metric in ('prompt_tokens', 'completion_tokens'):
+            known = [results[k][metric] for k in starts if k in results and results[k].get('ok') is True
+                     and isinstance(results[k].get(metric), (int, float)) and results[k][metric] >= 0]
+            detail[metric + '_missing_attempts'] = len(starts) - len(known)
+            subtotals[metric] = sum(known)
+            values[metric] = sum(known) if len(known) == len(starts) else None
+        issued = any(call >= 9 for call, _ in starts)
+        max_attempts = max((sum(call == k[0] for k in starts) for call, _ in starts), default=0)
+    else:
+        issued = None if values['logical_calls'] is None else values['logical_calls'] >= 9
+        max_attempts = episode.get('max_attempts_on_one_call')
+        # Older summaries sum successful responses. Failed-request usage is unknown.
+        if episode.get('failed_attempts'):
+            for metric in ('prompt_tokens', 'completion_tokens'):
+                values[metric] = None
+                detail[metric + '_missing_attempts'] = episode['failed_attempts']
+    return values, subtotals, detail, issued, max_attempts
+
+
+def episode_summary(directory, expected=None):
+    directory = Path(directory)
+    ep = read_json(directory / 'episode.json')
+    expected = expected or dict(instance_id=ep.get('instance_id'), backend=ep.get('backend'))
+    if any(ep.get(k) != expected[k] for k in ('instance_id', 'backend')) or ep.get('run_id') != directory.name or not ep.get('exit_status'):
+        raise ReportIntegrityError('episode identity/terminal status disagrees with assignment: %s' % directory)
+    if expected.get('image') and (ep.get('pins') or {}).get('image_id') != expected['image']:
+        raise ReportIntegrityError('episode image disagrees with frozen assignment: %s' % directory)
+    patch = directory / 'submission.diff'
+    if not patch.exists():
+        raise ReportIntegrityError('terminal episode has no submission artifact: %s' % directory)
+    raw = patch.read_bytes()
+    actual_sha = hashlib.sha256(raw).hexdigest()
+    patch_matches = actual_sha == ep.get('submission_sha256')
+    if not patch_matches:
+        raise ReportIntegrityError('submission artifact disagrees with episode hash: %s' % directory)
+    grade_path = directory / 'grade.json'
+    grade = read_json(grade_path) if grade_path.exists() else None
+    if grade_path.exists():
+        required = {'classification', 'grade_valid', 'operational_resolved', 'algorithmic_correctness'}
+        if not isinstance(grade, dict) or not required <= grade.keys():
+            raise ReportIntegrityError('existing grade is not a complete grade object: %s' % grade_path)
+        identities = dict(instance_id=ep['instance_id'], backend=ep['backend'], episode_run_id=ep['run_id'], submission_sha256=actual_sha)
+        if any(grade.get(k) != value for k, value in identities.items()):
+            raise ReportIntegrityError('grade identity/hash disagrees with episode: %s' % grade_path)
+        if grade.get('grade_valid') is True:
+            if grade.get('classification') not in ('evaluated', 'operational_zero', 'unknown_evaluator_failure'):
+                raise ReportIntegrityError('valid grade has an unknown classification: %s' % grade_path)
+            if not patch_matches or grade.get('operational_resolved') not in (0, 1):
+                raise ReportIntegrityError('valid grade has mismatched artifact or missing binary outcome: %s' % grade_path)
+            if ep['exit_status'] == 'Submitted' and raw.strip() and grade.get('image_id') != (ep.get('pins') or {}).get('image_id'):
+                raise ReportIntegrityError('valid grade image disagrees with episode: %s' % grade_path)
+        elif grade.get('classification') != 'integrity_refusal' or grade.get('grade_valid') is not False:
+            raise ReportIntegrityError('invalid grade must remain an explicit integrity refusal: %s' % grade_path)
+    values, subtotals, telemetry, issued, max_attempts = attempt_telemetry(directory, ep)
+    trajectory = read_json(directory / 'trajectory.json') if (directory / 'trajectory.json').exists() else None
+    completed = None if trajectory is None else sum(m.get('role') == 'assistant' for m in trajectory.get('messages', []))
+    feedback = None
+    snapshot = directory / 'call9_history.json'
+    if issued is True and snapshot.exists():
+        snap = read_json(snapshot)
+        if snap.get('call') != 9 or not isinstance(snap.get('messages'), list):
+            raise ReportIntegrityError('invalid pre-call-9 snapshot: %s' % snapshot)
+        feedback = feedback_features(snap['messages'])
+    cls = grade['classification'] if grade else ('artifact_integrity_failure' if not patch_matches else 'ungraded')
+    valid = (grade or {}).get('grade_valid')
+    # An evaluator integrity refusal does not invalidate an intact local candidate.
+    eligible = ep['exit_status'] == 'Submitted' and bool(raw.strip()) and patch_matches
+    return dict(instance_id=ep['instance_id'], backend=ep['backend'], run_id=ep['run_id'], state='terminal',
+                exit_status=ep['exit_status'], nonempty_patch=ep['exit_status'] == 'Submitted' and bool(raw.strip()),
+                submission_hash_matches=patch_matches, classification=cls, grade_valid=valid,
+                operational_resolved=(grade or {}).get('operational_resolved') if valid is True else None,
+                algorithmic_correctness=(grade or {}).get('algorithmic_correctness') if valid is True else None,
+                algorithmic_eligible=eligible,
+                call9_eligible=issued, call9_eligibility_source=telemetry['source'], call9_feedback=feedback,
+                completed_assistant_messages=completed, max_attempts_on_one_call=max_attempts,
+                known_subtotals=subtotals, telemetry=telemetry, infrastructure_suspect=bool(ep.get('infrastructure_suspect')), **values)
+
+
+def incomplete_evidence(directory):
+    """Observed usage in an unfinished run is a subtotal, never its final cost."""
+    _, subtotals, detail, issued, maximum = attempt_telemetry(directory, {})
+    feedback = None
+    snapshot = directory / 'call9_history.json'
+    if issued is True and snapshot.exists():
+        record = read_json(snapshot)
+        if record.get('call') != 9 or not isinstance(record.get('messages'), list):
+            raise ReportIntegrityError('invalid pre-call-9 snapshot: %s' % snapshot)
+        feedback = feedback_features(record['messages'])
+    return dict(run_id=directory.name, known_subtotals=subtotals, telemetry=detail,
+                call9_eligible=True if issued is True else None, call9_feedback=feedback,
+                known_max_attempts_on_one_call=maximum)
 
 
 def collect(frame, out):
     assigned, rows, missing = [], [], []
-    for t in sorted(frame['pilot']['tasks'], key=lambda t: t['position']):
-        for be in t['backend_order']:
-            assigned.append((t['instance_id'], be))
-            dirs = sorted(d for d in Path(out).glob('%s__%s__*' % (t['instance_id'], be)) if d.is_dir())
-            term = [d for d in dirs if (d / 'episode.json').exists()]
-            if len(term) > 1:
-                raise SystemExit('two terminal episodes for %s/%s' % (t['instance_id'], be))
-            if term:
-                rows.append(episode_summary(term[0]))
+    for task in sorted(frame['pilot']['tasks'], key=lambda t: t['position']):
+        if sorted(task['backend_order']) != ['large', 'small']:
+            raise ReportIntegrityError('frozen task must assign exactly one small and one large episode')
+        for backend in task['backend_order']:
+            key = (task['instance_id'], backend)
+            if key in assigned:
+                raise ReportIntegrityError('duplicate frozen assignment: %s/%s' % key)
+            assigned.append(key)
+            directories = sorted(d for d in Path(out).glob('%s__%s__*' % key) if d.is_dir())
+            terminal = [d for d in directories if (d / 'episode.json').exists()]
+            if len(terminal) > 1:
+                raise ReportIntegrityError('two terminal episodes for %s/%s' % key)
+            if terminal:
+                row = episode_summary(terminal[0], dict(instance_id=key[0], backend=key[1], image=task.get('instance_image')))
+                row['retained_incomplete_run_dirs'] = [d.name for d in directories if d not in terminal]
+                row['incomplete_attempt_evidence'] = [incomplete_evidence(d) for d in directories if d not in terminal]
+                rows.append(row)
             else:
-                missing.append(dict(instance_id=t['instance_id'], backend=be, state='incomplete' if dirs else 'unstarted',
-                                    retained_run_dirs=[d.name for d in dirs]))
+                pending = dict(instance_id=key[0], backend=key[1], state='incomplete' if directories else 'unstarted',
+                               retained_run_dirs=[d.name for d in directories])
+                missing.append(pending)
+                evidence = [incomplete_evidence(d) for d in directories]
+                # Never merge ambiguous histories or costs from separate partial runs.
+                single = evidence[0] if len(evidence) == 1 else {}
+                rows.append(dict(pending, classification=pending['state'], grade_valid=None, operational_resolved=None,
+                                 algorithmic_correctness=None, algorithmic_eligible=False,
+                                 call9_eligible=single.get('call9_eligible'), call9_feedback=single.get('call9_feedback'),
+                                 incomplete_attempt_evidence=evidence, nonempty_patch=None,
+                                 known_subtotals=single.get('known_subtotals', {}), **{k: None for k in METRICS}))
     return assigned, rows, missing
 
 
-def backend_table(rows, be):
-    r = [x for x in rows if x['backend'] == be]
-    ex = {}
-    for x in r:
-        ex[x['exit_status']] = ex.get(x['exit_status'], 0) + 1
-    cl = {}
-    for x in r:
-        cl[x['classification']] = cl.get(x['classification'], 0) + 1
-    valid = [x for x in r if x['grade_valid'] is True]
-    unk = sum(x['classification'] == 'unknown_evaluator_failure' for x in r)
-    res = sum(x['operational_resolved'] == 1 for x in valid)
-    e9 = [x for x in r if x['call9_eligible']]
-    s = lambda k: sum(x[k] or 0 for x in r)
-    return dict(terminal=len(r), exit_status=ex, submitted=ex.get('Submitted', 0), nonempty_patch=sum(x['nonempty_patch'] for x in r),
-                classification=cl, valid_grades=len(valid), operational_resolved=res,
-                algorithmic_bounds=dict(low=res, high=res + unk, unknown=unk),
-                integrity_refusals=cl.get('integrity_refusal', 0), infrastructure_suspect=sum(x['infrastructure_suspect'] for x in r),
-                call9_eligible=len(e9), call9_distinct_histories=len({x['call9_feedback']['history_sha256'] for x in e9}),
-                call9_ran_tests=sum(x['call9_feedback']['ran_tests'] for x in e9), call9_ran_edit=sum(x['call9_feedback']['ran_edit'] for x in e9),
-                call9_nonzero_returncodes=sum(x['call9_feedback']['nonzero_returncodes'] for x in e9),
-                logical_calls=s('logical_calls'), physical_requests=s('physical_requests'), failed_attempts=s('failed_attempts'),
-                max_attempts_on_one_call=max([x['max_attempts_on_one_call'] or 0 for x in r] or [0]),
-                prompt_tokens=s('prompt_tokens'), completion_tokens=s('completion_tokens'), wall_seconds=round(s('wall_seconds'), 1))
+def count_by(rows, key):
+    result = {}
+    for row in rows:
+        value = row.get(key)
+        result[value] = result.get(value, 0) + 1
+    return result
+
+
+def metric_summary(rows, metric):
+    known = [r[metric] for r in rows if r[metric] is not None]
+    subtotal = sum(r.get('known_subtotals', {}).get(metric) or 0 for r in rows)
+    return dict(total=sum(known) if len(known) == len(rows) else None,
+                known_subtotal=subtotal, complete_episode_count=len(known),
+                missing_or_partial_episode_count=len(rows) - len(known), assigned_episode_count=len(rows))
+
+
+def backend_table(rows, backend):
+    assigned = [r for r in rows if r['backend'] == backend]
+    terminal = [r for r in assigned if r['state'] == 'terminal']
+    valid = [r for r in terminal if r['grade_valid'] is True]
+    resolved = sum(r['operational_resolved'] == 1 for r in valid)
+    unknown = len(assigned) - len(valid)
+    algorithmic = [r for r in terminal if r['algorithmic_eligible']]
+    a_res = sum(r['algorithmic_correctness'] == 'resolved' for r in algorithmic)
+    a_known = sum(r['algorithmic_correctness'] in ('resolved', 'unresolved') for r in algorithmic)
+    eligible = [r for r in assigned if r['call9_eligible'] is True]
+    feedback = [r['call9_feedback'] for r in eligible if r['call9_feedback'] is not None]
+    costs = {metric: metric_summary(assigned, metric) for metric in METRICS}
+    maxima = [r.get('max_attempts_on_one_call') for r in assigned]
+    return dict(assigned=len(assigned), terminal=len(terminal), exit_status=count_by(terminal, 'exit_status'),
+                classification=count_by(assigned, 'classification'), valid_grades=len(valid),
+                submitted=sum(r['exit_status'] == 'Submitted' for r in terminal),
+                nonempty_patch=sum(r['nonempty_patch'] for r in terminal),
+                submitted_and_patch_denominators=dict(assigned=len(assigned), observed_terminal=len(terminal), pending=len(assigned)-len(terminal)),
+                operational_resolved=resolved,
+                operational_completion_bounds=dict(kind='finite assignment completion bounds, not confidence intervals',
+                                                   denominator=len(assigned), low=resolved, high=resolved+unknown, unknown=unknown),
+                algorithmic_bounds=dict(kind='finite completion bounds, not confidence intervals',
+                                        target='integrity-valid Submitted nonempty artifacts only', denominator=len(algorithmic),
+                                        low=a_res, high=a_res+len(algorithmic)-a_known, unknown=len(algorithmic)-a_known),
+                integrity_refusals=sum(r['classification'] in ('integrity_refusal', 'artifact_integrity_failure') for r in terminal),
+                infrastructure_suspect=sum(r.get('infrastructure_suspect', False) for r in terminal),
+                call9_eligible=len(eligible), call9_eligibility_unknown=sum(r['call9_eligible'] is None for r in assigned),
+                call9_feedback_known=len(feedback), call9_feedback_unknown=len(eligible)-len(feedback),
+                call9_distinct_histories=len({f['history_sha256'] for f in feedback}),
+                call9_test_command_pattern_seen=sum(f['test_command_pattern_seen'] for f in feedback),
+                call9_edit_command_pattern_seen=sum(f['edit_command_pattern_seen'] for f in feedback),
+                call9_nonzero_returncodes=sum(f['nonzero_returncodes'] for f in feedback),
+                max_attempts_on_one_call=max(maxima) if maxima and all(x is not None for x in maxima) else None,
+                known_max_attempts_on_one_call=max((x for x in maxima if x is not None), default=None),
+                cost_scope='episode telemetry only; includes a single incomplete run as known subtotals; excludes serving/preflight/evaluator overhead; multiple retained runs are listed separately, not merged',
+                costs=costs, **{metric: summary['total'] for metric, summary in costs.items()})
 
 
 def paired(rows):
     by = {}
-    for x in rows:
-        by.setdefault(x['instance_id'], {})[x['backend']] = x
+    for row in rows:
+        by.setdefault(row['instance_id'], {})[row['backend']] = row
     cells, per_task = {'1,1': 0, '1,0': 0, '0,1': 0, '0,0': 0}, []
-    for iid, d in by.items():
-        s, l = d.get('small'), d.get('large')
-        both = s is not None and l is not None and s['grade_valid'] is True and l['grade_valid'] is True
-        per_task.append(dict(instance_id=iid, small=None if s is None else s['operational_resolved'], large=None if l is None else l['operational_resolved'],
-                             both_valid=both))
+    for iid, models in by.items():
+        small, large = models.get('small'), models.get('large')
+        if small is None or large is None:
+            raise ReportIntegrityError('frozen paired task lacks a backend assignment: %s' % iid)
+        both = small['grade_valid'] is True and large['grade_valid'] is True
+        costs = {metric: (large[metric] - small[metric] if large[metric] is not None and small[metric] is not None else None)
+                 for metric in METRICS}
+        per_task.append(dict(instance_id=iid, small=small['operational_resolved'], large=large['operational_resolved'],
+                             small_state=small['state'], large_state=large['state'],
+                             small_classification=small['classification'], large_classification=large['classification'], both_valid=both,
+                             operational_difference_large_minus_small=large['operational_resolved']-small['operational_resolved'] if both else None,
+                             cost_differences_large_minus_small=costs))
         if both:
-            cells['%d,%d' % (s['operational_resolved'], l['operational_resolved'])] += 1
-    return dict(cells_small_large=cells, pairs_with_both_valid=sum(cells.values()), per_task=per_task)
+            cells['%d,%d' % (small['operational_resolved'], large['operational_resolved'])] += 1
+    differences = {metric: dict(known_pair_count=sum(r['cost_differences_large_minus_small'][metric] is not None for r in per_task),
+                               missing_pair_count=sum(r['cost_differences_large_minus_small'][metric] is None for r in per_task),
+                               known_pair_sum_large_minus_small=sum(r['cost_differences_large_minus_small'][metric] or 0 for r in per_task))
+                   for metric in METRICS}
+    return dict(assigned_pairs=len(per_task), cells_small_large=cells, pairs_with_both_valid=sum(cells.values()), per_task=per_task,
+                operational_difference_sum_on_valid_pairs=cells['0,1']-cells['1,0'], paired_cost_differences=differences)
 
 
 def report(frame, out):
     assigned, rows, missing = collect(frame, out)
+    backends = {backend: backend_table(rows, backend) for backend in ('small', 'large')}
+    bounds = [b['operational_completion_bounds'] for b in backends.values()]
     return dict(request='DTR-REQ-002', kind='fixed-backend DEVELOPMENT pilot, descriptive only (no efficacy, precision or routing claim)',
-                assigned=len(assigned), terminal=len(rows), not_terminal=missing,
-                backends={be: backend_table(rows, be) for be in ('small', 'large')}, paired=paired(rows), episodes=rows)
+                frame_content_sha256=hashlib.sha256(json.dumps(frame, sort_keys=True, separators=(',', ':')).encode()).hexdigest(),
+                assigned=len(assigned), terminal=sum(r['state'] == 'terminal' for r in rows), not_terminal=missing,
+                operational_completion_bounds=dict(kind='finite assignment completion bounds, not confidence intervals',
+                                                   denominator=len(assigned), **{k: sum(b[k] for b in bounds) for k in ('low', 'high', 'unknown')}),
+                backends=backends, paired=paired(rows), episodes=rows)
 
 
 def main():
-    rep = report(json.loads(FRAME.read_text()), OUT)
+    rep = report(read_json(FRAME), OUT)
     dst = OUT / ('report_%s.json' % (sys.argv[1] if len(sys.argv) > 1 else 'current'))
     with open(dst, 'x') as fh:
         fh.write(json.dumps(rep, indent=1) + '\n')

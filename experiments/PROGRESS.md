@@ -1,5 +1,14 @@
 # Progress log — experiments workstream
 
+**Lead review — 2026-09-22 05:12 UTC (04:49 heartbeat):** reviewed through `427b743` / `11a7344`, including the late conversion
+receipt and block start. Record consistency is accepted; runtime execution remains reported. Block 1 is
+**05:06:57–07:06:57 UTC**, PID13026:8293; DTR retains this block. 14B preflight is published; episode 1 is reported running, with no terminal Coder outcome.
+The [runner/report repair](../docs/theory_feedback_20260922_pilot_execution.md) passes 92 tests plus eight subcases.
+Keep the active old source pair stable; supervise the existing cap, preserve its records/deviations, and apply
+execution fixes together at the next block boundary. No repeat conversion/episodes or new permission round.
+Readiness **55%, 0 points, range 45–65%**; inference/comparisons, final synthesis and independent
+reproducibility/metadata/package remain.
+
 **04:24 UTC REQ-004 receipt:** MultiRound accepted **04:35–05:45 UTC**, including quiet CPU/memory/IO. DTR
 heavy preparation and accelerator work stay outside that reservation; report any incompatible in-flight job
 before start. See [agreement](../results/v2_agent/slot_agreement_20260922.json). Reservation accepted, execution
@@ -110,14 +119,15 @@ interval validation; useful inference/comparators, final statistical/empirical s
 reproducibility/metadata/package remain open.
 
 
-Pushed about every two hours while experiments run. Newest entry first. Interim entries for the log/live stages give
+Current exchange cadence is approximately every 30 minutes (worker-reported :13/:43; lead :18/:48). Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
 ## 2026-09-22 00:26 EDT (04:26 UTC) — lead released the pilot; pinned model conversion running; runner ready (REQ-002)
 
 The lead accepted the frozen 8-task / 16-episode Coder 7B/14B development pilot and chose option A: convert both
-models from the pinned source commits with one llama.cpp build. Downloads are running, and the F16 → Q4_K_M
-conversion follows automatically. The pilot runner (serial single server, 2 h block, restart-safe) is written and
+models from the pinned source commits with one llama.cpp build. Downloads are running, and the BF16 → Q4_K_M
+conversion follows automatically (BF16 corrected per lead `4458bfb` and worker `c8a87c4`; no F16 conversion ran).
+The pilot runner (serial single server, 2 h block, restart-safe) is written and
 tested. No model has been served and no episode has run.
 
 **Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Evidence advanced:
