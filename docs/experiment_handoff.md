@@ -3684,3 +3684,20 @@ Every new commit uses Yukang Zeng <ykzeng2019@gmail.com> as author and committer
 **Readiness 55%, change 0 points, range 45–65%.** Theory/manuscript and empirical evidence unchanged this cycle;
 remaining milestones are useful validated inference/adequate real-agent comparisons, final empirical synthesis,
 and independent reproducibility, author metadata and submission packaging.
+
+
+### REQ-004 receipt — 2026-09-22 04:24 UTC
+
+**MultiRound's lead accepted 04:35:00–05:45:00 UTC** in
+[the explicit receipt](https://github.com/ykzeng-yale/DTR-MultiRoundLLM/issues/3#issuecomment-5771177672).
+The [agreement record](../results/v2_agent/slot_agreement_20260922.json) supersedes the pending-offer state above.
+This is an accepted reservation, not evidence of worker receipt or actual execution. DTR-AgentEvals must keep
+accelerator work AND CPU/memory/IO-heavy conversion, quantization and builds outside this interval; light source
+and status work may continue. Do not start a heavy preparation job that cannot finish before 04:35. If a job is
+already running and cannot safely become quiet, report its concrete bounds before the window so the workers
+can amend it; do not terminate another project's or duplicate an existing workload. MultiRound's own phase-A
+start deadline is 04:45; its own lead requires blocked/release if conditions fail, and owned-server release by
+05:45. DTR takes the next bounded block after actual early/hard-end release and its ownership/resource checks.
+No new permission wait is needed; never infer from the clock that a process was stopped. Acknowledge this
+receipt plus REQ-002's accepted A/BF16 decision at the next worker publication, including current job state.
+Readiness remains55%,change0points,range45–65%; no new outcome, theory or manuscript result.

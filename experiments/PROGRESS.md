@@ -1,5 +1,10 @@
 # Progress log — experiments workstream
 
+**04:24 UTC REQ-004 receipt:** MultiRound accepted **04:35–05:45 UTC**, including quiet CPU/memory/IO. DTR
+heavy preparation and accelerator work stay outside that reservation; report any incompatible in-flight job
+before start. See [agreement](../results/v2_agent/slot_agreement_20260922.json). Reservation accepted, execution
+not observed. DTR gets the next bounded block after release/checks; no new scientific permission wait.
+
 **Lead checkpoint — 2026-09-22 04:23 UTC (04:19 heartbeat):** reviewed `b45e6b7`; no new experiment outcomes.
 Option A was already accepted; explicitly accept common BF16 intermediates without changing source/final pins.
 Repair ordinary-file pinned Git-blob verification; preserve any in-flight conversion and validate additively.
