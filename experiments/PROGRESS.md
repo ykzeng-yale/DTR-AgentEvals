@@ -1,5 +1,15 @@
 # Progress log — experiments workstream
 
+**Lead review — 2026-09-22 03:30 UTC:** reviewed `d3bf388`/`f1be616`. Astropy qualification accepted from saved
+logs; Django retained as an environment diagnosis (four change-form and one deletion-template error), with a
+bounded provenance-check decision. Audit: 89 checks, ten source blobs; no runtime rerun. REQ-002 proceeds with the
+initial queue. Original grading-ID/restart mechanisms accepted; before next grading/restart, repair durable
+unknown/integrity classification and terminal/source validation. Do not delay the pilot for Django or replace
+its failed initial-frame result. REQ-004 awaits ICLR receipt of the already relayed release. See latest handoff
+for acceptance criteria. Manuscript unchanged. Readiness 55%, 0 points, range 45–65%; inference/comparisons,
+final synthesis and independent reproducibility/metadata/package remain.
+
+
 **Lead review — 2026-09-22 02:55 UTC:** reviewed through `b9e443a`. Four real-agent smoke attempts retain
 operational zero (none invoked grading), with platform/context defects and later edit/quoting failures
 distinguished. cp2/wc2 accepted; four capture tests pass. REQ-002: repair evaluator cache identity and safe

@@ -1,0 +1,51 @@
+{
+  "reviewed_commit": "d3bf38877ca6cc188d038bc92bfbca08d8f39f72",
+  "scope": "Deterministic retrospective saved-artifact audit; no runtime rerun",
+  "checks": 89,
+  "evidence": {
+    "astropy__astropy-12907": {
+      "raw_status_counts": {
+        "stock_gold": {
+          "PASSED": 15
+        },
+        "adapter_reference_attempt1": {
+          "PASSED": 15
+        },
+        "adapter_no_change_attempt1": {
+          "PASSED": 13,
+          "FAILED": 2
+        }
+      },
+      "qualified": true,
+      "scope": "15 raw status identities independently reconstructed in each of three logs"
+    },
+    "django__django-10097": {
+      "qualified": false,
+      "raw_traceback_errors_verified": {
+        "test_basic_add_GET (generic_inline_admin.tests.GenericAdminViewTest)": "admin/change_form.html",
+        "test_basic_edit_GET (generic_inline_admin.tests.GenericAdminViewTest)": "admin/change_form.html",
+        "test_no_param (generic_inline_admin.tests.GenericInlineAdminParametersTest)": "admin/change_form.html",
+        "test_add (generic_inline_admin.tests.GenericInlineAdminWithUniqueTogetherTest)": "admin/change_form.html",
+        "test_delete (generic_inline_admin.tests.GenericInlineAdminWithUniqueTogetherTest)": "admin/delete_confirmation.html"
+      },
+      "required_status_counts_inspected": {
+        "PASSED": 1865,
+        "ERROR": 5
+      },
+      "scope": "Five named template-error tracebacks verified in all three logs; full 1870-test required map is inspected, not independently reconstructed",
+      "diagnosis": "Template lookup fails in installed Django for stock, reference and no-change. Missing packaged files versus loader/path mismatch, mutable dependency drift and translation effects are not isolated."
+    }
+  },
+  "source_sha256": {
+    "results/v2_adapter/m01_c104f840_f7bbbb2/instances.jsonl": "cee2e8760d9a1f3389031c709fd854af7d7a662499bd152ddeb62491f38dec64",
+    "experiments/v2_adapter/control_adapter.py": "b81df0e7fb73c0ed2d60182c764a868ff6407629ba27e34072588e3070ab782d",
+    "results/v2_adapter/qualification_20260922/astropy__astropy-12907/summary.json": "1e912c5ac31563965711f0457fb02d559cd66030f8238f1c6ca0afbc390b3622",
+    "results/v2_adapter/qualification_20260922/astropy__astropy-12907/stock_gold_test_output.txt": "2e6533454958b04847197c076824006f16f3ea1a0fe69906d539528012de171d",
+    "results/v2_adapter/qualification_20260922/astropy__astropy-12907/adapter_reference_attempt1_test_output.txt": "59a4f19b015a25bb1fd268b4da06f776b0c510073f1f278f693cc66b5f78f962",
+    "results/v2_adapter/qualification_20260922/astropy__astropy-12907/adapter_no_change_attempt1_test_output.txt": "b89bc583d218d319a91e6b6033e0c08be388a2e97509faa48b7dde1e61b8028c",
+    "results/v2_adapter/qualification_20260922/django__django-10097/summary.json": "94e93cea56f25c79700ab0d7bc0ec7d5a1fafebc75bf533f0824b95672586e4e",
+    "results/v2_adapter/qualification_20260922/django__django-10097/stock_gold_test_output.txt": "8cb17150040c5e0a76faabba996a8a775086947cfeafbdd36d8668f54cd2e3a7",
+    "results/v2_adapter/qualification_20260922/django__django-10097/adapter_reference_attempt1_test_output.txt": "cf659b340d92f2b90215fde39a2cab38898ed5b4107736ef5bdab717d97ba02a",
+    "results/v2_adapter/qualification_20260922/django__django-10097/adapter_no_change_attempt1_test_output.txt": "d9ce7d2e6ea8049685920ef9809c1e508ffeaa8036b8ff15a79b708b41c73cd7"
+  }
+}

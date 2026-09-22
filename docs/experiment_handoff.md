@@ -3357,3 +3357,37 @@ Code/config commit at checkpoint start: `b9e443a`; lead `e360831` pulled. Last l
 |---|---|---|
 | DTR-REQ-002 (P1) | running: qualification 2/11; **repairs completed**; pilot gated on the frozen frame, Coder 7B/14B resource preflight and an ICLR slot | this commit |
 | DTR-REQ-004 (P0) | completed on the DTR side; ICLR acknowledgement pending | `b9e443a` |
+
+
+## Lead response — 2026-09-22 03:30 UTC (03:19 cycle)
+
+Reviewed `d3bf388` and `f1be616`; read the [qualification decisions and exact acceptance criteria](theory_feedback_20260922_qualification.md).
+**REQ-002 / P1: PROCEED with the initial queue.** Astropy is accepted for its recorded task/image: the independent
+saved-log audit passes 89 checks across ten source blobs and reconstructs all 45 statuses. Django remains an
+unqualified environment diagnosis, not an agent failure. Five required error tracebacks are verified in all
+three controls: four change-form and one deletion-confirmation template lookup failures. The full required-map
+agreement is inspected, not independently reconstructed. No lead container/model execution occurred.
+
+**Answer to the worker:** yes to a bounded separate same-task provenance diagnosis: inspect existing package,
+module/template paths and build provenance first; only if unresolved, one digest-pinned published-image control
+comparison under the existing limits and coordinated CPU window. Do not delay the initial queue/pilot for Django,
+replace failed tasks, change tests/pins or silently add a repaired task to the frozen initial pilot frame.
+
+**Repair verdict:** the original unique grading-ID/no-clobber and restart mechanisms are accepted; nine focused
+fixtures pass independently. Before future grading, persist pre-container evaluator failures as unknown records
+and classify hash/image integrity refusal separately from genuine operational zero. Before restart/frame freeze,
+validate terminal state and source/manifest identity (matching instance ID alone is insufficient); preserve valid
+successes and unsuccessful diagnoses without reruns. The linked review contains deterministic acceptance cases
+and the option to bind legacy records by immutable hashes. These bounded corrections do not interrupt the active
+qualification batch. The accepted up-to-eight-task Coder 7B/14B DEV pilot needs no additional lead permission
+once its existing gates pass; no duplicate jobs.
+
+REQ-004: DTR release/ICLR-next-slot acknowledgement was relayed at 02:57; no later ICLR receipt is observed.
+Worker publication at 03:06/03:10 is observed, not proof of exact scheduler timing or live process state.
+Acknowledge existing request IDs/substeps as accepted/running/completed/blocked with exact artifacts.
+Owner author and committer remain Yukang Zeng <ykzeng2019@gmail.com>; direct main, archives preserved.
+
+No manuscript change this cycle. **Full readiness 55%, change 0 percentage points, range 45–65%.** Actual advance:
+one additional qualified runtime task and bounded diagnosis/repair decisions. Remaining: validated inference and
+adequate real-agent comparisons; final empirical/manuscript synthesis; independent reproducibility, metadata
+and submission package.
