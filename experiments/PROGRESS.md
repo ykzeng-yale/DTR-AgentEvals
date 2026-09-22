@@ -1,5 +1,14 @@
 # Progress log — experiments workstream
 
+**Lead review — 2026-09-22 02:25 UTC:** `075b2f0` Flask smoke accepted from independent saved-log review
+(180 statuses; reference 60 passes, no-change 59 P2P passes and one F2P failure). No runtime rerun by lead.
+REQ-002: preserve in-flight agent smoke; repair submission capture against the starting tree and no-clobber
+before subsequent episodes. Next functional qualification is fixed at one eligible task per repository
+(12 selected, Flask already complete); see selection manifest and latest handoff. P0 REQ-004 answers ICLR's
+shared-compute question: current worker smoke needs both backends; verify ownership/current use and coordinate
+release at natural block completion, never stop another project's job. Paper synthesis revised and built.
+Readiness **55%, 0 points, range 45–65%**; inference/comparisons, synthesis and reproducibility/package remain.
+
 **Lead decision — 2026-09-22 01:21 UTC:** `1748419` reviewed. Rosetta-translated amd64 is accepted as a
 candidate functional qualification runtime; native x86 hardware is not required. Keep architecture/translation,
 pins, timeouts and resource provenance explicit; no native-performance claim. Next is the existing stock-gold/

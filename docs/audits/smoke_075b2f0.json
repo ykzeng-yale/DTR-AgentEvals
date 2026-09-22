@@ -1,0 +1,72 @@
+{
+  "audit": "smoke_flask_075b2f0_saved_record_audit",
+  "reviewed_commit": "075b2f03667f3a1ef0591ebb9e5a9063781e01ab",
+  "validation_scope": "Independent saved-log parsing, hashes, cross-record consistency, and local Git capture fixture; no runtime or model rerun",
+  "passed": true,
+  "assertion_count": 448,
+  "source_sha256": {
+    "results/v2_adapter/smoke_flask_20260922/summary.json": "b355c4d24c5bab28a25b2a96d5ff9ce5859eae7bbb66df9c3745fad1d81fd812",
+    "results/v2_adapter/smoke_flask_20260922/logs/stock_gold_test_output.txt": "fd613ad2db343383d50d12a6337c1fda671caff41f89c4c524e4f02ef68f5b2f",
+    "results/v2_adapter/smoke_flask_20260922/logs/adapter_reference_attempt1_test_output.txt": "56af2741726dc5f75dc10af8c56d04a85f09f5a31f22bc424e2cc77182b76c79",
+    "results/v2_adapter/smoke_flask_20260922/logs/adapter_no_change_attempt1_test_output.txt": "6b246af06e72f9f087dc6a313f4c990ae77fc3f13d97e50fac4b7d6dd9307126",
+    "experiments/v2_adapter/control_adapter.py": "b81df0e7fb73c0ed2d60182c764a868ff6407629ba27e34072588e3070ab782d",
+    "results/v2_adapter/m01_c104f840_f7bbbb2/instances.jsonl": "cee2e8760d9a1f3389031c709fd854af7d7a662499bd152ddeb62491f38dec64"
+  },
+  "instance_id": "pallets__flask-5014",
+  "required_tests": {
+    "fail_to_pass": 1,
+    "pass_to_pass": 59
+  },
+  "log_evidence": {
+    "stock_gold": {
+      "log_sha256": "fd613ad2db343383d50d12a6337c1fda671caff41f89c4c524e4f02ef68f5b2f",
+      "parsed_tests": 60,
+      "status_counts": {
+        "PASSED": 60
+      }
+    },
+    "adapter_reference_attempt1": {
+      "log_sha256": "56af2741726dc5f75dc10af8c56d04a85f09f5a31f22bc424e2cc77182b76c79",
+      "parsed_tests": 60,
+      "status_counts": {
+        "PASSED": 60
+      }
+    },
+    "adapter_no_change_attempt1": {
+      "log_sha256": "6b246af06e72f9f087dc6a313f4c990ae77fc3f13d97e50fac4b7d6dd9307126",
+      "parsed_tests": 60,
+      "status_counts": {
+        "PASSED": 59,
+        "FAILED": 1
+      }
+    }
+  },
+  "image_digests": {
+    "base": "sha256:f7d1dba08fbc14f5232016debb02d9ace25c84e2a088ec8ec6c776fc3c2f07d5",
+    "env": "sha256:dde7768ebdd830836a0c155fff0b3bc411091f3e91dc4849835035e030f5e823",
+    "instance": "sha256:c7540f05e930a92e04b82e923f654d28e9c86511723e82cd0b78afc5aeb62759"
+  },
+  "recorded_acceptance": {
+    "pins_and_script_hashes_agree": true,
+    "stock_reference_required_test_maps_agree": true,
+    "stock_reference_strict_outcomes_agree": true,
+    "reference_passes_required_tests": true,
+    "no_change_meets_rule": true
+  },
+  "git_submission_fixture": {
+    "scope": "Temporary local Git fixture; no benchmark/runtime execution",
+    "plain_diff_after_staged_change_and_untracked_file_bytes": 0,
+    "base_diff_after_staged_change_bytes": 120,
+    "base_diff_alone_includes_untracked_file": false,
+    "plain_diff_after_agent_commit_bytes": 0,
+    "base_diff_after_agent_commit_bytes": 230
+  },
+  "verdict": "Accept task/environment-specific functional smoke as artifact-supported; repair prospective submission capture and no-clobber semantics",
+  "limitations": [
+    "Runtime installation and original container execution not independently rerun.",
+    "Image identities and platform metadata are recorded worker evidence, not independently inspected local runtime state.",
+    "No representative benchmark qualification, model-effect estimate, routing benefit, or confirmatory inference established.",
+    "Plain git diff omits staged, untracked, and committed changes; base diff still needs explicit new-file inclusion.",
+    "The agent runner reuses task/backend output paths and can overwrite prior artifacts."
+  ]
+}

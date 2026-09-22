@@ -1,0 +1,138 @@
+{
+  "request": "DTR-REQ-002",
+  "stage": "development runtime qualification, not performance evaluation or CONFIRM",
+  "reviewed_worker_commit": "075b2f03667f3a1ef0591ebb9e5a9063781e01ab",
+  "source": "results/v2_adapter/m01_c104f840_f7bbbb2/instances.jsonl",
+  "source_sha256": "cee2e8760d9a1f3389031c709fd854af7d7a662499bd152ddeb62491f38dec64",
+  "selection_rule": "One lexicographically first eligible instance_id per repository in pinned M01; fixed before additional controls, no substitution after failures. Retain completed flask control; do not rerun it solely for this plan.",
+  "counts": {
+    "repositories": 12,
+    "selected": 12,
+    "already_completed": 1,
+    "new_tasks": 11
+  },
+  "tasks": [
+    {
+      "repo": "astropy/astropy",
+      "instance_id": "astropy__astropy-12907",
+      "eval_script_sha256": "229f462fcbdcae232228507f9491b8538c5aeaeede709c5fc822b586245d9460",
+      "n_fail_to_pass": 2,
+      "n_pass_to_pass": 13,
+      "limitations": [],
+      "status": "planned"
+    },
+    {
+      "repo": "django/django",
+      "instance_id": "django__django-10097",
+      "eval_script_sha256": "6c1635c7dd7a9f8ad723934c5aaf8c95f8930c1902e76492bd9e3b6015a8c132",
+      "n_fail_to_pass": 438,
+      "n_pass_to_pass": 1432,
+      "limitations": [],
+      "status": "planned"
+    },
+    {
+      "repo": "matplotlib/matplotlib",
+      "instance_id": "matplotlib__matplotlib-13989",
+      "eval_script_sha256": "50724c4127a83538b94b22313d3b0009dd49073361ffb2b7f4ddfb665ead15da",
+      "n_fail_to_pass": 1,
+      "n_pass_to_pass": 411,
+      "limitations": [],
+      "status": "planned"
+    },
+    {
+      "repo": "mwaskom/seaborn",
+      "instance_id": "mwaskom__seaborn-3069",
+      "eval_script_sha256": "7a00ea831cdaddd4a34231b77aef2cef321e3ec54a18b7e5e86d862bfa4ce324",
+      "n_fail_to_pass": 2,
+      "n_pass_to_pass": 94,
+      "limitations": [],
+      "status": "planned"
+    },
+    {
+      "repo": "pallets/flask",
+      "instance_id": "pallets__flask-5014",
+      "eval_script_sha256": "a752d2d3520db71513c263dd476e8da457395a447a346f6b5c18782dc0faf034",
+      "n_fail_to_pass": 1,
+      "n_pass_to_pass": 59,
+      "limitations": [],
+      "status": "completed smoke at 075b2f0"
+    },
+    {
+      "repo": "psf/requests",
+      "instance_id": "psf__requests-1142",
+      "eval_script_sha256": "7c1b567c7a139bd101d845a0f1dca55fe4f95daaeceacfcb3ae8e5e0522ab972",
+      "n_fail_to_pass": 1,
+      "n_pass_to_pass": 5,
+      "limitations": [],
+      "status": "planned"
+    },
+    {
+      "repo": "pydata/xarray",
+      "instance_id": "pydata__xarray-2905",
+      "eval_script_sha256": "65540be2ca454c19d1c156ec899c3f851ec1d5a481c346ae87614e9033d54ca1",
+      "n_fail_to_pass": 1,
+      "n_pass_to_pass": 364,
+      "limitations": [],
+      "status": "planned"
+    },
+    {
+      "repo": "pylint-dev/pylint",
+      "instance_id": "pylint-dev__pylint-4551",
+      "eval_script_sha256": "0a63b8c0b3917a45995982c192a0b537ced5bbb468bc9b91871a5be7b8f93acf",
+      "n_fail_to_pass": 10,
+      "n_pass_to_pass": 0,
+      "limitations": [
+        "PASS_TO_PASS empty: regression preservation is untested for this instance"
+      ],
+      "status": "planned"
+    },
+    {
+      "repo": "pytest-dev/pytest",
+      "instance_id": "pytest-dev__pytest-10051",
+      "eval_script_sha256": "1e8c906946b43d963fe5977bbeed36629a58f772f33b982a27fd70b886d95be6",
+      "n_fail_to_pass": 1,
+      "n_pass_to_pass": 15,
+      "limitations": [],
+      "status": "planned"
+    },
+    {
+      "repo": "scikit-learn/scikit-learn",
+      "instance_id": "scikit-learn__scikit-learn-10297",
+      "eval_script_sha256": "fd3b9040a63ab761b0ce55a57a883a1f86cd34273e871b8740639ff45dd858ae",
+      "n_fail_to_pass": 1,
+      "n_pass_to_pass": 28,
+      "limitations": [],
+      "status": "planned"
+    },
+    {
+      "repo": "sphinx-doc/sphinx",
+      "instance_id": "sphinx-doc__sphinx-10323",
+      "eval_script_sha256": "944f0096f017ae6c0b9a90714f12642413094ac38cb6c5fefb4fcd94a593fa36",
+      "n_fail_to_pass": 1,
+      "n_pass_to_pass": 40,
+      "limitations": [],
+      "status": "planned"
+    },
+    {
+      "repo": "sympy/sympy",
+      "instance_id": "sympy__sympy-11618",
+      "eval_script_sha256": "48d97b2961099fadccbcf8db0ec3f78d96272493c567bd5ca9e51851daaad046",
+      "n_fail_to_pass": 1,
+      "n_pass_to_pass": 4,
+      "limitations": [],
+      "status": "planned"
+    }
+  ],
+  "controls": [
+    "stock gold",
+    "adapter reference",
+    "adapter no_change"
+  ],
+  "acceptance": "Existing bae161f same-digest/script, stock/reference test-map and strict-outcome agreement, reference success, negative-control qualification; include declared empty-P2P limitation; retain failures and incomplete records.",
+  "limits": {
+    "timeout_seconds_per_attempt": 1800,
+    "parallel_tasks": 1,
+    "resource_policy": "existing recorded host limits; coordinate heavy CPU/VM work with shared-host measurement windows; no purchase"
+  },
+  "scope": "At most one task per repository; does not qualify every version/image or estimate success rates. Wider 500-task qualification and routing protocol gates remain."
+}

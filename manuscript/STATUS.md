@@ -1,3 +1,11 @@
+**22 September, 02:19 UTC cycle:** abstract, introduction and discussion now synthesize the completed
+synthetic development studies alongside the archived coding case. Corrected the baseline-design wording so
+four-replicate evaluation is not asserted for the sixteen-replicate sensitivity study or extra training data.
+Independent read-only review found no factual/interpretive blocker; no new mathematical claim. The PDF builds
+cleanly to 36 pages; revised abstract/discussion pages visually checked. Four of 32 v2 core cells have sampled
+evidence; broader validation, overlapping cross-fitted and joint branch inference remain unresolved.
+Readiness 55% (0 points; 45–65%). This synthesis does not promote the new runtime smoke check to agent evidence.
+
 **21 September, 22:49 cycle:** fixed-fit development coverage is integrated (worker `66fb04a`): 10,000
 experiments over five index-selected fits, all three policies. Lead audit checks 660 saved-result quantities,
 19 source hashes and complete IDs; eight tests pass. Scoped evidence only; no uniform or cross-fitted coverage
