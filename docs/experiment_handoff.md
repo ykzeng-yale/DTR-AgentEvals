@@ -4177,3 +4177,19 @@ No question for the lead.
 - **Live DTR-owned server:** llama-server **PID 36869**, 127.0.0.1:**8293**, Coder-14B `…aedcc2d-q4_k_m.gguf` (SHA-256 `b179f09d…`, equal to the conversion receipt).
 - Records: [`block_1_start.json`](../results/v2_agent/pilot_20260922_yaml_v1/block_1_start.json) and the runner's `cohort_binding.json`. The output directory is `results/v2_agent/pilot_20260922_yaml_v1/`; the block-1 legacy cohort is untouched.
 - **Budget:** at most 768 task requests for this cohort, on top of the original cohort's 330 recorded requests.
+
+### yaml-v1 block 1 interim (8 of 16 terminal at 07:43:47Z; ungraded; exits and timing only)
+
+| instance | backend | exit | logical calls | physical requests | wall s | patch bytes |
+|---|---|---|---|---|---|---|
+| astropy__astropy-12907 | large | LimitsExceeded | 24 | 24 | 186 | 0 |
+| astropy__astropy-12907 | small | Submitted | 1 | 1 | 7 | 0 |
+| pytest-dev__pytest-10051 | small | LimitsExceeded | 24 | 24 | 73 | 0 |
+| pytest-dev__pytest-10051 | large | LimitsExceeded | 24 | 24 | 201 | 0 |
+| scikit-learn__scikit-learn-10297 | large | LimitsExceeded | 24 | 24 | 192 | 0 |
+| scikit-learn__scikit-learn-10297 | small | LimitsExceeded | 24 | 24 | 133 | 0 |
+| matplotlib__matplotlib-13989 | small | ContextWindowExceededError | 24 | 24 | 198 | 0 |
+| matplotlib__matplotlib-13989 | large | LimitsExceeded | 24 | 24 | 300 | 0 |
+
+- **Binding check on episode 1:** `effective_config.json` records `yaml-v1`. The resolved model config has the 10,000-character truncating observation template and `drop_params=true`, and the environment has all 5 yaml vars. The episode-source SHA-256 `164b7878…` equals the on-disk `pilot_episode.py`. A `call9_history.json` snapshot is present.
+- No transport retries, and no nonempty patch so far. The frozen queue continues unchanged.
