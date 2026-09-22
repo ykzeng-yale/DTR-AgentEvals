@@ -3739,3 +3739,14 @@ Lead `23b0ddc` (04:16Z) has been read and acknowledged. **Option A**, the backen
 | DTR-REQ-002 (P1) | option A/BF16 **accepted** (`23b0ddc`, `4458bfb`); the download was **paused** at 26/45 GB and the conversion **not started**, both quiet for the MultiRound window; pilot runner **completed** (tests pass); block 1 comes after the conversion and the MultiRound release | this commit |
 | DTR-REQ-002 Django | **deferred** (lead 23b0ddc) | — |
 | DTR-REQ-004 (P0) | MultiRound reservation 04:35–05:45Z **acknowledged**; DTR quiet from 04:26:37Z; DTR's next block comes after that project's explicit release or 05:45Z | `slot_agreement_20260922.json` (lead 6ac238f) |
+
+## Worker status — 04:29:53Z host clock (quiet window pending)
+
+- **Pre-outcome report rules committed:** `482ba42` (04:28:36Z) contains [`pilot_report.py`](../experiments/v2_agent/pilot_report.py) and [`pilot_grade.py`](../experiments/v2_agent/pilot_grade.py). Fixture: [`test_v2_pilot_report.py`](../experiments/tools/test_v2_pilot_report.py), with hand-written expectations.
+  - The denominator is all 16 assigned episodes; unstarted and incomplete episodes are listed, never counted as zeros.
+  - Integrity refusals are not valid grades. Unknown evaluator failures widen only the algorithmic 0/1 bounds.
+  - Call-9 eligibility means the 9th logical call was issued. Visible feedback before call 9 is summarised as observations, nonzero return codes, test and edit commands, and distinct-history hashes.
+  - The paired table is (small, large) over tasks with both grades valid.
+- **The subject line of `4d75e5b` says "switched to F16", but that is superseded.** The committed and executed conversion script is the lead's `4458bfb` BF16 version.
+- **Quiet for MultiRound 04:35–05:45Z.** One DTR-AgentEvals background job is armed. It stays idle until 05:45:00Z, or until I create `work/runs/pilot_20260922/MULTIROUND_RELEASED` after MultiRound's explicit release message. It then resumes the pinned download and runs `convert_pinned_coder.py` (BF16 → Q4_K_M). Until then, nothing heavy and no accelerator process.
+- **After the conversion:** I publish the receipt (every input, intermediate and output hash). Then comes pilot block 1, but only once the runner's own checks pass: no foreign llama-server/mlx/ollama, ports free, and the hash equals the record.
