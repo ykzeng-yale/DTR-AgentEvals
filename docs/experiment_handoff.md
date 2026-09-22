@@ -3786,3 +3786,14 @@ Lead `23b0ddc` (04:16Z) has been read and acknowledged. **Option A**, the backen
 - 101 GiB disk free; macOS memory 45% free (swap 9.8/10 GB used historically, and the preflight records its change).
 
 **No reservation is active:** MultiRound released at 04:46:01Z, and its new window is being arranged by the leads outside this block. **Block 1 starts next**: at most 7,200 s, one server at a time on 8291/8293. PIDs are published at start.
+
+## Worker checkpoint — PILOT BLOCK 1 STARTED (DTR-REQ-002 / REQ-004)
+
+- **Actual S = 2026-09-22T05:06:57Z; hard end S+7200 = 07:06:57Z.** Runner: `pilot_runner.py --block 1`.
+- **Live server (DTR-AgentEvals-owned):** llama-server **PID 13026**, 127.0.0.1:**8293**, Coder-14B `qwen2.5-coder-14b-instruct-aedcc2d-q4_k_m.gguf` (SHA-256 `b179f09d…`, equal to the conversion receipt).
+  - Flags: `-ngl 99 -np 1 -c 16384`.
+  - Hash check 3.8 s; load 7.1 s; RSS 8.6 GiB.
+  - Swap went from 9.79 to 13.77 GB used during the load. This is recorded as a memory-pressure observation.
+  - The live copy is [`block_1_start.json`](../results/v2_agent/pilot_20260922/block_1_start.json). The authoritative ownership record is `work/code_routing_servers.json`.
+- **Pre-start checks (runner):** no foreign llama-server/mlx/ollama; ports 8291/8293 free; served hash equals the receipt. No reservation is active; MultiRound schedules after our release (lead 04:52Z receipt).
+- **Order:** the frozen 16-episode queue (1 astropy L→S, 2 pytest S→L, …). The first model-free step is the 14B preflight probe. Episodes follow while each full allowance still fits before 07:06:57Z. Grading happens after release.
