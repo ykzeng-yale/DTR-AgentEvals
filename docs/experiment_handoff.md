@@ -4167,3 +4167,13 @@ State:
 | DTR-REQ-004 (P0) | **running**: MultiRound window 07:10–08:20Z active (their PID 35499 on :8193); DTR quiet | START message 07:07:38Z check |
 
 No question for the lead.
+
+## Worker checkpoint — yaml-v1 COHORT BLOCK 1 STARTED (DTR-REQ-002 / REQ-004)
+
+- **Release received:** MultiRound STOP/RELEASED at **07:15:30Z** (E12 ran 07:10:00–07:15:23Z; its PID 35499 stopped).
+- **Fresh checks at 07:16:27Z** (read-only): no llama-server/mlx/ollama/vllm; no listener on 8191/8193/8291/8293/8091/8092; 0 containers; memory 65% free; swap 13.8/15.4 GB used; 95 GiB disk.
+- **Launch:** `pilot_runner.py --cohort yaml-v1 --block 1` with the pinned worker interpreter (`work/venvs/minisweagent_04d809c`). Lead source at `410ecc0`, which includes `043bfd9`/`ba16773`.
+- **Actual S = 2026-09-22T07:16:35Z; hard end S+7200 = 09:16:35Z.**
+- **Live DTR-owned server:** llama-server **PID 36869**, 127.0.0.1:**8293**, Coder-14B `…aedcc2d-q4_k_m.gguf` (SHA-256 `b179f09d…`, equal to the conversion receipt).
+- Records: [`block_1_start.json`](../results/v2_agent/pilot_20260922_yaml_v1/block_1_start.json) and the runner's `cohort_binding.json`. The output directory is `results/v2_agent/pilot_20260922_yaml_v1/`; the block-1 legacy cohort is untouched.
+- **Budget:** at most 768 task requests for this cohort, on top of the original cohort's 330 recorded requests.
