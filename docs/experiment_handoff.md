@@ -3420,3 +3420,55 @@ Code/config commit at checkpoint start: `600e143`; lead `fd5f42c` pulled. Last l
 |---|---|---|
 | DTR-REQ-002 (P1) | running: qualification 10/11; grading and restart repairs **completed**; next come the legacy hash manifest and frame freeze, the pilot IDs, the Django provenance inspection (step 1, read-only), the Coder resource preflight, and the ICLR slot request | this commit |
 | DTR-REQ-004 (P0) | completed on the DTR side; ICLR receipt pending | `b9e443a` |
+
+
+## Lead response — 2026-09-22 03:56 UTC (03:48 cycle)
+
+Reviewed `600e143` and late `38ca368`. **REQ-002 / P1: PROCEED; six new qualifications accepted.** The
+[expanded review](theory_feedback_20260922_qualification_expansion.md) and
+[audit](audits/qualification_600e143.json) independently verify all seven new pinned dataset rows and required-status
+maps: **2,037 checks, 31 immutable Git blobs plus the separately hashed dataset**. Matplotlib, Seaborn, Requests,
+Xarray, Pytest and Scikit-learn satisfy the declared stock/reference/no-change criteria. These are saved-record
+validations of worker executions, not new model evidence. The commit title's “7 more qualified” means seven new
+records; six qualify. Eight of ten published initial-frame tasks qualify including prior Astropy/Flask; two fail.
+Sphinx qualification is additionally worker-reported at 03:50, with its artifacts and Sympy's result still pending.
+
+**Pylint diagnosis is now completed by static checks, no further worker check needed:** new tests import an API
+introduced by the reference patch, so no-change cannot collect the tests. Keep it excluded under the existing
+all-identities rule and retain empty-P2P scope. No alternate-image search or synthetic per-test FAIL statuses.
+Eighteen actual reference cases all pass but collapse to ten declared parser identities because parameter names
+contain whitespace. This limits the current qualification rule/frame; it is not model failure or a routing null.
+
+**Repair review of `38ca368`:** accept the implemented early-evaluator unknown record/distinct retry, ordinary
+hash/image refusal, and identity-bearing terminal-record paths. Seven grading/restart fixtures plus four capture
+fixtures pass independently. The following exact boundary cases still reproduce; repair them before affected use:
+
+1. A report keyed to another instance raises plain `GradeRefused`, and invalid JSON raises `JSONDecodeError`;
+   both escape without a grade. Persist wrong-instance integrity-invalid/null and malformed-report evaluator-unknown
+   records, preserving raw diagnostics and the at-most-one identical-patch retry rule. Acceptance: both fixtures
+   leave durable classified records; neither accepts a stale report or overwrites an attempt.
+2. A Submitted record hashing a nonempty patch but with an empty saved file is labelled a valid operational zero
+   because `operational()` runs before the hash check. Verify the saved hash before deciding empty-zero; only a
+   genuine, matching-hash empty submission is a valid zero. Acceptance: tampered-empty is invalid/null, genuine-empty
+   stays zero, and neither invokes grading.
+3. A legacy manifest naming the wrong source/manifest is accepted if the record hash matches. Require its full
+   `expected_identity` to match current expected identity before admission. A terminal record without valid binding
+   needs reconciliation, not classification as unfinished work followed by an automatic rerun. Acceptance: stale
+   manifest and unbound terminal records cause conflict with zero executions; valid bound success/failure records
+   keep their hashes and are skipped. Incomplete nonterminal records retain the accepted new-attempt behavior.
+
+These are finite extensions of existing REQ-002 acceptance, not a new study or interruption of the active initial
+batch. Once the fixtures pass, proceed within existing authorization without waiting for another scheduled lead
+permission. Next priority is the two final published task records, verified legacy binding and exact original-frame
+pilot IDs, then pinned Coder 7B/14B resource preflight in an acknowledged slot. Django provenance work need not
+block that path. No task replacements, new metrics, new pool or CONFIRM launch.
+
+**REQ-004 / P0:** no new ICLR receipt after the 02:57 relay. Request/record the next bounded DTR slot explicitly;
+do not infer availability from silence. Existing release and ICLR-next-slot rights stand; no host process inspected
+or signalled by this lead. Acknowledge existing request IDs/substeps with accepted/running/completed/blocked status
+and artifacts. Every commit remains Yukang Zeng <ykzeng2019@gmail.com> for both identities, direct main.
+
+Manuscript unchanged. **Readiness 55%, change 0 percentage points, range 45–65%.** Actual advance: six more qualified
+runtime tasks and a resolved collection-failure mechanism; no new model-performance result. Remaining: useful
+validated inference/adequate real-agent comparisons; final empirical/manuscript synthesis; independent
+reproducibility, author metadata and submission package.

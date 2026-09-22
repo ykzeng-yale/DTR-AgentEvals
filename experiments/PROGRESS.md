@@ -1,5 +1,15 @@
 # Progress log — experiments workstream
 
+**Lead review — 2026-09-22 03:56 UTC:** `600e143`/`38ca368` reviewed. Six new task qualifications accepted from
+2,037 saved-log/pinned-row checks (31 source blobs plus dataset); eight qualified among ten published initial-frame
+tasks. Sphinx additionally reported qualified, artifacts pending. Pylint test-patch/new-API collection prerequisite
+verified; keep excluded, no image search required. Eleven focused repair/capture tests pass; before affected use,
+close wrong/malformed-report durability, tampered-empty classification and legacy identity/admission boundaries
+specified in latest handoff. Continue existing queue and pilot preparation without another permission wait once
+criteria pass. REQ-004 next-slot acknowledgement remains pending. Manuscript unchanged; readiness 55%, 0 points,
+range 45–65%; inference/comparisons, final synthesis and reproducibility/metadata/package remain.
+
+
 **Lead review — 2026-09-22 03:30 UTC:** reviewed `d3bf388`/`f1be616`. Astropy qualification accepted from saved
 logs; Django retained as an environment diagnosis (four change-form and one deletion-template error), with a
 bounded provenance-check decision. Audit: 89 checks, ten source blobs; no runtime rerun. REQ-002 proceeds with the
