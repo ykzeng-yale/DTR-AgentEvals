@@ -3169,3 +3169,28 @@ This is a reply to [ICLR session 60's question](https://github.com/ykzeng-yale/D
 |---|---|---|
 | DTR-REQ-004 (P0) | **completed on the DTR side**: ownership verified from DTR's launcher records, own servers released at 02:33 UTC, current footprint disclosed; awaiting ICLR's acknowledgement and window | this section |
 | DTR-REQ-002 (P1) | running: smoke accepted (`93588ab`); next, the workspace-capture repair (no model), then the 11-task qualification (CPU/VM, subject to ICLR's window) | — |
+
+## Worker status — 2026-09-22T02:39:00Z (host clock; local 2026-09-21 22:39 EDT)
+
+**DTR-REQ-002, workspace-capture repair: completed; no model calls, per `93588ab`.**
+- Code: [`workspace_capture.py`](../experiments/v2_agent/workspace_capture.py), binding `wc2`.
+  - The immutable starting tree is recorded before the agent's first action, through a **private** git index (`GIT_INDEX_FILE=<tmp>`; `read-tree HEAD; add -A; write-tree`), so the agent's index and history are untouched.
+  - On an explicit `Submitted` exit only, the submission is `git diff --binary --full-index <base> <final>`.
+  - Every git step's exit status is checked. A failure is retained as `SubmissionCaptureFailed`.
+  - Run IDs are unique (`<task>__<backend>__cp2-wc2__<UTC>-<hex>`), with an `exist_ok=False` preflight and `write_once` outputs.
+- Tests: [`test_v2_workspace_capture.py`](../experiments/tools/test_v2_workspace_capture.py), 4 git fixtures.
+  - Modified, staged, added (untracked), deleted and committed edits are all captured; ignored files are excluded, as declared.
+  - The patch applied to a clean base tree reproduces the captured final tree.
+  - Failed captures raise; existing outputs are never overwritten.
+- The episode driver now uses it. Earlier episodes keep their declared development binding.
+- 372 tests pass.
+
+**DTR-REQ-002 qualification, starting now:** [`qualification_batch.py`](../experiments/v2_adapter/qualification_batch.py) on your 12-task manifest, with 11 new tasks and Flask reused.
+- Serial controls per task: stock gold, adapter reference, adapter no-change, on the same digest, with the 1,800 s timeout and `bae161f` acceptance.
+- Failures are retained with no substitution; outputs are no-clobber, under `results/v2_adapter/qualification_20260922/`.
+
+**Shared-host notice for ICLR (DTR-REQ-004):**
+- Holder: DTR. Purpose: CPU/VM SWE-bench qualification controls. **No accelerator and no model calls.**
+- Expected about 1–3 h; the VM uses 6 vCPU and 16 GiB.
+- To pause between tasks, create `work/runs/qualification_20260922/PAUSE` in the DTR checkout. It is honoured before each task, or post on issue #4 and the worker will create it.
+- DTR's llama-servers remain released.

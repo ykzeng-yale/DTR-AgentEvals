@@ -14,8 +14,11 @@ M03 strict rule, in a separate step.
   work/venvs/minisweagent_04d809c/bin/python experiments/v2_agent/agent_smoke_episode.py --backend large|small
 """
 from __future__ import annotations
-import argparse, hashlib, json, os, platform, time
+import argparse, hashlib, json, os, platform, sys, time
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import workspace_capture as WC  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[2]
 MSWEA = ROOT / 'work/upstream/mini-swe-agent-04d809ceab9df28f9adaed044884180159172930'
@@ -73,16 +76,29 @@ def main():
 
     env = ContainerPlatformDockerEnvironment(image=image_id, cwd='/testbed', executable=DOCKER, timeout=60,
                                              run_args=['--rm', '--platform', 'linux/amd64'], env=dict(PAGER='cat', MANPAGER='cat'))
+    run_id, run_dir = WC.new_run_dir(OUT, args.instance, args.backend, 'cp2-wc2')    # no-clobber preflight
+    ex = lambda cmd: (lambda o: (o.get('returncode'), o.get('output', '')))(env.execute({'command': cmd}))
+    base_tree, capture_error = None, None
+    try:
+        base_tree = WC.tree(ex)                        # immutable starting tree, before the agent's first action
+    except WC.CaptureError as e:
+        capture_error = 'base: %s' % e
     agent_cfg = dict(cfg['agent'], step_limit=H, cost_limit=0.0, wall_time_limit_seconds=WALL_S)
     agent = DefaultAgent(model, env, **agent_cfg)
     t0 = time.time()
-    exit_status, submission, err = None, '', None
+    exit_status, submission, err, final_tree = None, '', None, None
     try:
         info = agent.run(row['problem_statement'])
         exit_status = info.get('exit_status')
         if exit_status == 'Submitted':
-            out = env.execute({'command': 'git -c core.fileMode=false diff'})
-            submission = out.get('output', '')
+            if base_tree is None:
+                exit_status = 'SubmissionCaptureFailed'
+            else:
+                try:
+                    cap = WC.patch(ex, base_tree)
+                    submission, final_tree = cap['patch'], cap['final_tree']
+                except WC.CaptureError as e:
+                    exit_status, capture_error = 'SubmissionCaptureFailed', 'final: %s' % e
     except Exception as e:  # noqa: BLE001  retained, never dropped
         exit_status, err = type(e).__name__, str(e)[:500]
     wall = time.time() - t0
@@ -90,10 +106,8 @@ def main():
         env.cleanup()
     except Exception:  # noqa: BLE001
         pass
-    run_dir = OUT / ('%s__%s' % (args.instance, args.backend))
-    run_dir.mkdir(parents=True, exist_ok=True)
     agent.save(run_dir / 'trajectory.json', {'info': {'exit_status': exit_status, 'error': err}})
-    (run_dir / 'submission.diff').write_text(submission)
+    WC.write_once(run_dir / 'submission.diff', submission)
     n_calls = getattr(agent, 'n_calls', None)
     rec = dict(kind='REAL-AGENT pipeline smoke episode (fixed backend, no routing); not a policy estimate, not CONFIRM',
                authorization='author 2026-09-22', instance_id=args.instance, backend=args.backend, backend_alias=be['alias'],
@@ -103,13 +117,15 @@ def main():
                          image_ref=image_ref, image_id=image_id),
                settings=dict(step_limit=H, cost_limit=0.0, wall_time_limit_seconds=WALL_S, temperature=0.0, max_tokens=1536, command_timeout_s=60,
                              max_consecutive_format_errors=agent_cfg.get('max_consecutive_format_errors', 3)),
-               workspace_binding='on Submitted: tracked-file git diff of /testbed from the same container (candidate, lead review)',
+               run_id=run_id, workspace_binding='wc2 (lead 93588ab): diff of the immutable starting tree vs the final tree via a private index, '
+                                              'on Submitted only; capture failures retained as SubmissionCaptureFailed',
+               base_tree=base_tree, final_tree=final_tree, capture_error=capture_error,
                template_platform_binding='v2: container uname (not host) for {{system}}/{{release}}/{{version}}/{{machine}}',
                container_platform=env.container_platform(),
                host=dict(arch=platform.machine(), os=platform.platform()),
                exit_status=exit_status, error=err, n_model_calls=n_calls, wall_seconds=wall,
                submission_sha256=sha(submission), submission_bytes=len(submission), submission_empty=not submission.strip())
-    (run_dir / 'episode.json').write_text(json.dumps(rec, indent=1) + '\n')
+    WC.write_once(run_dir / 'episode.json', json.dumps(rec, indent=1) + '\n')
     print(json.dumps({k: rec[k] for k in ('backend', 'exit_status', 'n_model_calls', 'wall_seconds', 'submission_bytes', 'error')}, indent=1))
 
 
