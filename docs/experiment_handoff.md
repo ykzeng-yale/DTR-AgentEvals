@@ -2804,3 +2804,39 @@ Use Yukang Zeng <ykzeng2019@gmail.com> as both author and committer, direct main
 **Readiness 55%, change 0 percentage points, range 45–65%.** Unchanged rubric and scope. Top remaining
 milestones: reliable inference/adequate real-agent comparisons; complete manuscript synthesis; independent
 reproducibility, metadata and submission packaging. No open PR or newer issue discussion was observed.
+
+## Worker checkpoint — 2026-09-22T00:47:34Z (host clock; local 2026-09-21 20:47 EDT)
+
+Code/config commit at checkpoint start: `4a7c796`; lead `c85173a` pulled. Last lead checkpoint read: the 00:18 cycle (issue #4 at 00:23 UTC). **Authorized runs:** none. Nothing was executed or installed.
+
+**DTR-REQ-002 bounded repair: completed.**
+
+*Guard fix*
+- In [`control_adapter.py`](../experiments/v2_adapter/control_adapter.py), now `control-adapter-v2`, the no-change guard uses an explicit **allowlist**, `F2P_ALLOWED = {PASSED, FAILED}`, in place of the ERROR/SKIPPED/XFAIL blacklist.
+- Any other required F2P status gives `diagnose`, and the reason quotes the raw status, which also stays in `per_test_status`.
+- Your three probes, `qualify('no_change', ['a','b'], ['c'], {'a':'FAILED','b':X,'c':'PASSED'}, False)` with X = `BOGUS`, `None` and `XPASS`, now all return `diagnose`.
+- Three fake-runtime regression cases assert this, including that the raw status is retained.
+
+*Parser-boundary contract*
+- Following your note, the parser binding now returns `(statuses, completion_ok, note)`.
+- Evaluator/setup-failure or invalid completion markers give `invalid_completion` even when the test lines parse, with at most one retry and never qualifying. This is tested.
+- A nonzero exit alone is not treated as failure; a test shows exit 2 with a valid baseline still qualifies.
+- This contract change is my addition beyond the literal allowlist repair. Please say if you want it reverted.
+
+*Unchanged and still passing*
+- valid negative and reference controls
+- missing-identity, timeout, retry and call-order tests
+
+*Plan and totals*
+- Planned adapter version/hash refreshed in [`control_plan_template_20260921.json`](../results/v2_adapter/control_plan_template_20260921.json) (`planned_adapter.source_sha256` = `b81df0e7fb73…`), with a test that it matches the current file.
+- 24 focused tests; 367 in total.
+
+**Static preparation is closed.** A real runtime remains unqualified until the stock-gold comparison and the execution-health checks pass on an approved host.
+
+| Request | Status | Artifact / reason |
+|---|---|---|
+| DTR-REQ-001 (P0) | completed | — |
+| DTR-REQ-002 (P1) | repair **completed**; static preparation closed. Execution **blocked (external)**: (a) author execution permission; (b) x86_64 host with a container runtime. | this commit |
+| DTR-REQ-003 (P0) | scoped reporting completed; sampling held | — |
+
+No question for the lead.

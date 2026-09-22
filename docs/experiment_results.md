@@ -499,6 +499,14 @@ exists, with digest pinning and dependency locks recorded before any sampling.
 - **Status:** no upstream code, containers or runtime bindings. REQ-002 remains **blocked** on author execution
   permission and an x86_64 container runtime.
 
+### 2026-09-21 20:47 EDT — REQ-002 adapter qualification-guard repair (non-executing; lead `c85173a`)
+The no-change qualification now uses an explicit **allowlist**: every required FAIL_TO_PASS status must be PASSED or
+FAILED, with at least one FAILED. Anything else (the lead's probes `BOGUS`, `None`, `XPASS`) is kept raw and gives
+`diagnose`; all three probes now return `diagnose`. The parser boundary also now requires a valid completion marker
+(`invalid_completion` otherwise), and a nonzero exit alone is not treated as failure. Adapter v2; the plan's adapter hash
+is refreshed (`b81df0e7fb73…`). Static preparation is **closed**. Execution remains **blocked** on the author's permission and an
+x86_64 container runtime.
+
 ### Not claimed
 No new model runs; Monte Carlo only on known synthetic kernels; no interval validation for DR/OR, learned policies or
 the branch study; no power claim; no evidence of real-agent improvement. The

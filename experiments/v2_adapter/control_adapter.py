@@ -13,11 +13,16 @@ attempt; the script performs its own test-patch/reset sequence):
 Qualification (lead 7f9673a; sharpens the infrastructure gate, rescored nothing):
   both        completed, interpretable execution (no timeout, report/log present and parsed, no evaluator/setup failure)
               and every required F2P/P2P identity accounted for; otherwise 'diagnose' (never a silent exclusion)
-  no_change   all required P2P observed PASSED (unless the predeclared empty-P2P limitation applies), at least one F2P
-              observed FAILED, and no F2P ERROR/SKIPPED/XFAIL ambiguity -> 'qualified'; a false strict score alone is
-              NOT sufficient; all-F2P-passing baseline -> 'diagnose' (negative control not demonstrated)
+  no_change   all required P2P observed PASSED (unless the predeclared empty-P2P limitation applies), EVERY required
+              F2P status in the allowlist {PASSED, FAILED} (anything else - ERROR, SKIPPED, XFAIL, XPASS, None, unknown
+              strings - is retained raw and gives 'diagnose'), and at least one F2P FAILED -> 'qualified'; a false strict
+              score alone is NOT sufficient; all-F2P-passing baseline -> 'diagnose' (negative control not demonstrated)
   reference   every required F2P and P2P observed PASSED (M03 strict rule) -> 'qualified'; otherwise 'diagnose'
-Operational retry rule preserved: a timeout or missing/unparsable report gets exactly one retry with identical inputs;
+Completion gate (lead c85173a): the parser binding returns (statuses, completion_ok, note); evaluator/setup-failure or
+invalid completion markers make the attempt 'invalid_completion' even if test lines parse - a nonempty status map alone
+never establishes completion. A nonzero eval-script exit is NOT by itself an evaluator failure (expected baseline test
+failures produce it).
+Operational retry rule preserved: a timeout, missing/unparsable report or invalid completion gets exactly one retry with identical inputs;
 both attempts are recorded.
 """
 from __future__ import annotations
@@ -26,9 +31,9 @@ from pathlib import Path
 
 from grading_conformance import declared_outcome, PASSED, FAILED, SKIPPED, ERROR, XFAIL
 
-ADAPTER_VERSION = 'control-adapter-v1 (lead 7f9673a)'
+ADAPTER_VERSION = 'control-adapter-v2 (lead 7f9673a; F2P allowlist and completion gate per c85173a)'
 MODES = ('no_change', 'reference')
-AMBIGUOUS = {ERROR, SKIPPED, XFAIL}
+F2P_ALLOWED = {PASSED, FAILED}          # explicit allowlist (lead c85173a): anything else is ambiguous -> diagnose
 
 
 def sha(text):
@@ -64,8 +69,9 @@ def qualify(mode, f2p, p2p, statuses, empty_p2p_declared):
         return 'diagnose', 'empty PASS_TO_PASS without the declared limitation', strict
     if any(statuses[t] != PASSED for t in p2p):
         return 'diagnose', 'a required PASS_TO_PASS test was not PASSED at baseline', strict
-    if any(statuses[t] in AMBIGUOUS for t in f2p):
-        return 'diagnose', 'FAIL_TO_PASS ERROR/SKIPPED/XFAIL ambiguity retained for diagnosis', strict
+    bad = {t: statuses[t] for t in f2p if statuses[t] not in F2P_ALLOWED}
+    if bad:
+        return 'diagnose', 'FAIL_TO_PASS status outside {PASSED, FAILED} retained raw for diagnosis: %r' % sorted(bad.items(), key=str), strict
     if not any(statuses[t] == FAILED for t in f2p):
         return 'diagnose', 'no FAIL_TO_PASS test observed FAILED: negative control not demonstrated', strict
     return 'qualified', 'baseline F2P failure observed with P2P passing', strict
@@ -73,7 +79,9 @@ def qualify(mode, f2p, p2p, statuses, empty_p2p_declared):
 
 def run_control(mode, instance, runtime, eval_script, parse_log, image_digests, reference_patch=None, timeout=1800):
     """One control for one instance. `instance` needs instance_id, eval_script_sha256 (M01), FAIL_TO_PASS, PASS_TO_PASS,
-    empty_p2p_declared. `parse_log` is the pinned log parser binding: log_text -> {test_id: status} or None."""
+    empty_p2p_declared. `parse_log` is the pinned log parser binding:
+    log_text -> (statuses {test_id: status} or None, completion_ok: bool, note); completion_ok must be False for
+    evaluator/setup-failure or invalid completion markers, even if individual test lines parse."""
     if mode not in MODES:
         raise ControlRefused('mode must be no_change or reference')
     if sha(eval_script) != instance['eval_script_sha256']:
@@ -111,17 +119,19 @@ def run_control(mode, instance, runtime, eval_script, parse_log, image_digests, 
             a['repo_state_post'] = runtime.repo_state(h)
         finally:
             runtime.stop(h)
-        statuses = parse_log(log) if (log is not None and not timed_out) else None
-        a['per_test_status'] = statuses
+        statuses, completion_ok, note = parse_log(log) if (log is not None and not timed_out) else (None, False, 'no log')
+        a['per_test_status'], a['completion_ok'], a['completion_note'] = statuses, completion_ok, note
         if timed_out:
             a['evaluation_status'] = 'timeout'
         elif not statuses:
             a['evaluation_status'] = 'missing_or_unparsable_report'
+        elif not completion_ok:
+            a['evaluation_status'] = 'invalid_completion'  # evaluator/setup-failure marker: a nonempty map is not enough
         else:
             a['evaluation_status'] = 'completed'
         rec['attempts'].append(a)
         if a['evaluation_status'] == 'completed':
-            break                                          # at most one retry, only for timeout / missing report
+            break                                          # at most one retry, only for timeout / missing report / invalid completion
     last = rec['attempts'][-1]
     if last['evaluation_status'] != 'completed':
         rec.update(qualification='diagnose', reason='no completed interpretable execution: %s' % last['evaluation_status'],

@@ -37,7 +37,16 @@ class FakeRuntime(A.Runtime):
 
 
 def parser(log):
-    return None if log in (None, 'garbage') else dict(item.split('=') for item in log.split(';'))
+    """Fake pinned-parser binding: (statuses, completion_ok, note). 'EVALFAIL|' prefix = evaluator-failure marker."""
+    if log in (None, 'garbage'):
+        return None, False, 'unparsable'
+    ok = not log.startswith('EVALFAIL|')
+    body = log.split('|', 1)[1] if not ok else log
+    st = {}
+    for item in body.split(';'):
+        k, v = item.split('=')
+        st[k] = None if v == 'None' else v
+    return st, ok, 'ok' if ok else 'evaluator failure marker'
 
 
 def log(**st):
@@ -130,3 +139,27 @@ def test_refusals_before_any_runtime_call():
         with pytest.raises(A.ControlRefused):
             A.run_control(kw['mode'], INST, rt, kw['eval_script'], parser, kw.get('image_digests', DIG), reference_patch=kw.get('reference_patch'))
         assert rt.calls == []
+
+
+@pytest.mark.parametrize('raw', ['BOGUS', None, 'XPASS'])
+def test_f2p_status_outside_the_allowlist_never_qualifies_and_is_retained_raw(raw):
+    # lead c85173a probes: qualify('no_change', ['a','b'], ['c'], {'a':'FAILED','b':<raw>,'c':'PASSED'}, False)
+    q, why, _ = A.qualify('no_change', ['a', 'b'], ['c'], {'a': 'FAILED', 'b': raw, 'c': 'PASSED'}, False)
+    assert q == 'diagnose' and repr(raw) in why
+    rt = FakeRuntime([(1, log(f1=F, f2=raw, p1=P), False)])
+    rec = A.run_control('no_change', INST, rt, SCRIPT, parser, DIG)
+    assert rec['qualification'] == 'diagnose' and rec['attempts'][-1]['per_test_status']['t::f2'] == raw
+
+
+def test_invalid_completion_marker_blocks_qualification_even_with_parseable_tests():
+    bad = 'EVALFAIL|' + log(f1=F, f2=P, p1=P)
+    rt = FakeRuntime([(1, bad, False), (1, bad, False)])
+    rec = A.run_control('no_change', INST, rt, SCRIPT, parser, DIG)
+    assert [a['evaluation_status'] for a in rec['attempts']] == ['invalid_completion', 'invalid_completion']
+    assert rec['qualification'] == 'diagnose' and rec['strict_verified_resolved'] is None
+
+
+def test_nonzero_exit_alone_is_not_an_evaluator_failure():
+    rt = FakeRuntime([(2, log(f1=F, f2=F, p1=P), False)])
+    rec = A.run_control('no_change', INST, rt, SCRIPT, parser, DIG)
+    assert rec['attempts'][0]['exit_code'] == 2 and rec['qualification'] == 'qualified'

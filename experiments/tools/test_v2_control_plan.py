@@ -33,3 +33,10 @@ def test_plan_matches_m01_and_keeps_placeholders():
     assert '7f9673a' in art['controls']['no_change']['resolved_by'] and 'bypasses ONLY prediction' in art['controls']['no_change']['mechanism']
     assert 'NOT YET WRITTEN' in art['command_templates']['no_change'] and art['resolved_lead_decision'].startswith('7f9673a')
     assert art['status'].startswith('TEMPLATE ONLY')
+
+
+def test_planned_adapter_hash_and_version_are_current():
+    import control_adapter as CA
+    art = json.loads(P.OUT.read_text())
+    assert art['planned_adapter']['source_sha256'] == CA.adapter_source_sha256()
+    assert art['planned_adapter']['version'] == CA.ADAPTER_VERSION == P.RECORD['adapter_version']

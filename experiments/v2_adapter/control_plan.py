@@ -12,6 +12,8 @@ ROOT = Path(__file__).resolve().parents[2]
 M01 = ROOT / 'results/v2_adapter/m01_c104f840_f7bbbb2'
 OUT = ROOT / 'results/v2_adapter/control_plan_template_20260921.json'
 PH = lambda name: '<%s>' % name                           # explicit placeholder, filled only on a verified host
+ADAPTER = dict(version='control-adapter-v2 (lead 7f9673a; F2P allowlist and completion gate per c85173a)',
+               sha256=hashlib.sha256((ROOT / 'experiments/v2_adapter/control_adapter.py').read_bytes()).hexdigest())
 
 PINS = dict(dataset='princeton-nlp/SWE-bench_Verified@c104f84 (local parquet; a Hugging Face name would load UNPINNED data)',
             dataset_parquet_sha256='a45b1fe4e2f0c8390b2b2938ac83e92ed5979000856808f3679c07812e9e6dcd',
@@ -29,8 +31,9 @@ CONTROLS = dict(   # lead decision 7f9673a: one separately versioned adapter (co
                              'application (patch_application = not_applicable), invokes the identical M01 hash-checked eval script '
                              'once (it applies the test patch itself); no fabricated patch, no empty git-apply, no test edits',
                    qualification='completed interpretable execution with all required identities accounted for, all required '
-                                 'PASS_TO_PASS observed PASSED (unless the declared empty-P2P limitation applies), at least one '
-                                 'FAIL_TO_PASS observed FAILED and no F2P ERROR/SKIPPED/XFAIL ambiguity; a false strict score alone '
+                                 'PASS_TO_PASS observed PASSED (unless the declared empty-P2P limitation applies), EVERY required '
+                                 'FAIL_TO_PASS status in {PASSED, FAILED} with at least one FAILED (anything else retained raw -> '
+                                 'diagnose; lead c85173a), a valid completion marker; a false strict score alone '
                                  'does NOT qualify (timeout, missing report/tests, evaluator or setup failure -> diagnose)',
                    resolved_by='lead 7f9673a (supersedes the open issue raised in 0d3f9da: the unmodified CLI drops empty '
                                'predictions, run_evaluation.py L458-L470)'))
@@ -48,7 +51,7 @@ RECORD = dict(  # expected acceptance record per instance x control (every field
     upstream_resolved=PH('BOOL_FROM_UPSTREAM_REPORT'), strict_verified_resolved=PH('BOOL_FROM_M03_STRICT_RULE'),
     expected_strict_outcome=None, meets_expectation=PH('BOOL'), qualification=PH('qualified|diagnose (never silent exclusion)'),
     diagnosis=PH('REQUIRED_IF_NOT_MET'), author_execution_permission_ref=PH('LINK_TO_AUTHOR_APPROVAL'),
-    control_mode=None, adapter_version=PH('control-adapter-v1 (lead 7f9673a)'), adapter_source_sha256=PH('SHA256_OF_ADAPTER_USED'),
+    control_mode=None, adapter_version=ADAPTER['version'], adapter_source_sha256=PH('SHA256_OF_ADAPTER_USED'),
     prediction_identity=None, patch_application=PH('not_applicable|applied|failed'), repo_state_pre=PH('HASH'),
     repo_state_post=PH('HASH'), attempts=PH('[attempt records; at most one retry on timeout/missing report]'),
     report_scope=PH('explicit scope statement; no fabricated upstream success markers'), qualification_reason=PH('TEXT'),
@@ -77,8 +80,8 @@ def plan():
                        base_image_key=r['base_image_key'], env_image_key=r['env_image_key'], instance_image_key=r['instance_image_key'],
                        control_mode=control, prediction_identity='dataset_reference_patch' if control == 'reference' else 'no_prediction',
                        expected_strict_outcome=('qualified: every required F2P/P2P PASSED' if control == 'reference' else
-                                                'qualified: completed, identities accounted, P2P PASSED%s, >=1 F2P FAILED, no F2P '
-                                                'ERROR/SKIPPED/XFAIL (a false strict score alone is insufficient)' %
+                                                'qualified: completed with a valid completion marker, identities accounted, P2P PASSED%s, '
+                                                'every F2P in {PASSED, FAILED} with >=1 FAILED (a false strict score alone is insufficient)' %
                                                 (' (empty-P2P limitation declared)' if r['limitations'] else '')),
                        arch_expected=r['arch'], limitations=r['limitations'])
             out.append(rec)
@@ -93,6 +96,8 @@ def main():
                          '(b) an x86_64 host with a container runtime (this host: arm64, no docker/podman/colima)'],
                resolved_lead_decision='7f9673a: separately versioned control adapter (control_adapter.py); no-change bypasses only '
                                       'prediction application; qualification requires completed interpretable execution',
+               planned_adapter=dict(path='experiments/v2_adapter/control_adapter.py', version=ADAPTER['version'],
+                                    source_sha256=ADAPTER['sha256'], note='refreshed for lead c85173a; the runtime run records the hash actually used'),
                pins=PINS, m01_instances_sha256=hashlib.sha256((M01 / 'instances.jsonl').read_bytes()).hexdigest(),
                counts=dict(m01_rows=len(rows), eligible=len(eligible), planned_records=len(recs),
                            empty_pass_to_pass_limitation=sum(1 for r in eligible if r['limitations'])),
