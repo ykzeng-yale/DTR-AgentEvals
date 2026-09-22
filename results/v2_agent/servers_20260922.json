@@ -1,0 +1,52 @@
+{
+ "note": "local llama-server backends used by the DTR-REQ-002 agent smoke episodes (ownership by port and work/code_routing_servers.json)",
+ "change": "2026-09-22: restarted own servers from -np 4 -c 32768 (8,192 tokens/slot) to -np 2 -c 32768 (16,384 tokens/slot; lead candidate context), same ports/aliases/weights",
+ "servers": [
+  {
+   "role": "small",
+   "port": 8193,
+   "alias": "qwen2.5-3b-instruct",
+   "gguf_file": "qwen2.5-3b-instruct-q4_k_m.gguf",
+   "gguf_bytes": 2104932768,
+   "flags": [
+    "-m",
+    "--alias",
+    "qwen2.5-3b-instruct",
+    "--port",
+    "8193",
+    "-ngl",
+    "99",
+    "-np",
+    "2",
+    "-c",
+    "32768",
+    "--jinja",
+    "--host",
+    "127.0.0.1"
+   ]
+  },
+  {
+   "role": "large",
+   "port": 8191,
+   "alias": "qwen2.5-7b-instruct",
+   "gguf_file": "qwen2.5-7b-instruct-q4_k_m-00001-of-00002.gguf",
+   "gguf_bytes": 3993201344,
+   "flags": [
+    "-m",
+    "--alias",
+    "qwen2.5-7b-instruct",
+    "--port",
+    "8191",
+    "-ngl",
+    "99",
+    "-np",
+    "2",
+    "-c",
+    "32768",
+    "--jinja",
+    "--host",
+    "127.0.0.1"
+   ]
+  }
+ ]
+}

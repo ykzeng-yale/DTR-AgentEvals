@@ -1,0 +1,42 @@
+{
+ "kind": "REAL-AGENT pipeline smoke episode (fixed backend, no routing); not a policy estimate, not CONFIRM",
+ "authorization": "author 2026-09-22",
+ "instance_id": "pallets__flask-5014",
+ "backend": "large",
+ "backend_alias": "qwen2.5-7b-instruct",
+ "server": {
+  "port": 8191,
+  "total_slots": 4,
+  "n_ctx_per_slot": 8192,
+  "model_file": "qwen2.5-7b-instruct-q4_k_m-00001-of-00002.gguf"
+ },
+ "pins": {
+  "mini_swe_agent": "04d809ceab9df28f9adaed044884180159172930",
+  "default_yaml_sha256": "112aa58328f478a41cc2630702a4b89ef459e912870e05065157ed221f56701f",
+  "image_ref": "sweb.eval.x86_64.pallets__flask-5014:latest",
+  "image_id": "sha256:c7540f05e930a92e04b82e923f654d28e9c86511723e82cd0b78afc5aeb62759"
+ },
+ "settings": {
+  "step_limit": 24,
+  "cost_limit": 0.0,
+  "wall_time_limit_seconds": 1800,
+  "temperature": 0.0,
+  "max_tokens": 1536,
+  "command_timeout_s": 60,
+  "max_consecutive_format_errors": 3
+ },
+ "workspace_binding": "on Submitted: tracked-file git diff of /testbed from the same container (candidate, lead review)",
+ "host": {
+  "arch": "arm64",
+  "os": "macOS-26.5.2-arm64-arm-64bit"
+ },
+ "exit_status": "RepeatedFormatError",
+ "error": null,
+ "n_model_calls": 9,
+ "wall_seconds": 63.699758768081665,
+ "submission_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+ "submission_bytes": 0,
+ "submission_empty": true,
+ "binding": "v1: pinned DockerEnvironment.get_template_vars renders {{system}} from the HOST platform.uname() (docker.py L61-L62)",
+ "diagnosis": "RETAINED FAILURE, binding defect: the prompt told the model it was on macOS (Darwin host), so it used BSD `sed -i ''`, which fails on GNU sed in the Linux container (2 failed edits), then 3 consecutive zero-action responses -> RepeatedFormatError after 9 model calls. Not a model-capability estimate."
+}

@@ -3100,3 +3100,39 @@ no rewritten archives. **Readiness 55%, change 0 percentage points, range 45–6
 functional benchmark control, manuscript synthesis and concrete next-stage decisions. Remaining: useful
 validated inference/adequate real-agent comparisons; complete empirical synthesis; independent reproducibility,
 author metadata and submission package. No PR or submission created.
+
+## Worker checkpoint — 2026-09-22T02:32:21Z (host clock; local 2026-09-21 22:32 EDT)
+
+Code/config commit at checkpoint start: `075b2f0`. Last lead checkpoint read: the 01:18 cycle (`bae161f`); no newer lead commit when this checkpoint started. **Authorized:** the author's "run agents" (`68fa4ea`).
+
+**DTR-REQ-002: first real-agent pipeline episodes completed on `pallets__flask-5014`.**
+- Artifacts: [`smoke_episode_20260922/`](../results/v2_agent/smoke_episode_20260922/), with a trajectory, episode record and grade for each episode. Local paths are replaced by `~`.
+- Stack: pinned mini-swe-agent `04d809c`, unmodified agent/model/environment classes, `default.yaml` (SHA `112aa583…`), H=24, T=0, max_tokens 1,536, 60 s per command, and a 1,800 s wall bound via the agent's own limit. One fixed backend per episode (no routing). Image `sha256:c7540f05e930`, amd64 under Rosetta.
+
+*Episodes*
+1. **7B, v1 binding: `RepeatedFormatError` after 9 calls.**
+   - Diagnosed binding defect: the pinned `DockerEnvironment.get_template_vars` merges the **host** `platform.uname()` (docker.py L61–L62), so `default.yaml` rendered "Darwin" plus its macOS `sed -i ''` advice.
+   - The model followed that advice on GNU sed in the Linux container, then gave three zero-action responses.
+   - Fix, v2: a subclass that reports the container's `uname` (Linux 6.8.0-117, x86_64 userland). No upstream code is changed.
+2. **7B, v2, at 8,192 tokens per slot: `ContextWindowExceededError`** at call 8 (a 8,217-token request).
+   - I then restarted my own two llama-servers, same ports, aliases and weights, from `-np 4` to `-np 2` with the same `-c 32768`. That gives **16,384 tokens per slot** (your candidate) at the same KV memory; ownership was checked by port and PID first.
+3. **7B at 16k: `LimitsExceeded` at 24 calls (156 s).** It located `src/flask/blueprints.py`, then issued the identical `sed '/__init__/a …'` edit 16 times.
+4. **3B at 16k: `Submitted` after 11 calls with no tracked changes**, so an empty submission.
+
+*Grading*
+- All four submissions are empty, so each is operationally 0 and unresolved; the stock harness has nothing to evaluate.
+- The grader ([`grade_submission.py`](../experiments/v2_agent/grade_submission.py)) runs the stock harness on non-empty submissions plus the strict rule.
+
+*Interpretation*
+- This shows the real-agent loop runs end to end on this runtime. It is not a capability estimate: one task, T=0.
+- Two bindings await your review: **container-platform template vars** and **workspace-diff submission on an explicit `Submitted` exit**.
+
+| Request | Status | Artifact / reason |
+|---|---|---|
+| DTR-REQ-001 (P0) | completed | — |
+| DTR-REQ-002 (P1) | **running**: runtime qualified on 1 task (5/5); 4 real-agent pipeline episodes completed (all operational 0; the defects are diagnosed and fixed) | this commit |
+| DTR-REQ-003 (P0) | scoped reporting completed; sampling held | — |
+
+**Questions for the lead:**
+1. Do you accept both bindings?
+2. Should the next step be a frozen, seeded, index-free sample of qualified tasks for a fixed-backend development pilot that measures base rates for small vs large, before the routing study? If so, specify N and the selection rule, or say whether I should propose them.

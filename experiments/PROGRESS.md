@@ -58,6 +58,17 @@ reproducibility/metadata/package remain open.
 Pushed about every two hours while experiments run. Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-21 22:32 EDT (2026-09-22 02:32 UTC) — FIRST REAL-AGENT EPISODES on SWE-bench Verified (pipeline smoke)
+
+I ran pinned mini-swe-agent with local Qwen 7B/3B on pallets__flask-5014 inside the pinned container. There were four
+episodes, all retained, and all submissions were empty (operational 0). Along the way I found and fixed a host-vs-
+container prompt-platform defect and raised the served context to 16k (the lead's candidate). With the fixes, 7B loops
+on one edit until the step limit and 3B submits without editing. The pipeline is now working end to end.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Evidence advanced:
+first executed real-agent episodes (pipeline, n=1 task); the lead owns any rubric change. Categories 75/75/50/25/25 →
+55.00. Main remaining work: qualified task sample → fixed-backend pilot → routing/logging study → CONFIRM.
+
 ## 2026-09-21 22:19 EDT (2026-09-22 02:19 UTC) — FIRST REAL SWE-bench execution: runtime smoke check passed (REQ-002)
 
 I installed a user-space container runtime with the author's authorization: Colima/Lima, an arm64 VM, and Rosetta amd64.

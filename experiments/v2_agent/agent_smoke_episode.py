@@ -23,6 +23,7 @@ DEFAULT_YAML_SHA = '112aa58328f478a41cc2630702a4b89ef459e912870e05065157ed221f56
 DATA = ROOT / 'work/benchmark_inputs/swebench_verified_c104f840/test-00000-of-00001.parquet'
 BACKENDS = dict(large=dict(alias='qwen2.5-7b-instruct', port=8191), small=dict(alias='qwen2.5-3b-instruct', port=8193))
 H = 24
+WALL_S = 1800   # smoke-episode wall bound via mini-swe-agent's own wall_time_limit_seconds (not a frozen study limit)
 OUT = ROOT / 'results/v2_agent/smoke_episode_20260922'
 DOCKER = str(Path.home() / '.local/dtr-runtime/bin/docker')
 
@@ -56,9 +57,23 @@ def main():
     model = LitellmTextbasedModel(model_name='openai/' + be['alias'], cost_tracking='ignore_errors',
                                   model_kwargs=dict(api_base='http://127.0.0.1:%d/v1' % be['port'], api_key='none',
                                                     temperature=0.0, max_tokens=1536))
-    env = DockerEnvironment(image=image_id, cwd='/testbed', executable=DOCKER, timeout=60,
-                            run_args=['--rm', '--platform', 'linux/amd64'], env=dict(PAGER='cat', MANPAGER='cat'))
-    agent_cfg = dict(cfg['agent'], step_limit=H, cost_limit=0.0)
+    class ContainerPlatformDockerEnvironment(DockerEnvironment):
+        """Binding v2: report the CONTAINER's uname to the prompt templates. The pinned DockerEnvironment uses the host's
+        platform.uname() (docker.py L61-L62), which on a macOS host tells the model it is on Darwin (and default.yaml then
+        recommends BSD `sed -i ''`) although every command runs in a Linux container. No upstream code is modified."""
+        def container_platform(self):
+            if not hasattr(self, '_cplat'):
+                vals = {k: self.execute({'command': 'uname -%s' % f}).get('output', '').strip() for k, f in
+                        (('system', 's'), ('release', 'r'), ('version', 'v'), ('machine', 'm'))}
+                self._cplat = vals
+            return self._cplat
+
+        def get_template_vars(self, **kwargs):
+            return {**super().get_template_vars(**kwargs), **self.container_platform()}
+
+    env = ContainerPlatformDockerEnvironment(image=image_id, cwd='/testbed', executable=DOCKER, timeout=60,
+                                             run_args=['--rm', '--platform', 'linux/amd64'], env=dict(PAGER='cat', MANPAGER='cat'))
+    agent_cfg = dict(cfg['agent'], step_limit=H, cost_limit=0.0, wall_time_limit_seconds=WALL_S)
     agent = DefaultAgent(model, env, **agent_cfg)
     t0 = time.time()
     exit_status, submission, err = None, '', None
@@ -83,12 +98,14 @@ def main():
     rec = dict(kind='REAL-AGENT pipeline smoke episode (fixed backend, no routing); not a policy estimate, not CONFIRM',
                authorization='author 2026-09-22', instance_id=args.instance, backend=args.backend, backend_alias=be['alias'],
                server=dict(port=be['port'], total_slots=props.get('total_slots'), n_ctx_per_slot=props.get('default_generation_settings', {}).get('n_ctx'),
-                           model_path=props.get('model_path')),
+                           model_file=Path(props.get('model_path') or '').name),   # file name only (no local paths)
                pins=dict(mini_swe_agent='04d809ceab9df28f9adaed044884180159172930', default_yaml_sha256=DEFAULT_YAML_SHA,
                          image_ref=image_ref, image_id=image_id),
-               settings=dict(step_limit=H, cost_limit=0.0, temperature=0.0, max_tokens=1536, command_timeout_s=60,
+               settings=dict(step_limit=H, cost_limit=0.0, wall_time_limit_seconds=WALL_S, temperature=0.0, max_tokens=1536, command_timeout_s=60,
                              max_consecutive_format_errors=agent_cfg.get('max_consecutive_format_errors', 3)),
                workspace_binding='on Submitted: tracked-file git diff of /testbed from the same container (candidate, lead review)',
+               template_platform_binding='v2: container uname (not host) for {{system}}/{{release}}/{{version}}/{{machine}}',
+               container_platform=env.container_platform(),
                host=dict(arch=platform.machine(), os=platform.platform()),
                exit_status=exit_status, error=err, n_model_calls=n_calls, wall_seconds=wall,
                submission_sha256=sha(submission), submission_bytes=len(submission), submission_empty=not submission.strip())

@@ -538,6 +538,26 @@ x86_64 container runtime.
   used `--cache_level env`, which removed its instance image, so a second stock run with `--cache_level instance` (also
   resolved) supplied the digest the adapter used. Both runs' logs are kept.
 
+### 2026-09-21 22:32 EDT — FIRST REAL-AGENT EPISODES on SWE-bench Verified (`pallets__flask-5014`; pipeline smoke, fixed backends, no routing)
+[episodes](../results/v2_agent/smoke_episode_20260922/) · [driver](../experiments/v2_agent/agent_smoke_episode.py) · [grader](../experiments/v2_agent/grade_submission.py) · [servers](../results/v2_agent/servers_20260922.json).
+- **Stack:** pinned mini-swe-agent `04d809c` (unmodified DefaultAgent, LitellmTextbasedModel and DockerEnvironment), the
+  lead's prompt basis `default.yaml` (SHA verified), H=24, T=0. Local Qwen2.5 q4_k_m 7B and 3B on the project's
+  llama-servers, running in the digest-pinned amd64 instance image under Rosetta.
+- **Episodes, all retained:**
+
+| # | Backend | Exit | Calls | Wall time | Cause |
+|---|---|---|---|---|---|
+| 1 | 7B | `RepeatedFormatError` | 9 | 64 s | **binding defect found:** the pinned DockerEnvironment renders `{{system}}` from the *host* `platform.uname()` (docker.py L61–62), so the prompt said macOS and the model used BSD `sed -i ''`, which fails on Linux |
+| 2 | 7B | `ContextWindowExceededError` | 8 | 57 s | container-platform fix applied; the 8,217-token request exceeded the 8,192 served per slot |
+| 3 | 7B | `LimitsExceeded` | 24 | 156 s | servers restarted at 16,384 tokens per slot (the lead's candidate); it found the right file, then repeated one `sed` edit 16 times |
+| 4 | 3B | `Submitted` | 11 | 41 s | 16k; never edited a file (broken `grep` quoting), so the patch was empty |
+
+- **Grading:** every submission was empty, so every operational outcome is **0 / unresolved**. The harness has nothing to
+  evaluate.
+- **Scope:** a pipeline smoke test that shows the real-agent loop runs end to end on this runtime. Not a capability or
+  routing estimate, and not CONFIRM. The container-platform binding and the workspace-diff submission binding await the
+  lead's review.
+
 ### Not claimed
 No new model runs; Monte Carlo only on known synthetic kernels; no interval validation for DR/OR, learned policies or
 the branch study; no power claim; no evidence of real-agent improvement. The
