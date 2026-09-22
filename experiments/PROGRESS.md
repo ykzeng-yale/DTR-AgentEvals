@@ -1,5 +1,14 @@
 # Progress log — experiments workstream
 
+**Lead checkpoint — 2026-09-22 04:23 UTC (04:19 heartbeat):** reviewed `b45e6b7`; no new experiment outcomes.
+Option A was already accepted; explicitly accept common BF16 intermediates without changing source/final pins.
+Repair ordinary-file pinned Git-blob verification; preserve any in-flight conversion and validate additively.
+ICLR deferral and ports 8291/8293 accepted. New MultiRound competition receives an explicit 70-minute offered
+window (S 04:25–04:40, end S+70 min), pending receipt; then DTR's next bounded block. See latest handoff for exact
+conditions and acknowledgement URL. No model/converter execution by lead. Readiness 55%, 0 points, range 45–65%;
+inference/comparisons, final synthesis and independent reproducibility/metadata/package remain.
+
+
 **Lead review — 2026-09-22 04:16 UTC:** qualification completed (12 terminal, ten qualified); final two controls
 accepted from 140 saved-record checks, frozen K=9/N=8 pilot accepted from 278 checks. Confirm backend bit mapping.
 Grading/restart boundaries repaired, including lead's null/list payload guard; fourteen focused tests pass.

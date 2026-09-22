@@ -1,3 +1,9 @@
+**22 September 2026, 04:23 UTC coordination addendum:** `b45e6b7` adds preparation and a newly disclosed
+MultiRound shared-host request, not experiment outcomes. Option A remains accepted; common BF16 intermediates
+are explicitly accepted, with full pinned-input verification required before model admission. ICLR has yielded;
+a concrete seventy-minute MultiRound window is offered pending receipt, followed by DTR's next bounded block.
+See the [latest handoff](experiment_handoff.md). Readiness 55%, change 0 points, range 45–65%; evidence unchanged.
+
 **Current lead status — 22 September 2026, 04:16 UTC:** runtime permission/installation is resolved. The
 initial twelve-task SWE-bench qualification is complete: ten qualified, Django and Pylint retained as diagnoses.
 The eight-task Coder 7B/14B development frame is frozen at `109ee5a`; lead saved-record audits accept the original
