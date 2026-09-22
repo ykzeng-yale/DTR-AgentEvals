@@ -229,3 +229,32 @@ def test_grade_pass_refuses_empty_or_incomplete_existing_grade(tmp_path, invalid
     with pytest.raises(RP.ReportIntegrityError, match='complete grade object'):
         PG.grade_pass(FRAME, tmp_path, lambda directory: calls.append(directory))
     assert calls == []
+
+
+def test_block1_legacy_exit_attempt_log_is_admitted_labelled_and_derives_call9_only_when_calls_1_8_answered(tmp_path):
+    """Block-1 episodes (pre-a64d81e code) wrote one completed-attempt record per line at episode exit, without
+    start/result events. They are admitted as a labelled legacy source; call-9 feedback comes from the trajectory
+    prefix only when every logical call 1-8 was answered, otherwise it stays unknown. Expected values by hand."""
+    out = tmp_path / 'out'
+    for iid, backend, fail_call in (('a__1', 'small', None), ('a__1', 'large', 3)):
+        ep(out, iid, backend, 'LimitsExceeded', 10, ledger=False, rc=(0, 1),
+           grade=dict(classification='operational_zero', grade_valid=True, operational_resolved=0, algorithmic_correctness='not_evaluated'))
+        d = out / ('%s__%s__pilot-cp2-wc2__T-000000' % (iid, backend))
+        (d / 'call9_history.json').unlink(missing_ok=True)                       # block 1 wrote no snapshot
+        lines = []
+        for call in range(1, 11):
+            if call == fail_call:
+                lines.append(dict(call=call, attempt=1, t_start=1.0, t_end=2.0, ok=False, error='APIConnectionError'))
+                lines.append(dict(call=call, attempt=2, t_start=2.0, t_end=3.0, ok=False, error='APIConnectionError'))
+            else:
+                lines.append(dict(call=call, attempt=1, t_start=1.0, t_end=2.0, ok=True, prompt_tokens=50, completion_tokens=5, finish_reason='stop'))
+        (d / 'attempts.jsonl').write_text(''.join(json.dumps(x) + '\n' for x in lines))
+    rows = {r['backend']: r for r in RP.report(FRAME, out)['episodes'] if r['instance_id'] == 'a__1'}
+    s, l = rows['small'], rows['large']
+    assert s['telemetry']['source'] == l['telemetry']['source'] == 'block1_exit_attempt_log'
+    assert s['physical_requests'] == 10 and l['physical_requests'] == 11 and l['failed_attempts'] == 2
+    assert s['prompt_tokens'] == 500 and l['prompt_tokens'] is None                  # failed attempts: usage unknown, not zero
+    assert l['known_subtotals']['prompt_tokens'] == 450
+    assert s['call9_eligible'] is True and s['call9_feedback_source'] == 'block1_trajectory_prefix_calls_1_8_answered'
+    assert s['call9_feedback']['observations'] == 8 and s['call9_feedback']['nonzero_returncodes'] == 4
+    assert l['call9_eligible'] is True and l['call9_feedback'] is None and l['call9_feedback_source'] is None

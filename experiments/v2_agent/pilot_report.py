@@ -17,6 +17,7 @@ FRAME = ROOT / 'results/v2_agent/pilot_frame_20260922.json'
 OUT = ROOT / 'results/v2_agent/pilot_20260922'
 TEST_RE = re.compile(r'\b(pytest|py\.test|unittest|runtests|tox|nosetests|nose|manage\.py\s+test)\b')
 EDIT_RE = re.compile(r"(sed\s+-i|\bpatch\b|git\s+apply|\btee\b|cat\s+>|cat\s+<<|>\s*[\w./-]+\.(py|txt|cfg|toml|rst|ini))")
+LEGACY_KEYS = {'call', 'attempt', 't_start', 't_end', 'ok'}
 METRICS = ('logical_calls', 'physical_requests', 'failed_attempts', 'prompt_tokens', 'completion_tokens', 'wall_seconds')
 
 
@@ -71,6 +72,11 @@ def attempt_telemetry(directory, episode):
             records = [json.loads(line) for line in path.read_text().splitlines() if line.strip()]
         except ValueError as exc:
             raise ReportIntegrityError('invalid attempt ledger: %s' % path) from exc
+        legacy = bool(records) and all('event' not in r and LEGACY_KEYS <= r.keys() for r in records)
+        if legacy:
+            # Block-1 format (episode code before a64d81e): one COMPLETED physical attempt per line, written once at
+            # episode-process exit. An interrupted process leaves no ledger, so unresolved attempts cannot appear here.
+            records = [dict(r, event=e) for r in records for e in ('start', 'result')]
         for record in records:
             if record.get('event') not in ('start', 'result'):
                 raise ReportIntegrityError('attempt ledger requires durable start/result events: %s' % path)
@@ -85,7 +91,11 @@ def attempt_telemetry(directory, episode):
             raise ReportIntegrityError('attempt result without durable start: %s' % path)
         if starts and sorted({k[0] for k in starts}) != list(range(1, max(k[0] for k in starts) + 1)):
             raise ReportIntegrityError('noncontiguous dispatched logical calls: %s' % path)
-        detail.update(source='durable_attempt_ledger', unresolved_attempts=len(starts.keys() - results.keys()))
+        detail.update(source='block1_exit_attempt_log' if legacy else 'durable_attempt_ledger',
+                      unresolved_attempts=len(starts.keys() - results.keys()))
+        if legacy:
+            ok_calls = {k[0] for k, r in results.items() if r.get('ok') is True}
+            detail['block1_calls_1_8_all_answered'] = all(c in ok_calls for c in range(1, 9))
         if values['logical_calls'] is None:
             subtotals['logical_calls'] = len({call for call, _ in starts})
         values['physical_requests'] = subtotals['physical_requests'] = len(starts)
@@ -148,13 +158,19 @@ def episode_summary(directory, expected=None):
     values, subtotals, telemetry, issued, max_attempts = attempt_telemetry(directory, ep)
     trajectory = read_json(directory / 'trajectory.json') if (directory / 'trajectory.json').exists() else None
     completed = None if trajectory is None else sum(m.get('role') == 'assistant' for m in trajectory.get('messages', []))
-    feedback = None
+    feedback, feedback_source = None, None
     snapshot = directory / 'call9_history.json'
     if issued is True and snapshot.exists():
         snap = read_json(snapshot)
         if snap.get('call') != 9 or not isinstance(snap.get('messages'), list):
             raise ReportIntegrityError('invalid pre-call-9 snapshot: %s' % snapshot)
-        feedback = feedback_features(snap['messages'])
+        feedback, feedback_source = feedback_features(snap['messages']), 'pre_call9_snapshot'
+    elif issued is True and telemetry.get('block1_calls_1_8_all_answered') and trajectory is not None:
+        # Block 1 has no snapshot. When every logical call 1-8 returned a response, the saved assistant messages 1-8 ARE
+        # those calls, so the trajectory prefix before the 9th assistant message is the history call 9 conditioned on.
+        visible = visible_before_call(trajectory.get('messages', []), 9)
+        if visible is not None:
+            feedback, feedback_source = feedback_features(visible), 'block1_trajectory_prefix_calls_1_8_answered'
     cls = grade['classification'] if grade else ('artifact_integrity_failure' if not patch_matches else 'ungraded')
     valid = (grade or {}).get('grade_valid')
     # An evaluator integrity refusal does not invalidate an intact local candidate.
@@ -166,6 +182,7 @@ def episode_summary(directory, expected=None):
                 algorithmic_correctness=(grade or {}).get('algorithmic_correctness') if valid is True else None,
                 algorithmic_eligible=eligible,
                 call9_eligible=issued, call9_eligibility_source=telemetry['source'], call9_feedback=feedback,
+                call9_feedback_source=feedback_source,
                 completed_assistant_messages=completed, max_attempts_on_one_call=max_attempts,
                 known_subtotals=subtotals, telemetry=telemetry, infrastructure_suspect=bool(ep.get('infrastructure_suspect')), **values)
 
