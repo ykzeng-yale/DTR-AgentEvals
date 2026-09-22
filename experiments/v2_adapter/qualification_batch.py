@@ -50,11 +50,12 @@ def vm_free_gb():
         return None
 
 
-def qualify(client, inst, m01, platform_rec):
+def qualify(client, inst, m01, platform_rec, attempt_dir, stock_run_id):
     from swebench.harness.grading import get_logs_eval
     from swebench.harness.test_spec.test_spec import make_test_spec
     iid = inst['instance_id']
-    rec = dict(instance_id=iid, repo=inst['repo'], version=inst['version'], started_utc=time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime()))
+    rec = dict(instance_id=iid, repo=inst['repo'], version=inst['version'], stock_run_id=stock_run_id, attempt_dir=attempt_dir.name,
+               started_utc=time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime()))
     q = Q.qualify(inst)
     (f2p, e1), (p2p, e2) = Q.parse_test_list(inst, 'FAIL_TO_PASS'), Q.parse_test_list(inst, 'PASS_TO_PASS')
     rec['limitations'] = q['limitations']
@@ -62,14 +63,13 @@ def qualify(client, inst, m01, platform_rec):
     # 1. stock gold (unmodified harness)
     t0 = time.time()
     p = subprocess.run([sys.executable, '-m', 'swebench.harness.run_evaluation', '--dataset_name', str(DATA), '--split', 'train',
-                        '--predictions_path', 'gold', '--instance_ids', iid, '--run_id', STOCK_RUN_ID, '--namespace', 'none',
+                        '--predictions_path', 'gold', '--instance_ids', iid, '--run_id', stock_run_id, '--namespace', 'none',
                         '--max_workers', '1', '--timeout', str(TIMEOUT), '--cache_level', 'instance', '--report_dir', 'reports'],
                        cwd=RUN, capture_output=True, text=True)
     rec['stock_wall_seconds'] = time.time() - t0
     rec['stock_exit'] = p.returncode
-    sdir = RUN / 'logs/run_evaluation' / STOCK_RUN_ID / 'gold' / iid
-    (OUT / iid).mkdir(parents=True, exist_ok=False)
-    (OUT / iid / 'stock_stdout_tail.txt').write_text(p.stdout[-4000:] + '\n--- stderr ---\n' + p.stderr[-4000:])
+    sdir = RUN / 'logs/run_evaluation' / stock_run_id / 'gold' / iid
+    (attempt_dir / 'stock_stdout_tail.txt').write_text(p.stdout[-4000:] + '\n--- stderr ---\n' + p.stderr[-4000:])
     if not (sdir / 'report.json').exists() or not (sdir / 'test_output.txt').exists():
         rec.update(stage_failed='stock_gold', diagnosis='no stock report/test output (image build or evaluation failure; see run_instance/build logs)',
                    run_instance_log_tail=(sdir / 'run_instance.log').read_text()[-3000:] if (sdir / 'run_instance.log').exists() else None)
@@ -79,7 +79,7 @@ def qualify(client, inst, m01, platform_rec):
     stock_eval_sh = (sdir / 'eval.sh').read_text()
     stock_map, stock_found = get_logs_eval(ts, str(sdir / 'test_output.txt'))
     stock_strict = declared_outcome(f2p, p2p, stock_map, log_ok=stock_found)
-    (OUT / iid / 'stock_gold_test_output.txt').write_text(stock_log)
+    (attempt_dir / 'stock_gold_test_output.txt').write_text(stock_log)
     imgs = {k: client.images.get(getattr(ts, k + '_image_key')) for k in ('base', 'env', 'instance')}
     digests = {k: v.id for k, v in imgs.items()}
     rec_inst = dict(instance_id=iid, eval_script_sha256=m01['eval_script_sha256'], FAIL_TO_PASS=f2p, PASS_TO_PASS=p2p,
@@ -92,7 +92,7 @@ def qualify(client, inst, m01, platform_rec):
                           reference_patch=inst['patch'] if mode == 'reference' else None, timeout=TIMEOUT)
         r['runtime_events'] = rt.events
         for i, lg in enumerate(rt.logs, 1):
-            (OUT / iid / ('adapter_%s_attempt%d_test_output.txt' % (mode, i))).write_text(lg['text'])
+            (attempt_dir / ('adapter_%s_attempt%d_test_output.txt' % (mode, i))).write_text(lg['text'])
             r['attempts'][i - 1]['eval_runtime_seconds'] = lg['runtime_seconds']
         out[mode] = r
     ref, nch = out['reference'], out['no_change']
@@ -111,6 +111,70 @@ def qualify(client, inst, m01, platform_rec):
                adapter_reference=ref, adapter_no_change=nch, stock_vs_reference_required_status_differences=map_diff,
                acceptance=acc, qualified=all(acc.values()), platform=platform_rec)
     return rec
+
+
+class ConflictingRecord(SystemExit):
+    pass
+
+
+def task_state(out, iid):
+    """completed (validated summary; path, sha256) | incomplete (dir without summary) | new. Conflicts fail explicitly."""
+    d = Path(out) / iid
+    if not d.exists():
+        return 'new', None, None
+    summaries = [d / 'summary.json'] + sorted(d.glob('attempt-*/summary.json'))
+    for s in summaries:
+        if s.exists():
+            raw = s.read_bytes()
+            try:
+                rec = json.loads(raw)
+            except ValueError:
+                raise ConflictingRecord('unparsable summary %s: refusing to guess' % s)
+            if rec.get('instance_id') != iid:
+                raise ConflictingRecord('summary %s names %r, not %r' % (s, rec.get('instance_id'), iid))
+            return 'completed', s, hashlib.sha256(raw).hexdigest()
+    return 'incomplete', d, None
+
+
+def run_queue(todo, out, qualify_fn, status, pause=None, free_fn=None, min_free=MIN_FREE_GB, stamp=None):
+    """Restart-safe serial queue (lead e360831): completed tasks are validated and skipped BEFORE any execution; an
+    incomplete prior attempt is retained and a new no-clobber attempt directory (with its own stock run ID, so no cached
+    harness report is reused) is created before the stock run; conflicting records fail explicitly."""
+    stamp = stamp or (lambda: time.strftime('%Y%m%dT%H%M%SZ', time.gmtime()))
+    status.setdefault('completed', []); status.setdefault('skipped_completed', []); status.setdefault('incomplete_prior_attempts', [])
+    for iid in todo:
+        state, path, digest = task_state(out, iid)
+        if state == 'completed':
+            status['skipped_completed'].append(dict(instance_id=iid, summary=str(Path(path).relative_to(out)), sha256=digest))
+            continue
+        if pause is not None and Path(pause).exists():
+            status['stopped'] = 'paused before %s (shared-host coordination)' % iid
+            break
+        free = free_fn() if free_fn else None
+        if free is not None and free < min_free:
+            status['stopped'] = 'VM disk guard: %.1f GB free < %d GB before %s' % (free, min_free, iid)
+            break
+        if state == 'incomplete':
+            status['incomplete_prior_attempts'].append(dict(instance_id=iid, retained=str(Path(path).relative_to(out))))
+            tag = stamp()
+            attempt_dir, stock_run_id = Path(out) / iid / ('attempt-' + tag), 'qual-stock-gold-' + tag
+        else:
+            attempt_dir, stock_run_id = Path(out) / iid, STOCK_RUN_ID
+        attempt_dir.mkdir(parents=True, exist_ok=False)                 # output preflight BEFORE the stock run
+        try:
+            rec = qualify_fn(iid, attempt_dir, stock_run_id)
+        except Exception as e:  # noqa: BLE001  retained as a diagnosis
+            rec = dict(instance_id=iid, stage_failed='exception', error='%s: %s' % (type(e).__name__, str(e)[:500]),
+                       traceback=traceback.format_exc()[-3000:])
+        rec['vm_free_gb_before'] = free
+        rec['finished_utc'] = time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime())
+        with open(attempt_dir / 'summary.json', 'x') as fh:
+            fh.write(json.dumps(rec, indent=1, default=str) + '\n')
+        status['completed'].append(dict(instance_id=iid, attempt=str(attempt_dir.relative_to(out)), qualified=rec.get('qualified', False),
+                                        stage_failed=rec.get('stage_failed'), acceptance=rec.get('acceptance')))
+        (Path(out) / 'status.json').write_text(json.dumps(status, indent=1, default=str) + '\n')
+        print(iid, 'qualified=%s' % rec.get('qualified'), rec.get('stage_failed') or '', flush=True)
+    return status
 
 
 def main():
@@ -132,33 +196,17 @@ def main():
                         resource_limits=dict(cpus=info.get('NCPU'), mem_bytes=info.get('MemTotal')), declared_timeout_seconds=TIMEOUT,
                         evaluator_commit='f7bbbb2ccdf479001d6467c9e34af59e44a840f9', package=swebench.__version__,
                         adapter_version=A.ADAPTER_VERSION, adapter_source_sha256=A.adapter_source_sha256())
-    todo = [t for t in man['tasks'] if t['instance_id'] != 'pallets__flask-5014']
-    status = dict(manifest=str(MANIFEST.relative_to(ROOT)), selected=len(man['tasks']), reused=['pallets__flask-5014'], planned_new=[t['instance_id'] for t in todo],
+    todo = [t['instance_id'] for t in man['tasks'] if t['instance_id'] != 'pallets__flask-5014']
+    status = dict(manifest=str(MANIFEST.relative_to(ROOT)), selected=len(man['tasks']), reused=['pallets__flask-5014'], planned_new=todo,
                   completed=[], stopped=None)
-    for t in todo:
-        iid = t['instance_id']
-        if PAUSE.exists():
-            status['stopped'] = 'paused by %s before %s (shared-host coordination)' % (PAUSE, iid); break
-        free = vm_free_gb()
-        if free is not None and free < MIN_FREE_GB:
-            status['stopped'] = 'VM disk guard: %.1f GB free < %d GB before %s' % (free, MIN_FREE_GB, iid); break
+
+    def qualify_fn(iid, attempt_dir, stock_run_id):
         inst = {k: (v if not hasattr(v, 'item') else v.item()) for k, v in rows[iid].items()}
-        try:
-            rec = qualify(client, inst, m01[iid], platform_rec)
-        except Exception as e:  # noqa: BLE001  retained as a diagnosis
-            rec = dict(instance_id=iid, stage_failed='exception', error='%s: %s' % (type(e).__name__, str(e)[:500]), traceback=traceback.format_exc()[-3000:])
-        rec['vm_free_gb_before'] = free
-        rec['finished_utc'] = time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime())
-        (OUT / iid).mkdir(parents=True, exist_ok=True)
-        with open(OUT / iid / 'summary.json', 'x') as fh:
-            fh.write(json.dumps(rec, indent=1, default=str) + '\n')
-        status['completed'].append(dict(instance_id=iid, qualified=rec.get('qualified', False), stage_failed=rec.get('stage_failed'),
-                                        acceptance=rec.get('acceptance')))
-        (OUT / 'status.json').write_text(json.dumps(status, indent=1, default=str) + '\n')
-        print(iid, 'qualified=%s' % rec.get('qualified'), rec.get('stage_failed') or '', flush=True)
+        return qualify(client, inst, m01[iid], platform_rec, attempt_dir, stock_run_id)
+
+    status = run_queue(todo, OUT, qualify_fn, status, pause=PAUSE, free_fn=vm_free_gb)
     status['finished_utc'] = time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime())
     (OUT / 'status.json').write_text(json.dumps(status, indent=1, default=str) + '\n')
-
 
 if __name__ == '__main__':
     main()

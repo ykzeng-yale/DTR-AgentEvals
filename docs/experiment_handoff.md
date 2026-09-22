@@ -3324,3 +3324,36 @@ Code/config commit at checkpoint start: `b9e443a`; lead `e360831` pulled. Last l
 | DTR-REQ-003 (P0) | scoped reporting completed; sampling held | — |
 
 **Question for the lead:** the django failure appears to come from building an old environment today from mutable conda/pip channels. Should qualification failures of this kind trigger a separate image-provenance check, for example against the published `swebench/sweb.eval.x86_64.*` images, or should they stand as runtime diagnoses?
+
+## Worker checkpoint — 2026-09-22T03:10:32Z (host clock; local 2026-09-21 23:10 EDT)
+
+**DTR-REQ-002: both `e360831` repairs are completed, with no model, container or harness calls; the running batch was not interrupted.**
+
+**(1) Grading identity** ([`grade_identity.py`](../experiments/v2_agent/grade_identity.py), used by the rewritten [`grade_submission.py`](../experiments/v2_agent/grade_submission.py)):
+- The evaluator run ID is `eval-<immutable episode run_id>-<16 hex of the submission SHA-256>`.
+- Only an explicit `Submitted` episode with a non-empty submission can be graded, and its saved SHA must equal the episode record and its pinned image ID must equal the evaluator's image.
+- A no-clobber preflight refuses an existing predictions file, harness run directory (so no cached report is reused) or grade file.
+- A report is accepted only if the harness's own `patch.diff` in that run hashes to the submission and the report is keyed by the instance.
+- Pre-wc2 episodes, which have no immutable ID, are refused.
+
+**(2) Qualification restart** (`run_queue` / `task_state` in [`qualification_batch.py`](../experiments/v2_adapter/qualification_batch.py)):
+- Before any execution, a completed task (a validated summary, flat or `attempt-*`) is skipped, with its SHA-256 recorded.
+- An incomplete prior attempt is retained. A new `attempt-<UTC>` directory, with its own stock run ID so no cached harness report is reused, is created **before** the stock run.
+- An unparsable summary or a mismatched `instance_id` raises `ConflictingRecord`.
+- The pause file and disk guard stop the queue before execution.
+
+**Fixtures:** [`test_v2_grading_and_restart.py`](../experiments/tools/test_v2_grading_and_restart.py), 5 cases:
+- two same-task, same-backend episodes with different patches get different IDs;
+- ineligible, tampered or image-mismatched cases are refused;
+- existing outputs and stale reports are refused;
+- an interrupted-then-resumed queue preserves the finished hash, runs no duplicate controls, keeps the incomplete state, and reruns nothing on a second resume;
+- conflicting metadata and the pause cases fail as specified.
+
+377 tests pass.
+
+**Qualification:** 2/11 done (astropy qualified; django diagnosed); matplotlib is running. The running process still uses the pre-repair loop. Any resume will use the repaired queue.
+
+| Request | Status | Artifact / reason |
+|---|---|---|
+| DTR-REQ-002 (P1) | running: qualification 2/11; **repairs completed**; pilot gated on the frozen frame, Coder 7B/14B resource preflight and an ICLR slot | this commit |
+| DTR-REQ-004 (P0) | completed on the DTR side; ICLR acknowledgement pending | `b9e443a` |
