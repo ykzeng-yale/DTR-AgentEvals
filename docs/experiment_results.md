@@ -1,3 +1,5 @@
+**2026-09-22 06:08 UTC lead review:** `b378613` publishes all 16 fixed-backend DEV episodes. Independent saved-record checks reconcile 330 requests, 16 empty patches and 16 operational zeros (zero eligible algorithmic artifacts). Both backends used an incomplete YAML configuration. Full model/environment settings, effective-config provenance and separate cohort namespaces are now repaired and tested. One corrected `yaml-v1` cohort is authorized after the accepted MultiRound window's explicit release and fresh host checks; no early block based on the failed pilot's runtime. It uses the same eight tasks/16 assignments, order, models and budgets; no pooling, decoding tuning, learned routing or CONFIRM. The original cohort is retained. Read the [scientific review and acceptance criteria](theory_feedback_20260922_yaml_binding.md). Readiness **55%, change 0 points, range 45–65%**; useful inference/comparisons, final synthesis, and independent reproducibility/metadata/package remain.
+
 **2026-09-22 05:22 UTC coordination update:** scientific evidence is unchanged from `a64d81e`; no new terminal Coder
 outcome. MultiRound's next quiet window **07:10–08:20 UTC** is now [accepted](../results/v2_agent/slot_agreement_20260922_0710.json),
 conditional on actual DTR release and ownership/resource checks. This supersedes the earlier "no new reservation"
@@ -681,12 +683,12 @@ a terminal state inside one 48-minute host block; none was restarted or replaced
   development result under that defect, not a capability estimate. Per the decision rule, zero successes triggers
   development diagnosis only: no routing, no CONFIRM, no efficacy claim.
 
-### 2026-09-22 06:01 UTC — Correction: the config defect explains 2 of the 3 context overflows, not 3 (DTR-REQ-002)
+### 2026-09-22 06:01 UTC — Correction: 2 of the 3 context overflows followed oversized observations (DTR-REQ-002)
 - A recount over all 16 block-1 trajectories finds **2 of 3** context overflows followed a single oversized command
   output: seaborn on the 14B (129,699 characters) and sympy on the 7B (94,870 characters). The third, matplotlib on
   the 7B, filled its context gradually (maximum observation 3,520 characters).
 - Repetition is the dominant pattern: 12 of 16 episodes repeated one command at least 5 times.
-  [counts](../results/v2_agent/pilot_20260922/block1_harness_exposure.json). Lead status: unreviewed.
+  [counts](../results/v2_agent/pilot_20260922/block1_harness_exposure.json). Lead independently reproduced the counts. All 16 share the configuration deviation; the causal effect of the restored settings is not isolated.
 
 ### Not claimed
 No new model runs; Monte Carlo only on known synthetic kernels; no interval validation for DR/OR, learned policies or

@@ -4041,3 +4041,49 @@ Code/config commit at checkpoint start: `86a0010`. Last lead checkpoint read: is
 1. Accept binding v3?
 2. Authorize the labelled re-run of the same 16 assignments under it (e.g. `pilot_20260922_v3/`, block 1 retained)? It could fit before 07:10Z only if it starts by about 06:15Z; otherwise after 08:20Z.
 3. Given that the truncation fix touches only 2 of 16 exits, should the re-run also address T=0 repetition? That is a design choice I will not make.
+
+## Lead review — 2026-09-22 06:08 UTC (05:49 scheduled run)
+
+Reviewed through `86a0010`, including the completed `b378613` archive. Independent saved-record checks
+reconcile all 16 frozen assignments/pins/patches/grades, 330 physical requests, 12 step exits, three context exits
+and one empty submission: **16 operational zeros; no eligible algorithmic artifacts**. Full token totals remain
+unknown on three failed requests. Block release 05:54:42 is recorded; live release is worker/peer-reported.
+
+**DTR-REQ-002 P1 — REPAIR integrated, PROCEED one corrected DEVELOPMENT cohort; HOLD learned routing/CONFIRM.**
+The lead inherited the missing model/environment settings and owns this repair. Full pinned YAML sections now
+reach all constructors; full effective/resolved config, source hashes, resume validation, and a write-once cohort
+source freeze prevent mixing versions. Canonical binding/output: `yaml-v1` /
+`results/v2_agent/pilot_20260922_yaml_v1/`. This supersedes the worker's proposed `v3` name; authorize exactly
+one additional cohort, not both. Same eight tasks/16 assignments, order, models/images, decoding and budgets;
+additional cap 768 task requests explicitly disclosed. No pooling, selective repeat, T/step tuning or success stopping.
+
+The [frozen amendment](../configs/v2_fixed_backend_development_pilot_yaml_v1_20260922.json) and
+[review](theory_feedback_20260922_yaml_binding.md) supply exact acceptance/commands. The original full 16 remains
+unchanged. The lead already generated `report_block1_lead_20260922T0606.json`; no duplicate analysis is requested.
+Generic legacy history reconstruction was unsafe because physical responses may fail parsing. Its generic fields
+are now unknown; an archive-specific audit separately links the 14 actual pre-call9 prefixes using the 112 first-eight
+response/action/time brackets. Treat any such retrospective features as regex/record summaries, not effective edits.
+
+**Remaining REQ-002 feedback:** publish the 11 sanitized server logs listed in `sanitization_block1.json` but absent
+from Git, or mark them unavailable. Correct the three-file-dump explanation: seaborn/large and sympy/small had
+oversized outputs; matplotlib/small's maximum tool observation was 3,520 chars and its 16,610-token failure was cumulative
+history. Do not promise the truncation repair fixes every context failure. Per-episode executed-source hashes are
+absent, so the disclosed 05:33:50–05:34:13 source replacement/no-effect claim remains partly reported.
+
+**DTR-REQ-004 P0 — accepted window acknowledged.** MultiRound's 05:48 receipt `aae9cb2` and the worker's release/
+window acknowledgement close the earlier receipt request. Preserve 07:10–08:20 and wait for explicit peer early/final
+release plus fresh ownership/resource checks before the corrected cohort. Do not infer a safe 06:15 start from a 48-minute
+failed block: the corrected run keeps full worst-case time/cleanup allowances. No new heavy grading/conversion/build
+in the quiet window. Do not stop other jobs. No further scientific permission round after these existing conditions.
+
+Acknowledge REQ-002 as accepted/running/completed/blocked/superseded with processed commit and cohort ID; keep the
+same identity Yukang Zeng <ykzeng2019@gmail.com> for author/committer, verified raw and on GitHub. Tests: 110 passed,
+one optional worker-venv check skipped; exact pinned templates rendered locally. No lead model/container/MC execution.
+Manuscript unchanged. **Full-project readiness 55%, change 0 points, range 45–65%**: useful inference/comparisons;
+final empirical/manuscript synthesis; independent reproducibility, author metadata and submission package.
+
+**Late `c2a3878` reply reviewed:** the two-of-three oversized-output correction and 214/326 exact repeated-command
+count reproduce; that recount is completed. All 16 still share the configuration deviation, so "only 2 affected
+exits" is not an identified causal conclusion. Retain T=0 and all limits in the one corrected cohort; no decoding
+sweep or separate v3 cohort. The lead decision above removes the scientific approval wait. Missing server logs
+and executed-source attribution remain reporting requests, not another model-selection round.

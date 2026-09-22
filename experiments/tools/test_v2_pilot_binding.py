@@ -1,4 +1,4 @@
-"""Binding v3 fixture (block-1 finding 98895fe): the episode must apply the pinned default.yaml `model` and
+"""Full YAML binding fixture (block-1 finding 98895fe): the episode must apply the pinned default.yaml `model` and
 `environment` sections, not only `agent`. Expected values are the pinned yaml's own values (parsed by the pinned
 mini-swe-agent venv when present) plus hand-written serving kwargs; nothing is recomputed with the helper's logic."""
 import json, subprocess, sys
@@ -17,7 +17,9 @@ MSWEA_PY = ROOT / 'work/venvs/minisweagent_04d809c/bin/python'
 def test_model_and_environment_sections_are_applied_with_serving_kwargs_layered_on_top():
     cfg = dict(agent=dict(step_limit=0), environment=dict(env=dict(PAGER='cat', MANPAGER='cat', LESS='-R', PIP_PROGRESS_BAR='off', TQDM_DISABLE='1')),
                model=dict(observation_template='OBS {{output.output[:10]}}', format_error_template='FMT', model_kwargs=dict(drop_params=True)))
-    model_cfg, kwargs, env = PE.yaml_bindings(cfg, 8293, 900)
+    effective = PE.build_effective_config(cfg, port=8293, alias='fixture', image_id='sha256:fixture')
+    model_cfg = {k: v for k, v in effective['model'].items() if k not in ('model_kwargs', 'model_name', 'cost_tracking')}
+    kwargs, env = effective['model']['model_kwargs'], effective['environment']['env']
     assert model_cfg == dict(observation_template='OBS {{output.output[:10]}}', format_error_template='FMT')
     assert kwargs == dict(drop_params=True, api_base='http://127.0.0.1:8293/v1', api_key='none', temperature=0.0, max_tokens=1536,
                           timeout=900, num_retries=0)
@@ -29,7 +31,9 @@ def test_model_and_environment_sections_are_applied_with_serving_kwargs_layered_
 def test_pinned_yaml_yields_truncating_observation_template_and_full_env():
     cfg = json.loads(subprocess.run([str(MSWEA_PY), '-c', 'import yaml,json,sys; print(json.dumps(yaml.safe_load(open(sys.argv[1]))))', str(YAML)],
                                     capture_output=True, text=True, check=True).stdout)
-    model_cfg, kwargs, env = PE.yaml_bindings(cfg, 8291, 900)
+    effective = PE.build_effective_config(cfg, port=8291, alias='fixture', image_id='sha256:fixture')
+    model_cfg = effective['model']
+    kwargs, env = model_cfg['model_kwargs'], effective['environment']['env']
     assert 'output.output | length < 10000' in model_cfg['observation_template'] and '<output_head>' in model_cfg['observation_template']
     assert model_cfg['format_error_template'] == cfg['model']['format_error_template']
     assert kwargs['drop_params'] is True and kwargs['temperature'] == 0.0 and kwargs['max_tokens'] == 1536

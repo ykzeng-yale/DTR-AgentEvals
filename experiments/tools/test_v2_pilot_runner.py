@@ -322,3 +322,141 @@ def test_host_receipt_does_not_claim_release_with_unknown_child_or_container(tmp
     servers.unconfirmed_episode_pids, servers.unconfirmed_container_runs = [], []
     servers._record()
     assert json.loads(path.read_text())['release_confirmed'] is True
+
+
+# Exact model/environment sections from mini-swe-agent 04d809c default.yaml,
+# SHA256 112aa58328f478a41cc2630702a4b89ef459e912870e05065157ed221f56701f.
+PINNED_YAML_SECTIONS = {'model': {'observation_template': '{% if output.exception_info -%}\n'
+                                   '<exception>{{output.exception_info}}</exception>\n'
+                                   '{% endif -%}\n'
+                                   '<returncode>{{output.returncode}}</returncode>\n'
+                                   '{% if output.output | length < 10000 -%}\n'
+                                   '<output>\n'
+                                   '{{ output.output -}}\n'
+                                   '</output>\n'
+                                   '{%- else -%}\n'
+                                   '<warning>\n'
+                                   'The output of your last command was too long.\n'
+                                   'Please try a different command that produces less output.\n'
+                                   "If you're looking at a file you can try use head, tail or sed to "
+                                   'view a smaller number of lines selectively.\n'
+                                   "If you're using grep or find and it produced too much output, you "
+                                   'can use a more selective search pattern.\n'
+                                   "If you really need to see something from the full command's output, "
+                                   'you can redirect output to a file and then search in that file.\n'
+                                   '</warning>\n'
+                                   '{%- set elided_chars = output.output | length - 10000 -%}\n'
+                                   '<output_head>\n'
+                                   '{{ output.output[:5000] }}\n'
+                                   '</output_head>\n'
+                                   '<elided_chars>\n'
+                                   '{{ elided_chars }} characters elided\n'
+                                   '</elided_chars>\n'
+                                   '<output_tail>\n'
+                                   '{{ output.output[-5000:] }}\n'
+                                   '</output_tail>\n'
+                                   '{%- endif -%}\n',
+           'model_kwargs': {'drop_params': True},
+           'format_error_template': '{% if finish_reason is defined and finish_reason in ["length", '
+                                    '"tool_calls"] -%}\n'
+                                    'Your previous response reached the output token limit '
+                                    '(finish_reason={{ finish_reason }}) before you produced a complete '
+                                    'action, so it was cut off. Respond more concisely and provide '
+                                    'exactly one action in the required format. If you need to think '
+                                    'more, do so briefly.\n'
+                                    '{%- else -%}\n'
+                                    'Format error:\n'
+                                    '\n'
+                                    '<error>\n'
+                                    '{{error}}\n'
+                                    '</error>\n'
+                                    '\n'
+                                    'Here is general guidance on how to format your response:\n'
+                                    '\n'
+                                    'Please always provide EXACTLY ONE action in triple backticks, '
+                                    'found {{actions|length}} actions.\n'
+                                    'If you want to end the task, please issue the following command: '
+                                    '`echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT`\n'
+                                    'without any other command.\n'
+                                    'Else, please format your response exactly as follows:\n'
+                                    '\n'
+                                    '<response_example>\n'
+                                    'Here are some thoughts about why you want to perform the action.\n'
+                                    '\n'
+                                    '```mswea_bash_command\n'
+                                    '<action>\n'
+                                    '```\n'
+                                    '</response_example>\n'
+                                    '\n'
+                                    'Note: In rare cases, if you need to reference a similar format in '
+                                    'your command, you might have\n'
+                                    'to proceed in two steps, first writing TRIPLEBACKTICKSBASH, then '
+                                    'replacing them with ```mswea_bash_command.\n'
+                                    '{%- endif %}'},
+ 'environment': {'env': {'PAGER': 'cat',
+                         'MANPAGER': 'cat',
+                         'LESS': '-R',
+                         'PIP_PROGRESS_BAR': 'off',
+                         'TQDM_DISABLE': '1'}}}
+
+
+def yaml_fixture():
+    return dict(agent=dict(system_template='fixture system', instance_template='{{ task }}', step_limit=0, cost_limit=0.0),
+                **json.loads(json.dumps(PINNED_YAML_SECTIONS)))
+
+
+def test_full_yaml_sections_reach_model_environment_and_declared_overrides():
+    cfg = yaml_fixture()
+    original = json.loads(json.dumps(cfg))
+    cfg['model']['model_kwargs'].update(api_base='old', temperature=0.9, max_tokens=9999)
+    effective = PE.build_effective_config(cfg, alias='fixed-coder', port=8291, image_id='sha256:fixed', executable='/mock/docker')
+    model, env = effective['model'], effective['environment']
+    assert model['observation_template'] == original['model']['observation_template']
+    assert model['format_error_template'] == original['model']['format_error_template']
+    assert model['model_kwargs'] == dict(drop_params=True, api_base='http://127.0.0.1:8291/v1', api_key='none',
+                                        temperature=0.0, max_tokens=1536, timeout=900, num_retries=0)
+    assert model['model_name'] == 'openai/fixed-coder' and model['cost_tracking'] == 'ignore_errors'
+    assert env['env'] == dict(PAGER='cat', MANPAGER='cat', LESS='-R', PIP_PROGRESS_BAR='off', TQDM_DISABLE='1')
+    assert env['image'] == 'sha256:fixed' and env['timeout'] == 60 and env['executable'] == '/mock/docker'
+    assert env['run_args'] == ['--rm', '--platform', 'linux/amd64']
+    assert effective['agent']['step_limit'] == 24 and effective['agent']['wall_time_limit_seconds'] == 1800
+    # Constructor mocks receive whole sections; no model/environment is instantiated.
+    calls = {}
+    def constructor(section, **kwargs):
+        calls[section] = kwargs
+    for section in ('agent', 'model', 'environment'):
+        constructor(section, **effective[section])
+    assert calls == effective
+    effective['model']['model_kwargs']['drop_params'] = False
+    effective['environment']['env']['LESS'] = 'changed'
+    assert cfg['model']['model_kwargs']['drop_params'] is True and cfg['environment']['env']['LESS'] == '-R'
+
+
+def test_pinned_observation_template_preserves_short_output_and_elides_long_output():
+    from jinja2 import Template
+    effective = PE.build_effective_config(yaml_fixture(), alias='fixed-coder', port=8291, image_id='sha256:fixed')
+    template = Template(effective['model']['observation_template'])
+    short = template.render(output=dict(exception_info='', returncode=0, output='complete short output'))
+    assert '<output>\ncomplete short output' in short and '<warning>' not in short
+    long = 'H' * 5000 + 'MIDDLE_ONLY' * 1000 + 'T' * 5000
+    rendered = template.render(output=dict(exception_info='fixture failure', returncode=1, output=long))
+    assert '<exception>fixture failure</exception>' in rendered and '<returncode>1</returncode>' in rendered
+    assert '<warning>' in rendered and '10000 characters elided' not in rendered
+    assert str(len(long) - 10000) + ' characters elided' in rendered
+    assert 'H' * 5000 in rendered and 'T' * 5000 in rendered and 'MIDDLE_ONLY' not in rendered
+
+
+def test_pinned_format_template_and_effective_config_hash_are_bound():
+    from jinja2 import Template
+    effective = PE.build_effective_config(yaml_fixture(), alias='fixed-coder', port=8291, image_id='sha256:fixed')
+    template = Template(effective['model']['format_error_template'])
+    assert 'reached the output token limit' in template.render(finish_reason='length', error='bad', actions=[])
+    assert 'found 0 actions' in template.render(finish_reason='stop', error='bad', actions=[])
+    resolved = json.loads(json.dumps(effective))       # mocked component model_dump values
+    receipt = PE.effective_config_receipt(effective, resolved)
+    payload = {k:v for k,v in receipt.items() if k != 'effective_config_sha256'}
+    expected = PE.sha(json.dumps(payload, sort_keys=True, separators=(',', ':'), ensure_ascii=False))
+    assert receipt['effective_config_sha256'] == expected and receipt['configuration_binding'] == 'yaml-v1'
+    changed = json.loads(json.dumps(resolved))
+    changed['model']['observation_template'] = 'untruncated class default'
+    assert PE.effective_config_receipt(effective, changed)['effective_config_sha256'] != expected

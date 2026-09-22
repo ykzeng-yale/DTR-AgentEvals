@@ -1,0 +1,2506 @@
+{
+  "schema_version": 1,
+  "request": "DTR-REQ-002",
+  "kind": "independent deterministic retrospective audit of published legacy DEVELOPMENT artifacts; no model/container/evaluator execution",
+  "created_utc": "2026-09-22T06:08:39.576163+00:00",
+  "archive_commit": "b378613171434d23183806e39293a0cc03033c53",
+  "archive_url": "https://github.com/ykzeng-yale/DTR-AgentEvals/commit/b378613171434d23183806e39293a0cc03033c53",
+  "source_evidence": [
+    {
+      "path": "src/minisweagent/agents/default.py",
+      "commit": "04d809ceab9df28f9adaed044884180159172930",
+      "git_blob_sha1": "ca310e37d7c61888c576f73f5e1790ac769407b1",
+      "sha256": "e8ef8aa365942d739c2ec5cb0879f60f377d2dc2de8ec670aaedf3bafb45a4c2",
+      "url": "https://github.com/SWE-agent/mini-swe-agent/blob/04d809ceab9df28f9adaed044884180159172930/src/minisweagent/agents/default.py"
+    },
+    {
+      "path": "src/minisweagent/models/litellm_model.py",
+      "commit": "04d809ceab9df28f9adaed044884180159172930",
+      "git_blob_sha1": "84b5d548df0e10cbe820862399379bbde69a6fa8",
+      "sha256": "6df4483bcdc9620b2f9d7f8bb1027a7fb9729b739976cbcf1a9d18fb58c48227",
+      "url": "https://github.com/SWE-agent/mini-swe-agent/blob/04d809ceab9df28f9adaed044884180159172930/src/minisweagent/models/litellm_model.py"
+    },
+    {
+      "path": "src/minisweagent/models/litellm_textbased_model.py",
+      "commit": "04d809ceab9df28f9adaed044884180159172930",
+      "git_blob_sha1": "db7e042a9ad146321d4d3e7d5864e6a149f65b36",
+      "sha256": "395bc9bc4a06c18577e73b21c5465f9d22a6d0cc45b006f3d7c9fdaae399e732",
+      "url": "https://github.com/SWE-agent/mini-swe-agent/blob/04d809ceab9df28f9adaed044884180159172930/src/minisweagent/models/litellm_textbased_model.py"
+    },
+    {
+      "path": "src/minisweagent/models/utils/actions_text.py",
+      "commit": "04d809ceab9df28f9adaed044884180159172930",
+      "git_blob_sha1": "3129a1db46afc26b5ebd3d2af8170c57d1821fcd",
+      "sha256": "e5997bba3ae3d541ff418317cc8dd9e9e17657de806679ef38ab1ad74e294047",
+      "url": "https://github.com/SWE-agent/mini-swe-agent/blob/04d809ceab9df28f9adaed044884180159172930/src/minisweagent/models/utils/actions_text.py"
+    },
+    {
+      "path": "src/minisweagent/exceptions.py",
+      "commit": "04d809ceab9df28f9adaed044884180159172930",
+      "git_blob_sha1": "b11e404c98f62ace8c5c75b9a683105d49984a6c",
+      "sha256": "0590393c56bee873c79a691dcb4f15cb39c85f1658598b84bfb295bfde56921d",
+      "url": "https://github.com/SWE-agent/mini-swe-agent/blob/04d809ceab9df28f9adaed044884180159172930/src/minisweagent/exceptions.py"
+    },
+    {
+      "path": "experiments/v2_agent/pilot_episode.py",
+      "commit": "11a7344fd4888accb4f66c174e53c60e2f89aa2d",
+      "sha256": "780c945aa0c5254b34540bde3e83d50a4f4aef3e2a9558acaf780e15e3c6faee",
+      "evidence": "worker-declared executed wrapper, source inspected; executed bytes not independently attested",
+      "url": "https://github.com/ykzeng-yale/DTR-AgentEvals/blob/11a7344fd4888accb4f66c174e53c60e2f89aa2d/experiments/v2_agent/pilot_episode.py"
+    }
+  ],
+  "source_semantics": [
+    "The inspected legacy AccountedModel.query increments its logical counter once, then delegates to the pinned model; its _query records each physical attempt and returns the response without changing agent messages.",
+    "DefaultAgent.query increments n_calls before model.query and appends the returned assistant only after model.query returns. DefaultAgent.step then executes the parsed action and appends its observation.",
+    "Pinned parse_regex_actions returns exactly one action or raises FormatError carrying a user message whose extra.interrupt_type is FormatError. The model attaches the raw response and cost before rethrowing.",
+    "DefaultAgent.run appends every FormatError message on both handler branches; add_messages only extends the list and serialize retains that complete list. An uncaught non-format exception appends an exit and raises; it cannot silently continue to call9.",
+    "Accordingly a successful physical response alone is insufficient. This audit additionally requires exactly eight alternating assistant/observation pairs before assistant9, no format-error marker, exactly one action matching the pinned regex per pair, matching response usage/finish reason, and attempt_end(k) <= assistant_timestamp(k) <= observation_timestamp(k) <= attempt_start(k+1) for k=1..8.",
+    "All112 first-eight-call links pass for the14 runs issuing call9. The only recorded FormatError is in sympy/large after12 assistant messages, outside each audited first-eight-call prefix. The full prefix before the ninth assistant is therefore the agent history for logical call9 under the inspected source and recorded timestamps.",
+    "This is an archive-specific reconstruction under source/record integrity assumptions, not a generic legacy-report acceptance rule or independent observation of executed remote code."
+  ],
+  "checks": {
+    "frozen_assignment_count": 16,
+    "terminal_assignment_count": 16,
+    "unique_identity_order_image_and_model_checks": "pass",
+    "patch_bytes_hash_and_grade_identity_checks": "pass",
+    "empty_submissions": 16,
+    "nonempty_submitted_artifacts": 0,
+    "operational_zeros": 16,
+    "evaluator_runs": 0,
+    "algorithmic_eligible_denominator": 0,
+    "algorithmic_rate": null,
+    "paired_operational_cells_small_large": {
+      "0,0": 8,
+      "0,1": 0,
+      "1,0": 0,
+      "1,1": 0
+    },
+    "exit_counts": {
+      "LimitsExceeded": 12,
+      "Submitted": 1,
+      "ContextWindowExceededError": 3
+    },
+    "physical_requests": 330,
+    "logical_calls": 330,
+    "failed_physical_attempts": 3,
+    "retries": 0,
+    "call9_issued": 14,
+    "call9_mappings_supported": 14,
+    "generic_ok_response_implies_successful_parse_rule": "rejected"
+  },
+  "input_sha256": {
+    "results/v2_agent/pilot_frame_20260922.json": "3c29e1da8597e4a72fa74951bd5eb194566be69a90e00c6cb78af9c73e5654a7",
+    "results/v2_agent/coder_conversion_20260922.json": "7e165c220b2d4f045375a98e3edc35ccc5a0133221bfd8bff18c397cbab61c1f",
+    "results/v2_agent/pilot_20260922/block_1.json": "224021f264c02535c42db20c6bbe1078fbf73a607f994c7cc12d580021ef0a27",
+    "results/v2_agent/pilot_20260922/report_block1_final.json": "2b04971c58105f883c0f023da7705483251d7c4a912edb00aa7c3a98e5f06c5e",
+    "results/v2_agent/pilot_20260922/sanitization_block1.json": "8b62b529babaab94999a1f57f109319269da231642197e6eb473b89771ad4f08"
+  },
+  "costs_by_backend": {
+    "small": {
+      "n_model_calls": 157.0,
+      "physical_requests": 157.0,
+      "failed_attempts": 2.0,
+      "wall_seconds": 925.2099578380585,
+      "known_prompt_tokens": 541238.0,
+      "missing_prompt_tokens_attempts": 2.0,
+      "known_completion_tokens": 16322.0,
+      "missing_completion_tokens_attempts": 2.0
+    },
+    "large": {
+      "n_model_calls": 173.0,
+      "physical_requests": 173.0,
+      "failed_attempts": 1.0,
+      "wall_seconds": 1634.3724737167358,
+      "known_prompt_tokens": 708572.0,
+      "missing_prompt_tokens_attempts": 1.0,
+      "known_completion_tokens": 15388.0,
+      "missing_completion_tokens_attempts": 1.0
+    }
+  },
+  "cost_scope": "Known token subtotals exclude unobserved failed-attempt usage; episode wall excludes setup/serving/preflight/evaluator overhead. Recorded zero monetary cost is not a measured total cost.",
+  "context_diagnostics": [
+    {
+      "instance_id": "matplotlib__matplotlib-13989",
+      "backend": "small",
+      "failed_logical_call": 24,
+      "reported_request_tokens": 16610,
+      "context_limit_tokens": 16384,
+      "max_observation_message_index": 21,
+      "max_raw_output_characters": 3475,
+      "max_rendered_observation_characters": 3520,
+      "any_observation_reaches_yaml_truncation_threshold": false,
+      "interpretation": "All individual observations fall below pinned truncation threshold; cumulative history exhausted context. Per-observation YAML truncation alone would not shorten these observations."
+    },
+    {
+      "instance_id": "mwaskom__seaborn-3069",
+      "backend": "large",
+      "failed_logical_call": 5,
+      "reported_request_tokens": 31179,
+      "context_limit_tokens": 16384,
+      "max_observation_message_index": 9,
+      "max_raw_output_characters": 129654,
+      "max_rendered_observation_characters": 129699,
+      "any_observation_reaches_yaml_truncation_threshold": true,
+      "interpretation": "Large untruncated observation preceded context error; corrected truncation is a plausible mechanism, not a counterfactual result."
+    },
+    {
+      "instance_id": "sympy__sympy-11618",
+      "backend": "small",
+      "failed_logical_call": 12,
+      "reported_request_tokens": 35199,
+      "context_limit_tokens": 16384,
+      "max_observation_message_index": 23,
+      "max_raw_output_characters": 94825,
+      "max_rendered_observation_characters": 94870,
+      "any_observation_reaches_yaml_truncation_threshold": true,
+      "interpretation": "Large untruncated observation preceded context error; corrected truncation is a plausible mechanism, not a counterfactual result."
+    }
+  ],
+  "sanitization": {
+    "manifest_entries": 43,
+    "present_and_hash_matched": 32,
+    "published_files": [
+      {
+        "path": "results/v2_agent/pilot_20260922/astropy__astropy-12907__large__pilot-cp2-wc2__20260922T050935Z-27c33e/runner_stdout.txt",
+        "published_sha256": "d8d43581b47016ec429e30e7d9368df2ba34dc94574cf3469ebfae1edb36c9b8"
+      },
+      {
+        "path": "results/v2_agent/pilot_20260922/astropy__astropy-12907__large__pilot-cp2-wc2__20260922T050935Z-27c33e/trajectory.json",
+        "published_sha256": "9bff0ae796e47f4ad1579ee9fba53b7929cdc99757bbdb796391e8efd582ab1b"
+      },
+      {
+        "path": "results/v2_agent/pilot_20260922/astropy__astropy-12907__small__pilot-cp2-wc2__20260922T051348Z-7cc0d0/runner_stdout.txt",
+        "published_sha256": "c32cb8d1e5480dfa7dad37d9123c308393b69438b8c823e2e21458a0c3213a0d"
+      },
+      {
+        "path": "results/v2_agent/pilot_20260922/astropy__astropy-12907__small__pilot-cp2-wc2__20260922T051348Z-7cc0d0/trajectory.json",
+        "published_sha256": "b93bd87cd857aed98046c4c45d710f7dd5739f329979eecf1b1f2eaf0e15fc61"
+      },
+      {
+        "path": "results/v2_agent/pilot_20260922/matplotlib__matplotlib-13989__large__pilot-cp2-wc2__20260922T052837Z-2c553e/runner_stdout.txt",
+        "published_sha256": "c16a73d155ab2b9f37c286a11bdd4910251933c49f4b088a5cfc5c76a2b807bd"
+      },
+      {
+        "path": "results/v2_agent/pilot_20260922/matplotlib__matplotlib-13989__large__pilot-cp2-wc2__20260922T052837Z-2c553e/trajectory.json",
+        "published_sha256": "53906ee9b6a2c6ff60c9c1978946f8db9ec2176cd374252562b8d723e9ec8ee6"
+      },
+      {
+        "path": "results/v2_agent/pilot_20260922/matplotlib__matplotlib-13989__small__pilot-cp2-wc2__20260922T052510Z-0a446a/runner_stdout.txt",
+        "published_sha256": "38193928eace7231251007ec38cbea78181b89610ac4ab23614c2e8163e3cda9"
+      },
+      {
+        "path": "results/v2_agent/pilot_20260922/matplotlib__matplotlib-13989__small__pilot-cp2-wc2__20260922T052510Z-0a446a/trajectory.json",
+        "published_sha256": "0c3b637cdca5f93bbae526c236b027e1be9236a277773efc301ef365c862a66c"
+      },
+      {
+        "path": "results/v2_agent/pilot_20260922/mwaskom__seaborn-3069__large__pilot-cp2-wc2__20260922T053759Z-610089/runner_stdout.txt",
+        "published_sha256": "9245248e66e3041b4956779bf1c8877290b27ade985a0fc256d62086f4f2f8f9"
+      },
+      {
+        "path": "results/v2_agent/pilot_20260922/mwaskom__seaborn-3069__large__pilot-cp2-wc2__20260922T053759Z-610089/trajectory.json",
+        "published_sha256": "643ea90710e400060b15a1006d36f683dc77ac4513cef9799c2df003acf874c9"
+      },
+      {
+        "path": "results/v2_agent/pilot_20260922/mwaskom__seaborn-3069__small__pilot-cp2-wc2__20260922T053834Z-7dcda8/runner_stdout.txt",
+        "published_sha256": "657cd65e7fd625842fe5438b39f510433052f16dc58ac1048ec48d2aae68d979"
+      },
+      {
+        "path": "results/v2_agent/pilot_20260922/mwaskom__seaborn-3069__small__pilot-cp2-wc2__20260922T053834Z-7dcda8/trajectory.json",
+        "published_sha256": "0c5961dca05c26240dde64f9cd0bfcad2c9046593502661ec6bebd1d56c6e430"
+      },
+      {
+        "path": "results/v2_agent/pilot_20260922/psf__requests-1142__large__pilot-cp2-wc2__20260922T055112Z-48dc58/runner_stdout.txt",
+        "published_sha256": "065f35ad79a40ad97b992e4d9e466de02b11e388ff3291e58a755743e87ac643"
+      },
+      {
+        "path": "results/v2_agent/pilot_20260922/psf__requests-1142__large__pilot-cp2-wc2__20260922T055112Z-48dc58/trajectory.json",
+        "published_sha256": "8052cd8ed197ec5d810a86aa11e885e55314da55572eb9371de9e9adc6133402"
+      },
+      {
+        "path": "results/v2_agent/pilot_20260922/psf__requests-1142__small__pilot-cp2-wc2__20260922T054827Z-85153d/runner_stdout.txt",
+        "published_sha256": "8da1267c64741b37813df8d3d883bbf2e47a1365699836ae75545ba6bae53c3c"
+      },
+      {
+        "path": "results/v2_agent/pilot_20260922/psf__requests-1142__small__pilot-cp2-wc2__20260922T054827Z-85153d/trajectory.json",
+        "published_sha256": "15d07a73870204ac74c13beebea31da20be014e35b15f1010d5027f704554493"
+      },
+      {
+        "path": "results/v2_agent/pilot_20260922/pytest-dev__pytest-10051__large__pilot-cp2-wc2__20260922T051527Z-caa8a2/runner_stdout.txt",
+        "published_sha256": "6925b2c5f3fde001d36948ec58f8766cba87068ddee797ce9901fcbaa67dc932"
+      },
+      {
+        "path": "results/v2_agent/pilot_20260922/pytest-dev__pytest-10051__large__pilot-cp2-wc2__20260922T051527Z-caa8a2/trajectory.json",
+        "published_sha256": "303314146517fa73862642acaad66e7fc923787ee82c036b8f4cb98272ebac43"
+      },
+      {
+        "path": "results/v2_agent/pilot_20260922/pytest-dev__pytest-10051__small__pilot-cp2-wc2__20260922T051357Z-473ac3/runner_stdout.txt",
+        "published_sha256": "d701c806b86abf36a7186f6890095f01a96e779b8dd23f86420dee97df595ba2"
+      },
+      {
+        "path": "results/v2_agent/pilot_20260922/pytest-dev__pytest-10051__small__pilot-cp2-wc2__20260922T051357Z-473ac3/trajectory.json",
+        "published_sha256": "72d90d66d4bad4ed4365f35c277e73fd14363975d911ab0cc9a3945a9e4d2bcd"
+      },
+      {
+        "path": "results/v2_agent/pilot_20260922/scikit-learn__scikit-learn-10297__large__pilot-cp2-wc2__20260922T051926Z-faa4a9/runner_stdout.txt",
+        "published_sha256": "e32b7b2130009492cb16a935fbe5157388004786678f8bd20366e817b0e3a77d"
+      },
+      {
+        "path": "results/v2_agent/pilot_20260922/scikit-learn__scikit-learn-10297__large__pilot-cp2-wc2__20260922T051926Z-faa4a9/trajectory.json",
+        "published_sha256": "9af61496e8bc84a4ed62a18f15bd48b0eca9920e5a335501f154e3bec727fb98"
+      },
+      {
+        "path": "results/v2_agent/pilot_20260922/scikit-learn__scikit-learn-10297__small__pilot-cp2-wc2__20260922T052252Z-def348/runner_stdout.txt",
+        "published_sha256": "cfee7ac4b1b23eb6dc0599640e332c6de3ba3913add238610c64fc5e53390a2f"
+      },
+      {
+        "path": "results/v2_agent/pilot_20260922/scikit-learn__scikit-learn-10297__small__pilot-cp2-wc2__20260922T052252Z-def348/trajectory.json",
+        "published_sha256": "9366591df8b3a95b4b8538027400fdd68ba8b0f84a205ae0aa44e48a06a8ab77"
+      },
+      {
+        "path": "results/v2_agent/pilot_20260922/sphinx-doc__sphinx-10323__large__pilot-cp2-wc2__20260922T053958Z-57036a/runner_stdout.txt",
+        "published_sha256": "b77a5903625738de9c90d931ec18edb99768bff4d2038bc2e54f6d652f48c7bd"
+      },
+      {
+        "path": "results/v2_agent/pilot_20260922/sphinx-doc__sphinx-10323__large__pilot-cp2-wc2__20260922T053958Z-57036a/trajectory.json",
+        "published_sha256": "7d7638a8b5c9d08b29acba09a4dcc9db359691a05219beb41fc145d039878b2a"
+      },
+      {
+        "path": "results/v2_agent/pilot_20260922/sphinx-doc__sphinx-10323__small__pilot-cp2-wc2__20260922T054445Z-15b460/runner_stdout.txt",
+        "published_sha256": "d4d5ba9b016af2e05fac3101e88a6b0075c0c57ad22fcd03326daa33edcc42ca"
+      },
+      {
+        "path": "results/v2_agent/pilot_20260922/sphinx-doc__sphinx-10323__small__pilot-cp2-wc2__20260922T054445Z-15b460/trajectory.json",
+        "published_sha256": "b50e2d6a423a156a5324a48765b2cb78d88a21f9bedb9528548c10c128c72afe"
+      },
+      {
+        "path": "results/v2_agent/pilot_20260922/sympy__sympy-11618__large__pilot-cp2-wc2__20260922T053340Z-fa1672/runner_stdout.txt",
+        "published_sha256": "c999ae3aad8dfcf2bb55bdb78f5d3379d86ea887a528ab86305542737149e7ae"
+      },
+      {
+        "path": "results/v2_agent/pilot_20260922/sympy__sympy-11618__large__pilot-cp2-wc2__20260922T053340Z-fa1672/trajectory.json",
+        "published_sha256": "685505b68daa3338ae2200a7f38cd84ea6cd2bb46dcb1960207d7892966a88ed"
+      },
+      {
+        "path": "results/v2_agent/pilot_20260922/sympy__sympy-11618__small__pilot-cp2-wc2__20260922T053700Z-067273/runner_stdout.txt",
+        "published_sha256": "238a47de72ba791189be6880dc528e5ae92ce69125f458bf4f16a737a60c96d3"
+      },
+      {
+        "path": "results/v2_agent/pilot_20260922/sympy__sympy-11618__small__pilot-cp2-wc2__20260922T053700Z-067273/trajectory.json",
+        "published_sha256": "9d8af220960695d218fb7748aab4ed58ca228646f20aee17aa38120965e28413"
+      }
+    ],
+    "missing_files": [
+      {
+        "path": "results/v2_agent/pilot_20260922/server_large_2026-09-22T050701Z.log",
+        "declared_published_sha256": "f192897e6b4c63a4ee6a99bd6431128e8ca51757e91e10c1b9ff8438038fedcb"
+      },
+      {
+        "path": "results/v2_agent/pilot_20260922/server_large_2026-09-22T051525Z.log",
+        "declared_published_sha256": "e664425bca094d9bf320b22107d7eea224351b0915f73703ed7768550fa8a725"
+      },
+      {
+        "path": "results/v2_agent/pilot_20260922/server_large_2026-09-22T052835Z.log",
+        "declared_published_sha256": "e8f0203edaa12b037fef041a1c57bdfa0956f5b5ce0a9f1211bdef42115dd9c2"
+      },
+      {
+        "path": "results/v2_agent/pilot_20260922/server_large_2026-09-22T053757Z.log",
+        "declared_published_sha256": "91d6448c28d0b0ab7bde9fb3643a58fbe85ec0a2f7a6b76a72ddee45cb49772b"
+      },
+      {
+        "path": "results/v2_agent/pilot_20260922/server_large_2026-09-22T053956Z.log",
+        "declared_published_sha256": "8f727dca750ccbf3712ea2f9ac22593204592c5122b4f14785579b7ede350950"
+      },
+      {
+        "path": "results/v2_agent/pilot_20260922/server_large_2026-09-22T055110Z.log",
+        "declared_published_sha256": "0c2e7d07530fa879d12258385c2d4a3374ca50a1def384ab3abeca20b3c8f9ad"
+      },
+      {
+        "path": "results/v2_agent/pilot_20260922/server_small_2026-09-22T051249Z.log",
+        "declared_published_sha256": "9d6aa4b4f78714448ca3b55f687fbae98c897de08e7e7d328bf9579b68b8be68"
+      },
+      {
+        "path": "results/v2_agent/pilot_20260922/server_small_2026-09-22T052251Z.log",
+        "declared_published_sha256": "b7927d03ed5bea6c3ef93d7b23dac907a8747c3c90947fcbbaf2aab9598dbf9f"
+      },
+      {
+        "path": "results/v2_agent/pilot_20260922/server_small_2026-09-22T053659Z.log",
+        "declared_published_sha256": "e3ddd924c22aef7f179fa24508f178c91691b75dc0a09791baafca6cf9c4b727"
+      },
+      {
+        "path": "results/v2_agent/pilot_20260922/server_small_2026-09-22T053833Z.log",
+        "declared_published_sha256": "1d3a8324f3c316e16f42359cf1ae69c6ca7b37f7b1202f9967cea8f903d5f5cf"
+      },
+      {
+        "path": "results/v2_agent/pilot_20260922/server_small_2026-09-22T054444Z.log",
+        "declared_published_sha256": "672cfb99a6656721c1e55ed55e7645b6a2d2ccb8a08a75df6f57bd48426b1d30"
+      }
+    ],
+    "raw_bytes_independently_available": false,
+    "contradiction": "Worker prose says11server logs published; listed paths absent from this immutable Git tree."
+  },
+  "release_and_source": {
+    "recorded_start_utc": "2026-09-22T05:06:57Z",
+    "recorded_release_utc": "2026-09-22T05:54:42Z",
+    "recorded_hard_end_utc": "2026-09-22T07:06:57Z",
+    "independent_live_process_check": false,
+    "worker_claimed_replacement_interval_utc": [
+      "2026-09-22T05:33:50Z",
+      "2026-09-22T05:34:13Z"
+    ],
+    "neighboring_recorded_run_ids": [
+      "sympy__sympy-11618__large__pilot-cp2-wc2__20260922T053340Z-fa1672",
+      "sympy__sympy-11618__small__pilot-cp2-wc2__20260922T053700Z-067273"
+    ],
+    "interpretation": "Recorded run IDs and first-request timestamps are consistent with no new episode launch during the replacement interval. They do not independently attest executed source bytes or cleanup. Raw server logs are absent."
+  },
+  "interpretation": [
+    "Preserve every unfavorable legacy result. These are operational observations under the disclosed faulty binding, not correctness failures of16evaluated candidate programs.",
+    "Repeated commands and context failures are distinct observed mechanisms; missing truncation does not explain every limit exit.",
+    "Call9 occupancy and regex edit/test indicators establish recorded opportunity/features only, not useful routing heterogeneity, successful code edits or policy superiority.",
+    "Both legacy and corrected cohorts remain separately labeled DEVELOPMENT on exposed selected tasks; never pool into CONFIRM or infer a single-repair causal effect."
+  ],
+  "episodes": [
+    {
+      "instance_id": "astropy__astropy-12907",
+      "backend": "large",
+      "run_id": "astropy__astropy-12907__large__pilot-cp2-wc2__20260922T050935Z-27c33e",
+      "directory": "results/v2_agent/pilot_20260922/astropy__astropy-12907__large__pilot-cp2-wc2__20260922T050935Z-27c33e/",
+      "sha256": {
+        "episode.json": "baf947a0237d18eabca88cd9e521ec2a345a3d5d18dba6294e9e54390da303ec",
+        "trajectory.json": "9bff0ae796e47f4ad1579ee9fba53b7929cdc99757bbdb796391e8efd582ab1b",
+        "attempts.jsonl": "ed7d134ea623c90e91151c40538e90a7a1a16599d37f7525c973a8fde1e7fccb",
+        "submission.diff": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "grade.json": "cbbc43bf9e44122e1251b34fafe3754aca5689d38af05e7940f756bc45e161a0"
+      },
+      "pins": {
+        "mini_swe_agent": "04d809ceab9df28f9adaed044884180159172930",
+        "default_yaml_sha256": "112aa58328f478a41cc2630702a4b89ef459e912870e05065157ed221f56701f",
+        "image_ref": "sweb.eval.x86_64.astropy__astropy-12907:latest",
+        "image_id": "sha256:beadc022542f84f0baa58843cfabd2aee289634ae65a6626cf2bbe94d704e960"
+      },
+      "served_model_sha256": "b179f09d5f73776e68623384d95a0dbd73ccf038e34db50b508e9c3baf468066",
+      "exit_status": "LimitsExceeded",
+      "physical_requests": 24,
+      "failed_physical_attempts": 0,
+      "submission_bytes": 0,
+      "classification": "operational_zero",
+      "algorithmic_eligible": false,
+      "serialized_yaml_model_environment_deviation_confirmed": true,
+      "call9_mapping": {
+        "call9_issued": true,
+        "all_format_error_markers": [],
+        "status": "supported by archive-specific source, parse, timestamp and response checks",
+        "first_eight_call_mapping": [
+          {
+            "logical_call": 1,
+            "ledger_line_1based": 1,
+            "assistant_message_index": 2,
+            "observation_message_index": 3,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790053794.1815062,
+            "assistant_timestamp": 1790053794.181897,
+            "observation_timestamp": 1790053794.634728,
+            "next_attempt_start": 1790053794.634908
+          },
+          {
+            "logical_call": 2,
+            "ledger_line_1based": 2,
+            "assistant_message_index": 4,
+            "observation_message_index": 5,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790053801.612858,
+            "assistant_timestamp": 1790053801.6130402,
+            "observation_timestamp": 1790053802.33485,
+            "next_attempt_start": 1790053802.334966
+          },
+          {
+            "logical_call": 3,
+            "ledger_line_1based": 3,
+            "assistant_message_index": 6,
+            "observation_message_index": 7,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790053811.511159,
+            "assistant_timestamp": 1790053811.5113091,
+            "observation_timestamp": 1790053811.782666,
+            "next_attempt_start": 1790053811.78278
+          },
+          {
+            "logical_call": 4,
+            "ledger_line_1based": 4,
+            "assistant_message_index": 8,
+            "observation_message_index": 9,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790053819.2564821,
+            "assistant_timestamp": 1790053819.256643,
+            "observation_timestamp": 1790053820.01192,
+            "next_attempt_start": 1790053820.012065
+          },
+          {
+            "logical_call": 5,
+            "ledger_line_1based": 5,
+            "assistant_message_index": 10,
+            "observation_message_index": 11,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790053826.204892,
+            "assistant_timestamp": 1790053826.205044,
+            "observation_timestamp": 1790053826.4759538,
+            "next_attempt_start": 1790053826.476071
+          },
+          {
+            "logical_call": 6,
+            "ledger_line_1based": 6,
+            "assistant_message_index": 12,
+            "observation_message_index": 13,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790053833.758398,
+            "assistant_timestamp": 1790053833.758549,
+            "observation_timestamp": 1790053834.4626062,
+            "next_attempt_start": 1790053834.4627242
+          },
+          {
+            "logical_call": 7,
+            "ledger_line_1based": 7,
+            "assistant_message_index": 14,
+            "observation_message_index": 15,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790053840.692211,
+            "assistant_timestamp": 1790053840.692362,
+            "observation_timestamp": 1790053840.9568279,
+            "next_attempt_start": 1790053840.9569569
+          },
+          {
+            "logical_call": 8,
+            "ledger_line_1based": 8,
+            "assistant_message_index": 16,
+            "observation_message_index": 17,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790053848.068191,
+            "assistant_timestamp": 1790053848.068344,
+            "observation_timestamp": 1790053848.747849,
+            "next_attempt_start": 1790053848.747985
+          }
+        ],
+        "pre_call9_message_count": 18,
+        "first_eight_parse_error_count": 0,
+        "features": {
+          "observations": 8,
+          "nonzero_returncodes": 7,
+          "test_command_pattern_seen": false,
+          "edit_command_pattern_seen": false,
+          "history_sha256": "160f2f9ac0589721401841a9f04dfb6c0248a51a40500f7471e32494b3289953"
+        },
+        "features_match_archived_report": true
+      }
+    },
+    {
+      "instance_id": "astropy__astropy-12907",
+      "backend": "small",
+      "run_id": "astropy__astropy-12907__small__pilot-cp2-wc2__20260922T051348Z-7cc0d0",
+      "directory": "results/v2_agent/pilot_20260922/astropy__astropy-12907__small__pilot-cp2-wc2__20260922T051348Z-7cc0d0/",
+      "sha256": {
+        "episode.json": "67b4ea6e939296c78b3e2cb1e6176fbdb54938ea897f0c381931c9ddf4e435c8",
+        "trajectory.json": "b93bd87cd857aed98046c4c45d710f7dd5739f329979eecf1b1f2eaf0e15fc61",
+        "attempts.jsonl": "2dac6dc966ca19b1a3d009d29de66e9f6e70cf9ba63c3709b53eadf7387c6b88",
+        "submission.diff": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "grade.json": "fd810f0d2fff42df0503a2d96d13260795ed2554d95e39a8c6dc08ae5f326572"
+      },
+      "pins": {
+        "mini_swe_agent": "04d809ceab9df28f9adaed044884180159172930",
+        "default_yaml_sha256": "112aa58328f478a41cc2630702a4b89ef459e912870e05065157ed221f56701f",
+        "image_ref": "sweb.eval.x86_64.astropy__astropy-12907:latest",
+        "image_id": "sha256:beadc022542f84f0baa58843cfabd2aee289634ae65a6626cf2bbe94d704e960"
+      },
+      "served_model_sha256": "87a3665ca3247c54dfa198010f6e1f48d41611029bbcb5ed185a5ad05fcd3b81",
+      "exit_status": "Submitted",
+      "physical_requests": 1,
+      "failed_physical_attempts": 0,
+      "submission_bytes": 0,
+      "classification": "operational_zero",
+      "algorithmic_eligible": false,
+      "serialized_yaml_model_environment_deviation_confirmed": true,
+      "call9_mapping": {
+        "call9_issued": false,
+        "all_format_error_markers": [],
+        "status": "not issued; no pre-call-9 history claimed"
+      }
+    },
+    {
+      "instance_id": "pytest-dev__pytest-10051",
+      "backend": "small",
+      "run_id": "pytest-dev__pytest-10051__small__pilot-cp2-wc2__20260922T051357Z-473ac3",
+      "directory": "results/v2_agent/pilot_20260922/pytest-dev__pytest-10051__small__pilot-cp2-wc2__20260922T051357Z-473ac3/",
+      "sha256": {
+        "episode.json": "0b8083711eb13e4636dd091da50969cc136b35b4fb75bae582ae42b28d685055",
+        "trajectory.json": "72d90d66d4bad4ed4365f35c277e73fd14363975d911ab0cc9a3945a9e4d2bcd",
+        "attempts.jsonl": "91ebaf055851e7308ab17b30357e6be766a044bde6ccd1967db40fc2b8c3c55c",
+        "submission.diff": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "grade.json": "2ef01b791e2ded563819f6c0c494bd76de67af6c9f5ba3d2d3808d38997fb318"
+      },
+      "pins": {
+        "mini_swe_agent": "04d809ceab9df28f9adaed044884180159172930",
+        "default_yaml_sha256": "112aa58328f478a41cc2630702a4b89ef459e912870e05065157ed221f56701f",
+        "image_ref": "sweb.eval.x86_64.pytest-dev__pytest-10051:latest",
+        "image_id": "sha256:f361af4257dc5a4b79d41951cde8c83029df8959a41f327cdc5c00c534188ddc"
+      },
+      "served_model_sha256": "87a3665ca3247c54dfa198010f6e1f48d41611029bbcb5ed185a5ad05fcd3b81",
+      "exit_status": "LimitsExceeded",
+      "physical_requests": 24,
+      "failed_physical_attempts": 0,
+      "submission_bytes": 0,
+      "classification": "operational_zero",
+      "algorithmic_eligible": false,
+      "serialized_yaml_model_environment_deviation_confirmed": true,
+      "call9_mapping": {
+        "call9_issued": true,
+        "all_format_error_markers": [],
+        "status": "supported by archive-specific source, parse, timestamp and response checks",
+        "first_eight_call_mapping": [
+          {
+            "logical_call": 1,
+            "ledger_line_1based": 1,
+            "assistant_message_index": 2,
+            "observation_message_index": 3,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790054046.972557,
+            "assistant_timestamp": 1790054046.9728131,
+            "observation_timestamp": 1790054047.222497,
+            "next_attempt_start": 1790054047.2226272
+          },
+          {
+            "logical_call": 2,
+            "ledger_line_1based": 2,
+            "assistant_message_index": 4,
+            "observation_message_index": 5,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790054049.004555,
+            "assistant_timestamp": 1790054049.0047202,
+            "observation_timestamp": 1790054049.252453,
+            "next_attempt_start": 1790054049.2525618
+          },
+          {
+            "logical_call": 3,
+            "ledger_line_1based": 3,
+            "assistant_message_index": 6,
+            "observation_message_index": 7,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790054053.106168,
+            "assistant_timestamp": 1790054053.1063209,
+            "observation_timestamp": 1790054053.369029,
+            "next_attempt_start": 1790054053.369148
+          },
+          {
+            "logical_call": 4,
+            "ledger_line_1based": 4,
+            "assistant_message_index": 8,
+            "observation_message_index": 9,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790054055.565425,
+            "assistant_timestamp": 1790054055.565581,
+            "observation_timestamp": 1790054055.81583,
+            "next_attempt_start": 1790054055.8159518
+          },
+          {
+            "logical_call": 5,
+            "ledger_line_1based": 5,
+            "assistant_message_index": 10,
+            "observation_message_index": 11,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790054059.5740612,
+            "assistant_timestamp": 1790054059.574209,
+            "observation_timestamp": 1790054059.825568,
+            "next_attempt_start": 1790054059.825691
+          },
+          {
+            "logical_call": 6,
+            "ledger_line_1based": 6,
+            "assistant_message_index": 12,
+            "observation_message_index": 13,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790054061.702991,
+            "assistant_timestamp": 1790054061.703145,
+            "observation_timestamp": 1790054061.955819,
+            "next_attempt_start": 1790054061.955931
+          },
+          {
+            "logical_call": 7,
+            "ledger_line_1based": 7,
+            "assistant_message_index": 14,
+            "observation_message_index": 15,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790054065.2949471,
+            "assistant_timestamp": 1790054065.2950919,
+            "observation_timestamp": 1790054065.553376,
+            "next_attempt_start": 1790054065.5535018
+          },
+          {
+            "logical_call": 8,
+            "ledger_line_1based": 8,
+            "assistant_message_index": 16,
+            "observation_message_index": 17,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790054067.447186,
+            "assistant_timestamp": 1790054067.447339,
+            "observation_timestamp": 1790054067.7027059,
+            "next_attempt_start": 1790054067.7028291
+          }
+        ],
+        "pre_call9_message_count": 18,
+        "first_eight_parse_error_count": 0,
+        "features": {
+          "observations": 8,
+          "nonzero_returncodes": 4,
+          "test_command_pattern_seen": true,
+          "edit_command_pattern_seen": false,
+          "history_sha256": "212efd15597b0207789ee3622014da3c88be0e074bc910a4f4745e5401a9c8d2"
+        },
+        "features_match_archived_report": true
+      }
+    },
+    {
+      "instance_id": "pytest-dev__pytest-10051",
+      "backend": "large",
+      "run_id": "pytest-dev__pytest-10051__large__pilot-cp2-wc2__20260922T051527Z-caa8a2",
+      "directory": "results/v2_agent/pilot_20260922/pytest-dev__pytest-10051__large__pilot-cp2-wc2__20260922T051527Z-caa8a2/",
+      "sha256": {
+        "episode.json": "6042e020dba6aecc2ba8f9812290e6bd39297a041e39fa3d9b0be68e02b5bc36",
+        "trajectory.json": "303314146517fa73862642acaad66e7fc923787ee82c036b8f4cb98272ebac43",
+        "attempts.jsonl": "c90ea1c5916a93c4e33f01d77bc21e67c40c403840c52d2c61ca407311473993",
+        "submission.diff": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "grade.json": "a3b59e8e89fafe52a25005f22f0a88dd47a33088c9916593d1acbc3c449c396b"
+      },
+      "pins": {
+        "mini_swe_agent": "04d809ceab9df28f9adaed044884180159172930",
+        "default_yaml_sha256": "112aa58328f478a41cc2630702a4b89ef459e912870e05065157ed221f56701f",
+        "image_ref": "sweb.eval.x86_64.pytest-dev__pytest-10051:latest",
+        "image_id": "sha256:f361af4257dc5a4b79d41951cde8c83029df8959a41f327cdc5c00c534188ddc"
+      },
+      "served_model_sha256": "b179f09d5f73776e68623384d95a0dbd73ccf038e34db50b508e9c3baf468066",
+      "exit_status": "LimitsExceeded",
+      "physical_requests": 24,
+      "failed_physical_attempts": 0,
+      "submission_bytes": 0,
+      "classification": "operational_zero",
+      "algorithmic_eligible": false,
+      "serialized_yaml_model_environment_deviation_confirmed": true,
+      "call9_mapping": {
+        "call9_issued": true,
+        "all_format_error_markers": [],
+        "status": "supported by archive-specific source, parse, timestamp and response checks",
+        "first_eight_call_mapping": [
+          {
+            "logical_call": 1,
+            "ledger_line_1based": 1,
+            "assistant_message_index": 2,
+            "observation_message_index": 3,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790054149.092413,
+            "assistant_timestamp": 1790054149.092711,
+            "observation_timestamp": 1790054149.367609,
+            "next_attempt_start": 1790054149.3677619
+          },
+          {
+            "logical_call": 2,
+            "ledger_line_1based": 2,
+            "assistant_message_index": 4,
+            "observation_message_index": 5,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790054159.356561,
+            "assistant_timestamp": 1790054159.356726,
+            "observation_timestamp": 1790054160.1524858,
+            "next_attempt_start": 1790054160.152598
+          },
+          {
+            "logical_call": 3,
+            "ledger_line_1based": 3,
+            "assistant_message_index": 6,
+            "observation_message_index": 7,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790054168.915903,
+            "assistant_timestamp": 1790054168.9160588,
+            "observation_timestamp": 1790054169.15347,
+            "next_attempt_start": 1790054169.1535969
+          },
+          {
+            "logical_call": 4,
+            "ledger_line_1based": 4,
+            "assistant_message_index": 8,
+            "observation_message_index": 9,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790054177.905385,
+            "assistant_timestamp": 1790054177.905529,
+            "observation_timestamp": 1790054178.163032,
+            "next_attempt_start": 1790054178.163189
+          },
+          {
+            "logical_call": 5,
+            "ledger_line_1based": 5,
+            "assistant_message_index": 10,
+            "observation_message_index": 11,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790054186.9388428,
+            "assistant_timestamp": 1790054186.93899,
+            "observation_timestamp": 1790054187.182508,
+            "next_attempt_start": 1790054187.1826339
+          },
+          {
+            "logical_call": 6,
+            "ledger_line_1based": 6,
+            "assistant_message_index": 12,
+            "observation_message_index": 13,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790054195.995724,
+            "assistant_timestamp": 1790054195.9958699,
+            "observation_timestamp": 1790054196.246603,
+            "next_attempt_start": 1790054196.2467232
+          },
+          {
+            "logical_call": 7,
+            "ledger_line_1based": 7,
+            "assistant_message_index": 14,
+            "observation_message_index": 15,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790054205.145992,
+            "assistant_timestamp": 1790054205.1461408,
+            "observation_timestamp": 1790054205.384701,
+            "next_attempt_start": 1790054205.3848162
+          },
+          {
+            "logical_call": 8,
+            "ledger_line_1based": 8,
+            "assistant_message_index": 16,
+            "observation_message_index": 17,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790054214.281995,
+            "assistant_timestamp": 1790054214.282156,
+            "observation_timestamp": 1790054214.521943,
+            "next_attempt_start": 1790054214.5220659
+          }
+        ],
+        "pre_call9_message_count": 18,
+        "first_eight_parse_error_count": 0,
+        "features": {
+          "observations": 8,
+          "nonzero_returncodes": 8,
+          "test_command_pattern_seen": true,
+          "edit_command_pattern_seen": false,
+          "history_sha256": "d559a4b39193f307d6e2025aa91aaccfa102fe777e4b8dd6eb5634103e62cb74"
+        },
+        "features_match_archived_report": true
+      }
+    },
+    {
+      "instance_id": "scikit-learn__scikit-learn-10297",
+      "backend": "large",
+      "run_id": "scikit-learn__scikit-learn-10297__large__pilot-cp2-wc2__20260922T051926Z-faa4a9",
+      "directory": "results/v2_agent/pilot_20260922/scikit-learn__scikit-learn-10297__large__pilot-cp2-wc2__20260922T051926Z-faa4a9/",
+      "sha256": {
+        "episode.json": "8ea961068a0929148f43e3b9d4d41c18b81429606636f6ba0a331bbed2290663",
+        "trajectory.json": "9af61496e8bc84a4ed62a18f15bd48b0eca9920e5a335501f154e3bec727fb98",
+        "attempts.jsonl": "e4fd7479f3798cd2721c6c70d42a49578e2d664192e7d6d60cec800c4378b5b8",
+        "submission.diff": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "grade.json": "384de19ba5d703b3e5fa36d22209de5e3cf9c687fa5519c950fbbe04554e8213"
+      },
+      "pins": {
+        "mini_swe_agent": "04d809ceab9df28f9adaed044884180159172930",
+        "default_yaml_sha256": "112aa58328f478a41cc2630702a4b89ef459e912870e05065157ed221f56701f",
+        "image_ref": "sweb.eval.x86_64.scikit-learn__scikit-learn-10297:latest",
+        "image_id": "sha256:adc94ee4331c08388d2e03862f1a68e2e0ed0ca3b832ba928ef870ed1122b55a"
+      },
+      "served_model_sha256": "b179f09d5f73776e68623384d95a0dbd73ccf038e34db50b508e9c3baf468066",
+      "exit_status": "LimitsExceeded",
+      "physical_requests": 24,
+      "failed_physical_attempts": 0,
+      "submission_bytes": 0,
+      "classification": "operational_zero",
+      "algorithmic_eligible": false,
+      "serialized_yaml_model_environment_deviation_confirmed": true,
+      "call9_mapping": {
+        "call9_issued": true,
+        "all_format_error_markers": [],
+        "status": "supported by archive-specific source, parse, timestamp and response checks",
+        "first_eight_call_mapping": [
+          {
+            "logical_call": 1,
+            "ledger_line_1based": 1,
+            "assistant_message_index": 2,
+            "observation_message_index": 3,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790054387.49214,
+            "assistant_timestamp": 1790054387.492378,
+            "observation_timestamp": 1790054387.8075361,
+            "next_attempt_start": 1790054387.807734
+          },
+          {
+            "logical_call": 2,
+            "ledger_line_1based": 2,
+            "assistant_message_index": 4,
+            "observation_message_index": 5,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790054396.243368,
+            "assistant_timestamp": 1790054396.243552,
+            "observation_timestamp": 1790054396.518175,
+            "next_attempt_start": 1790054396.5183191
+          },
+          {
+            "logical_call": 3,
+            "ledger_line_1based": 3,
+            "assistant_message_index": 6,
+            "observation_message_index": 7,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790054404.423743,
+            "assistant_timestamp": 1790054404.423893,
+            "observation_timestamp": 1790054404.6726882,
+            "next_attempt_start": 1790054404.6728032
+          },
+          {
+            "logical_call": 4,
+            "ledger_line_1based": 4,
+            "assistant_message_index": 8,
+            "observation_message_index": 9,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790054410.915568,
+            "assistant_timestamp": 1790054410.915735,
+            "observation_timestamp": 1790054411.151299,
+            "next_attempt_start": 1790054411.151417
+          },
+          {
+            "logical_call": 5,
+            "ledger_line_1based": 5,
+            "assistant_message_index": 10,
+            "observation_message_index": 11,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790054421.02206,
+            "assistant_timestamp": 1790054421.022211,
+            "observation_timestamp": 1790054421.374135,
+            "next_attempt_start": 1790054421.374246
+          },
+          {
+            "logical_call": 6,
+            "ledger_line_1based": 6,
+            "assistant_message_index": 12,
+            "observation_message_index": 13,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790054428.91155,
+            "assistant_timestamp": 1790054428.911707,
+            "observation_timestamp": 1790054429.583144,
+            "next_attempt_start": 1790054429.5832598
+          },
+          {
+            "logical_call": 7,
+            "ledger_line_1based": 7,
+            "assistant_message_index": 14,
+            "observation_message_index": 15,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790054435.547837,
+            "assistant_timestamp": 1790054435.547991,
+            "observation_timestamp": 1790054435.798754,
+            "next_attempt_start": 1790054435.798872
+          },
+          {
+            "logical_call": 8,
+            "ledger_line_1based": 8,
+            "assistant_message_index": 16,
+            "observation_message_index": 17,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790054443.766397,
+            "assistant_timestamp": 1790054443.766571,
+            "observation_timestamp": 1790054444.2770739,
+            "next_attempt_start": 1790054444.27721
+          }
+        ],
+        "pre_call9_message_count": 18,
+        "first_eight_parse_error_count": 0,
+        "features": {
+          "observations": 8,
+          "nonzero_returncodes": 4,
+          "test_command_pattern_seen": false,
+          "edit_command_pattern_seen": false,
+          "history_sha256": "a4761cce7d6bf4ca7e2ec865930ccd886b259f0b11e8b71acd36915af783e913"
+        },
+        "features_match_archived_report": true
+      }
+    },
+    {
+      "instance_id": "scikit-learn__scikit-learn-10297",
+      "backend": "small",
+      "run_id": "scikit-learn__scikit-learn-10297__small__pilot-cp2-wc2__20260922T052252Z-def348",
+      "directory": "results/v2_agent/pilot_20260922/scikit-learn__scikit-learn-10297__small__pilot-cp2-wc2__20260922T052252Z-def348/",
+      "sha256": {
+        "episode.json": "e272e7988622eb9da39f4293c9a294b62ba13f2ab0cb5dbd8a4664965068b165",
+        "trajectory.json": "9366591df8b3a95b4b8538027400fdd68ba8b0f84a205ae0aa44e48a06a8ab77",
+        "attempts.jsonl": "b9d945d72d7fb9ed4e4e12c5e35ce2b91c39a9e9f1fd51315d2a52fec0c851c3",
+        "submission.diff": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "grade.json": "7133bfdc7ecaf1b866c05ff949f36aecfcba8c61e9f602c2fb4c9bb127ede818"
+      },
+      "pins": {
+        "mini_swe_agent": "04d809ceab9df28f9adaed044884180159172930",
+        "default_yaml_sha256": "112aa58328f478a41cc2630702a4b89ef459e912870e05065157ed221f56701f",
+        "image_ref": "sweb.eval.x86_64.scikit-learn__scikit-learn-10297:latest",
+        "image_id": "sha256:adc94ee4331c08388d2e03862f1a68e2e0ed0ca3b832ba928ef870ed1122b55a"
+      },
+      "served_model_sha256": "87a3665ca3247c54dfa198010f6e1f48d41611029bbcb5ed185a5ad05fcd3b81",
+      "exit_status": "LimitsExceeded",
+      "physical_requests": 24,
+      "failed_physical_attempts": 0,
+      "submission_bytes": 0,
+      "classification": "operational_zero",
+      "algorithmic_eligible": false,
+      "serialized_yaml_model_environment_deviation_confirmed": true,
+      "call9_mapping": {
+        "call9_issued": true,
+        "all_format_error_markers": [],
+        "status": "supported by archive-specific source, parse, timestamp and response checks",
+        "first_eight_call_mapping": [
+          {
+            "logical_call": 1,
+            "ledger_line_1based": 1,
+            "assistant_message_index": 2,
+            "observation_message_index": 3,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790054583.829694,
+            "assistant_timestamp": 1790054583.829967,
+            "observation_timestamp": 1790054604.094887,
+            "next_attempt_start": 1790054604.0950122
+          },
+          {
+            "logical_call": 2,
+            "ledger_line_1based": 2,
+            "assistant_message_index": 4,
+            "observation_message_index": 5,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790054608.6191301,
+            "assistant_timestamp": 1790054608.619287,
+            "observation_timestamp": 1790054608.867767,
+            "next_attempt_start": 1790054608.86789
+          },
+          {
+            "logical_call": 3,
+            "ledger_line_1based": 3,
+            "assistant_message_index": 6,
+            "observation_message_index": 7,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790054613.5629592,
+            "assistant_timestamp": 1790054613.563113,
+            "observation_timestamp": 1790054631.953428,
+            "next_attempt_start": 1790054631.953553
+          },
+          {
+            "logical_call": 4,
+            "ledger_line_1based": 4,
+            "assistant_message_index": 8,
+            "observation_message_index": 9,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790054634.967336,
+            "assistant_timestamp": 1790054634.9675,
+            "observation_timestamp": 1790054635.205256,
+            "next_attempt_start": 1790054635.205371
+          },
+          {
+            "logical_call": 5,
+            "ledger_line_1based": 5,
+            "assistant_message_index": 10,
+            "observation_message_index": 11,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790054641.557207,
+            "assistant_timestamp": 1790054641.557367,
+            "observation_timestamp": 1790054642.544493,
+            "next_attempt_start": 1790054642.544651
+          },
+          {
+            "logical_call": 6,
+            "ledger_line_1based": 6,
+            "assistant_message_index": 12,
+            "observation_message_index": 13,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790054644.824366,
+            "assistant_timestamp": 1790054644.824512,
+            "observation_timestamp": 1790054645.08388,
+            "next_attempt_start": 1790054645.0839949
+          },
+          {
+            "logical_call": 7,
+            "ledger_line_1based": 7,
+            "assistant_message_index": 14,
+            "observation_message_index": 15,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790054648.4405398,
+            "assistant_timestamp": 1790054648.4406888,
+            "observation_timestamp": 1790054648.698417,
+            "next_attempt_start": 1790054648.698532
+          },
+          {
+            "logical_call": 8,
+            "ledger_line_1based": 8,
+            "assistant_message_index": 16,
+            "observation_message_index": 17,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790054652.40378,
+            "assistant_timestamp": 1790054652.4039319,
+            "observation_timestamp": 1790054652.719211,
+            "next_attempt_start": 1790054652.719329
+          }
+        ],
+        "pre_call9_message_count": 18,
+        "first_eight_parse_error_count": 0,
+        "features": {
+          "observations": 8,
+          "nonzero_returncodes": 7,
+          "test_command_pattern_seen": false,
+          "edit_command_pattern_seen": true,
+          "history_sha256": "2e729b822f986dc4e49488c16809aeac8ebe0b41ffa47059da1759cc59e42c66"
+        },
+        "features_match_archived_report": true
+      }
+    },
+    {
+      "instance_id": "matplotlib__matplotlib-13989",
+      "backend": "small",
+      "run_id": "matplotlib__matplotlib-13989__small__pilot-cp2-wc2__20260922T052510Z-0a446a",
+      "directory": "results/v2_agent/pilot_20260922/matplotlib__matplotlib-13989__small__pilot-cp2-wc2__20260922T052510Z-0a446a/",
+      "sha256": {
+        "episode.json": "22666d9fcb05951e5b2db49a8960400b67a1c1ec93a7cc34fe23c6747dfe9c73",
+        "trajectory.json": "0c3b637cdca5f93bbae526c236b027e1be9236a277773efc301ef365c862a66c",
+        "attempts.jsonl": "4584325666f46526ce90e6377d3dda1fc50e3fdd802df2152dc59cdd9ae7a3df",
+        "submission.diff": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "grade.json": "b9ae12db086f195dbcb3475607a3da26bf7997f2192e560451e6b2862def6ba8"
+      },
+      "pins": {
+        "mini_swe_agent": "04d809ceab9df28f9adaed044884180159172930",
+        "default_yaml_sha256": "112aa58328f478a41cc2630702a4b89ef459e912870e05065157ed221f56701f",
+        "image_ref": "sweb.eval.x86_64.matplotlib__matplotlib-13989:latest",
+        "image_id": "sha256:0d4a28de8b868c56cb6857b4f6811fea7249302da9d435afe6e2c6c41250cace"
+      },
+      "served_model_sha256": "87a3665ca3247c54dfa198010f6e1f48d41611029bbcb5ed185a5ad05fcd3b81",
+      "exit_status": "ContextWindowExceededError",
+      "physical_requests": 24,
+      "failed_physical_attempts": 1,
+      "submission_bytes": 0,
+      "classification": "operational_zero",
+      "algorithmic_eligible": false,
+      "serialized_yaml_model_environment_deviation_confirmed": true,
+      "call9_mapping": {
+        "call9_issued": true,
+        "all_format_error_markers": [],
+        "status": "supported by archive-specific source, parse, timestamp and response checks",
+        "first_eight_call_mapping": [
+          {
+            "logical_call": 1,
+            "ledger_line_1based": 1,
+            "assistant_message_index": 2,
+            "observation_message_index": 3,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790054721.905499,
+            "assistant_timestamp": 1790054721.905764,
+            "observation_timestamp": 1790054722.572254,
+            "next_attempt_start": 1790054722.572393
+          },
+          {
+            "logical_call": 2,
+            "ledger_line_1based": 2,
+            "assistant_message_index": 4,
+            "observation_message_index": 5,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790054727.5489962,
+            "assistant_timestamp": 1790054727.549206,
+            "observation_timestamp": 1790054727.847307,
+            "next_attempt_start": 1790054727.847429
+          },
+          {
+            "logical_call": 3,
+            "ledger_line_1based": 3,
+            "assistant_message_index": 6,
+            "observation_message_index": 7,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790054731.8695428,
+            "assistant_timestamp": 1790054731.869695,
+            "observation_timestamp": 1790054732.139101,
+            "next_attempt_start": 1790054732.139216
+          },
+          {
+            "logical_call": 4,
+            "ledger_line_1based": 4,
+            "assistant_message_index": 8,
+            "observation_message_index": 9,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790054734.758198,
+            "assistant_timestamp": 1790054734.758351,
+            "observation_timestamp": 1790054735.013136,
+            "next_attempt_start": 1790054735.013254
+          },
+          {
+            "logical_call": 5,
+            "ledger_line_1based": 5,
+            "assistant_message_index": 10,
+            "observation_message_index": 11,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790054736.7531252,
+            "assistant_timestamp": 1790054736.753273,
+            "observation_timestamp": 1790054737.103362,
+            "next_attempt_start": 1790054737.103477
+          },
+          {
+            "logical_call": 6,
+            "ledger_line_1based": 6,
+            "assistant_message_index": 12,
+            "observation_message_index": 13,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790054742.188411,
+            "assistant_timestamp": 1790054742.188568,
+            "observation_timestamp": 1790054742.607193,
+            "next_attempt_start": 1790054742.607307
+          },
+          {
+            "logical_call": 7,
+            "ledger_line_1based": 7,
+            "assistant_message_index": 14,
+            "observation_message_index": 15,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790054745.993803,
+            "assistant_timestamp": 1790054745.993952,
+            "observation_timestamp": 1790054746.6198,
+            "next_attempt_start": 1790054746.619922
+          },
+          {
+            "logical_call": 8,
+            "ledger_line_1based": 8,
+            "assistant_message_index": 16,
+            "observation_message_index": 17,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790054751.012532,
+            "assistant_timestamp": 1790054751.0126789,
+            "observation_timestamp": 1790054751.251874,
+            "next_attempt_start": 1790054751.25199
+          }
+        ],
+        "pre_call9_message_count": 18,
+        "first_eight_parse_error_count": 0,
+        "features": {
+          "observations": 8,
+          "nonzero_returncodes": 4,
+          "test_command_pattern_seen": false,
+          "edit_command_pattern_seen": false,
+          "history_sha256": "6053b1305de890b2c40a8f5e94b8d14305515360dafd1a7349837aa0ac8a05e2"
+        },
+        "features_match_archived_report": true
+      }
+    },
+    {
+      "instance_id": "matplotlib__matplotlib-13989",
+      "backend": "large",
+      "run_id": "matplotlib__matplotlib-13989__large__pilot-cp2-wc2__20260922T052837Z-2c553e",
+      "directory": "results/v2_agent/pilot_20260922/matplotlib__matplotlib-13989__large__pilot-cp2-wc2__20260922T052837Z-2c553e/",
+      "sha256": {
+        "episode.json": "ea38e3a3305abd281ae8203b05a9bfdeb74847d8b51d3df396e9d1b79ce5bc6f",
+        "trajectory.json": "53906ee9b6a2c6ff60c9c1978946f8db9ec2176cd374252562b8d723e9ec8ee6",
+        "attempts.jsonl": "f2c74fde64185ca871692224bfe19cf46990d08fd511b7143c885c0a53983f50",
+        "submission.diff": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "grade.json": "d343768c9003480fd3937c9c9805fad513007069318e137d25676782e2d034b6"
+      },
+      "pins": {
+        "mini_swe_agent": "04d809ceab9df28f9adaed044884180159172930",
+        "default_yaml_sha256": "112aa58328f478a41cc2630702a4b89ef459e912870e05065157ed221f56701f",
+        "image_ref": "sweb.eval.x86_64.matplotlib__matplotlib-13989:latest",
+        "image_id": "sha256:0d4a28de8b868c56cb6857b4f6811fea7249302da9d435afe6e2c6c41250cace"
+      },
+      "served_model_sha256": "b179f09d5f73776e68623384d95a0dbd73ccf038e34db50b508e9c3baf468066",
+      "exit_status": "LimitsExceeded",
+      "physical_requests": 24,
+      "failed_physical_attempts": 0,
+      "submission_bytes": 0,
+      "classification": "operational_zero",
+      "algorithmic_eligible": false,
+      "serialized_yaml_model_environment_deviation_confirmed": true,
+      "call9_mapping": {
+        "call9_issued": true,
+        "all_format_error_markers": [],
+        "status": "supported by archive-specific source, parse, timestamp and response checks",
+        "first_eight_call_mapping": [
+          {
+            "logical_call": 1,
+            "ledger_line_1based": 1,
+            "assistant_message_index": 2,
+            "observation_message_index": 3,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790054939.436537,
+            "assistant_timestamp": 1790054939.436805,
+            "observation_timestamp": 1790054939.672769,
+            "next_attempt_start": 1790054939.672912
+          },
+          {
+            "logical_call": 2,
+            "ledger_line_1based": 2,
+            "assistant_message_index": 4,
+            "observation_message_index": 5,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790054945.179142,
+            "assistant_timestamp": 1790054945.179304,
+            "observation_timestamp": 1790054945.9011478,
+            "next_attempt_start": 1790054945.901261
+          },
+          {
+            "logical_call": 3,
+            "ledger_line_1based": 3,
+            "assistant_message_index": 6,
+            "observation_message_index": 7,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790054957.641782,
+            "assistant_timestamp": 1790054957.641943,
+            "observation_timestamp": 1790054957.898674,
+            "next_attempt_start": 1790054957.8987799
+          },
+          {
+            "logical_call": 4,
+            "ledger_line_1based": 4,
+            "assistant_message_index": 8,
+            "observation_message_index": 9,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790054969.5520709,
+            "assistant_timestamp": 1790054969.5522208,
+            "observation_timestamp": 1790054970.270128,
+            "next_attempt_start": 1790054970.270237
+          },
+          {
+            "logical_call": 5,
+            "ledger_line_1based": 5,
+            "assistant_message_index": 10,
+            "observation_message_index": 11,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790054982.691755,
+            "assistant_timestamp": 1790054982.6919072,
+            "observation_timestamp": 1790054983.0886452,
+            "next_attempt_start": 1790054983.088757
+          },
+          {
+            "logical_call": 6,
+            "ledger_line_1based": 6,
+            "assistant_message_index": 12,
+            "observation_message_index": 13,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790054994.6353002,
+            "assistant_timestamp": 1790054994.635447,
+            "observation_timestamp": 1790054995.0405052,
+            "next_attempt_start": 1790054995.040616
+          },
+          {
+            "logical_call": 7,
+            "ledger_line_1based": 7,
+            "assistant_message_index": 14,
+            "observation_message_index": 15,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790055006.760576,
+            "assistant_timestamp": 1790055006.760726,
+            "observation_timestamp": 1790055007.155086,
+            "next_attempt_start": 1790055007.155211
+          },
+          {
+            "logical_call": 8,
+            "ledger_line_1based": 8,
+            "assistant_message_index": 16,
+            "observation_message_index": 17,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790055018.829876,
+            "assistant_timestamp": 1790055018.830038,
+            "observation_timestamp": 1790055019.2195761,
+            "next_attempt_start": 1790055019.2197278
+          }
+        ],
+        "pre_call9_message_count": 18,
+        "first_eight_parse_error_count": 0,
+        "features": {
+          "observations": 8,
+          "nonzero_returncodes": 7,
+          "test_command_pattern_seen": false,
+          "edit_command_pattern_seen": false,
+          "history_sha256": "ac39e1bc8946ef273cf0eb13fbcea460ffd51efbd1b426fb0e1c2bc9fb5ae4a7"
+        },
+        "features_match_archived_report": true
+      }
+    },
+    {
+      "instance_id": "sympy__sympy-11618",
+      "backend": "large",
+      "run_id": "sympy__sympy-11618__large__pilot-cp2-wc2__20260922T053340Z-fa1672",
+      "directory": "results/v2_agent/pilot_20260922/sympy__sympy-11618__large__pilot-cp2-wc2__20260922T053340Z-fa1672/",
+      "sha256": {
+        "episode.json": "338574494eca9224ad8b4cbfaab2ffcfbc6e414995e523f6a229cfae0e92920c",
+        "trajectory.json": "685505b68daa3338ae2200a7f38cd84ea6cd2bb46dcb1960207d7892966a88ed",
+        "attempts.jsonl": "9bd7b18aa29c0304c8477d4356ddc7650b04c2d0d76d97390939acc2f08f03a0",
+        "submission.diff": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "grade.json": "208d11f5c289eefeff3735a51b1fc605d9cff816c8e3c95b0f1ac8483481a1fb"
+      },
+      "pins": {
+        "mini_swe_agent": "04d809ceab9df28f9adaed044884180159172930",
+        "default_yaml_sha256": "112aa58328f478a41cc2630702a4b89ef459e912870e05065157ed221f56701f",
+        "image_ref": "sweb.eval.x86_64.sympy__sympy-11618:latest",
+        "image_id": "sha256:c073cca08a52c8cd039b2c015aa19740ef235febbd5080c838c79fe93d905f28"
+      },
+      "served_model_sha256": "b179f09d5f73776e68623384d95a0dbd73ccf038e34db50b508e9c3baf468066",
+      "exit_status": "LimitsExceeded",
+      "physical_requests": 24,
+      "failed_physical_attempts": 0,
+      "submission_bytes": 0,
+      "classification": "operational_zero",
+      "algorithmic_eligible": false,
+      "serialized_yaml_model_environment_deviation_confirmed": true,
+      "call9_mapping": {
+        "call9_issued": true,
+        "all_format_error_markers": [
+          {
+            "message_index": 26,
+            "preceding_assistant_count": 12,
+            "n_actions": 2
+          }
+        ],
+        "status": "supported by archive-specific source, parse, timestamp and response checks",
+        "first_eight_call_mapping": [
+          {
+            "logical_call": 1,
+            "ledger_line_1based": 1,
+            "assistant_message_index": 2,
+            "observation_message_index": 3,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790055233.517611,
+            "assistant_timestamp": 1790055233.5179489,
+            "observation_timestamp": 1790055233.8345332,
+            "next_attempt_start": 1790055233.834677
+          },
+          {
+            "logical_call": 2,
+            "ledger_line_1based": 2,
+            "assistant_message_index": 4,
+            "observation_message_index": 5,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790055242.549124,
+            "assistant_timestamp": 1790055242.5493078,
+            "observation_timestamp": 1790055242.803421,
+            "next_attempt_start": 1790055242.80354
+          },
+          {
+            "logical_call": 3,
+            "ledger_line_1based": 3,
+            "assistant_message_index": 6,
+            "observation_message_index": 7,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790055249.3343139,
+            "assistant_timestamp": 1790055249.334466,
+            "observation_timestamp": 1790055249.6538,
+            "next_attempt_start": 1790055249.653905
+          },
+          {
+            "logical_call": 4,
+            "ledger_line_1based": 4,
+            "assistant_message_index": 8,
+            "observation_message_index": 9,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790055258.405887,
+            "assistant_timestamp": 1790055258.406044,
+            "observation_timestamp": 1790055258.6555111,
+            "next_attempt_start": 1790055258.655631
+          },
+          {
+            "logical_call": 5,
+            "ledger_line_1based": 5,
+            "assistant_message_index": 10,
+            "observation_message_index": 11,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790055265.938271,
+            "assistant_timestamp": 1790055265.9384232,
+            "observation_timestamp": 1790055266.183872,
+            "next_attempt_start": 1790055266.183989
+          },
+          {
+            "logical_call": 6,
+            "ledger_line_1based": 6,
+            "assistant_message_index": 12,
+            "observation_message_index": 13,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790055272.472054,
+            "assistant_timestamp": 1790055272.4722052,
+            "observation_timestamp": 1790055272.801075,
+            "next_attempt_start": 1790055272.8012009
+          },
+          {
+            "logical_call": 7,
+            "ledger_line_1based": 7,
+            "assistant_message_index": 14,
+            "observation_message_index": 15,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790055279.9781141,
+            "assistant_timestamp": 1790055279.978267,
+            "observation_timestamp": 1790055280.23788,
+            "next_attempt_start": 1790055280.238004
+          },
+          {
+            "logical_call": 8,
+            "ledger_line_1based": 8,
+            "assistant_message_index": 16,
+            "observation_message_index": 17,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790055289.837867,
+            "assistant_timestamp": 1790055289.838018,
+            "observation_timestamp": 1790055290.19505,
+            "next_attempt_start": 1790055290.195188
+          }
+        ],
+        "pre_call9_message_count": 18,
+        "first_eight_parse_error_count": 0,
+        "features": {
+          "observations": 8,
+          "nonzero_returncodes": 3,
+          "test_command_pattern_seen": false,
+          "edit_command_pattern_seen": false,
+          "history_sha256": "ba00da91837c5bc2cd30f12edc8b2343742d9d82a875878e1a1cca411028c900"
+        },
+        "features_match_archived_report": true
+      }
+    },
+    {
+      "instance_id": "sympy__sympy-11618",
+      "backend": "small",
+      "run_id": "sympy__sympy-11618__small__pilot-cp2-wc2__20260922T053700Z-067273",
+      "directory": "results/v2_agent/pilot_20260922/sympy__sympy-11618__small__pilot-cp2-wc2__20260922T053700Z-067273/",
+      "sha256": {
+        "episode.json": "899d6634f9cad31a0a9c9db2dda572fc09e5af81b3c2b71ea9d7a62b16d6922c",
+        "trajectory.json": "9d8af220960695d218fb7748aab4ed58ca228646f20aee17aa38120965e28413",
+        "attempts.jsonl": "e4e849d86a0643f4ebb6d151396d0d2ecc97d7af10fcc6e9de9bc4be6a11b4eb",
+        "submission.diff": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "grade.json": "1134ad31c7c12ee69329eca906bcb28e8696310ebd69315bf1ae4b6947ee3b80"
+      },
+      "pins": {
+        "mini_swe_agent": "04d809ceab9df28f9adaed044884180159172930",
+        "default_yaml_sha256": "112aa58328f478a41cc2630702a4b89ef459e912870e05065157ed221f56701f",
+        "image_ref": "sweb.eval.x86_64.sympy__sympy-11618:latest",
+        "image_id": "sha256:c073cca08a52c8cd039b2c015aa19740ef235febbd5080c838c79fe93d905f28"
+      },
+      "served_model_sha256": "87a3665ca3247c54dfa198010f6e1f48d41611029bbcb5ed185a5ad05fcd3b81",
+      "exit_status": "ContextWindowExceededError",
+      "physical_requests": 12,
+      "failed_physical_attempts": 1,
+      "submission_bytes": 0,
+      "classification": "operational_zero",
+      "algorithmic_eligible": false,
+      "serialized_yaml_model_environment_deviation_confirmed": true,
+      "call9_mapping": {
+        "call9_issued": true,
+        "all_format_error_markers": [],
+        "status": "supported by archive-specific source, parse, timestamp and response checks",
+        "first_eight_call_mapping": [
+          {
+            "logical_call": 1,
+            "ledger_line_1based": 1,
+            "assistant_message_index": 2,
+            "observation_message_index": 3,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790055429.225565,
+            "assistant_timestamp": 1790055429.225834,
+            "observation_timestamp": 1790055429.47034,
+            "next_attempt_start": 1790055429.470454
+          },
+          {
+            "logical_call": 2,
+            "ledger_line_1based": 2,
+            "assistant_message_index": 4,
+            "observation_message_index": 5,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790055431.769203,
+            "assistant_timestamp": 1790055431.769399,
+            "observation_timestamp": 1790055432.027649,
+            "next_attempt_start": 1790055432.027767
+          },
+          {
+            "logical_call": 3,
+            "ledger_line_1based": 3,
+            "assistant_message_index": 6,
+            "observation_message_index": 7,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790055435.214046,
+            "assistant_timestamp": 1790055435.214196,
+            "observation_timestamp": 1790055435.4776802,
+            "next_attempt_start": 1790055435.477789
+          },
+          {
+            "logical_call": 4,
+            "ledger_line_1based": 4,
+            "assistant_message_index": 8,
+            "observation_message_index": 9,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790055440.2193122,
+            "assistant_timestamp": 1790055440.219475,
+            "observation_timestamp": 1790055440.479986,
+            "next_attempt_start": 1790055440.4801102
+          },
+          {
+            "logical_call": 5,
+            "ledger_line_1based": 5,
+            "assistant_message_index": 10,
+            "observation_message_index": 11,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790055443.875207,
+            "assistant_timestamp": 1790055443.875378,
+            "observation_timestamp": 1790055444.773652,
+            "next_attempt_start": 1790055444.773768
+          },
+          {
+            "logical_call": 6,
+            "ledger_line_1based": 6,
+            "assistant_message_index": 12,
+            "observation_message_index": 13,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790055448.979151,
+            "assistant_timestamp": 1790055448.9793038,
+            "observation_timestamp": 1790055449.4551418,
+            "next_attempt_start": 1790055449.455263
+          },
+          {
+            "logical_call": 7,
+            "ledger_line_1based": 7,
+            "assistant_message_index": 14,
+            "observation_message_index": 15,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790055452.930371,
+            "assistant_timestamp": 1790055452.93052,
+            "observation_timestamp": 1790055453.401648,
+            "next_attempt_start": 1790055453.40176
+          },
+          {
+            "logical_call": 8,
+            "ledger_line_1based": 8,
+            "assistant_message_index": 16,
+            "observation_message_index": 17,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790055457.709086,
+            "assistant_timestamp": 1790055457.709232,
+            "observation_timestamp": 1790055458.168144,
+            "next_attempt_start": 1790055458.168257
+          }
+        ],
+        "pre_call9_message_count": 18,
+        "first_eight_parse_error_count": 0,
+        "features": {
+          "observations": 8,
+          "nonzero_returncodes": 5,
+          "test_command_pattern_seen": false,
+          "edit_command_pattern_seen": true,
+          "history_sha256": "fba830a0d98686b75dfa3c6bd0902a10cac92017791906fbd82fed0b12f06714"
+        },
+        "features_match_archived_report": true
+      }
+    },
+    {
+      "instance_id": "mwaskom__seaborn-3069",
+      "backend": "large",
+      "run_id": "mwaskom__seaborn-3069__large__pilot-cp2-wc2__20260922T053759Z-610089",
+      "directory": "results/v2_agent/pilot_20260922/mwaskom__seaborn-3069__large__pilot-cp2-wc2__20260922T053759Z-610089/",
+      "sha256": {
+        "episode.json": "c75f799d054c1ce4ae8f63b474fabe23e845b91d3e14658bbcdd163bffd5f236",
+        "trajectory.json": "643ea90710e400060b15a1006d36f683dc77ac4513cef9799c2df003acf874c9",
+        "attempts.jsonl": "b67e020354e340c0ff52487275df56324cb0d529909603fc04a0a95526729172",
+        "submission.diff": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "grade.json": "8d13233fd54109da982076bcc59547d5cd91d7c7eaa8c349b5ba26cd487f77ca"
+      },
+      "pins": {
+        "mini_swe_agent": "04d809ceab9df28f9adaed044884180159172930",
+        "default_yaml_sha256": "112aa58328f478a41cc2630702a4b89ef459e912870e05065157ed221f56701f",
+        "image_ref": "sweb.eval.x86_64.mwaskom__seaborn-3069:latest",
+        "image_id": "sha256:06ac5e5099922330534311d3d960987f887ff65e3246cc9e399f11d826e897d7"
+      },
+      "served_model_sha256": "b179f09d5f73776e68623384d95a0dbd73ccf038e34db50b508e9c3baf468066",
+      "exit_status": "ContextWindowExceededError",
+      "physical_requests": 5,
+      "failed_physical_attempts": 1,
+      "submission_bytes": 0,
+      "classification": "operational_zero",
+      "algorithmic_eligible": false,
+      "serialized_yaml_model_environment_deviation_confirmed": true,
+      "call9_mapping": {
+        "call9_issued": false,
+        "all_format_error_markers": [],
+        "status": "not issued; no pre-call-9 history claimed"
+      }
+    },
+    {
+      "instance_id": "mwaskom__seaborn-3069",
+      "backend": "small",
+      "run_id": "mwaskom__seaborn-3069__small__pilot-cp2-wc2__20260922T053834Z-7dcda8",
+      "directory": "results/v2_agent/pilot_20260922/mwaskom__seaborn-3069__small__pilot-cp2-wc2__20260922T053834Z-7dcda8/",
+      "sha256": {
+        "episode.json": "4a99a2dbedd8c0c906ae7585cb1afd37a5c6623882af7043f14fe41481a23c17",
+        "trajectory.json": "0c5961dca05c26240dde64f9cd0bfcad2c9046593502661ec6bebd1d56c6e430",
+        "attempts.jsonl": "e72760b8355345389289a6487112a3af58c3629425527a390d631a726e060211",
+        "submission.diff": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "grade.json": "2dab0b4124a56eae0a0174e063750c539a429dcba9e226a489cc34e60546b652"
+      },
+      "pins": {
+        "mini_swe_agent": "04d809ceab9df28f9adaed044884180159172930",
+        "default_yaml_sha256": "112aa58328f478a41cc2630702a4b89ef459e912870e05065157ed221f56701f",
+        "image_ref": "sweb.eval.x86_64.mwaskom__seaborn-3069:latest",
+        "image_id": "sha256:06ac5e5099922330534311d3d960987f887ff65e3246cc9e399f11d826e897d7"
+      },
+      "served_model_sha256": "87a3665ca3247c54dfa198010f6e1f48d41611029bbcb5ed185a5ad05fcd3b81",
+      "exit_status": "LimitsExceeded",
+      "physical_requests": 24,
+      "failed_physical_attempts": 0,
+      "submission_bytes": 0,
+      "classification": "operational_zero",
+      "algorithmic_eligible": false,
+      "serialized_yaml_model_environment_deviation_confirmed": true,
+      "call9_mapping": {
+        "call9_issued": true,
+        "all_format_error_markers": [],
+        "status": "supported by archive-specific source, parse, timestamp and response checks",
+        "first_eight_call_mapping": [
+          {
+            "logical_call": 1,
+            "ledger_line_1based": 1,
+            "assistant_message_index": 2,
+            "observation_message_index": 3,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790055522.149973,
+            "assistant_timestamp": 1790055522.150238,
+            "observation_timestamp": 1790055522.3978791,
+            "next_attempt_start": 1790055522.3980181
+          },
+          {
+            "logical_call": 2,
+            "ledger_line_1based": 2,
+            "assistant_message_index": 4,
+            "observation_message_index": 5,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790055525.1598961,
+            "assistant_timestamp": 1790055525.1600618,
+            "observation_timestamp": 1790055525.410527,
+            "next_attempt_start": 1790055525.41066
+          },
+          {
+            "logical_call": 3,
+            "ledger_line_1based": 3,
+            "assistant_message_index": 6,
+            "observation_message_index": 7,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790055528.371299,
+            "assistant_timestamp": 1790055528.371448,
+            "observation_timestamp": 1790055528.6140869,
+            "next_attempt_start": 1790055528.6142201
+          },
+          {
+            "logical_call": 4,
+            "ledger_line_1based": 4,
+            "assistant_message_index": 8,
+            "observation_message_index": 9,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790055531.4223769,
+            "assistant_timestamp": 1790055531.422526,
+            "observation_timestamp": 1790055531.677786,
+            "next_attempt_start": 1790055531.6779149
+          },
+          {
+            "logical_call": 5,
+            "ledger_line_1based": 5,
+            "assistant_message_index": 10,
+            "observation_message_index": 11,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790055535.105391,
+            "assistant_timestamp": 1790055535.105545,
+            "observation_timestamp": 1790055535.34606,
+            "next_attempt_start": 1790055535.346171
+          },
+          {
+            "logical_call": 6,
+            "ledger_line_1based": 6,
+            "assistant_message_index": 12,
+            "observation_message_index": 13,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790055538.560241,
+            "assistant_timestamp": 1790055538.560587,
+            "observation_timestamp": 1790055538.8396502,
+            "next_attempt_start": 1790055538.8397639
+          },
+          {
+            "logical_call": 7,
+            "ledger_line_1based": 7,
+            "assistant_message_index": 14,
+            "observation_message_index": 15,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790055542.2331278,
+            "assistant_timestamp": 1790055542.233386,
+            "observation_timestamp": 1790055542.500614,
+            "next_attempt_start": 1790055542.500802
+          },
+          {
+            "logical_call": 8,
+            "ledger_line_1based": 8,
+            "assistant_message_index": 16,
+            "observation_message_index": 17,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790055545.294834,
+            "assistant_timestamp": 1790055545.295074,
+            "observation_timestamp": 1790055545.558329,
+            "next_attempt_start": 1790055545.5584588
+          }
+        ],
+        "pre_call9_message_count": 18,
+        "first_eight_parse_error_count": 0,
+        "features": {
+          "observations": 8,
+          "nonzero_returncodes": 7,
+          "test_command_pattern_seen": false,
+          "edit_command_pattern_seen": false,
+          "history_sha256": "3bef757cc219a74f2ae5f2e96d3a7c3fc0006da6881d5f8be10c389e716fc019"
+        },
+        "features_match_archived_report": true
+      }
+    },
+    {
+      "instance_id": "sphinx-doc__sphinx-10323",
+      "backend": "large",
+      "run_id": "sphinx-doc__sphinx-10323__large__pilot-cp2-wc2__20260922T053958Z-57036a",
+      "directory": "results/v2_agent/pilot_20260922/sphinx-doc__sphinx-10323__large__pilot-cp2-wc2__20260922T053958Z-57036a/",
+      "sha256": {
+        "episode.json": "9714158c5dbdc3ba02694d842a265dffedafcdc6205b3c5e3dd211e2f678308d",
+        "trajectory.json": "7d7638a8b5c9d08b29acba09a4dcc9db359691a05219beb41fc145d039878b2a",
+        "attempts.jsonl": "49abdb8edefdd8b785da831adec594001ad5d46456e72cf257df948817111d13",
+        "submission.diff": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "grade.json": "68200ea5e92ff0aacc7b290611a4437eb2605fea9c0dadd60845c079d6e63675"
+      },
+      "pins": {
+        "mini_swe_agent": "04d809ceab9df28f9adaed044884180159172930",
+        "default_yaml_sha256": "112aa58328f478a41cc2630702a4b89ef459e912870e05065157ed221f56701f",
+        "image_ref": "sweb.eval.x86_64.sphinx-doc__sphinx-10323:latest",
+        "image_id": "sha256:cfb39fa235b89db7628444136036f34070b49373f416359b3aa1139f12bf1166"
+      },
+      "served_model_sha256": "b179f09d5f73776e68623384d95a0dbd73ccf038e34db50b508e9c3baf468066",
+      "exit_status": "LimitsExceeded",
+      "physical_requests": 24,
+      "failed_physical_attempts": 0,
+      "submission_bytes": 0,
+      "classification": "operational_zero",
+      "algorithmic_eligible": false,
+      "serialized_yaml_model_environment_deviation_confirmed": true,
+      "call9_mapping": {
+        "call9_issued": true,
+        "all_format_error_markers": [],
+        "status": "supported by archive-specific source, parse, timestamp and response checks",
+        "first_eight_call_mapping": [
+          {
+            "logical_call": 1,
+            "ledger_line_1based": 1,
+            "assistant_message_index": 2,
+            "observation_message_index": 3,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790055615.016394,
+            "assistant_timestamp": 1790055615.016688,
+            "observation_timestamp": 1790055615.26718,
+            "next_attempt_start": 1790055615.2673001
+          },
+          {
+            "logical_call": 2,
+            "ledger_line_1based": 2,
+            "assistant_message_index": 4,
+            "observation_message_index": 5,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790055626.3292959,
+            "assistant_timestamp": 1790055626.3294709,
+            "observation_timestamp": 1790055626.56395,
+            "next_attempt_start": 1790055626.564054
+          },
+          {
+            "logical_call": 3,
+            "ledger_line_1based": 3,
+            "assistant_message_index": 6,
+            "observation_message_index": 7,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790055633.1869938,
+            "assistant_timestamp": 1790055633.18716,
+            "observation_timestamp": 1790055633.4371562,
+            "next_attempt_start": 1790055633.4372742
+          },
+          {
+            "logical_call": 4,
+            "ledger_line_1based": 4,
+            "assistant_message_index": 8,
+            "observation_message_index": 9,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790055648.748124,
+            "assistant_timestamp": 1790055648.7483451,
+            "observation_timestamp": 1790055649.121383,
+            "next_attempt_start": 1790055649.121517
+          },
+          {
+            "logical_call": 5,
+            "ledger_line_1based": 5,
+            "assistant_message_index": 10,
+            "observation_message_index": 11,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790055659.802787,
+            "assistant_timestamp": 1790055659.8029408,
+            "observation_timestamp": 1790055660.065143,
+            "next_attempt_start": 1790055660.065257
+          },
+          {
+            "logical_call": 6,
+            "ledger_line_1based": 6,
+            "assistant_message_index": 12,
+            "observation_message_index": 13,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790055667.093624,
+            "assistant_timestamp": 1790055667.093795,
+            "observation_timestamp": 1790055667.37008,
+            "next_attempt_start": 1790055667.37023
+          },
+          {
+            "logical_call": 7,
+            "ledger_line_1based": 7,
+            "assistant_message_index": 14,
+            "observation_message_index": 15,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790055685.5058439,
+            "assistant_timestamp": 1790055685.505997,
+            "observation_timestamp": 1790055685.8709602,
+            "next_attempt_start": 1790055685.871087
+          },
+          {
+            "logical_call": 8,
+            "ledger_line_1based": 8,
+            "assistant_message_index": 16,
+            "observation_message_index": 17,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790055695.29039,
+            "assistant_timestamp": 1790055695.2905579,
+            "observation_timestamp": 1790055695.558399,
+            "next_attempt_start": 1790055695.5585291
+          }
+        ],
+        "pre_call9_message_count": 18,
+        "first_eight_parse_error_count": 0,
+        "features": {
+          "observations": 8,
+          "nonzero_returncodes": 3,
+          "test_command_pattern_seen": false,
+          "edit_command_pattern_seen": false,
+          "history_sha256": "de18d59692b2548b3b0769aa3ec753e1dbc50aea254801d1a555bf2d55aa8059"
+        },
+        "features_match_archived_report": true
+      }
+    },
+    {
+      "instance_id": "sphinx-doc__sphinx-10323",
+      "backend": "small",
+      "run_id": "sphinx-doc__sphinx-10323__small__pilot-cp2-wc2__20260922T054445Z-15b460",
+      "directory": "results/v2_agent/pilot_20260922/sphinx-doc__sphinx-10323__small__pilot-cp2-wc2__20260922T054445Z-15b460/",
+      "sha256": {
+        "episode.json": "0e17925639108ba9dca41a28aaf5453d20a8359978efada6a0f53f818ed4da26",
+        "trajectory.json": "b50e2d6a423a156a5324a48765b2cb78d88a21f9bedb9528548c10c128c72afe",
+        "attempts.jsonl": "3e89c55416e1dbab9b5552fe5bd90383641a161761627eeb1b3f14cbb0ab6687",
+        "submission.diff": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "grade.json": "05d14ee67a5ba4aefeec47923247c7a18dd67d5952104d86d1083eacedbe20ee"
+      },
+      "pins": {
+        "mini_swe_agent": "04d809ceab9df28f9adaed044884180159172930",
+        "default_yaml_sha256": "112aa58328f478a41cc2630702a4b89ef459e912870e05065157ed221f56701f",
+        "image_ref": "sweb.eval.x86_64.sphinx-doc__sphinx-10323:latest",
+        "image_id": "sha256:cfb39fa235b89db7628444136036f34070b49373f416359b3aa1139f12bf1166"
+      },
+      "served_model_sha256": "87a3665ca3247c54dfa198010f6e1f48d41611029bbcb5ed185a5ad05fcd3b81",
+      "exit_status": "LimitsExceeded",
+      "physical_requests": 24,
+      "failed_physical_attempts": 0,
+      "submission_bytes": 0,
+      "classification": "operational_zero",
+      "algorithmic_eligible": false,
+      "serialized_yaml_model_environment_deviation_confirmed": true,
+      "call9_mapping": {
+        "call9_issued": true,
+        "all_format_error_markers": [],
+        "status": "supported by archive-specific source, parse, timestamp and response checks",
+        "first_eight_call_mapping": [
+          {
+            "logical_call": 1,
+            "ledger_line_1based": 1,
+            "assistant_message_index": 2,
+            "observation_message_index": 3,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790055898.3841522,
+            "assistant_timestamp": 1790055898.384554,
+            "observation_timestamp": 1790055898.645609,
+            "next_attempt_start": 1790055898.64576
+          },
+          {
+            "logical_call": 2,
+            "ledger_line_1based": 2,
+            "assistant_message_index": 4,
+            "observation_message_index": 5,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790055906.3831942,
+            "assistant_timestamp": 1790055906.3833568,
+            "observation_timestamp": 1790055906.64734,
+            "next_attempt_start": 1790055906.647497
+          },
+          {
+            "logical_call": 3,
+            "ledger_line_1based": 3,
+            "assistant_message_index": 6,
+            "observation_message_index": 7,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790055913.391629,
+            "assistant_timestamp": 1790055913.391783,
+            "observation_timestamp": 1790055913.667337,
+            "next_attempt_start": 1790055913.667468
+          },
+          {
+            "logical_call": 4,
+            "ledger_line_1based": 4,
+            "assistant_message_index": 8,
+            "observation_message_index": 9,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790055924.836114,
+            "assistant_timestamp": 1790055924.836266,
+            "observation_timestamp": 1790055925.138737,
+            "next_attempt_start": 1790055925.1388679
+          },
+          {
+            "logical_call": 5,
+            "ledger_line_1based": 5,
+            "assistant_message_index": 10,
+            "observation_message_index": 11,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790055933.873934,
+            "assistant_timestamp": 1790055933.874177,
+            "observation_timestamp": 1790055934.126202,
+            "next_attempt_start": 1790055934.1263602
+          },
+          {
+            "logical_call": 6,
+            "ledger_line_1based": 6,
+            "assistant_message_index": 12,
+            "observation_message_index": 13,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790055942.734177,
+            "assistant_timestamp": 1790055942.734339,
+            "observation_timestamp": 1790055943.005926,
+            "next_attempt_start": 1790055943.006046
+          },
+          {
+            "logical_call": 7,
+            "ledger_line_1based": 7,
+            "assistant_message_index": 14,
+            "observation_message_index": 15,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790055951.656024,
+            "assistant_timestamp": 1790055951.656178,
+            "observation_timestamp": 1790055951.908003,
+            "next_attempt_start": 1790055951.9081442
+          },
+          {
+            "logical_call": 8,
+            "ledger_line_1based": 8,
+            "assistant_message_index": 16,
+            "observation_message_index": 17,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790055960.602153,
+            "assistant_timestamp": 1790055960.6023612,
+            "observation_timestamp": 1790055960.8569689,
+            "next_attempt_start": 1790055960.857117
+          }
+        ],
+        "pre_call9_message_count": 18,
+        "first_eight_parse_error_count": 0,
+        "features": {
+          "observations": 8,
+          "nonzero_returncodes": 7,
+          "test_command_pattern_seen": false,
+          "edit_command_pattern_seen": true,
+          "history_sha256": "aff3e29ad991f29929494c56c4f1ddc945f0493b09141d435558507e1c725fb9"
+        },
+        "features_match_archived_report": true
+      }
+    },
+    {
+      "instance_id": "psf__requests-1142",
+      "backend": "small",
+      "run_id": "psf__requests-1142__small__pilot-cp2-wc2__20260922T054827Z-85153d",
+      "directory": "results/v2_agent/pilot_20260922/psf__requests-1142__small__pilot-cp2-wc2__20260922T054827Z-85153d/",
+      "sha256": {
+        "episode.json": "9c466591ee7fd203175f269af7bd95d531fc73829d77c9e248aef582907a1a22",
+        "trajectory.json": "15d07a73870204ac74c13beebea31da20be014e35b15f1010d5027f704554493",
+        "attempts.jsonl": "e575c2dc9765b0e426626a72704abe14fcaa84f09c36e51592807723b4d87ef6",
+        "submission.diff": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "grade.json": "36ed8345c8a0dc29cd1b7490224e3a7b2ba57b6d3262afba89ce9cdf71b377bc"
+      },
+      "pins": {
+        "mini_swe_agent": "04d809ceab9df28f9adaed044884180159172930",
+        "default_yaml_sha256": "112aa58328f478a41cc2630702a4b89ef459e912870e05065157ed221f56701f",
+        "image_ref": "sweb.eval.x86_64.psf__requests-1142:latest",
+        "image_id": "sha256:d461c7c6e50916d9837e81604d8e79efca06af9c063f5477b0086102a96b50cf"
+      },
+      "served_model_sha256": "87a3665ca3247c54dfa198010f6e1f48d41611029bbcb5ed185a5ad05fcd3b81",
+      "exit_status": "LimitsExceeded",
+      "physical_requests": 24,
+      "failed_physical_attempts": 0,
+      "submission_bytes": 0,
+      "classification": "operational_zero",
+      "algorithmic_eligible": false,
+      "serialized_yaml_model_environment_deviation_confirmed": true,
+      "call9_mapping": {
+        "call9_issued": true,
+        "all_format_error_markers": [],
+        "status": "supported by archive-specific source, parse, timestamp and response checks",
+        "first_eight_call_mapping": [
+          {
+            "logical_call": 1,
+            "ledger_line_1based": 1,
+            "assistant_message_index": 2,
+            "observation_message_index": 3,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790056118.5569391,
+            "assistant_timestamp": 1790056118.557306,
+            "observation_timestamp": 1790056118.814858,
+            "next_attempt_start": 1790056118.815081
+          },
+          {
+            "logical_call": 2,
+            "ledger_line_1based": 2,
+            "assistant_message_index": 4,
+            "observation_message_index": 5,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790056123.921872,
+            "assistant_timestamp": 1790056123.9220521,
+            "observation_timestamp": 1790056124.461374,
+            "next_attempt_start": 1790056124.461489
+          },
+          {
+            "logical_call": 3,
+            "ledger_line_1based": 3,
+            "assistant_message_index": 6,
+            "observation_message_index": 7,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790056129.653774,
+            "assistant_timestamp": 1790056129.6539252,
+            "observation_timestamp": 1790056129.925461,
+            "next_attempt_start": 1790056129.925586
+          },
+          {
+            "logical_call": 4,
+            "ledger_line_1based": 4,
+            "assistant_message_index": 8,
+            "observation_message_index": 9,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790056139.480414,
+            "assistant_timestamp": 1790056139.480573,
+            "observation_timestamp": 1790056139.722188,
+            "next_attempt_start": 1790056139.722334
+          },
+          {
+            "logical_call": 5,
+            "ledger_line_1based": 5,
+            "assistant_message_index": 10,
+            "observation_message_index": 11,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790056145.986364,
+            "assistant_timestamp": 1790056145.9867,
+            "observation_timestamp": 1790056146.2535338,
+            "next_attempt_start": 1790056146.253654
+          },
+          {
+            "logical_call": 6,
+            "ledger_line_1based": 6,
+            "assistant_message_index": 12,
+            "observation_message_index": 13,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790056152.486006,
+            "assistant_timestamp": 1790056152.4861598,
+            "observation_timestamp": 1790056152.7340858,
+            "next_attempt_start": 1790056152.7342038
+          },
+          {
+            "logical_call": 7,
+            "ledger_line_1based": 7,
+            "assistant_message_index": 14,
+            "observation_message_index": 15,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790056159.015271,
+            "assistant_timestamp": 1790056159.015428,
+            "observation_timestamp": 1790056159.26086,
+            "next_attempt_start": 1790056159.260993
+          },
+          {
+            "logical_call": 8,
+            "ledger_line_1based": 8,
+            "assistant_message_index": 16,
+            "observation_message_index": 17,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790056165.479946,
+            "assistant_timestamp": 1790056165.480114,
+            "observation_timestamp": 1790056165.72552,
+            "next_attempt_start": 1790056165.7256372
+          }
+        ],
+        "pre_call9_message_count": 18,
+        "first_eight_parse_error_count": 0,
+        "features": {
+          "observations": 8,
+          "nonzero_returncodes": 6,
+          "test_command_pattern_seen": false,
+          "edit_command_pattern_seen": true,
+          "history_sha256": "824b45adeda6e77c3572fc7911ec49ee7f454349f16bb581c4228090fe82be7e"
+        },
+        "features_match_archived_report": true
+      }
+    },
+    {
+      "instance_id": "psf__requests-1142",
+      "backend": "large",
+      "run_id": "psf__requests-1142__large__pilot-cp2-wc2__20260922T055112Z-48dc58",
+      "directory": "results/v2_agent/pilot_20260922/psf__requests-1142__large__pilot-cp2-wc2__20260922T055112Z-48dc58/",
+      "sha256": {
+        "episode.json": "a65a60ad13d204bac0d3bdedb9f502525c66ed1c5be98b6ffa6396615dcbf35d",
+        "trajectory.json": "8052cd8ed197ec5d810a86aa11e885e55314da55572eb9371de9e9adc6133402",
+        "attempts.jsonl": "c282d87bf348f4ee93f0ba5cd659297f046302c81785f5dba4c1dca13a1a7d89",
+        "submission.diff": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "grade.json": "480f34b529031ce6d1325d417f6430679589392d633395681dffb6f691c507be"
+      },
+      "pins": {
+        "mini_swe_agent": "04d809ceab9df28f9adaed044884180159172930",
+        "default_yaml_sha256": "112aa58328f478a41cc2630702a4b89ef459e912870e05065157ed221f56701f",
+        "image_ref": "sweb.eval.x86_64.psf__requests-1142:latest",
+        "image_id": "sha256:d461c7c6e50916d9837e81604d8e79efca06af9c063f5477b0086102a96b50cf"
+      },
+      "served_model_sha256": "b179f09d5f73776e68623384d95a0dbd73ccf038e34db50b508e9c3baf468066",
+      "exit_status": "LimitsExceeded",
+      "physical_requests": 24,
+      "failed_physical_attempts": 0,
+      "submission_bytes": 0,
+      "classification": "operational_zero",
+      "algorithmic_eligible": false,
+      "serialized_yaml_model_environment_deviation_confirmed": true,
+      "call9_mapping": {
+        "call9_issued": true,
+        "all_format_error_markers": [],
+        "status": "supported by archive-specific source, parse, timestamp and response checks",
+        "first_eight_call_mapping": [
+          {
+            "logical_call": 1,
+            "ledger_line_1based": 1,
+            "assistant_message_index": 2,
+            "observation_message_index": 3,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790056283.767627,
+            "assistant_timestamp": 1790056283.767893,
+            "observation_timestamp": 1790056284.0154529,
+            "next_attempt_start": 1790056284.015599
+          },
+          {
+            "logical_call": 2,
+            "ledger_line_1based": 2,
+            "assistant_message_index": 4,
+            "observation_message_index": 5,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790056291.497437,
+            "assistant_timestamp": 1790056291.497598,
+            "observation_timestamp": 1790056291.747385,
+            "next_attempt_start": 1790056291.747502
+          },
+          {
+            "logical_call": 3,
+            "ledger_line_1based": 3,
+            "assistant_message_index": 6,
+            "observation_message_index": 7,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790056299.749881,
+            "assistant_timestamp": 1790056299.750041,
+            "observation_timestamp": 1790056299.987335,
+            "next_attempt_start": 1790056299.987456
+          },
+          {
+            "logical_call": 4,
+            "ledger_line_1based": 4,
+            "assistant_message_index": 8,
+            "observation_message_index": 9,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790056306.2648,
+            "assistant_timestamp": 1790056306.264951,
+            "observation_timestamp": 1790056306.519132,
+            "next_attempt_start": 1790056306.5192618
+          },
+          {
+            "logical_call": 5,
+            "ledger_line_1based": 5,
+            "assistant_message_index": 10,
+            "observation_message_index": 11,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790056316.019018,
+            "assistant_timestamp": 1790056316.019169,
+            "observation_timestamp": 1790056316.2518349,
+            "next_attempt_start": 1790056316.25195
+          },
+          {
+            "logical_call": 6,
+            "ledger_line_1based": 6,
+            "assistant_message_index": 12,
+            "observation_message_index": 13,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790056321.3540008,
+            "assistant_timestamp": 1790056321.3541582,
+            "observation_timestamp": 1790056322.021564,
+            "next_attempt_start": 1790056322.0217128
+          },
+          {
+            "logical_call": 7,
+            "ledger_line_1based": 7,
+            "assistant_message_index": 14,
+            "observation_message_index": 15,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790056329.788955,
+            "assistant_timestamp": 1790056329.789105,
+            "observation_timestamp": 1790056330.062328,
+            "next_attempt_start": 1790056330.062452
+          },
+          {
+            "logical_call": 8,
+            "ledger_line_1based": 8,
+            "assistant_message_index": 16,
+            "observation_message_index": 17,
+            "parsed_action_count": 1,
+            "physical_attempt_ok": true,
+            "response_usage_and_finish_reason_match": true,
+            "attempt_end": 1790056338.60331,
+            "assistant_timestamp": 1790056338.60346,
+            "observation_timestamp": 1790056338.858192,
+            "next_attempt_start": 1790056338.858319
+          }
+        ],
+        "pre_call9_message_count": 18,
+        "first_eight_parse_error_count": 0,
+        "features": {
+          "observations": 8,
+          "nonzero_returncodes": 3,
+          "test_command_pattern_seen": false,
+          "edit_command_pattern_seen": false,
+          "history_sha256": "366274bda293cd94ae47ef5a7c02b37d759f36a556a071f2b1182d90fa5fe813"
+        },
+        "features_match_archived_report": true
+      }
+    }
+  ]
+}

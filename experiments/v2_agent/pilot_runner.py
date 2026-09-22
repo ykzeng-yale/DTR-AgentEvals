@@ -18,7 +18,7 @@ Declared before launch (no outcome exists yet):
     one fixed non-task probe (512 generated tokens, T=0) and one long-prompt probe (~12k tokens) for throughput;
     fit failures are recorded, never substituted
   * grading is NOT done in the block (CPU-only, after release) by grade_submission.py
-  work/venvs/minisweagent_04d809c/bin/python experiments/v2_agent/pilot_runner.py --block 1 [--dry-run]
+  work/venvs/minisweagent_04d809c/bin/python experiments/v2_agent/pilot_runner.py --cohort yaml-v1 --block 1 [--dry-run]
 """
 from __future__ import annotations
 import argparse, hashlib, json, os, signal, subprocess, sys, time
@@ -27,6 +27,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import workspace_capture as WC  # noqa: E402
+import pilot_cohort as PC  # noqa: E402
 
 FRAME = ROOT / 'results/v2_agent/pilot_frame_20260922.json'
 CONV = ROOT / 'results/v2_agent/coder_conversion_20260922.json'
@@ -91,7 +92,7 @@ def episode_queue(frame):
     return q
 
 
-def episode_state(out, item, expected_models=None):
+def episode_state(out, item, expected_models=None, expected_binding=None, expected_episode_source=None):
     """completed (terminal episode.json) | incomplete (run dir(s) without one) | new; conflicts raise."""
     prefix = '%s__%s__' % (item['instance_id'], item['backend'])
     dirs = sorted(d for d in Path(out).glob(prefix + '*') if d.is_dir()) if Path(out).exists() else []
@@ -119,6 +120,11 @@ def episode_state(out, item, expected_models=None):
                 rec.get('workspace_binding') != 'wc2' or rec.get('template_platform_binding') != 'cp2' or
                 any(rec.get('settings', {}).get(k) != v for k, v in FROZEN_SETTINGS.items())):
             raise Conflict('%s has missing/conflicting frozen harness/settings/binding identity; reconcile before reuse' % e)
+        if expected_binding is not None:
+            try:
+                PC.validate_effective_receipt(d, rec, expected_binding, expected_episode_source)
+            except ValueError as exc:
+                raise Conflict('%s: %s' % (e, exc)) from exc
         if done is not None:
             raise Conflict('two terminal episodes for %s/%s: %s and %s' % (item['instance_id'], item['backend'], done[0], d.name))
         done = (d.name, hashlib.sha256(raw).hexdigest(), rec)
@@ -134,11 +140,11 @@ def plan_start(now, block_start, switching, cap=BLOCK_CAP, wall=EPISODE_WALL, ma
 
 
 def run_block(queue, out, serve, run_episode, status, clock=time.time, block_start=None, pause=None, physical_so_far=0,
-              expected_models=None):
+              expected_models=None, expected_binding=None, expected_episode_source=None):
     """serve(backend) makes that backend the ONE live server (stopping the other); run_episode(item) returns the
     terminal record. Every task state is validated before any execution."""
     block_start = clock() if block_start is None else block_start
-    states = [(it, episode_state(out, it, expected_models)) for it in queue]
+    states = [(it, episode_state(out, it, expected_models, expected_binding, expected_episode_source)) for it in queue]
     incomplete = [dict(instance_id=it['instance_id'], backend=it['backend'], run_dirs=state[2])
                   for it, state in states if state[2]]
     if incomplete:
@@ -354,11 +360,13 @@ def preflight(backend, ev, out, deadline, block):
     return rec
 
 
-def make_episode_runner(out, servers):
+def make_episode_runner(out, servers, verify_source=None):
     def run(item):
+        if verify_source is not None:
+            verify_source()
         if remaining(servers.work_deadline) < EPISODE_WALL:
             raise DeadlineReached('full episode allowance no longer fits after setup')
-        run_id, run_dir = WC.new_run_dir(out, item['instance_id'], item['backend'], 'pilot-cp2-wc2')
+        run_id, run_dir = WC.new_run_dir(out, item['instance_id'], item['backend'], 'pilot-cp2-wc2-yaml-v1')
         live = servers.live
         served = dict(model_file=live['model_file'], model_sha256=live['model_sha256'], server_pid=live['pid'],
                       server_started_utc=live['started_utc'], llama_cpp='4fea119de30f6a923992780f6fd5ccb0bee5d47d')
@@ -426,6 +434,8 @@ def make_episode_runner(out, servers):
                        backend=item['backend'], backend_alias=ALIAS[item['backend']], run_id=run_id, served=served,
                        pins=dict(image_id=item['image'], mini_swe_agent=HARNESS_PIN, default_yaml_sha256=DEFAULT_YAML_PIN),
                        settings=dict(FROZEN_SETTINGS), workspace_binding='wc2', template_platform_binding='cp2',
+                       configuration_binding='yaml-v1', effective_config_status='unavailable; reconciliation required',
+                       episode_source_sha256=sha_file(EPISODE),
                        contract_scope='declared invocation; child produced no observed episode record',
                        exit_status='EpisodeWallLimit' if wall_timeout else
                        ('RunnerHardKill' if proc.returncode in (-9, None) else 'EpisodeProcessError'),
@@ -446,28 +456,40 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--block', type=int, required=True)
     ap.add_argument('--dry-run', action='store_true')
+    ap.add_argument('--cohort', choices=tuple(PC.COHORTS), required=True)
     args = ap.parse_args()
+    if not args.dry_run and args.cohort != 'yaml-v1':
+        ap.error('legacy cohort is read-only; never execute the repaired driver in its namespace')
+    out = PC.cohort_output(args.cohort)
     frame = json.loads(FRAME.read_text())
     queue = episode_queue(frame)
-    OUT.mkdir(parents=True, exist_ok=True)
     if args.dry_run:
         for it in queue:
-            print(it['position'], it['order'], it['instance_id'], it['backend'], episode_state(OUT, it)[0])
+            print(it['position'], it['order'], it['instance_id'], it['backend'], episode_state(out, it)[0])
         return
+    PC.validate_amendment(FRAME, CONV)
+    from pilot_episode import CONFIGURATION_BINDING
+    if CONFIGURATION_BINDING != args.cohort:
+        raise Conflict('runner/episode configuration binding mismatch')
     conv = json.loads(CONV.read_text())
-    bpath = OUT / ('block_%d.json' % args.block)
+    out.mkdir(parents=True, exist_ok=True)
+    source_binding = PC.freeze_source_binding(out)
+    bpath = out / ('block_%d.json' % args.block)
     if bpath.exists():
         raise SystemExit('block %d already recorded' % args.block)
-    status = dict(block=args.block, frame_sha256=sha_file(FRAME), conversion_record_sha256=sha_file(CONV))
+    status = dict(block=args.block, cohort=args.cohort, frame_sha256=sha_file(FRAME), conversion_record_sha256=sha_file(CONV),
+                  amendment_sha256=sha_file(PC.AMENDMENT), runner_source_sha256=sha_file(Path(__file__)),
+                  episode_source_sha256=sha_file(EPISODE))
     S = time.time()
     block = dict(block=args.block, block_start_utc=utc(S), block_hard_end_utc=utc(S + BLOCK_CAP), hard_deadline_epoch=S + BLOCK_CAP)
-    servers = Servers(conv, block, OUT)
+    servers = Servers(conv, block, out)
     done_pre = set()
 
     def serve(backend):
+        PC.freeze_source_binding(out)
         ev = servers.serve(backend)
         if backend not in done_pre:
-            receipt = preflight(backend, ev, OUT, servers.work_deadline, block)
+            receipt = preflight(backend, ev, out, servers.work_deadline, block)
             fits = receipt['fits_declared_limits']
             status.setdefault('preflight', {})[backend] = fits
             status['non_task_probe_requests'] = status.get('non_task_probe_requests', 0) + receipt['non_task_probe_requests']
@@ -479,8 +501,9 @@ def main():
     old_handler = signal.signal(signal.SIGALRM, alarm)
     signal.setitimer(signal.ITIMER_REAL, remaining(servers.work_deadline))
     try:
-        run_block(queue, OUT, serve, make_episode_runner(OUT, servers), status, block_start=S, pause=OUT / 'PAUSE',
-                  expected_models={be: conv['backends'][be]['q4_k_m']['sha256'] for be in PORTS})
+        run_block(queue, out, serve, make_episode_runner(out, servers, lambda: PC.freeze_source_binding(out)), status, block_start=S, pause=out / 'PAUSE',
+                  expected_models={be: conv['backends'][be]['q4_k_m']['sha256'] for be in PORTS}, expected_binding=args.cohort,
+                  expected_episode_source=source_binding['sources']['pilot_episode.py'])
     except Exception as e:  # noqa: BLE001  recorded; the block still releases its own server
         status['stopped'] = 'error: %s: %s' % (type(e).__name__, str(e)[:500])
     finally:

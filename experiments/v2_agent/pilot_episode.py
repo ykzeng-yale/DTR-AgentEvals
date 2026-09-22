@@ -13,7 +13,7 @@ from __future__ import annotations
 import os
 os.environ['MSWEA_MODEL_RETRY_STOP_AFTER_ATTEMPT'] = '2'
 os.environ['MSWEA_COST_TRACKING'] = 'ignore_errors'
-import argparse, hashlib, json, platform, re, signal, subprocess, sys, time
+import argparse, copy, hashlib, json, platform, re, signal, subprocess, sys, time
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -26,10 +26,35 @@ DATA = ROOT / 'work/benchmark_inputs/swebench_verified_c104f840/test-00000-of-00
 DOCKER = str(Path.home() / '.local/dtr-runtime/bin/docker')
 H, WALL_S, MAX_TOKENS, CMD_TIMEOUT, ATTEMPTS_PER_CALL = 24, 1800, 1536, 60, 2
 REQUEST_TIMEOUT_S = 900
+CONFIGURATION_BINDING = 'yaml-v1'
+MINI_SWE_AGENT_PIN = '04d809ceab9df28f9adaed044884180159172930'
+EPISODE_SOURCE_SHA256 = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
 
 
 def sha(b):
     return hashlib.sha256(b if isinstance(b, bytes) else b.encode()).hexdigest()
+
+
+def build_effective_config(cfg, *, alias, port, image_id, executable=DOCKER):
+    """Preserve all three pinned YAML sections; apply only the declared pilot runtime overrides."""
+    effective = {section: copy.deepcopy(cfg[section]) for section in ('agent', 'model', 'environment')}
+    effective['agent'].update(step_limit=H, cost_limit=0.0, wall_time_limit_seconds=WALL_S)
+    model = effective['model']
+    model.update(model_name='openai/' + alias, cost_tracking='ignore_errors')
+    model.setdefault('model_kwargs', {}).update(api_base='http://127.0.0.1:%d/v1' % port, api_key='none',
+                                               temperature=0.0, max_tokens=MAX_TOKENS,
+                                               timeout=REQUEST_TIMEOUT_S, num_retries=0)
+    effective['environment'].update(image=image_id, cwd='/testbed', executable=executable, timeout=CMD_TIMEOUT,
+                                     run_args=['--rm', '--platform', 'linux/amd64'])
+    return effective
+
+
+def effective_config_receipt(arguments, resolved):
+    payload = dict(configuration_binding=CONFIGURATION_BINDING, mini_swe_agent=MINI_SWE_AGENT_PIN,
+                   default_yaml_sha256=DEFAULT_YAML_SHA, episode_source_sha256=EPISODE_SOURCE_SHA256,
+                   constructor_arguments=arguments, resolved=resolved)
+    digest = sha(json.dumps(payload, sort_keys=True, separators=(',', ':'), ensure_ascii=False))
+    return dict(payload, effective_config_sha256=digest)
 
 
 class EpisodeDeadline(TimeoutError):
@@ -90,22 +115,6 @@ def cleanup_owned_container(container_id, deadline, run=None):
     return rec
 
 
-YAML_BINDING = 'default.yaml agent+model+environment (binding v3, proposed after block-1 finding 98895fe)'
-
-
-def yaml_bindings(cfg, port, alias_timeout_s):
-    """Apply the pinned default.yaml `model` and `environment` sections, not only `agent` (block-1 defect 98895fe:
-    class-default templates meant no 10k-character observation truncation, a different format-error message, no
-    drop_params, and only PAGER/MANPAGER in the container env). Our pinned serving/decoding kwargs are layered ON TOP of
-    the yaml model_kwargs; every other yaml model key (observation_template, format_error_template) is passed unchanged."""
-    model = dict(cfg['model'])
-    kwargs = dict(model.pop('model_kwargs', None) or {})
-    kwargs.update(api_base='http://127.0.0.1:%d/v1' % port, api_key='none', temperature=0.0, max_tokens=MAX_TOKENS,
-                  timeout=alias_timeout_s, num_retries=0)
-    env_vars = dict((cfg.get('environment') or {}).get('env') or {})
-    return model, kwargs, env_vars
-
-
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--instance', required=True)
@@ -144,6 +153,7 @@ def main():
     image_id = subprocess.run([DOCKER, 'image', 'inspect', '--format', '{{.Id}}', image_ref], capture_output=True, text=True, check=True).stdout.strip()
     if image_id != args.expected_image:
         raise SystemExit('image %s is %s, frozen frame pins %s' % (image_ref, image_id, args.expected_image))
+    effective_cfg = build_effective_config(cfg, alias=args.alias, port=args.port, image_id=image_id)
     props = requests.get('http://127.0.0.1:%d/props' % args.port, timeout=10).json()
     attempts = []
 
@@ -181,8 +191,7 @@ def main():
             append_attempt(attempts_path, dict(rec, event='result'))
             return r
 
-    model_cfg, model_kwargs, env_vars = yaml_bindings(cfg, args.port, REQUEST_TIMEOUT_S)
-    model = AccountedModel(model_name='openai/' + args.alias, cost_tracking='ignore_errors', model_kwargs=model_kwargs, **model_cfg)
+    model = AccountedModel(**effective_cfg['model'])
 
     class ContainerPlatformDockerEnvironment(DockerEnvironment):
         """cp2 binding (accepted): the CONTAINER's uname in the prompt templates, not the macOS host's."""
@@ -205,16 +214,18 @@ def main():
         def get_template_vars(self, **kwargs):
             return {**super().get_template_vars(**kwargs), **self.container_platform()}
 
-    env = ContainerPlatformDockerEnvironment(image=image_id, cwd='/testbed', executable=DOCKER, timeout=CMD_TIMEOUT,
-                                             run_args=['--rm', '--platform', 'linux/amd64'], env=env_vars)
+    env = ContainerPlatformDockerEnvironment(**effective_cfg['environment'])
     ex = lambda cmd: (lambda o: (o.get('returncode'), o.get('output', '')))(env.execute({'command': cmd}))
     base_tree, capture_error = None, None
     try:
         base_tree = WC.tree(ex)
     except WC.CaptureError as e:
         capture_error = 'base: %s' % e
-    agent_cfg = dict(cfg['agent'], step_limit=H, cost_limit=0.0, wall_time_limit_seconds=WALL_S)
+    agent_cfg = effective_cfg['agent']
     agent = DefaultAgent(model, env, **agent_cfg)
+    config_record = effective_config_receipt(effective_cfg, dict(agent=agent.config.model_dump(mode='json'),
+                      model=model.config.model_dump(mode='json'), environment=env.config.model_dump(mode='json')))
+    WC.write_once(run_dir / 'effective_config.json', json.dumps(config_record, indent=1) + '\n')
     t0 = time.time()
     exit_status, submission, err, final_tree = None, '', None, None
     try:
@@ -252,17 +263,15 @@ def main():
                served=json.loads(args.served),
                server=dict(port=args.port, total_slots=props.get('total_slots'), n_ctx_per_slot=props.get('default_generation_settings', {}).get('n_ctx'),
                            model_file=Path(props.get('model_path') or '').name),
-               pins=dict(mini_swe_agent='04d809ceab9df28f9adaed044884180159172930', default_yaml_sha256=DEFAULT_YAML_SHA,
+               pins=dict(mini_swe_agent=MINI_SWE_AGENT_PIN, default_yaml_sha256=DEFAULT_YAML_SHA,
                          image_ref=image_ref, image_id=image_id),
+               configuration_binding=CONFIGURATION_BINDING, effective_config_file='effective_config.json',
+               effective_config_status='recorded', effective_config_sha256=config_record['effective_config_sha256'],
+               episode_source_sha256=config_record['episode_source_sha256'],
                settings=dict(step_limit=H, cost_limit=0.0, wall_time_limit_seconds=WALL_S, temperature=0.0, max_tokens=MAX_TOKENS,
                              command_timeout_s=CMD_TIMEOUT, physical_attempts_per_call_max=ATTEMPTS_PER_CALL, request_timeout_s=REQUEST_TIMEOUT_S,
                              max_consecutive_format_errors=agent_cfg.get('max_consecutive_format_errors')),
                workspace_binding='wc2', template_platform_binding='cp2', container_platform=env.container_platform(),
-               yaml_binding=YAML_BINDING, effective_model_config=dict(
-                   observation_template_sha256=sha(model.config.observation_template),
-                   format_error_template_sha256=sha(model.config.format_error_template),
-                   model_kwargs={k: v for k, v in model_kwargs.items() if k != 'api_key'}),
-               container_env=env_vars,
                base_tree=base_tree, final_tree=final_tree, capture_error=capture_error, cleanup_error=cleanup_error,
                container_cleanup=container_cleanup,
                host=dict(arch=platform.machine(), os=platform.platform()),

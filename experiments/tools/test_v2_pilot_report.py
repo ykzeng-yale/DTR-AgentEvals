@@ -231,13 +231,14 @@ def test_grade_pass_refuses_empty_or_incomplete_existing_grade(tmp_path, invalid
     assert calls == []
 
 
-def test_block1_legacy_exit_attempt_log_is_admitted_labelled_and_derives_call9_only_when_calls_1_8_answered(tmp_path):
+def test_block1_legacy_exit_attempt_log_keeps_costs_but_has_unknown_call9_feedback(tmp_path):
     """Block-1 episodes (pre-a64d81e code) wrote one completed-attempt record per line at episode exit, without
-    start/result events. They are admitted as a labelled legacy source; call-9 feedback comes from the trajectory
-    prefix only when every logical call 1-8 was answered, otherwise it stays unknown. Expected values by hand."""
+    start/result events. They remain a labelled cost source; physical success alone cannot identify which
+    responses became saved assistants. Call-9 feedback is unknown without its snapshot. Values by hand."""
     out = tmp_path / 'out'
     for iid, backend, fail_call in (('a__1', 'small', None), ('a__1', 'large', 3)):
         ep(out, iid, backend, 'LimitsExceeded', 10, ledger=False, rc=(0, 1),
+           physical_requests=11 if fail_call else 10, failed_attempts=2 if fail_call else 0,
            grade=dict(classification='operational_zero', grade_valid=True, operational_resolved=0, algorithmic_correctness='not_evaluated'))
         d = out / ('%s__%s__pilot-cp2-wc2__T-000000' % (iid, backend))
         (d / 'call9_history.json').unlink(missing_ok=True)                       # block 1 wrote no snapshot
@@ -255,6 +256,172 @@ def test_block1_legacy_exit_attempt_log_is_admitted_labelled_and_derives_call9_o
     assert s['physical_requests'] == 10 and l['physical_requests'] == 11 and l['failed_attempts'] == 2
     assert s['prompt_tokens'] == 500 and l['prompt_tokens'] is None                  # failed attempts: usage unknown, not zero
     assert l['known_subtotals']['prompt_tokens'] == 450
-    assert s['call9_eligible'] is True and s['call9_feedback_source'] == 'block1_trajectory_prefix_calls_1_8_answered'
-    assert s['call9_feedback']['observations'] == 8 and s['call9_feedback']['nonzero_returncodes'] == 4
+    assert s['call9_eligible'] is True and s['call9_feedback'] is None and s['call9_feedback_source'] is None
     assert l['call9_eligible'] is True and l['call9_feedback'] is None and l['call9_feedback_source'] is None
+
+
+def legacy_attempts(directory, n_calls):
+    records = [dict(call=call, attempt=1, t_start=call, t_end=call + .1, ok=True,
+                    prompt_tokens=100, completion_tokens=10) for call in range(1, n_calls + 1)]
+    (directory / 'attempts.jsonl').write_text(''.join(json.dumps(r) + '\n' for r in records))
+
+
+@pytest.mark.parametrize('rejected_calls', [(3,), (3, 4, 5)])
+def test_legacy_physical_success_with_parse_errors_does_not_map_assistant_ordinals(tmp_path, rejected_calls):
+    directory = ep(tmp_path, 'a__1', 'small', 'LimitsExceeded', 10, ledger=False)
+    (directory / 'call9_history.json').unlink()
+    legacy_attempts(directory, 10)
+    original = msgs(10)
+    messages = original[:2]
+    for call in range(1, 11):
+        if call in rejected_calls:
+            # Pinned model.query raises FormatError after the successful physical response;
+            # DefaultAgent saves error feedback, but never appends the rejected assistant.
+            messages.append(dict(role='user', content='FormatError: exactly one action required',
+                                 extra=dict(response={'content': 'unparseable response'})))
+        else:
+            messages.extend(original[2 * call:2 * call + 2])
+    (directory / 'trajectory.json').write_text(json.dumps(dict(messages=messages)))
+    row = RP.report(FRAME, tmp_path)['episodes'][0]
+    assert row['logical_calls'] == row['physical_requests'] == 10
+    assert row['completed_assistant_messages'] == 10 - len(rejected_calls)
+    assert row['prompt_tokens'] == 1000 and row['call9_eligible'] is True
+    assert row['call9_feedback'] is None and row['call9_feedback_source'] is None
+    if len(rejected_calls) == 1:
+        # The ninth saved assistant is logical call 10. The old prefix silently included
+        # the observation of logical call 9, which was unavailable when call 9 was issued.
+        prefix = RP.visible_before_call(messages, 9)
+        assert any(m.get('content') == 'o8' for m in prefix)
+
+
+@pytest.mark.parametrize('counter,value,match', [('physical_requests', 3, 'counters disagree'),
+                                                ('failed_attempts', 1, 'counters disagree'),
+                                                ('n_model_calls', 1, 'dispatched call exceeds')])
+def test_legacy_attempt_log_must_agree_with_exit_counters(tmp_path, counter, value, match):
+    directory = ep(tmp_path, 'a__1', 'small', 'LimitsExceeded', 2, ledger=False)
+    record = RP.read_json(directory / 'episode.json')
+    record[counter] = value
+    (directory / 'episode.json').write_text(json.dumps(record))
+    legacy_attempts(directory, 2)
+    with pytest.raises(RP.ReportIntegrityError, match=match):
+        RP.report(FRAME, tmp_path)
+
+
+def test_legacy_call_can_fail_before_dispatch_without_inventing_usage(tmp_path):
+    directory = ep(tmp_path, 'a__1', 'small', 'ValueError', 2, ledger=False, physical_requests=1)
+    legacy_attempts(directory, 1)
+    row = RP.report(FRAME, tmp_path)['episodes'][0]
+    assert row['logical_calls'] == 2 and row['physical_requests'] == 1 and row['prompt_tokens'] == 100
+
+
+@pytest.mark.parametrize('args,cohort', [(['fixture'], 'legacy'), (['fixture', '--cohort', 'yaml-v1'], 'yaml-v1')])
+def test_report_cli_selects_one_cohort_output(tmp_path, monkeypatch, args, cohort):
+    import pilot_cohort as PC
+    requested = []
+    def output(name):
+        requested.append(name)
+        return tmp_path / name
+    monkeypatch.setattr(PC, 'cohort_output', output)
+    RP.main(args)
+    assert requested == [cohort]
+    destination = tmp_path / cohort / 'report_fixture.json'
+    rep = RP.read_json(destination)
+    assert rep['assigned'] == 16 and rep['terminal'] == 0
+    assert rep['cohort'] == rep['cohort_provenance']['cohort'] == cohort
+    if cohort == 'legacy':
+        assert 'faulty/incomplete YAML' in rep['cohort_provenance']['configuration_binding_label']
+        assert rep['cohort_provenance']['amendment_sha256'] is None
+    else:
+        assert rep['cohort_provenance']['amendment_sha256'] == hashlib.sha256(PC.AMENDMENT.read_bytes()).hexdigest()
+        assert rep['cohort_provenance']['cohort_binding_status'] == 'unavailable'
+    assert not (tmp_path / ('yaml-v1' if cohort == 'legacy' else 'legacy')).exists()
+
+
+def bind_effective_config(directory, source='a' * 64):
+    arguments = {section: {'fixture': section} for section in ('agent', 'model', 'environment')}
+    receipt = dict(configuration_binding='yaml-v1', mini_swe_agent='fixture-mini-pin', default_yaml_sha256='fixture-yaml-pin',
+                   episode_source_sha256=source, constructor_arguments=arguments, resolved=arguments)
+    digest = hashlib.sha256(json.dumps(receipt, sort_keys=True, separators=(',', ':'), ensure_ascii=False).encode()).hexdigest()
+    receipt['effective_config_sha256'] = digest
+    (directory / 'effective_config.json').write_text(json.dumps(receipt))
+    episode = RP.read_json(directory / 'episode.json')
+    episode.update(configuration_binding='yaml-v1', effective_config_file='effective_config.json', effective_config_sha256=digest,
+                   effective_config_status='recorded', episode_source_sha256=source)
+    episode['pins'].update(mini_swe_agent='fixture-mini-pin', default_yaml_sha256='fixture-yaml-pin')
+    (directory / 'episode.json').write_text(json.dumps(episode))
+    return episode
+
+
+@pytest.mark.parametrize('damage,status', [(None, 'validated'), ('missing', 'unavailable'), ('fallback', 'unavailable'),
+                                          ('digest', 'invalid'), ('frozen_source', 'invalid'), ('binding', 'invalid'),
+                                          ('unfrozen', 'unavailable')])
+def test_corrected_configuration_provenance_never_hides_adverse_assignments(tmp_path, damage, status):
+    directory = ep(tmp_path, 'a__1', 'small', 'Submitted', 1, evaluated(0))
+    episode = bind_effective_config(directory)
+    expected_source = 'a' * 64
+    if damage == 'missing':
+        (directory / 'effective_config.json').unlink()
+    elif damage == 'fallback':
+        episode['exit_status'] = 'RunnerHardKill'
+        episode['effective_config_status'] = 'unavailable; reconciliation required'
+        for key in ('effective_config_file', 'effective_config_sha256'):
+            episode.pop(key)
+    elif damage == 'digest':
+        episode['effective_config_sha256'] = 'b' * 64
+    elif damage == 'frozen_source':
+        expected_source = 'b' * 64
+    elif damage == 'binding':
+        episode['configuration_binding'] = 'legacy'
+    elif damage == 'unfrozen':
+        expected_source = None
+    (directory / 'episode.json').write_text(json.dumps(episode))
+    rep = RP.report(FRAME, tmp_path, expected_binding='yaml-v1', expected_source=expected_source)
+    row = rep['episodes'][0]
+    assert rep['assigned'] == 6 and len(rep['episodes']) == 6 and len(rep['paired']['per_task']) == 3
+    assert row['operational_resolved'] == 0 and row['state'] == 'terminal'
+    assert row['configuration_provenance_status'] == row['configuration_provenance']['status'] == status
+    assert rep['configuration_provenance']['terminal_status_counts'] == {status: 1}
+    assert rep['backends']['small']['valid_grades'] == 1 and rep['backends']['small']['operational_resolved'] == 0
+    assert rep['episodes'][1]['configuration_provenance_status'] == 'unavailable'
+
+
+@pytest.mark.parametrize('damage,status', [(None, 'validated'), ('amendment', 'invalid'), ('source', 'invalid'),
+                                          ('missing', 'unavailable')])
+def test_corrected_report_reads_frozen_source_and_amendment_without_changing_them(tmp_path, monkeypatch, damage, status):
+    import pilot_cohort as PC
+    amendment = tmp_path / 'amendment.json'
+    amendment.write_text(json.dumps(dict(cohort='yaml-v1', configuration_binding='yaml-v1')))
+    monkeypatch.setattr(PC, 'AMENDMENT', amendment)
+    out = tmp_path / 'yaml-v1'
+    out.mkdir()
+    binding = dict(cohort='yaml-v1', amendment_sha256=hashlib.sha256(amendment.read_bytes()).hexdigest(),
+                   sources={'pilot_episode.py': 'a' * 64})
+    if damage == 'amendment':
+        binding['amendment_sha256'] = 'b' * 64
+    elif damage == 'source':
+        binding['sources'] = {}
+    path = out / 'cohort_binding.json'
+    if damage != 'missing':
+        path.write_text(json.dumps(binding))
+    before = path.read_bytes() if path.exists() else None
+    metadata = RP.cohort_metadata('yaml-v1', out)
+    assert metadata['cohort_binding_status'] == status
+    assert metadata['expected_episode_source_sha256'] == ('a' * 64 if status == 'validated' else None)
+    assert (path.read_bytes() if path.exists() else None) == before
+
+
+def test_corrected_grade_pass_refuses_missing_provenance_without_hiding_episode(tmp_path):
+    invalid = ep(tmp_path, 'a__1', 'small', 'RunnerHardKill', None, ledger=False)
+    valid = ep(tmp_path, 'a__1', 'large', 'Submitted', 1)
+    bind_effective_config(valid)
+    before = (invalid / 'episode.json').read_bytes()
+    calls = []
+    def fail(directory):
+        calls.append(directory)
+        return SimpleNamespace(returncode=1, stderr='fixture evaluator unavailable', stdout='')
+    results = PG.grade_pass(FRAME, tmp_path, fail, expected_binding='yaml-v1', expected_source='a' * 64)
+    assert calls == [valid]
+    assert results[0]['state'] == 'configuration_refusal'
+    assert results[0]['configuration_provenance']['status'] == 'unavailable'
+    assert results[1]['state'] == 'ungraded'
+    assert (invalid / 'episode.json').read_bytes() == before and not (invalid / 'grade.json').exists()

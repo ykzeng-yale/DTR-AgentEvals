@@ -5,26 +5,28 @@ directory and `results/sim/`, `results/code_routing/` are written only by this w
 Theory, proposal, literature and the reference library under `src/` belong to the theory
 agent and are not edited from here. Rules in [`AGENTS.md`](../AGENTS.md) apply.
 
-## Current status — 22 September 2026, 04:16 UTC
+## Current status — 22 September 2026, 06:08 UTC
 
-The archived MBPP/HumanEval logging, live comparison and branch collection are complete, with descriptive
-review and manuscript integration; the learned fixed schedule did not establish adaptive improvement and
-primary branch inference remains unresolved. Static replay A5 is completed. REQ-003's eleven synthetic
-study/diagnostic rows are consolidated and designated checks accepted, with scoped coverage results integrated;
-the broader v2 grid and overlapping cross-fitted/selection/joint-branch inference remain open.
+The archived MBPP/HumanEval study and designated synthetic checks remain integrated descriptively;
+useful primary branch inference and the broader v2 validation gates remain unresolved.
+The twelve-task SWE-bench qualification produced ten qualified tasks, with original Django/Pylint failures retained.
 
-REQ-002 runtime permission/installation is resolved. All twelve initial SWE-bench qualification tasks have
-terminal records; ten qualify and Django/Pylint remain diagnosed failures. The eight-task Coder 7B/14B DEV pilot
-is frozen at `109ee5a`, excluding the previously used Flask pipeline task. Django/Pylint records remain
-archived and ineligible for this pilot.
-The next result is this existing bounded pilot after pinned-source model conversion and measured resource
-preflight. Grading boundaries are repaired; ICLR explicitly declined its next-slot claim at 04:10 UTC. No new qualification sweep or permission wait is requested. Further Django
-mechanism diagnosis stays separate. No Coder-pilot outcome is available yet.
+The first Coder 7B/14B fixed-backend development cohort is now complete: **16/16 terminal, no nonempty patches,
+16 operational zeros, 330 requests**. Published records and identities reconcile independently. This is an
+unfavorable result under a harness defect: the driver omitted the pinned YAML's model/environment settings.
+Two context failures involved oversized observations; a third came from cumulative history. No algorithmic
+correctness denominator or routing/capability conclusion follows.
 
-See [current evidence and remaining milestones](../docs/experiment_results.md) and the
-[latest lead/worker handoff](../docs/experiment_handoff.md). The tables below are historical snapshots, preserved
-with their original results and limitations. Readiness **55%, change 0 points, range 45–65%**; validated
-inference/adequate real-agent comparisons, final synthesis and reproducibility/metadata/package remain.
+The [lead review](../docs/theory_feedback_20260922_yaml_binding.md) integrates the full-YAML repair, corrected
+history reporting and source/configuration receipts. **One separate corrected `yaml-v1` DEV cohort is authorized**,
+with the same eight tasks and 16 assignments, models/order/budgets, after the existing host handoff. Do not create
+a second `v3` cohort, change decoding or mix old/new results. MultiRound's accepted 07:10–08:20 UTC window is
+preserved; explicit peer release and fresh checks are required before corrected inference. No corrected outcome
+exists yet. The original cohort and report remain archived; a separate lead report preserves zeros and missingness.
+
+See [evidence and remaining milestones](../docs/experiment_results.md) and the
+[lead/worker handoff](../docs/experiment_handoff.md). Readiness **55%, change 0 points, range 45–65%**:
+useful validated inference/adequate comparisons, final empirical synthesis, and reproducibility/metadata/package.
 
 ## Historical status (18 September 2026)
 

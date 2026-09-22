@@ -250,3 +250,17 @@ it does not replace the primary fixed-benchmark target or validate a confidence 
 no new observations or simulation validation were produced. The 35-page PDF remains unchanged. Remaining milestones:
 (1) useful validated inference and adequate comparisons; (2) remaining statistical validation and final empirical
 synthesis; (3) independent reproducibility, author metadata and submission packaging. Nothing submitted.
+
+## Checkpoint: 22 September 2026, 06:08 UTC
+
+The first frozen Coder fixed-backend DEV pilot is fully published and its saved records independently
+reconciled: 16/16 terminal operational zeros, no nonempty patch and 330 requests. A missing full-YAML binding
+affects interpretation; the same selected tasks will be evaluated once in a separately frozen corrected
+DEV cohort after the existing shared-host handoff. The original results remain visible. Source/configuration
+and reporting repairs are validated, while neither corrected execution nor useful routing inference exists.
+See [the review](theory_feedback_20260922_yaml_binding.md).
+
+**55%, change 0 percentage points, judgment range 45–65%**. Same weights 25/20/30/15/10 and stages 75/75/50/25/25.
+The completed negative pilot advances partial evidence; it does not close the three largest milestones:
+useful validated inference/adequate real-agent comparisons; final empirical/manuscript synthesis; independent
+reproducibility, author metadata and submission package. Manuscript unchanged in this run.

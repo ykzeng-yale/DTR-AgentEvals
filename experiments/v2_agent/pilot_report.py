@@ -6,6 +6,7 @@ nonempty artifacts only; non-submissions are not algorithmic failures. Usage
 totals require complete telemetry, otherwise only known subtotals are reported.
 """
 from __future__ import annotations
+import argparse
 import hashlib
 import json
 import re
@@ -76,6 +77,11 @@ def attempt_telemetry(directory, episode):
         if legacy:
             # Block-1 format (episode code before a64d81e): one COMPLETED physical attempt per line, written once at
             # episode-process exit. An interrupted process leaves no ledger, so unresolved attempts cannot appear here.
+            # Both counters were computed from this exact list at exit; disagreement means the legacy log cannot
+            # establish complete usage. A logical call can fail before physical dispatch, so its count is an upper bound.
+            counters = dict(physical_requests=len(records), failed_attempts=sum(r.get('ok') is False for r in records))
+            if any(episode.get(k) is not None and episode[k] != n for k, n in counters.items()):
+                raise ReportIntegrityError('legacy attempt counters disagree with episode: %s' % path)
             records = [dict(r, event=e) for r in records for e in ('start', 'result')]
         for record in records:
             if record.get('event') not in ('start', 'result'):
@@ -93,9 +99,8 @@ def attempt_telemetry(directory, episode):
             raise ReportIntegrityError('noncontiguous dispatched logical calls: %s' % path)
         detail.update(source='block1_exit_attempt_log' if legacy else 'durable_attempt_ledger',
                       unresolved_attempts=len(starts.keys() - results.keys()))
-        if legacy:
-            ok_calls = {k[0] for k, r in results.items() if r.get('ok') is True}
-            detail['block1_calls_1_8_all_answered'] = all(c in ok_calls for c in range(1, 9))
+        if legacy and starts and values['logical_calls'] is not None and max(k[0] for k in starts) > values['logical_calls']:
+            raise ReportIntegrityError('legacy dispatched call exceeds episode logical count: %s' % path)
         if values['logical_calls'] is None:
             subtotals['logical_calls'] = len({call for call, _ in starts})
         values['physical_requests'] = subtotals['physical_requests'] = len(starts)
@@ -121,7 +126,30 @@ def attempt_telemetry(directory, episode):
     return values, subtotals, detail, issued, max_attempts
 
 
-def episode_summary(directory, expected=None):
+def configuration_provenance(directory, episode, expected_binding=None, expected_source=None):
+    """Report admission evidence without removing an assignment or its observed outcome."""
+    result = dict(status='not_checked', expected_binding=expected_binding, expected_source=expected_source,
+                  reported_binding=episode.get('configuration_binding'),
+                  reported_episode_source=episode.get('episode_source_sha256'),
+                  effective_config_sha256=episode.get('effective_config_sha256'), reason=None)
+    if expected_binding is None:
+        return result
+    if episode.get('configuration_binding') not in (None, expected_binding):
+        return dict(result, status='invalid', reason='episode configuration binding conflicts with expected cohort')
+    required = ('configuration_binding', 'effective_config_file', 'effective_config_sha256', 'episode_source_sha256')
+    if any(not episode.get(key) for key in required) or not (Path(directory) / 'effective_config.json').exists():
+        return dict(result, status='unavailable', reason='effective configuration identity or receipt unavailable')
+    from pilot_cohort import validate_effective_receipt
+    try:
+        validate_effective_receipt(directory, episode, expected_binding, expected_source)
+    except (ValueError, TypeError, AttributeError, KeyError, OSError) as exc:
+        return dict(result, status='invalid', reason=str(exc))
+    if expected_source is None:
+        return dict(result, status='unavailable', reason='receipt is internally consistent but frozen cohort episode source is unavailable')
+    return dict(result, status='validated')
+
+
+def episode_summary(directory, expected=None, *, expected_binding=None, expected_source=None):
     directory = Path(directory)
     ep = read_json(directory / 'episode.json')
     expected = expected or dict(instance_id=ep.get('instance_id'), backend=ep.get('backend'))
@@ -165,17 +193,16 @@ def episode_summary(directory, expected=None):
         if snap.get('call') != 9 or not isinstance(snap.get('messages'), list):
             raise ReportIntegrityError('invalid pre-call-9 snapshot: %s' % snapshot)
         feedback, feedback_source = feedback_features(snap['messages']), 'pre_call9_snapshot'
-    elif issued is True and telemetry.get('block1_calls_1_8_all_answered') and trajectory is not None:
-        # Block 1 has no snapshot. When every logical call 1-8 returned a response, the saved assistant messages 1-8 ARE
-        # those calls, so the trajectory prefix before the 9th assistant message is the history call 9 conditioned on.
-        visible = visible_before_call(trajectory.get('messages', []), 9)
-        if visible is not None:
-            feedback, feedback_source = feedback_features(visible), 'block1_trajectory_prefix_calls_1_8_answered'
+    # Legacy ok=True means a physical response arrived, not that parsing succeeded or an assistant was appended.
+    # DefaultAgent increments its call count before model.query; FormatError can skip the assistant append entirely.
+    # Without an exact pre-call snapshot, assistant ordinals therefore do not establish the logical-call-9 history.
     cls = grade['classification'] if grade else ('artifact_integrity_failure' if not patch_matches else 'ungraded')
     valid = (grade or {}).get('grade_valid')
     # An evaluator integrity refusal does not invalidate an intact local candidate.
     eligible = ep['exit_status'] == 'Submitted' and bool(raw.strip()) and patch_matches
+    provenance = configuration_provenance(directory, ep, expected_binding, expected_source)
     return dict(instance_id=ep['instance_id'], backend=ep['backend'], run_id=ep['run_id'], state='terminal',
+                configuration_provenance=provenance, configuration_provenance_status=provenance['status'],
                 exit_status=ep['exit_status'], nonempty_patch=ep['exit_status'] == 'Submitted' and bool(raw.strip()),
                 submission_hash_matches=patch_matches, classification=cls, grade_valid=valid,
                 operational_resolved=(grade or {}).get('operational_resolved') if valid is True else None,
@@ -202,7 +229,7 @@ def incomplete_evidence(directory):
                 known_max_attempts_on_one_call=maximum)
 
 
-def collect(frame, out):
+def collect(frame, out, *, expected_binding=None, expected_source=None):
     assigned, rows, missing = [], [], []
     for task in sorted(frame['pilot']['tasks'], key=lambda t: t['position']):
         if sorted(task['backend_order']) != ['large', 'small']:
@@ -217,7 +244,8 @@ def collect(frame, out):
             if len(terminal) > 1:
                 raise ReportIntegrityError('two terminal episodes for %s/%s' % key)
             if terminal:
-                row = episode_summary(terminal[0], dict(instance_id=key[0], backend=key[1], image=task.get('instance_image')))
+                row = episode_summary(terminal[0], dict(instance_id=key[0], backend=key[1], image=task.get('instance_image')),
+                                      expected_binding=expected_binding, expected_source=expected_source)
                 row['retained_incomplete_run_dirs'] = [d.name for d in directories if d not in terminal]
                 row['incomplete_attempt_evidence'] = [incomplete_evidence(d) for d in directories if d not in terminal]
                 rows.append(row)
@@ -229,6 +257,10 @@ def collect(frame, out):
                 # Never merge ambiguous histories or costs from separate partial runs.
                 single = evidence[0] if len(evidence) == 1 else {}
                 rows.append(dict(pending, classification=pending['state'], grade_valid=None, operational_resolved=None,
+                                 configuration_provenance_status='unavailable' if expected_binding else 'not_checked',
+                                 configuration_provenance=dict(status='unavailable' if expected_binding else 'not_checked',
+                                                               expected_binding=expected_binding, expected_source=expected_source,
+                                                               reason='no terminal episode'),
                                  algorithmic_correctness=None, algorithmic_eligible=False,
                                  call9_eligible=single.get('call9_eligible'), call9_feedback=single.get('call9_feedback'),
                                  incomplete_attempt_evidence=evidence, nonempty_patch=None,
@@ -317,11 +349,14 @@ def paired(rows):
                 operational_difference_sum_on_valid_pairs=cells['0,1']-cells['1,0'], paired_cost_differences=differences)
 
 
-def report(frame, out):
-    assigned, rows, missing = collect(frame, out)
+def report(frame, out, *, expected_binding=None, expected_source=None):
+    assigned, rows, missing = collect(frame, out, expected_binding=expected_binding, expected_source=expected_source)
     backends = {backend: backend_table(rows, backend) for backend in ('small', 'large')}
     bounds = [b['operational_completion_bounds'] for b in backends.values()]
     return dict(request='DTR-REQ-002', kind='fixed-backend DEVELOPMENT pilot, descriptive only (no efficacy, precision or routing claim)',
+                configuration_provenance=dict(expected_binding=expected_binding, expected_source=expected_source,
+                                              terminal_status_counts=count_by([r for r in rows if r['state'] == 'terminal'], 'configuration_provenance_status'),
+                                              scope='configuration/source admission only; outcomes and all assigned episodes remain visible regardless of admission'),
                 frame_content_sha256=hashlib.sha256(json.dumps(frame, sort_keys=True, separators=(',', ':')).encode()).hexdigest(),
                 assigned=len(assigned), terminal=sum(r['state'] == 'terminal' for r in rows), not_terminal=missing,
                 operational_completion_bounds=dict(kind='finite assignment completion bounds, not confidence intervals',
@@ -329,9 +364,53 @@ def report(frame, out):
                 backends=backends, paired=paired(rows), episodes=rows)
 
 
-def main():
-    rep = report(read_json(FRAME), OUT)
-    dst = OUT / ('report_%s.json' % (sys.argv[1] if len(sys.argv) > 1 else 'current'))
+def cohort_metadata(cohort, out):
+    """Read provenance without freezing or changing any runtime source binding."""
+    if cohort == 'legacy':
+        return dict(cohort=cohort, configuration_binding='legacy-incomplete-yaml',
+                    configuration_binding_label='faulty/incomplete YAML binding: model and environment sections were omitted',
+                    amendment_file=None, amendment_sha256=None, cohort_binding_status='not_applicable',
+                    expected_episode_source_sha256=None)
+    from pilot_cohort import AMENDMENT
+    result = dict(cohort=cohort, configuration_binding='yaml-v1',
+                  configuration_binding_label='intended full YAML binding; per-terminal receipt and frozen-source validation required',
+                  amendment_file='configs/' + AMENDMENT.name, amendment_sha256=None, cohort_binding_status='unavailable',
+                  expected_episode_source_sha256=None)
+    binding_path = Path(out) / 'cohort_binding.json'
+    try:
+        result['amendment_sha256'] = hashlib.sha256(AMENDMENT.read_bytes()).hexdigest()
+        amendment = read_json(AMENDMENT)
+        if amendment.get('cohort') != cohort or amendment.get('configuration_binding') != 'yaml-v1':
+            raise ValueError('amendment cohort/configuration binding mismatch')
+        if not binding_path.exists():
+            return dict(result, reason='frozen cohort source binding unavailable')
+        result['cohort_binding_sha256'] = hashlib.sha256(binding_path.read_bytes()).hexdigest()
+        binding = read_json(binding_path)
+        source = binding.get('sources', {}).get('pilot_episode.py')
+        if (binding.get('cohort') != cohort or binding.get('amendment_sha256') != result['amendment_sha256'] or
+                not isinstance(source, str) or not re.fullmatch(r'[0-9a-f]{64}', source)):
+            raise ValueError('frozen cohort binding disagrees with amendment or lacks episode source')
+    except OSError as exc:
+        return dict(result, reason=str(exc))
+    except (ValueError, TypeError, AttributeError) as exc:
+        return dict(result, cohort_binding_status='invalid', reason=str(exc))
+    return dict(result, cohort_binding_status='validated', expected_episode_source_sha256=source, reason=None)
+
+
+def main(argv=None):
+    from pilot_cohort import cohort_output
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('stamp', nargs='?', default='current')
+    parser.add_argument('--cohort', choices=('legacy', 'yaml-v1'), default='legacy')
+    args = parser.parse_args(argv)
+    out = cohort_output(args.cohort)
+    provenance = cohort_metadata(args.cohort, out)
+    rep = report(read_json(FRAME), out, expected_binding='yaml-v1' if args.cohort == 'yaml-v1' else None,
+                 expected_source=provenance['expected_episode_source_sha256'])
+    rep['cohort'] = args.cohort
+    rep['cohort_provenance'] = provenance
+    out.mkdir(parents=True, exist_ok=True)
+    dst = out / ('report_%s.json' % args.stamp)
     with open(dst, 'x') as fh:
         fh.write(json.dumps(rep, indent=1) + '\n')
     print(json.dumps({k: rep[k] for k in ('assigned', 'terminal')}), json.dumps(rep['paired']['cells_small_large']))
