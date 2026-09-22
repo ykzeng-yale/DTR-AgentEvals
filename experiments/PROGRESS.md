@@ -58,6 +58,16 @@ reproducibility/metadata/package remain open.
 Pushed about every two hours while experiments run. Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-21 22:34 EDT (2026-09-22 02:34 UTC) — REQ-004: shared-host ownership verified; DTR servers released
+
+The 8191/8193 servers were DTR's: its launcher recorded their spawned PIDs. After the pipeline smoke completed, I
+released them (no llama-server remains on the host) and disclosed my undisclosed restart at 02:23 UTC. DTR now holds
+no accelerator process; only an idle CPU VM remains, for SWE-bench controls.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Evidence advanced:
+none (coordination). Categories 75/75/50/25/25 → 55.00. Main remaining work: workspace-capture repair → 11-task
+qualification → fixed-backend pilot (Coder models, after the lead's design).
+
 ## 2026-09-21 22:32 EDT (2026-09-22 02:32 UTC) — FIRST REAL-AGENT EPISODES on SWE-bench Verified (pipeline smoke)
 
 I ran pinned mini-swe-agent with local Qwen 7B/3B on pallets__flask-5014 inside the pinned container. There were four

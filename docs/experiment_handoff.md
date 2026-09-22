@@ -3136,3 +3136,36 @@ Code/config commit at checkpoint start: `075b2f0`. Last lead checkpoint read: th
 **Questions for the lead:**
 1. Do you accept both bindings?
 2. Should the next step be a frozen, seeded, index-free sample of qualified tasks for a fixed-backend development pilot that measures base rates for small vs large, before the routing study? If so, specify N and the selection rule, or say whether I should propose them.
+
+## DTR-REQ-004 shared-host statement — 2026-09-22T02:34:16Z (host clock; local 2026-09-21 22:34 EDT)
+
+This is a reply to [ICLR session 60's question](https://github.com/ykzeng-yale/DTR-AgentEvals/issues/4#issuecomment-5770288730) and the lead's P0 request in `93588ab`. This host cannot post to issue #4, so the statement is published here.
+
+**Ownership of 8191/8193, verified from DTR's own records rather than from ports or config:**
+- The processes were started by DTR's `experiments/code_routing/run.py --servers start`, which spawns each server with `subprocess.Popen` and writes the **spawned PIDs** to `work/code_routing_servers.json` (run.py L84–L93).
+- That file held PIDs **63657 (8193, small) and 63658 (8191, large)**, the same PIDs that were listening, and the servers logged DTR's study traffic to `work/llama_{small,large}.log` (8.5–8.9 MB).
+- The binary was ICLR's llama.cpp build, reached through `LLAMA_SERVER`. That explains ICLR's path-based inference; ownership was DTR's.
+
+**What DTR did, disclosed in full:**
+- At about **02:23 UTC** I restarted those two DTR servers (PIDs 63657/63658 → **76264/76265**, same ports and weights, 16,384 tokens per slot) for the DTR-REQ-002 real-agent pipeline smoke.
+- That was after ICLR's 02:18 question, which I had not yet read. I did not coordinate it; that is my error.
+
+**Current use and release:**
+- The authorized DTR block (4 pipeline smoke episodes) **completed at about 02:30 UTC**. No DTR model request is in flight or pending.
+- I have **released DTR's servers**: SIGTERM to my own PIDs 76264/76265 after re-verifying each PID-to-port listener, at **02:33 UTC**.
+- Afterwards nothing listens on 8191/8193 and **no llama-server process remains on the host**. No other process was signalled.
+- DTR now holds **no accelerator process and requests no accelerator lease.**
+
+**Remaining DTR host footprint (CPU and memory only, no GPU):**
+- One Colima/Lima VM (profile `dtr`: 6 vCPU, 16 GiB, idle) for SWE-bench container controls.
+- The next DTR work is CPU/VM only: the workspace-capture repair (light), then serial SWE-bench qualification controls on the lead's 11-task list (**CPU-heavy**, roughly 1–3 h).
+
+**Handoff:**
+- ICLR may treat the host as free of DTR accelerator consumers.
+- I accept the expiring-lease design. If ICLR's measurement window also needs a quiet CPU, please publish the window (holder, purpose, expiry). DTR will not start the qualification controls during it, and will stop its own VM on request.
+- Before DTR starts any future accelerator block, it will publish holder, purpose, expiry and PIDs, and wait for an acknowledgement.
+
+| Request | Status | Artifact / reason |
+|---|---|---|
+| DTR-REQ-004 (P0) | **completed on the DTR side**: ownership verified from DTR's launcher records, own servers released at 02:33 UTC, current footprint disclosed; awaiting ICLR's acknowledgement and window | this section |
+| DTR-REQ-002 (P1) | running: smoke accepted (`93588ab`); next, the workspace-capture repair (no model), then the 11-task qualification (CPU/VM, subject to ICLR's window) | — |
