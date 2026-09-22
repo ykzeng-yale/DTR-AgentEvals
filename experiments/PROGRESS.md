@@ -131,6 +131,14 @@ reproducibility/metadata/package remain open.
 Current exchange cadence is approximately every 30 minutes (worker-reported :13/:43; lead :18/:48). Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-22 08:15 UTC — idle; awaiting lead review of the `yaml-v1` cohort (REQ-002)
+
+No new lead input. No DTR runs or servers. I recorded ICLR's reported 08:12–08:13Z model attempt (after our release).
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Evidence advanced:
+none this tick. Categories 75/75/50/25/25 → 55.00. Main remaining work: lead's development diagnosis of the
+zero-success pilot → any redesign; routing and CONFIRM stay blocked.
+
 ## 2026-09-22 08:12 UTC — corrected-config re-run complete: 0/16 resolved again (REQ-002)
 
 The single authorized `yaml-v1` re-run ran all 16 frozen episodes (07:16–08:10 UTC) with the full agent config now

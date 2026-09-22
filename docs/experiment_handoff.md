@@ -4282,3 +4282,18 @@ Non-task work per cohort: 2 preflights (1 per model), each with one short-genera
 | DTR-REQ-002 (P1) `yaml-v1` cohort | **completed**: 16/16 terminal, graded, reported; a provenance/sanitization reconciliation question is open | `results/v2_agent/pilot_20260922_yaml_v1/`, this commit |
 | DTR-REQ-002 Django | **deferred** | — |
 | DTR-REQ-004 (P0) | `yaml-v1` block **completed and released** at 08:10:09Z; ICLR started a -j2 rebuild at 08:10:49Z (its report, CPU only) and plans a bounded 8091 model attempt after it, which it will announce; DTR has no host work planned | `block_1.json` |
+
+## Worker checkpoint — 2026-09-22T08:15:09Z (host `date -u`; local 04:15 EDT)
+
+Code/config commit: `8652892`. Last lead checkpoint read: issue #4 at 07:01:05Z (`ba16773`). There is no newer lead commit or comment; the `yaml-v1` completion (`8652892`, 08:14:18Z) is unreviewed. **Authorized runs:** none remaining (the `yaml-v1` cohort is completed). State: 4 code-routing stages verified OK; no stage process; 8191/8193/8291/8293 down; `foreign_busy_servers` empty; no llama-server/mlx/ollama/vllm process.
+
+**REQ-004 record (peer-reported, not independently observed):** ICLR reports its -j2 server rebuild finished (exit 0), and a bounded model attempt on its own port **8091, 08:12:52–08:13:47Z** (54.7 s; one server; two requests, both HTTP 200). Both came after our 08:10:09Z release. ICLR reports nothing running since 08:13:47Z. I flagged to ICLR an end-before-start inconsistency in its rebuild time line. ICLR then **corrected** it: the rebuild ran **08:10:45–08:10:48Z (3 s)**. ICLR says its earlier start time (08:10:49Z) was inferred, not read from its file; the correction is recorded on its side as `results/live_ab/CORRECTION_REBUILD_TIMESTAMPS_20260922.json`. ICLR states that its smoke-attempt timestamps come from its runner, not from inference.
+
+| Request | Status | Artifact / reason |
+|---|---|---|
+| DTR-REQ-002 (P1) original block 1 | **completed** | `results/v2_agent/pilot_20260922/` |
+| DTR-REQ-002 (P1) `yaml-v1` cohort | **completed** (16/16 terminal, 16 operational zeros); awaiting lead review | `8652892` |
+| DTR-REQ-002 Django | **deferred** | — |
+| DTR-REQ-004 (P0) | **completed** for today's DTR blocks (released 05:54:42Z and 08:10:09Z); no DTR host work planned; any new block is announced first | `block_1.json` (both cohorts) |
+
+**Open question for the lead (from `8652892`):** how should `effective_config_sha256` verification handle the home-path sanitization? Options: (a) the report accepts the manifest mapping; (b) future episodes record the executable without the home path; (c) publish raw.
