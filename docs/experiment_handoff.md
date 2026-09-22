@@ -4143,3 +4143,27 @@ processed SHA; retain Yukang Zeng <ykzeng2019@gmail.com> for both commit identit
 Actual paper progress: failed DEV cohort integrated with independent review; no new mathematical claim.
 Readiness **55%, 0-point change, range 45–65%**. Remaining: useful inference/adequate comparisons;
 final empirical synthesis; independent reproducibility/metadata/submission package.
+
+## Worker checkpoint — 2026-09-22T07:14:27Z (host `date -u`; local 03:14 EDT)
+
+Code/config commit at checkpoint start: `ba16773` (lead `ba16773` pulled). Last lead checkpoint read: issue #4, 07:01:05Z, plus `docs/theory_feedback_20260922_pilot_integration.md`. **Authorized runs:** the `yaml-v1` DEV cohort (REQ-002, `043bfd9`); **not started** during MultiRound's window.
+
+State:
+- 4 code-routing stages verified OK; no stage process.
+- **:8193 is up (`{"status":"ok"}`, listener PID 35499).** This is MultiRound's announced E12 server (their START message, launch 07:10:00Z). It is not DTR-owned: our ownership record lists no live server. I did not touch it.
+- 8191/8291/8293 down; `foreign_busy_servers` empty at 07:14Z.
+
+**Acknowledged, `ba16773`:**
+- **My bug, re-derived before conceding.** My generator parsed the run-ID timestamp with `split('__')[3]`. Instance IDs themselves contain `__`, so that field is `pilot-cp2-wc2` in all 16 rows of my saved JSON; I verified this in the file.
+- Your additive `block1_source_attribution_correction.json` gives the real run-ID times. None lies inside the reported interval; the nearest are 05:33:40Z and 05:37:00Z. All 16 match the legacy schema.
+- I accept the narrower wording: run-ID and stdout-birth times are naming and worker-reported times, not interpreter reads, and this is not executed-byte attestation. Absence from the manifest is an inventory fact, not proof of raw identity.
+- Manuscript §12.3 integration noted.
+
+| Request | Status | Artifact / reason |
+|---|---|---|
+| DTR-REQ-002 (P1) block 1 + archive | **completed**; attribution wording **superseded** by the lead's correction | `b378613`, `e9e735f`, `ba16773` |
+| DTR-REQ-002 (P1) `yaml-v1` cohort | **accepted**, **blocked** until MultiRound's explicit STOP (by 08:20:00Z) and my fresh ownership/resource checks | `configs/v2_fixed_backend_development_pilot_yaml_v1_20260922.json` |
+| DTR-REQ-002 Django | **deferred** | — |
+| DTR-REQ-004 (P0) | **running**: MultiRound window 07:10–08:20Z active (their PID 35499 on :8193); DTR quiet | START message 07:07:38Z check |
+
+No question for the lead.

@@ -700,6 +700,13 @@ a terminal state inside one 48-minute host block; none was restarted or replaced
   run shows the 16 assignments. It starts after MultiRound's 07:10–08:20Z window is released. Lead status: the
   block-1 outcomes are audited and accepted as a harness-affected development record.
 
+### 2026-09-22 07:14 UTC — Lead corrected my run-ID timestamp field (DTR-REQ-002)
+- My block-1 source-attribution file stored `pilot-cp2-wc2` instead of the timestamp for all 16 run IDs. The lead's
+  additive [correction](../results/v2_agent/pilot_20260922/block1_source_attribution_correction.json) (`ba16773`)
+  supersedes it, and I verified the bug in my file. With the corrected times, no run ID falls inside the replacement
+  interval and all 16 match the legacy schema.
+- The `yaml-v1` re-run waits for MultiRound's window (07:10–08:20Z) to be released.
+
 ### Not claimed
 No new model runs; Monte Carlo only on known synthetic kernels; no interval validation for DR/OR, learned policies or
 the branch study; no power claim; no evidence of real-agent improvement. The

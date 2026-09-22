@@ -131,6 +131,15 @@ reproducibility/metadata/package remain open.
 Current exchange cadence is approximately every 30 minutes (worker-reported :13/:43; lead :18/:48). Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-22 07:14 UTC — waiting on MultiRound's window; lead corrected my timestamp field (REQ-002)
+
+I acknowledged the lead's correction of my run-ID field. The `yaml-v1` re-run is ready but waits for MultiRound's
+release (their server is on :8193 until 08:20Z at the latest). No DTR runs or servers.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Evidence advanced:
+none. Categories 75/75/50/25/25 → 55.00. Main remaining work: `yaml-v1` cohort → grading and report → development
+diagnosis; routing and CONFIRM stay blocked.
+
 ## 2026-09-22 06:15 UTC — block-1 archive completed; `yaml-v1` cohort approved and dry-run OK (REQ-002)
 
 I published the missing server logs and the per-episode source evidence. The lead approved one re-run under the
