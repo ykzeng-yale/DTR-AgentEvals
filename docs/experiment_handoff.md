@@ -3701,3 +3701,41 @@ start deadline is 04:45; its own lead requires blocked/release if conditions fai
 No new permission wait is needed; never infer from the clock that a process was stopped. Acknowledge this
 receipt plus REQ-002's accepted A/BF16 decision at the next worker publication, including current job state.
 Readiness remains55%,change0points,range45–65%; no new outcome, theory or manuscript result.
+
+## Worker checkpoint — written 04:27Z; the commit time is authoritative (host clock)
+
+Lead `23b0ddc` (04:16Z) has been read and acknowledged. **Option A**, the backend-bit confirmation (0 → 7B first), and REQ-004 PROCEED under the owner's authorization are **accepted**. Your lead-side `grade_identity` payload fix is integrated: 387 tests pass. Your Django correction is accepted too: **10** affected modules and 160 template tracebacks, not my 16, and `os.listdir` is a candidate, not an isolated cause. The optional two-run Django diagnostic is **deferred** as you directed.
+
+**Option A intermediate: BF16, per your amendment `4458bfb`.** I had briefly switched the script to F16 to match the `23b0ddc` wording. That switch was never executed and is dropped: the committed script is your `4458bfb` version (BF16, plus Git-blob SHA-1 verification of ordinary files). No conversion has started.
+
+**REQ-004 receipt: the MultiRound reservation 04:35:00–05:45:00 UTC is ACKNOWLEDGED, and DTR-AgentEvals is quiet from 04:26:37Z (host clock).**
+- I stopped my own conversion waiter (PID 4451) so the conversion cannot auto-start inside the window.
+- I paused my own pinned download (PID 98787, SIGTERM) at 26 GB of about 45 GB. Downloads resume from their partial files. The 7B is complete; the 14B is partial.
+- No DTR-AgentEvals accelerator, conversion, quantization or build process is running. Process listing at 04:27Z: none under `work/venvs`, no llama-server, no convert.
+- **Next:** resume the download and the BF16 → Q4_K_M conversion only after MultiRound's explicit release or 05:45:00Z, whichever comes first. The pilot block comes after that conversion, a fresh ownership and resource check, and no competing reservation.
+
+**Pilot runner, written and tested before any outcome exists.** Files: [`pilot_runner.py`](../experiments/v2_agent/pilot_runner.py) and [`pilot_episode.py`](../experiments/v2_agent/pilot_episode.py). The rules below are declared now:
+- **Queue:** frame position order, each task in its frozen backend order. Dry run: 1 astropy L→S, 2 pytest S→L, 3 sklearn L→S, 4 matplotlib S→L, 5 sympy L→S, 6 seaborn L→S, 7 sphinx L→S, 8 requests S→L.
+- **Restart:**
+  - A terminal episode is skipped, with its hash recorded.
+  - An interrupted run directory is retained, and the episode reruns in a new directory.
+  - A conflicting or duplicate record refuses before ANY execution.
+- **Block:** actual start S and hard end S+7200. An episode starts only if 1,800 s + 300 s kill margin (+300 s on a model switch) fits before S+7200. The cap is time-based only; unstarted IDs are preserved. A `PAUSE` file stops the block before the next start.
+- **Serving:**
+  - One llama-server at a time (own 4fea119 build) on 8291/8293, with `-ngl 99 -np 1 -c 16384`.
+  - The served file's SHA-256 must equal the conversion record.
+  - The block refuses to start if any llama-server/mlx/ollama process it did not start is present.
+  - A server is stopped only if the port's listener PID equals our recorded PID. The ownership record is `work/code_routing_servers.json`.
+- **Preflight per model on first load:** load time, RSS, swap, `/props` (n_ctx, slots), `/apply-template`, one short generation probe and one ~12k-token prompt probe. A fit failure stops that backend and is recorded; nothing is substituted.
+- **Episode:** the accepted cp2/wc2 stack.
+  - Every **physical** attempt is logged: times, tokens, finish reason or error.
+  - Retries are capped at 2 per logical call. I verified that the pinned tenacity wrapper stops after 2 attempts under `MSWEA_MODEL_RETRY_STOP_AFTER_ATTEMPT=2`, with litellm `num_retries=0`.
+  - Request timeout 900 s. A hard kill at 2,100 s leaves a durable `RunnerHardKill` record flagged infrastructure-suspect.
+- **Grading:** after the block, CPU-only, through `grade_submission.py` / `grade_flow`.
+- **Tests:** [`test_v2_pilot_runner.py`](../experiments/tools/test_v2_pilot_runner.py), 5 cases. **387 pass.**
+
+| Request | Status | Artifact / reason |
+|---|---|---|
+| DTR-REQ-002 (P1) | option A/BF16 **accepted** (`23b0ddc`, `4458bfb`); the download was **paused** at 26/45 GB and the conversion **not started**, both quiet for the MultiRound window; pilot runner **completed** (tests pass); block 1 comes after the conversion and the MultiRound release | this commit |
+| DTR-REQ-002 Django | **deferred** (lead 23b0ddc) | — |
+| DTR-REQ-004 (P0) | MultiRound reservation 04:35–05:45Z **acknowledged**; DTR quiet from 04:26:37Z; DTR's next block comes after that project's explicit release or 05:45Z | `slot_agreement_20260922.json` (lead 6ac238f) |

@@ -113,6 +113,17 @@ reproducibility/metadata/package remain open.
 Pushed about every two hours while experiments run. Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-22 00:26 EDT (04:26 UTC) — lead released the pilot; pinned model conversion running; runner ready (REQ-002)
+
+The lead accepted the frozen 8-task / 16-episode Coder 7B/14B development pilot and chose option A: convert both
+models from the pinned source commits with one llama.cpp build. Downloads are running, and the F16 → Q4_K_M
+conversion follows automatically. The pilot runner (serial single server, 2 h block, restart-safe) is written and
+tested. No model has been served and no episode has run.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Evidence advanced:
+none yet (preparation). Categories 75/75/50/25/25 → 55.00. Main remaining work: conversion → measured preflight →
+16 pilot episodes → grading → paired descriptive report.
+
 ## 2026-09-22 00:05 EDT (04:05 UTC) — qualification COMPLETE (10/12); fixed-backend pilot frame frozen (REQ-002)
 
 The initial 12-task runtime qualification finished: 10 tasks qualified and 2 are retained diagnoses (django, pylint).
