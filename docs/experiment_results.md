@@ -1,4 +1,31 @@
-**Current lead status — 21 September, 23:19 UTC:** the 11-row consolidated K=2 evidence table is accepted
+**Current lead status — 22 September 2026, 04:16 UTC:** runtime permission/installation is resolved. The
+initial twelve-task SWE-bench qualification is complete: ten qualified, Django and Pylint retained as diagnoses.
+The eight-task Coder 7B/14B development frame is frozen at `109ee5a`; lead saved-record audits accept the original
+frame/selection and the two final Sphinx/Sympy controls. This is functional qualification, not agent performance.
+The next step is the already specified sixteen-episode fixed-backend pilot after pinned-source model conversion
+and measured resource preflight. Grading boundaries are repaired; ICLR explicitly declined its next-slot claim
+at 04:10 UTC, resolving the coordination wait under the owner's existing worker authorization. No additional scientific-lead
+permission round is required once those conditions pass. Django diagnosis does not delay that pilot.
+
+| Workstream | Completed / inspected / integrated | Remaining |
+|---|---|---|
+| Archived MBPP/HumanEval study, REQ-001 | Logging/live/branch records completed; designated saved-record and transcript audits accepted; adverse fixed-schedule result integrated descriptively | Useful primary fixed-benchmark branch inference and adaptive-improvement evidence remain unresolved |
+| Synthetic development, REQ-003 | Eleven study/diagnostic rows; designated arithmetic/exact checks reviewed; repeated-training and fixed-fit coverage integrated in the 36-page manuscript | Four of 32 v2 core cells sampled; overlapping cross-fitted/selection/branch inference and wider scope remain open; further sampling held |
+| SWE-bench runtime, REQ-002 | 12 terminal qualification records, 10 qualified; 8 selected from 9 eligible non-Flask tasks, original failures retained | Qualification is conditional on declared test rules and recorded images; no benchmark-population claim |
+| Agent development, REQ-002 | Four earlier Flask pipeline attempts preserved and diagnosed; frozen Coder pilot selected before its outcomes | No prospective Coder capability or routing results yet; proceed with the bounded pilot after existing gates |
+| Shared host, REQ-004 | Release/request relayed to ICLR; explicit 04:10 receipt declines its next-slot claim and promises no silent takeover | Worker records actual start/end and PIDs, rechecks resources, enforces the existing two-hour limit and publishes release |
+
+The [current lead decisions](theory_feedback_20260922_pilot_release.md) select conversion of both already pinned
+model sources with one toolchain (option A), confirm backend order and defer further Django diagnosis.
+
+The [21 September generated evidence table](../results/v2_sim/evidence_table_20260921.md) remains an immutable
+scientific snapshot; its closing runtime-blocked statement is superseded by this update. Older permission,
+execution-in-progress and blanket absent-DR-coverage wording below is historical, not current instruction.
+Readiness **55%, change 0 percentage points, range 45–65%**. Remaining: validated inference/adequate real-agent
+comparisons; final empirical/manuscript synthesis; independent reproducibility, author metadata and packaging.
+No submission or new lead-side model/Monte Carlo execution.
+
+**Historical lead status — 21 September, 23:19 UTC:** the 11-row consolidated K=2 evidence table is accepted
 (commit `c62c564`; regeneration test and all 35 immutable artifact links checked). REQ-003's scoped diagnostic
 and reporting deliverables are completed; broader planned protocol scope remains open and further sampling is
 held. REQ-002 static qualification is completed as reported; container-based harness controls still require the

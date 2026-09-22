@@ -86,6 +86,8 @@ def accept_report(harness_log_dir, instance_id, submission):
     if not isinstance(rep, dict) or instance_id not in rep:
         raise IntegrityRefusal('report is not keyed by %s (keys %s): not this instance\'s grade' % (
             instance_id, sorted(rep)[:5] if isinstance(rep, dict) else type(rep).__name__))
+    if not isinstance(rep[instance_id], dict):
+        raise IntegrityRefusal('report payload for %s is %s, expected an object' % (instance_id, type(rep[instance_id]).__name__))
     return rep
 
 

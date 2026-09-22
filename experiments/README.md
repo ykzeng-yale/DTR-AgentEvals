@@ -5,7 +5,28 @@ directory and `results/sim/`, `results/code_routing/` are written only by this w
 Theory, proposal, literature and the reference library under `src/` belong to the theory
 agent and are not edited from here. Rules in [`AGENTS.md`](../AGENTS.md) apply.
 
-## Status (18 September 2026)
+## Current status — 22 September 2026, 04:16 UTC
+
+The archived MBPP/HumanEval logging, live comparison and branch collection are complete, with descriptive
+review and manuscript integration; the learned fixed schedule did not establish adaptive improvement and
+primary branch inference remains unresolved. Static replay A5 is completed. REQ-003's eleven synthetic
+study/diagnostic rows are consolidated and designated checks accepted, with scoped coverage results integrated;
+the broader v2 grid and overlapping cross-fitted/selection/joint-branch inference remain open.
+
+REQ-002 runtime permission/installation is resolved. All twelve initial SWE-bench qualification tasks have
+terminal records; ten qualify and Django/Pylint remain diagnosed failures. The eight-task Coder 7B/14B DEV pilot
+is frozen at `109ee5a`, excluding the previously used Flask pipeline task. Django/Pylint records remain
+archived and ineligible for this pilot.
+The next result is this existing bounded pilot after pinned-source model conversion and measured resource
+preflight. Grading boundaries are repaired; ICLR explicitly declined its next-slot claim at 04:10 UTC. No new qualification sweep or permission wait is requested. Further Django
+mechanism diagnosis stays separate. No Coder-pilot outcome is available yet.
+
+See [current evidence and remaining milestones](../docs/experiment_results.md) and the
+[latest lead/worker handoff](../docs/experiment_handoff.md). The tables below are historical snapshots, preserved
+with their original results and limitations. Readiness **55%, change 0 points, range 45–65%**; validated
+inference/adequate real-agent comparisons, final synthesis and reproducibility/metadata/package remain.
+
+## Historical status (18 September 2026)
 
 | ID | What | Evidence layer | Status |
 |---|---|---|---|
@@ -19,7 +40,7 @@ agent and are not edited from here. Rules in [`AGENTS.md`](../AGENTS.md) apply.
 
 The L1–L3 study below is executed on real open-weight models; E0 and S1 remain synthetic.
 
-### Mapping to the open GitHub issues
+### Historical mapping to the open GitHub issues
 
 | Issue | Covered here | Still open |
 |---|---|---|

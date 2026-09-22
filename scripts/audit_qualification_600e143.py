@@ -39,9 +39,13 @@ def blob(path):
 
 
 def main():
+    global COMMIT
     ap = argparse.ArgumentParser()
     ap.add_argument('--output', type=Path)
+    ap.add_argument('--commit', default=COMMIT)
+    ap.add_argument('--tasks', nargs='+')
     args = ap.parse_args()
+    COMMIT = args.commit
     check(sha((ROOT / DATA).read_bytes()) == DATA_SHA, 'pinned dataset bytes')
     rows = {r['instance_id']: r for r in pq.read_table(ROOT / DATA).to_pylist()}
     manifest = json.loads(blob('configs/v2_runtime_smoke_expansion_20260922.json'))
@@ -49,7 +53,7 @@ def main():
     check(sha(m01raw) == manifest['source_sha256'], 'M01 pin')
     m01 = {r['instance_id']: r for r in map(json.loads, m01raw.splitlines())}
     adapter_sha = sha(blob('experiments/v2_adapter/control_adapter.py'))
-    tasks = ['matplotlib__matplotlib-13989', 'mwaskom__seaborn-3069', 'psf__requests-1142',
+    tasks = args.tasks or ['matplotlib__matplotlib-13989', 'mwaskom__seaborn-3069', 'psf__requests-1142',
              'pydata__xarray-2905', 'pylint-dev__pylint-4551', 'pytest-dev__pytest-10051',
              'scikit-learn__scikit-learn-10297']
     evidence = {}
@@ -71,7 +75,11 @@ def main():
             text = logs[key] = raw.decode()
             check('>>>>> Start Test Output' in text and '>>>>> End Test Output' in text, iid + key + ': markers')
             # Match printed status lines independently; preserve the pinned dataset's tokenized identities.
-            smap = {m[2]: m[1] for m in re.finditer(r'^(PASSED|FAILED|ERROR|SKIPPED|XFAIL|XPASS)\s+(\S+)', text, re.M)}
+            plain = re.sub(r'\x1b\[[0-9;]*m', '', text)
+            smap = {m[2]: m[1] for m in re.finditer(r'^(PASSED|FAILED|ERROR|SKIPPED|XFAIL|XPASS)\s+(\S+)', plain, re.M)}
+            if row['repo'] == 'sympy/sympy':
+                for m in re.finditer(r'^(test_\w+)\s+(ok|F|E)\b', plain, re.M):
+                    smap[m[1]] = {'ok': 'PASSED', 'F': 'FAILED', 'E': 'ERROR'}[m[2]]
             parsed[key] = {t: smap.get(t) for t in f2p + p2p}
             counts[key] = {kind: dict(collections.Counter(smap.get(t, 'MISSING') for t in ids))
                            for kind, ids in [('F2P', f2p), ('P2P', p2p)]}

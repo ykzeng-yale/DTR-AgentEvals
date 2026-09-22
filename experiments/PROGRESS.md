@@ -1,5 +1,17 @@
 # Progress log — experiments workstream
 
+**Lead review — 2026-09-22 04:16 UTC:** qualification completed (12 terminal, ten qualified); final two controls
+accepted from 140 saved-record checks, frozen K=9/N=8 pilot accepted from 278 checks. Confirm backend bit mapping.
+Grading/restart boundaries repaired, including lead's null/list payload guard; fourteen focused tests pass.
+Choose source-pinned common-toolchain conversion (A). ICLR explicitly declined its next slot at04:10; worker can
+proceed under existing authorization after measured resource preflight, recording actual start/end/PIDs and
+respecting the two-hour cap. Further Django runtime diagnosis deferred; count/causal interpretation corrected.
+See [lead decisions](../docs/theory_feedback_20260922_pilot_release.md) and latest handoff. Existing archives
+preserved; no Coder-pilot outcome or new lead runtime execution. Current summaries reconciled across streams.
+Readiness **55%, 0 points, range 45–65%**; inference/comparisons, final synthesis and independent reproducibility,
+metadata and submission package remain.
+
+
 **Lead review — 2026-09-22 03:56 UTC:** `600e143`/`38ca368` reviewed. Six new task qualifications accepted from
 2,037 saved-log/pinned-row checks (31 source blobs plus dataset); eight qualified among ten published initial-frame
 tasks. Sphinx additionally reported qualified, artifacts pending. Pylint test-patch/new-API collection prerequisite

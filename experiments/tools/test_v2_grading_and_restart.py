@@ -25,7 +25,8 @@ def episode(run_id, patch, exit_status='Submitted', image=IMG, iid='t__x'):
 
 
 def harness(behaviour):
-    """behaviour: list per call of 'pre_container' | 'ok' | 'stale' | 'wrong_instance' | 'malformed'; writes what the
+    """behaviour: list per call of 'pre_container' | 'ok' | 'stale' | 'wrong_instance' | 'malformed' | 'null_payload' |
+    'list_payload'; writes what the
     pinned evaluator would write."""
     calls = []
 
@@ -39,6 +40,8 @@ def harness(behaviour):
         d.mkdir(parents=True)
         (d / 'patch.diff').write_text('diff --git a/x b/x\n+STALE\n' if kind == 'stale' else patch)
         report = {('o__y' if kind == 'wrong_instance' else 't__x'): {'resolved': True, 'patch_successfully_applied': True}}
+        if kind in ('null_payload', 'list_payload'):
+            report['t__x'] = None if kind == 'null_payload' else []
         (d / 'report.json').write_text('{"t__x": {"resolved": tr' if kind == 'malformed' else json.dumps(report))
         (d / 'test_output.txt').write_text('log')
         return dict(returncode=0)
@@ -174,12 +177,21 @@ def test_legacy_records_bind_by_immutable_hash_without_rewriting(tmp_path):
 
 
 def test_wrong_instance_and_malformed_reports_leave_durable_classified_records(tmp_path):
-    """lead 7cb2062 case 1: a report keyed to another instance is integrity-invalid/null; malformed JSON is an
+    """lead 7cb2062 case 1: a report keyed to another instance or a non-object payload is integrity-invalid/null; malformed JSON is an
     evaluator-unknown attempt followed by at most one identical-patch retry; raw diagnostics kept; nothing overwritten."""
     run, calls = harness(['wrong_instance'])
     g = GI.grade_flow(episode('w1', P1), P1, IMG, tmp_path, tmp_path / 'w.json', run, strict, 'alias')
     assert g['classification'] == 'integrity_refusal' and g['grade_valid'] is False and g['operational_resolved'] is None
     assert len(calls) == 1 and 'report.json' in g['attempts'][0]['raw'] and 'patch.diff' in g['attempts'][0]['raw']
+    for kind in ('null_payload', 'list_payload'):
+        run, calls = harness([kind])
+        grade_path = tmp_path / (kind + '.json')
+        invalid = GI.grade_flow(episode(kind, P1), P1, IMG, tmp_path, grade_path, run,
+                                lambda _: pytest.fail('invalid payload reached strict grading'), 'alias')
+        assert invalid['classification'] == 'integrity_refusal' and invalid['grade_valid'] is False
+        assert invalid['operational_resolved'] is None and invalid['algorithmic_correctness'] is None
+        assert len(calls) == len(invalid['attempts']) == 1 and 'report.json' in invalid['attempts'][0]['raw']
+        assert json.loads(grade_path.read_text()) == invalid                              # durable, no retry
     run, calls = harness(['malformed', 'malformed'])
     m = GI.grade_flow(episode('m1', P1), P1, IMG, tmp_path, tmp_path / 'm.json', run, strict, 'alias')
     assert m['classification'] == 'unknown_evaluator_failure' and m['algorithmic_correctness'] == 'unknown'

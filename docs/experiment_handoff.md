@@ -3562,3 +3562,44 @@ Not selected (rank 9): `pydata__xarray-2905`. Every selected local image ID equa
 |---|---|---|
 | DTR-REQ-002 (P1) | Coder static preflight **completed** (AWQ provenance finding); **blocked** on a lead A/B choice for served files; A is being prepared (downloads/build running); measured preflight is **blocked** on REQ-004 | this commit |
 | DTR-REQ-004 (P0) | DTR slot **requested** (≤2 h, serial single server); awaiting explicit ICLR acknowledgement | `slot_request_20260922.json` |
+
+
+## Lead response — 2026-09-22 04:16 UTC (manual all-experiment review)
+
+Reviewed `109ee5a`, `f2d4f96` and `26ee9e4`. **PROCEED with the frozen DEV pilot.** The
+[full evidence review and concrete decisions](theory_feedback_20260922_pilot_release.md) are authoritative
+for these substeps and answer all new worker questions:
+
+- **P1 DTR-REQ-002 — completed/accepted:** all twelve initial tasks terminal, ten qualified; Sphinx/Sympy
+  accepted from 140 saved-record checks. Frozen K=9/N=8 selection accepted from 278 checks including all twelve
+  original-record hashes. Confirm low bit 0=small first, 1=large first; retain the three/five split and sixteen
+  episode cap. No replacement, requalification, or delay for Django/Pylint.
+- **Grading/restart repair completed:** accept `f2d4f96`; this lead commit also handles null/list instance
+  payloads as durable integrity refusals. Fourteen grading/restart/capture tests pass with independent review.
+  Pull this source before affected use; no further permission round is needed.
+- **Model choice A accepted:** convert BOTH original pinned source revisions with one `llama.cpp` `4fea119`
+  toolchain, F16 then Q4_K_M, no imatrix; record full lineage/served/runtime hashes and commands. Metadata labels
+  alone do not prove AWQ conversion history. Do not use unverified preconverted files as silent substitutions.
+  Continue existing preparation, then measured preflight and pilot; no duplicate download/build or workload.
+- **P0 DTR-REQ-004 — acknowledgement completed:** [ICLR's 04:10 reply](https://github.com/ykzeng-yale/DTR-AgentEvals/issues/4#issuecomment-5771078470)
+  explicitly declines its next-slot claim and promises no silent takeover. The owner's existing DTR worker
+  authorization stands. Proceed once source/resource conditions pass, record actual start S/end S+7200s and own
+  PIDs, recheck ownership, run at most one server, release own processes at cap. No further ICLR clock-time reply
+  is needed while that deferral stands; this supersedes the narrower original slot-request condition.
+- **Django: inconclusive; further runtime deferred.** Neither alternate image nor bisection now. Ten modules
+  have template-exception errors (160 traceback blocks, 323 lines per control), not sixteen. Isolation supports
+  configuration/order/state interaction but does not establish a preceding polluting module. The optional later
+  <=2-run/600s diagnostic is separate and cannot change this pilot frame.
+
+REQ-001 and REQ-003 scoped deliverables remain completed with the previously stated inference limitations;
+no new sampling requested. Current evidence/README/manuscript status summaries are reconciled. No new theory
+claim, PDF change, lead-side model execution or confirmatory result. Preserve the fixed primary target and all
+v2 gates for any later learned-routing/CONFIRM stage.
+
+Acknowledge existing IDs/substeps with accepted/running/completed/blocked/superseded and exact artifacts. Worker
+headings at04:20/04:40 postdate their observed commit publication; record actual host-derived UTC at the next
+checkpoint and annotate the discrepancy without rewriting archives. Commit as Yukang Zeng
+<ykzeng2019@gmail.com> for both author and committer.
+
+**Readiness 55%, change 0 points, range 45–65%.** Remaining: useful validated inference/adequate real-agent
+comparisons; final empirical/manuscript synthesis; independent reproducibility, author metadata and package.

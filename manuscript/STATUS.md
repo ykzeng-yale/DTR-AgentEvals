@@ -57,7 +57,7 @@ current contents, not the absence of new repository results. Overall readiness r
 | Source-population variance link | A bounded iid task-population CLT, oracle variance link and expectation-only sampled-quadratic corollary are proved; fixed-benchmark inference, sampled-variance concentration and joint coverage remain open. |
 | Execution drift | Full-history coupling bound and deployment-adjusted improvement certificate proved for externally justified kernel allowances and a common payoff. The allowances are not estimated from ordinary logs. |
 | Replay limits | Outcome copying distinguished from frozen-state reward recomputation; adaptive donor failure and a narrow positive control proved in Section 8.2. |
-| Empirical sections | Descriptive coding case integrated, with all six policies and unfavorable/unresolved comparisons; numeric and narrative review complete. Prospective design includes feedback/opportunity thresholds. New simulations and GPU/model execution remain deferred. |
+| Empirical sections | Descriptive coding case and scoped synthetic point-estimation/coverage studies integrated, including unfavorable results and remaining limitations. The theory workstream defers new sampling; the separately authorized experiment workstream is preparing the frozen SWE-bench development pilot. |
 | Discussion and reproducibility | Written, with practical limitations, open questions, build instructions, and this audit record. |
 
 There are 15 numbered theorem/proposition/corollary statements, plus additional derived identities and explicitly scoped corollaries in the prose. All proofs concern their written assumptions; no claim is made that realistic agent systems already satisfy those assumptions.
