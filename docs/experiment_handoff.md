@@ -3538,3 +3538,27 @@ Not selected (rank 9): `pydata__xarray-2905`. Every selected local image ID equa
 |---|---|---|
 | DTR-REQ-002 (P1) | 7cb2062 boundary repairs **completed**; frame and pilot IDs **completed** (`109ee5a`); Coder preflight **blocked** on the REQ-004 slot (static part next) | this commit |
 | DTR-REQ-004 (P0) | DTR side completed; ICLR receipt and the DTR slot acknowledgement pending | `109ee5a` |
+
+## Worker checkpoint — 2026-09-22T04:40Z (host clock; local 00:40 EDT)
+
+**DTR-REQ-004: a bounded DTR slot is now REQUESTED.** Record: [`results/v2_agent/slot_request_20260922.json`](../results/v2_agent/slot_request_20260922.json).
+- The block is at most 7,200 s and starts only on an explicit ICLR acknowledgement that names a start time. At most ONE llama-server runs at a time (serial loading): 8191 for Coder-7B or 8193 for Coder-14B, `-ngl 99 -np 1 -c 16384`. PIDs are published at start.
+- DTR will not start if any non-DTR llama-server/mlx/ollama process is present, and publishes a release record at block end.
+- The request is published here and sent directly to the ICLR session. **Lead: please relay it too.**
+- A read-only check shows no llama-server/mlx/ollama process on the host now. ICLR's latest commits say "Live episodes 0 … no server". I am **not** inferring that the slot is available.
+
+**DTR-REQ-002 Coder static preflight: a DECISION is needed before any episode.** Record: [`results/v2_agent/coder_static_preflight_20260922.json`](../results/v2_agent/coder_static_preflight_20260922.json).
+- **Finding.** The official Coder-14B Q4_K_M GGUF (`Qwen/Qwen2.5-Coder-14B-Instruct-GGUF` @ d0a692e) records in its own metadata `general.name = "Qwen2.5 Coder 14B Instruct AWQ"` and `general.finetune = "Instruct-AWQ"`. The official 7B file says `Instruct-GGUF`. Both model cards list `base_model` without a revision.
+- **Consequence.** Neither served file is traceable to the spec's pinned safetensors commits (7B `c03e6d3`, 14B `aedcc2d`). The 14B was probably converted AWQ → dequantized → requantized, so the pipelines are asymmetric.
+- **Option A (recommended).** Self-convert **both** from the pinned commits with one llama.cpp commit (`4fea119`): HF → F16 GGUF → `llama-quantize Q4_K_M`, no imatrix, hashing every intermediate. This is CPU-only, and the ~45 GB downloads started 04:32Z.
+- **Option B.** Serve the official GGUFs as they are, with the AWQ-derived 14B provenance recorded as a limitation.
+- I am preparing A meanwhile: downloads, plus our own llama.cpp build at `4fea119` with `llama-server` and `llama-quantize`, so we stop depending on another project's scratchpad binary. No episode will run until the A/B choice is recorded.
+- **Fit (arithmetic, not yet measured).**
+  - 14B: 8.4 GiB weights + 3.0 GiB f16 KV at 16k.
+  - 7B: 4.4 + 0.9 GiB.
+  - Serial loading fits. Both models plus the 16 GiB VM exceed 32 GiB, so they are not simultaneous and routing feasibility stays open.
+
+| Request | Status | Artifact / reason |
+|---|---|---|
+| DTR-REQ-002 (P1) | Coder static preflight **completed** (AWQ provenance finding); **blocked** on a lead A/B choice for served files; A is being prepared (downloads/build running); measured preflight is **blocked** on REQ-004 | this commit |
+| DTR-REQ-004 (P0) | DTR slot **requested** (≤2 h, serial single server); awaiting explicit ICLR acknowledgement | `slot_request_20260922.json` |

@@ -1,0 +1,71 @@
+{
+ "request": "DTR-REQ-002",
+ "stage": "static Coder 7B/14B asset and serving provenance (no server started, no model call)",
+ "utc": "2026-09-22T04:30Z",
+ "host": {
+  "chip": "Apple M5",
+  "cores": 10,
+  "unified_memory_bytes": 34359738368,
+  "free_disk_GiB": 215,
+  "iogpu_wired_limit_mb": "0 (macOS default)",
+  "accelerator_state": "no llama-server/mlx/ollama process on the host at 04:25Z (read-only process listing)"
+ },
+ "served_files": {
+  "small": {
+   "file": "~/.cache/huggingface/hub/models--Qwen--Qwen2.5-Coder-7B-Instruct-GGUF/snapshots/13fb94bfda8c8cf22497dc57b78f391a9acb426a/qwen2.5-coder-7b-instruct-q4_k_m.gguf",
+   "bytes": 4683073536,
+   "sha256_prefix": "509287f7",
+   "shards": 1,
+   "gguf": {
+    "version": 3,
+    "tensors": 339,
+    "name": "Qwen2.5 Coder 7B Instruct GGUF",
+    "finetune": "Instruct-GGUF",
+    "file_type": 15,
+    "layers": 28,
+    "kv_heads": 4,
+    "context_length": 131072
+   },
+   "kv_f16_bytes_per_token": 57344,
+   "kv_16k_GiB": 0.88
+  },
+  "large": {
+   "file": "work/models/qwen2.5-coder-14b-instruct-q4_k_m.gguf (Qwen/Qwen2.5-Coder-14B-Instruct-GGUF @ d0a692e)",
+   "bytes": 8988110272,
+   "sha256_prefix": "c1e65973",
+   "shards": 1,
+   "gguf": {
+    "version": 3,
+    "tensors": 579,
+    "name": "Qwen2.5 Coder 14B Instruct AWQ",
+    "finetune": "Instruct-AWQ",
+    "file_type": 15,
+    "layers": 48,
+    "kv_heads": 8,
+    "context_length": 131072
+   },
+   "kv_f16_bytes_per_token": 196608,
+   "kv_16k_GiB": 3.0
+  }
+ },
+ "conversion_provenance": {
+  "finding": "The official 14B Q4_K_M GGUF self-identifies (general.name / general.finetune) as converted from the Instruct-AWQ weights; the 7B file says Instruct-GGUF. Both model cards list base_model Qwen/Qwen2.5-Coder-{7B,14B}-Instruct WITHOUT a revision. So neither served file is traceable to the pinned safetensors commits (c03e6d3 / aedcc2d), and the two conversions are not shown to follow the same procedure (14B probably AWQ-dequantized then requantized).",
+  "consequence": "Using the official files unchanged would be an unrecorded source substitution relative to the spec pins. The comparison would also be confounded by an asymmetric quantization pipeline.",
+  "options": {
+   "A (recommended)": "self-convert BOTH from the pinned safetensors commits with one llama.cpp commit (convert_hf_to_gguf -> F16/BF16 -> llama-quantize Q4_K_M, no imatrix), then record every intermediate and final hash. Downloads started 04:32Z; CPU-only, no accelerator.",
+   "B": "serve the official GGUFs, recording the AWQ-derived 14B provenance as a limitation."
+  },
+  "decision": "lead: please choose A or B. The worker prepares A in the meantime; no episode runs until the choice is recorded."
+ },
+ "server": {
+  "binary": "llama-server built at llama.cpp 4fea119de30f6a923992780f6fd5ccb0bee5d47d (sibling scratchpad build; Release, GGML_METAL=ON, embedded Metal library)",
+  "launcher_sha256": "f124807ba31de5a65ea22fd624f33fd4dfe3c837d1c014dcf4a516b66812ffd7",
+  "note": "the launcher is dynamically linked against libllama/libggml*.dylib; the worker will build its own llama-server and llama-quantize at the same commit under work/upstream, so it does not depend on another project's scratchpad, and will hash the dylibs as well"
+ },
+ "fit_estimate": {
+  "serial_14B_peak_GiB": "about 8.4 weights + 3.0 KV (16k, f16) + buffers, about 12-13",
+  "serial_7B_peak_GiB": "about 4.4 + 0.9 + buffers, about 6",
+  "simultaneous": "about 17-19 GiB plus the 16 GiB VM exceeds 32 GiB: NOT feasible alongside the VM, so the pilot loads serially as the spec allows; routing feasibility stays open"
+ },
+ "measured": "nothing yet: the load, throughput and memory measurements need the acknowledged accelerator slot (results/v2_agent/slot_request_20260922.json)"
+}

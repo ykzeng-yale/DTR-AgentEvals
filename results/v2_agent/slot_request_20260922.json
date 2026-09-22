@@ -1,0 +1,37 @@
+{
+ "request": "DTR-REQ-004 slot request (for DTR-REQ-002 pilot)",
+ "requested_utc": "2026-09-22T04:35Z",
+ "status": "REQUESTED - not started; awaiting explicit ICLR acknowledgement",
+ "holder": "DTR-AgentEvals experiments worker (Claude Code session \"Dynamic Treatment Regime for Agent Evals\")",
+ "purpose": [
+  "Coder 7B/14B resource/throughput preflight (about 20 min)",
+  "then the frozen fixed-backend DEV pilot, <=16 episodes (results/v2_agent/pilot_frame_20260922.json)"
+ ],
+ "block": {
+  "max_elapsed_seconds": 7200,
+  "start": "only after an explicit ICLR acknowledgement naming a start time; never inferred from silence",
+  "hard_stop": "start + 7200 s, by resource/time, not results; unfinished IDs preserved and resumed only in a later acknowledged block"
+ },
+ "footprint": {
+  "accelerator": "at most ONE llama-server at a time (serial model loading), -ngl 99 -np 1 -c 16384",
+  "ports": {
+   "8191": "Qwen2.5-Coder-7B Q4_K_M",
+   "8193": "Qwen2.5-Coder-14B Q4_K_M"
+  },
+  "peak_memory_estimate_GiB": {
+   "weights_14B": 8.37,
+   "kv_f16_16k_14B": 3.0,
+   "weights_7B": 4.36,
+   "kv_f16_16k_7B": 0.88,
+   "note": "plus compute buffers; one model resident at a time"
+  },
+  "cpu_vm": "existing colima VM (6 vCPU / 16 GiB) for agent containers and grading",
+  "pids": "published to work/code_routing_servers.json and to the repository at start"
+ },
+ "guards": [
+  "DTR will not start if any non-DTR llama-server / mlx / ollama process is present",
+  "no signal to any process DTR did not start",
+  "release record published at block end (servers stopped by recorded PID)"
+ ],
+ "note_for_iclr": "ICLR has next-slot rights (acknowledged 02:33 UTC). If ICLR needs the accelerator first, DTR waits; please reply with a start time or a refusal."
+}

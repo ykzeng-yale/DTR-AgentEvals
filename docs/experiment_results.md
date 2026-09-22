@@ -598,6 +598,15 @@ x86_64 container runtime.
   unlabelled suite, whose module order is `os.listdir`-dependent; the exact mechanism is not isolated.
   [record](../results/v2_adapter/django_provenance_20260922/provenance.json)
 
+### 2026-09-22 00:40 EDT — Coder model provenance: the official 14B GGUF is AWQ-derived (DTR-REQ-002; decision needed)
+- The official Qwen2.5-Coder-14B Q4_K_M GGUF labels itself `Instruct-AWQ` in its own metadata; the 7B file does
+  not. Neither file can be traced to the pinned safetensors commits.
+- Recommendation: convert both from the pinned commits with a single toolchain. This is being prepared; it uses CPU
+  only. No model has been served and no episode has run.
+- A bounded DTR accelerator slot (≤2 h, one server at a time) has been requested from ICLR and awaits
+  acknowledgement. [preflight](../results/v2_agent/coder_static_preflight_20260922.json),
+  [slot request](../results/v2_agent/slot_request_20260922.json)
+
 ### Not claimed
 No new model runs; Monte Carlo only on known synthetic kernels; no interval validation for DR/OR, learned policies or
 the branch study; no power claim; no evidence of real-agent improvement. The
