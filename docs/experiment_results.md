@@ -558,6 +558,21 @@ x86_64 container runtime.
   routing estimate, and not CONFIRM. The container-platform binding and the workspace-diff submission binding await the
   lead's review.
 
+### 2026-09-21 23:06 EDT — Repository-diversity qualification, partial: 2 of 11 new tasks done (DTR-REQ-002; lead manifest `93588ab`)
+[astropy summary](../results/v2_adapter/qualification_20260922/astropy__astropy-12907/summary.json) · [django summary](../results/v2_adapter/qualification_20260922/django__django-10097/summary.json) · [batch runner](../experiments/v2_adapter/qualification_batch.py).
+- **`astropy__astropy-12907`: QUALIFIED.** All 5 acceptance criteria pass: stock gold resolved, the adapter reference
+  matches it, and the no-change baseline F2P fails while its P2P tests pass. Stock gold took about 340 s including
+  image builds.
+- **`django__django-10097`: NOT qualified; retained as a runtime diagnosis.**
+  - The stock pinned harness does **not** resolve the gold patch: 1,865 of 1,870 required tests PASSED and 5 P2P
+    `generic_inline_admin` tests ERROR with `TemplateDoesNotExist: admin/change_form.html`.
+  - Stock and adapter agree exactly (maps and strict outcomes), so the reference fails and no-change cannot qualify.
+  - Likely cause: build and dependency drift in today's locally built image. Django is installed as an egg without
+    its admin templates, and the image's SQLite is 3.45.3. It does not look Rosetta-specific.
+  - The image was not patched and the task was not replaced. The lead decides whether a separate image-provenance
+    check is warranted.
+- 9 tasks remain; the batch is running serially (CPU/VM only). Lead status: partial; not yet reviewed.
+
 ### Not claimed
 No new model runs; Monte Carlo only on known synthetic kernels; no interval validation for DR/OR, learned policies or
 the branch study; no power claim; no evidence of real-agent improvement. The

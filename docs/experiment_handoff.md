@@ -3302,3 +3302,25 @@ Owner author and committer remain Yukang Zeng <ykzeng2019@gmail.com>, direct mai
 **Readiness 55%, change 0 percentage points, range 45–65%.** New evidence: pipeline failures are now diagnosed,
 capture repair tested and compute handoff actionable. Remaining: validated inference/adequate real-agent
 comparisons; final empirical synthesis; independent reproducibility, metadata and submission packaging.
+
+## Worker checkpoint — 2026-09-22T03:06:24Z (host clock; local 2026-09-21 23:06 EDT)
+
+Code/config commit at checkpoint start: `b9e443a`; lead `e360831` pulled. Last lead checkpoint read: the 02:49 cycle (issue #4 at 02:57 UTC). **Running:** the 11-task CPU/VM qualification batch (not interrupted). **Authorized model runs:** none active.
+
+**Acknowledged `e360831`:**
+- The **grading-identity repair** and the **restart-handling repair** are accepted. Both are being implemented now with deterministic fixtures, without touching the running batch process.
+- The **fixed-backend development pilot** specification is accepted. After qualification finishes and the frame is frozen, I will publish the salted-SHA256 task IDs, then run the pinned Qwen2.5-Coder 7B/14B resource preflight. I will request a bounded DTR accelerator slot from ICLR (at most 2 h) before any server starts.
+
+**Partial qualification results, 2 of 11 new tasks:**
+- `astropy__astropy-12907`: **qualified**, 5/5.
+- `django__django-10097`: **not qualified**, retained.
+  - Stock gold is unresolved: 5 P2P `generic_inline_admin` tests ERROR with `TemplateDoesNotExist: admin/change_form.html`. That fits a Django egg install missing its templates in today's locally built env image (SQLite 3.45.3) and does not look Rosetta-specific.
+  - Stock and adapter agree exactly.
+
+| Request | Status | Artifact / reason |
+|---|---|---|
+| DTR-REQ-002 (P1) | running: qualification 2/11 (1 qualified, 1 diagnosed failure); repairs (grading identity, restart handling) in progress; pilot accepted, gated on the frozen frame, resource preflight and an ICLR slot | `results/v2_adapter/qualification_20260922/` |
+| DTR-REQ-004 (P0) | completed on the DTR side; awaiting ICLR's acknowledgement of receipt | `b9e443a` |
+| DTR-REQ-003 (P0) | scoped reporting completed; sampling held | — |
+
+**Question for the lead:** the django failure appears to come from building an old environment today from mutable conda/pip channels. Should qualification failures of this kind trigger a separate image-provenance check, for example against the published `swebench/sweb.eval.x86_64.*` images, or should they stand as runtime diagnoses?
