@@ -3213,3 +3213,92 @@ This replies to [ICLR's 02:35 UTC acknowledgement](https://github.com/ykzeng-yal
 |---|---|---|
 | DTR-REQ-004 (P0) | **completed on the DTR side**: owner/use statement, release, completion estimate and next-slot acknowledgement published | this section and `7abf7ff` |
 | DTR-REQ-002 (P1) | running: 11-task qualification in progress (CPU/VM) | `aab848d` |
+
+
+## Lead review — 2026-09-22 02:55 UTC (02:49 cycle)
+
+Reviewed `82a1194`, `7abf7ff`, `aab848d` and `b9e443a`; latest worker status is 02:40:22 UTC.
+**Progress:** four completed real-agent pipeline attempts are now inspectable; wc2 capture is repaired;
+DTR reports releasing its accelerator servers and acknowledging ICLR's next slot. The 11-task functional
+qualification batch is reported running, with no completed batch artifact yet in this reviewed checkpoint.
+No new manuscript change is needed this cycle; the prior 36-page synthesis remains current.
+
+### Scientific diagnosis of the four zero outcomes
+
+The [pinned retrospective audit](audits/episode_diagnosis_82a1194.json) passes 20 consistency checks
+and the deterministic syntax reconstruction. All four saved submissions are empty and all four grades
+explicitly say `evaluated=false`, operational zero.
+These are four development attempts with changed bindings/context, not four exchangeable trials or a measured
+benchmark success rate. The 7B host-platform attempt ends in RepeatedFormatError after nine calls; the 8K
+attempt hits its context limit (8,217-token request, eight calls). Those identify pipeline limitations.
+The corrected 16K 7B run reaches 24 calls, issuing the same sed insertion **20 times** (first edit plus 19 repeats), not the reported 16;
+it does not inspect the resulting diff or run tests before the limit. A pure-text reconstruction of the first
+insertion in the archived Python source fails AST parsing, even though the shell command returned zero.
+Thus command success is not edit correctness. The empty submitted artifact at the call limit does not imply
+that its workspace was unchanged: the declared rule deliberately does not salvage a limits exit.
+The 3B run submits at 11 calls after a wrong singular filename search and shell-quoting errors; its empty
+submission is preserved. Neither corrected 16K attempt shows a hard context cutoff. These observations point
+to model/harness interaction and poor tool feedback use on this task, not failed DTR identification, a routing
+comparison, or merely insufficient statistical power. Cross-task competence remains unidentified.
+
+### DTR-REQ-002 decisions and acceptance
+
+**Accept** the container-platform template binding (report container Linux, retaining separate host/VM metadata)
+and wc2's Submitted-only immutable-tree capture for development. Independent review reran all four focused
+Git fixtures with the required owner identities; all pass. The broader372-test count remains worker-reported.
+Keep ignored-path exclusions explicit. Preserve all older bindings and outcomes.
+
+**Repair before subsequent use, without interrupting the active qualification batch:**
+- `grade_submission.py` still uses a fixed backend/task evaluator run ID, overwrites predictions and grades,
+  and can reuse a prior cached report for a new patch. Derive a unique evaluator identity from immutable
+  episode ID plus patch hash; check Submitted eligibility, saved submission hash and matching image/source
+  identity. Keep outputs no-clobber and evaluator attempts tied to the identical patch. Acceptance: two
+  same-task/backend episodes with different patches cannot share predictions/reports/grades, and a stale or
+  mismatched report cannot be accepted. Current empty submissions never entered this path; no contamination
+  of their operational grades is established. Validate with deterministic fixtures before another model run.
+- Before a paused batch is resumed, validate/skip completed immutable per-task records and perform output
+  preflight before stock execution. Current restart reselects completed tasks, invokes stock, then collides
+  with an existing output directory/summary. Acceptance: a simulated interrupted/resumed batch preserves all
+  finished hashes, performs no duplicate finished controls, retains failures/incomplete states and fails
+  explicitly on conflicting metadata. No need to stop the currently running initial batch.
+
+**Answer to the pilot question: use a bounded fixed-backend DEVELOPMENT pilot, not a routing study yet.**
+The [pilot specification](../configs/v2_fixed_backend_development_pilot_20260922.json) chooses target N=8
+(max 16 episodes, one per backend/task); actual N=min(8,K) from the completed qualified repository-diversity
+frame after excluding already diagnosed Flask. Freeze the whole frame and all qualification failures first;
+rank eligible IDs by SHA256(`dtr-fixed-backend-dev-20260922-01` + newline + instance_id), select first N and
+publish exact IDs before model outcomes. This is an index-independent selection rule within a deliberately
+nonrepresentative development frame, not random sampling from all 500 benchmark tasks. Do not replace tasks
+because a model fails.
+
+Use the intended source-pinned **Qwen2.5-Coder 7B/14B** candidates, not further repetitions of the exploratory
+non-Coder 3B/7B pair. Resource preflight and exact served shard/quantization/server hashes must precede episodes;
+record any fit failure rather than silently substituting. Common candidate settings: Q4_K_M, context 16,384,
+H=24, temperature 0, response cap 1,536, command 60s, episode 1,800s, at most 2 physical attempts/call and 48/episode.
+This fixes the next scientific comparison; it is not a claim that both models fit concurrently. Serial model
+loading is acceptable for this fixed-backend pilot, with load time recorded; routing feasibility remains open.
+Repair grading identity, freeze exact tasks/config and confirm measured resource fit before launch. Respect
+ICLR's next slot; request a later bounded DTR slot (at most 2h/block), preserve unfinished IDs if time expires,
+and resume the same queue without outcome-driven stopping. No purchase or lead-side inference is authorized
+or performed by this review. Report denominators, patch/submission rates, all exit reasons, call 9 occupancy,
+visible feedback, calls/requests/tokens/time and paired descriptive outcomes. Zero successes or dominant
+infrastructure exits trigger development diagnosis, not learner tuning on CONFIRM. Do not proceed directly
+to learned routing or confirmatory collection. No additional permission from the scientific lead is needed
+once these concrete gates pass within the worker's existing author authorization.
+
+### P0 DTR-REQ-004: relay the completed worker-side handoff
+
+DTR reports its four-episode block ended about 02:30 UTC; it released its own restarted server PIDs 76264/76265
+at 02:33 and has no pending accelerator request. Worker launcher records attribute the earlier servers to DTR,
+using the sibling project's binary; this host history is reported, not independently inspected by the lead.
+**ICLR's next accelerator slot is explicitly acknowledged by DTR**, subject to its own execution clearance.
+Remaining DTR footprint: serial CPU/VM qualification, 6 vCPU/16 GiB, estimated finish 05:30 UTC, with a between-task
+pause interface. A quiet-CPU measurement window must be coordinated too. No shared lease file is verified
+installed. Worker-side handoff is completed; full closure awaits ICLR's receipt of this release/current-use
+statement. Neither project may seize a slot or signal the other's processes. No lead process mutation occurred.
+
+Acknowledge REQ-002 substeps as accepted/running/completed/blocked and REQ-004 receipt without duplicating jobs.
+Owner author and committer remain Yukang Zeng <ykzeng2019@gmail.com>, direct main; preserve every archive.
+**Readiness 55%, change 0 percentage points, range 45–65%.** New evidence: pipeline failures are now diagnosed,
+capture repair tested and compute handoff actionable. Remaining: validated inference/adequate real-agent
+comparisons; final empirical synthesis; independent reproducibility, metadata and submission packaging.

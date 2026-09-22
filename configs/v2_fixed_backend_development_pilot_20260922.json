@@ -1,0 +1,66 @@
+{
+  "request": "DTR-REQ-002",
+  "status": "prospective DEVELOPMENT pilot specification; no task assignments or model executions created by this file",
+  "decision_utc": "2026-09-22T02:54:30Z",
+  "target": "Can the intended fixed coding backends produce eligible patches and verified resolutions under the common harness? This is a feasibility comparison, not routing superiority or confirmatory inference.",
+  "qualification_manifest": "configs/v2_runtime_smoke_expansion_20260922.json",
+  "selection": {
+    "frame": "All tasks in the fixed12-task qualification manifest with completed accepted controls, after the whole qualification batch has terminal records; exclude pallets__flask-5014 already used for outcome-guided diagnosis. Keep every original qualification failure in its record.",
+    "target_n": 8,
+    "actual_n": "min(8, K) where K is size of the above qualified frame; record K and actual N before any new model outcome; no extra task substitution",
+    "seed_label": "dtr-fixed-backend-dev-20260922-01",
+    "ordering": "Sort by SHA256 of UTF-8 seed_label + newline + instance_id; break hash ties by instance_id; select first actual_n. Freeze exact IDs and source hashes before inference.",
+    "inference_scope": "Conditional descriptive development results on the selected tasks; no repository or benchmark population-rate claim."
+  },
+  "models": [
+    {
+      "repository": "https://huggingface.co/Qwen/Qwen2.5-Coder-7B-Instruct",
+      "source_commit": "c03e6d358207e414f1eca0bb1891e29f1db0e242",
+      "quantization": "Q4_K_M candidate; exact conversion/source and all served shard hashes must be recorded before episodes"
+    },
+    {
+      "repository": "https://huggingface.co/Qwen/Qwen2.5-Coder-14B-Instruct",
+      "source_commit": "aedcc2d42b622764e023cf882b6652e646b95671",
+      "quantization": "Q4_K_M candidate; exact conversion/source and all served shard hashes must be recorded before episodes"
+    }
+  ],
+  "episodes": {
+    "per_task_per_backend": 1,
+    "max_total": 16,
+    "decoding": {
+      "temperature": 0,
+      "max_tokens": 1536,
+      "context_per_slot": 16384
+    },
+    "logical_call_limit": 24,
+    "physical_attempts_per_logical_call_max": 2,
+    "max_physical_requests_per_episode": 48,
+    "max_physical_requests_all_episodes": 768,
+    "command_timeout_seconds": 60,
+    "episode_wall_seconds": 1800,
+    "evaluator_attempt_timeout_seconds": 1800,
+    "evaluator_retry_max": 1,
+    "submission": "cp2/wc2 explicit Submitted capture only, repaired unique evaluator identity and no-clobber; no salvage",
+    "paired_backend_order": "Task pairs sequential within an agreed host slot; first backend determined by low bit of SHA256(seed_label + newline + instance_id + newline + order). Record exact order before launch.",
+    "token_note": "Nominal generated-token ceiling589824 for one physical attempt or1179648 for two; input tokens and evaluator/runtime overhead reported separately. No claim that this worst-case allowance is affordable."
+  },
+  "launch_conditions": [
+    "Current qualification records complete and exact pilot manifest frozen",
+    "grader identity/cache and resume fixes validated deterministically; archives immutable",
+    "pinned Coder pair assets and serving hashes/context confirmed; no silent substitution by the old3B/7B pool",
+    "measured resource/throughput preflight fits the common declared limits; fixed-backend pilot may load backends serially but cannot establish simultaneous routing feasibility",
+    "ICLR next-slot rights respected; explicit release acknowledgement and agreed DTR slot before new accelerator work"
+  ],
+  "shared_host": {
+    "block_elapsed_cap_seconds": 7200,
+    "rule": "No accelerator work until handoff. Reach hard block cap by resource/time, not results; preserve incomplete IDs and resume the same frozen queue in a later agreed slot. Do not stop another project."
+  },
+  "report": [
+    "all selected task/backend outcomes and exact denominators",
+    "Submitted/nonempty patch rates and capture/format/context/budget/evaluator exits",
+    "call9 eligibility occupancy and visible feedback variation",
+    "logical calls, physical requests, input/output tokens, elapsed time, model pins",
+    "paired descriptive success/cost differences, no efficacy or precision claim"
+  ],
+  "decision_rule": "Complete the frozen bounded pilot without outcome-driven replacement or early success stopping. Zero verified successes or dominant format/context/infrastructure failures trigger further development diagnosis; do not launch learned routing or CONFIRM. Existing main protocol gates unchanged."
+}

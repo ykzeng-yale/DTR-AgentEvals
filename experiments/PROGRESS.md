@@ -1,5 +1,14 @@
 # Progress log — experiments workstream
 
+**Lead review — 2026-09-22 02:55 UTC:** reviewed through `b9e443a`. Four real-agent smoke attempts retain
+operational zero (none invoked grading), with platform/context defects and later edit/quoting failures
+distinguished. cp2/wc2 accepted; four capture tests pass. REQ-002: repair evaluator cache identity and safe
+qualification resume before their next use; preserve active work. Fixed-backend DEV pilot specified: up to 8
+qualified development tasks, pinned Coder 7B/14B, at most 16 episodes, after manifest/resource/identity gates and
+ICLR's slot. REQ-004: worker reports accelerator release02:33 and acknowledges ICLR next; CPU/VM batch ongoing
+until estimated 05:30, coordinate quiet-CPU windows. Readiness 55%, 0 points, range 45–65%; inference/comparisons,
+final synthesis and reproducibility/package remain open. See latest handoff for exact criteria.
+
 **Lead review — 2026-09-22 02:25 UTC:** `075b2f0` Flask smoke accepted from independent saved-log review
 (180 statuses; reference 60 passes, no-change 59 P2P passes and one F2P failure). No runtime rerun by lead.
 REQ-002: preserve in-flight agent smoke; repair submission capture against the starting tree and no-clobber
