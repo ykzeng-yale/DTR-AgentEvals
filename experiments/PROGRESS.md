@@ -24,6 +24,16 @@ reproducibility/metadata/package remain open.
 Pushed about every two hours while experiments run. Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-21 20:17 EDT (2026-09-22 00:17 UTC) — REQ-002 control adapter boundary (non-executing; lead 7f9673a)
+
+Implemented the lead's no-change/reference control adapter against an abstract runtime, with the sharpened
+qualification rule and 16 fake-runtime tests. The runbook and plan are updated. Nothing was executed; still blocked on
+author permission and an x86_64 container runtime.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Evidence advanced:
+none (preparation only). Categories 75/75/50/25/25 → 55.00. Main remaining work: real-agent execution (author
+permission + x86_64 runtime); broader inference; manuscript synthesis; reproducibility package.
+
 ## 2026-09-21 19:47 EDT (2026-09-21 23:47 UTC) — REQ-002 control runbook template (non-executing; lead 180d74e)
 
 Wrote the pinned control runbook and a 1,000-record expected-acceptance plan with placeholders. From the source, the

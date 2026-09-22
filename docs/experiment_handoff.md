@@ -2732,3 +2732,40 @@ Worker checkpoint at 23:47 UTC is fresh. No new experiment evidence or manuscrip
 **55%, change 0 percentage points, range 45–65%**. Remaining: reliable inference/adequate real-agent comparisons;
 complete manuscript synthesis; independent reproducibility, metadata and submission package. Owner identities
 and direct-main history rules retained.
+
+## Worker checkpoint — 2026-09-22T00:17:55Z (host clock; local 2026-09-21 20:17 EDT)
+
+Code/config commit at checkpoint start: `0d3f9da`; lead `7f9673a` pulled. Last lead checkpoint read: the 23:49 cycle (issue #4 at 23:51 UTC). **Authorized runs:** none. Nothing was executed or installed.
+
+**DTR-REQ-002 static preparation per `7f9673a`: completed.**
+
+- **Adapter:** [`control_adapter.py`](../experiments/v2_adapter/control_adapter.py), `control-adapter-v1`. It defines an abstract `Runtime` boundary: `start`, `repo_state`, `apply_patch`, `run_eval_script`, `stop`. It imports no container, subprocess or SWE-bench code; the real binding is written only on an approved host.
+- **`no_change` mode:** bypasses **only** prediction application and records `patch_application = not_applicable`, `prediction_identity = no_prediction` and an explicit report scope.
+- **`reference` mode:** applies the dataset patch, then runs the script. A failed application is a setup failure, and the script is not run, as in the pinned sequence.
+- **Both modes:**
+  - The eval script is checked against the M01 SHA before any runtime call, and the instance image digest must already be recorded.
+  - The identical script is invoked exactly once per attempt.
+  - A timeout or missing/unparsable report gets exactly one retry with identical inputs, and both attempts are recorded.
+  - Pre/post repository state, log hash and parsed statuses are recorded.
+  - The strict endpoint uses the existing M03 `declared_outcome` rule.
+- **Qualification, exactly as you specified.** Both modes need completed, interpretable execution with all identities accounted for; otherwise diagnose.
+  - No-change qualifies only with P2P all PASSED (or the declared empty-P2P limitation), at least one F2P FAILED, and no F2P ERROR, SKIPPED or XFAIL.
+  - Reference qualifies only with every F2P and P2P PASSED.
+- **Fake-runtime tests:** [`test_v2_control_adapter.py`](../experiments/tools/test_v2_control_adapter.py), 16 cases:
+  - call order in each mode; no-change never calls `apply_patch`; both modes run the identical script once;
+  - a patch failure skips the script;
+  - timeout twice and missing-then-unparsable both retry once and cannot qualify; a completed retry is used;
+  - seven qualification cases: a valid baseline, an all-pass baseline, a missing identity, broken P2P, and F2P ERROR, SKIPPED and XFAIL;
+  - the empty-P2P declaration; a reference with a SKIPPED test;
+  - refusals before any runtime call.
+- **Runbook and plan revised:** the no-change mechanism is marked resolved by `7f9673a`, the qualification criteria are added, and the 1,000 expected records now carry the control mode, prediction identity, adapter hash, patch-application, attempt and scope fields plus a stock-gold comparison slot for reference.
+- Static tests do **not** establish equivalence with the stock gold path; the runtime check must.
+- 361 tests pass.
+
+| Request | Status | Artifact / reason |
+|---|---|---|
+| DTR-REQ-001 (P0) | completed | — |
+| DTR-REQ-002 (P1) | **blocked (external)**: (a) author execution permission; (b) x86_64 host with a container runtime. Static preparation completed (M01, M02, M03-static, runbook, plan, adapter boundary). | this commit |
+| DTR-REQ-003 (P0) | scoped reporting completed and accepted; sampling held | — |
+
+No question for the lead.

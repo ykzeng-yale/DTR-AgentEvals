@@ -1,4 +1,4 @@
-"""DTR-REQ-002 (lead 180d74e): NON-EXECUTING control-plan template for the pre-sampling no-change / reference-patch
+"""DTR-REQ-002 (lead 180d74e; decision 7f9673a): NON-EXECUTING control-plan template for the pre-sampling no-change / reference-patch
 controls (experiment_protocol_v2.md infrastructure gate; M03 decision). Pure data: it reads the committed M01 records and
 writes a plan with explicit placeholders. It imports no container, subprocess or SWE-bench code and runs nothing.
 Commands in the runbook are UNTESTED templates; host, runtime and image digests are placeholders, never guessed.
@@ -19,18 +19,21 @@ PINS = dict(dataset='princeton-nlp/SWE-bench_Verified@c104f84 (local parquet; a 
             dependency_lock='results/v2_adapter/m01_c104f840_f7bbbb2/dependency_lock.txt',
             m01_summary='results/v2_adapter/m01_c104f840_f7bbbb2/summary.json')
 
-CONTROLS = dict(
-    reference=dict(patch='dataset `patch` field (gold), via --predictions_path gold',
-                   expected='STRICT verified pass: nonempty FAIL_TO_PASS and every FAIL_TO_PASS and PASS_TO_PASS test observed PASSED '
-                            '(SKIPPED/XFAIL/missing do not pass); upstream report preserved beside the strict score'),
-    no_change=dict(patch='NONE (base_commit + test_patch only)',
-                   expected='STRICT verified FAIL: at least one FAIL_TO_PASS test not observed PASSED',
-                   open_issue='the unmodified CLI cannot run this control: run_evaluation drops empty predictions before any '
-                              'container starts (run_evaluation.py L458-L470, read from source). Calling run_instance directly would '
-                              'write an empty patch.diff and try GIT_APPLY_CMDS (L64-L67, L158-L184); whether git apply / patch accept '
-                              'an empty file was NOT tested here (inferred to fail -> EvaluationError). A mechanism (e.g. running the '
-                              'generated eval script in the instance image without applying a prediction, graded by the pinned parser) '
-                              'needs a LEAD DECISION before execution.'))
+CONTROLS = dict(   # lead decision 7f9673a: one separately versioned adapter (control_adapter.py) with two modes
+    reference=dict(mechanism='control_adapter mode "reference": dataset reference patch through the pinned application step, '
+                             'then the identical M01 eval script once; on the approved runtime it must be compared with the '
+                             'unmodified pinned stock gold path (--predictions_path gold) on the same task/image, disagreements kept',
+                   qualification='completed interpretable execution, every required identity accounted for, and every required '
+                                 'FAIL_TO_PASS and PASS_TO_PASS test observed PASSED (M03 strict rule); otherwise diagnose'),
+    no_change=dict(mechanism='control_adapter mode "no_change": same digest-pinned image/base commit, bypasses ONLY prediction '
+                             'application (patch_application = not_applicable), invokes the identical M01 hash-checked eval script '
+                             'once (it applies the test patch itself); no fabricated patch, no empty git-apply, no test edits',
+                   qualification='completed interpretable execution with all required identities accounted for, all required '
+                                 'PASS_TO_PASS observed PASSED (unless the declared empty-P2P limitation applies), at least one '
+                                 'FAIL_TO_PASS observed FAILED and no F2P ERROR/SKIPPED/XFAIL ambiguity; a false strict score alone '
+                                 'does NOT qualify (timeout, missing report/tests, evaluator or setup failure -> diagnose)',
+                   resolved_by='lead 7f9673a (supersedes the open issue raised in 0d3f9da: the unmodified CLI drops empty '
+                               'predictions, run_evaluation.py L458-L470)'))
 
 RECORD = dict(  # expected acceptance record per instance x control (every field required; placeholders until executed)
     run_id=PH('RUN_ID'), instance_id=None, control=None, host_id=PH('HOST_ID'), host_arch_uname_m=PH('MUST_EQUAL_x86_64'),
@@ -44,13 +47,21 @@ RECORD = dict(  # expected acceptance record per instance x control (every field
     report_json_sha256=PH('SHA256'), test_log_sha256=PH('SHA256'), per_test_status=PH('{test_id: PASSED|FAILED|SKIPPED|XFAIL|ERROR|MISSING}'),
     upstream_resolved=PH('BOOL_FROM_UPSTREAM_REPORT'), strict_verified_resolved=PH('BOOL_FROM_M03_STRICT_RULE'),
     expected_strict_outcome=None, meets_expectation=PH('BOOL'), qualification=PH('qualified|diagnose (never silent exclusion)'),
-    diagnosis=PH('REQUIRED_IF_NOT_MET'), author_execution_permission_ref=PH('LINK_TO_AUTHOR_APPROVAL'))
+    diagnosis=PH('REQUIRED_IF_NOT_MET'), author_execution_permission_ref=PH('LINK_TO_AUTHOR_APPROVAL'),
+    control_mode=None, adapter_version=PH('control-adapter-v1 (lead 7f9673a)'), adapter_source_sha256=PH('SHA256_OF_ADAPTER_USED'),
+    prediction_identity=None, patch_application=PH('not_applicable|applied|failed'), repo_state_pre=PH('HASH'),
+    repo_state_post=PH('HASH'), attempts=PH('[attempt records; at most one retry on timeout/missing report]'),
+    report_scope=PH('explicit scope statement; no fabricated upstream success markers'), qualification_reason=PH('TEXT'),
+    stock_gold_path_comparison=PH('reference only: agreement/disagreement with the unmodified --predictions_path gold run'))
 
 COMMAND_TEMPLATES = dict(  # UNTESTED; flags read from run_evaluation.py L583-L674 at f7bbbb2; run only on a verified x86_64 host
     reference='python -m swebench.harness.run_evaluation --dataset_name <PATH_TO_SHA_VERIFIED_PARQUET> --split train '
               '--predictions_path gold --instance_ids <INSTANCE_ID ...> --run_id <RUN_ID> --namespace none --max_workers <N> '
               '--timeout 1800 --cache_level env --report_dir <REPORT_DIR>',
-    no_change='NOT AVAILABLE through the unmodified CLI (see controls.no_change.open_issue); awaiting lead decision',
+    no_change='control_adapter.run_control(mode="no_change", ...) with an approved Runtime binding (NOT YET WRITTEN; '
+              'written only on the approved x86_64 host); the unmodified CLI cannot run it (drops empty predictions)',
+    reference_adapter='control_adapter.run_control(mode="reference", reference_patch=<dataset patch>, ...) - compared with '
+                      'the stock CLI gold command above on the same task/image',
     notes=['a local .parquet is loaded with split="train" by load_swebench_dataset (utils.py L147-L148); --split is then unused',
            '--namespace none builds images locally; the default namespace pulls mutable "latest" tags - record every digest',
            'no project credentials on the host; disposable isolated workers; network only for image builds'])
@@ -64,7 +75,11 @@ def plan():
         for control in ('no_change', 'reference'):
             rec = dict(RECORD, instance_id=r['instance_id'], control=control, eval_script_sha256_expected=r['eval_script_sha256'],
                        base_image_key=r['base_image_key'], env_image_key=r['env_image_key'], instance_image_key=r['instance_image_key'],
-                       expected_strict_outcome='strict_verified_resolved == True' if control == 'reference' else 'strict_verified_resolved == False',
+                       control_mode=control, prediction_identity='dataset_reference_patch' if control == 'reference' else 'no_prediction',
+                       expected_strict_outcome=('qualified: every required F2P/P2P PASSED' if control == 'reference' else
+                                                'qualified: completed, identities accounted, P2P PASSED%s, >=1 F2P FAILED, no F2P '
+                                                'ERROR/SKIPPED/XFAIL (a false strict score alone is insufficient)' %
+                                                (' (empty-P2P limitation declared)' if r['limitations'] else '')),
                        arch_expected=r['arch'], limitations=r['limitations'])
             out.append(rec)
     return rows, eligible, out
@@ -76,7 +91,8 @@ def main():
                status='TEMPLATE ONLY: nothing executed; commands untested; host/runtime/digests are placeholders',
                blockers=['(a) author execution permission for the harness controls (unanswered since 2026-09-21 15:16 UTC)',
                          '(b) an x86_64 host with a container runtime (this host: arm64, no docker/podman/colima)'],
-               open_lead_decision='mechanism for the no-change control (the unmodified harness cannot evaluate an empty patch)',
+               resolved_lead_decision='7f9673a: separately versioned control adapter (control_adapter.py); no-change bypasses only '
+                                      'prediction application; qualification requires completed interpretable execution',
                pins=PINS, m01_instances_sha256=hashlib.sha256((M01 / 'instances.jsonl').read_bytes()).hexdigest(),
                counts=dict(m01_rows=len(rows), eligible=len(eligible), planned_records=len(recs),
                            empty_pass_to_pass_limitation=sum(1 for r in eligible if r['limitations'])),

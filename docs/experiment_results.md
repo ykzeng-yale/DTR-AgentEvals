@@ -488,6 +488,17 @@ exists, with digest pinning and dependency locks recorded before any sampling.
 - **Status:** REQ-002 remains **blocked** on (a) the author's execution permission and (b) an x86_64 container
   runtime. Nothing was executed.
 
+### 2026-09-21 20:17 EDT — REQ-002 control adapter boundary (non-executing; lead decision `7f9673a`)
+[Adapter](../experiments/v2_adapter/control_adapter.py) · [fake-runtime tests](../experiments/tools/test_v2_control_adapter.py) ·
+[updated runbook](swebench_control_runbook_20260921.md) · [updated plan](../results/v2_adapter/control_plan_template_20260921.json).
+- **Adapter:** one separately versioned adapter with `no_change` and `reference` modes. `no_change` never applies a
+  prediction. Both modes run the identical M01 hash-checked script once per attempt, with one retry only on a timeout or
+  missing report.
+- **Qualification** follows the lead's sharpened rule: a false strict score alone never qualifies a negative control.
+  16 fake-runtime cases pass.
+- **Status:** no upstream code, containers or runtime bindings. REQ-002 remains **blocked** on author execution
+  permission and an x86_64 container runtime.
+
 ### Not claimed
 No new model runs; Monte Carlo only on known synthetic kernels; no interval validation for DR/OR, learned policies or
 the branch study; no power claim; no evidence of real-agent improvement. The

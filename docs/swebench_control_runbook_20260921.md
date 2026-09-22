@@ -1,4 +1,4 @@
-# SWE-bench control runbook — TEMPLATE (DTR-REQ-002; lead `180d74e`)
+# SWE-bench control runbook — TEMPLATE (DTR-REQ-002; lead `180d74e`, decision `7f9673a`)
 
 **Status: template only.** Nothing has been executed, and the commands below are **untested**. Host, runtime and image
 digests are placeholders; they are resolved only on a verified host and never guessed. Machine-readable plan and
@@ -56,13 +56,35 @@ python -m swebench.harness.run_evaluation --dataset_name <PATH_TO_SHA_VERIFIED_P
 - `--namespace none` builds images locally. The default namespace pulls mutable `latest` tags, so record every digest.
 - Expected: strict verified **pass**.
 
-**No change** (base commit + test patch only). This control is **not available through the unmodified CLI**.
-- `run_evaluation` drops empty predictions before any container starts (L458–L470).
-- Calling `run_instance` directly would try to apply an empty patch (L158–L184). How `git apply`/`patch` handle an empty
-  file was not tested here.
-- **Lead decision needed:** the mechanism, for example running the generated eval script in the instance image
-  without applying a prediction, graded by the pinned parser.
-- Expected: strict verified **fail**, meaning at least one FAIL_TO_PASS test is not observed PASSED.
+**No change** (base commit + test patch only). **Resolved by the lead in `7f9673a`.**
+- The unmodified CLI cannot run this control, because it drops empty predictions (L458–L470).
+- It therefore runs through the separately versioned adapter [`control_adapter.py`](../experiments/v2_adapter/control_adapter.py)
+  in mode `no_change`. That mode uses the same digest-pinned image and base commit and bypasses **only** prediction
+  application (`patch_application = not_applicable`). It then invokes the identical M01 hash-checked eval script once;
+  the script applies the test patch itself.
+- No fabricated patch, no empty `git apply`, no test edits. The report states its scope, and no upstream success
+  markers are fabricated.
+- The Runtime binding is **not yet written**; it is written only on the approved x86_64 host.
+
+**Adapter reference mode.** The same adapter applies the dataset reference patch and then runs the identical script
+once. On the approved runtime it must be compared with the stock gold command above on the same task and image, with
+any disagreement kept and diagnosed. Static tests cannot establish that equivalence.
+
+## Qualification (lead `7f9673a`)
+- **Both controls:** execution must be completed and interpretable: no timeout, the report and log present and parsed,
+  no evaluator or setup failure. Every required test identity must be accounted for. Otherwise the result is
+  **diagnose**; tasks are never silently excluded. A timeout or missing report gets exactly one retry with identical
+  inputs, and both attempts are recorded.
+- **No change qualifies** only when all of the following hold:
+  - all required PASS_TO_PASS tests are observed PASSED, unless the declared empty-P2P limitation applies;
+  - at least one FAIL_TO_PASS test is observed FAILED;
+  - no FAIL_TO_PASS test is ERROR, SKIPPED or XFAIL.
+
+  A false strict score **alone** is insufficient. An all-passing baseline gives diagnose.
+- **Reference qualifies** when every required FAIL_TO_PASS and PASS_TO_PASS test is observed PASSED (the M03 strict
+  rule).
+- Fake-runtime boundary tests: [`test_v2_control_adapter.py`](../experiments/tools/test_v2_control_adapter.py), 16
+  cases.
 
 ## Acceptance record (per instance × control)
 The schema is in the JSON (`record_schema`). It covers:

@@ -25,7 +25,11 @@ def test_plan_matches_m01_and_keeps_placeholders():
         assert r['instance_image_key'] == src['instance_image_key']
         for k in ('instance_image_digest', 'env_image_digest', 'base_image_digest', 'host_id', 'container_runtime', 'author_execution_permission_ref'):
             assert r[k].startswith('<') and r[k].endswith('>'), k        # never a guessed value
-        assert r['expected_strict_outcome'].endswith('True' if r['control'] == 'reference' else 'False')
+        assert r['control_mode'] == r['control'] and r['expected_strict_outcome'].startswith('qualified:')
+        if r['control'] == 'no_change':
+            assert r['prediction_identity'] == 'no_prediction' and 'insufficient' in r['expected_strict_outcome']
+            assert ('empty-P2P' in r['expected_strict_outcome']) == bool(src['limitations'])
     assert art['counts']['empty_pass_to_pass_limitation'] == 11
-    assert 'LEAD DECISION' in art['controls']['no_change']['open_issue'] and 'NOT AVAILABLE' in art['command_templates']['no_change']
+    assert '7f9673a' in art['controls']['no_change']['resolved_by'] and 'bypasses ONLY prediction' in art['controls']['no_change']['mechanism']
+    assert 'NOT YET WRITTEN' in art['command_templates']['no_change'] and art['resolved_lead_decision'].startswith('7f9673a')
     assert art['status'].startswith('TEMPLATE ONLY')
