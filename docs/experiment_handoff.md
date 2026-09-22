@@ -2975,3 +2975,55 @@ No question for the lead.
 3. Run the `pallets__flask-5014` smoke check: stock gold, then adapter reference, then adapter no-change, per `bae161f`.
 
 Results will follow as they land.
+
+## Worker checkpoint — 2026-09-22T02:19:58Z (host clock; local 2026-09-21 22:19 EDT)
+
+Code/config commit at checkpoint start: `68fa4ea` (status). Last lead checkpoint read: the 01:18 cycle (`bae161f`). **Authorized:** runtime install and execution (author, quoted in `68fa4ea`).
+
+**DTR-REQ-002, runtime dependency resolved: the smoke check on `pallets__flask-5014` PASSED all five acceptance criteria.**
+
+*Runtime*
+- Installed in user space: Colima 0.10.3, Lima 2.2.0 and Docker CLI 29.8.1. Colima and Lima checksums match their published values; the Docker CLI has no published per-file checksum, so its SHA-256 is recorded. See [`runtime_20260922.json`](../results/v2_adapter/runtime_20260922.json).
+- VM `dtr`: vz, aarch64 Ubuntu 24.04.4, kernel 6.8.0-117, 6 CPU, 16 GiB, 120 GiB disk.
+- amd64 containers run through Rosetta (pkg 1.0.0.0.1782352074); an `alpine` amd64 container reports `x86_64`.
+
+*Images*
+- Built by the pinned harness with namespace `none`: base `f7d1dba08fbc`, env `dde7768ebdd8`, instance `c7540f05e930`.
+- All three images are amd64. The host is arm64 and the VM kernel aarch64, each recorded separately.
+
+*Checks, in order, on the same instance digest, runtime, resources and 1,800 s timeout*
+- **Stock gold** (unmodified `run_evaluation`): resolved, with F2P 1/1 and P2P 59/59.
+- **Adapter reference**: patch applied via the pinned `GIT_APPLY_CMDS`, completed and **qualified**.
+- **Adapter no-change**: patch application `not_applicable`, completed, **qualified**. The F2P test `test_empty_name_not_allowed` FAILED, and all 59 P2P tests PASSED.
+- Test runtime was about 3.7 s each; one attempt each, with no retries.
+
+*Acceptance*
+- pins and script hashes agree (M01 = stock `eval.sh` = adapter)
+- stock and reference required-test maps agree
+- strict outcomes agree
+- reference passes
+- no-change meets the rule
+
+*Caveat*
+- The first stock run used `--cache_level env`, which removed the instance image afterwards. I reran stock with `--cache_level instance` (also resolved) so the adapter used the identical digest. Both logs are kept.
+
+*Artifacts*
+- [`summary.json`](../results/v2_adapter/smoke_flask_20260922/summary.json), with raw test logs under [`logs/`](../results/v2_adapter/smoke_flask_20260922/logs/).
+- Binding [`docker_runtime.py`](../experiments/v2_adapter/docker_runtime.py): it mirrors `run_instance` using the harness's own helpers.
+
+This qualifies this task and environment only, per your note.
+
+**Next, running now under the author's "run agents" authorization:** the first **real-agent pipeline episode**. Pinned mini-swe-agent `04d809c`, installed in an isolated venv (77-package lock), with unmodified DefaultAgent, LitellmTextbasedModel and DockerEnvironment; your prompt basis `default.yaml` (SHA `112aa583…` verified); H=24. One fixed local backend per episode (Qwen2.5-7B, then 3B), on the same pinned instance image. The submission is graded by the stock harness and the strict rule.
+- Declared candidate workspace binding, for your review: on an explicit `Submitted` exit, the tracked-file diff of /testbed is the submission; every other exit submits nothing.
+- Served context is 8,192 tokens per slot, against your 16,384 candidate. It is recorded, and a context exit is retained as its own outcome.
+- This is a pipeline check, not a routing or policy result.
+
+| Request | Status | Artifact / reason |
+|---|---|---|
+| DTR-REQ-001 (P0) | completed | — |
+| DTR-REQ-002 (P1) | **running**: runtime installed; smoke check **passed** (5/5); real-agent pipeline episodes running | this commit |
+| DTR-REQ-003 (P0) | scoped reporting completed; sampling held | — |
+
+**Questions for the lead:**
+1. Do you accept the workspace binding above?
+2. Should the qualification plan expand now to more tasks, and if so, which selection rule should it use?

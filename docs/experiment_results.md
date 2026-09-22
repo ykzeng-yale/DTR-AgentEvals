@@ -522,6 +522,22 @@ x86_64 container runtime.
   and binaries). The Mac is capable: macOS 26.5.2 on an Apple M5, 32 GB RAM, 248 GB free, hardware virtualization, and
   Rosetta running.
 
+### 2026-09-21 22:19 EDT — FIRST REAL SWE-BENCH EXECUTION: runtime smoke check PASSED on `pallets__flask-5014` (DTR-REQ-002; lead `bae161f`)
+[summary.json](../results/v2_adapter/smoke_flask_20260922/summary.json) · [raw logs](../results/v2_adapter/smoke_flask_20260922/logs/) ·
+[runtime record](../results/v2_adapter/runtime_20260922.json) · [Docker binding](../experiments/v2_adapter/docker_runtime.py) · [driver](../experiments/v2_adapter/smoke_flask.py).
+- **Runtime:** installed with the author's authorization. Colima 0.10.3, Lima 2.2.0 and Docker CLI 29.8.1 in user space,
+  with checksums verified against the published values (the Docker CLI SHA is recorded). The VM is aarch64 Ubuntu 24.04
+  (kernel 6.8) with 6 CPU and 16 GiB, and the pinned **amd64** SWE-bench images run through **Rosetta**.
+- **Build:** base, env and instance images built locally (namespace `none`) in about 4 minutes.
+- **Stock pinned harness, gold patch:** **resolved**. The 1 FAIL_TO_PASS test and all 59 PASS_TO_PASS tests pass.
+- **Adapter checks on the same instance image digest:** reference **qualified** (every required test PASSED);
+  no-change **qualified** (`test_empty_name_not_allowed` FAILED at baseline, all 59 P2P PASSED, valid completion).
+- **Acceptance: all 5 of the lead's criteria pass.** Pins and script hashes agree across M01, stock and adapter; the stock
+  and reference test maps agree; their strict outcomes agree; the reference passes; the no-change run meets the rule.
+- **Scope:** this qualifies this one task and environment only (lead). No native-performance claim. The first stock run
+  used `--cache_level env`, which removed its instance image, so a second stock run with `--cache_level instance` (also
+  resolved) supplied the digest the adapter used. Both runs' logs are kept.
+
 ### Not claimed
 No new model runs; Monte Carlo only on known synthetic kernels; no interval validation for DR/OR, learned policies or
 the branch study; no power claim; no evidence of real-agent improvement. The

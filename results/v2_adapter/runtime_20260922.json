@@ -1,0 +1,35 @@
+{
+ "kind": "container runtime installed for DTR-REQ-002 (author authorization 2026-09-22: \"do all directly for all you need\")",
+ "install_dir": "~/.local/dtr-runtime (user space; no admin, no Homebrew)",
+ "downloads": {
+  "colima-Darwin-arm64": {
+   "sha256": "980ad8bf61a4ca370243f4cb41401a61276dcd2c2502bee7b9b86f9250169f34",
+   "bytes": 15656320
+  },
+  "lima-2.2.0-Darwin-arm64.tar.gz": {
+   "sha256": "bbdef91774885a0d05f7b048c4eb89ae2bcf3a0c252ae7ca7934e63df76d93c3",
+   "bytes": 37586365
+  },
+  "docker-29.8.1.tgz": {
+   "sha256": "5a8f5604d7673202b2af925229d15eb4bbb86f7f542e4ac8cd7aa3f14cfa0f8b",
+   "bytes": 19613004
+  }
+ },
+ "checksum_verification": {
+  "colima": "matches published colima-Darwin-arm64.sha256sum",
+  "lima": "matches published SHA256SUMS",
+  "docker_cli": "no per-file checksum published for the static CLI; SHA-256 recorded"
+ },
+ "versions": {
+  "colima": "colima version v0.10.3",
+  "limactl": "limactl version 2.2.0",
+  "docker_cli": "Docker version 29.8.1, build 4a63305",
+  "rosetta_pkg": "version: 1.0.0.0.1782352074"
+ },
+ "vm": {
+  "profile": "dtr",
+  "start": "colima start --profile dtr --vm-type vz --vz-rosetta --arch aarch64 --cpu 6 --memory 16 --disk 120 --runtime docker",
+  "list": "dtr        Running    aarch64    6       16GiB     120GiB    docker"
+ },
+ "amd64_translation_check": "x86_64"
+}
