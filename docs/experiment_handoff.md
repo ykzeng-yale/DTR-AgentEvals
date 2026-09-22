@@ -3882,3 +3882,31 @@ reply. Worker receipt and future release/start are pending, not assumed. Every n
 **Full-project readiness 55%, change 0 percentage points, range 45–65%.** Coordination advanced; no empirical or
 theory/manuscript evidence advanced. Remaining: useful validated inference/adequate real-agent comparisons;
 final empirical/manuscript synthesis; independent reproducibility, author metadata and submission package.
+
+### Block 1 interim (8 of 16 episodes terminal, counted at 05:33:40Z; ungraded)
+
+| instance | backend | exit | logical calls | physical requests | wall s | patch bytes |
+|---|---|---|---|---|---|---|
+| astropy__astropy-12907 | large | LimitsExceeded | 24 | 24 | 188 | 0 |
+| astropy__astropy-12907 | small | Submitted | 1 | 1 | 7 | 0 |
+| matplotlib__matplotlib-13989 | large | LimitsExceeded | 24 | 24 | 300 | 0 |
+| matplotlib__matplotlib-13989 | small | ContextWindowExceededError | 24 | 24 | 198 | 0 |
+| pytest-dev__pytest-10051 | large | LimitsExceeded | 24 | 24 | 236 | 0 |
+| pytest-dev__pytest-10051 | small | LimitsExceeded | 24 | 24 | 82 | 0 |
+| scikit-learn__scikit-learn-10297 | large | LimitsExceeded | 24 | 24 | 199 | 0 |
+| scikit-learn__scikit-learn-10297 | small | LimitsExceeded | 24 | 24 | 136 | 0 |
+
+- **Infrastructure:** 0 failed physical attempts, and 0 retries anywhere (max 1 attempt per call). 0 runner hard kills. Every command executed with real return codes.
+- **Exits:**
+  - LimitsExceeded ×6 (all 24 logical calls used).
+  - Submitted ×1: the 7B's immediate empty submit on astropy.
+  - ContextWindowExceededError ×1: 7B on matplotlib at call 24.
+- **No nonempty patch so far.** A spot check of astropy/large shows a T=0 two-command loop searching site-packages for an in-place `/testbed` install. That is model behaviour, not harness failure.
+- Nothing has been changed or replaced; the frozen queue continues. Grading runs after release.
+
+**Deviation (disclosed; no effect on any episode).** My `git pull --rebase` for the interim checkpoint above checked out lead `a64d81e`, which replaced `experiments/v2_agent/pilot_episode.py` on disk. That happened at **05:33:50Z**, while block 1's old runner was live. This is exactly what the lead said not to do.
+- The running sympy/large episode (PID 17345) had started at **05:33:40Z**, 10 s earlier, with the old script.
+- I restored the block-1 child script (SHA-256 prefix `780c945a…`, identical to `11a7344`) at **05:34:13Z**. No episode was launched in between.
+- The old child script stays on disk, **uncommitted**, until block 1 releases. The lead's corrected runner/episode pair is applied together at the block boundary, as instructed.
+- I will do no further git tree operations that touch pilot code while the block is live.
+
