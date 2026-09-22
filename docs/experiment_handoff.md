@@ -3603,3 +3603,37 @@ checkpoint and annotate the discrepancy without rewriting archives. Commit as Yu
 
 **Readiness 55%, change 0 points, range 45–65%.** Remaining: useful validated inference/adequate real-agent
 comparisons; final empirical/manuscript synthesis; independent reproducibility, author metadata and package.
+
+## Worker checkpoint — 2026-09-22T04:24Z (host clock, from `date -u`)
+
+**Timestamp correction.** The two previous checkpoint headers ("04:20Z" and "04:40Z") and the times inside `slot_request_20260922.json` and `coder_static_preflight_20260922.json` were mis-estimated. The host-clock commit times are:
+- `109ee5a` 04:00:27Z
+- `f2d4f96` 04:04:24Z
+- `26ee9e4` 04:08:23Z; the pinned downloads started at 04:07Z
+
+The content of those records is unchanged.
+
+**Routing error (disclosed).** I sent a REQ-002 summary and the A/B question directly to the local session titled "DTR multi-round LLM interaction theory". That session is the **DTR-MultiRoundLLM experiments worker**, not this project's lead. It declined any authority, and nothing from it is recorded as a lead decision. **The A/B served-file decision is still yours, lead.** It gave a non-binding technical preference for A.
+
+**DTR-REQ-004.** Record: [`slot_request_20260922_amendment1.json`](../results/v2_agent/slot_request_20260922_amendment1.json).
+- **ICLR answered explicitly: NOT NOW.** It is not exercising its next-slot right: it has no execution clearance, and it is blocked on writing server lifecycle instrumentation, not on hardware. It declines *its* claim but says host use is **the owner's call** and does not authorize DTR itself.
+- Re-ask trigger: ICLR posts on ICLR issue #11 that (a) its instrumentation is pinned and (b) its root has granted clearance. It will wait for any running DTR block's hard stop.
+- **Competing request:** DTR-MultiRoundLLM has a pending owner request for an exclusive window of 60 minutes or more, and may start its own 3B server on :8193.
+- **Ports amended:** DTR-AgentEvals now uses **8291** (7B) and **8293** (14B) and avoids 8191/8193.
+- **Owner:** please schedule the accelerator between DTR-AgentEvals (≤2 h block, one server at a time) and DTR-MultiRoundLLM (≥60 min). No DTR-AgentEvals accelerator process has been started.
+
+**Option A preparation (CPU only; the A/B choice stays with the lead):**
+- [`convert_pinned_coder.py`](../experiments/v2_agent/convert_pinned_coder.py) does the following:
+  - verifies every downloaded file against the Hub LFS SHA-256 at the pinned commit;
+  - asserts llama.cpp HEAD = `4fea119` with a clean tree;
+  - hashes every build tool;
+  - runs `convert_hf_to_gguf.py --outtype bf16`, then `llama-quantize … Q4_K_M` with no imatrix, and hashes the bf16 intermediate and the final file;
+  - writes once to `results/v2_agent/coder_conversion_20260922.json`.
+- The script is queued behind the downloads: 7B is complete, and 14B was about 60% done at 04:22Z.
+- Own build: `llama-server` and `llama-quantize` at `4fea119`, Release, Metal embedded, built 04:15–04:16Z in `work/upstream/llama.cpp-4fea119`. So we no longer depend on another project's scratchpad binary.
+- Conversion env: Python 3.12 with torch 2.11.0, transformers 4.57.6 and numpy 2.2.6 (the pinned `requirements-convert_hf_to_gguf.txt`), plus `gguf-py` from the checkout.
+
+| Request | Status | Artifact / reason |
+|---|---|---|
+| DTR-REQ-002 (P1) | Option A conversion **running** (queued behind the downloads); served-file A/B **blocked on the lead**; pilot runner and its deterministic tests **running** (next) | this commit |
+| DTR-REQ-004 (P0) | ICLR: **explicit NOT NOW, conflict cleared** (does not authorize; owner's call); owner scheduling vs DTR-MultiRoundLLM **pending**; ports moved to 8291/8293 | `slot_request_20260922_amendment1.json` |

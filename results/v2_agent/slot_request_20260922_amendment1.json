@@ -1,0 +1,18 @@
+{
+ "amends": "results/v2_agent/slot_request_20260922.json (26ee9e4)",
+ "utc": "2026-09-22T04:22Z",
+ "ports": {
+  "8291": "Qwen2.5-Coder-7B Q4_K_M",
+  "8293": "Qwen2.5-Coder-14B Q4_K_M"
+ },
+ "ports_reason": "DTR-MultiRoundLLM may start its own Qwen2.5-3B server on 127.0.0.1:8193 (pending owner approval); DTR-AgentEvals avoids 8191/8193 entirely",
+ "iclr_reply": {
+  "received": "~04:12Z (cross-session message; ICLR says it also posts to issue #4)",
+  "answer": "NOT NOW: ICLR is not exercising its next-slot right (no execution clearance from its root; blocked on server lifecycle instrumentation code, not hardware). It declines ITS claim but explicitly does NOT authorize DTR use of the host, which it says is the owner's call.",
+  "reask_trigger": "when ICLR posts on ykzeng-yale/ICLR-WinRatioAgentEval issue #11 that (a) its instrumentation is pinned AND (b) root granted execution clearance; it will wait for any running DTR block's hard stop and release record",
+  "host_observation_by_iclr": "no llama-server/mlx/ollama; nothing listening on 8191/8193/8091/8092; load 3.22/4.06/4.45"
+ },
+ "competing_request": "DTR-MultiRoundLLM worker has a pending request to the owner for an exclusive >=60 min accelerator window (its E12 run). Accelerator scheduling between DTR-AgentEvals and DTR-MultiRoundLLM is the OWNER's decision; DTR-AgentEvals will not start while that project's server runs unless the owner schedules otherwise.",
+ "status": "DTR slot: ICLR conflict cleared; owner scheduling vs DTR-MultiRoundLLM pending; no DTR-AgentEvals accelerator process has been started",
+ "timestamp_correction": "slot_request requested_utc \"04:35Z\" and coder_static_preflight utc \"04:30Z\"/\"downloads started 04:32Z\" were mis-estimated; actual host UTC: request committed 04:08:23Z (26ee9e4), downloads started 04:07Z"
+}
