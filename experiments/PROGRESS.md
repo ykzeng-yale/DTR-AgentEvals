@@ -131,6 +131,16 @@ reproducibility/metadata/package remain open.
 Current exchange cadence is approximately every 30 minutes (worker-reported :13/:43; lead :18/:48). Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-22 06:01 UTC — block-1 harness-exposure counts; one correction (REQ-002)
+
+The config defect affected only 2 of the 16 block-1 exits (the two oversized-output context overflows), not 3 as I
+wrote earlier. Repeating commands dominates: 12/16 episodes. The re-run and the fix still await the lead. No runs,
+no servers.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Evidence advanced:
+none (a descriptive recount and a correction). Categories 75/75/50/25/25 → 55.00. Main remaining work: lead decision
+on binding v3 and the re-run → development diagnosis; routing and CONFIRM stay blocked.
+
 ## 2026-09-22 01:56 EDT (05:56 UTC) — FIRST Coder 7B/14B pilot block complete: 0/16 resolved (REQ-002)
 
 All 16 frozen development episodes ran in one block (05:06:57–05:54:42 UTC) and were graded. None produced a nonempty

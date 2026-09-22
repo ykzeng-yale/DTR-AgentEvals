@@ -4018,3 +4018,26 @@ final empirical/manuscript synthesis; independent reproducibility, author metada
   - ICLR's compile ran from 05:56:03 to 05:56:52Z, and ICLR reports nothing of its own running.
   - MultiRound holds 07:10–08:20Z.
   - A re-run block would need its own acknowledged slot: after 08:20Z, or before 07:10Z only if it fits entirely. At about 48 min per 16 episodes plus a cleanup margin, a start by about 06:15Z would fit, but I will not start one without your decision.
+
+## Worker checkpoint — 2026-09-22T06:01:08Z (host `date -u`; local 02:01 EDT)
+
+Code/config commit at checkpoint start: `86a0010`. Last lead checkpoint read: issue #4, 05:23:32Z (`a64d81e`/`f9ca76a`). There is no newer lead commit or comment, so block 1's results (`b378613`) and the binding-v3 proposal (`86a0010`) are unreviewed. **Authorized runs:** none in progress. The REQ-002 re-run is not started and awaits the lead. State check: all 4 code-routing stages verified OK; no `run.py --stage` process; 8191/8193/8291/8293 down; `foreign_busy_servers` empty.
+
+**Slice this tick (REQ-002, descriptive only):** [`block1_harness_exposure.json`](../results/v2_agent/pilot_20260922/block1_harness_exposure.json), from [`block1_harness_exposure.py`](../experiments/v2_agent/block1_harness_exposure.py), computed over all 16 committed block-1 trajectories and ledgers.
+- **Correction of my `b378613` statement:** I wrote there that "at least 3 context exits followed untruncated file dumps". That is wrong: **2 of 3** did.
+  - seaborn/large: 129,699-character observation, then 31,179 requested tokens at call 5.
+  - sympy/small: 94,870-character observation at call 11.
+  - The third, **matplotlib/small**, had no observation over 10,000 characters (maximum 3,520). Its context filled gradually to 15,623 prompt tokens by the last answered call (call 23).
+  - The `98895fe` finding itself (yaml sections not applied) stands. Its measured reach in block 1 is 1 long observation per backend.
+- **Repetition:** 12/16 episodes repeated one command at least 5 times (6 per backend). 214 of 326 issued commands repeat an earlier identical command (small 102/155, large 112/171). This is consistent with the loop pattern, and it is not affected by the truncation fix.
+
+| Request | Status | Artifact / reason |
+|---|---|---|
+| DTR-REQ-002 (P1) | block 1 **completed** (`b378613`); binding v3 **prepared** (`86a0010`); exposure counts **completed** (this commit); labelled re-run **blocked** on the lead's decision | `results/v2_agent/pilot_20260922/` |
+| DTR-REQ-002 Django | **deferred** (lead `23b0ddc`) | — |
+| DTR-REQ-004 (P0) | block 1 **completed and released** at 05:54:42Z; ICLR compile 05:56:03–05:56:52Z (its report); MultiRound window 07:10–08:20Z **acknowledged**; no DTR work planned in it | `block_1.json`, `slot_agreement_20260922_0710.json` |
+
+**Questions for the lead (unchanged):**
+1. Accept binding v3?
+2. Authorize the labelled re-run of the same 16 assignments under it (e.g. `pilot_20260922_v3/`, block 1 retained)? It could fit before 07:10Z only if it starts by about 06:15Z; otherwise after 08:20Z.
+3. Given that the truncation fix touches only 2 of 16 exits, should the re-run also address T=0 repetition? That is a design choice I will not make.

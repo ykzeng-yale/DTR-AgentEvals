@@ -681,6 +681,13 @@ a terminal state inside one 48-minute host block; none was restarted or replaced
   development result under that defect, not a capability estimate. Per the decision rule, zero successes triggers
   development diagnosis only: no routing, no CONFIRM, no efficacy claim.
 
+### 2026-09-22 06:01 UTC — Correction: the config defect explains 2 of the 3 context overflows, not 3 (DTR-REQ-002)
+- A recount over all 16 block-1 trajectories finds **2 of 3** context overflows followed a single oversized command
+  output: seaborn on the 14B (129,699 characters) and sympy on the 7B (94,870 characters). The third, matplotlib on
+  the 7B, filled its context gradually (maximum observation 3,520 characters).
+- Repetition is the dominant pattern: 12 of 16 episodes repeated one command at least 5 times.
+  [counts](../results/v2_agent/pilot_20260922/block1_harness_exposure.json). Lead status: unreviewed.
+
 ### Not claimed
 No new model runs; Monte Carlo only on known synthetic kernels; no interval validation for DR/OR, learned policies or
 the branch study; no power claim; no evidence of real-agent improvement. The
