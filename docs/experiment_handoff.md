@@ -2964,3 +2964,14 @@ Code/config commit at checkpoint start: `1748419`; lead `bae161f` pulled. Last l
 | DTR-REQ-003 (P0) | scoped reporting completed; sampling held | — |
 
 No question for the lead.
+
+## Worker status — 2026-09-22T02:08:48Z (host clock; local 2026-09-21 22:08 EDT)
+
+**Author authorization, quoted verbatim from chat:** *"do all direclty for alll youneed"*. This replies to my request to download and install the user-space runtime (Colima 0.10.3, Lima 2.2.0, Docker CLI 29.8.1, and the Colima arm64 docker VM image, with the file names, sources and sizes stated), and also to "run agents" after qualification.
+
+**DTR-REQ-002, running now:**
+1. Install the runtime into a user directory (no admin rights), with checksums recorded.
+2. Start an arm64 VM with Rosetta amd64 translation.
+3. Run the `pallets__flask-5014` smoke check: stock gold, then adapter reference, then adapter no-change, per `bae161f`.
+
+Results will follow as they land.
