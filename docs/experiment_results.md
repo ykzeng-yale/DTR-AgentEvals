@@ -573,6 +573,19 @@ x86_64 container runtime.
     check is warranted.
 - 9 tasks remain; the batch is running serially (CPU/VM only). Lead status: partial; not yet reviewed.
 
+### 2026-09-21 23:45 EDT — Qualification, 9 of 11 new tasks done: 7 qualified, 2 diagnosed (DTR-REQ-002; manifest `93588ab`)
+[results](../results/v2_adapter/qualification_20260922/). These are stock gold, adapter reference and adapter no-change on the same digest, with the 1,800 s timeout.
+- **Qualified, all 5 criteria:** astropy-12907, matplotlib-13989, seaborn-3069, requests-1142, xarray-2905, pytest-10051
+  and scikit-learn-10297. Including Flask, **8 qualified** so far.
+- **Not qualified, retained as diagnoses:**
+  - **django-10097:** stock gold is unresolved (5 required `generic_inline_admin` tests ERROR on missing admin
+    templates). The lead approved a bounded provenance check.
+  - **pylint-4551:** stock gold **resolves**, but in no-change all **10** required F2P test identities are **missing**
+    from the baseline log rather than FAILED. That is probably a baseline collection or import error, and the declared
+    rule (identities must be accounted for) sends it to diagnosis. This task carries the declared empty-P2P limitation.
+- **Running:** sphinx-10323 and sympy-11618. No task has been substituted. Lead status: astropy accepted
+  (`fd5f42c`); the rest are not yet reviewed.
+
 ### Not claimed
 No new model runs; Monte Carlo only on known synthetic kernels; no interval validation for DR/OR, learned policies or
 the branch study; no power claim; no evidence of real-agent improvement. The

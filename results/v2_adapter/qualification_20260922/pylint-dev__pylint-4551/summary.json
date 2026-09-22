@@ -1,0 +1,186 @@
+{
+ "instance_id": "pylint-dev__pylint-4551",
+ "repo": "pylint-dev/pylint",
+ "version": "2.9",
+ "started_utc": "2026-09-22T03:29:06Z",
+ "limitations": [
+  "PASS_TO_PASS empty: regression preservation is untested for this instance"
+ ],
+ "stock_wall_seconds": 162.93636298179626,
+ "stock_exit": 0,
+ "image_digests": {
+  "base": "sha256:f7d1dba08fbc14f5232016debb02d9ace25c84e2a088ec8ec6c776fc3c2f07d5",
+  "env": "sha256:c36a0f9d163e032109b39f3a796ea372b833cb9f1b05324c421708b11ec69068",
+  "instance": "sha256:fd026849479b9de180620afac30bd04bc03e7206474b2020a5004db6d75de17b"
+ },
+ "image_userland_arch": {
+  "base": "amd64",
+  "env": "amd64",
+  "instance": "amd64"
+ },
+ "required_tests": {
+  "fail_to_pass": 10,
+  "pass_to_pass": 0
+ },
+ "stock": {
+  "resolved": true,
+  "strict_outcome": "resolved",
+  "get_logs_eval_found": true,
+  "required_status_counts": {
+   "PASSED": 10
+  }
+ },
+ "adapter_reference": {
+  "adapter_version": "control-adapter-v2 (lead 7f9673a; F2P allowlist and completion gate per c85173a)",
+  "adapter_source_sha256": "b81df0e7fb73c0ed2d60182c764a868ff6407629ba27e34072588e3070ab782d",
+  "instance_id": "pylint-dev__pylint-4551",
+  "control_mode": "reference",
+  "prediction_identity": "dataset_reference_patch",
+  "patch_sha256": "06a5ae87f8794dff30b6733c4427cf46fed7ae67c545449b3168977be5cf215c",
+  "eval_script_sha256": "0a63b8c0b3917a45995982c192a0b537ced5bbb468bc9b91871a5be7b8f93acf",
+  "image_digests": {
+   "base": "sha256:f7d1dba08fbc14f5232016debb02d9ace25c84e2a088ec8ec6c776fc3c2f07d5",
+   "env": "sha256:c36a0f9d163e032109b39f3a796ea372b833cb9f1b05324c421708b11ec69068",
+   "instance": "sha256:fd026849479b9de180620afac30bd04bc03e7206474b2020a5004db6d75de17b"
+  },
+  "attempts": [
+   {
+    "attempt": 1,
+    "repo_state_pre": {
+     "head": "3d22b4ddcbc836717c278baf59424dd1889b49dc",
+     "diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "diff_bytes": 0
+    },
+    "patch_application": "applied",
+    "patch_output_sha256": "4c387326f8cf5033e91021c77688845adfe6493602dbebdfccd78ea9d3a2dbb0",
+    "exit_code": null,
+    "timed_out": false,
+    "log_sha256": "a26d6eb1ca96326c2cd06b07b46957ab656dc7944a56d5af526481ad0d02e747",
+    "repo_state_post": {
+     "head": "3d22b4ddcbc836717c278baf59424dd1889b49dc",
+     "diff_sha256": "e832c3004a7016a8415b554972791b9b14f1d8adfbd58c56d5854942fedcd2ea",
+     "diff_bytes": 7044
+    },
+    "per_test_status": {
+     "tests/unittest_pyreverse_writer.py::test_dot_files[packages_No_Name.dot]": "PASSED",
+     "tests/unittest_pyreverse_writer.py::test_dot_files[classes_No_Name.dot]": "PASSED",
+     "tests/unittest_pyreverse_writer.py::test_get_visibility[names0-special]": "PASSED",
+     "tests/unittest_pyreverse_writer.py::test_get_visibility[names1-private]": "PASSED",
+     "tests/unittest_pyreverse_writer.py::test_get_visibility[names2-public]": "PASSED",
+     "tests/unittest_pyreverse_writer.py::test_get_visibility[names3-protected]": "PASSED",
+     "tests/unittest_pyreverse_writer.py::test_get_annotation_annassign[a:": "PASSED",
+     "tests/unittest_pyreverse_writer.py::test_get_annotation_assignattr[def": "PASSED",
+     "tests/unittest_pyreverse_writer.py::test_infer_node_1": "PASSED",
+     "tests/unittest_pyreverse_writer.py::test_infer_node_2": "PASSED"
+    },
+    "completion_ok": true,
+    "completion_note": "get_logs_eval found=True",
+    "evaluation_status": "completed",
+    "eval_runtime_seconds": 3.4335761070251465
+   }
+  ],
+  "report_scope": "qualification control with the dataset reference patch",
+  "qualification": "qualified",
+  "reason": "every required test PASSED",
+  "strict_verified_resolved": true,
+  "runtime_events": [
+   [
+    "start",
+    "a203f148eff715fa9465027b5210e179923c559ffed8ef164e9ee7b32033d7a9",
+    "sha256:fd026849479b9de180620afac30bd04bc03e7206474b2020a5004db6d75de17b"
+   ],
+   [
+    "apply_patch",
+    "git apply --verbose",
+    0
+   ],
+   [
+    "stop",
+    "a203f148eff715fa9465027b5210e179923c559ffed8ef164e9ee7b32033d7a9"
+   ]
+  ]
+ },
+ "adapter_no_change": {
+  "adapter_version": "control-adapter-v2 (lead 7f9673a; F2P allowlist and completion gate per c85173a)",
+  "adapter_source_sha256": "b81df0e7fb73c0ed2d60182c764a868ff6407629ba27e34072588e3070ab782d",
+  "instance_id": "pylint-dev__pylint-4551",
+  "control_mode": "no_change",
+  "prediction_identity": "no_prediction",
+  "patch_sha256": null,
+  "eval_script_sha256": "0a63b8c0b3917a45995982c192a0b537ced5bbb468bc9b91871a5be7b8f93acf",
+  "image_digests": {
+   "base": "sha256:f7d1dba08fbc14f5232016debb02d9ace25c84e2a088ec8ec6c776fc3c2f07d5",
+   "env": "sha256:c36a0f9d163e032109b39f3a796ea372b833cb9f1b05324c421708b11ec69068",
+   "instance": "sha256:fd026849479b9de180620afac30bd04bc03e7206474b2020a5004db6d75de17b"
+  },
+  "attempts": [
+   {
+    "attempt": 1,
+    "repo_state_pre": {
+     "head": "3d22b4ddcbc836717c278baf59424dd1889b49dc",
+     "diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "diff_bytes": 0
+    },
+    "patch_application": "not_applicable",
+    "exit_code": null,
+    "timed_out": false,
+    "log_sha256": "dd01c6b1370bbbd6780010461de5d3b9b91902ed8287d4c7e704668747db4b90",
+    "repo_state_post": {
+     "head": "3d22b4ddcbc836717c278baf59424dd1889b49dc",
+     "diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "diff_bytes": 0
+    },
+    "per_test_status": {
+     "tests/unittest_pyreverse_writer.py": "ERROR"
+    },
+    "completion_ok": true,
+    "completion_note": "get_logs_eval found=True",
+    "evaluation_status": "completed",
+    "eval_runtime_seconds": 3.426799774169922
+   }
+  ],
+  "report_scope": "qualification control only: no prediction applied; not an official submission or model observation",
+  "qualification": "diagnose",
+  "reason": "missing required test identities: 10",
+  "strict_verified_resolved": false,
+  "runtime_events": [
+   [
+    "start",
+    "655f1ebc010fe373baf4cc5f8b6dafff0ac1beca0fed76ea36879a74a26b737b",
+    "sha256:fd026849479b9de180620afac30bd04bc03e7206474b2020a5004db6d75de17b"
+   ],
+   [
+    "stop",
+    "655f1ebc010fe373baf4cc5f8b6dafff0ac1beca0fed76ea36879a74a26b737b"
+   ]
+  ]
+ },
+ "stock_vs_reference_required_status_differences": {},
+ "acceptance": {
+  "pins_and_script_hashes_agree": true,
+  "stock_reference_required_test_maps_agree": true,
+  "stock_reference_strict_outcomes_agree": true,
+  "reference_passes_required_tests": true,
+  "no_change_meets_rule": false
+ },
+ "qualified": false,
+ "platform": {
+  "host_arch": "arm64",
+  "vm_kernel_arch": "aarch64",
+  "vm_kernel": "6.8.0-117-generic",
+  "vm_os": "Ubuntu 24.04.4 LTS",
+  "docker_server": "29.5.2",
+  "translation_mode": "rosetta (colima vz)",
+  "resource_limits": {
+   "cpus": 6,
+   "mem_bytes": 16732983296
+  },
+  "declared_timeout_seconds": 1800,
+  "evaluator_commit": "f7bbbb2ccdf479001d6467c9e34af59e44a840f9",
+  "package": "4.1.0",
+  "adapter_version": "control-adapter-v2 (lead 7f9673a; F2P allowlist and completion gate per c85173a)",
+  "adapter_source_sha256": "b81df0e7fb73c0ed2d60182c764a868ff6407629ba27e34072588e3070ab782d"
+ },
+ "vm_free_gb_before": 91.16728973388672,
+ "finished_utc": "2026-09-22T03:32:27Z"
+}
