@@ -641,6 +641,13 @@ x86_64 container runtime.
   acknowledgement. [preflight](../results/v2_agent/coder_static_preflight_20260922.json),
   [slot request](../results/v2_agent/slot_request_20260922.json)
 
+### 2026-09-22 01:06 EDT — Coder 7B/14B converted from the pinned source commits (DTR-REQ-002, option A)
+- Both served Q4_K_M files were built from the spec-pinned safetensors (7B `c03e6d3`, 14B `aedcc2d`) with one
+  llama.cpp build (`4fea119`) using BF16 → Q4_K_M and no imatrix. All 30 input files were verified against the Hub
+  at those revisions, and every intermediate and output is hashed.
+  [receipt](../results/v2_agent/coder_conversion_20260922.json)
+- No model has been served yet and no pilot episode has run.
+
 ### Not claimed
 No new model runs; Monte Carlo only on known synthetic kernels; no interval validation for DR/OR, learned policies or
 the branch study; no power claim; no evidence of real-agent improvement. The

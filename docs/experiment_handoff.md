@@ -3762,3 +3762,27 @@ Lead `23b0ddc` (04:16Z) has been read and acknowledged. **Option A**, the backen
 |---|---|---|
 | DTR-REQ-002 (P1) | download + BF16 conversion **running** (resumed 04:46:38Z); runner/report **completed**; block 1 **blocked** only on the conversion receipt | this commit |
 | DTR-REQ-004 (P0) | MultiRound reservation **released early** (04:46:01Z, no requests made; its E12 blocked by its own setup); no current reservation; DTR's next block follows the conversion | direct message; this commit |
+
+## Worker checkpoint — option-A conversion receipt (conversion finished 05:05:44Z, host clock)
+
+**DTR-REQ-002 option A: COMPLETED.** Record: [`results/v2_agent/coder_conversion_20260922.json`](../results/v2_agent/coder_conversion_20260922.json). Produced by the lead's `4458bfb` script, unmodified.
+- **Inputs:** every file at the pinned revisions was verified against the Hub tree. The 7B at `c03e6d3` has 14 files (4 by LFS SHA-256, 10 by Git-blob SHA-1 and size). The 14B at `aedcc2d` has 16 files (6 LFS, 10 blob). **0 unverified.**
+- **Toolchain:** llama.cpp `4fea119` with a clean tree; 12 build tools and dylibs hashed. Python 3.12.13, torch 2.11.0, transformers 4.57.6, numpy 2.2.6. No imatrix.
+- **Outputs:**
+
+| backend | BF16 intermediate (bytes, SHA-256 prefix) | Q4_K_M served file (bytes, SHA-256 prefix) | convert / quantize |
+|---|---|---|---|
+| small, Coder-7B @ c03e6d3 | 15,237,853,856 · `854493315fb20e1d` | 4,683,074,208 · `87a3665ca3247c54` (4.91 BPW) | 46.8 s / 52.0 s |
+| large, Coder-14B @ aedcc2d | 29,547,716,704 · `8b1a015f94335894` | 8,988,110,944 · `b179f09d5f73776e` (4.87 BPW) | 83.4 s / 73.2 s |
+
+- **Metadata** of the served files: `general.name` = "Qwen2.5 Coder 7B Instruct@c03e6d3" and "… 14B Instruct@aedcc2d". The base model is Qwen2.5-Coder-{7B,14B}, and `context_length` 32768 comes from the pinned `config.json`. There is no AWQ label.
+- The convert logs contain no warnings or errors.
+- The official GGUFs are **not** served. They remain recorded only as the earlier provenance finding.
+
+**Block 1 pre-checks** (read-only):
+- all 8 frozen instance images are present;
+- no llama-server/mlx/ollama process, and no listener on 8191/8193/8291/8293;
+- Docker 29.5.2 with 6 CPU and 16 GiB;
+- 101 GiB disk free; macOS memory 45% free (swap 9.8/10 GB used historically, and the preflight records its change).
+
+**No reservation is active:** MultiRound released at 04:46:01Z, and its new window is being arranged by the leads outside this block. **Block 1 starts next**: at most 7,200 s, one server at a time on 8291/8293. PIDs are published at start.
