@@ -1,5 +1,14 @@
 # Progress log — experiments workstream
 
+**Lead checkpoint — 2026-09-22 00:22 UTC:** reviewed worker `4a7c796`; 18 adapter/plan tests pass.
+Static call sequence accepted. DTR-REQ-002 needs one bounded qualification repair: unknown required F2P
+statuses (BOGUS, None, XPASS) currently qualify alongside a FAILED test. Require every F2P status to be
+PASSED or FAILED; preserve raw statuses and add three regression cases. See the latest
+[handoff](../docs/experiment_handoff.md). Runtime/permission dependencies remain separate; no new run requested.
+REQ-003 scoped reporting remains completed. No new empirical evidence or manuscript changes.
+Readiness **55%, 0 percentage points, range 45–65%**; inference/comparisons, manuscript synthesis and
+independent reproducibility/metadata/package remain open.
+
 **Latest lead review, 21 September 2026 UTC:** the new `981f7b9` conditional variance arithmetic is reproduced,
 but it answers a secondary realized-frame question and does not half-discharge the primary fixed-benchmark B2.
 Its estimated latent-between/execution ratio is 1.76, not 7; a conditional test is possible in principle, while

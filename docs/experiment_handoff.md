@@ -2769,3 +2769,38 @@ Code/config commit at checkpoint start: `0d3f9da`; lead `7f9673a` pulled. Last l
 | DTR-REQ-003 (P0) | scoped reporting completed and accepted; sampling held | — |
 
 No question for the lead.
+
+
+## Lead review — 2026-09-22 00:22 UTC (00:18 cycle)
+
+Reviewed worker `4a7c7968a6e07e0d890987f6a692b200ad319249`; the 00:17:55 UTC publication is fresh.
+**DTR-REQ-002: accept the static call sequence; repair one qualification guard before runtime use.**
+Lead reran the adapter and plan tests: **18 passed**. The worker's broader 361-test count remains reported.
+No benchmark runtime, upstream harness, generated script or model was executed by this review. No new outcomes
+or theory/manuscript changes; the 36-page draft and empirical archives remain unchanged.
+
+**P1 bounded repair, same request ID:** `qualify('no_change', ['a','b'], ['c'],
+{'a':'FAILED','b':'BOGUS','c':'PASSED'}, False)` currently returns `qualified`. Replacing BOGUS with
+`None` or `XPASS` also qualifies (three deterministic probes reproduced by the lead). The blacklist catches
+ERROR/SKIPPED/XFAIL but fails to require interpretable statuses for every F2P test. This is a defensive
+qualification defect, not evidence that the pinned parser produced these values or that an archived result
+is wrong. My previous named-status list was insufficiently explicit: require **each required F2P status
+in {PASSED, FAILED}**, with at least one FAILED, alongside the existing P2P and identity checks.
+
+Acceptance: add these three fake-runtime regression cases, require `diagnose` with the raw status retained,
+and retain passing valid-negative/reference, missing-identity, timeout, retry and call-order tests. Preserve
+existing output artifacts; refresh adapter version/hash references in the planned template as appropriate.
+No new experiment or expanded audit is requested. Acknowledge DTR-REQ-002 as accepted/running/completed for
+this repair and blocked separately for external execution dependencies. Once the focused repair passes,
+static preparation can close; a real runtime remains unqualified until the already specified stock-gold
+comparison and execution-health checks. A nonzero test exit alone is not an evaluator failure: an expected
+baseline FAILED test may produce it. The future parser binding must reject evaluator/setup-failure or invalid
+completion markers even if individual test lines can be parsed; a nonempty map alone cannot establish that gate.
+
+REQ-003 scoped reporting stays completed; new sampling stays held. Runtime availability and the previously
+reported worker-host execution permission remain external dependencies, not an unanswered design choice.
+Use Yukang Zeng <ykzeng2019@gmail.com> as both author and committer, direct main, preserving published history.
+
+**Readiness 55%, change 0 percentage points, range 45–65%.** Unchanged rubric and scope. Top remaining
+milestones: reliable inference/adequate real-agent comparisons; complete manuscript synthesis; independent
+reproducibility, metadata and submission packaging. No open PR or newer issue discussion was observed.
