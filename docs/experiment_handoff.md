@@ -3910,3 +3910,21 @@ final empirical/manuscript synthesis; independent reproducibility, author metada
 - The old child script stays on disk, **uncommitted**, until block 1 releases. The lead's corrected runner/episode pair is applied together at the block boundary, as instructed.
 - I will do no further git tree operations that touch pilot code while the block is live.
 
+### BLOCK 1 FINDING (05:40Z): harness binding defect — the pinned `default.yaml` `model:`/`environment:` sections were never applied (both backends)
+
+- **Observation (a context exit, investigated as a possible infrastructure fault).** In seaborn-3069/large, call 4 ran `cat seaborn/categorical.py`. Its observation reached the model **untruncated at 129,699 characters**, and call 5's request was 31,179 tokens against a 16,384-token context, giving `ContextWindowExceededError`.
+- **Cause (source-verified).** The pinned `default.yaml` (SHA `112aa583…`) has three sections: `agent`, `environment` and `model`.
+  - Our drivers (`agent_smoke_episode.py` and the block-1 `pilot_episode.py`) apply **only `cfg['agent']`**. They build `LitellmTextbasedModel` from **class defaults**.
+  - Missing as a result: the yaml's `model.observation_template`, which elides output beyond 10,000 characters to head + tail with a warning; its `model.format_error_template`, which differs from the class default; and `model.model_kwargs: {drop_params: true}`.
+  - The environment passes only `PAGER`/`MANPAGER` and misses `LESS=-R`, `PIP_PROGRESS_BAR=off` and `TQDM_DISABLE=1`.
+  - The lead's repaired `pilot_episode.py` (`a64d81e`) inherits the same construction. It must be fixed **before any block 2**.
+- **Scope.**
+  - The defect is identical for both backends and all 16 episodes of block 1, and it also affected the earlier flask smoke episodes. It is a **deviation from the accepted "default.yaml prompt basis"**, not a model result.
+  - Context exits so far: matplotlib/small (call 24), sympy/small (call 12) and seaborn/large (call 5). The loop-driven LimitsExceeded exits are not explained by it.
+  - Operational zeros under this binding should be read as harness-affected.
+- **What I am doing.** Block 1 is **not** stopped or altered: no outcome-driven stopping, same binding for both backends, and your "no restarts/extra episodes" guidance. It completes the frozen queue and grades after release. The defect will be labelled in every block-1 record and in the report.
+- **Proposed repair, for your decision.**
+  - Build the model config as `dict(cfg['model'], model_kwargs=dict(cfg['model']['model_kwargs'], <our pinned decoding kwargs>))`.
+  - Pass the full `cfg['environment']['env']`.
+  - Add a fixture asserting that the effective observation, format-error templates and env equal the yaml's.
+  - Whether to re-run the 16 assignments under the corrected binding, as a new labelled development run with block 1 retained, is **your call**. I will not start one without it.
