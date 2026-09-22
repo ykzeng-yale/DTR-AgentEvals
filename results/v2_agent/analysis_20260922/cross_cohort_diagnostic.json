@@ -1,0 +1,2627 @@
+{
+ "artifact": "results/v2_agent/analysis_20260922/cross_cohort_diagnostic.json",
+ "script": "experiments/v2_agent/analysis/cross_cohort_diagnostic.py",
+ "request": "DTR-REQ-002 / DTR-REQ-004",
+ "role": "SYNTHESIS of four descriptive worker analyses plus an independent re-derivation of the load-bearing anchor numbers",
+ "kind": "DESCRIPTIVE. Counts and classifications over already-completed committed episodes. No model, server, container or evaluator was run. No existing file was modified.",
+ "scope_note": "Every number in this file is computed over the COMPLETE set of 32 committed episodes (2 cohorts x 8 instances x 2 backends) or over the complete contents of the four source artifacts, never over a sample or a printed subset.",
+ "interpretation_boundary": "Every number here describes WHAT WAS EXECUTED by a particular harness configuration on a particular day. Nothing here is a measurement of model capability, and this file makes no causal claim, no efficacy claim and no recommendation about study design.",
+ "source_artifacts": {
+  "cross_cohort_divergence": {
+   "path_repo_relative": "results/v2_agent/analysis_20260922/cross_cohort_divergence.json",
+   "sha256": "831fe28f8dd93e247cdb8ede29b29de9d42cb5bd5932360c6a39ffbd916802cd",
+   "bytes": 123365
+  },
+  "repetition_taxonomy": {
+   "path_repo_relative": "results/v2_agent/analysis_20260922/repetition_taxonomy.json",
+   "sha256": "be0d03c3d59b55dd9f70c30e4df91d52baf2c24d837373c76d905382588b7d7d",
+   "bytes": 77456
+  },
+  "action_profile": {
+   "path_repo_relative": "results/v2_agent/analysis_20260922/action_profile.json",
+   "sha256": "20397771a08d7a307759c3f89f1553b14f2a7461d977a6fbc7b09b9ea0735c67",
+   "bytes": 314642
+  },
+  "budget_profile": {
+   "path_repo_relative": "results/v2_agent/analysis_20260922/budget_profile.json",
+   "sha256": "fdce0ea88c85ea4e76a65bfed63ffb076c3faba363dcf7343b1025955e0f532b",
+   "bytes": 213186
+  }
+ },
+ "verifier_artifacts": {
+  "cross_cohort_divergence": {
+   "path_repo_relative": "results/v2_agent/analysis_20260922/cross_cohort_divergence_verification.json",
+   "sha256": "5eae1b7b945c6e18263d2869a066d9d956b010ad5b24e08de7a5db2004eb3795",
+   "bytes": 31004
+  },
+  "repetition_taxonomy": {
+   "path_repo_relative": "results/v2_agent/analysis_20260922/repetition_taxonomy_verification.json",
+   "sha256": "350c27ff140f12985f185e4b901955bcf26224f99ce3819825f8e3117ee7377a",
+   "bytes": 63554
+  },
+  "action_profile": {
+   "path_repo_relative": "results/v2_agent/analysis_20260922/action_profile_verification.json",
+   "sha256": "ecf45ebd5ab7e4912ae264afd98e50fce35eb679ce25dc4450ea6f7cf6adb5c9",
+   "bytes": 328324
+  },
+  "budget_profile": {
+   "path_repo_relative": "results/v2_agent/analysis_20260922/budget_profile_verification.json",
+   "sha256": "36bc3521bfc2a1aed10a0da5342dce2a442183e037ec6e6942f2b86aeb7e59c3",
+   "bytes": 82753
+  }
+ },
+ "committed_reports_cross_checked": {
+  "legacy": {
+   "path_repo_relative": "results/v2_agent/pilot_20260922/report_block1_final.json",
+   "sha256": "2b04971c58105f883c0f023da7705483251d7c4a912edb00aa7c3a98e5f06c5e",
+   "bytes": 37688
+  },
+  "yaml-v1": {
+   "path_repo_relative": "results/v2_agent/pilot_20260922_yaml_v1/report_yaml_v1_block1_final.json",
+   "sha256": "ef894706d393a73b6accc07a94cfbd1a4bba1c1b12b9a1c6e682c4744ec5fb17",
+   "bytes": 45874
+  }
+ },
+ "cohort_dirs_repo_relative": {
+  "legacy": "results/v2_agent/pilot_20260922",
+  "yaml-v1": "results/v2_agent/pilot_20260922_yaml_v1"
+ },
+ "known_context": {
+  "step_limit_H": 24,
+  "temperature": 0.0,
+  "server_context_tokens": 16384,
+  "max_response_tokens": 1536,
+  "all_submissions_empty": true,
+  "all_grades": "operational_zero"
+ },
+ "independent_rederivation_integrity": {
+  "episodes_read": 32,
+  "assignments": 16,
+  "episodes_per_cohort": {
+   "legacy": 16,
+   "yaml-v1": 16
+  },
+  "all_run_id_parses_match_episode_json": true,
+  "all_assignments_present_in_both_cohorts": true,
+  "distinct_run_ids": 32,
+  "ledger_dialect_counts": {
+   "legacy_one_record_per_attempt": 16,
+   "yaml_v1_start_result_pairs": 16
+  },
+  "binding_counts": {
+   "legacy|pilot-cp2-wc2": 16,
+   "yaml-v1|pilot-cp2-wc2-yaml-v1": 16
+  },
+  "assistant_messages_with_action_count_not_1_total": 0
+ },
+ "headline_claim_verification": {
+  "note": "status is one of reproduced / reproduced_but_conflated / not_reproduced / not_reproduced_by_this_route. Values recomputed in this script come from the committed episode records, not from the four artifacts, except where the note says otherwise.",
+  "n_claims": 24,
+  "status_counts": {
+   "reproduced": 22,
+   "reproduced_but_conflated": 1,
+   "not_reproduced": 1
+  },
+  "mechanical_audit": {
+   "rule": "every claim labelled 'reproduced' must have published == recomputed (order-insensitive); the script aborts the write otherwise",
+   "n_claims_with_exactly_matching_values": 23,
+   "n_claims_with_status_consistent_with_values": 24,
+   "per_claim": [
+    {
+     "claim_id": "H01",
+     "status": "reproduced",
+     "values_match_exactly": true,
+     "status_consistent": true
+    },
+    {
+     "claim_id": "H02",
+     "status": "reproduced",
+     "values_match_exactly": true,
+     "status_consistent": true
+    },
+    {
+     "claim_id": "H03",
+     "status": "reproduced",
+     "values_match_exactly": true,
+     "status_consistent": true
+    },
+    {
+     "claim_id": "H04",
+     "status": "reproduced",
+     "values_match_exactly": true,
+     "status_consistent": true
+    },
+    {
+     "claim_id": "H05",
+     "status": "reproduced",
+     "values_match_exactly": true,
+     "status_consistent": true
+    },
+    {
+     "claim_id": "H06",
+     "status": "reproduced",
+     "values_match_exactly": true,
+     "status_consistent": true
+    },
+    {
+     "claim_id": "H07",
+     "status": "reproduced",
+     "values_match_exactly": true,
+     "status_consistent": true
+    },
+    {
+     "claim_id": "H08",
+     "status": "reproduced",
+     "values_match_exactly": true,
+     "status_consistent": true
+    },
+    {
+     "claim_id": "H09",
+     "status": "reproduced",
+     "values_match_exactly": true,
+     "status_consistent": true
+    },
+    {
+     "claim_id": "H10",
+     "status": "reproduced",
+     "values_match_exactly": true,
+     "status_consistent": true
+    },
+    {
+     "claim_id": "H11",
+     "status": "reproduced",
+     "values_match_exactly": true,
+     "status_consistent": true
+    },
+    {
+     "claim_id": "H12",
+     "status": "reproduced",
+     "values_match_exactly": true,
+     "status_consistent": true
+    },
+    {
+     "claim_id": "H13",
+     "status": "reproduced",
+     "values_match_exactly": true,
+     "status_consistent": true
+    },
+    {
+     "claim_id": "H14",
+     "status": "reproduced",
+     "values_match_exactly": true,
+     "status_consistent": true
+    },
+    {
+     "claim_id": "H15",
+     "status": "reproduced",
+     "values_match_exactly": true,
+     "status_consistent": true
+    },
+    {
+     "claim_id": "H16",
+     "status": "reproduced",
+     "values_match_exactly": true,
+     "status_consistent": true
+    },
+    {
+     "claim_id": "H17",
+     "status": "reproduced",
+     "values_match_exactly": true,
+     "status_consistent": true
+    },
+    {
+     "claim_id": "H18",
+     "status": "reproduced",
+     "values_match_exactly": true,
+     "status_consistent": true
+    },
+    {
+     "claim_id": "H19",
+     "status": "reproduced",
+     "values_match_exactly": true,
+     "status_consistent": true
+    },
+    {
+     "claim_id": "H20",
+     "status": "reproduced",
+     "values_match_exactly": true,
+     "status_consistent": true
+    },
+    {
+     "claim_id": "H21",
+     "status": "reproduced",
+     "values_match_exactly": true,
+     "status_consistent": true
+    },
+    {
+     "claim_id": "H22",
+     "status": "reproduced_but_conflated",
+     "values_match_exactly": true,
+     "status_consistent": true
+    },
+    {
+     "claim_id": "H23",
+     "status": "reproduced",
+     "values_match_exactly": true,
+     "status_consistent": true
+    },
+    {
+     "claim_id": "H24",
+     "status": "not_reproduced",
+     "values_match_exactly": false,
+     "status_consistent": true
+    }
+   ]
+  },
+  "claims": [
+   {
+    "claim_id": "H01",
+    "dimension": "all",
+    "claim": "Episodes analysed (2 cohorts x 8 instances x 2 backends)",
+    "value_as_published": 32,
+    "value_recomputed_by_this_synthesis": 32,
+    "status": "reproduced",
+    "note": "",
+    "values_match_exactly": true
+   },
+   {
+    "claim_id": "H02",
+    "dimension": "all",
+    "claim": "Every episode produced an empty submission.diff",
+    "value_as_published": 32,
+    "value_recomputed_by_this_synthesis": 32,
+    "status": "reproduced",
+    "note": "",
+    "values_match_exactly": true
+   },
+   {
+    "claim_id": "H03",
+    "dimension": "all",
+    "claim": "Every episode was graded operational_zero",
+    "value_as_published": 32,
+    "value_recomputed_by_this_synthesis": 32,
+    "status": "reproduced",
+    "note": "",
+    "values_match_exactly": true
+   },
+   {
+    "claim_id": "H04",
+    "dimension": "budget/repetition",
+    "claim": "Total logical model calls across all 32 episodes",
+    "value_as_published": 682,
+    "value_recomputed_by_this_synthesis": 682,
+    "status": "reproduced",
+    "note": "",
+    "values_match_exactly": true
+   },
+   {
+    "claim_id": "H05",
+    "dimension": "repetition/action",
+    "claim": "Total recorded commands across all 32 episodes",
+    "value_as_published": 674,
+    "value_recomputed_by_this_synthesis": 674,
+    "status": "reproduced",
+    "note": "",
+    "values_match_exactly": true
+   },
+   {
+    "claim_id": "H06",
+    "dimension": "repetition",
+    "claim": "Model calls that produced no recorded command (unrecorded calls)",
+    "value_as_published": 8,
+    "value_recomputed_by_this_synthesis": 8,
+    "status": "reproduced",
+    "note": "3 of the 8 are FormatError calls recorded in trajectory.json; the remaining 5 correspond to the 5 failed physical attempts in the ledgers.",
+    "values_match_exactly": true
+   },
+   {
+    "claim_id": "H07",
+    "dimension": "divergence",
+    "claim": "Format-error calls: legacy vs yaml-v1",
+    "value_as_published": {
+     "legacy": 1,
+     "yaml-v1": 2
+    },
+    "value_recomputed_by_this_synthesis": {
+     "legacy": 1,
+     "yaml-v1": 2
+    },
+    "status": "reproduced",
+    "note": "",
+    "values_match_exactly": true
+   },
+   {
+    "claim_id": "H08",
+    "dimension": "divergence",
+    "claim": "Commands issued per cohort",
+    "value_as_published": {
+     "legacy": 326,
+     "yaml-v1": 348
+    },
+    "value_recomputed_by_this_synthesis": {
+     "legacy": 326,
+     "yaml-v1": 348
+    },
+    "status": "reproduced",
+    "note": "",
+    "values_match_exactly": true
+   },
+   {
+    "claim_id": "H09",
+    "dimension": "divergence/repetition",
+    "claim": "Assignments whose full command sequence is byte-identical across cohorts",
+    "value_as_published": 12,
+    "value_recomputed_by_this_synthesis": 12,
+    "status": "reproduced",
+    "note": "",
+    "values_match_exactly": true
+   },
+   {
+    "claim_id": "H10",
+    "dimension": "divergence",
+    "claim": "Sum of identical command-prefix lengths over the 16 assignments",
+    "value_as_published": 292,
+    "value_recomputed_by_this_synthesis": 292,
+    "status": "reproduced",
+    "note": "",
+    "values_match_exactly": true
+   },
+   {
+    "claim_id": "H11",
+    "dimension": "divergence",
+    "claim": "Exit-status counts per cohort",
+    "value_as_published": {
+     "legacy": {
+      "Submitted": 1,
+      "LimitsExceeded": 12,
+      "ContextWindowExceededError": 3
+     },
+     "yaml-v1": {
+      "Submitted": 1,
+      "LimitsExceeded": 13,
+      "ContextWindowExceededError": 2
+     }
+    },
+    "value_recomputed_by_this_synthesis": {
+     "legacy": {
+      "LimitsExceeded": 12,
+      "Submitted": 1,
+      "ContextWindowExceededError": 3
+     },
+     "yaml-v1": {
+      "LimitsExceeded": 13,
+      "Submitted": 1,
+      "ContextWindowExceededError": 2
+     }
+    },
+    "status": "reproduced",
+    "note": "",
+    "values_match_exactly": true
+   },
+   {
+    "claim_id": "H12",
+    "dimension": "repetition",
+    "claim": "Repeated command occurrences across all 32 episodes",
+    "value_as_published": 446,
+    "value_recomputed_by_this_synthesis": 446,
+    "status": "reproduced",
+    "note": "",
+    "values_match_exactly": true
+   },
+   {
+    "claim_id": "H13",
+    "dimension": "repetition",
+    "claim": "Repeat occurrences whose observation is identical to the PREVIOUS occurrence (the baseline the published artifact uses)",
+    "value_as_published": 443,
+    "value_recomputed_by_this_synthesis": 443,
+    "status": "reproduced",
+    "note": "Baseline-dependent; see defect REP-1. Under a first-occurrence baseline the figure is 437, recomputed here as 437.",
+    "values_match_exactly": true
+   },
+   {
+    "claim_id": "H14",
+    "dimension": "repetition",
+    "claim": "Episodes ending in a terminal command cycle",
+    "value_as_published": 28,
+    "value_recomputed_by_this_synthesis": 28,
+    "status": "reproduced",
+    "note": "Carried from repetition_taxonomy.json episodes[] (terminal-cycle detection is not re-implemented here); the 28/32 count is recomputed from the artifact's own rows.",
+    "values_match_exactly": true
+   },
+   {
+    "claim_id": "H15",
+    "dimension": "repetition",
+    "claim": "Episodes with at least one command repeated 5 or more times",
+    "value_as_published": 24,
+    "value_recomputed_by_this_synthesis": 24,
+    "status": "reproduced",
+    "note": "Recomputed from repetition_taxonomy.json episodes[].max_repeat; the per-episode max_repeat values were independently re-derived here and agree in 32/32.",
+    "values_match_exactly": true
+   },
+   {
+    "claim_id": "H16",
+    "dimension": "action",
+    "claim": "Episodes in which any edit-family command was issued",
+    "value_as_published": 10,
+    "value_recomputed_by_this_synthesis": 10,
+    "status": "reproduced",
+    "note": "",
+    "values_match_exactly": true
+   },
+   {
+    "claim_id": "H17",
+    "dimension": "action",
+    "claim": "Episodes in which any run-tests-family command was issued",
+    "value_as_published": 0,
+    "value_recomputed_by_this_synthesis": 0,
+    "status": "reproduced",
+    "note": "",
+    "values_match_exactly": true
+   },
+   {
+    "claim_id": "H18",
+    "dimension": "budget",
+    "claim": "Terminating-constraint counts across all 32 episodes",
+    "value_as_published": {
+     "step_limit_H24": 25,
+     "context_window": 5,
+     "submitted": 2
+    },
+    "value_recomputed_by_this_synthesis": {
+     "step_limit_H24": 25,
+     "submitted": 2,
+     "context_window": 5
+    },
+    "status": "reproduced",
+    "note": "The published field omits explicit zero entries for wall_clock and other; both are 0 here. See defect BUD-3.",
+    "values_match_exactly": true
+   },
+   {
+    "claim_id": "H19",
+    "dimension": "budget",
+    "claim": "Prompt tokens summed over answered calls (all 32 episodes)",
+    "value_as_published": 2667613,
+    "value_recomputed_by_this_synthesis": 2667613,
+    "status": "reproduced",
+    "note": "",
+    "values_match_exactly": true
+   },
+   {
+    "claim_id": "H20",
+    "dimension": "budget",
+    "claim": "Completion tokens summed over answered calls (all 32 episodes)",
+    "value_as_published": 66041,
+    "value_recomputed_by_this_synthesis": 66041,
+    "status": "reproduced",
+    "note": "",
+    "values_match_exactly": true
+   },
+   {
+    "claim_id": "H21",
+    "dimension": "budget",
+    "claim": "Assignments whose answered prompt-token series is identical across cohorts",
+    "value_as_published": 12,
+    "value_recomputed_by_this_synthesis": 12,
+    "status": "reproduced",
+    "note": "",
+    "values_match_exactly": true
+   },
+   {
+    "claim_id": "H22",
+    "dimension": "budget",
+    "claim": "Assignments reported as NOT having an identical prompt-token series",
+    "value_as_published": 4,
+    "value_recomputed_by_this_synthesis": 4,
+    "status": "reproduced_but_conflated",
+    "note": "The count of 4 is reproduced, but it merges 2 pure-truncation cases (the shorter series is a strict prefix of the longer) with 2 cases that genuinely differ at a shared index. See defect BUD-1.",
+    "values_match_exactly": true
+   },
+   {
+    "claim_id": "H23",
+    "dimension": "divergence",
+    "claim": "Observations rendered through the yaml-v1 elision branch",
+    "value_as_published": {
+     "legacy": 0,
+     "yaml-v1": 5
+    },
+    "value_recomputed_by_this_synthesis": {
+     "legacy": 0,
+     "yaml-v1": 5
+    },
+    "status": "reproduced",
+    "note": "Counted over the RENDERED observation text (message content), which is where the harness writes the elision markup; extra.raw_output is the pre-render command output and carries the marker 0 times in both cohorts. The 5 fall in exactly 2 episodes, mwaskom__seaborn-3069 and sympy__sympy-11618, matching the source artifact and its verifier.",
+    "values_match_exactly": true
+   },
+   {
+    "claim_id": "H24",
+    "dimension": "action",
+    "claim": "Instances (of 8) for which no target-path candidate is derivable from the issue text",
+    "value_as_published": "5 (as written in action_profile.json method.target_path_derivation.limits[1])",
+    "value_recomputed_by_this_synthesis": 4,
+    "status": "not_reproduced",
+    "note": "The published prose says 5 of 8; the artifact's own per-episode rows give candidate_derived for astropy-12907, psf__requests-1142, pytest-10051 and sphinx-10323, and no_candidate_derivable for matplotlib-13989, seaborn-3069, scikit-learn-10297 and sympy-11618, i.e. 4 of 8. This is consistent with the artifact's own aggregate episodes_with_target_reference_defined = 16 (4 instances x 4 episodes). See defect ACT-2.",
+    "values_match_exactly": false
+   }
+  ]
+ },
+ "defect_register": {
+  "fix_policy": "NO existing file was modified. Every verifier-reported defect was adjudicated independently here and recorded below. None of them is a parsing or aggregation bug that makes a COMPUTED field wrong: they are (a) traceability gaps, where a true number is asserted in prose that no field of the artifact backs, (b) definition/label imprecision, (c) omitted explicit zeros, (d) one incorrect hand-written prose figure (ACT-2), and (e) one published method that is not self-contained (ACT-1). Editing a committed artifact in place would also invalidate the sha256 values its verifier recorded, so each item is carried forward as an explicit disagreement instead.",
+  "n_defects": 14,
+  "n_defects_with_no_effect_on_any_reported_value": 7,
+  "n_defects_with_some_stated_effect_on_a_reported_value": 7,
+  "n_defects_where_a_published_number_is_outright_wrong": 1,
+  "the_one_outright_wrong_published_number": "ACT-2: action_profile.json prose says 5 of 8 instances have no derivable target-path candidate; the correct figure is 4 of 8. No computed field is affected.",
+  "defects": [
+   {
+    "defect_id": "DIV-1",
+    "artifact": "results/v2_agent/analysis_20260922/cross_cohort_divergence.json",
+    "severity": "traceability_gap",
+    "verifier_finding": "The stated method for the env-var claim asserts '25 pip-containing commands and 0 less/man/more in each cohort', but no field of the artifact carries a command-level pip or pager count.",
+    "independent_adjudication": "CONFIRMED as a traceability gap; the numbers themselves are TRUE.",
+    "recomputed_here": {
+     "pip_containing_commands": {
+      "legacy": 25,
+      "yaml-v1": 25
+     },
+     "less_man_more_commands": {
+      "legacy": 0,
+      "yaml-v1": 0
+     }
+    },
+    "disposition": "recorded_not_fixed",
+    "effect_on_any_published_number": "none"
+   },
+   {
+    "defect_id": "DIV-2",
+    "artifact": "results/v2_agent/analysis_20260922/cross_cohort_divergence.json",
+    "severity": "undocumented_convention",
+    "verifier_finding": "observation_truncated_in_yaml_v1 = 2 relies on an unstated convention: for the two length-mismatch assignments the shorter episode has no logical call at the divergent index, and the artifact silently compares that episode's FINAL observation. Under a strict reading both would be no_preceding_observation, a label the artifact's own vocabulary contains.",
+    "independent_adjudication": "CONFIRMED. The two affected assignments are mwaskom__seaborn-3069|large and sympy__sympy-11618|small, which are exactly the two assignments this synthesis independently classifies as length_mismatch_only. The count is convention-dependent: 2 under the proximate convention, 0 under the strict one (with no_preceding_observation = 2 instead).",
+    "disposition": "recorded_not_fixed",
+    "effect_on_any_published_number": "the label distribution only; no command, call or token count changes"
+   },
+   {
+    "defect_id": "DIV-3",
+    "artifact": "results/v2_agent/analysis_20260922/cross_cohort_divergence.json",
+    "severity": "imprecise_label",
+    "verifier_finding": "For sympy__sympy-11618|large the preceding-observation label reads 'observation_identical_but_command_differs' at call 12, but the yaml-v1 side issued NO command at that call: it is a format_error.",
+    "independent_adjudication": "CONFIRMED. The artifact's own evidence block records yaml_v1_call_kind = 'format_error' and yaml_v1_command_excerpt = null, so the record is self-correcting, but the label alone misstates the difference as a command-text difference rather than a call-kind difference.",
+    "disposition": "recorded_not_fixed",
+    "effect_on_any_published_number": "none"
+   },
+   {
+    "defect_id": "DIV-4",
+    "artifact": "results/v2_agent/analysis_20260922/cross_cohort_divergence.json",
+    "severity": "omitted_explicit_zeros",
+    "verifier_finding": "first_divergent_call_preceding_observation_classification_counts carries only the two nonzero keys, so the three asserted zeros are inferences from key ABSENCE.",
+    "independent_adjudication": "CONFIRMED as stated. The three zeros are correct but are not values the artifact states; a reader cannot distinguish 'measured zero' from 'category never evaluated' without reading the vocabulary definition.",
+    "disposition": "recorded_not_fixed",
+    "effect_on_any_published_number": "none"
+   },
+   {
+    "defect_id": "DIV-5",
+    "artifact": "results/v2_agent/analysis_20260922/cross_cohort_divergence.json",
+    "severity": "confusable_field_names",
+    "verifier_finding": "first_divergent_call_index_preceding_observation (earliest index whose preceding message differs) and first_divergence.preceding_observation_evidence (the most proximate preceding observation at the first divergent call) are different quantities with near-identical names.",
+    "independent_adjudication": "CONFIRMED as a naming hazard. Both are defined in the artifact's definitions block; no number is wrong.",
+    "disposition": "recorded_not_fixed",
+    "effect_on_any_published_number": "none"
+   },
+   {
+    "defect_id": "REP-1",
+    "artifact": "results/v2_agent/analysis_20260922/repetition_taxonomy.json",
+    "severity": "baseline_dependence_not_flagged",
+    "verifier_finding": "identical_observation_repeats = 443/446 is computed against the immediately preceding occurrence; under a first-occurrence baseline it is 437/446. The chosen baseline is defined but the limitations block does not flag that the headline is baseline-dependent, and 443 is the more favourable figure.",
+    "independent_adjudication": "CONFIRMED by independent recomputation of BOTH baselines over all 32 episodes.",
+    "recomputed_here": {
+     "repeat_occurrences": 446,
+     "identical_to_previous_occurrence": 443,
+     "identical_to_first_occurrence": 437,
+     "missing_observation": 0
+    },
+    "disposition": "recorded_not_fixed; BOTH baselines are reported in this synthesis and in SUMMARY.md",
+    "effect_on_any_published_number": "the headline identical-observation figure moves 443 -> 437 under the alternative baseline; no other field changes"
+   },
+   {
+    "defect_id": "REP-2",
+    "artifact": "results/v2_agent/analysis_20260922/repetition_taxonomy.json",
+    "severity": "field_name_invites_misreading",
+    "verifier_finding": "repeated_command_strings = 63 is a SUM OVER EPISODES of per-episode distinct repeated command strings, not 63 globally distinct strings; a string repeated in two episodes is counted twice.",
+    "independent_adjudication": "CONFIRMED as a wording hazard. The per-episode definition makes the value derivable; the top-level name does not carry the scope.",
+    "disposition": "recorded_not_fixed",
+    "effect_on_any_published_number": "none under the stated definition"
+   },
+   {
+    "defect_id": "REP-3",
+    "artifact": "results/v2_agent/analysis_20260922/repetition_taxonomy.json",
+    "severity": "scope_not_carried_on_field",
+    "verifier_finding": "integrity.assistant_messages_with_action_count_not_1 = 0 is scoped to SAVED assistant messages; read alone it appears to contradict format_error_messages = 3 (the rejected multi-action responses were never persisted as assistant messages).",
+    "independent_adjudication": "CONFIRMED. This synthesis independently re-derives 0 saved assistant messages with an action count other than 1 across all 32 episodes, and 3 FormatError interrupt messages, so both numbers are right and only the field's scope is unstated.",
+    "recomputed_here": {
+     "assistant_messages_with_action_count_not_1": 0,
+     "format_error_calls_total": 3
+    },
+    "disposition": "recorded_not_fixed",
+    "effect_on_any_published_number": "none"
+   },
+   {
+    "defect_id": "ACT-1",
+    "artifact": "results/v2_agent/analysis_20260922/action_profile.json",
+    "severity": "method_not_self_contained",
+    "verifier_finding": "The published method documents family regexes, a command-start anchor and heredoc handling, but the implementation ALSO masks the content of quoted spans before matching, and that step is absent from the method. Applying the published rules as published yields inspect 401 / create_file 42 instead of the published inspect 443 / create_file 0.",
+    "independent_adjudication": "CONFIRMED. Applying the published create_file.generic_redirect pattern to RAW command text matches 49 commands across the two cohorts; 42 of those are false positives caused by the '>' inside the quoted grep pattern '    <plugin>' in sphinx-doc__sphinx-10323 (40 occurrences of the piped cat|grep form plus 2 of the grep -r form), and only 7 are genuine heredoc writes -- which matches the artifact's own family_counts_any_match.create_file = 7. The PUBLISHED COUNTS ARE THE SEMANTICALLY CORRECT ONES; what fails is reproducibility from the stated method.",
+    "recomputed_here": {
+     "commands_matching_generic_redirect_on_raw_text": 49,
+     "of_which_quoted_plugin_false_positives": 42,
+     "of_which_genuine_heredoc_writes": 7,
+     "artifact_family_counts_any_match_create_file": 7
+    },
+    "disposition": "recorded_not_fixed (the numbers are correct; the METHOD TEXT is incomplete)",
+    "effect_on_any_published_number": "none; the defect is that a reader cannot reproduce the correct numbers from the published method"
+   },
+   {
+    "defect_id": "ACT-2",
+    "artifact": "results/v2_agent/analysis_20260922/action_profile.json",
+    "severity": "incorrect_published_figure_in_prose",
+    "verifier_finding": "method.target_path_derivation.limits[1] states 'For 5 of the 8 instances no candidate is derivable at all'. The correct figure is 4 of 8.",
+    "independent_adjudication": "CONFIRMED WRONG. Recomputed from the artifact's own per-episode target_path_reference.status over all 32 rows: 16 episodes candidate_derived and 16 no_candidate_derivable, i.e. 4 instances each way. This is the only defect across the four artifacts where a PUBLISHED NUMBER is wrong. It is a hand-written prose figure in a limitation note, not a computed field, and it contradicts the artifact's own aggregate episodes_with_target_reference_defined = 16.",
+    "recomputed_here": {
+     "instances_with_candidate_derived": [
+      "astropy__astropy-12907",
+      "psf__requests-1142",
+      "pytest-dev__pytest-10051",
+      "sphinx-doc__sphinx-10323"
+     ],
+     "instances_without_candidate": [
+      "matplotlib__matplotlib-13989",
+      "mwaskom__seaborn-3069",
+      "scikit-learn__scikit-learn-10297",
+      "sympy__sympy-11618"
+     ],
+     "n_instances_with_candidate": 4,
+     "n_instances_without_candidate": 4,
+     "episodes_with_target_reference_defined": 16
+    },
+    "disposition": "recorded_not_fixed; the corrected figure (4 of 8) is used everywhere in this synthesis and the published '5 of 8' is marked NOT REPRODUCED in claim H24",
+    "effect_on_any_published_number": "the prose limitation only; every computed field in the artifact is consistent with 4 of 8"
+   },
+   {
+    "defect_id": "ACT-3",
+    "artifact": "results/v2_agent/analysis_20260922/action_profile.json",
+    "severity": "inconsistent_counting_unit_in_review_summary",
+    "verifier_finding": "The per-episode extremes were summarised with mismatched units ('1 episode' for the all-nonzero extreme against '2 episodes' for the zero-nonzero extreme; both are 2 episodes), and '0 nonzero out of 1 command' should be read as 0 of 0 OBSERVED because that command never received an observation.",
+    "independent_adjudication": "CONFIRMED for the review summary. The artifact's own per-episode field n_nonzero_returncode is correct, and it records n_commands_with_observation = 0 and nonzero_returncode_fraction = null for the affected episodes, so the artifact itself does not make the error.",
+    "disposition": "recorded_not_fixed",
+    "effect_on_any_published_number": "none (the error was in the review summary, not in the artifact)"
+   },
+   {
+    "defect_id": "BUD-1",
+    "artifact": "results/v2_agent/analysis_20260922/budget_profile.json",
+    "severity": "two_distinct_cases_merged_into_one_boolean",
+    "verifier_finding": "cross_cohort_task_pairs conflates truncation with divergence: 2 of the 4 cells reported identical_prompt_token_series=false are cases where the shorter series is a strict prefix of the longer (the shorter episode simply ended earlier), not disagreements. Only 2 cells actually disagree at a shared index, so the '4/16 diverge' headline overstates determinism breaks by a factor of two.",
+    "independent_adjudication": "CONFIRMED by independent recomputation of all 16 assignments' answered prompt-token series from the ledgers in both dialects.",
+    "recomputed_here": {
+     "identical": 12,
+     "shorter_is_strict_prefix_of_longer": 2,
+     "differs_at_a_shared_index": 2,
+     "pure_truncation_assignments": [
+      "mwaskom__seaborn-3069|large",
+      "sympy__sympy-11618|small"
+     ],
+     "genuinely_disagreeing_assignments": [
+      "psf__requests-1142|large",
+      "sympy__sympy-11618|large"
+     ]
+    },
+    "disposition": "recorded_not_fixed; this synthesis emits the three-way relation (identical / strict-prefix / differs-at-shared-index) as a first-class field for every assignment so the two cases are never merged again",
+    "effect_on_any_published_number": "the interpretation of the 4/16 figure; the underlying per-episode token series are unaffected"
+   },
+   {
+    "defect_id": "BUD-2",
+    "artifact": "results/v2_agent/analysis_20260922/budget_profile.json",
+    "severity": "ambiguity_not_flagged_where_the_worker_rule_required_it",
+    "verifier_finding": "Three of the five context-window episodes carry an empty 'ambiguities' array although the records do not determine what drove the request-size jump. Most sharply, legacy mwaskom__seaborn-3069/large goes from a final answered prompt of 2588 to a 31179-token request in one step (its own largest observed growth step is 921), and legacy sympy__sympy-11618/small goes 3043 -> 35199 (own largest step 351).",
+    "independent_adjudication": "CONFIRMED as an omission. The ledger does not carry the content appended before the failed request, so the mechanism is NOT RECOVERABLE from these artifacts. This synthesis records the mechanism as ambiguous and does not attribute it.",
+    "disposition": "recorded_not_fixed; surfaced as open question Q3",
+    "effect_on_any_published_number": "none"
+   },
+   {
+    "defect_id": "BUD-3",
+    "artifact": "results/v2_agent/analysis_20260922/budget_profile.json",
+    "severity": "omitted_explicit_zeros",
+    "verifier_finding": "summary_all_32.terminating_constraint_counts carries only three keys, so the asserted wall_clock = 0 and other = 0 are absent from the field rather than stated in it.",
+    "independent_adjudication": "CONFIRMED as a completeness gap; both zeros are correct. This synthesis emits terminating-constraint counts with explicit zero entries.",
+    "disposition": "recorded_not_fixed",
+    "effect_on_any_published_number": "none"
+   }
+  ]
+ },
+ "cross_artifact_field_disagreements": {
+  "note": "Fields that appear in more than one source artifact were compared per episode against this script's own re-derivation. An empty list means the four artifacts agree with each other and with the records on exit_status, n_model_calls, recorded-command count and submission size for all 32 episodes.",
+  "n_disagreements": 0,
+  "disagreements": []
+ },
+ "per_assignment_table": {
+  "note": "16 rows, one per (instance_id, backend) assignment, each carrying both cohorts. command_divergence is indexed by RECORDED COMMAND; the divergence artifact's logical-call index (which counts format-error calls) is carried alongside it under its own key.",
+  "n_rows": 16,
+  "rows": [
+   {
+    "instance_id": "astropy__astropy-12907",
+    "backend": "large",
+    "per_cohort": {
+     "legacy": {
+      "run_id": "astropy__astropy-12907__large__pilot-cp2-wc2__20260922T050935Z-27c33e",
+      "run_dir_repo_relative": "results/v2_agent/pilot_20260922/astropy__astropy-12907__large__pilot-cp2-wc2__20260922T050935Z-27c33e",
+      "binding": "pilot-cp2-wc2",
+      "exit_status": "LimitsExceeded",
+      "terminating_constraint": "step_limit_H24",
+      "terminating_constraint_authority": "episode.json exit_status",
+      "grade_classification": "operational_zero",
+      "submission_bytes": 0,
+      "n_model_calls": 24,
+      "n_recorded_commands": 24,
+      "n_format_error_calls": 0,
+      "dominant_repetition_pattern": "terminal_2cycle",
+      "terminal_cycle_period": 2,
+      "terminal_cycle_repeats": 10,
+      "terminal_cycle_start_call": 5,
+      "max_identical_command_repeats": 11,
+      "distinct_commands": 5,
+      "any_edit_issued": false,
+      "first_edit_call_index": null,
+      "any_run_tests_issued": false,
+      "any_submit_sentinel": false,
+      "family_counts_primary": {
+       "submit": 0,
+       "edit": 0,
+       "create_file": 0,
+       "run_tests": 0,
+       "inspect": 24,
+       "python_eval": 0,
+       "vcs": 0,
+       "install_env": 0,
+       "other": 0
+      },
+      "n_nonzero_returncode": 23,
+      "max_answered_prompt_tokens": 4417
+     },
+     "yaml-v1": {
+      "run_id": "astropy__astropy-12907__large__pilot-cp2-wc2-yaml-v1__20260922T071912Z-d5c042",
+      "run_dir_repo_relative": "results/v2_agent/pilot_20260922_yaml_v1/astropy__astropy-12907__large__pilot-cp2-wc2-yaml-v1__20260922T071912Z-d5c042",
+      "binding": "pilot-cp2-wc2-yaml-v1",
+      "exit_status": "LimitsExceeded",
+      "terminating_constraint": "step_limit_H24",
+      "terminating_constraint_authority": "episode.json exit_status",
+      "grade_classification": "operational_zero",
+      "submission_bytes": 0,
+      "n_model_calls": 24,
+      "n_recorded_commands": 24,
+      "n_format_error_calls": 0,
+      "dominant_repetition_pattern": "terminal_2cycle",
+      "terminal_cycle_period": 2,
+      "terminal_cycle_repeats": 10,
+      "terminal_cycle_start_call": 5,
+      "max_identical_command_repeats": 11,
+      "distinct_commands": 5,
+      "any_edit_issued": false,
+      "first_edit_call_index": null,
+      "any_run_tests_issued": false,
+      "any_submit_sentinel": false,
+      "family_counts_primary": {
+       "submit": 0,
+       "edit": 0,
+       "create_file": 0,
+       "run_tests": 0,
+       "inspect": 24,
+       "python_eval": 0,
+       "vcs": 0,
+       "install_env": 0,
+       "other": 0
+      },
+      "n_nonzero_returncode": 23,
+      "max_answered_prompt_tokens": 4417
+     }
+    },
+    "command_divergence": {
+     "identical_command_sequences": true,
+     "identical_command_prefix_length": 24,
+     "first_divergent_command_index_1based": null,
+     "length_mismatch_only": false,
+     "source_artifact_agrees": true,
+     "first_divergent_logical_call_index_from_divergence_artifact": null,
+     "length_mismatch_only_from_divergence_artifact": false
+    },
+    "prompt_token_series_relation": {
+     "relation": "identical",
+     "common_prefix_length": 24
+    },
+    "same_exit_status": true,
+    "same_terminating_constraint": true,
+    "same_dominant_repetition_pattern": true,
+    "same_any_edit_issued": true
+   },
+   {
+    "instance_id": "astropy__astropy-12907",
+    "backend": "small",
+    "per_cohort": {
+     "legacy": {
+      "run_id": "astropy__astropy-12907__small__pilot-cp2-wc2__20260922T051348Z-7cc0d0",
+      "run_dir_repo_relative": "results/v2_agent/pilot_20260922/astropy__astropy-12907__small__pilot-cp2-wc2__20260922T051348Z-7cc0d0",
+      "binding": "pilot-cp2-wc2",
+      "exit_status": "Submitted",
+      "terminating_constraint": "submitted",
+      "terminating_constraint_authority": "episode.json exit_status",
+      "grade_classification": "operational_zero",
+      "submission_bytes": 0,
+      "n_model_calls": 1,
+      "n_recorded_commands": 1,
+      "n_format_error_calls": 0,
+      "dominant_repetition_pattern": "single_call",
+      "terminal_cycle_period": null,
+      "terminal_cycle_repeats": null,
+      "terminal_cycle_start_call": null,
+      "max_identical_command_repeats": 1,
+      "distinct_commands": 1,
+      "any_edit_issued": false,
+      "first_edit_call_index": null,
+      "any_run_tests_issued": false,
+      "any_submit_sentinel": true,
+      "family_counts_primary": {
+       "submit": 1,
+       "edit": 0,
+       "create_file": 0,
+       "run_tests": 0,
+       "inspect": 0,
+       "python_eval": 0,
+       "vcs": 0,
+       "install_env": 0,
+       "other": 0
+      },
+      "n_nonzero_returncode": 0,
+      "max_answered_prompt_tokens": 1028
+     },
+     "yaml-v1": {
+      "run_id": "astropy__astropy-12907__small__pilot-cp2-wc2-yaml-v1__20260922T072332Z-8548bb",
+      "run_dir_repo_relative": "results/v2_agent/pilot_20260922_yaml_v1/astropy__astropy-12907__small__pilot-cp2-wc2-yaml-v1__20260922T072332Z-8548bb",
+      "binding": "pilot-cp2-wc2-yaml-v1",
+      "exit_status": "Submitted",
+      "terminating_constraint": "submitted",
+      "terminating_constraint_authority": "episode.json exit_status",
+      "grade_classification": "operational_zero",
+      "submission_bytes": 0,
+      "n_model_calls": 1,
+      "n_recorded_commands": 1,
+      "n_format_error_calls": 0,
+      "dominant_repetition_pattern": "single_call",
+      "terminal_cycle_period": null,
+      "terminal_cycle_repeats": null,
+      "terminal_cycle_start_call": null,
+      "max_identical_command_repeats": 1,
+      "distinct_commands": 1,
+      "any_edit_issued": false,
+      "first_edit_call_index": null,
+      "any_run_tests_issued": false,
+      "any_submit_sentinel": true,
+      "family_counts_primary": {
+       "submit": 1,
+       "edit": 0,
+       "create_file": 0,
+       "run_tests": 0,
+       "inspect": 0,
+       "python_eval": 0,
+       "vcs": 0,
+       "install_env": 0,
+       "other": 0
+      },
+      "n_nonzero_returncode": 0,
+      "max_answered_prompt_tokens": 1028
+     }
+    },
+    "command_divergence": {
+     "identical_command_sequences": true,
+     "identical_command_prefix_length": 1,
+     "first_divergent_command_index_1based": null,
+     "length_mismatch_only": false,
+     "source_artifact_agrees": true,
+     "first_divergent_logical_call_index_from_divergence_artifact": null,
+     "length_mismatch_only_from_divergence_artifact": false
+    },
+    "prompt_token_series_relation": {
+     "relation": "identical",
+     "common_prefix_length": 1
+    },
+    "same_exit_status": true,
+    "same_terminating_constraint": true,
+    "same_dominant_repetition_pattern": true,
+    "same_any_edit_issued": true
+   },
+   {
+    "instance_id": "matplotlib__matplotlib-13989",
+    "backend": "large",
+    "per_cohort": {
+     "legacy": {
+      "run_id": "matplotlib__matplotlib-13989__large__pilot-cp2-wc2__20260922T052837Z-2c553e",
+      "run_dir_repo_relative": "results/v2_agent/pilot_20260922/matplotlib__matplotlib-13989__large__pilot-cp2-wc2__20260922T052837Z-2c553e",
+      "binding": "pilot-cp2-wc2",
+      "exit_status": "LimitsExceeded",
+      "terminating_constraint": "step_limit_H24",
+      "terminating_constraint_authority": "episode.json exit_status",
+      "grade_classification": "operational_zero",
+      "submission_bytes": 0,
+      "n_model_calls": 24,
+      "n_recorded_commands": 24,
+      "n_format_error_calls": 0,
+      "dominant_repetition_pattern": "terminal_1cycle",
+      "terminal_cycle_period": 1,
+      "terminal_cycle_repeats": 20,
+      "terminal_cycle_start_call": 5,
+      "max_identical_command_repeats": 20,
+      "distinct_commands": 5,
+      "any_edit_issued": false,
+      "first_edit_call_index": null,
+      "any_run_tests_issued": false,
+      "any_submit_sentinel": false,
+      "family_counts_primary": {
+       "submit": 0,
+       "edit": 0,
+       "create_file": 0,
+       "run_tests": 0,
+       "inspect": 1,
+       "python_eval": 23,
+       "vcs": 0,
+       "install_env": 0,
+       "other": 0
+      },
+      "n_nonzero_returncode": 23,
+      "max_answered_prompt_tokens": 5320
+     },
+     "yaml-v1": {
+      "run_id": "matplotlib__matplotlib-13989__large__pilot-cp2-wc2-yaml-v1__20260922T073826Z-0b4b85",
+      "run_dir_repo_relative": "results/v2_agent/pilot_20260922_yaml_v1/matplotlib__matplotlib-13989__large__pilot-cp2-wc2-yaml-v1__20260922T073826Z-0b4b85",
+      "binding": "pilot-cp2-wc2-yaml-v1",
+      "exit_status": "LimitsExceeded",
+      "terminating_constraint": "step_limit_H24",
+      "terminating_constraint_authority": "episode.json exit_status",
+      "grade_classification": "operational_zero",
+      "submission_bytes": 0,
+      "n_model_calls": 24,
+      "n_recorded_commands": 24,
+      "n_format_error_calls": 0,
+      "dominant_repetition_pattern": "terminal_1cycle",
+      "terminal_cycle_period": 1,
+      "terminal_cycle_repeats": 20,
+      "terminal_cycle_start_call": 5,
+      "max_identical_command_repeats": 20,
+      "distinct_commands": 5,
+      "any_edit_issued": false,
+      "first_edit_call_index": null,
+      "any_run_tests_issued": false,
+      "any_submit_sentinel": false,
+      "family_counts_primary": {
+       "submit": 0,
+       "edit": 0,
+       "create_file": 0,
+       "run_tests": 0,
+       "inspect": 1,
+       "python_eval": 23,
+       "vcs": 0,
+       "install_env": 0,
+       "other": 0
+      },
+      "n_nonzero_returncode": 23,
+      "max_answered_prompt_tokens": 5320
+     }
+    },
+    "command_divergence": {
+     "identical_command_sequences": true,
+     "identical_command_prefix_length": 24,
+     "first_divergent_command_index_1based": null,
+     "length_mismatch_only": false,
+     "source_artifact_agrees": true,
+     "first_divergent_logical_call_index_from_divergence_artifact": null,
+     "length_mismatch_only_from_divergence_artifact": false
+    },
+    "prompt_token_series_relation": {
+     "relation": "identical",
+     "common_prefix_length": 24
+    },
+    "same_exit_status": true,
+    "same_terminating_constraint": true,
+    "same_dominant_repetition_pattern": true,
+    "same_any_edit_issued": true
+   },
+   {
+    "instance_id": "matplotlib__matplotlib-13989",
+    "backend": "small",
+    "per_cohort": {
+     "legacy": {
+      "run_id": "matplotlib__matplotlib-13989__small__pilot-cp2-wc2__20260922T052510Z-0a446a",
+      "run_dir_repo_relative": "results/v2_agent/pilot_20260922/matplotlib__matplotlib-13989__small__pilot-cp2-wc2__20260922T052510Z-0a446a",
+      "binding": "pilot-cp2-wc2",
+      "exit_status": "ContextWindowExceededError",
+      "terminating_constraint": "context_window",
+      "terminating_constraint_authority": "episode.json exit_status",
+      "grade_classification": "operational_zero",
+      "submission_bytes": 0,
+      "n_model_calls": 24,
+      "n_recorded_commands": 23,
+      "n_format_error_calls": 0,
+      "dominant_repetition_pattern": "terminal_1cycle",
+      "terminal_cycle_period": 1,
+      "terminal_cycle_repeats": 13,
+      "terminal_cycle_start_call": 11,
+      "max_identical_command_repeats": 13,
+      "distinct_commands": 11,
+      "any_edit_issued": false,
+      "first_edit_call_index": null,
+      "any_run_tests_issued": false,
+      "any_submit_sentinel": false,
+      "family_counts_primary": {
+       "submit": 0,
+       "edit": 0,
+       "create_file": 0,
+       "run_tests": 0,
+       "inspect": 2,
+       "python_eval": 0,
+       "vcs": 21,
+       "install_env": 0,
+       "other": 0
+      },
+      "n_nonzero_returncode": 4,
+      "max_answered_prompt_tokens": 15623
+     },
+     "yaml-v1": {
+      "run_id": "matplotlib__matplotlib-13989__small__pilot-cp2-wc2-yaml-v1__20260922T073449Z-bc05f4",
+      "run_dir_repo_relative": "results/v2_agent/pilot_20260922_yaml_v1/matplotlib__matplotlib-13989__small__pilot-cp2-wc2-yaml-v1__20260922T073449Z-bc05f4",
+      "binding": "pilot-cp2-wc2-yaml-v1",
+      "exit_status": "ContextWindowExceededError",
+      "terminating_constraint": "context_window",
+      "terminating_constraint_authority": "episode.json exit_status",
+      "grade_classification": "operational_zero",
+      "submission_bytes": 0,
+      "n_model_calls": 24,
+      "n_recorded_commands": 23,
+      "n_format_error_calls": 0,
+      "dominant_repetition_pattern": "terminal_1cycle",
+      "terminal_cycle_period": 1,
+      "terminal_cycle_repeats": 13,
+      "terminal_cycle_start_call": 11,
+      "max_identical_command_repeats": 13,
+      "distinct_commands": 11,
+      "any_edit_issued": false,
+      "first_edit_call_index": null,
+      "any_run_tests_issued": false,
+      "any_submit_sentinel": false,
+      "family_counts_primary": {
+       "submit": 0,
+       "edit": 0,
+       "create_file": 0,
+       "run_tests": 0,
+       "inspect": 2,
+       "python_eval": 0,
+       "vcs": 21,
+       "install_env": 0,
+       "other": 0
+      },
+      "n_nonzero_returncode": 4,
+      "max_answered_prompt_tokens": 15623
+     }
+    },
+    "command_divergence": {
+     "identical_command_sequences": true,
+     "identical_command_prefix_length": 23,
+     "first_divergent_command_index_1based": null,
+     "length_mismatch_only": false,
+     "source_artifact_agrees": true,
+     "first_divergent_logical_call_index_from_divergence_artifact": null,
+     "length_mismatch_only_from_divergence_artifact": false
+    },
+    "prompt_token_series_relation": {
+     "relation": "identical",
+     "common_prefix_length": 23
+    },
+    "same_exit_status": true,
+    "same_terminating_constraint": true,
+    "same_dominant_repetition_pattern": true,
+    "same_any_edit_issued": true
+   },
+   {
+    "instance_id": "mwaskom__seaborn-3069",
+    "backend": "large",
+    "per_cohort": {
+     "legacy": {
+      "run_id": "mwaskom__seaborn-3069__large__pilot-cp2-wc2__20260922T053759Z-610089",
+      "run_dir_repo_relative": "results/v2_agent/pilot_20260922/mwaskom__seaborn-3069__large__pilot-cp2-wc2__20260922T053759Z-610089",
+      "binding": "pilot-cp2-wc2",
+      "exit_status": "ContextWindowExceededError",
+      "terminating_constraint": "context_window",
+      "terminating_constraint_authority": "episode.json exit_status",
+      "grade_classification": "operational_zero",
+      "submission_bytes": 0,
+      "n_model_calls": 5,
+      "n_recorded_commands": 4,
+      "n_format_error_calls": 0,
+      "dominant_repetition_pattern": "no_repetition",
+      "terminal_cycle_period": null,
+      "terminal_cycle_repeats": null,
+      "terminal_cycle_start_call": null,
+      "max_identical_command_repeats": 1,
+      "distinct_commands": 4,
+      "any_edit_issued": false,
+      "first_edit_call_index": null,
+      "any_run_tests_issued": false,
+      "any_submit_sentinel": false,
+      "family_counts_primary": {
+       "submit": 0,
+       "edit": 0,
+       "create_file": 0,
+       "run_tests": 0,
+       "inspect": 4,
+       "python_eval": 0,
+       "vcs": 0,
+       "install_env": 0,
+       "other": 0
+      },
+      "n_nonzero_returncode": 1,
+      "max_answered_prompt_tokens": 2588
+     },
+     "yaml-v1": {
+      "run_id": "mwaskom__seaborn-3069__large__pilot-cp2-wc2-yaml-v1__20260922T075057Z-3cd2d1",
+      "run_dir_repo_relative": "results/v2_agent/pilot_20260922_yaml_v1/mwaskom__seaborn-3069__large__pilot-cp2-wc2-yaml-v1__20260922T075057Z-3cd2d1",
+      "binding": "pilot-cp2-wc2-yaml-v1",
+      "exit_status": "LimitsExceeded",
+      "terminating_constraint": "step_limit_H24",
+      "terminating_constraint_authority": "episode.json exit_status",
+      "grade_classification": "operational_zero",
+      "submission_bytes": 0,
+      "n_model_calls": 24,
+      "n_recorded_commands": 24,
+      "n_format_error_calls": 0,
+      "dominant_repetition_pattern": "terminal_1cycle",
+      "terminal_cycle_period": 1,
+      "terminal_cycle_repeats": 17,
+      "terminal_cycle_start_call": 8,
+      "max_identical_command_repeats": 18,
+      "distinct_commands": 6,
+      "any_edit_issued": false,
+      "first_edit_call_index": null,
+      "any_run_tests_issued": false,
+      "any_submit_sentinel": false,
+      "family_counts_primary": {
+       "submit": 0,
+       "edit": 0,
+       "create_file": 0,
+       "run_tests": 0,
+       "inspect": 24,
+       "python_eval": 0,
+       "vcs": 0,
+       "install_env": 0,
+       "other": 0
+      },
+      "n_nonzero_returncode": 3,
+      "max_answered_prompt_tokens": 11271
+     }
+    },
+    "command_divergence": {
+     "identical_command_sequences": false,
+     "identical_command_prefix_length": 4,
+     "first_divergent_command_index_1based": 5,
+     "length_mismatch_only": true,
+     "source_artifact_agrees": true,
+     "first_divergent_logical_call_index_from_divergence_artifact": 5,
+     "length_mismatch_only_from_divergence_artifact": true
+    },
+    "prompt_token_series_relation": {
+     "relation": "shorter_is_strict_prefix_of_longer",
+     "common_prefix_length": 4
+    },
+    "same_exit_status": false,
+    "same_terminating_constraint": false,
+    "same_dominant_repetition_pattern": false,
+    "same_any_edit_issued": true
+   },
+   {
+    "instance_id": "mwaskom__seaborn-3069",
+    "backend": "small",
+    "per_cohort": {
+     "legacy": {
+      "run_id": "mwaskom__seaborn-3069__small__pilot-cp2-wc2__20260922T053834Z-7dcda8",
+      "run_dir_repo_relative": "results/v2_agent/pilot_20260922/mwaskom__seaborn-3069__small__pilot-cp2-wc2__20260922T053834Z-7dcda8",
+      "binding": "pilot-cp2-wc2",
+      "exit_status": "LimitsExceeded",
+      "terminating_constraint": "step_limit_H24",
+      "terminating_constraint_authority": "episode.json exit_status",
+      "grade_classification": "operational_zero",
+      "submission_bytes": 0,
+      "n_model_calls": 24,
+      "n_recorded_commands": 24,
+      "n_format_error_calls": 0,
+      "dominant_repetition_pattern": "terminal_2cycle",
+      "terminal_cycle_period": 2,
+      "terminal_cycle_repeats": 8,
+      "terminal_cycle_start_call": 9,
+      "max_identical_command_repeats": 9,
+      "distinct_commands": 9,
+      "any_edit_issued": false,
+      "first_edit_call_index": null,
+      "any_run_tests_issued": false,
+      "any_submit_sentinel": false,
+      "family_counts_primary": {
+       "submit": 0,
+       "edit": 0,
+       "create_file": 0,
+       "run_tests": 0,
+       "inspect": 22,
+       "python_eval": 0,
+       "vcs": 0,
+       "install_env": 0,
+       "other": 2
+      },
+      "n_nonzero_returncode": 23,
+      "max_answered_prompt_tokens": 3268
+     },
+     "yaml-v1": {
+      "run_id": "mwaskom__seaborn-3069__small__pilot-cp2-wc2-yaml-v1__20260922T075455Z-809e31",
+      "run_dir_repo_relative": "results/v2_agent/pilot_20260922_yaml_v1/mwaskom__seaborn-3069__small__pilot-cp2-wc2-yaml-v1__20260922T075455Z-809e31",
+      "binding": "pilot-cp2-wc2-yaml-v1",
+      "exit_status": "LimitsExceeded",
+      "terminating_constraint": "step_limit_H24",
+      "terminating_constraint_authority": "episode.json exit_status",
+      "grade_classification": "operational_zero",
+      "submission_bytes": 0,
+      "n_model_calls": 24,
+      "n_recorded_commands": 24,
+      "n_format_error_calls": 0,
+      "dominant_repetition_pattern": "terminal_2cycle",
+      "terminal_cycle_period": 2,
+      "terminal_cycle_repeats": 8,
+      "terminal_cycle_start_call": 9,
+      "max_identical_command_repeats": 9,
+      "distinct_commands": 9,
+      "any_edit_issued": false,
+      "first_edit_call_index": null,
+      "any_run_tests_issued": false,
+      "any_submit_sentinel": false,
+      "family_counts_primary": {
+       "submit": 0,
+       "edit": 0,
+       "create_file": 0,
+       "run_tests": 0,
+       "inspect": 22,
+       "python_eval": 0,
+       "vcs": 0,
+       "install_env": 0,
+       "other": 2
+      },
+      "n_nonzero_returncode": 23,
+      "max_answered_prompt_tokens": 3268
+     }
+    },
+    "command_divergence": {
+     "identical_command_sequences": true,
+     "identical_command_prefix_length": 24,
+     "first_divergent_command_index_1based": null,
+     "length_mismatch_only": false,
+     "source_artifact_agrees": true,
+     "first_divergent_logical_call_index_from_divergence_artifact": null,
+     "length_mismatch_only_from_divergence_artifact": false
+    },
+    "prompt_token_series_relation": {
+     "relation": "identical",
+     "common_prefix_length": 24
+    },
+    "same_exit_status": true,
+    "same_terminating_constraint": true,
+    "same_dominant_repetition_pattern": true,
+    "same_any_edit_issued": true
+   },
+   {
+    "instance_id": "psf__requests-1142",
+    "backend": "large",
+    "per_cohort": {
+     "legacy": {
+      "run_id": "psf__requests-1142__large__pilot-cp2-wc2__20260922T055112Z-48dc58",
+      "run_dir_repo_relative": "results/v2_agent/pilot_20260922/psf__requests-1142__large__pilot-cp2-wc2__20260922T055112Z-48dc58",
+      "binding": "pilot-cp2-wc2",
+      "exit_status": "LimitsExceeded",
+      "terminating_constraint": "step_limit_H24",
+      "terminating_constraint_authority": "episode.json exit_status",
+      "grade_classification": "operational_zero",
+      "submission_bytes": 0,
+      "n_model_calls": 24,
+      "n_recorded_commands": 24,
+      "n_format_error_calls": 0,
+      "dominant_repetition_pattern": "terminal_longer_cycle",
+      "terminal_cycle_period": 5,
+      "terminal_cycle_repeats": 4,
+      "terminal_cycle_start_call": 5,
+      "max_identical_command_repeats": 5,
+      "distinct_commands": 7,
+      "any_edit_issued": false,
+      "first_edit_call_index": null,
+      "any_run_tests_issued": false,
+      "any_submit_sentinel": false,
+      "family_counts_primary": {
+       "submit": 0,
+       "edit": 0,
+       "create_file": 0,
+       "run_tests": 0,
+       "inspect": 24,
+       "python_eval": 0,
+       "vcs": 0,
+       "install_env": 0,
+       "other": 0
+      },
+      "n_nonzero_returncode": 9,
+      "max_answered_prompt_tokens": 10555
+     },
+     "yaml-v1": {
+      "run_id": "psf__requests-1142__large__pilot-cp2-wc2-yaml-v1__20260922T080700Z-49aae1",
+      "run_dir_repo_relative": "results/v2_agent/pilot_20260922_yaml_v1/psf__requests-1142__large__pilot-cp2-wc2-yaml-v1__20260922T080700Z-49aae1",
+      "binding": "pilot-cp2-wc2-yaml-v1",
+      "exit_status": "LimitsExceeded",
+      "terminating_constraint": "step_limit_H24",
+      "terminating_constraint_authority": "episode.json exit_status",
+      "grade_classification": "operational_zero",
+      "submission_bytes": 0,
+      "n_model_calls": 24,
+      "n_recorded_commands": 24,
+      "n_format_error_calls": 0,
+      "dominant_repetition_pattern": "terminal_longer_cycle",
+      "terminal_cycle_period": 3,
+      "terminal_cycle_repeats": 6,
+      "terminal_cycle_start_call": 7,
+      "max_identical_command_repeats": 7,
+      "distinct_commands": 6,
+      "any_edit_issued": false,
+      "first_edit_call_index": null,
+      "any_run_tests_issued": false,
+      "any_submit_sentinel": false,
+      "family_counts_primary": {
+       "submit": 0,
+       "edit": 0,
+       "create_file": 0,
+       "run_tests": 0,
+       "inspect": 24,
+       "python_eval": 0,
+       "vcs": 0,
+       "install_env": 0,
+       "other": 0
+      },
+      "n_nonzero_returncode": 14,
+      "max_answered_prompt_tokens": 8166
+     }
+    },
+    "command_divergence": {
+     "identical_command_sequences": false,
+     "identical_command_prefix_length": 2,
+     "first_divergent_command_index_1based": 3,
+     "length_mismatch_only": false,
+     "source_artifact_agrees": true,
+     "first_divergent_logical_call_index_from_divergence_artifact": 3,
+     "length_mismatch_only_from_divergence_artifact": false
+    },
+    "prompt_token_series_relation": {
+     "relation": "differs_at_a_shared_index",
+     "common_prefix_length": 2
+    },
+    "same_exit_status": true,
+    "same_terminating_constraint": true,
+    "same_dominant_repetition_pattern": true,
+    "same_any_edit_issued": true
+   },
+   {
+    "instance_id": "psf__requests-1142",
+    "backend": "small",
+    "per_cohort": {
+     "legacy": {
+      "run_id": "psf__requests-1142__small__pilot-cp2-wc2__20260922T054827Z-85153d",
+      "run_dir_repo_relative": "results/v2_agent/pilot_20260922/psf__requests-1142__small__pilot-cp2-wc2__20260922T054827Z-85153d",
+      "binding": "pilot-cp2-wc2",
+      "exit_status": "LimitsExceeded",
+      "terminating_constraint": "step_limit_H24",
+      "terminating_constraint_authority": "episode.json exit_status",
+      "grade_classification": "operational_zero",
+      "submission_bytes": 0,
+      "n_model_calls": 24,
+      "n_recorded_commands": 24,
+      "n_format_error_calls": 0,
+      "dominant_repetition_pattern": "terminal_1cycle",
+      "terminal_cycle_period": 1,
+      "terminal_cycle_repeats": 21,
+      "terminal_cycle_start_call": 4,
+      "max_identical_command_repeats": 21,
+      "distinct_commands": 4,
+      "any_edit_issued": true,
+      "first_edit_call_index": 4,
+      "any_run_tests_issued": false,
+      "any_submit_sentinel": false,
+      "family_counts_primary": {
+       "submit": 0,
+       "edit": 21,
+       "create_file": 0,
+       "run_tests": 0,
+       "inspect": 3,
+       "python_eval": 0,
+       "vcs": 0,
+       "install_env": 0,
+       "other": 0
+      },
+      "n_nonzero_returncode": 22,
+      "max_answered_prompt_tokens": 5330
+     },
+     "yaml-v1": {
+      "run_id": "psf__requests-1142__small__pilot-cp2-wc2-yaml-v1__20260922T080423Z-7ad659",
+      "run_dir_repo_relative": "results/v2_agent/pilot_20260922_yaml_v1/psf__requests-1142__small__pilot-cp2-wc2-yaml-v1__20260922T080423Z-7ad659",
+      "binding": "pilot-cp2-wc2-yaml-v1",
+      "exit_status": "LimitsExceeded",
+      "terminating_constraint": "step_limit_H24",
+      "terminating_constraint_authority": "episode.json exit_status",
+      "grade_classification": "operational_zero",
+      "submission_bytes": 0,
+      "n_model_calls": 24,
+      "n_recorded_commands": 24,
+      "n_format_error_calls": 0,
+      "dominant_repetition_pattern": "terminal_1cycle",
+      "terminal_cycle_period": 1,
+      "terminal_cycle_repeats": 21,
+      "terminal_cycle_start_call": 4,
+      "max_identical_command_repeats": 21,
+      "distinct_commands": 4,
+      "any_edit_issued": true,
+      "first_edit_call_index": 4,
+      "any_run_tests_issued": false,
+      "any_submit_sentinel": false,
+      "family_counts_primary": {
+       "submit": 0,
+       "edit": 21,
+       "create_file": 0,
+       "run_tests": 0,
+       "inspect": 3,
+       "python_eval": 0,
+       "vcs": 0,
+       "install_env": 0,
+       "other": 0
+      },
+      "n_nonzero_returncode": 22,
+      "max_answered_prompt_tokens": 5330
+     }
+    },
+    "command_divergence": {
+     "identical_command_sequences": true,
+     "identical_command_prefix_length": 24,
+     "first_divergent_command_index_1based": null,
+     "length_mismatch_only": false,
+     "source_artifact_agrees": true,
+     "first_divergent_logical_call_index_from_divergence_artifact": null,
+     "length_mismatch_only_from_divergence_artifact": false
+    },
+    "prompt_token_series_relation": {
+     "relation": "identical",
+     "common_prefix_length": 24
+    },
+    "same_exit_status": true,
+    "same_terminating_constraint": true,
+    "same_dominant_repetition_pattern": true,
+    "same_any_edit_issued": true
+   },
+   {
+    "instance_id": "pytest-dev__pytest-10051",
+    "backend": "large",
+    "per_cohort": {
+     "legacy": {
+      "run_id": "pytest-dev__pytest-10051__large__pilot-cp2-wc2__20260922T051527Z-caa8a2",
+      "run_dir_repo_relative": "results/v2_agent/pilot_20260922/pytest-dev__pytest-10051__large__pilot-cp2-wc2__20260922T051527Z-caa8a2",
+      "binding": "pilot-cp2-wc2",
+      "exit_status": "LimitsExceeded",
+      "terminating_constraint": "step_limit_H24",
+      "terminating_constraint_authority": "episode.json exit_status",
+      "grade_classification": "operational_zero",
+      "submission_bytes": 0,
+      "n_model_calls": 24,
+      "n_recorded_commands": 24,
+      "n_format_error_calls": 0,
+      "dominant_repetition_pattern": "terminal_1cycle",
+      "terminal_cycle_period": 1,
+      "terminal_cycle_repeats": 22,
+      "terminal_cycle_start_call": 3,
+      "max_identical_command_repeats": 22,
+      "distinct_commands": 3,
+      "any_edit_issued": false,
+      "first_edit_call_index": null,
+      "any_run_tests_issued": false,
+      "any_submit_sentinel": false,
+      "family_counts_primary": {
+       "submit": 0,
+       "edit": 0,
+       "create_file": 0,
+       "run_tests": 0,
+       "inspect": 24,
+       "python_eval": 0,
+       "vcs": 0,
+       "install_env": 0,
+       "other": 0
+      },
+      "n_nonzero_returncode": 24,
+      "max_answered_prompt_tokens": 4696
+     },
+     "yaml-v1": {
+      "run_id": "pytest-dev__pytest-10051__large__pilot-cp2-wc2-yaml-v1__20260922T072522Z-dd9d41",
+      "run_dir_repo_relative": "results/v2_agent/pilot_20260922_yaml_v1/pytest-dev__pytest-10051__large__pilot-cp2-wc2-yaml-v1__20260922T072522Z-dd9d41",
+      "binding": "pilot-cp2-wc2-yaml-v1",
+      "exit_status": "LimitsExceeded",
+      "terminating_constraint": "step_limit_H24",
+      "terminating_constraint_authority": "episode.json exit_status",
+      "grade_classification": "operational_zero",
+      "submission_bytes": 0,
+      "n_model_calls": 24,
+      "n_recorded_commands": 24,
+      "n_format_error_calls": 0,
+      "dominant_repetition_pattern": "terminal_1cycle",
+      "terminal_cycle_period": 1,
+      "terminal_cycle_repeats": 22,
+      "terminal_cycle_start_call": 3,
+      "max_identical_command_repeats": 22,
+      "distinct_commands": 3,
+      "any_edit_issued": false,
+      "first_edit_call_index": null,
+      "any_run_tests_issued": false,
+      "any_submit_sentinel": false,
+      "family_counts_primary": {
+       "submit": 0,
+       "edit": 0,
+       "create_file": 0,
+       "run_tests": 0,
+       "inspect": 24,
+       "python_eval": 0,
+       "vcs": 0,
+       "install_env": 0,
+       "other": 0
+      },
+      "n_nonzero_returncode": 24,
+      "max_answered_prompt_tokens": 4696
+     }
+    },
+    "command_divergence": {
+     "identical_command_sequences": true,
+     "identical_command_prefix_length": 24,
+     "first_divergent_command_index_1based": null,
+     "length_mismatch_only": false,
+     "source_artifact_agrees": true,
+     "first_divergent_logical_call_index_from_divergence_artifact": null,
+     "length_mismatch_only_from_divergence_artifact": false
+    },
+    "prompt_token_series_relation": {
+     "relation": "identical",
+     "common_prefix_length": 24
+    },
+    "same_exit_status": true,
+    "same_terminating_constraint": true,
+    "same_dominant_repetition_pattern": true,
+    "same_any_edit_issued": true
+   },
+   {
+    "instance_id": "pytest-dev__pytest-10051",
+    "backend": "small",
+    "per_cohort": {
+     "legacy": {
+      "run_id": "pytest-dev__pytest-10051__small__pilot-cp2-wc2__20260922T051357Z-473ac3",
+      "run_dir_repo_relative": "results/v2_agent/pilot_20260922/pytest-dev__pytest-10051__small__pilot-cp2-wc2__20260922T051357Z-473ac3",
+      "binding": "pilot-cp2-wc2",
+      "exit_status": "LimitsExceeded",
+      "terminating_constraint": "step_limit_H24",
+      "terminating_constraint_authority": "episode.json exit_status",
+      "grade_classification": "operational_zero",
+      "submission_bytes": 0,
+      "n_model_calls": 24,
+      "n_recorded_commands": 24,
+      "n_format_error_calls": 0,
+      "dominant_repetition_pattern": "terminal_2cycle",
+      "terminal_cycle_period": 2,
+      "terminal_cycle_repeats": 11,
+      "terminal_cycle_start_call": 3,
+      "max_identical_command_repeats": 12,
+      "distinct_commands": 3,
+      "any_edit_issued": false,
+      "first_edit_call_index": null,
+      "any_run_tests_issued": false,
+      "any_submit_sentinel": false,
+      "family_counts_primary": {
+       "submit": 0,
+       "edit": 0,
+       "create_file": 0,
+       "run_tests": 0,
+       "inspect": 24,
+       "python_eval": 0,
+       "vcs": 0,
+       "install_env": 0,
+       "other": 0
+      },
+      "n_nonzero_returncode": 12,
+      "max_answered_prompt_tokens": 3664
+     },
+     "yaml-v1": {
+      "run_id": "pytest-dev__pytest-10051__small__pilot-cp2-wc2-yaml-v1__20260922T072351Z-97023d",
+      "run_dir_repo_relative": "results/v2_agent/pilot_20260922_yaml_v1/pytest-dev__pytest-10051__small__pilot-cp2-wc2-yaml-v1__20260922T072351Z-97023d",
+      "binding": "pilot-cp2-wc2-yaml-v1",
+      "exit_status": "LimitsExceeded",
+      "terminating_constraint": "step_limit_H24",
+      "terminating_constraint_authority": "episode.json exit_status",
+      "grade_classification": "operational_zero",
+      "submission_bytes": 0,
+      "n_model_calls": 24,
+      "n_recorded_commands": 24,
+      "n_format_error_calls": 0,
+      "dominant_repetition_pattern": "terminal_2cycle",
+      "terminal_cycle_period": 2,
+      "terminal_cycle_repeats": 11,
+      "terminal_cycle_start_call": 3,
+      "max_identical_command_repeats": 12,
+      "distinct_commands": 3,
+      "any_edit_issued": false,
+      "first_edit_call_index": null,
+      "any_run_tests_issued": false,
+      "any_submit_sentinel": false,
+      "family_counts_primary": {
+       "submit": 0,
+       "edit": 0,
+       "create_file": 0,
+       "run_tests": 0,
+       "inspect": 24,
+       "python_eval": 0,
+       "vcs": 0,
+       "install_env": 0,
+       "other": 0
+      },
+      "n_nonzero_returncode": 12,
+      "max_answered_prompt_tokens": 3664
+     }
+    },
+    "command_divergence": {
+     "identical_command_sequences": true,
+     "identical_command_prefix_length": 24,
+     "first_divergent_command_index_1based": null,
+     "length_mismatch_only": false,
+     "source_artifact_agrees": true,
+     "first_divergent_logical_call_index_from_divergence_artifact": null,
+     "length_mismatch_only_from_divergence_artifact": false
+    },
+    "prompt_token_series_relation": {
+     "relation": "identical",
+     "common_prefix_length": 24
+    },
+    "same_exit_status": true,
+    "same_terminating_constraint": true,
+    "same_dominant_repetition_pattern": true,
+    "same_any_edit_issued": true
+   },
+   {
+    "instance_id": "scikit-learn__scikit-learn-10297",
+    "backend": "large",
+    "per_cohort": {
+     "legacy": {
+      "run_id": "scikit-learn__scikit-learn-10297__large__pilot-cp2-wc2__20260922T051926Z-faa4a9",
+      "run_dir_repo_relative": "results/v2_agent/pilot_20260922/scikit-learn__scikit-learn-10297__large__pilot-cp2-wc2__20260922T051926Z-faa4a9",
+      "binding": "pilot-cp2-wc2",
+      "exit_status": "LimitsExceeded",
+      "terminating_constraint": "step_limit_H24",
+      "terminating_constraint_authority": "episode.json exit_status",
+      "grade_classification": "operational_zero",
+      "submission_bytes": 0,
+      "n_model_calls": 24,
+      "n_recorded_commands": 24,
+      "n_format_error_calls": 0,
+      "dominant_repetition_pattern": "terminal_2cycle",
+      "terminal_cycle_period": 2,
+      "terminal_cycle_repeats": 9,
+      "terminal_cycle_start_call": 7,
+      "max_identical_command_repeats": 10,
+      "distinct_commands": 7,
+      "any_edit_issued": false,
+      "first_edit_call_index": null,
+      "any_run_tests_issued": false,
+      "any_submit_sentinel": false,
+      "family_counts_primary": {
+       "submit": 0,
+       "edit": 0,
+       "create_file": 0,
+       "run_tests": 0,
+       "inspect": 24,
+       "python_eval": 0,
+       "vcs": 0,
+       "install_env": 0,
+       "other": 0
+      },
+      "n_nonzero_returncode": 4,
+      "max_answered_prompt_tokens": 3808
+     },
+     "yaml-v1": {
+      "run_id": "scikit-learn__scikit-learn-10297__large__pilot-cp2-wc2-yaml-v1__20260922T072856Z-4e3eb7",
+      "run_dir_repo_relative": "results/v2_agent/pilot_20260922_yaml_v1/scikit-learn__scikit-learn-10297__large__pilot-cp2-wc2-yaml-v1__20260922T072856Z-4e3eb7",
+      "binding": "pilot-cp2-wc2-yaml-v1",
+      "exit_status": "LimitsExceeded",
+      "terminating_constraint": "step_limit_H24",
+      "terminating_constraint_authority": "episode.json exit_status",
+      "grade_classification": "operational_zero",
+      "submission_bytes": 0,
+      "n_model_calls": 24,
+      "n_recorded_commands": 24,
+      "n_format_error_calls": 0,
+      "dominant_repetition_pattern": "terminal_2cycle",
+      "terminal_cycle_period": 2,
+      "terminal_cycle_repeats": 9,
+      "terminal_cycle_start_call": 7,
+      "max_identical_command_repeats": 10,
+      "distinct_commands": 7,
+      "any_edit_issued": false,
+      "first_edit_call_index": null,
+      "any_run_tests_issued": false,
+      "any_submit_sentinel": false,
+      "family_counts_primary": {
+       "submit": 0,
+       "edit": 0,
+       "create_file": 0,
+       "run_tests": 0,
+       "inspect": 24,
+       "python_eval": 0,
+       "vcs": 0,
+       "install_env": 0,
+       "other": 0
+      },
+      "n_nonzero_returncode": 4,
+      "max_answered_prompt_tokens": 3808
+     }
+    },
+    "command_divergence": {
+     "identical_command_sequences": true,
+     "identical_command_prefix_length": 24,
+     "first_divergent_command_index_1based": null,
+     "length_mismatch_only": false,
+     "source_artifact_agrees": true,
+     "first_divergent_logical_call_index_from_divergence_artifact": null,
+     "length_mismatch_only_from_divergence_artifact": false
+    },
+    "prompt_token_series_relation": {
+     "relation": "identical",
+     "common_prefix_length": 24
+    },
+    "same_exit_status": true,
+    "same_terminating_constraint": true,
+    "same_dominant_repetition_pattern": true,
+    "same_any_edit_issued": true
+   },
+   {
+    "instance_id": "scikit-learn__scikit-learn-10297",
+    "backend": "small",
+    "per_cohort": {
+     "legacy": {
+      "run_id": "scikit-learn__scikit-learn-10297__small__pilot-cp2-wc2__20260922T052252Z-def348",
+      "run_dir_repo_relative": "results/v2_agent/pilot_20260922/scikit-learn__scikit-learn-10297__small__pilot-cp2-wc2__20260922T052252Z-def348",
+      "binding": "pilot-cp2-wc2",
+      "exit_status": "LimitsExceeded",
+      "terminating_constraint": "step_limit_H24",
+      "terminating_constraint_authority": "episode.json exit_status",
+      "grade_classification": "operational_zero",
+      "submission_bytes": 0,
+      "n_model_calls": 24,
+      "n_recorded_commands": 24,
+      "n_format_error_calls": 0,
+      "dominant_repetition_pattern": "terminal_longer_cycle",
+      "terminal_cycle_period": 3,
+      "terminal_cycle_repeats": 6,
+      "terminal_cycle_start_call": 7,
+      "max_identical_command_repeats": 6,
+      "distinct_commands": 9,
+      "any_edit_issued": true,
+      "first_edit_call_index": 5,
+      "any_run_tests_issued": false,
+      "any_submit_sentinel": true,
+      "family_counts_primary": {
+       "submit": 3,
+       "edit": 1,
+       "create_file": 0,
+       "run_tests": 0,
+       "inspect": 0,
+       "python_eval": 13,
+       "vcs": 7,
+       "install_env": 0,
+       "other": 0
+      },
+      "n_nonzero_returncode": 23,
+      "max_answered_prompt_tokens": 4381
+     },
+     "yaml-v1": {
+      "run_id": "scikit-learn__scikit-learn-10297__small__pilot-cp2-wc2-yaml-v1__20260922T073224Z-a920da",
+      "run_dir_repo_relative": "results/v2_agent/pilot_20260922_yaml_v1/scikit-learn__scikit-learn-10297__small__pilot-cp2-wc2-yaml-v1__20260922T073224Z-a920da",
+      "binding": "pilot-cp2-wc2-yaml-v1",
+      "exit_status": "LimitsExceeded",
+      "terminating_constraint": "step_limit_H24",
+      "terminating_constraint_authority": "episode.json exit_status",
+      "grade_classification": "operational_zero",
+      "submission_bytes": 0,
+      "n_model_calls": 24,
+      "n_recorded_commands": 24,
+      "n_format_error_calls": 0,
+      "dominant_repetition_pattern": "terminal_longer_cycle",
+      "terminal_cycle_period": 3,
+      "terminal_cycle_repeats": 6,
+      "terminal_cycle_start_call": 7,
+      "max_identical_command_repeats": 6,
+      "distinct_commands": 9,
+      "any_edit_issued": true,
+      "first_edit_call_index": 5,
+      "any_run_tests_issued": false,
+      "any_submit_sentinel": true,
+      "family_counts_primary": {
+       "submit": 3,
+       "edit": 1,
+       "create_file": 0,
+       "run_tests": 0,
+       "inspect": 0,
+       "python_eval": 13,
+       "vcs": 7,
+       "install_env": 0,
+       "other": 0
+      },
+      "n_nonzero_returncode": 23,
+      "max_answered_prompt_tokens": 4381
+     }
+    },
+    "command_divergence": {
+     "identical_command_sequences": true,
+     "identical_command_prefix_length": 24,
+     "first_divergent_command_index_1based": null,
+     "length_mismatch_only": false,
+     "source_artifact_agrees": true,
+     "first_divergent_logical_call_index_from_divergence_artifact": null,
+     "length_mismatch_only_from_divergence_artifact": false
+    },
+    "prompt_token_series_relation": {
+     "relation": "identical",
+     "common_prefix_length": 24
+    },
+    "same_exit_status": true,
+    "same_terminating_constraint": true,
+    "same_dominant_repetition_pattern": true,
+    "same_any_edit_issued": true
+   },
+   {
+    "instance_id": "sphinx-doc__sphinx-10323",
+    "backend": "large",
+    "per_cohort": {
+     "legacy": {
+      "run_id": "sphinx-doc__sphinx-10323__large__pilot-cp2-wc2__20260922T053958Z-57036a",
+      "run_dir_repo_relative": "results/v2_agent/pilot_20260922/sphinx-doc__sphinx-10323__large__pilot-cp2-wc2__20260922T053958Z-57036a",
+      "binding": "pilot-cp2-wc2",
+      "exit_status": "LimitsExceeded",
+      "terminating_constraint": "step_limit_H24",
+      "terminating_constraint_authority": "episode.json exit_status",
+      "grade_classification": "operational_zero",
+      "submission_bytes": 0,
+      "n_model_calls": 24,
+      "n_recorded_commands": 24,
+      "n_format_error_calls": 0,
+      "dominant_repetition_pattern": "terminal_longer_cycle",
+      "terminal_cycle_period": 6,
+      "terminal_cycle_repeats": 2,
+      "terminal_cycle_start_call": 13,
+      "max_identical_command_repeats": 3,
+      "distinct_commands": 14,
+      "any_edit_issued": false,
+      "first_edit_call_index": null,
+      "any_run_tests_issued": false,
+      "any_submit_sentinel": false,
+      "family_counts_primary": {
+       "submit": 0,
+       "edit": 0,
+       "create_file": 0,
+       "run_tests": 0,
+       "inspect": 24,
+       "python_eval": 0,
+       "vcs": 0,
+       "install_env": 0,
+       "other": 0
+      },
+      "n_nonzero_returncode": 3,
+      "max_answered_prompt_tokens": 12613
+     },
+     "yaml-v1": {
+      "run_id": "sphinx-doc__sphinx-10323__large__pilot-cp2-wc2-yaml-v1__20260922T075619Z-5db7a6",
+      "run_dir_repo_relative": "results/v2_agent/pilot_20260922_yaml_v1/sphinx-doc__sphinx-10323__large__pilot-cp2-wc2-yaml-v1__20260922T075619Z-5db7a6",
+      "binding": "pilot-cp2-wc2-yaml-v1",
+      "exit_status": "LimitsExceeded",
+      "terminating_constraint": "step_limit_H24",
+      "terminating_constraint_authority": "episode.json exit_status",
+      "grade_classification": "operational_zero",
+      "submission_bytes": 0,
+      "n_model_calls": 24,
+      "n_recorded_commands": 24,
+      "n_format_error_calls": 0,
+      "dominant_repetition_pattern": "terminal_longer_cycle",
+      "terminal_cycle_period": 6,
+      "terminal_cycle_repeats": 2,
+      "terminal_cycle_start_call": 13,
+      "max_identical_command_repeats": 3,
+      "distinct_commands": 14,
+      "any_edit_issued": false,
+      "first_edit_call_index": null,
+      "any_run_tests_issued": false,
+      "any_submit_sentinel": false,
+      "family_counts_primary": {
+       "submit": 0,
+       "edit": 0,
+       "create_file": 0,
+       "run_tests": 0,
+       "inspect": 24,
+       "python_eval": 0,
+       "vcs": 0,
+       "install_env": 0,
+       "other": 0
+      },
+      "n_nonzero_returncode": 3,
+      "max_answered_prompt_tokens": 12613
+     }
+    },
+    "command_divergence": {
+     "identical_command_sequences": true,
+     "identical_command_prefix_length": 24,
+     "first_divergent_command_index_1based": null,
+     "length_mismatch_only": false,
+     "source_artifact_agrees": true,
+     "first_divergent_logical_call_index_from_divergence_artifact": null,
+     "length_mismatch_only_from_divergence_artifact": false
+    },
+    "prompt_token_series_relation": {
+     "relation": "identical",
+     "common_prefix_length": 24
+    },
+    "same_exit_status": true,
+    "same_terminating_constraint": true,
+    "same_dominant_repetition_pattern": true,
+    "same_any_edit_issued": true
+   },
+   {
+    "instance_id": "sphinx-doc__sphinx-10323",
+    "backend": "small",
+    "per_cohort": {
+     "legacy": {
+      "run_id": "sphinx-doc__sphinx-10323__small__pilot-cp2-wc2__20260922T054445Z-15b460",
+      "run_dir_repo_relative": "results/v2_agent/pilot_20260922/sphinx-doc__sphinx-10323__small__pilot-cp2-wc2__20260922T054445Z-15b460",
+      "binding": "pilot-cp2-wc2",
+      "exit_status": "LimitsExceeded",
+      "terminating_constraint": "step_limit_H24",
+      "terminating_constraint_authority": "episode.json exit_status",
+      "grade_classification": "operational_zero",
+      "submission_bytes": 0,
+      "n_model_calls": 24,
+      "n_recorded_commands": 24,
+      "n_format_error_calls": 0,
+      "dominant_repetition_pattern": "terminal_1cycle",
+      "terminal_cycle_period": 1,
+      "terminal_cycle_repeats": 20,
+      "terminal_cycle_start_call": 5,
+      "max_identical_command_repeats": 20,
+      "distinct_commands": 5,
+      "any_edit_issued": true,
+      "first_edit_call_index": 1,
+      "any_run_tests_issued": false,
+      "any_submit_sentinel": false,
+      "family_counts_primary": {
+       "submit": 0,
+       "edit": 1,
+       "create_file": 0,
+       "run_tests": 0,
+       "inspect": 23,
+       "python_eval": 0,
+       "vcs": 0,
+       "install_env": 0,
+       "other": 0
+      },
+      "n_nonzero_returncode": 23,
+      "max_answered_prompt_tokens": 7559
+     },
+     "yaml-v1": {
+      "run_id": "sphinx-doc__sphinx-10323__small__pilot-cp2-wc2-yaml-v1__20260922T080104Z-452291",
+      "run_dir_repo_relative": "results/v2_agent/pilot_20260922_yaml_v1/sphinx-doc__sphinx-10323__small__pilot-cp2-wc2-yaml-v1__20260922T080104Z-452291",
+      "binding": "pilot-cp2-wc2-yaml-v1",
+      "exit_status": "LimitsExceeded",
+      "terminating_constraint": "step_limit_H24",
+      "terminating_constraint_authority": "episode.json exit_status",
+      "grade_classification": "operational_zero",
+      "submission_bytes": 0,
+      "n_model_calls": 24,
+      "n_recorded_commands": 24,
+      "n_format_error_calls": 0,
+      "dominant_repetition_pattern": "terminal_1cycle",
+      "terminal_cycle_period": 1,
+      "terminal_cycle_repeats": 20,
+      "terminal_cycle_start_call": 5,
+      "max_identical_command_repeats": 20,
+      "distinct_commands": 5,
+      "any_edit_issued": true,
+      "first_edit_call_index": 1,
+      "any_run_tests_issued": false,
+      "any_submit_sentinel": false,
+      "family_counts_primary": {
+       "submit": 0,
+       "edit": 1,
+       "create_file": 0,
+       "run_tests": 0,
+       "inspect": 23,
+       "python_eval": 0,
+       "vcs": 0,
+       "install_env": 0,
+       "other": 0
+      },
+      "n_nonzero_returncode": 23,
+      "max_answered_prompt_tokens": 7559
+     }
+    },
+    "command_divergence": {
+     "identical_command_sequences": true,
+     "identical_command_prefix_length": 24,
+     "first_divergent_command_index_1based": null,
+     "length_mismatch_only": false,
+     "source_artifact_agrees": true,
+     "first_divergent_logical_call_index_from_divergence_artifact": null,
+     "length_mismatch_only_from_divergence_artifact": false
+    },
+    "prompt_token_series_relation": {
+     "relation": "identical",
+     "common_prefix_length": 24
+    },
+    "same_exit_status": true,
+    "same_terminating_constraint": true,
+    "same_dominant_repetition_pattern": true,
+    "same_any_edit_issued": true
+   },
+   {
+    "instance_id": "sympy__sympy-11618",
+    "backend": "large",
+    "per_cohort": {
+     "legacy": {
+      "run_id": "sympy__sympy-11618__large__pilot-cp2-wc2__20260922T053340Z-fa1672",
+      "run_dir_repo_relative": "results/v2_agent/pilot_20260922/sympy__sympy-11618__large__pilot-cp2-wc2__20260922T053340Z-fa1672",
+      "binding": "pilot-cp2-wc2",
+      "exit_status": "LimitsExceeded",
+      "terminating_constraint": "step_limit_H24",
+      "terminating_constraint_authority": "episode.json exit_status",
+      "grade_classification": "operational_zero",
+      "submission_bytes": 0,
+      "n_model_calls": 24,
+      "n_recorded_commands": 23,
+      "n_format_error_calls": 1,
+      "dominant_repetition_pattern": "terminal_2cycle",
+      "terminal_cycle_period": 2,
+      "terminal_cycle_repeats": 4,
+      "terminal_cycle_start_call": 16,
+      "max_identical_command_repeats": 5,
+      "distinct_commands": 14,
+      "any_edit_issued": true,
+      "first_edit_call_index": 12,
+      "any_run_tests_issued": false,
+      "any_submit_sentinel": false,
+      "family_counts_primary": {
+       "submit": 0,
+       "edit": 6,
+       "create_file": 0,
+       "run_tests": 0,
+       "inspect": 11,
+       "python_eval": 5,
+       "vcs": 0,
+       "install_env": 0,
+       "other": 1
+      },
+      "n_nonzero_returncode": 3,
+      "max_answered_prompt_tokens": 5027
+     },
+     "yaml-v1": {
+      "run_id": "sympy__sympy-11618__large__pilot-cp2-wc2-yaml-v1__20260922T074338Z-1b5364",
+      "run_dir_repo_relative": "results/v2_agent/pilot_20260922_yaml_v1/sympy__sympy-11618__large__pilot-cp2-wc2-yaml-v1__20260922T074338Z-1b5364",
+      "binding": "pilot-cp2-wc2-yaml-v1",
+      "exit_status": "LimitsExceeded",
+      "terminating_constraint": "step_limit_H24",
+      "terminating_constraint_authority": "episode.json exit_status",
+      "grade_classification": "operational_zero",
+      "submission_bytes": 0,
+      "n_model_calls": 24,
+      "n_recorded_commands": 22,
+      "n_format_error_calls": 2,
+      "dominant_repetition_pattern": "terminal_2cycle",
+      "terminal_cycle_period": 2,
+      "terminal_cycle_repeats": 2,
+      "terminal_cycle_start_call": 19,
+      "max_identical_command_repeats": 4,
+      "distinct_commands": 17,
+      "any_edit_issued": true,
+      "first_edit_call_index": 13,
+      "any_run_tests_issued": false,
+      "any_submit_sentinel": false,
+      "family_counts_primary": {
+       "submit": 0,
+       "edit": 11,
+       "create_file": 0,
+       "run_tests": 0,
+       "inspect": 10,
+       "python_eval": 0,
+       "vcs": 0,
+       "install_env": 0,
+       "other": 1
+      },
+      "n_nonzero_returncode": 4,
+      "max_answered_prompt_tokens": 5600
+     }
+    },
+    "command_divergence": {
+     "identical_command_sequences": false,
+     "identical_command_prefix_length": 11,
+     "first_divergent_command_index_1based": 12,
+     "length_mismatch_only": false,
+     "source_artifact_agrees": true,
+     "first_divergent_logical_call_index_from_divergence_artifact": 12,
+     "length_mismatch_only_from_divergence_artifact": false
+    },
+    "prompt_token_series_relation": {
+     "relation": "differs_at_a_shared_index",
+     "common_prefix_length": 12
+    },
+    "same_exit_status": true,
+    "same_terminating_constraint": true,
+    "same_dominant_repetition_pattern": true,
+    "same_any_edit_issued": true
+   },
+   {
+    "instance_id": "sympy__sympy-11618",
+    "backend": "small",
+    "per_cohort": {
+     "legacy": {
+      "run_id": "sympy__sympy-11618__small__pilot-cp2-wc2__20260922T053700Z-067273",
+      "run_dir_repo_relative": "results/v2_agent/pilot_20260922/sympy__sympy-11618__small__pilot-cp2-wc2__20260922T053700Z-067273",
+      "binding": "pilot-cp2-wc2",
+      "exit_status": "ContextWindowExceededError",
+      "terminating_constraint": "context_window",
+      "terminating_constraint_authority": "episode.json exit_status",
+      "grade_classification": "operational_zero",
+      "submission_bytes": 0,
+      "n_model_calls": 12,
+      "n_recorded_commands": 11,
+      "n_format_error_calls": 0,
+      "dominant_repetition_pattern": "no_repetition",
+      "terminal_cycle_period": null,
+      "terminal_cycle_repeats": null,
+      "terminal_cycle_start_call": null,
+      "max_identical_command_repeats": 1,
+      "distinct_commands": 11,
+      "any_edit_issued": true,
+      "first_edit_call_index": 1,
+      "any_run_tests_issued": false,
+      "any_submit_sentinel": false,
+      "family_counts_primary": {
+       "submit": 0,
+       "edit": 2,
+       "create_file": 0,
+       "run_tests": 0,
+       "inspect": 2,
+       "python_eval": 7,
+       "vcs": 0,
+       "install_env": 0,
+       "other": 0
+      },
+      "n_nonzero_returncode": 8,
+      "max_answered_prompt_tokens": 3043
+     },
+     "yaml-v1": {
+      "run_id": "sympy__sympy-11618__small__pilot-cp2-wc2-yaml-v1__20260922T074845Z-5b988f",
+      "run_dir_repo_relative": "results/v2_agent/pilot_20260922_yaml_v1/sympy__sympy-11618__small__pilot-cp2-wc2-yaml-v1__20260922T074845Z-5b988f",
+      "binding": "pilot-cp2-wc2-yaml-v1",
+      "exit_status": "ContextWindowExceededError",
+      "terminating_constraint": "context_window",
+      "terminating_constraint_authority": "episode.json exit_status",
+      "grade_classification": "operational_zero",
+      "submission_bytes": 0,
+      "n_model_calls": 15,
+      "n_recorded_commands": 14,
+      "n_format_error_calls": 0,
+      "dominant_repetition_pattern": "terminal_1cycle",
+      "terminal_cycle_period": 1,
+      "terminal_cycle_repeats": 4,
+      "terminal_cycle_start_call": 11,
+      "max_identical_command_repeats": 4,
+      "distinct_commands": 11,
+      "any_edit_issued": true,
+      "first_edit_call_index": 1,
+      "any_run_tests_issued": false,
+      "any_submit_sentinel": false,
+      "family_counts_primary": {
+       "submit": 0,
+       "edit": 2,
+       "create_file": 0,
+       "run_tests": 0,
+       "inspect": 2,
+       "python_eval": 10,
+       "vcs": 0,
+       "install_env": 0,
+       "other": 0
+      },
+      "n_nonzero_returncode": 11,
+      "max_answered_prompt_tokens": 13842
+     }
+    },
+    "command_divergence": {
+     "identical_command_sequences": false,
+     "identical_command_prefix_length": 11,
+     "first_divergent_command_index_1based": 12,
+     "length_mismatch_only": true,
+     "source_artifact_agrees": true,
+     "first_divergent_logical_call_index_from_divergence_artifact": 12,
+     "length_mismatch_only_from_divergence_artifact": true
+    },
+    "prompt_token_series_relation": {
+     "relation": "shorter_is_strict_prefix_of_longer",
+     "common_prefix_length": 11
+    },
+    "same_exit_status": true,
+    "same_terminating_constraint": true,
+    "same_dominant_repetition_pattern": false,
+    "same_any_edit_issued": true
+   }
+  ]
+ },
+ "aggregates": {
+  "all_32": {
+   "episodes": 32,
+   "n_model_calls": 682,
+   "n_recorded_commands": 674,
+   "n_format_error_calls": 3,
+   "unrecorded_model_calls": 8,
+   "exit_status_counts": {
+    "LimitsExceeded": 25,
+    "Submitted": 2,
+    "ContextWindowExceededError": 5
+   },
+   "grade_classification_counts": {
+    "operational_zero": 32
+   },
+   "episodes_with_empty_submission": 32,
+   "prompt_tokens_total_over_answered_calls": 2667613,
+   "completion_tokens_total_over_answered_calls": 66041,
+   "max_answered_prompt_tokens_over_episodes": 15623,
+   "repeat_occurrences": 446,
+   "repeat_occurrences_observation_identical_to_previous": 443,
+   "repeat_occurrences_observation_identical_to_first": 437,
+   "repeat_occurrences_missing_observation": 0
+  },
+  "by_cohort": {
+   "legacy": {
+    "episodes": 16,
+    "n_model_calls": 330,
+    "n_recorded_commands": 326,
+    "n_format_error_calls": 1,
+    "unrecorded_model_calls": 4,
+    "exit_status_counts": {
+     "LimitsExceeded": 12,
+     "Submitted": 1,
+     "ContextWindowExceededError": 3
+    },
+    "grade_classification_counts": {
+     "operational_zero": 16
+    },
+    "episodes_with_empty_submission": 16,
+    "prompt_tokens_total_over_answered_calls": 1249810,
+    "completion_tokens_total_over_answered_calls": 31710,
+    "max_answered_prompt_tokens_over_episodes": 15623,
+    "repeat_occurrences": 214,
+    "repeat_occurrences_observation_identical_to_previous": 212,
+    "repeat_occurrences_observation_identical_to_first": 208,
+    "repeat_occurrences_missing_observation": 0
+   },
+   "yaml-v1": {
+    "episodes": 16,
+    "n_model_calls": 352,
+    "n_recorded_commands": 348,
+    "n_format_error_calls": 2,
+    "unrecorded_model_calls": 4,
+    "exit_status_counts": {
+     "LimitsExceeded": 13,
+     "Submitted": 1,
+     "ContextWindowExceededError": 2
+    },
+    "grade_classification_counts": {
+     "operational_zero": 16
+    },
+    "episodes_with_empty_submission": 16,
+    "prompt_tokens_total_over_answered_calls": 1417803,
+    "completion_tokens_total_over_answered_calls": 34331,
+    "max_answered_prompt_tokens_over_episodes": 15623,
+    "repeat_occurrences": 232,
+    "repeat_occurrences_observation_identical_to_previous": 231,
+    "repeat_occurrences_observation_identical_to_first": 229,
+    "repeat_occurrences_missing_observation": 0
+   }
+  },
+  "by_backend": {
+   "large": {
+    "episodes": 16,
+    "n_model_calls": 365,
+    "n_recorded_commands": 361,
+    "n_format_error_calls": 3,
+    "unrecorded_model_calls": 4,
+    "exit_status_counts": {
+     "LimitsExceeded": 15,
+     "ContextWindowExceededError": 1
+    },
+    "grade_classification_counts": {
+     "operational_zero": 16
+    },
+    "episodes_with_empty_submission": 16,
+    "prompt_tokens_total_over_answered_calls": 1554411,
+    "completion_tokens_total_over_answered_calls": 33067,
+    "max_answered_prompt_tokens_over_episodes": 12613,
+    "repeat_occurrences": 239,
+    "repeat_occurrences_observation_identical_to_previous": 236,
+    "repeat_occurrences_observation_identical_to_first": 230,
+    "repeat_occurrences_missing_observation": 0
+   },
+   "small": {
+    "episodes": 16,
+    "n_model_calls": 317,
+    "n_recorded_commands": 313,
+    "n_format_error_calls": 0,
+    "unrecorded_model_calls": 4,
+    "exit_status_counts": {
+     "Submitted": 2,
+     "ContextWindowExceededError": 4,
+     "LimitsExceeded": 10
+    },
+    "grade_classification_counts": {
+     "operational_zero": 16
+    },
+    "episodes_with_empty_submission": 16,
+    "prompt_tokens_total_over_answered_calls": 1113202,
+    "completion_tokens_total_over_answered_calls": 32974,
+    "max_answered_prompt_tokens_over_episodes": 15623,
+    "repeat_occurrences": 207,
+    "repeat_occurrences_observation_identical_to_previous": 207,
+    "repeat_occurrences_observation_identical_to_first": 207,
+    "repeat_occurrences_missing_observation": 0
+   }
+  },
+  "by_cohort_backend": {
+   "legacy|large": {
+    "episodes": 8,
+    "n_model_calls": 173,
+    "n_recorded_commands": 171,
+    "n_format_error_calls": 1,
+    "unrecorded_model_calls": 2,
+    "exit_status_counts": {
+     "LimitsExceeded": 7,
+     "ContextWindowExceededError": 1
+    },
+    "grade_classification_counts": {
+     "operational_zero": 8
+    },
+    "episodes_with_empty_submission": 8,
+    "prompt_tokens_total_over_answered_calls": 708572,
+    "completion_tokens_total_over_answered_calls": 15388,
+    "max_answered_prompt_tokens_over_episodes": 12613,
+    "repeat_occurrences": 112,
+    "repeat_occurrences_observation_identical_to_previous": 110,
+    "repeat_occurrences_observation_identical_to_first": 106,
+    "repeat_occurrences_missing_observation": 0
+   },
+   "legacy|small": {
+    "episodes": 8,
+    "n_model_calls": 157,
+    "n_recorded_commands": 155,
+    "n_format_error_calls": 0,
+    "unrecorded_model_calls": 2,
+    "exit_status_counts": {
+     "Submitted": 1,
+     "ContextWindowExceededError": 2,
+     "LimitsExceeded": 5
+    },
+    "grade_classification_counts": {
+     "operational_zero": 8
+    },
+    "episodes_with_empty_submission": 8,
+    "prompt_tokens_total_over_answered_calls": 541238,
+    "completion_tokens_total_over_answered_calls": 16322,
+    "max_answered_prompt_tokens_over_episodes": 15623,
+    "repeat_occurrences": 102,
+    "repeat_occurrences_observation_identical_to_previous": 102,
+    "repeat_occurrences_observation_identical_to_first": 102,
+    "repeat_occurrences_missing_observation": 0
+   },
+   "yaml-v1|large": {
+    "episodes": 8,
+    "n_model_calls": 192,
+    "n_recorded_commands": 190,
+    "n_format_error_calls": 2,
+    "unrecorded_model_calls": 2,
+    "exit_status_counts": {
+     "LimitsExceeded": 8
+    },
+    "grade_classification_counts": {
+     "operational_zero": 8
+    },
+    "episodes_with_empty_submission": 8,
+    "prompt_tokens_total_over_answered_calls": 845839,
+    "completion_tokens_total_over_answered_calls": 17679,
+    "max_answered_prompt_tokens_over_episodes": 12613,
+    "repeat_occurrences": 127,
+    "repeat_occurrences_observation_identical_to_previous": 126,
+    "repeat_occurrences_observation_identical_to_first": 124,
+    "repeat_occurrences_missing_observation": 0
+   },
+   "yaml-v1|small": {
+    "episodes": 8,
+    "n_model_calls": 160,
+    "n_recorded_commands": 158,
+    "n_format_error_calls": 0,
+    "unrecorded_model_calls": 2,
+    "exit_status_counts": {
+     "Submitted": 1,
+     "ContextWindowExceededError": 2,
+     "LimitsExceeded": 5
+    },
+    "grade_classification_counts": {
+     "operational_zero": 8
+    },
+    "episodes_with_empty_submission": 8,
+    "prompt_tokens_total_over_answered_calls": 571964,
+    "completion_tokens_total_over_answered_calls": 16652,
+    "max_answered_prompt_tokens_over_episodes": 15623,
+    "repeat_occurrences": 105,
+    "repeat_occurrences_observation_identical_to_previous": 105,
+    "repeat_occurrences_observation_identical_to_first": 105,
+    "repeat_occurrences_missing_observation": 0
+   }
+  },
+  "command_family_profile_from_action_profile": {
+   "note": "Copied from action_profile.json aggregates; the family classifier is NOT re-implemented in this script. See defect_register entry ACT-1 for a reproducibility gap in that artifact's PUBLISHED method text.",
+   "overall_family_counts_primary": {
+    "submit": 8,
+    "edit": 67,
+    "create_file": 0,
+    "run_tests": 0,
+    "inspect": 443,
+    "python_eval": 94,
+    "vcs": 56,
+    "install_env": 0,
+    "other": 6
+   },
+   "overall_family_share_primary": {
+    "submit": 0.0119,
+    "edit": 0.0994,
+    "create_file": 0.0,
+    "run_tests": 0.0,
+    "inspect": 0.6573,
+    "python_eval": 0.1395,
+    "vcs": 0.0831,
+    "install_env": 0.0,
+    "other": 0.0089
+   },
+   "by_cohort_family_counts_primary": {
+    "legacy": {
+     "submit": 4,
+     "edit": 31,
+     "create_file": 0,
+     "run_tests": 0,
+     "inspect": 212,
+     "python_eval": 48,
+     "vcs": 28,
+     "install_env": 0,
+     "other": 3
+    },
+    "yaml-v1": {
+     "submit": 4,
+     "edit": 36,
+     "create_file": 0,
+     "run_tests": 0,
+     "inspect": 231,
+     "python_eval": 46,
+     "vcs": 28,
+     "install_env": 0,
+     "other": 3
+    }
+   },
+   "edit_write_target_location_counts_overall": {
+    "freshly_cloned_copy_outside_base_tree": 6,
+    "installed_package_outside_repo_tree": 42,
+    "relative_resolves_under_testbed": 25
+   }
+  },
+  "per_assignment_pairing": {
+   "assignments": 16,
+   "identical_command_sequences": 12,
+   "divergent_command_sequences": 4,
+   "divergent_of_which_length_mismatch_only": 2,
+   "divergent_of_which_differ_at_a_shared_index": 2,
+   "prompt_token_series_relation_counts": {
+    "identical": 12,
+    "shorter_is_strict_prefix_of_longer": 2,
+    "differs_at_a_shared_index": 2
+   },
+   "same_exit_status": 15,
+   "same_terminating_constraint": 15,
+   "same_dominant_repetition_pattern": 14,
+   "same_any_edit_issued": 16,
+   "identical_command_prefix_lengths_sorted": [
+    1,
+    2,
+    4,
+    11,
+    11,
+    23,
+    24,
+    24,
+    24,
+    24,
+    24,
+    24,
+    24,
+    24,
+    24,
+    24
+   ],
+   "identical_command_prefix_length_sum": 292
+  },
+  "terminating_constraint_counts_with_explicit_zeros": {
+   "step_limit_H24": 25,
+   "submitted": 2,
+   "context_window": 5,
+   "wall_clock": 0,
+   "other": 0
+  }
+ },
+ "open_questions_for_the_scientific_lead": {
+  "note": "Phrased as questions for the lead, not as recommendations. This worker does not choose study design.",
+  "questions": [
+   {
+    "id": "Q1",
+    "question": "All 32 episodes produced an empty submission and were graded operational_zero, so the grade dimension has zero variance. Should the block-1 records be treated as informative about anything other than harness behaviour, and if so on which measured quantity?",
+    "what_the_records_do_and_do_not_settle": "The records settle what was executed (calls, commands, tokens, exits). They contain no successful patch and no gold-patch file list, so nothing here separates 'the model could not' from 'the loop never reached an edit'."
+   },
+   {
+    "id": "Q2",
+    "question": "Is 12 of 16 assignments byte-identical across the two cohorts the intended level of agreement for a temperature-0 configuration change, or does the lead expect 16 of 16, which would make the 4 divergences a finding about the harness rather than about sampling?",
+    "what_the_records_do_and_do_not_settle": "The records establish the divergence points exactly (commands at 3, 5, 12 and 12; prompt-token series differing at a shared index in 2 assignments only). They do not establish whether the two cohorts were served by bit-identical server state."
+   },
+   {
+    "id": "Q3",
+    "question": "For the context-window terminations, the prompt-token jump in the final step is one to two orders of magnitude larger than any observed growth step in the same episode (2588 -> 31179 and 3043 -> 35199 against own-largest steps of 921 and 351). The ledger does not record the content appended before the failed request. Does the lead want a harness change that persists the rejected request, and is the current inability to attribute these jumps acceptable for block 2?",
+    "what_the_records_do_and_do_not_settle": "The records establish the jump sizes. They do not contain the rejected request body, so the mechanism is not recoverable from these artifacts."
+   },
+   {
+    "id": "Q4",
+    "question": "28 of 32 episodes end in a terminal command cycle and 24 of 32 contain a command repeated 5 or more times, with 443 of 446 repeat occurrences returning an observation identical to the previous one (437 of 446 against the first occurrence). Which of the two baselines does the lead want fixed as the reporting convention before block 2?",
+    "what_the_records_do_and_do_not_settle": "Both baselines are computed here over the complete record set. Which one is the right summary is a reporting decision, not something the records decide."
+   },
+   {
+    "id": "Q5",
+    "question": "0 of 674 commands were classified into the run_tests family and 8 submit-sentinel commands appear across 4 episodes, while 67 commands were classified as edits in 10 of 32 episodes -- yet every submission.diff is empty. Does the lead want the edit-target location breakdown (42 commands writing into an installed package outside the repo tree, 25 resolving under the testbed, 6 into a freshly cloned copy) treated as the quantity of interest for block 2?",
+    "what_the_records_do_and_do_not_settle": "The counts and target locations are recorded. Whether a write outside the graded tree explains the empty diff is not determined by these artifacts, which carry no final tree listing for any episode."
+   },
+   {
+    "id": "Q6",
+    "question": "The step limit H=24 binds in 25 of 32 episodes and the context window in 5. Does the lead want H raised for block 2, and if so is the comparison across H values still to be treated as one cohort, given that 12 of 16 assignments were byte-identical at H=24?",
+    "what_the_records_do_and_do_not_settle": "The binding constraint per episode is recorded with its authority. What H should be is a design decision outside this worker's scope."
+   },
+   {
+    "id": "Q7",
+    "question": "The target-path heuristic derives a candidate for 4 of the 8 instances from issue text only, and the gold patch file list is absent from the committed artifacts. Should the gold patch be committed alongside block-2 records so that 'referenced the file that needed changing' becomes measurable rather than heuristic?",
+    "what_the_records_do_and_do_not_settle": "The records support only 'referenced a path named in the issue text'. Ground truth is absent, so no accuracy statement about targeting is available from these files."
+   },
+   {
+    "id": "Q8",
+    "question": "Two artifacts carry convention-dependent headline figures (the preceding-observation label under the proximate-versus-strict convention, and the identical-observation baseline). Does the lead want these conventions frozen in a shared definitions file before block 2, so that block-1 and block-2 numbers remain comparable?",
+    "what_the_records_do_and_do_not_settle": "Both conventions and both resulting values are recorded here. Choosing between them is a reporting decision."
+   }
+  ]
+ },
+ "output_hygiene_check": {
+  "contains_local_username_literal": false,
+  "n_absolute_user_paths": 0,
+  "n_absolute_paths_any": 0
+ }
+}

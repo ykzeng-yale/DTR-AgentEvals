@@ -4318,3 +4318,60 @@ Code/config commit at checkpoint start: `f8252c9`. Last lead checkpoint read: is
 | DTR-REQ-004 (P0) | **completed** for today's DTR blocks; no DTR host work planned | — |
 
 **Open question for the lead (from `8652892`):** how should `effective_config_sha256` be handled under home-path sanitization? Options: (a) a manifest mapping; (b) record the executable without the home path; (c) publish raw.
+
+## Worker checkpoint — 2026-09-22T19:42:08Z (host `date -u`; local 15:42 EDT) — CROSS-COHORT DIAGNOSTIC of the 32 completed episodes
+
+Code/config commit at checkpoint start: `e8a3d39`. Last lead checkpoint read: issue #4 at 07:01:05Z (`ba16773`); no lead commit or comment since, so `8652892`/`e8a3d39` remain unreviewed. **Authorized runs:** none; **none started**. No model, server, container or evaluator ran for this work: it is analysis of already-committed records.
+
+**Why this slice:** your `043bfd9` review named the next discriminating check as distinguishing *failure to produce eligible patches* from evaluator uncertainty, context/budget exits and insufficient feedback, and asked to "classify repeated commands on saved records". This does that for all 32 episodes of both cohorts.
+
+**Method.** Four independent analyses, each re-derived by a second worker that was told to refute it, then a synthesis that registers every disagreement. Artifacts (all write-once, no existing record touched): [`analysis_20260922/`](../results/v2_agent/analysis_20260922/) with `cross_cohort_divergence`, `repetition_taxonomy`, `action_profile`, `budget_profile`, each plus a `_verification` file, and `cross_cohort_diagnostic.json` + [`SUMMARY.md`](../results/v2_agent/analysis_20260922/SUMMARY.md). Scripts under `experiments/v2_agent/analysis/`. **Of 24 headline claims re-derived, 22 reproduced, 1 was conflated and 1 was wrong** (both registered below).
+
+**I re-derived these myself from the complete records before publishing** (not taking the agents' word):
+
+| Quantity | legacy | yaml-v1 | all 32 |
+|---|---:|---:|---:|
+| Episodes / empty `submission.diff` / `operational_zero` | 16 / 16 / 16 | 16 / 16 / 16 | 32 / 32 / 32 |
+| Logical model calls | 330 | 352 | 682 |
+| Recorded commands | 326 | 348 | 674 (gap 8 = 3 format-error calls + 5 failed physical attempts) |
+| Exits Submitted / LimitsExceeded / ContextWindowExceeded | 1 / 12 / 3 | 1 / 13 / 2 | 2 / 25 / 5 |
+| Prompt / completion tokens over answered calls | 1,249,810 | 1,417,803 | 2,667,613 / 66,041 |
+| Command sequences byte-identical across cohorts | — | — | **12 of 16** assignments; identical-prefix sum 292 |
+
+**The finding I think matters most for your diagnosis — "no eligible patch" is not "no edit was attempted".**
+- Per cohort, **5 of 16 episodes issued file-writing commands** (7B 4, 14B 1), and the write targets classify as:
+  - `relative_resolves_under_testbed`: sphinx/7B 1, sympy/7B 2, sympy/14B 6 (legacy) and 11 (yaml-v1), sklearn/7B 1;
+  - `installed_package_outside_repo_tree`: **requests/7B 21 writes** — edits to the installed package, which the wc2 `/testbed` diff would not capture even on a Submitted exit;
+  - `freshly_cloned_copy_outside_base_tree`: sklearn/7B 3 writes into a repo it cloned itself.
+- I verified the sympy/14B case by hand in both cohorts: `sed -i` against `./sympy/geometry/point.py` returning 0, and `cat <<'EOF' > test_distance.py` creating and then running a new file. **Caveat I insist on:** `sed -i` exits 0 even when no line matches, and the trajectory does not show the file afterwards, so *whether those substitutions applied is not recorded*.
+- **`final_tree` is recorded for only 2 of 32 episodes** (the two Submitted ones). Under the declared wc2 rule (capture only on an explicit Submitted exit, no salvage) the other 30 have no captured tree, so any workspace change they made is unrecorded by construction.
+- So the 0/32 result means **no episode reached an eligible submission**; it does not establish that no episode changed a repository file. Nothing here separates "the model could not" from "the loop never submitted". That distinction is yours to draw, not mine.
+
+**Other verified counts (agent-computed, independently reproduced by the verifier):**
+- Primary command family over 674 commands: inspect 443, python_eval 94, edit 67, vcs 56, submit 8, other 6, **`run_tests` 0**, create_file 0, install_env 0. **No episode in either cohort ever ran the repository's tests.**
+- Repetition: 28/32 episodes end in a terminal command cycle; 24/32 contain a command repeated ≥5 times; highest single-command repeat 22. Of 446 repeat occurrences, 443 returned an observation identical to the previous occurrence (437 against the first-occurrence baseline).
+- Cross-cohort agreement: same exit 15/16, same terminating constraint 15/16, same repetition pattern 14/16, same any-edit flag 16/16.
+- Terminating constraint over 32: step limit 25, context window 5, submitted 2, wall clock 0.
+- The two context-window terminations show a final prompt-token jump far larger than any growth step in the same episode (2,588 → 31,179 and 3,043 → 35,199, against own-largest steps of 921 and 351). The rejected request body is not persisted, so the mechanism is **not recoverable** from these records.
+
+**Defect register (registered, not silently fixed).**
+- **ACT-2, wrong number:** `action_profile.json` prose says a target-path candidate is underivable for "5 of the 8" instances. The correct figure is **4 of 8** — I checked its own per-episode `target_path_reference` rows: 4 `candidate_derived`, 4 `no_candidate_derivable`. Prose only; every computed field is consistent with 4. Corrected additively in `cross_cohort_diagnostic.json`, original left unmodified.
+- **ACT-1, not self-contained:** the published command-family method omits a quote-masking step, so applying the rules exactly as published gives inspect 401 / create_file 42 instead of 443 / 0. The published counts are the semantically correct ones; the gap is reproducibility from the stated method.
+- **BUD-1, conflated:** "4 of 16 assignments without an identical prompt-token series" mixes 2 pure-truncation cases with 2 that genuinely differ at a shared index.
+- **REP-1, baseline-dependent headline:** the 443/446 identical-observation figure uses the previous-occurrence baseline and is the more favourable of the two; 437/446 under first-occurrence.
+- Ten further traceability/wording defects are listed in the diagnostic artifact.
+
+**Questions for you (I am not deciding any of these):**
+1. Given that 30 of 32 episodes have no captured final tree, do you want block 2 to record the workspace diff on **every** exit as a separately labelled diagnostic field, while keeping the frozen submission rule (capture only on Submitted) unchanged for the endpoint?
+2. `run_tests` is 0 across 674 commands. Is "the agent never ran the repository's tests" a reportable development observation for the manuscript, or do you want it framed differently?
+3. Is 12 of 16 byte-identical command sequences the agreement you expect from a temperature-0 configuration change, or does the 4-assignment divergence itself need explaining before block 2?
+4. Which identical-observation baseline should be frozen as the reporting convention?
+5. Do you want the rejected request body persisted so context-overflow jumps become attributable?
+6. Still open from `8652892`: how should `effective_config_sha256` verification handle home-path sanitization — manifest mapping, path-free recording, or raw publication?
+
+| Request | Status | Artifact / reason |
+|---|---|---|
+| DTR-REQ-002 (P1) block 1 + `yaml-v1` cohorts | **completed** | `b378613`, `8652892` |
+| DTR-REQ-002 (P1) cross-cohort diagnostic | **completed** (this commit); awaiting your review | `results/v2_agent/analysis_20260922/` |
+| DTR-REQ-002 Django | **deferred** | — |
+| DTR-REQ-004 (P0) | **completed** for today's blocks; host idle; no DTR work planned | — |

@@ -131,6 +131,18 @@ reproducibility/metadata/package remain open.
 Current exchange cadence is approximately every 30 minutes (worker-reported :13/:43; lead :18/:48). Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-22 19:42 UTC — cross-cohort diagnostic of all 32 episodes (REQ-002)
+
+Four independently verified analyses of the two completed cohorts, no new execution. Verified: 32/32 operational
+zeros, 682 calls, 674 commands, 12/16 byte-identical command sequences. Main factual result: 5 of 16 episodes per
+cohort issued file-writing commands (one writing into site-packages), but only 2 of 32 episodes have a captured
+final tree, so a zero is "never submitted", not "never edited". No episode ran the repository tests. Two published
+numbers were corrected and 14 defects registered; 6 questions are open for the lead.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Evidence advanced:
+none under the rubric (descriptive analysis of existing records; no new observation). Categories 75/75/50/25/25 →
+55.00. Main remaining work: lead's diagnosis and any block-2 design; routing and CONFIRM stay blocked.
+
 ## 2026-09-22 08:44 UTC — yaml-v1 repetition and truncation counts (REQ-002)
 
 Descriptive counts for the config-fixed re-run: repetition is unchanged (12/16 episodes), and the truncated oversized

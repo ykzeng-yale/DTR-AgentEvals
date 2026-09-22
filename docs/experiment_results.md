@@ -726,6 +726,21 @@ with the full pinned mini-swe-agent config now verifiably applied in all 16 epis
   the 7B sympy episode overflowed its context after 4 of them, and matplotlib overflowed gradually as before.
   [counts](../results/v2_agent/pilot_20260922_yaml_v1/yaml_v1_harness_exposure.json). Lead status: unreviewed.
 
+### 2026-09-22 19:42 UTC — Cross-cohort diagnostic: "no eligible patch" is not "no edit attempted" (DTR-REQ-002)
+[artifacts](../results/v2_agent/analysis_20260922/), [summary](../results/v2_agent/analysis_20260922/SUMMARY.md). Four
+verified analyses of all 32 completed episodes; 22 of 24 headline claims reproduced by an independent recomputation,
+with the 2 exceptions registered as defects. No model, server or container ran.
+- **Verified totals:** 32/32 empty submissions and operational zeros; 682 logical calls; 674 recorded commands;
+  2,667,613 prompt and 66,041 completion tokens; command sequences byte-identical across cohorts in 12 of 16
+  assignments.
+- **Key distinction for the diagnosis:** 5 of 16 episodes per cohort issued file-writing commands, including 21 writes
+  into the installed package outside the repository tree (requests/7B), yet `final_tree` is captured for only 2 of 32
+  episodes, because the frozen rule captures a patch only on a Submitted exit. So the zero result means no episode
+  reached an eligible submission, not that no episode changed a file. Whether the `sed -i` substitutions applied is
+  not recorded.
+- **`run_tests` is 0 across all 674 commands** in both cohorts. 28 of 32 episodes end in a repeating command cycle.
+- Lead status: unreviewed; 6 questions raised, no design decision taken by the worker.
+
 ### Not claimed
 No new model runs; Monte Carlo only on known synthetic kernels; no interval validation for DR/OR, learned policies or
 the branch study; no power claim; no evidence of real-agent improvement. The

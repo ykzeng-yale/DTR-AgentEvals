@@ -1,0 +1,783 @@
+{
+  "analysis": "cross_cohort_divergence_verification",
+  "role": "INDEPENDENT VERIFIER of results/v2_agent/analysis_20260922/cross_cohort_divergence.json",
+  "kind": "DESCRIPTIVE recomputation over already-completed committed episodes; counts and classifications only; no causal claim, no efficacy claim, no study-design recommendation",
+  "generated_by_script_repo_relative": "experiments/v2_agent/analysis/verify_divergence.py",
+  "independence_note": "Pairing keys read from episode.json {instance_id,backend}; run-directory names parsed by a regex anchored on the trailing <YYYYmmdd>T<HHMMSS>Z-<hex> segment and cross-checked. Command text re-derived by line-scanning fenced blocks in extra.response.choices[0].message.content (the raw provider payload); extra.actions used only as a cross-check. Call counts cross-checked against attempts.jsonl in both ledger formats and against episode.json n_model_calls. Template markup inside trajectory info.config is never scanned.",
+  "inputs": {
+    "legacy_cohort_dir_repo_relative": "results/v2_agent/pilot_20260922",
+    "yaml_v1_cohort_dir_repo_relative": "results/v2_agent/pilot_20260922_yaml_v1",
+    "legacy_report_repo_relative": "results/v2_agent/pilot_20260922/report_block1_final.json",
+    "yaml_v1_report_repo_relative": "results/v2_agent/pilot_20260922_yaml_v1/report_yaml_v1_block1_final.json",
+    "peer_artifact_repo_relative": "results/v2_agent/analysis_20260922/cross_cohort_divergence.json",
+    "episodes_read": 32,
+    "legacy_episodes": 16,
+    "yaml_v1_episodes": 16,
+    "pairs": 16,
+    "keys_only_in_legacy": [],
+    "keys_only_in_yaml_v1": []
+  },
+  "aggregate_all_pairs": {
+    "subset": "all",
+    "n_pairs": 16,
+    "n_pairs_identical_command_sequences": 12,
+    "n_pairs_divergent_command_sequences": 4,
+    "n_pairs_with_any_first_divergent_call": 4,
+    "identical_command_prefix_lengths_sorted": [
+      1,
+      2,
+      4,
+      11,
+      11,
+      23,
+      24,
+      24,
+      24,
+      24,
+      24,
+      24,
+      24,
+      24,
+      24,
+      24
+    ],
+    "identical_command_prefix_length_sum": 292,
+    "identical_command_prefix_length_min": 1,
+    "identical_command_prefix_length_max": 24,
+    "first_divergent_call_indices": [
+      {
+        "instance_id": "mwaskom__seaborn-3069",
+        "backend": "large",
+        "index": 5,
+        "length_mismatch_only": true,
+        "classification": "observation_truncated_in_yaml_v1"
+      },
+      {
+        "instance_id": "psf__requests-1142",
+        "backend": "large",
+        "index": 3,
+        "length_mismatch_only": false,
+        "classification": "observation_identical_but_command_differs"
+      },
+      {
+        "instance_id": "sympy__sympy-11618",
+        "backend": "large",
+        "index": 12,
+        "length_mismatch_only": false,
+        "classification": "observation_identical_but_command_differs"
+      },
+      {
+        "instance_id": "sympy__sympy-11618",
+        "backend": "small",
+        "index": 12,
+        "length_mismatch_only": true,
+        "classification": "observation_truncated_in_yaml_v1"
+      }
+    ],
+    "first_divergence_classification_counts": {
+      "observation_truncated_in_yaml_v1": 2,
+      "observation_identical_but_command_differs": 2
+    },
+    "first_divergence_classification_counts_strict_convention": {
+      "no_preceding_observation": 2,
+      "observation_identical_but_command_differs": 2
+    },
+    "n_pairs_with_any_differing_response": 5,
+    "n_pairs_whose_first_differing_response_is_clock_field_only": 4
+  },
+  "aggregate_by_backend": {
+    "large": {
+      "subset": "backend=large",
+      "n_pairs": 8,
+      "n_pairs_identical_command_sequences": 5,
+      "n_pairs_divergent_command_sequences": 3,
+      "n_pairs_with_any_first_divergent_call": 3,
+      "identical_command_prefix_lengths_sorted": [
+        2,
+        4,
+        11,
+        24,
+        24,
+        24,
+        24,
+        24
+      ],
+      "identical_command_prefix_length_sum": 137,
+      "identical_command_prefix_length_min": 2,
+      "identical_command_prefix_length_max": 24,
+      "first_divergent_call_indices": [
+        {
+          "instance_id": "mwaskom__seaborn-3069",
+          "backend": "large",
+          "index": 5,
+          "length_mismatch_only": true,
+          "classification": "observation_truncated_in_yaml_v1"
+        },
+        {
+          "instance_id": "psf__requests-1142",
+          "backend": "large",
+          "index": 3,
+          "length_mismatch_only": false,
+          "classification": "observation_identical_but_command_differs"
+        },
+        {
+          "instance_id": "sympy__sympy-11618",
+          "backend": "large",
+          "index": 12,
+          "length_mismatch_only": false,
+          "classification": "observation_identical_but_command_differs"
+        }
+      ],
+      "first_divergence_classification_counts": {
+        "observation_truncated_in_yaml_v1": 1,
+        "observation_identical_but_command_differs": 2
+      },
+      "first_divergence_classification_counts_strict_convention": {
+        "no_preceding_observation": 1,
+        "observation_identical_but_command_differs": 2
+      },
+      "n_pairs_with_any_differing_response": 4,
+      "n_pairs_whose_first_differing_response_is_clock_field_only": 4
+    },
+    "small": {
+      "subset": "backend=small",
+      "n_pairs": 8,
+      "n_pairs_identical_command_sequences": 7,
+      "n_pairs_divergent_command_sequences": 1,
+      "n_pairs_with_any_first_divergent_call": 1,
+      "identical_command_prefix_lengths_sorted": [
+        1,
+        11,
+        23,
+        24,
+        24,
+        24,
+        24,
+        24
+      ],
+      "identical_command_prefix_length_sum": 155,
+      "identical_command_prefix_length_min": 1,
+      "identical_command_prefix_length_max": 24,
+      "first_divergent_call_indices": [
+        {
+          "instance_id": "sympy__sympy-11618",
+          "backend": "small",
+          "index": 12,
+          "length_mismatch_only": true,
+          "classification": "observation_truncated_in_yaml_v1"
+        }
+      ],
+      "first_divergence_classification_counts": {
+        "observation_truncated_in_yaml_v1": 1
+      },
+      "first_divergence_classification_counts_strict_convention": {
+        "no_preceding_observation": 1
+      },
+      "n_pairs_with_any_differing_response": 1,
+      "n_pairs_whose_first_differing_response_is_clock_field_only": 0
+    }
+  },
+  "per_cohort_scans": {
+    "legacy": {
+      "n_episodes": 16,
+      "n_observations": 325,
+      "n_observations_with_elided_chars": 0,
+      "episodes_with_elided_observations": [],
+      "n_commands_issued": 326,
+      "n_commands_containing_pip": 25,
+      "n_commands_invoking_less_man_more": 0,
+      "n_format_error_calls": 1,
+      "env_var_probe_counts_over_raw_output": {
+        "carriage_return": 0,
+        "ansi_escape": 0,
+        "tqdm_block_glyph": 0,
+        "rate_suffix_it_s": 0,
+        "percent_bar": 0,
+        "downloading": 0,
+        "eta": 0
+      },
+      "exit_status_counts": {
+        "LimitsExceeded": 12,
+        "ContextWindowExceededError": 3,
+        "Submitted": 1
+      },
+      "grade_classification_counts": {
+        "operational_zero": 16
+      },
+      "n_empty_submission_diff": 16,
+      "call_count_disagreements": [
+        {
+          "instance_id": "mwaskom__seaborn-3069",
+          "backend": "large",
+          "episode_json": 5,
+          "reconstructed": 4
+        },
+        {
+          "instance_id": "matplotlib__matplotlib-13989",
+          "backend": "small",
+          "episode_json": 24,
+          "reconstructed": 23
+        },
+        {
+          "instance_id": "sympy__sympy-11618",
+          "backend": "small",
+          "episode_json": 12,
+          "reconstructed": 11
+        }
+      ],
+      "payload_derived_command_mismatches_vs_actions": 0,
+      "multi_fence_responses": 0
+    },
+    "yaml_v1": {
+      "n_episodes": 16,
+      "n_observations": 347,
+      "n_observations_with_elided_chars": 5,
+      "episodes_with_elided_observations": [
+        {
+          "instance_id": "mwaskom__seaborn-3069",
+          "backend": "large",
+          "n_elided_observations": 1
+        },
+        {
+          "instance_id": "sympy__sympy-11618",
+          "backend": "small",
+          "n_elided_observations": 4
+        }
+      ],
+      "n_commands_issued": 348,
+      "n_commands_containing_pip": 25,
+      "n_commands_invoking_less_man_more": 0,
+      "n_format_error_calls": 2,
+      "env_var_probe_counts_over_raw_output": {
+        "carriage_return": 0,
+        "ansi_escape": 0,
+        "tqdm_block_glyph": 0,
+        "rate_suffix_it_s": 0,
+        "percent_bar": 0,
+        "downloading": 0,
+        "eta": 0
+      },
+      "exit_status_counts": {
+        "LimitsExceeded": 13,
+        "Submitted": 1,
+        "ContextWindowExceededError": 2
+      },
+      "grade_classification_counts": {
+        "operational_zero": 16
+      },
+      "n_empty_submission_diff": 16,
+      "call_count_disagreements": [
+        {
+          "instance_id": "matplotlib__matplotlib-13989",
+          "backend": "small",
+          "episode_json": 24,
+          "reconstructed": 23
+        },
+        {
+          "instance_id": "sympy__sympy-11618",
+          "backend": "small",
+          "episode_json": 15,
+          "reconstructed": 14
+        }
+      ],
+      "payload_derived_command_mismatches_vs_actions": 0,
+      "multi_fence_responses": 0
+    }
+  },
+  "committed_report_cross_check": {
+    "legacy": {
+      "report_repo_relative": "results/v2_agent/pilot_20260922/report_block1_final.json",
+      "per_backend_exit_status": {
+        "small": {
+          "Submitted": 1,
+          "LimitsExceeded": 5,
+          "ContextWindowExceededError": 2
+        },
+        "large": {
+          "LimitsExceeded": 7,
+          "ContextWindowExceededError": 1
+        }
+      },
+      "summed_exit_status": {
+        "Submitted": 1,
+        "LimitsExceeded": 12,
+        "ContextWindowExceededError": 3
+      },
+      "matches_my_recomputed_exit_counts": true
+    },
+    "yaml_v1": {
+      "report_repo_relative": "results/v2_agent/pilot_20260922_yaml_v1/report_yaml_v1_block1_final.json",
+      "per_backend_exit_status": {
+        "small": {
+          "Submitted": 1,
+          "LimitsExceeded": 5,
+          "ContextWindowExceededError": 2
+        },
+        "large": {
+          "LimitsExceeded": 8
+        }
+      },
+      "summed_exit_status": {
+        "Submitted": 1,
+        "LimitsExceeded": 13,
+        "ContextWindowExceededError": 2
+      },
+      "matches_my_recomputed_exit_counts": true
+    }
+  },
+  "format_error_locations": [
+    {
+      "cohort": "legacy",
+      "instance_id": "sympy__sympy-11618",
+      "backend": "large",
+      "n_format_error_calls": 1,
+      "logical_call_indices": [
+        13
+      ]
+    },
+    {
+      "cohort": "yaml_v1",
+      "instance_id": "sympy__sympy-11618",
+      "backend": "large",
+      "n_format_error_calls": 2,
+      "logical_call_indices": [
+        12,
+        19
+      ]
+    }
+  ],
+  "pairs": [
+    {
+      "instance_id": "astropy__astropy-12907",
+      "backend": "large",
+      "legacy_run_dir": "astropy__astropy-12907__large__pilot-cp2-wc2__20260922T050935Z-27c33e",
+      "yaml_v1_run_dir": "astropy__astropy-12907__large__pilot-cp2-wc2-yaml-v1__20260922T071912Z-d5c042",
+      "n_action_calls_legacy": 24,
+      "n_action_calls_yaml_v1": 24,
+      "n_logical_calls_legacy": 24,
+      "n_logical_calls_yaml_v1": 24,
+      "compared_call_depth": 24,
+      "identical_command_sequences": true,
+      "identical_command_prefix_length": 24,
+      "first_divergent_logical_call_index": null,
+      "first_divergent_is_length_mismatch_only": false,
+      "first_divergence_classification": null,
+      "first_divergence_classification_strict_convention": null,
+      "first_divergence_evidence": null,
+      "first_differing_response_index": null,
+      "first_differing_response_is_clock_field_only": null,
+      "first_differing_response_diff_lines": null
+    },
+    {
+      "instance_id": "matplotlib__matplotlib-13989",
+      "backend": "large",
+      "legacy_run_dir": "matplotlib__matplotlib-13989__large__pilot-cp2-wc2__20260922T052837Z-2c553e",
+      "yaml_v1_run_dir": "matplotlib__matplotlib-13989__large__pilot-cp2-wc2-yaml-v1__20260922T073826Z-0b4b85",
+      "n_action_calls_legacy": 24,
+      "n_action_calls_yaml_v1": 24,
+      "n_logical_calls_legacy": 24,
+      "n_logical_calls_yaml_v1": 24,
+      "compared_call_depth": 24,
+      "identical_command_sequences": true,
+      "identical_command_prefix_length": 24,
+      "first_divergent_logical_call_index": null,
+      "first_divergent_is_length_mismatch_only": false,
+      "first_divergence_classification": null,
+      "first_divergence_classification_strict_convention": null,
+      "first_divergence_evidence": null,
+      "first_differing_response_index": null,
+      "first_differing_response_is_clock_field_only": null,
+      "first_differing_response_diff_lines": null
+    },
+    {
+      "instance_id": "mwaskom__seaborn-3069",
+      "backend": "large",
+      "legacy_run_dir": "mwaskom__seaborn-3069__large__pilot-cp2-wc2__20260922T053759Z-610089",
+      "yaml_v1_run_dir": "mwaskom__seaborn-3069__large__pilot-cp2-wc2-yaml-v1__20260922T075057Z-3cd2d1",
+      "n_action_calls_legacy": 4,
+      "n_action_calls_yaml_v1": 24,
+      "n_logical_calls_legacy": 4,
+      "n_logical_calls_yaml_v1": 24,
+      "compared_call_depth": 4,
+      "identical_command_sequences": false,
+      "identical_command_prefix_length": 4,
+      "first_divergent_logical_call_index": 5,
+      "first_divergent_is_length_mismatch_only": true,
+      "first_divergence_classification": "observation_truncated_in_yaml_v1",
+      "first_divergence_classification_strict_convention": "no_preceding_observation",
+      "first_divergence_evidence": {
+        "convention": "most proximate preceding observation on each side; for an episode that terminated before this index, that is its last observation",
+        "legacy_rendered_chars": 129699,
+        "yaml_v1_rendered_chars": 10614,
+        "legacy_raw_output_chars": 129654,
+        "yaml_v1_raw_output_chars": 129654,
+        "raw_output_identical": true,
+        "rendered_observation_identical": false,
+        "yaml_v1_elision_markers_present": [
+          "The output of your last command was too long.",
+          "<output_head>",
+          "<elided_chars>",
+          "characters elided",
+          "<output_tail>"
+        ],
+        "legacy_elision_markers_present": [],
+        "legacy_call_kind": null,
+        "yaml_v1_call_kind": "action",
+        "legacy_call_present": false,
+        "yaml_v1_call_present": true,
+        "note": "length-mismatch-only divergence: the shorter episode has no logical call at this index, so its side of the comparison is its final observation"
+      },
+      "first_differing_response_index": 1,
+      "first_differing_response_is_clock_field_only": true,
+      "first_differing_response_diff_lines": [
+        {
+          "line_index": 4,
+          "legacy": "drwxr-xr-x  1 root root 4096 Sep 22 05:38 ..",
+          "yaml_v1": "drwxr-xr-x  1 root root 4096 Sep 22 07:50 .."
+        }
+      ]
+    },
+    {
+      "instance_id": "psf__requests-1142",
+      "backend": "large",
+      "legacy_run_dir": "psf__requests-1142__large__pilot-cp2-wc2__20260922T055112Z-48dc58",
+      "yaml_v1_run_dir": "psf__requests-1142__large__pilot-cp2-wc2-yaml-v1__20260922T080700Z-49aae1",
+      "n_action_calls_legacy": 24,
+      "n_action_calls_yaml_v1": 24,
+      "n_logical_calls_legacy": 24,
+      "n_logical_calls_yaml_v1": 24,
+      "compared_call_depth": 24,
+      "identical_command_sequences": false,
+      "identical_command_prefix_length": 2,
+      "first_divergent_logical_call_index": 3,
+      "first_divergent_is_length_mismatch_only": false,
+      "first_divergence_classification": "observation_identical_but_command_differs",
+      "first_divergence_classification_strict_convention": "observation_identical_but_command_differs",
+      "first_divergence_evidence": {
+        "convention": "most proximate preceding observation on each side; for an episode that terminated before this index, that is its last observation",
+        "legacy_rendered_chars": 1062,
+        "yaml_v1_rendered_chars": 1062,
+        "legacy_raw_output_chars": 1017,
+        "yaml_v1_raw_output_chars": 1017,
+        "raw_output_identical": true,
+        "rendered_observation_identical": true,
+        "yaml_v1_elision_markers_present": [],
+        "legacy_elision_markers_present": [],
+        "legacy_call_kind": "action",
+        "yaml_v1_call_kind": "action",
+        "legacy_call_present": true,
+        "yaml_v1_call_present": true
+      },
+      "first_differing_response_index": 1,
+      "first_differing_response_is_clock_field_only": true,
+      "first_differing_response_diff_lines": [
+        {
+          "line_index": 4,
+          "legacy": "drwxr-xr-x 1 root root  4096 Sep 22 05:51 ..",
+          "yaml_v1": "drwxr-xr-x 1 root root  4096 Sep 22 08:07 .."
+        }
+      ]
+    },
+    {
+      "instance_id": "pytest-dev__pytest-10051",
+      "backend": "large",
+      "legacy_run_dir": "pytest-dev__pytest-10051__large__pilot-cp2-wc2__20260922T051527Z-caa8a2",
+      "yaml_v1_run_dir": "pytest-dev__pytest-10051__large__pilot-cp2-wc2-yaml-v1__20260922T072522Z-dd9d41",
+      "n_action_calls_legacy": 24,
+      "n_action_calls_yaml_v1": 24,
+      "n_logical_calls_legacy": 24,
+      "n_logical_calls_yaml_v1": 24,
+      "compared_call_depth": 24,
+      "identical_command_sequences": true,
+      "identical_command_prefix_length": 24,
+      "first_divergent_logical_call_index": null,
+      "first_divergent_is_length_mismatch_only": false,
+      "first_divergence_classification": null,
+      "first_divergence_classification_strict_convention": null,
+      "first_divergence_evidence": null,
+      "first_differing_response_index": null,
+      "first_differing_response_is_clock_field_only": null,
+      "first_differing_response_diff_lines": null
+    },
+    {
+      "instance_id": "scikit-learn__scikit-learn-10297",
+      "backend": "large",
+      "legacy_run_dir": "scikit-learn__scikit-learn-10297__large__pilot-cp2-wc2__20260922T051926Z-faa4a9",
+      "yaml_v1_run_dir": "scikit-learn__scikit-learn-10297__large__pilot-cp2-wc2-yaml-v1__20260922T072856Z-4e3eb7",
+      "n_action_calls_legacy": 24,
+      "n_action_calls_yaml_v1": 24,
+      "n_logical_calls_legacy": 24,
+      "n_logical_calls_yaml_v1": 24,
+      "compared_call_depth": 24,
+      "identical_command_sequences": true,
+      "identical_command_prefix_length": 24,
+      "first_divergent_logical_call_index": null,
+      "first_divergent_is_length_mismatch_only": false,
+      "first_divergence_classification": null,
+      "first_divergence_classification_strict_convention": null,
+      "first_divergence_evidence": null,
+      "first_differing_response_index": null,
+      "first_differing_response_is_clock_field_only": null,
+      "first_differing_response_diff_lines": null
+    },
+    {
+      "instance_id": "sphinx-doc__sphinx-10323",
+      "backend": "large",
+      "legacy_run_dir": "sphinx-doc__sphinx-10323__large__pilot-cp2-wc2__20260922T053958Z-57036a",
+      "yaml_v1_run_dir": "sphinx-doc__sphinx-10323__large__pilot-cp2-wc2-yaml-v1__20260922T075619Z-5db7a6",
+      "n_action_calls_legacy": 24,
+      "n_action_calls_yaml_v1": 24,
+      "n_logical_calls_legacy": 24,
+      "n_logical_calls_yaml_v1": 24,
+      "compared_call_depth": 24,
+      "identical_command_sequences": true,
+      "identical_command_prefix_length": 24,
+      "first_divergent_logical_call_index": null,
+      "first_divergent_is_length_mismatch_only": false,
+      "first_divergence_classification": null,
+      "first_divergence_classification_strict_convention": null,
+      "first_divergence_evidence": null,
+      "first_differing_response_index": 1,
+      "first_differing_response_is_clock_field_only": true,
+      "first_differing_response_diff_lines": [
+        {
+          "line_index": 4,
+          "legacy": "drwxr-xr-x  1 root root   4096 Sep 22 05:40 ..",
+          "yaml_v1": "drwxr-xr-x  1 root root   4096 Sep 22 07:56 .."
+        }
+      ]
+    },
+    {
+      "instance_id": "sympy__sympy-11618",
+      "backend": "large",
+      "legacy_run_dir": "sympy__sympy-11618__large__pilot-cp2-wc2__20260922T053340Z-fa1672",
+      "yaml_v1_run_dir": "sympy__sympy-11618__large__pilot-cp2-wc2-yaml-v1__20260922T074338Z-1b5364",
+      "n_action_calls_legacy": 23,
+      "n_action_calls_yaml_v1": 22,
+      "n_logical_calls_legacy": 24,
+      "n_logical_calls_yaml_v1": 24,
+      "compared_call_depth": 24,
+      "identical_command_sequences": false,
+      "identical_command_prefix_length": 11,
+      "first_divergent_logical_call_index": 12,
+      "first_divergent_is_length_mismatch_only": false,
+      "first_divergence_classification": "observation_identical_but_command_differs",
+      "first_divergence_classification_strict_convention": "observation_identical_but_command_differs",
+      "first_divergence_evidence": {
+        "convention": "most proximate preceding observation on each side; for an episode that terminated before this index, that is its last observation",
+        "legacy_rendered_chars": 1134,
+        "yaml_v1_rendered_chars": 1134,
+        "legacy_raw_output_chars": 1089,
+        "yaml_v1_raw_output_chars": 1089,
+        "raw_output_identical": true,
+        "rendered_observation_identical": true,
+        "yaml_v1_elision_markers_present": [],
+        "legacy_elision_markers_present": [],
+        "legacy_call_kind": "action",
+        "yaml_v1_call_kind": "format_error",
+        "legacy_call_present": true,
+        "yaml_v1_call_present": true
+      },
+      "first_differing_response_index": 1,
+      "first_differing_response_is_clock_field_only": true,
+      "first_differing_response_diff_lines": [
+        {
+          "line_index": 4,
+          "legacy": "drwxr-xr-x  1 root root  4096 Sep 22 05:33 ..",
+          "yaml_v1": "drwxr-xr-x  1 root root  4096 Sep 22 07:43 .."
+        }
+      ]
+    },
+    {
+      "instance_id": "astropy__astropy-12907",
+      "backend": "small",
+      "legacy_run_dir": "astropy__astropy-12907__small__pilot-cp2-wc2__20260922T051348Z-7cc0d0",
+      "yaml_v1_run_dir": "astropy__astropy-12907__small__pilot-cp2-wc2-yaml-v1__20260922T072332Z-8548bb",
+      "n_action_calls_legacy": 1,
+      "n_action_calls_yaml_v1": 1,
+      "n_logical_calls_legacy": 1,
+      "n_logical_calls_yaml_v1": 1,
+      "compared_call_depth": 1,
+      "identical_command_sequences": true,
+      "identical_command_prefix_length": 1,
+      "first_divergent_logical_call_index": null,
+      "first_divergent_is_length_mismatch_only": false,
+      "first_divergence_classification": null,
+      "first_divergence_classification_strict_convention": null,
+      "first_divergence_evidence": null,
+      "first_differing_response_index": null,
+      "first_differing_response_is_clock_field_only": null,
+      "first_differing_response_diff_lines": null
+    },
+    {
+      "instance_id": "matplotlib__matplotlib-13989",
+      "backend": "small",
+      "legacy_run_dir": "matplotlib__matplotlib-13989__small__pilot-cp2-wc2__20260922T052510Z-0a446a",
+      "yaml_v1_run_dir": "matplotlib__matplotlib-13989__small__pilot-cp2-wc2-yaml-v1__20260922T073449Z-bc05f4",
+      "n_action_calls_legacy": 23,
+      "n_action_calls_yaml_v1": 23,
+      "n_logical_calls_legacy": 23,
+      "n_logical_calls_yaml_v1": 23,
+      "compared_call_depth": 23,
+      "identical_command_sequences": true,
+      "identical_command_prefix_length": 23,
+      "first_divergent_logical_call_index": null,
+      "first_divergent_is_length_mismatch_only": false,
+      "first_divergence_classification": null,
+      "first_divergence_classification_strict_convention": null,
+      "first_divergence_evidence": null,
+      "first_differing_response_index": null,
+      "first_differing_response_is_clock_field_only": null,
+      "first_differing_response_diff_lines": null
+    },
+    {
+      "instance_id": "mwaskom__seaborn-3069",
+      "backend": "small",
+      "legacy_run_dir": "mwaskom__seaborn-3069__small__pilot-cp2-wc2__20260922T053834Z-7dcda8",
+      "yaml_v1_run_dir": "mwaskom__seaborn-3069__small__pilot-cp2-wc2-yaml-v1__20260922T075455Z-809e31",
+      "n_action_calls_legacy": 24,
+      "n_action_calls_yaml_v1": 24,
+      "n_logical_calls_legacy": 24,
+      "n_logical_calls_yaml_v1": 24,
+      "compared_call_depth": 24,
+      "identical_command_sequences": true,
+      "identical_command_prefix_length": 24,
+      "first_divergent_logical_call_index": null,
+      "first_divergent_is_length_mismatch_only": false,
+      "first_divergence_classification": null,
+      "first_divergence_classification_strict_convention": null,
+      "first_divergence_evidence": null,
+      "first_differing_response_index": null,
+      "first_differing_response_is_clock_field_only": null,
+      "first_differing_response_diff_lines": null
+    },
+    {
+      "instance_id": "psf__requests-1142",
+      "backend": "small",
+      "legacy_run_dir": "psf__requests-1142__small__pilot-cp2-wc2__20260922T054827Z-85153d",
+      "yaml_v1_run_dir": "psf__requests-1142__small__pilot-cp2-wc2-yaml-v1__20260922T080423Z-7ad659",
+      "n_action_calls_legacy": 24,
+      "n_action_calls_yaml_v1": 24,
+      "n_logical_calls_legacy": 24,
+      "n_logical_calls_yaml_v1": 24,
+      "compared_call_depth": 24,
+      "identical_command_sequences": true,
+      "identical_command_prefix_length": 24,
+      "first_divergent_logical_call_index": null,
+      "first_divergent_is_length_mismatch_only": false,
+      "first_divergence_classification": null,
+      "first_divergence_classification_strict_convention": null,
+      "first_divergence_evidence": null,
+      "first_differing_response_index": null,
+      "first_differing_response_is_clock_field_only": null,
+      "first_differing_response_diff_lines": null
+    },
+    {
+      "instance_id": "pytest-dev__pytest-10051",
+      "backend": "small",
+      "legacy_run_dir": "pytest-dev__pytest-10051__small__pilot-cp2-wc2__20260922T051357Z-473ac3",
+      "yaml_v1_run_dir": "pytest-dev__pytest-10051__small__pilot-cp2-wc2-yaml-v1__20260922T072351Z-97023d",
+      "n_action_calls_legacy": 24,
+      "n_action_calls_yaml_v1": 24,
+      "n_logical_calls_legacy": 24,
+      "n_logical_calls_yaml_v1": 24,
+      "compared_call_depth": 24,
+      "identical_command_sequences": true,
+      "identical_command_prefix_length": 24,
+      "first_divergent_logical_call_index": null,
+      "first_divergent_is_length_mismatch_only": false,
+      "first_divergence_classification": null,
+      "first_divergence_classification_strict_convention": null,
+      "first_divergence_evidence": null,
+      "first_differing_response_index": null,
+      "first_differing_response_is_clock_field_only": null,
+      "first_differing_response_diff_lines": null
+    },
+    {
+      "instance_id": "scikit-learn__scikit-learn-10297",
+      "backend": "small",
+      "legacy_run_dir": "scikit-learn__scikit-learn-10297__small__pilot-cp2-wc2__20260922T052252Z-def348",
+      "yaml_v1_run_dir": "scikit-learn__scikit-learn-10297__small__pilot-cp2-wc2-yaml-v1__20260922T073224Z-a920da",
+      "n_action_calls_legacy": 24,
+      "n_action_calls_yaml_v1": 24,
+      "n_logical_calls_legacy": 24,
+      "n_logical_calls_yaml_v1": 24,
+      "compared_call_depth": 24,
+      "identical_command_sequences": true,
+      "identical_command_prefix_length": 24,
+      "first_divergent_logical_call_index": null,
+      "first_divergent_is_length_mismatch_only": false,
+      "first_divergence_classification": null,
+      "first_divergence_classification_strict_convention": null,
+      "first_divergence_evidence": null,
+      "first_differing_response_index": null,
+      "first_differing_response_is_clock_field_only": null,
+      "first_differing_response_diff_lines": null
+    },
+    {
+      "instance_id": "sphinx-doc__sphinx-10323",
+      "backend": "small",
+      "legacy_run_dir": "sphinx-doc__sphinx-10323__small__pilot-cp2-wc2__20260922T054445Z-15b460",
+      "yaml_v1_run_dir": "sphinx-doc__sphinx-10323__small__pilot-cp2-wc2-yaml-v1__20260922T080104Z-452291",
+      "n_action_calls_legacy": 24,
+      "n_action_calls_yaml_v1": 24,
+      "n_logical_calls_legacy": 24,
+      "n_logical_calls_yaml_v1": 24,
+      "compared_call_depth": 24,
+      "identical_command_sequences": true,
+      "identical_command_prefix_length": 24,
+      "first_divergent_logical_call_index": null,
+      "first_divergent_is_length_mismatch_only": false,
+      "first_divergence_classification": null,
+      "first_divergence_classification_strict_convention": null,
+      "first_divergence_evidence": null,
+      "first_differing_response_index": null,
+      "first_differing_response_is_clock_field_only": null,
+      "first_differing_response_diff_lines": null
+    },
+    {
+      "instance_id": "sympy__sympy-11618",
+      "backend": "small",
+      "legacy_run_dir": "sympy__sympy-11618__small__pilot-cp2-wc2__20260922T053700Z-067273",
+      "yaml_v1_run_dir": "sympy__sympy-11618__small__pilot-cp2-wc2-yaml-v1__20260922T074845Z-5b988f",
+      "n_action_calls_legacy": 11,
+      "n_action_calls_yaml_v1": 14,
+      "n_logical_calls_legacy": 11,
+      "n_logical_calls_yaml_v1": 14,
+      "compared_call_depth": 11,
+      "identical_command_sequences": false,
+      "identical_command_prefix_length": 11,
+      "first_divergent_logical_call_index": 12,
+      "first_divergent_is_length_mismatch_only": true,
+      "first_divergence_classification": "observation_truncated_in_yaml_v1",
+      "first_divergence_classification_strict_convention": "no_preceding_observation",
+      "first_divergence_evidence": {
+        "convention": "most proximate preceding observation on each side; for an episode that terminated before this index, that is its last observation",
+        "legacy_rendered_chars": 94870,
+        "yaml_v1_rendered_chars": 10613,
+        "legacy_raw_output_chars": 94825,
+        "yaml_v1_raw_output_chars": 94825,
+        "raw_output_identical": true,
+        "rendered_observation_identical": false,
+        "yaml_v1_elision_markers_present": [
+          "The output of your last command was too long.",
+          "<output_head>",
+          "<elided_chars>",
+          "characters elided",
+          "<output_tail>"
+        ],
+        "legacy_elision_markers_present": [],
+        "legacy_call_kind": null,
+        "yaml_v1_call_kind": "action",
+        "legacy_call_present": false,
+        "yaml_v1_call_present": true,
+        "note": "length-mismatch-only divergence: the shorter episode has no logical call at this index, so its side of the comparison is its final observation"
+      },
+      "first_differing_response_index": 11,
+      "first_differing_response_is_clock_field_only": false,
+      "first_differing_response_diff_lines": null
+    }
+  ],
+  "loader_notes": [],
+  "output_sha256_excluding_this_field": "d2c2682521984614de6d7ad3b5e5c085e6be7b7f6f3d7d0b3480c25c61f649e6"
+}
