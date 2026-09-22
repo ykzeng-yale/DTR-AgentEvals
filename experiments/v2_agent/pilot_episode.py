@@ -90,6 +90,22 @@ def cleanup_owned_container(container_id, deadline, run=None):
     return rec
 
 
+YAML_BINDING = 'default.yaml agent+model+environment (binding v3, proposed after block-1 finding 98895fe)'
+
+
+def yaml_bindings(cfg, port, alias_timeout_s):
+    """Apply the pinned default.yaml `model` and `environment` sections, not only `agent` (block-1 defect 98895fe:
+    class-default templates meant no 10k-character observation truncation, a different format-error message, no
+    drop_params, and only PAGER/MANPAGER in the container env). Our pinned serving/decoding kwargs are layered ON TOP of
+    the yaml model_kwargs; every other yaml model key (observation_template, format_error_template) is passed unchanged."""
+    model = dict(cfg['model'])
+    kwargs = dict(model.pop('model_kwargs', None) or {})
+    kwargs.update(api_base='http://127.0.0.1:%d/v1' % port, api_key='none', temperature=0.0, max_tokens=MAX_TOKENS,
+                  timeout=alias_timeout_s, num_retries=0)
+    env_vars = dict((cfg.get('environment') or {}).get('env') or {})
+    return model, kwargs, env_vars
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--instance', required=True)
@@ -165,9 +181,8 @@ def main():
             append_attempt(attempts_path, dict(rec, event='result'))
             return r
 
-    model = AccountedModel(model_name='openai/' + args.alias, cost_tracking='ignore_errors',
-                           model_kwargs=dict(api_base='http://127.0.0.1:%d/v1' % args.port, api_key='none', temperature=0.0,
-                                             max_tokens=MAX_TOKENS, timeout=REQUEST_TIMEOUT_S, num_retries=0))
+    model_cfg, model_kwargs, env_vars = yaml_bindings(cfg, args.port, REQUEST_TIMEOUT_S)
+    model = AccountedModel(model_name='openai/' + args.alias, cost_tracking='ignore_errors', model_kwargs=model_kwargs, **model_cfg)
 
     class ContainerPlatformDockerEnvironment(DockerEnvironment):
         """cp2 binding (accepted): the CONTAINER's uname in the prompt templates, not the macOS host's."""
@@ -191,7 +206,7 @@ def main():
             return {**super().get_template_vars(**kwargs), **self.container_platform()}
 
     env = ContainerPlatformDockerEnvironment(image=image_id, cwd='/testbed', executable=DOCKER, timeout=CMD_TIMEOUT,
-                                             run_args=['--rm', '--platform', 'linux/amd64'], env=dict(PAGER='cat', MANPAGER='cat'))
+                                             run_args=['--rm', '--platform', 'linux/amd64'], env=env_vars)
     ex = lambda cmd: (lambda o: (o.get('returncode'), o.get('output', '')))(env.execute({'command': cmd}))
     base_tree, capture_error = None, None
     try:
@@ -243,6 +258,11 @@ def main():
                              command_timeout_s=CMD_TIMEOUT, physical_attempts_per_call_max=ATTEMPTS_PER_CALL, request_timeout_s=REQUEST_TIMEOUT_S,
                              max_consecutive_format_errors=agent_cfg.get('max_consecutive_format_errors')),
                workspace_binding='wc2', template_platform_binding='cp2', container_platform=env.container_platform(),
+               yaml_binding=YAML_BINDING, effective_model_config=dict(
+                   observation_template_sha256=sha(model.config.observation_template),
+                   format_error_template_sha256=sha(model.config.format_error_template),
+                   model_kwargs={k: v for k, v in model_kwargs.items() if k != 'api_key'}),
+               container_env=env_vars,
                base_tree=base_tree, final_tree=final_tree, capture_error=capture_error, cleanup_error=cleanup_error,
                container_cleanup=container_cleanup,
                host=dict(arch=platform.machine(), os=platform.platform()),

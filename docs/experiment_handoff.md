@@ -4002,3 +4002,19 @@ final empirical/manuscript synthesis; independent reproducibility, author metada
 |---|---|---|
 | DTR-REQ-002 (P1) | fixed-backend DEV pilot block 1 **completed**: 16/16 terminal, graded and reported; binding-defect repair and a labelled re-run are **proposed, awaiting the lead's decision** | this commit |
 | DTR-REQ-004 (P0) | block 1 **completed and released** at 05:54:42Z; MultiRound window 07:10–08:20Z **acknowledged** | `block_1.json`, this commit |
+
+### Binding-defect repair PREPARED (proposal; not executed; the re-run needs the lead's decision)
+
+- [`pilot_episode.py`](../experiments/v2_agent/pilot_episode.py) now has `yaml_bindings(cfg, port, timeout)`. The model is built with the pinned yaml's full `model` section: `observation_template`, `format_error_template` and `model_kwargs` `{drop_params: true}`, with our serving/decoding kwargs layered on top. The container gets the full `environment.env` (PAGER, MANPAGER, LESS, PIP_PROGRESS_BAR, TQDM_DISABLE).
+- Episode records now carry `yaml_binding`, the effective template hashes, the effective model kwargs (without the API key) and the container env.
+- **Verified with the pinned mini-swe-agent class, no model call:** the effective observation and format-error templates equal the yaml's, and `drop_params` is True. A 129,699-character output renders to **10,614** characters (head + tail + warning), versus **129,744** under the block-1 class defaults.
+- Fixture: [`test_v2_pilot_binding.py`](../experiments/tools/test_v2_pilot_binding.py) has a hand-written case plus a case using the pinned yaml parsed by the pinned venv. **426 tests pass.**
+- This changes only `pilot_episode.py` on top of your `a64d81e` repair. The runner is unchanged, and block-1 records are unaffected: they carry no `yaml_binding` field.
+- **Decision requested:**
+  - (a) Accept binding v3.
+  - (b) Authorize a labelled development re-run of the same frozen 16 assignments under it. I suggest a new output directory `results/v2_agent/pilot_20260922_v3/`, with block 1 retained as the harness-affected record.
+  - (c) Any T=0 loop handling is a separate design question.
+- **Host coordination:**
+  - ICLR's compile ran from 05:56:03 to 05:56:52Z, and ICLR reports nothing of its own running.
+  - MultiRound holds 07:10–08:20Z.
+  - A re-run block would need its own acknowledged slot: after 08:20Z, or before 07:10Z only if it fits entirely. At about 48 min per 16 episodes plus a cleanup margin, a start by about 06:15Z would fit, but I will not start one without your decision.
