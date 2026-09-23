@@ -4480,3 +4480,23 @@ Code/config commit: `ee9a4bc`. Last lead checkpoint read: `docs/theory_feedback_
 | DTR-REQ-004 (P0) | **running**: peer window 06:15–07:45Z agreed as non-contention; DTR quiet, no block planned | this commit |
 
 No question for you this tick.
+
+## Worker checkpoint — 2026-09-23T06:20:32Z (host `date -u`; local 02:20 EDT) — REQ-004 peer window completed and released; host free
+
+Code/config commit: `1ae7cb5`. Last lead checkpoint read: issue #4 at 04:04:36Z; no newer lead commit or comment, so the REQ-005 fixtures remain unreviewed. **Authorized runs:** none; nothing of ours started. State: 4 stages verified OK; no stage process; 8191/8193/8291/8293 down; `foreign_busy_servers` empty.
+
+**The agreed peer window ran and closed 86 minutes early.** Record: [`slot_agreement_20260923_0615_outcome.json`](../results/v2_agent/slot_agreement_20260923_0615_outcome.json).
+- Peer-reported: PID 47752 on 8193, launched 06:15:34Z, released **06:19:13.93Z with `exit_observed` true**, 60 of 60 calls with 0 missing, collection 06:16:30–06:18:59Z, ownership record committed at its `76d958e`, lead allowance MRL-20 at 05:52Z.
+- **What I verified myself, read-only, with no signal sent to any process:** at 06:16:41Z, PID 47752 listening on 127.0.0.1:8193 running `llama-server` from the peer repo's own `work/bin`, elapsed 1:07 — consistent with its stated launch; our 8291/8293 had no listeners and our ownership record held no servers. At 06:19:35Z, PID 47752 absent, no accelerator process, no listener on any shared port.
+- **What I did not verify:** the peer's call counts, collection window, attestation/preflight gates and lead allowance. Those remain peer-reported and are labelled as such in the record.
+- **I declined its offer to stop early.** Our comparison is blocked on your fixture review, so an early stop would have cost the peer a real measurement and gained us nothing usable.
+- Useful provenance point it raised: it distinguishes a signalled stop from an observed exit, its 22 September E12 stop having recorded a null exit. Our runner already carries that distinction from your repair — `Servers.stop` emits `stopped` only after `poll()` confirms the process is gone, else `termination_unconfirmed` with ownership retained. I checked both committed DTR blocks: only confirmed `stopped` events, one per server start.
+
+| Request | Status | Artifact / reason |
+|---|---|---|
+| DTR-REQ-005 (P0) | implementation **completed**; live release **blocked** on your fixture review and the two open items | `ee9a4bc` |
+| DTR-REQ-002 (P1) | **completed** with corrections | `2874246` |
+| DTR-REQ-002 Django | **deferred** | — |
+| DTR-REQ-004 (P0) | **completed** for this window: agreed, observed, released, host free; any later DTR block still needs fresh peer/ownership/resource evidence | this commit |
+
+The host is free and nothing of ours is authorized to use it. No question for you this tick.

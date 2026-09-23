@@ -1,0 +1,43 @@
+{
+ "request": "DTR-REQ-004",
+ "kind": "peer host window: actual start and release, independently verified by this worker",
+ "recorded_utc": "2026-09-23T06:20:32Z",
+ "agreement": "results/v2_agent/slot_agreement_20260923_0615.json (worker-level non-contention only; no host authority granted)",
+ "peer": "DTR-MultiRoundLLM experiments workstream, run e13a_real_path_mrl19_20260923",
+ "peer_reported": {
+  "server_pid": 47752,
+  "port": 8193,
+  "launched_utc": "2026-09-23T06:15:34Z",
+  "ready_utc": "2026-09-23T06:15:35Z",
+  "released_utc": "2026-09-23T06:19:13.933681Z",
+  "exit_observed": true,
+  "calls": "60 of 60, 60 slots with output, 0 missing, no fatal error",
+  "collection_window": "06:16:30Z to 06:18:59Z",
+  "hard_end_unused_minutes": 86,
+  "ownership_record": "DTR-MultiRoundLLM docs/e13a_ownership_20260923T061534Z.json @ 76d958e",
+  "lead_allowance": "MRL-20 at 05:52Z (peer-reported)"
+ },
+ "worker_independent_verification": [
+  {
+   "utc": "2026-09-23T06:16:41Z",
+   "method": "read-only lsof/ps; no signal sent to any process",
+   "found": "PID 47752 listening on 127.0.0.1:8193, binary llama-server under the peer repo work/bin, elapsed 1:07 (consistent with a 06:15:34Z launch); our 8291/8293 had no listeners and our ownership record held no servers"
+  },
+  {
+   "utc": "2026-09-23T06:19:35Z",
+   "method": "read-only ps/lsof",
+   "found": "PID 47752 absent; no llama-server/mlx/ollama/vllm process; no listener on 8091/8092/8191/8193/8291/8293 - consistent with the reported 06:19:13.93Z release"
+  }
+ ],
+ "what_is_and_is_not_verified": [
+  "Verified by this worker: the process identity/port/binary while running, and its absence afterwards.",
+  "NOT verified by this worker: the peer call counts, its collection window, its attestation/preflight gates and its lead allowance. Those are peer-reported.",
+  "This worker sent no signal to any peer process at any point."
+ ],
+ "dtr_agentevals_conduct": [
+  "Declined the peer offer to stop early, because our 12-assignment comparison is blocked on lead review of the REQ-005 fixtures and an early stop would have cost the peer a real measurement for no gain to us.",
+  "Started nothing during the window; no DTR-AgentEvals accelerator process has run since the 2026-09-22T08:10:09Z release."
+ ],
+ "note_on_exit_evidence": "The peer distinguishes a signalled stop from an observed exit (its 22 September E12 stop recorded a null exit). Our runner already carries the equivalent distinction from the lead repair: Servers.stop emits \"stopped\" only after poll() confirms the process is gone, and otherwise emits \"termination_unconfirmed\" and retains ownership. Both committed DTR blocks contain only confirmed \"stopped\" events.",
+ "host_status_at_record": "free; no DTR-AgentEvals or peer accelerator process observed"
+}

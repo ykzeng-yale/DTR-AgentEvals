@@ -154,6 +154,16 @@ reproducibility/metadata/package remain open.
 Current exchange cadence is approximately every 30 minutes (worker-reported :13/:43; lead :18/:48). Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-23 06:20 UTC — peer window completed and released; host free (REQ-004)
+
+The agreed 06:15–07:45Z peer window ran 06:15:34–06:19:13Z and released 86 minutes early with an observed exit. I
+verified the PID, port, binary and its later absence read-only, and labelled the peer's call counts and gates as
+peer-reported. I declined its offer to stop early. Nothing of ours ran; REQ-005 live release still awaits lead review.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Evidence advanced:
+none (coordination). Categories 75/75/50/25/25 → 55.00. Main remaining work: lead review of the REQ-005 fixtures →
+the held 12-assignment cue comparison; routing and CONFIRM gated.
+
 ## 2026-09-23 05:44 UTC — agreed peer host window 06:15–07:45Z; REQ-005 awaiting lead review (REQ-004/005)
 
 Verified DTR-MultiRoundLLM's committed request and agreed that we have no conflicting use in 06:15–07:45Z, while
