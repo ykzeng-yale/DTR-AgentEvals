@@ -4521,3 +4521,42 @@ Code/config commit: `1ae7cb5`. Last lead checkpoint read: issue #4 at 04:04:36Z;
 | DTR-REQ-004 (P0) | **completed** for this window: agreed, observed, released, host free; any later DTR block still needs fresh peer/ownership/resource evidence | this commit |
 
 The host is free and nothing of ours is authorized to use it. No question for you this tick.
+
+## Worker checkpoint — 2026-09-23T15:54:35Z (host `date -u`; local 11:54 EDT) — lead `add36c3` acknowledged; alignment correction re-derived and accepted
+
+Code/config commit at checkpoint start: `add36c3` (lead `add36c3` pulled). Last lead checkpoint read: `docs/theory_feedback_20260923_req005_review.md` (`add36c3`, 15:31:57Z). **Authorized runs:** none; the live cue comparison is held for review of the integration artifact. State: 4 code-routing stages verified OK; no stage process; 8191/8193/8291/8293 down; no llama-server/mlx/ollama/vllm process. After the pull the full suite passes: **760 passed, 8 subtests**.
+
+**Your material finding 1 (logical-call alignment): re-derived independently before conceding, and ACCEPTED.** I rebuilt one record per logical call from the attempt ledgers (authoritative IDs) plus the trajectories, without using `trajectory_triples.py`, and reproduced every figure you gave:
+- **682 logical calls vs 674 saved single-action assistant messages.** The 8 unsaved calls are **5 context-rejected finals** (legacy matplotlib/7B call 24, seaborn/14B call 5, sympy/7B call 12; yaml-v1 matplotlib/7B call 24, sympy/7B call 15) plus **3 FormatError calls** that were answered but never saved (legacy sympy/14B 1, yaml-v1 sympy/14B 2).
+- **10 incomplete detector records**: those 8 plus the two astropy/7B submit-sentinel calls.
+- **First triggers 21/32, split AAA 12 / ABABAB 9.**
+- **Legacy sympy/14B: ABABAB at logical call 22, candidate delivery 23** — not the 21/22 my adapter implied.
+
+**My own error, stated plainly.** The "independent" cross-check I ran before `ee9a4bc`, which reproduced 21/32, counted assistant messages as calls — the same blind spot as the adapter. It validated the total, not the alignment, so it could not have caught this. I accept the additive correction [`req005_fixture_landmarks_correction_20260923.json`](req005_fixture_landmarks_correction_20260923.json); the original fixture output stays as historical evidence.
+
+**Findings 2–4 (capture symlinks and inconsistent list bodies; receipt callback and completeness validation; integration gates) are accepted.** Your repairs are in the pulled sources and the suite is green.
+
+**Your answers to my open items are accepted as binding for the integration:**
+- **Storage:** private exact bodies with an 8 MiB per-body cap, a 4.5 GiB cohort reservation and a 6 GiB free-space preflight, rechecked before each write.
+- **Public receipts:** 64 KiB published whole, otherwise a 32 KiB head plus 32 KiB tail, with a 128 KiB final serialized cap on each request receipt and each outcome record.
+- **Refusals and bookkeeping:** an oversized body or failed write refuses before dispatch, with no truncation, no retry, and a queue stop. Post-dispatch bookkeeping failures are nonfatal with incomplete evidence retained.
+- **Diagnostics:** a 30 s diagnostic maximum anchored to `min(inference_end+120 s, absolute cleanup cap)`, a 90 s cleanup reserve, and supervisor-enforced timeouts.
+
+**DTR-REQ-005: the integration package is starting now** — new `cue-v1` episode, queue and admission sources, the frozen yaml-v1 drivers untouched. It covers:
+- transport-boundary capture of the finalized body on the **actual pinned SDK path**, with a stub-sender fixture comparing receiver-observed bytes against the retained body for both arms, a retry and a context/error response, and hidden SDK retries accounted for or disabled;
+- authoritative logical IDs, including parse failures and rejections;
+- cue insertion only before the next permitted query, with appended / attempted / received delivery states;
+- endpoint first, then the diagnostic, then cleanup in `finally`;
+- a frozen admission binding over the full queue;
+- the acceptance fixtures you listed, using a stub sender and disposable temporary Git trees.
+
+Nothing live runs; the first comparison stays held for your inspection of that artifact and fresh host agreement.
+
+| Request | Status | Artifact / reason |
+|---|---|---|
+| DTR-REQ-002 (P1) | **completed** — correction overlay accepted | `2874246` |
+| DTR-REQ-005 (P0) | **running** — integration package (no-model fixtures); live comparison **blocked** on your review of it plus fresh host agreement | next commit(s) |
+| DTR-REQ-002 Django | **deferred** | — |
+| DTR-REQ-004 (P0) | **completed** for the historical 06:15–07:45 window; **a fresh peer/ownership/resource check is required** before any later block, and the 06:19 release is not treated as current availability | `22c4a82` |
+
+**Next observed publication slot:** this commit now; then the integration package when its verification completes. No question for you this tick.

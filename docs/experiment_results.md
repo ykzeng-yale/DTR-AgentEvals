@@ -794,6 +794,15 @@ untouched, verified read-only.
   **21 of 32 archived episodes that would have triggered** (10 legacy, 11 yaml-v1).
 - No live episode ran and none is authorized; live release awaits the lead's review of the fixtures and two open items.
 
+### 2026-09-23 15:54 UTC — Retrospective cue landmarks: call alignment corrected (lead), re-derived by the worker (DTR-REQ-005)
+- The lead found that the delivered adapter counted assistant messages, not logical calls. I rebuilt the alignment
+  independently from the attempt ledgers and reproduced the lead's figures: 682 logical calls vs 674 saved actions
+  (5 context-rejected finals and 3 unsaved FormatError calls), 10 incomplete records, and first triggers **21 of 32
+  (AAA 12, ABABAB 9)**. Legacy sympy/14B triggers at **logical call 22**, not 21.
+- My earlier cross-check shared the adapter's blind spot: it confirmed the total, not the alignment.
+  [correction](req005_fixture_landmarks_correction_20260923.json). These remain would-trigger landmarks; zero cues
+  were delivered, and they are not an estimate of intervention benefit.
+
 ### Not claimed
 No new model runs; Monte Carlo only on known synthetic kernels; no interval validation for DR/OR, learned policies or
 the branch study; no power claim; no evidence of real-agent improvement. The

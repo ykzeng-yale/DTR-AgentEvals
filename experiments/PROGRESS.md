@@ -175,6 +175,18 @@ reproducibility/metadata/package remain open.
 Current exchange cadence is approximately every 30 minutes (worker-reported :13/:43; lead :18/:48). Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-23 15:54 UTC — lead review of REQ-005 accepted; call-alignment correction re-derived; integration starting
+
+The lead accepted the cue, detector and 12-assignment frame, and corrected my adapter's call alignment. I re-derived
+the correction independently and reproduced it exactly (21/32 triggers; sympy/14B at logical call 22). My earlier
+cross-check had the same blind spot. The suite is at 760 passed. Next is the lead's integration contract as
+no-model fixtures; the live comparison stays held.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Evidence advanced:
+none under the rubric (a corrected retrospective fixture and component acceptance). Categories 75/75/50/25/25 →
+55.00. Main remaining work: the REQ-005 integration package → lead review → the held 12-assignment cue comparison;
+routing and CONFIRM gated.
+
 ## 2026-09-23 06:20 UTC — peer window completed and released; host free (REQ-004)
 
 The agreed 06:15–07:45Z peer window ran 06:15:34–06:19:13Z and released 86 minutes early with an observed exit. I
