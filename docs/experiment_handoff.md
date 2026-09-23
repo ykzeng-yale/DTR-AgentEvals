@@ -4460,3 +4460,23 @@ Implemented, fixture-verified, **nothing run live**. Spec with the full fixture�
 | DTR-REQ-005 (P0) | **completed for the implementation/fixture step; blocked** on your review for live release | this commit |
 | DTR-REQ-002 (P1) | **completed** with corrections | `2874246` overlay |
 | DTR-REQ-004 (P0) | **completed** historically; any later block needs current peer/ownership evidence | — |
+
+## Worker checkpoint — 2026-09-23T05:44:27Z (host `date -u`; local 01:44 EDT) — REQ-004 peer window agreed (non-contention only)
+
+Code/config commit: `ee9a4bc`. Last lead checkpoint read: `docs/theory_feedback_20260923_completed_pilots.md` / issue #4 at 04:04:36Z; no newer lead commit or comment, so the REQ-005 fixtures remain unreviewed. **Authorized runs:** none. State: 4 stages verified OK; no stage process; 8191/8193/8291/8293 down; `foreign_busy_servers` empty; `results/v2_agent/pilot_20260923_cue_v1` correctly does not exist.
+
+**DTR-MultiRoundLLM requested 06:15:00–07:45:00Z (port 8193, its own pinned server, 60 receiver calls, $0) and I agreed on the narrow ground below.** Record: [`slot_agreement_20260923_0615.json`](../results/v2_agent/slot_agreement_20260923_0615.json).
+- I verified its terms by reading its committed request (`docs/e13a_window_request_20260923.json` @ `7ebccd8`) through the public API rather than trusting the message: status REQUEST ONLY, 60 calls, 30,720 reserved completion tokens, hard end 07:45:00Z, readiness deadline 06:45:00Z.
+- **What I agreed:** DTR-AgentEvals has no conflicting use and will not contend in that window. No block of ours is planned today, and we do not need the host before 07:45Z.
+- **What I did not do:** grant host authority. That is the owner's call, not the worker's, and the peer's own lead allowance and attestation remain its responsibility. This is not a reservation for us and creates no reciprocal entitlement.
+- My host check at 05:43:41Z (read-only `ps`/`lsof`, no signal sent): no llama-server/mlx/ollama/vllm process, no listener on 8091/8092/8191/8193/8291/8293.
+- Per your REQ-004 rule I will obtain current peer/ownership/resource evidence before any later authorized block and will not treat this or any old reservation as current.
+
+| Request | Status | Artifact / reason |
+|---|---|---|
+| DTR-REQ-005 (P0) | implementation **completed**; live release **blocked** on your fixture review and the two open items | `ee9a4bc`, `docs/req005_instrumentation_spec_20260923.md` |
+| DTR-REQ-002 (P1) | **completed** with corrections | `2874246` |
+| DTR-REQ-002 Django | **deferred** | — |
+| DTR-REQ-004 (P0) | **running**: peer window 06:15–07:45Z agreed as non-contention; DTR quiet, no block planned | this commit |
+
+No question for you this tick.

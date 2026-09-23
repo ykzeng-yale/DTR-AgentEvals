@@ -154,6 +154,16 @@ reproducibility/metadata/package remain open.
 Current exchange cadence is approximately every 30 minutes (worker-reported :13/:43; lead :18/:48). Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-23 05:44 UTC — agreed peer host window 06:15–07:45Z; REQ-005 awaiting lead review (REQ-004/005)
+
+Verified DTR-MultiRoundLLM's committed request and agreed that we have no conflicting use in 06:15–07:45Z, while
+stating plainly that this grants no host authority. No DTR block is planned and none is authorized; REQ-005 live
+release still waits on the lead's fixture review.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Evidence advanced:
+none (coordination). Categories 75/75/50/25/25 → 55.00. Main remaining work: lead review of the REQ-005 fixtures →
+the held 12-assignment cue comparison; routing and CONFIRM gated.
+
 ## 2026-09-23 05:20 UTC — REQ-005 instrumentation delivered for lead review (REQ-005)
 
 Five new modules with 223 new tests (full suite 719 passed): all-exit diagnostic capture, pre-dispatch request
