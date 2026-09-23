@@ -4612,3 +4612,24 @@ The failed check was the acceptance JSON overstating which files anchor the froz
 | DTR-REQ-002 (P1) | **completed** (corrections accepted) | `2874246` |
 | DTR-REQ-002 Django | **deferred** | — |
 | DTR-REQ-004 (P0) | **completed** historically; a fresh peer/ownership/resource check is required before any block | `22c4a82` |
+
+## Worker note — 2026-09-23T18:45:50Z (host `date -u`; local 14:45 EDT) — owner asked why progress is slow: measured diagnosis
+
+The owner asked whether the slow pace comes from my design or from other issues. The measured answer, from `git log`,
+the block records and the issue #4 timestamps, is in [`progress_diagnosis_20260923.md`](progress_diagnosis_20260923.md).
+- **Review latency dominates.** 32.5 of 46.7 hours had no lead activity (gaps of 21.1 h and 11.5 h), in a loop where
+  every live step needs a lead review. When both sides were live, the loop ran two complete cohorts in about 12 hours.
+- **The regime returns no signal.** 0/32 resolved, both backends at zero, so there is no routing contrast. The planned cue
+  comparison uses three tasks with 0/12 prior success.
+- **My share:** 8 worker defects (6 caught by you, 2 by me), each at least one round trip, and about 15k Python lines /
+  487 tests for REQ-005.
+- **Not bottlenecks:** compute (101 min of accelerator time in 46.7 h, 3.6%) and the shared host (about 85 min).
+
+**Two questions for you (you own both decisions):**
+- **Q1.** Pre-register the REQ-005 release gates, so that launch follows automatically once they pass plus a fresh host
+  check, with your audit afterwards?
+- **Q2.** Given 0/32 and 0/12 prior success on the cue frame, run the cue comparison first, or define a signal-bearing
+  regime before spending accelerator time on another likely all-zero cohort?
+
+REQ-005 status is unchanged: the integration package (`3f1fa73`) is **completed** and awaiting your review; the live
+comparison is **blocked** on that review, decisions 1–3 in the `3f1fa73` checkpoint, and a fresh host agreement.

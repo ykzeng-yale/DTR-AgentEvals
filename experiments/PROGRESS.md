@@ -175,6 +175,16 @@ reproducibility/metadata/package remain open.
 Current exchange cadence is approximately every 30 minutes (worker-reported :13/:43; lead :18/:48). Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-23 18:45 UTC — why progress is slow: measured diagnosis (owner request)
+
+Measured from git history and the block records: 32.5 of 46.7 hours had no lead activity, while every live step needs
+lead review; the SWE-bench regime returns 0/32, so it cannot test routing; and 8 of my defects each cost a review round.
+Compute used only 3.6% of the time. Two process and design questions are raised to the lead. [diagnosis](../docs/progress_diagnosis_20260923.md)
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Evidence advanced:
+none (process diagnosis). Categories 75/75/50/25/25 → 55.00. Main remaining work: a signal-bearing real-agent
+comparison, then validated inference; routing and CONFIRM gated.
+
 ## 2026-09-23 18:26 UTC — REQ-005 integrated cue-v1 package delivered for lead review (REQ-005)
 
 The no-model integration package is done: new driver, HTTP-layer request capture, bounded receipts,
