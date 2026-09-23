@@ -803,6 +803,18 @@ untouched, verified read-only.
   [correction](req005_fixture_landmarks_correction_20260923.json). These remain would-trigger landmarks; zero cues
   were delivered, and they are not an estimate of intervention benefit.
 
+### 2026-09-23 18:26 UTC — REQ-005 cue-v1 package delivered; no hidden resends in either completed cohort
+- **Integration package delivered, nothing run live:** [acceptance artifact](req005_integration_acceptance_20260923.json).
+  The new cue-v1 driver captures each outbound request at the HTTP layer, with bounded receipts and
+  supervisor-enforced cleanup timeouts, under a frozen 12-assignment / 576-request admission. 1024 tests pass, and
+  the frozen pilot sources are unchanged. The baseline arm's request bytes match the unmodified frozen driver's.
+- **Retrospective check closed:** the pinned library has retry layers beyond our `num_retries=0`, so I counted what
+  the server actually processed in the committed llama-server logs. legacy 334 = 327 answered + 3 rejected + 4
+  probes; yaml-v1 356 = 350 + 2 + 4. **Zero unexplained requests**, so the published 330 / 352 counts stand.
+  [reconciliation](../results/v2_agent/analysis_20260922/server_request_reconciliation_20260923.json)
+- Lead status: live release held pending review; three decisions are raised (the disabled second pass, the cue
+  message form, the host disk reserve).
+
 ### Not claimed
 No new model runs; Monte Carlo only on known synthetic kernels; no interval validation for DR/OR, learned policies or
 the branch study; no power claim; no evidence of real-agent improvement. The

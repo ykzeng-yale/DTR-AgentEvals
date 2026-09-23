@@ -1,0 +1,1645 @@
+{
+ "kind": "DTR-REQ-005 cue-v1 integrated no-model fixture package: acceptance artifact",
+ "request": "DTR-REQ-005",
+ "cohort": "cue-v1",
+ "base_commit": "98c8dcc8533c053afd822d243d7f5713e41fb074",
+ "created": "2026-09-23 (worker, uncommitted working tree; the manifest digests are the files as delivered)",
+ "contract": "docs/theory_feedback_20260923_req005_review.md, \"Concrete integration contract\" and \"Answers to the worker's open items\"",
+ "live_status": "NO live episode was run. No model, llama-server, container, evaluator or network call was made. results/v2_agent/pilot_20260923_cue_v1 was not created. Live release awaits lead review of this artifact and a fresh host agreement.",
+ "evidence_class": "deterministic fixture evidence (stub sender, fake docker over disposable Git repositories, fixed free-space answers); not pilot, confirmatory or model evidence, and not evidence that the cue helps",
+ "frozen_sources": {
+  "unchanged": true,
+  "note": "pilot_episode.py, pilot_runner.py, pilot_cohort.py, pilot_report.py and pilot_grade.py keep the digests in the source manifest and git diff over them is empty. Anchors differ per file: results/v2_agent/pilot_20260922_yaml_v1/cohort_binding.json binds only pilot_episode.py, pilot_runner.py and pilot_cohort.py; the lead audit (docs/audits/req005_component_review_20260923.json, preservation.frozen_runtime_sha256) binds those three plus pilot_grade.py; pilot_report.py is anchored only by git history. [Corrected by the worker after the final refuter flagged the original sentence as an overstatement.]"
+ },
+ "results_tree": {
+  "unchanged": true,
+  "note": "git status/diff over results/ is empty; nothing under results/ was created or changed"
+ },
+ "acceptance_items": [
+  {
+   "item": "(a) baseline model-visible messages and request bodies byte-identical to the frozen pilot_episode.py path for the same history (pinned reference built by running the frozen main() itself with the same stub)",
+   "tests": [
+    "experiments/tools/test_v2_cue_integration.py::test_a_baseline_request_bodies_headers_and_model_visible_messages_equal_the_frozen_driver",
+    "experiments/tools/test_v2_cue_transport.py::test_sdk_the_live_default_inner_transport_sends_what_litellm_s_frozen_default_client_sends",
+    "experiments/tools/test_v2_cue_transport.py::test_sdk_baseline_receiver_bytes_equal_the_retained_private_bytes_and_the_literal"
+   ]
+  },
+  {
+   "item": "(b) the cue arm differs from baseline only at the prescribed insertion (the 319-byte message after the third observation, from the delivery call on)",
+   "tests": [
+    "experiments/tools/test_v2_cue_integration.py::test_b_the_cue_arm_differs_from_baseline_only_by_the_one_inserted_cue_message",
+    "experiments/tools/test_v2_cue_episode.py::test_the_model_appends_the_cue_once_and_a_retry_resends_the_same_messages",
+    "experiments/tools/test_v2_cue_episode.py::test_the_cue_message_is_the_accepted_text_as_one_user_message",
+    "experiments/tools/test_v2_cue_transport.py::test_sdk_cue_arm_differs_from_baseline_only_by_the_one_inserted_cue_message"
+   ]
+  },
+  {
+   "item": "(c) parse-failure, retry and horizon boundaries (A,A,FormatError,A never triggers; a physical retry consumes no second cue; an H24 final-call trigger stays undelivered; a pre-dispatch storage refusal after insertion is not delivery; early exit stays undelivered)",
+   "tests": [
+    "experiments/tools/test_v2_cue_integration.py::test_c_a_format_error_breaks_adjacency_and_the_cue_waits_for_three_new_repeats",
+    "experiments/tools/test_v2_cue_integration.py::test_c_a_physical_retry_resends_the_same_single_cue_and_consumes_no_second_one",
+    "experiments/tools/test_v2_cue_integration.py::test_c_a_trigger_on_the_final_h24_call_stays_explicitly_undelivered",
+    "experiments/tools/test_v2_cue_integration.py::test_c_a_pre_dispatch_storage_refusal_after_insertion_is_not_delivery",
+    "experiments/tools/test_v2_cue_episode.py::test_a_format_error_breaks_adjacency_so_a_a_fe_a_never_triggers",
+    "experiments/tools/test_v2_cue_episode.py::test_a_format_error_is_its_own_logical_call_in_the_model",
+    "experiments/tools/test_v2_cue_episode.py::test_a_physical_retry_of_the_delivery_query_is_one_cue_with_two_sends",
+    "experiments/tools/test_v2_cue_episode.py::test_a_trigger_on_the_final_h24_call_is_recorded_without_delivery",
+    "experiments/tools/test_v2_cue_episode.py::test_an_early_exit_before_the_delivery_query_stays_explicitly_undelivered",
+    "experiments/tools/test_v2_cue_episode.py::test_a_query_refused_by_the_deadline_consumes_an_id_but_gets_no_cue",
+    "experiments/tools/test_v2_cue_episode.py::test_a_query_past_the_deadline_is_refused_before_the_cue_is_appended",
+    "experiments/tools/test_v2_cue_episode.py::test_a_pre_dispatch_refusal_after_insertion_is_not_delivery",
+    "experiments/tools/test_v2_cue_episode.py::test_a_transport_attempt_without_a_response_is_its_own_state",
+    "experiments/tools/test_v2_cue_episode.py::test_one_record_per_logical_call_is_fed_and_the_cue_goes_to_the_next_permitted_query_only",
+    "experiments/tools/test_v2_cue_episode.py::test_the_baseline_arm_records_the_same_landmark_silently",
+    "experiments/tools/test_v2_cue_episode.py::test_an_executor_exception_or_a_submitted_action_is_an_incomplete_record"
+   ]
+  },
+  {
+   "item": "(d) hung-executor deadline control: the supervisor kills the whole process group at the computed bound and the processes are actually gone",
+   "tests": [
+    "experiments/tools/test_v2_cue_integration.py::test_d_a_hung_diagnostic_executor_is_killed_at_its_bound_and_its_processes_are_gone",
+    "experiments/tools/test_v2_cue_terminal.py::test_a_hung_executor_subprocess_is_killed_at_the_computed_bound_and_cleanup_still_runs",
+    "experiments/tools/test_v2_cue_terminal.py::test_an_interrupt_after_the_leader_exited_still_kills_the_same_group_descendant",
+    "experiments/tools/test_v2_cue_terminal.py::test_a_descendant_that_leaves_the_group_and_keeps_the_pipe_is_recorded_as_escaped",
+    "experiments/tools/test_v2_cue_terminal.py::test_a_killed_group_whose_pipe_closes_is_not_reported_as_escaped",
+    "experiments/tools/test_v2_cue_terminal.py::test_time_spent_building_the_argv_is_charged_to_the_command_bound",
+    "experiments/tools/test_v2_cue_terminal.py::test_each_command_gets_only_the_remaining_diagnostic_time",
+    "experiments/tools/test_v2_cue_terminal.py::test_the_sixty_second_term_binds_when_a_plan_leaves_more_time"
+   ]
+  },
+  {
+   "item": "(e) capture-error cleanup still runs (diagnostic capture failure; transport/receipt infrastructure stop)",
+   "tests": [
+    "experiments/tools/test_v2_cue_integration.py::test_e_cleanup_runs_after_a_diagnostic_capture_error_and_after_a_receipt_capture_stop",
+    "experiments/tools/test_v2_cue_terminal.py::test_a_capture_error_never_escapes_the_wrapper_and_cleanup_still_runs",
+    "experiments/tools/test_v2_cue_terminal.py::test_an_executor_that_raises_still_reaches_cleanup",
+    "experiments/tools/test_v2_cue_terminal.py::test_an_endpoint_evaluated_inside_the_phase_is_recorded_when_it_breaks_the_cleanup_reserve"
+   ]
+  },
+  {
+   "item": "(f) storage refusal before dispatch: zero sends, no truncation, a recorded refusal and a queue stop",
+   "tests": [
+    "experiments/tools/test_v2_cue_integration.py::test_f_a_storage_refusal_before_dispatch_sends_nothing_and_stops_the_queue",
+    "experiments/tools/test_v2_cue_transport.py::test_sdk_a_failed_durable_write_and_low_free_space_refuse_with_zero_sends",
+    "experiments/tools/test_v2_cue_transport.py::test_a_failed_durable_write_refuses_before_dispatch",
+    "experiments/tools/test_v2_cue_transport.py::test_free_space_is_rechecked_before_each_write",
+    "experiments/tools/test_v2_cue_transport.py::test_the_start_preflight_refuses_an_unmeasurable_disk_and_probes_both_directories"
+   ]
+  },
+  {
+   "item": "(g) corrupt-receipt detection (an edited outcome, a deleted or edited refusal record, an over-cap file; detected in the episode store and at resume)",
+   "tests": [
+    "experiments/tools/test_v2_cue_integration.py::test_g_a_corrupted_receipt_is_detected_and_refuses_the_resume",
+    "experiments/tools/test_v2_cue_admission.py::test_a_corrupted_receipt_of_a_clean_terminal_assignment_refuses_the_resume",
+    "experiments/tools/test_v2_cue_transport.py::test_refusal_records_are_sealed_consecutive_and_checked",
+    "experiments/tools/test_v2_cue_transport.py::test_a_valid_receipt_file_over_128_kib_makes_the_set_incomplete",
+    "experiments/tools/test_v2_cue_transport.py::test_a_failed_directory_sync_after_the_public_receipt_is_a_refusal_linked_to_that_receipt"
+   ]
+  },
+  {
+   "item": "(h) Submitted-only endpoint bytes unchanged (frozen driver, baseline arm and cue arm all submit the same hand-typed 379-byte diff)",
+   "tests": [
+    "experiments/tools/test_v2_cue_integration.py::test_h_the_submitted_only_endpoint_bytes_are_unchanged_by_instrumentation_and_by_the_cue",
+    "experiments/tools/test_v2_cue_terminal.py::test_the_submitted_only_artifact_bytes_are_identical_before_and_after_the_diagnostic",
+    "experiments/tools/test_v2_cue_terminal.py::test_a_pre_existing_endpoint_file_with_other_bytes_is_a_conflict_not_unchanged",
+    "experiments/tools/test_v2_cue_terminal.py::test_a_partial_endpoint_file_left_by_a_failed_write_is_a_conflict"
+   ]
+  },
+  {
+   "item": "authoritative logical ids (one per model.query, equal to the agent n_calls) and exactly one record per call",
+   "tests": [
+    "experiments/tools/test_v2_cue_integration.py::test_the_ledger_records_every_episode_with_its_true_request_count",
+    "experiments/tools/test_v2_cue_episode.py::test_one_record_per_logical_call_is_fed_and_the_cue_goes_to_the_next_permitted_query_only"
+   ]
+  },
+  {
+   "item": "the driver is not runnable live without validate_queue passing (admission before any alarm, container, receipt or request); the bound run_assignment refuses because the live release is held",
+   "tests": [
+    "experiments/tools/test_v2_cue_integration.py::test_the_driver_does_nothing_unless_the_whole_queue_is_admitted",
+    "experiments/tools/test_v2_cue_integration.py::test_every_episode_ran_on_the_pinned_stack_with_no_network_and_through_admission",
+    "experiments/tools/test_v2_cue_admission.py::test_an_episode_is_admitted_only_as_the_open_assignment_of_a_runner_session",
+    "experiments/tools/test_v2_cue_admission.py::test_only_the_bound_episode_function_is_dispatched_outside_a_fixture_copy",
+    "experiments/tools/test_v2_cue_episode.py::test_the_live_runner_launch_argv_carries_the_frozen_row_and_the_budget"
+   ]
+  },
+  {
+   "item": "stub sender and disposable temporary Git trees only; no network; no benchmark-generated code",
+   "tests": [
+    "experiments/tools/test_v2_cue_integration.py::test_every_episode_ran_on_the_pinned_stack_with_no_network_and_through_admission",
+    "experiments/tools/test_v2_cue_transport.py::test_sdk_the_fixture_ran_on_the_pinned_stack_with_no_network"
+   ]
+  }
+ ],
+ "verdict_repairs": {
+  "transport": [
+   {
+    "report": "HIGH: an EpisodeDeadline raised during post-send bookkeeping (_close, _register, _bookkeeping_failure, the response note, the binding check) was swallowed and the result returned",
+    "judged": "real (reproduced)",
+    "repair": "every catch-all treats TimeoutError as the deadline: recorded, latched, and re-raised by dispatch (the same object) after the in-memory evidence; outside a dispatch scope it propagates at once",
+    "tests": [
+     "experiments/tools/test_v2_cue_transport.py::test_a_deadline_during_the_outcome_write_is_re_raised_not_swallowed",
+     "experiments/tools/test_v2_cue_transport.py::test_a_deadline_outside_a_dispatch_scope_propagates_at_once"
+    ]
+   },
+   {
+    "report": "MEDIUM: a deadline during the binding check became a false client_session_bypassed record",
+    "judged": "real",
+    "repair": "a deadline there is the deadline; any other check failure is client_session_binding_unverifiable, never a bypass claim",
+    "tests": [
+     "experiments/tools/test_v2_cue_transport.py::test_a_deadline_during_the_binding_check_is_the_deadline_not_a_bypass_claim"
+    ]
+   },
+   {
+    "report": "MEDIUM (lead decision): suppressing litellm's hidden second pass can change the caller-observed outcome; the server's 400 was hidden behind a synthetic 500",
+    "judged": "real contract tension; kept the contract's \"disable\" option",
+    "repair": "the outcome record keeps the server's own status and error (send.server_http_status, send.server_error, caller_exception_origin); integrity().frozen_path_parity reports every suppressed resend and surfaced redirect as a deviation for lead review",
+    "tests": [
+     "experiments/tools/test_v2_cue_transport.py::test_sdk_a_suppressed_hidden_resend_keeps_the_server_s_own_400_and_is_reported_as_a_parity_deviation"
+    ]
+   },
+   {
+    "report": "LOW-MEDIUM: (call, attempt) pairs could be reused and logical ids go backwards",
+    "judged": "real",
+    "repair": "dispatch is sequenced: first (1,1), then the next attempt of the same call or attempt 1 of the next call, within H24 and 2 attempts",
+    "tests": [
+     "experiments/tools/test_v2_cue_transport.py::test_query_identity_is_sequenced_and_no_pair_is_reused"
+    ]
+   },
+   {
+    "report": "LOW: refusal-record and secondary-log writes skipped the free-space recheck",
+    "judged": "real",
+    "repair": "both are rechecked before writing; a shortfall leaves the record unwritten and integrity incomplete",
+    "tests": [
+     "experiments/tools/test_v2_cue_transport.py::test_free_space_is_rechecked_before_each_write"
+    ]
+   },
+   {
+    "report": "LOW: a stateful ByteStream subclass could hand the terminal other bytes",
+    "judged": "real (unreachable on the frozen path)",
+    "repair": "type(request.stream) is httpx.ByteStream",
+    "tests": [
+     "experiments/tools/test_v2_cue_transport.py::test_sdk_a_bytestream_subclass_is_refused_unread"
+    ]
+   },
+   {
+    "report": "LOW: a public-directory fsync failure left a dispatched-looking receipt unlinked to its refusal",
+    "judged": "real",
+    "repair": "refusals carry the attempt key and the files present; completeness lists receipts_refused_before_dispatch and dispatched_attempt_keys",
+    "tests": [
+     "experiments/tools/test_v2_cue_transport.py::test_a_failed_directory_sync_after_the_public_receipt_is_a_refusal_linked_to_that_receipt"
+    ]
+   },
+   {
+    "report": "LOW: a deleted refusal record was not detected",
+    "judged": "real",
+    "repair": "refusal ordinals must be consecutive; a gap or a record under another ordinal's name is invalid",
+    "tests": [
+     "experiments/tools/test_v2_cue_transport.py::test_refusal_records_are_sealed_consecutive_and_checked"
+    ]
+   },
+   {
+    "report": "LOW: a pre-write deadline did not latch; a non-storage ReceiptError was labelled storage",
+    "judged": "real",
+    "repair": "episode_deadline_during_write latches (later sends refused as episode_deadline_latched); ReceiptError is receipt_contract_refused (protocol), OSError durable_write_failed, anything else receipt_internal_error",
+    "tests": [
+     "experiments/tools/test_v2_cue_transport.py::test_a_deadline_during_the_pre_dispatch_write_latches_and_nothing_is_sent",
+     "experiments/tools/test_v2_cue_transport.py::test_a_write_once_collision_is_a_protocol_refusal_not_an_overwrite"
+    ]
+   },
+   {
+    "report": "NOTE: horizon, attempts per call and sends per attempt could be overridden; host reserve unbounded",
+    "judged": "real for the first three; the reserve has no repository value",
+    "repair": "H24 and 2 attempts cannot be changed; more than one send per attempt needs accounting_fixture=True, recorded in every receipt; admission refuses a cue_episode that passes any of these; the reserve stays a required launcher declaration (listed as unresolved)",
+    "tests": [
+     "experiments/tools/test_v2_cue_transport.py::test_the_frozen_horizon_attempts_and_single_send_cannot_be_enlarged",
+     "experiments/tools/test_v2_cue_admission.py::test_the_enforcing_modules_state_the_contract_bounds_and_the_driver_passes_no_override"
+    ]
+   },
+   {
+    "report": "test weaknesses: 18 of 25 mutants survived; boundary, install-preflight, completeness, SIGALRM, default-inner and exact-value gaps",
+    "judged": "real",
+    "repair": "new fixtures for each; a worker mutation survey of 33 single-site mutants on the repaired module killed 32, and the survivor (M23) is an equivalent mutant (see mutation_survey)",
+    "tests": [
+     "experiments/tools/test_v2_cue_transport.py::test_the_install_preflight_names_every_hidden_send_path",
+     "experiments/tools/test_v2_cue_transport.py::test_session_binding_names_a_cached_client_that_does_not_wrap_the_session",
+     "experiments/tools/test_v2_cue_transport.py::test_an_unwritten_refusal_record_makes_integrity_incomplete",
+     "experiments/tools/test_v2_cue_transport.py::test_an_outcome_record_over_128_kib_is_refused_and_not_written",
+     "experiments/tools/test_v2_cue_transport.py::test_a_refusal_record_over_128_kib_is_refused",
+     "experiments/tools/test_v2_cue_transport.py::test_every_durable_write_is_synced_file_then_directory_before_the_send",
+     "experiments/tools/test_v2_cue_transport.py::test_the_listed_transformations_are_reduced_before_the_preview_is_dropped",
+     "experiments/tools/test_v2_cue_transport.py::test_a_receipt_of_exactly_128_kib_keeps_its_preview",
+     "experiments/tools/test_v2_cue_transport.py::test_a_refusal_detail_is_sanitized_before_it_is_recorded",
+     "experiments/tools/test_v2_cue_transport.py::test_sdk_a_cached_openai_client_outside_the_session_is_found_after_the_call",
+     "experiments/tools/test_v2_cue_transport.py::test_sdk_the_live_default_inner_transport_sends_what_litellm_s_frozen_default_client_sends"
+    ]
+   },
+   {
+    "report": "found during integration (not in the verdict): litellm caches four async handlers of other providers at import, so the install preflight refused every real episode",
+    "judged": "real (a live-path defect the fixtures had masked by flushing the cache)",
+    "repair": "only cached openai clients (the traced sync path) refuse installation; other entries are recorded in the install receipt",
+    "tests": [
+     "experiments/tools/test_v2_cue_transport.py::test_the_install_preflight_names_every_hidden_send_path",
+     "experiments/tools/test_v2_cue_transport.py::test_sdk_the_installer_refuses_a_pre_cached_client_or_a_hidden_send_global",
+     "experiments/tools/test_v2_cue_integration.py::test_every_episode_ran_on_the_pinned_stack_with_no_network_and_through_admission"
+    ]
+   }
+  ],
+  "terminal_reconstructed_from_verifier_probes": [
+   {
+    "report": "probe1: an operator abort after the leader exited left a same-group descendant running",
+    "judged": "real (reproduced)",
+    "repair": "the finally path SIGKILLs the whole group whenever neither supervision path finished, even with the leader gone, and confirms the group empty",
+    "tests": [
+     "experiments/tools/test_v2_cue_terminal.py::test_an_interrupt_after_the_leader_exited_still_kills_the_same_group_descendant"
+    ]
+   },
+   {
+    "report": "probe2: a setsid-escaped descendant survives; the docstring claimed none outlives the supervisor",
+    "judged": "real limit of process groups",
+    "repair": "claim corrected; an escaped process still holding the pipe is recorded (escaped_descendant_suspected) and counted",
+    "tests": [
+     "experiments/tools/test_v2_cue_terminal.py::test_a_descendant_that_leaves_the_group_and_keeps_the_pipe_is_recorded_as_escaped",
+     "experiments/tools/test_v2_cue_terminal.py::test_a_killed_group_whose_pipe_closes_is_not_reported_as_escaped"
+    ]
+   },
+   {
+    "report": "probe3: an endpoint evaluated inside the phase can consume the cleanup reserve",
+    "judged": "real",
+    "repair": "the driver determines the endpoint inside the inference window (the frozen order) and passes it in; a callable endpoint is recorded (endpoint_mode) with cleanup.reserve_intact",
+    "tests": [
+     "experiments/tools/test_v2_cue_terminal.py::test_an_endpoint_evaluated_inside_the_phase_is_recorded_when_it_breaks_the_cleanup_reserve"
+    ]
+   },
+   {
+    "report": "probe4 / probe7: a pre-existing or partially written submission.diff was reported unchanged",
+    "judged": "real",
+    "repair": "any file at the endpoint path is re-read; one not completely written by the phase with other bytes is file_conflict",
+    "tests": [
+     "experiments/tools/test_v2_cue_terminal.py::test_a_pre_existing_endpoint_file_with_other_bytes_is_a_conflict_not_unchanged",
+     "experiments/tools/test_v2_cue_terminal.py::test_a_partial_endpoint_file_left_by_a_failed_write_is_a_conflict"
+    ]
+   },
+   {
+    "report": "probe5: time spent building the argv was not charged to the command bound",
+    "judged": "real",
+    "repair": "the bound is taken after the argv is built",
+    "tests": [
+     "experiments/tools/test_v2_cue_terminal.py::test_time_spent_building_the_argv_is_charged_to_the_command_bound"
+    ]
+   },
+   {
+    "report": "mutants M1 (full budget per command) and M2 (60-s term dropped) survived",
+    "judged": "real test gaps (M2 is unreachable through phase_plan)",
+    "repair": "fixtures added",
+    "tests": [
+     "experiments/tools/test_v2_cue_terminal.py::test_each_command_gets_only_the_remaining_diagnostic_time",
+     "experiments/tools/test_v2_cue_terminal.py::test_the_sixty_second_term_binds_when_a_plan_leaves_more_time"
+    ]
+   },
+   {
+    "report": "found during integration: the supervisor's post-kill confirmation ran past the reserve start, leaving cleanup 89.97 s",
+    "judged": "real (strict 90-s reserve)",
+    "repair": "the diagnostic deadline is min(start + 30 s, reserve start - 4 s hand-off margin)",
+    "tests": [
+     "experiments/tools/test_v2_cue_integration.py::test_d_a_hung_diagnostic_executor_is_killed_at_its_bound_and_its_processes_are_gone",
+     "experiments/tools/test_v2_cue_terminal.py::test_an_early_finished_episode_is_anchored_at_its_actual_end_not_at_its_unused_deadline"
+    ]
+   }
+  ],
+  "admission_reconstructed_from_verifier_probes": [
+   {
+    "report": "P1/P1b: a pre-launch edit of an accepted helper, frozen grader/report, coding guide or wc2 module was frozen into the binding",
+    "judged": "real",
+    "repair": "accepted digests from the lead audit (and the published landmarks file where the audit is silent) must match; a mismatch refuses launch",
+    "tests": [
+     "experiments/tools/test_v2_cue_admission.py::test_a_pre_launch_edit_of_an_accepted_source_refuses_the_launch"
+    ]
+   },
+   {
+    "report": "P2: the traced SDK transport file, the editable .pth and a sitecustomize were not bound",
+    "judged": "real",
+    "repair": "traced SDK files verified against RECORD, every .pth bound (editable install must point at the bound source), site hooks refused; the episode re-checks the files it actually imports",
+    "tests": [
+     "experiments/tools/test_v2_cue_admission.py::test_the_traced_sdk_files_pth_and_site_hooks_are_bound"
+    ]
+   },
+   {
+    "report": "P3a/P3b: truncating the ledger at a record boundary erased a stop or an assignment",
+    "judged": "real",
+    "repair": "queue_ledger.head.json names the last record; a shorter ledger is refused",
+    "tests": [
+     "experiments/tools/test_v2_cue_admission.py::test_a_ledger_truncated_at_a_record_boundary_is_refused_not_resumed",
+     "experiments/tools/test_v2_cue_admission.py::test_a_crash_between_the_ledger_append_and_the_head_update_is_still_admitted"
+    ]
+   },
+   {
+    "report": "P3c: deleting the namespace allowed a second full launch",
+    "judged": "real",
+    "repair": "a write-once launch marker outside the namespace refuses any relaunch",
+    "tests": [
+     "experiments/tools/test_v2_cue_admission.py::test_deleting_the_namespace_never_opens_a_second_launch"
+    ]
+   },
+   {
+    "report": "P5: a run_directory_error stop could never be reconciled",
+    "judged": "real",
+    "repair": "assignment_error records run_dir_created; a run directory is required only where one was created",
+    "tests": [
+     "experiments/tools/test_v2_cue_admission.py::test_a_run_directory_error_can_be_reconciled_and_the_queue_resumes"
+    ]
+   },
+   {
+    "report": "P6: surrogate-escaped text crashed the ledger write mid-session",
+    "judged": "real",
+    "repair": "every ledger string is made valid UTF-8 (backslash escapes) before serialization",
+    "tests": [
+     "experiments/tools/test_v2_cue_admission.py::test_surrogate_escaped_text_is_recorded_escaped_and_never_breaks_the_ledger"
+    ]
+   },
+   {
+    "report": "P7: any callable was dispatched as the episode function",
+    "judged": "real",
+    "repair": "in the real checkout only the bound cue_episode.run_assignment; fixtures only in a disposable copy with fixture=True; the session records which",
+    "tests": [
+     "experiments/tools/test_v2_cue_admission.py::test_only_the_bound_episode_function_is_dispatched_outside_a_fixture_copy"
+    ]
+   },
+   {
+    "report": "P8/P12: a report or symlink written into the namespace or a run directory mid-session did not stop dispatch or validation",
+    "judged": "real",
+    "repair": "namespace contents and head re-checked before every dispatch (namespace_contents_invalid stop); run directories may hold only cue-v1 episode output",
+    "tests": [
+     "experiments/tools/test_v2_cue_admission.py::test_a_report_or_symlink_written_mid_session_stops_before_the_next_dispatch",
+     "experiments/tools/test_v2_cue_admission.py::test_a_run_directory_may_hold_only_cue_v1_episode_output"
+    ]
+   },
+   {
+    "report": "P9: a Finder .DS_Store blocks every resume",
+    "judged": "not a defect: fail-closed by design; the refusal names the file, and nothing unrecognized is admitted as runtime state",
+    "repair": null,
+    "tests": []
+   },
+   {
+    "report": "P10: the torn-record refusal promised a reconciliation that no path accepted",
+    "judged": "real",
+    "repair": "repair_torn_tail preserves the fragment write-once and appends a torn_tail_repair record; the message names it",
+    "tests": [
+     "experiments/tools/test_v2_cue_admission.py::test_a_torn_final_record_is_preserved_repaired_and_the_queue_resumes",
+     "experiments/tools/test_v2_cue_admission.py::test_an_edited_removed_or_torn_ledger_record_is_refused"
+    ]
+   },
+   {
+    "report": "P11: deadlines and storage bounds were restated, not read from the enforcing modules",
+    "judged": "real",
+    "repair": "the bounds are read from cue_terminal and cue_transport and checked; cue_episode may pass no capture override",
+    "tests": [
+     "experiments/tools/test_v2_cue_admission.py::test_the_enforcing_modules_state_the_contract_bounds_and_the_driver_passes_no_override"
+    ]
+   },
+   {
+    "report": "P12: a symlinked directory inside the pinned harness was skipped",
+    "judged": "real",
+    "repair": "symlinks are checked before directories",
+    "tests": [
+     "experiments/tools/test_v2_cue_admission.py::test_a_symlinked_directory_inside_the_pinned_harness_is_refused"
+    ]
+   }
+  ]
+ },
+ "verdict_input_note": "The task input carried the transport verdict in full but was truncated before the terminal and admission verdicts. Their findings were reconstructed from the verifiers' own probe scripts, which were re-run against the delivered sources; every reconstructed finding is listed with the judgement made.",
+ "not_implemented_exactly": [
+  "Hidden second pass (lead decision): the contract allows \"account for or disable\"; the capture disables it (one send per query attempt). A server 400 that would trigger litellm's pass 2 then reaches the caller as litellm's mapping of the refusal (InternalServerError), not as a success after pass 2. The server's own status and error are kept in the outcome record and every such case is reported in integrity().frozen_path_parity and the episode record; it does NOT stop the queue. Whether it should is for the lead.",
+  "Diagnostic hand-off margin: to keep the cleanup reserve at least 90 s including the supervisor's own post-kill confirmation, the diagnostic deadline is min(start + 30 s, absolute cleanup deadline - 90 s - 4 s). The per-command timeout is the contract formula applied to that deadline. This is stricter than the stated formula, never looser.",
+  "Host reserve: no repository source declares the existing host disk reserve. The episode requires it as --host-reserve-bytes and records it; the fixtures used 1 GiB. The lead or launcher must set the live value.",
+  "Live host/server step: not implemented. cue_episode.run_assignment raises LiveReleaseHeld and cue_runner offers only --dry-run/--validate; episode_argv shows the launch line a live runner would use.",
+  "Process-group limit: a host-side descendant that calls setsid leaves the group and cannot be killed by group signals; it is detected only while it holds the output pipe. The docker exec client does not do this, and in-container processes end with the container cleanup that always follows.",
+  "SDK binding scope: the 20 files on the traced request path are byte-verified against their RECORD digests, and each of the five distributions' RECORD is bound; other installed files are pinned through RECORD only, not re-hashed.",
+  "Interpreters: pytest runs in the project interpreter; the pinned interpreter has no pytest and was not modified, so every pinned-SDK part runs there through subprocess (the transport SDK fixture and the integration harness).",
+  "Logical ids: the driver opens the logical id before the frozen request_timeout pre-check (the frozen AccountedModel increments after it), so a query refused by the deadline still consumes an id and gets an explicit incomplete record; ids then equal the agent's n_calls. No model-visible effect.",
+  "Cue form: the cue is appended as one user message at the end of the model-visible history before the delivery query, and stays in the history of later calls (the form used by the transport fixture). The lead text fixes the cue and its timing, not the message role or position; the lead should confirm this form.",
+  "Accepted pins: workspace_capture.py and pilot_report.py are checked against the worker-published docs/req005_fixture_landmarks_20260923.json because the lead audit lists no digest for them; the lead may prefer to add them to its audit.",
+  "Start preflight: both the private and the public receipt directories must each show at least the reserve + 6 GiB free (conservative when they are on different devices).",
+  "Tamper evidence is local: the head file detects a truncated ledger and the launch marker a deleted namespace, but an operator who deliberately rewrites both can defeat them; the published git history remains the external anchor.",
+  "Request accounting: the episode reports its physical requests from the capture (the authoritative send ledger); the runner-side AssignmentRequestBudget is not consumed per send across the process boundary, and the per-episode cap is enforced in-process by the transport budget min(48, 576 - counted).",
+  "SIGALRM through the full driver: the frozen one-shot alarm path is reused unchanged and the capture's deadline handling is tested with a real SIGALRM at unit level; no integrated episode was driven into its inference deadline (timing-dependent)."
+ ],
+ "mutation_survey": {
+  "method": "worker-run, deterministic: each mutant is one single-site source edit applied to a scratch copy of experiments/, then the component test file is run with pytest -x (the transport file includes its pinned-SDK subprocess fixtures). KILLED means at least one test failed. Worker-reported, not independently verified",
+  "equivalent_mutants": [
+   {
+    "mutant": "M23_start_preflight_probe_error_passes",
+    "reason": "drops the probe_error conjunct of the start preflight; when a probe raises, its observed value stays None, so the remaining conjuncts already fail the preflight: the mutant is logically equivalent. The verifier's original M23 (a raising probe passing) is refused by test_the_start_preflight_refuses_an_unmeasurable_disk_and_probes_both_directories"
+   }
+  ],
+  "components": {
+   "transport": {
+    "module": "experiments/v2_agent/cue_transport.py",
+    "test_file": "experiments/tools/test_v2_cue_transport.py",
+    "mutants": [
+     {
+      "mutant": "M01_utf8_floor_noop",
+      "result": "KILLED"
+     },
+     {
+      "mutant": "M02_cap_lt",
+      "result": "KILLED"
+     },
+     {
+      "mutant": "M02b_cap_removed",
+      "result": "KILLED"
+     },
+     {
+      "mutant": "M03_one_send_gt",
+      "result": "KILLED"
+     },
+     {
+      "mutant": "M04_uncaptured_removed",
+      "result": "KILLED"
+     },
+     {
+      "mutant": "M05_binding_cache_loop_removed",
+      "result": "KILLED"
+     },
+     {
+      "mutant": "M06_proxy_check_removed",
+      "result": "KILLED"
+     },
+     {
+      "mutant": "M07_refusal_digest_unchecked",
+      "result": "KILLED"
+     },
+     {
+      "mutant": "M08_over_cap_ignored",
+      "result": "KILLED"
+     },
+     {
+      "mutant": "M09_no_outcome_reservation",
+      "result": "KILLED"
+     },
+     {
+      "mutant": "M10_timeout_not_special",
+      "result": "KILLED"
+     },
+     {
+      "mutant": "M11_ascii_serialization",
+      "result": "KILLED"
+     },
+     {
+      "mutant": "M12_unwritten_refusals_ignored",
+      "result": "KILLED"
+     },
+     {
+      "mutant": "M13_outcome_cap_removed",
+      "result": "KILLED"
+     },
+     {
+      "mutant": "M14_no_dir_sync",
+      "result": "KILLED"
+     },
+     {
+      "mutant": "M15_num_retries_per_request_unchecked",
+      "result": "KILLED"
+     },
+     {
+      "mutant": "M16_network_mock_unchecked",
+      "result": "KILLED"
+     },
+     {
+      "mutant": "M17_env_flags_unchecked",
+      "result": "KILLED"
+     },
+     {
+      "mutant": "M18_responses_route_unchecked",
+      "result": "KILLED"
+     },
+     {
+      "mutant": "M19_utf8_ceil_noop",
+      "result": "KILLED"
+     },
+     {
+      "mutant": "M20_listed_limit_not_reduced",
+      "result": "KILLED"
+     },
+     {
+      "mutant": "M21_refusal_cap_removed",
+      "result": "KILLED"
+     },
+     {
+      "mutant": "M22_integrity_ignores_interrupted",
+      "result": "KILLED"
+     },
+     {
+      "mutant": "M23_start_preflight_probe_error_passes",
+      "result": "SURVIVED"
+     },
+     {
+      "mutant": "M24_detail_unsanitized",
+      "result": "KILLED"
+     },
+     {
+      "mutant": "M25_close_swallows_deadline",
+      "result": "KILLED"
+     },
+     {
+      "mutant": "M26_binding_deadline_is_bypass",
+      "result": "KILLED"
+     },
+     {
+      "mutant": "M27_sequence_unchecked",
+      "result": "KILLED"
+     },
+     {
+      "mutant": "M28_bytestream_isinstance",
+      "result": "KILLED"
+     },
+     {
+      "mutant": "M29_refusal_gap_unchecked",
+      "result": "KILLED"
+     },
+     {
+      "mutant": "M30_dispatch_drops_deadline",
+      "result": "KILLED"
+     },
+     {
+      "mutant": "M31_public_start_probe_ignored",
+      "result": "KILLED"
+     },
+     {
+      "mutant": "M32_only_openai_clients_flagged",
+      "result": "KILLED"
+     }
+    ],
+    "killed": 32,
+    "total": 33
+   },
+   "terminal": {
+    "module": "experiments/v2_agent/cue_terminal.py",
+    "test_file": "experiments/tools/test_v2_cue_terminal.py",
+    "mutants": [
+     {
+      "mutant": "T1_full_budget_each_command",
+      "result": "KILLED"
+     },
+     {
+      "mutant": "T2_no_60s_term",
+      "result": "KILLED"
+     },
+     {
+      "mutant": "T3_no_reserve_term",
+      "result": "KILLED"
+     },
+     {
+      "mutant": "T4_interrupt_needs_live_leader",
+      "result": "KILLED"
+     },
+     {
+      "mutant": "T5_no_pipe_check",
+      "result": "KILLED"
+     },
+     {
+      "mutant": "T6_foreign_file_trusted",
+      "result": "KILLED"
+     },
+     {
+      "mutant": "T7_argv_time_uncharged",
+      "result": "KILLED"
+     },
+     {
+      "mutant": "T8_no_handoff_margin",
+      "result": "KILLED"
+     },
+     {
+      "mutant": "T9_reserve_intact_ignored",
+      "result": "KILLED"
+     },
+     {
+      "mutant": "T10_eperm_is_unknown",
+      "result": "KILLED"
+     }
+    ],
+    "killed": 10,
+    "total": 10
+   },
+   "admission": {
+    "module": "experiments/v2_agent/cue_admission.py",
+    "test_file": "experiments/tools/test_v2_cue_admission.py",
+    "mutants": [
+     {
+      "mutant": "A1_accepted_unchecked",
+      "result": "KILLED"
+     },
+     {
+      "mutant": "A2_traced_unchecked",
+      "result": "KILLED"
+     },
+     {
+      "mutant": "A3_site_hook_unchecked",
+      "result": "KILLED"
+     },
+     {
+      "mutant": "A4_pth_unchecked",
+      "result": "KILLED"
+     },
+     {
+      "mutant": "A5_head_unchecked",
+      "result": "KILLED"
+     },
+     {
+      "mutant": "A6_marker_unchecked",
+      "result": "KILLED"
+     },
+     {
+      "mutant": "A7_run_dir_always_required",
+      "result": "KILLED"
+     },
+     {
+      "mutant": "A8_clean_text_removed",
+      "result": "KILLED"
+     },
+     {
+      "mutant": "A9_run_dir_contents_unchecked",
+      "result": "KILLED"
+     },
+     {
+      "mutant": "A10_symlink_dir_skipped",
+      "result": "KILLED"
+     },
+     {
+      "mutant": "A11_enforced_unchecked",
+      "result": "KILLED"
+     },
+     {
+      "mutant": "A12_receipts_unchecked",
+      "result": "KILLED"
+     },
+     {
+      "mutant": "A13_forbidden_keyword_unchecked",
+      "result": "KILLED"
+     }
+    ],
+    "killed": 13,
+    "total": 13
+   },
+   "runner": {
+    "module": "experiments/v2_agent/cue_runner.py",
+    "test_file": "experiments/tools/test_v2_cue_admission.py",
+    "mutants": [
+     {
+      "mutant": "R1_mid_session_contents_unchecked",
+      "result": "KILLED"
+     },
+     {
+      "mutant": "R2_any_episode_fn",
+      "result": "KILLED"
+     }
+    ],
+    "killed": 2,
+    "total": 2
+   }
+  }
+ },
+ "source_manifest": [
+  {
+   "path": "experiments/v2_agent/cue_episode.py",
+   "sha256": "872ce526bce82d23a73fdf983f9f6aea1c965e2df9aeb054d3418c34946700e9",
+   "role": "new cue-v1 execution module (episode driver)"
+  },
+  {
+   "path": "experiments/v2_agent/cue_transport.py",
+   "sha256": "3ddfaf7734025d40b511d7f01732ced25c706487e1a64458fedaf2d1325acddd",
+   "role": "new cue-v1 execution module (transport capture), repaired"
+  },
+  {
+   "path": "experiments/v2_agent/cue_terminal.py",
+   "sha256": "7af9592b056379ad571914514fffb6d71012704e8bd61fa7bd89c3611c9ee64c",
+   "role": "new cue-v1 execution module (endpoint, diagnostic, cleanup), repaired"
+  },
+  {
+   "path": "experiments/v2_agent/cue_admission.py",
+   "sha256": "35a55024e19a16ae70b14486ad2606bb69fb810add0aa8101ae46ebef1cc57de",
+   "role": "new cue-v1 execution module (frozen admission), repaired"
+  },
+  {
+   "path": "experiments/v2_agent/cue_runner.py",
+   "sha256": "0c6d88c0807dd5a818e817c7bd24de2070010ef4e2f367b2c9cfa90e89e3624e",
+   "role": "new cue-v1 execution module (queue), repaired"
+  },
+  {
+   "path": "experiments/v2_agent/cue_detector.py",
+   "sha256": "3407e6355018dc5fd6708f9c368162cb846fc588d47d636d41e9ac7a18251d6f",
+   "role": "lead-accepted helper, unchanged"
+  },
+  {
+   "path": "experiments/v2_agent/exit_capture.py",
+   "sha256": "6e4f265759b3dbe22ba161382412cc9cd076dce822d76f4ac844fde987f699b9",
+   "role": "lead-accepted helper, unchanged"
+  },
+  {
+   "path": "experiments/v2_agent/request_receipt.py",
+   "sha256": "a751a43c6a2ef431c7119129308b740caed376536e6b6edcc7568368fde5cc46",
+   "role": "lead-accepted helper, unchanged"
+  },
+  {
+   "path": "experiments/v2_agent/trajectory_triples.py",
+   "sha256": "59ffe8f46706373f7ef4d8a443e89098036d29f0c06058c74653f5238850b24d",
+   "role": "lead-accepted helper, unchanged"
+  },
+  {
+   "path": "experiments/v2_agent/cue_cohort.py",
+   "sha256": "20bcf472c83ca36b07b4704a39ce45d6215a4a4bd9deb7ada0ac19e198c055bd",
+   "role": "lead-accepted helper, unchanged"
+  },
+  {
+   "path": "experiments/v2_agent/workspace_capture.py",
+   "sha256": "96f194f4854ab75e6235bec7b8289a41928b036cd7bddbe66eff4afbdbd5302f",
+   "role": "reused frozen wc2 module, unchanged"
+  },
+  {
+   "path": "experiments/v2_agent/pilot_episode.py",
+   "sha256": "164b7878f7a720a74ba913b97ee07ba287a556cb3ac6310aa95d2f2c91dbe6f5",
+   "role": "frozen yaml-v1 reference, unchanged (imported read-only by cue_episode)"
+  },
+  {
+   "path": "experiments/v2_agent/pilot_runner.py",
+   "sha256": "974df398415db22ed6676e04f0be5c1d93a7599d725f43f03fb989d77cbba10c",
+   "role": "frozen yaml-v1 reference, unchanged"
+  },
+  {
+   "path": "experiments/v2_agent/pilot_cohort.py",
+   "sha256": "59d271bd32217bd3c3a56c3dd4c20fd8eadd441377db7334c0932a325100851a",
+   "role": "frozen yaml-v1 reference, unchanged"
+  },
+  {
+   "path": "experiments/v2_agent/pilot_report.py",
+   "sha256": "1afa9002344557f4fd518044313f2fd277528a06a5fef667966175804711e10f",
+   "role": "frozen yaml-v1 reference, unchanged"
+  },
+  {
+   "path": "experiments/v2_agent/pilot_grade.py",
+   "sha256": "0c2a5a5da861a42fd1dbc79c01ff4b031bff8d0a3cbcda8b90e869161f70e7f1",
+   "role": "frozen yaml-v1 reference, unchanged"
+  },
+  {
+   "path": "experiments/v2_agent/analysis/req005_transport_map_probe.py",
+   "sha256": "4cb98ae60438ccf00a8ff8103cf5ee91c0cd3da2a1f27f188c16cf9a2ffcbdfc",
+   "role": "transport-map probe (earlier worker research)"
+  },
+  {
+   "path": "experiments/tools/test_v2_cue_integration.py",
+   "sha256": "c43b52fa0988fa177942a7b24abd24f43ac9c8ed66cdd3148954161bdbb50b15",
+   "role": "NEW acceptance fixtures (a)-(h), pinned SDK via subprocess"
+  },
+  {
+   "path": "experiments/tools/v2_cue_integration_harness.py",
+   "sha256": "3a6cc0894bc2b60b13061d9c03fc48d901b4b3dbd839f28de9543ef13a7d1dab",
+   "role": "NEW pinned-venv harness running the unmodified drivers"
+  },
+  {
+   "path": "experiments/tools/v2_cue_tree_fixture.py",
+   "sha256": "a861d4c2d5234163780457db5856780901568e03a027a033ac767278902bb6ef",
+   "role": "NEW disposable copy of the bound inputs"
+  },
+  {
+   "path": "experiments/tools/test_v2_cue_episode.py",
+   "sha256": "f18a5f039022d956674f13d47c074d149b66a58f7378f61c737cf74f1d141a8c",
+   "role": "NEW driver intervention fixtures (LogicalCalls, CueModel)"
+  },
+  {
+   "path": "experiments/tools/test_v2_cue_transport.py",
+   "sha256": "9451a46e267501e3af41adbda0b2ade22da1b3ff002c1e1e1e52a0d82c4deebd",
+   "role": "component fixtures, extended after the review"
+  },
+  {
+   "path": "experiments/tools/v2_cue_transport_sdk_fixture.py",
+   "sha256": "2afad617916ae67a28b4f44ec8b3e05f8d0975ac537cd9bd519340851fc7364f",
+   "role": "pinned-SDK observer for the transport fixtures, extended"
+  },
+  {
+   "path": "experiments/tools/test_v2_cue_terminal.py",
+   "sha256": "2c074b6e3927302b266514ba3bd98818c01289b58bc2fa625766d0b27e684008",
+   "role": "component fixtures, extended after the review"
+  },
+  {
+   "path": "experiments/tools/test_v2_cue_admission.py",
+   "sha256": "d772f5af27bb8cff3b121ad68076cc3d2890be994157e5de941462e7f59a1159",
+   "role": "component fixtures, extended after the review"
+  },
+  {
+   "path": "experiments/tools/test_v2_cue_detector.py",
+   "sha256": "26065b889724689cc538a4128aaf11a955f7406e714da50763f9e5086187e69f",
+   "role": "accepted helper fixtures, unchanged"
+  },
+  {
+   "path": "experiments/tools/test_v2_cue_cohort.py",
+   "sha256": "ef34156a245e82518878880f60ae37e1436f7cbbc9bfa6c15c4b73c43f3d2c5e",
+   "role": "accepted helper fixtures, unchanged"
+  },
+  {
+   "path": "experiments/tools/test_v2_exit_capture.py",
+   "sha256": "ac5d6a80d9d21976cee314f6e6ab588a4a99f61f45707ca78cefe752d5fef951",
+   "role": "accepted helper fixtures, unchanged"
+  },
+  {
+   "path": "experiments/tools/test_v2_request_receipt.py",
+   "sha256": "8cd93b3b21d1ef11ae450a38283faf807aeb97b53805ed19a22b7b8e9ebcfca4",
+   "role": "accepted helper fixtures, unchanged"
+  },
+  {
+   "path": "docs/theory_feedback_20260923_req005_review.md",
+   "sha256": "588036a1deaceac27f77c297d6dad30ec8ddac17be521367c79a50f9c53c4eeb",
+   "role": "the lead's binding integration contract"
+  },
+  {
+   "path": "docs/req005_instrumentation_spec_20260923.md",
+   "sha256": "dbb8a856bcb5206271c95c73859003e254954038b589efa02c9a5ddb93dabb90",
+   "role": "worker instrumentation specification"
+  },
+  {
+   "path": "docs/req005_transport_map_20260923.md",
+   "sha256": "1a217ae48b84b2f35c3c67538e0ad210bf7f8cd82dba74b547f0c186d67a4bb6",
+   "role": "worker transport map (the traced injection point)"
+  },
+  {
+   "path": "docs/req005_visible_evidence_guide_20260923.md",
+   "sha256": "ea7f67d4c1a0cf93d271f30fb1c48d027d8f4f97c28eaed0451c4a554c142625",
+   "role": "lead coding guide, bound by admission"
+  },
+  {
+   "path": "docs/audits/req005_component_review_20260923.json",
+   "sha256": "bab3f0667e6c23cd7015bd5dead712e8b8e435d4ceb66bd35f899458179328d6",
+   "role": "lead audit: the accepted digests admission checks"
+  },
+  {
+   "path": "docs/req005_fixture_landmarks_20260923.json",
+   "sha256": "4dcd4b325ee014b49d708df678ed56705708e1e8cd6a6dbecbd522aae17f91ba",
+   "role": "published pins for workspace_capture.py and pilot_report.py"
+  },
+  {
+   "path": "docs/req005_fixture_landmarks_correction_20260923.json",
+   "sha256": "7ca110bbf93b23c02f5f2d1c797138587c468bf549434ef58e634a2021361a60",
+   "role": "lead-accepted alignment correction"
+  },
+  {
+   "path": "docs/req005_integration_acceptance_20260923.md",
+   "sha256": "44e849006f20bee18d8a0d7b7a14eab572f7c53ca62d62085a11bc5a2d49ab8f",
+   "role": "this artifact's human summary"
+  },
+  {
+   "path": "results/v2_agent/pilot_20260922_yaml_v1/cohort_binding.json",
+   "sha256": "7b37292d9f1aeec14360323855f14f1fcdde2d73cd61188bdf42d6b885b53f0c",
+   "role": "published yaml-v1 source binding (read only)"
+  }
+ ],
+ "binding_preview": {
+  "binding_sha256": "8e4363c9214df191dc748a12a96ec3e7d675be37a9572bd0268745903ee1b2b9",
+  "problems": [],
+  "frozen": false,
+  "note": "compute_binding() over this checkout, read-only: the namespace results/v2_agent/pilot_20260923_cue_v1 does not exist and nothing was frozen; the live launch freezes its own binding",
+  "modules": {
+   "cue_admission.py": "35a55024e19a16ae70b14486ad2606bb69fb810add0aa8101ae46ebef1cc57de",
+   "cue_cohort.py": "20bcf472c83ca36b07b4704a39ce45d6215a4a4bd9deb7ada0ac19e198c055bd",
+   "cue_detector.py": "3407e6355018dc5fd6708f9c368162cb846fc588d47d636d41e9ac7a18251d6f",
+   "cue_episode.py": "872ce526bce82d23a73fdf983f9f6aea1c965e2df9aeb054d3418c34946700e9",
+   "cue_runner.py": "0c6d88c0807dd5a818e817c7bd24de2070010ef4e2f367b2c9cfa90e89e3624e",
+   "cue_terminal.py": "7af9592b056379ad571914514fffb6d71012704e8bd61fa7bd89c3611c9ee64c",
+   "cue_transport.py": "3ddfaf7734025d40b511d7f01732ced25c706487e1a64458fedaf2d1325acddd",
+   "exit_capture.py": "6e4f265759b3dbe22ba161382412cc9cd076dce822d76f4ac844fde987f699b9",
+   "pilot_episode.py": "164b7878f7a720a74ba913b97ee07ba287a556cb3ac6310aa95d2f2c91dbe6f5",
+   "request_receipt.py": "a751a43c6a2ef431c7119129308b740caed376536e6b6edcc7568368fde5cc46",
+   "trajectory_triples.py": "59ffe8f46706373f7ef4d8a443e89098036d29f0c06058c74653f5238850b24d",
+   "workspace_capture.py": "96f194f4854ab75e6235bec7b8289a41928b036cd7bddbe66eff4afbdbd5302f"
+  },
+  "enforced_bounds": {
+   "cue_episode_capture_keywords": [
+    [
+     "budget",
+     "host_reserve_bytes"
+    ]
+   ],
+   "cue_terminal": {
+    "CLEANUP_RESERVE_S": 90,
+    "DIAGNOSTIC_MAX_S": 30,
+    "EXISTING_CLEANUP_ALLOWANCE_S": 120,
+    "PHASE_WINDOW_S": 120,
+    "SUBPROCESS_MAX_S": 60
+   },
+   "cue_transport": {
+    "BODY_CAP_BYTES": 8388608,
+    "COHORT_RAW_RESERVATION_BYTES": 4831838208,
+    "PUBLIC_HEAD_BYTES": 32768,
+    "PUBLIC_RECORD_CAP_BYTES": 131072,
+    "PUBLIC_TAIL_BYTES": 32768,
+    "PUBLIC_WHOLE_MAX_BYTES": 65536,
+    "SENDS_PER_QUERY_ATTEMPT": 1,
+    "START_FREE_ABOVE_RESERVE_BYTES": 6442450944
+   }
+  },
+  "accepted_pins": {
+   "docs/req005_visible_evidence_guide_20260923.md": "ea7f67d4c1a0cf93d271f30fb1c48d027d8f4f97c28eaed0451c4a554c142625",
+   "experiments/v2_agent/cue_cohort.py": "20bcf472c83ca36b07b4704a39ce45d6215a4a4bd9deb7ada0ac19e198c055bd",
+   "experiments/v2_agent/cue_detector.py": "3407e6355018dc5fd6708f9c368162cb846fc588d47d636d41e9ac7a18251d6f",
+   "experiments/v2_agent/exit_capture.py": "6e4f265759b3dbe22ba161382412cc9cd076dce822d76f4ac844fde987f699b9",
+   "experiments/v2_agent/pilot_cohort.py": "59d271bd32217bd3c3a56c3dd4c20fd8eadd441377db7334c0932a325100851a",
+   "experiments/v2_agent/pilot_episode.py": "164b7878f7a720a74ba913b97ee07ba287a556cb3ac6310aa95d2f2c91dbe6f5",
+   "experiments/v2_agent/pilot_grade.py": "0c2a5a5da861a42fd1dbc79c01ff4b031bff8d0a3cbcda8b90e869161f70e7f1",
+   "experiments/v2_agent/pilot_report.py": "1afa9002344557f4fd518044313f2fd277528a06a5fef667966175804711e10f",
+   "experiments/v2_agent/pilot_runner.py": "974df398415db22ed6676e04f0be5c1d93a7599d725f43f03fb989d77cbba10c",
+   "experiments/v2_agent/request_receipt.py": "a751a43c6a2ef431c7119129308b740caed376536e6b6edcc7568368fde5cc46",
+   "experiments/v2_agent/trajectory_triples.py": "59ffe8f46706373f7ef4d8a443e89098036d29f0c06058c74653f5238850b24d",
+   "experiments/v2_agent/workspace_capture.py": "96f194f4854ab75e6235bec7b8289a41928b036cd7bddbe66eff4afbdbd5302f"
+  },
+  "sdk_traced_files": {
+   "httpcore/_sync/connection.py": "f5ec4639bdcf07e329d93d7eb1c91278bdadfad27ff7e357a2657c8a19960a05",
+   "httpcore/_sync/connection_pool.py": "6be4fc2d3b14c5ceebd16c356ad7c7483a163e34347c0f1497b4b7f85d0c8fbd",
+   "httpcore/_sync/http11.py": "205a1b0f531de491652462969e1d7f4377a98a452bc88f2aa34f6ff0c8892040",
+   "httpx/_client.py": "c43f941baefe58c91e96d00039e1868fe719d91453026d7db1647194563bff8d",
+   "httpx/_content.py": "2c61b3ac94d1dcebcde0c6f519554d2d7917247fbaa0a97002db4ef69e70ff28",
+   "httpx/_models.py": "e3ffc6bb2bf580bc6e6428708a6f247d036220e709f5a72b785392babbd97e6b",
+   "httpx/_transports/default.py": "03379a454c95c0271c4f2c8d25ec437f49f57457f3cf2769748420bf0ecf2e79",
+   "litellm/__init__.py": "24b9c6feda8081a7c08646da6c7971b6fe7c5e4a4fb53262257df5c5a6a023ef",
+   "litellm/constants.py": "3e517e3fac84f44deccefb6c83d3f6d6f7513956338d4befcc59fb7ce4fe6e7b",
+   "litellm/litellm_core_utils/exception_mapping_utils.py": "22f44046b596b9558d28e72fa667f2d804949e53bd594a171444113e8d11fd74",
+   "litellm/llms/custom_httpx/http_handler.py": "4d84f1b89afda0f558676428278dd53d5ee84c7af5a2ff4c3c64659209dc9314",
+   "litellm/llms/openai/common_utils.py": "2333615d6382f510bc4268f04450d56ed7f7c61ca8394daf654d70e8d7692ac9",
+   "litellm/llms/openai/openai.py": "30e9f9fb0d8857b5795236335f190f8de30b7f41b95f8fb08dd47ce863096bc8",
+   "litellm/main.py": "4e5a93d6066e1df0b8885d6d083548d1c33155fd181ee84f0aed809c26d76e34",
+   "litellm/utils.py": "6c6fdade35376c1f1c5e9cf76ee0b072b1c0e55ac30e2d900547e886a5cd9dcc",
+   "openai/_base_client.py": "5539c83d01c27e1bbf1ad34e59cc872202feb6c8bf81b56fadbeeb2b81a3e869",
+   "openai/_client.py": "d101a059e5c7632dff8f791ca8480c5cb07623272d421842ab40d348dd940517",
+   "openai/_utils/_json.py": "6e5f79bae216c2049f5d7fa03f5b6b2bf94300fc09ba361f274e42c68d92102e",
+   "openai/resources/chat/completions/completions.py": "f2fbad0d47459c97eacf48ff79b983c92c5f968aaa2b0454aff9cd2a5462477a",
+   "tenacity/__init__.py": "8f4bed57919393702b562309921c215cf5949a719dd37ec1d61a062b69954194"
+  }
+ },
+ "interpreters": {
+  "project": {
+   "path": ".venv/bin/python",
+   "output": [
+    "CPython 3.12.13",
+    "pytest 9.1.1"
+   ]
+  },
+  "pinned": {
+   "path": "work/venvs/minisweagent_04d809c/bin/python",
+   "output": [
+    "CPython 3.12.13",
+    "litellm 1.102.0",
+    "openai 2.54.0",
+    "httpx 0.28.1",
+    "httpcore 1.0.9",
+    "tenacity 9.1.4",
+    "mini-swe-agent 2.4.6",
+    "pytest installed: False"
+   ],
+   "role": "runs every pinned-SDK part through subprocess: v2_cue_transport_sdk_fixture.py (transport fixtures) and v2_cue_integration_harness.py (acceptance fixtures, both drivers). It has no pytest and was not modified, so pytest itself runs in the project interpreter"
+  }
+ },
+ "pytest_runs": [
+  {
+   "file": "experiments/tools/test_v2_cue_integration.py",
+   "command": ".venv/bin/python -m pytest -q -rA -p no:cacheprovider experiments/tools/test_v2_cue_integration.py",
+   "returncode": 0,
+   "seconds": 60.8,
+   "final_line": "14 passed in 60.68s (0:01:00)",
+   "output_lines": [
+    "..............                                                           [100%]",
+    "==================================== PASSES ====================================",
+    "=========================== short test summary info ============================",
+    "PASSED experiments/tools/test_v2_cue_integration.py::test_every_episode_ran_on_the_pinned_stack_with_no_network_and_through_admission",
+    "PASSED experiments/tools/test_v2_cue_integration.py::test_the_driver_does_nothing_unless_the_whole_queue_is_admitted",
+    "PASSED experiments/tools/test_v2_cue_integration.py::test_a_baseline_request_bodies_headers_and_model_visible_messages_equal_the_frozen_driver",
+    "PASSED experiments/tools/test_v2_cue_integration.py::test_b_the_cue_arm_differs_from_baseline_only_by_the_one_inserted_cue_message",
+    "PASSED experiments/tools/test_v2_cue_integration.py::test_c_a_format_error_breaks_adjacency_and_the_cue_waits_for_three_new_repeats",
+    "PASSED experiments/tools/test_v2_cue_integration.py::test_c_a_physical_retry_resends_the_same_single_cue_and_consumes_no_second_one",
+    "PASSED experiments/tools/test_v2_cue_integration.py::test_c_a_trigger_on_the_final_h24_call_stays_explicitly_undelivered",
+    "PASSED experiments/tools/test_v2_cue_integration.py::test_c_a_pre_dispatch_storage_refusal_after_insertion_is_not_delivery",
+    "PASSED experiments/tools/test_v2_cue_integration.py::test_d_a_hung_diagnostic_executor_is_killed_at_its_bound_and_its_processes_are_gone",
+    "PASSED experiments/tools/test_v2_cue_integration.py::test_e_cleanup_runs_after_a_diagnostic_capture_error_and_after_a_receipt_capture_stop",
+    "PASSED experiments/tools/test_v2_cue_integration.py::test_f_a_storage_refusal_before_dispatch_sends_nothing_and_stops_the_queue",
+    "PASSED experiments/tools/test_v2_cue_integration.py::test_g_a_corrupted_receipt_is_detected_and_refuses_the_resume",
+    "PASSED experiments/tools/test_v2_cue_integration.py::test_h_the_submitted_only_endpoint_bytes_are_unchanged_by_instrumentation_and_by_the_cue",
+    "PASSED experiments/tools/test_v2_cue_integration.py::test_the_ledger_records_every_episode_with_its_true_request_count"
+   ]
+  },
+  {
+   "file": "experiments/tools/test_v2_cue_episode.py",
+   "command": ".venv/bin/python -m pytest -q -rA -p no:cacheprovider experiments/tools/test_v2_cue_episode.py",
+   "returncode": 0,
+   "seconds": 0.9,
+   "final_line": "16 passed in 0.78s",
+   "output_lines": [
+    "................                                                         [100%]",
+    "==================================== PASSES ====================================",
+    "=========================== short test summary info ============================",
+    "PASSED experiments/tools/test_v2_cue_episode.py::test_a_format_error_breaks_adjacency_so_a_a_fe_a_never_triggers",
+    "PASSED experiments/tools/test_v2_cue_episode.py::test_one_record_per_logical_call_is_fed_and_the_cue_goes_to_the_next_permitted_query_only",
+    "PASSED experiments/tools/test_v2_cue_episode.py::test_a_physical_retry_of_the_delivery_query_is_one_cue_with_two_sends",
+    "PASSED experiments/tools/test_v2_cue_episode.py::test_a_pre_dispatch_refusal_after_insertion_is_not_delivery",
+    "PASSED experiments/tools/test_v2_cue_episode.py::test_a_transport_attempt_without_a_response_is_its_own_state",
+    "PASSED experiments/tools/test_v2_cue_episode.py::test_an_early_exit_before_the_delivery_query_stays_explicitly_undelivered",
+    "PASSED experiments/tools/test_v2_cue_episode.py::test_a_query_refused_by_the_deadline_consumes_an_id_but_gets_no_cue",
+    "PASSED experiments/tools/test_v2_cue_episode.py::test_a_trigger_on_the_final_h24_call_is_recorded_without_delivery",
+    "PASSED experiments/tools/test_v2_cue_episode.py::test_the_baseline_arm_records_the_same_landmark_silently",
+    "PASSED experiments/tools/test_v2_cue_episode.py::test_an_executor_exception_or_a_submitted_action_is_an_incomplete_record",
+    "PASSED experiments/tools/test_v2_cue_episode.py::test_the_cue_message_is_the_accepted_text_as_one_user_message",
+    "PASSED experiments/tools/test_v2_cue_episode.py::test_the_live_runner_launch_argv_carries_the_frozen_row_and_the_budget",
+    "PASSED experiments/tools/test_v2_cue_episode.py::test_an_unknown_arm_is_refused_before_any_work",
+    "PASSED experiments/tools/test_v2_cue_episode.py::test_the_model_appends_the_cue_once_and_a_retry_resends_the_same_messages",
+    "PASSED experiments/tools/test_v2_cue_episode.py::test_a_query_past_the_deadline_is_refused_before_the_cue_is_appended",
+    "PASSED experiments/tools/test_v2_cue_episode.py::test_a_format_error_is_its_own_logical_call_in_the_model"
+   ]
+  },
+  {
+   "file": "experiments/tools/test_v2_cue_transport.py",
+   "command": ".venv/bin/python -m pytest -q -rA -p no:cacheprovider experiments/tools/test_v2_cue_transport.py",
+   "returncode": 0,
+   "seconds": 9.3,
+   "final_line": "68 passed in 9.19s",
+   "output_lines": [
+    "....................................................................     [100%]",
+    "==================================== PASSES ====================================",
+    "=========================== short test summary info ============================",
+    "PASSED experiments/tools/test_v2_cue_transport.py::test_the_declared_bounds_are_the_lead_s_numbers",
+    "PASSED experiments/tools/test_v2_cue_transport.py::test_the_request_budget_refuses_an_unstated_or_enlarged_cohort_budget",
+    "PASSED experiments/tools/test_v2_cue_transport.py::test_wire_metadata_publishes_no_credential_value_query_or_userinfo",
+    "PASSED experiments/tools/test_v2_cue_transport.py::test_a_payload_within_64_kib_is_published_whole_with_its_complete_hash_and_length",
+    "PASSED experiments/tools/test_v2_cue_transport.py::test_a_payload_over_64_kib_publishes_a_32_kib_head_and_tail_with_original_offsets",
+    "PASSED experiments/tools/test_v2_cue_transport.py::test_a_multibyte_payload_is_cut_only_at_utf8_character_boundaries",
+    "PASSED experiments/tools/test_v2_cue_transport.py::test_redaction_happens_before_the_excerpt_is_cut",
+    "PASSED experiments/tools/test_v2_cue_transport.py::test_a_head_tail_preview_that_escapes_past_128_kib_is_omitted_entirely_with_its_reason",
+    "PASSED experiments/tools/test_v2_cue_transport.py::test_a_whole_payload_whose_serialized_receipt_exceeds_128_kib_is_omitted_not_truncated",
+    "PASSED experiments/tools/test_v2_cue_transport.py::test_transformation_metadata_is_bounded_with_an_omitted_entry_count",
+    "PASSED experiments/tools/test_v2_cue_transport.py::test_an_outcome_record_is_bounded_explicitly_and_stays_under_128_kib",
+    "PASSED experiments/tools/test_v2_cue_transport.py::test_an_identity_too_large_for_any_receipt_is_refused_before_any_work",
+    "PASSED experiments/tools/test_v2_cue_transport.py::test_the_start_preflight_needs_6_gib_above_the_declared_host_reserve",
+    "PASSED experiments/tools/test_v2_cue_transport.py::test_a_normal_send_is_persisted_before_it_is_forwarded_and_its_outcome_linked",
+    "PASSED experiments/tools/test_v2_cue_transport.py::test_an_oversized_body_is_refused_before_dispatch_and_never_truncated",
+    "PASSED experiments/tools/test_v2_cue_transport.py::test_a_body_of_exactly_8_mib_is_within_the_cap",
+    "PASSED experiments/tools/test_v2_cue_transport.py::test_a_failed_durable_write_refuses_before_dispatch[.request.raw]",
+    "PASSED experiments/tools/test_v2_cue_transport.py::test_a_failed_durable_write_refuses_before_dispatch[.request.json]",
+    "PASSED experiments/tools/test_v2_cue_transport.py::test_a_write_once_collision_is_a_protocol_refusal_not_an_overwrite",
+    "PASSED experiments/tools/test_v2_cue_transport.py::test_free_space_is_rechecked_before_each_write",
+    "PASSED experiments/tools/test_v2_cue_transport.py::test_a_failing_free_space_probe_refuses",
+    "PASSED experiments/tools/test_v2_cue_transport.py::test_non_replayable_mismatched_or_misdeclared_bodies_are_refused_unsent",
+    "PASSED experiments/tools/test_v2_cue_transport.py::test_a_second_send_inside_one_query_attempt_is_refused_and_recorded_but_is_not_a_stop",
+    "PASSED experiments/tools/test_v2_cue_transport.py::test_with_two_sends_allowed_the_extra_send_consumes_its_own_receipt_and_budget_unit",
+    "PASSED experiments/tools/test_v2_cue_transport.py::test_budget_exhaustion_scope_violations_and_the_latch_all_stop_before_any_send",
+    "PASSED experiments/tools/test_v2_cue_transport.py::test_a_call_that_returns_without_a_captured_send_is_a_stop_that_keeps_the_result",
+    "PASSED experiments/tools/test_v2_cue_transport.py::test_a_failed_outcome_write_keeps_the_model_success_and_marks_integrity_incomplete",
+    "PASSED experiments/tools/test_v2_cue_transport.py::test_a_failed_outcome_write_never_replaces_the_original_model_exception",
+    "PASSED experiments/tools/test_v2_cue_transport.py::test_usage_is_never_fabricated_when_the_server_omits_it_or_the_body_was_not_read",
+    "PASSED experiments/tools/test_v2_cue_transport.py::test_a_deadline_during_the_outcome_write_is_re_raised_not_swallowed",
+    "PASSED experiments/tools/test_v2_cue_transport.py::test_a_deadline_during_the_pre_dispatch_write_latches_and_nothing_is_sent",
+    "PASSED experiments/tools/test_v2_cue_transport.py::test_a_deadline_during_the_binding_check_is_the_deadline_not_a_bypass_claim",
+    "PASSED experiments/tools/test_v2_cue_transport.py::test_a_deadline_outside_a_dispatch_scope_propagates_at_once",
+    "PASSED experiments/tools/test_v2_cue_transport.py::test_query_identity_is_sequenced_and_no_pair_is_reused",
+    "PASSED experiments/tools/test_v2_cue_transport.py::test_the_frozen_horizon_attempts_and_single_send_cannot_be_enlarged",
+    "PASSED experiments/tools/test_v2_cue_transport.py::test_the_install_preflight_names_every_hidden_send_path",
+    "PASSED experiments/tools/test_v2_cue_transport.py::test_session_binding_names_a_cached_client_that_does_not_wrap_the_session",
+    "PASSED experiments/tools/test_v2_cue_transport.py::test_refusal_records_are_sealed_consecutive_and_checked",
+    "PASSED experiments/tools/test_v2_cue_transport.py::test_an_unwritten_refusal_record_makes_integrity_incomplete",
+    "PASSED experiments/tools/test_v2_cue_transport.py::test_a_valid_receipt_file_over_128_kib_makes_the_set_incomplete",
+    "PASSED experiments/tools/test_v2_cue_transport.py::test_an_outcome_record_over_128_kib_is_refused_and_not_written",
+    "PASSED experiments/tools/test_v2_cue_transport.py::test_a_refusal_record_over_128_kib_is_refused",
+    "PASSED experiments/tools/test_v2_cue_transport.py::test_every_durable_write_is_synced_file_then_directory_before_the_send",
+    "PASSED experiments/tools/test_v2_cue_transport.py::test_a_failed_directory_sync_after_the_public_receipt_is_a_refusal_linked_to_that_receipt",
+    "PASSED experiments/tools/test_v2_cue_transport.py::test_the_listed_transformations_are_reduced_before_the_preview_is_dropped",
+    "PASSED experiments/tools/test_v2_cue_transport.py::test_a_receipt_of_exactly_128_kib_keeps_its_preview",
+    "PASSED experiments/tools/test_v2_cue_transport.py::test_the_start_preflight_refuses_an_unmeasurable_disk_and_probes_both_directories",
+    "PASSED experiments/tools/test_v2_cue_transport.py::test_a_refusal_detail_is_sanitized_before_it_is_recorded",
+    "PASSED experiments/tools/test_v2_cue_transport.py::test_sdk_the_fixture_ran_on_the_pinned_stack_with_no_network",
+    "PASSED experiments/tools/test_v2_cue_transport.py::test_sdk_baseline_receiver_bytes_equal_the_retained_private_bytes_and_the_literal",
+    "PASSED experiments/tools/test_v2_cue_transport.py::test_sdk_cue_arm_differs_from_baseline_only_by_the_one_inserted_cue_message",
+    "PASSED experiments/tools/test_v2_cue_transport.py::test_sdk_a_retried_call_gets_one_receipt_per_physical_send",
+    "PASSED experiments/tools/test_v2_cue_transport.py::test_sdk_a_context_rejection_is_one_send_one_receipt_and_no_retry",
+    "PASSED experiments/tools/test_v2_cue_transport.py::test_sdk_an_oversized_body_is_refused_before_dispatch_with_zero_sends_and_the_stop_latches",
+    "PASSED experiments/tools/test_v2_cue_transport.py::test_sdk_a_failed_durable_write_and_low_free_space_refuse_with_zero_sends",
+    "PASSED experiments/tools/test_v2_cue_transport.py::test_sdk_a_bookkeeping_failure_preserves_the_original_success_and_exception",
+    "PASSED experiments/tools/test_v2_cue_transport.py::test_sdk_usage_the_server_omitted_stays_unknown_although_litellm_reports_zeros",
+    "PASSED experiments/tools/test_v2_cue_transport.py::test_sdk_a_multibyte_body_over_64_kib_is_retained_exactly_and_published_as_bounded_excerpts",
+    "PASSED experiments/tools/test_v2_cue_transport.py::test_sdk_litellm_s_hidden_second_pass_and_sdk_retries_are_refused_after_one_send",
+    "PASSED experiments/tools/test_v2_cue_transport.py::test_sdk_when_two_sends_are_allowed_each_extra_send_has_its_own_receipt_and_budget_unit",
+    "PASSED experiments/tools/test_v2_cue_transport.py::test_sdk_a_redirect_is_surfaced_not_followed",
+    "PASSED experiments/tools/test_v2_cue_transport.py::test_sdk_the_installer_refuses_a_pre_cached_client_or_a_hidden_send_global",
+    "PASSED experiments/tools/test_v2_cue_transport.py::test_sdk_a_send_that_bypasses_the_capture_session_stops_the_episode",
+    "PASSED experiments/tools/test_v2_cue_transport.py::test_sdk_a_streaming_body_is_refused_unread_before_the_terminal",
+    "PASSED experiments/tools/test_v2_cue_transport.py::test_sdk_a_suppressed_hidden_resend_keeps_the_server_s_own_400_and_is_reported_as_a_parity_deviation",
+    "PASSED experiments/tools/test_v2_cue_transport.py::test_sdk_a_cached_openai_client_outside_the_session_is_found_after_the_call",
+    "PASSED experiments/tools/test_v2_cue_transport.py::test_sdk_a_bytestream_subclass_is_refused_unread",
+    "PASSED experiments/tools/test_v2_cue_transport.py::test_sdk_the_live_default_inner_transport_sends_what_litellm_s_frozen_default_client_sends"
+   ]
+  },
+  {
+   "file": "experiments/tools/test_v2_cue_terminal.py",
+   "command": ".venv/bin/python -m pytest -q -rA -p no:cacheprovider experiments/tools/test_v2_cue_terminal.py",
+   "returncode": 0,
+   "seconds": 14.5,
+   "final_line": "79 passed in 14.42s",
+   "output_lines": [
+    "........................................................................ [ 91%]",
+    ".......                                                                  [100%]",
+    "==================================== PASSES ====================================",
+    "=========================== short test summary info ============================",
+    "PASSED experiments/tools/test_v2_cue_terminal.py::test_the_frozen_yaml_v1_sources_are_byte_identical_to_their_bound_hashes",
+    "PASSED experiments/tools/test_v2_cue_terminal.py::test_the_existing_cleanup_cap_is_the_frozen_drivers_deadline_plus_120",
+    "PASSED experiments/tools/test_v2_cue_terminal.py::test_the_module_imports_no_frozen_driver_and_carries_no_private_path",
+    "PASSED experiments/tools/test_v2_cue_terminal.py::test_an_early_finished_episode_is_anchored_at_its_actual_end_not_at_its_unused_deadline",
+    "PASSED experiments/tools/test_v2_cue_terminal.py::test_the_existing_cap_binds_when_inference_ran_up_to_its_deadline",
+    "PASSED experiments/tools/test_v2_cue_terminal.py::test_a_cap_leaving_less_than_ninety_seconds_grants_no_diagnostic_time",
+    "PASSED experiments/tools/test_v2_cue_terminal.py::test_an_inference_end_reported_after_the_start_is_still_bounded_by_the_independent_30s_maximum",
+    "PASSED experiments/tools/test_v2_cue_terminal.py::test_an_input_that_is_not_a_finite_epoch_time_grants_no_diagnostic_time[None-2920.0-1000.0-the actual inference end is not a finite epoch time: the phase cannot be anchored, so no diagnostic time is granted and cleanup keeps the existing cap-2920.0-existing_cap (unanchored)]",
+    "PASSED experiments/tools/test_v2_cue_terminal.py::test_an_input_that_is_not_a_finite_epoch_time_grants_no_diagnostic_time[nan-2920.0-1000.0-the actual inference end is not a finite epoch time: the phase cannot be anchored, so no diagnostic time is granted and cleanup keeps the existing cap-2920.0-existing_cap (unanchored)]",
+    "PASSED experiments/tools/test_v2_cue_terminal.py::test_an_input_that_is_not_a_finite_epoch_time_grants_no_diagnostic_time[True-2920.0-1000.0-the actual inference end is not a finite epoch time: the phase cannot be anchored, so no diagnostic time is granted and cleanup keeps the existing cap-2920.0-existing_cap (unanchored)]",
+    "PASSED experiments/tools/test_v2_cue_terminal.py::test_an_input_that_is_not_a_finite_epoch_time_grants_no_diagnostic_time[1000.0-nan-1000.0-the existing absolute cleanup cap is not a finite epoch time-None-None]",
+    "PASSED experiments/tools/test_v2_cue_terminal.py::test_an_input_that_is_not_a_finite_epoch_time_grants_no_diagnostic_time[1000.0-None-1000.0-the existing absolute cleanup cap is not a finite epoch time-None-None]",
+    "PASSED experiments/tools/test_v2_cue_terminal.py::test_an_input_that_is_not_a_finite_epoch_time_grants_no_diagnostic_time[1000.0-2920.0-inf-the diagnostic start (clock) is not a finite epoch time-1120.0-inference_end + 120]",
+    "PASSED experiments/tools/test_v2_cue_terminal.py::test_each_subprocess_bound_is_the_hand_computed_minimum[1000.0-2920.0-1000.0-1000.0-26.0-30.0-26.0-True]",
+    "PASSED experiments/tools/test_v2_cue_terminal.py::test_each_subprocess_bound_is_the_hand_computed_minimum[1000.0-2920.0-1000.0-1017.25-8.75-12.75-8.75-True]",
+    "PASSED experiments/tools/test_v2_cue_terminal.py::test_each_subprocess_bound_is_the_hand_computed_minimum[2805.0-2920.0-2805.5-2806.0-20.0-24.0-20.0-True]",
+    "PASSED experiments/tools/test_v2_cue_terminal.py::test_each_subprocess_bound_is_the_hand_computed_minimum[1000.0-1100.0-1000.0-1000.0-6.0-10.0-6.0-True]",
+    "PASSED experiments/tools/test_v2_cue_terminal.py::test_each_subprocess_bound_is_the_hand_computed_minimum[1100.0-5000.0-1000.0-1000.0-30.0-130.0-30.0-True]",
+    "PASSED experiments/tools/test_v2_cue_terminal.py::test_each_subprocess_bound_is_the_hand_computed_minimum[1100.0-5000.0-1000.0-1029.5-0.5-100.5-0.5-True]",
+    "PASSED experiments/tools/test_v2_cue_terminal.py::test_each_subprocess_bound_is_the_hand_computed_minimum[1000.0-2920.0-1000.0-1026.0-0.0-4.0-0.0-False]",
+    "PASSED experiments/tools/test_v2_cue_terminal.py::test_each_subprocess_bound_is_the_hand_computed_minimum[1000.0-2920.0-1000.0-1031.5--5.5--1.5--5.5-False]",
+    "PASSED experiments/tools/test_v2_cue_terminal.py::test_a_plan_that_is_not_runnable_never_dispatches[None]",
+    "PASSED experiments/tools/test_v2_cue_terminal.py::test_a_plan_that_is_not_runnable_never_dispatches[plan1]",
+    "PASSED experiments/tools/test_v2_cue_terminal.py::test_a_plan_that_is_not_runnable_never_dispatches[plan2]",
+    "PASSED experiments/tools/test_v2_cue_terminal.py::test_the_executor_returns_the_exact_bytes_and_return_code_of_the_command",
+    "PASSED experiments/tools/test_v2_cue_terminal.py::test_a_detached_descendant_is_swept_after_a_normal_exit",
+    "PASSED experiments/tools/test_v2_cue_terminal.py::test_output_beyond_the_supervisor_cap_is_an_overflow_not_an_observation",
+    "PASSED experiments/tools/test_v2_cue_terminal.py::test_a_command_without_remaining_time_is_never_started",
+    "PASSED experiments/tools/test_v2_cue_terminal.py::test_an_interrupted_supervisor_still_kills_the_whole_process_group",
+    "PASSED experiments/tools/test_v2_cue_terminal.py::test_a_hung_executor_subprocess_is_killed_at_the_computed_bound_and_cleanup_still_runs",
+    "PASSED experiments/tools/test_v2_cue_terminal.py::test_an_executor_that_raises_still_reaches_cleanup[argv_for raises]",
+    "PASSED experiments/tools/test_v2_cue_terminal.py::test_an_executor_that_raises_still_reaches_cleanup[spawn raises]",
+    "PASSED experiments/tools/test_v2_cue_terminal.py::test_an_operator_abort_inside_the_diagnostic_is_re_raised_only_after_cleanup",
+    "PASSED experiments/tools/test_v2_cue_terminal.py::test_the_diagnostic_gets_at_most_thirty_seconds_and_never_the_leftover_inference_time[1000000.0-1001620.0-1000002.0-24.0-1000120.0-118.0]",
+    "PASSED experiments/tools/test_v2_cue_terminal.py::test_the_diagnostic_gets_at_most_thirty_seconds_and_never_the_leftover_inference_time[1000000.0-1000120.0-1000020.0-6.0-1000120.0-100.0]",
+    "PASSED experiments/tools/test_v2_cue_terminal.py::test_the_diagnostic_gets_at_most_thirty_seconds_and_never_the_leftover_inference_time[1000005.0-1000120.0-1000005.5-20.5-1000120.0-114.5]",
+    "PASSED experiments/tools/test_v2_cue_terminal.py::test_when_the_cap_leaves_less_than_ninety_seconds_the_diagnostic_is_skipped_and_cleanup_keeps_the_rest",
+    "PASSED experiments/tools/test_v2_cue_terminal.py::test_the_submitted_only_artifact_bytes_are_identical_before_and_after_the_diagnostic",
+    "PASSED experiments/tools/test_v2_cue_terminal.py::test_every_terminal_path_runs_the_diagnostic_and_only_submitted_submits[Submitted-diff --git a/mod.py b/mod.py\\nindex 7d4290a117a4ddcc11daae7ea675841033830c8f..407de3068e7b5950585d5abed9776d104235a85d 100644\\n--- a/mod.py\\n+++ b/mod.py\\n@@ -1 +1 @@\\n-x = 1\\n+x = 2\\n]",
+    "PASSED experiments/tools/test_v2_cue_terminal.py::test_every_terminal_path_runs_the_diagnostic_and_only_submitted_submits[LimitsExceeded-]",
+    "PASSED experiments/tools/test_v2_cue_terminal.py::test_every_terminal_path_runs_the_diagnostic_and_only_submitted_submits[ContextWindowExceeded-]",
+    "PASSED experiments/tools/test_v2_cue_terminal.py::test_every_terminal_path_runs_the_diagnostic_and_only_submitted_submits[FormatError-]",
+    "PASSED experiments/tools/test_v2_cue_terminal.py::test_every_terminal_path_runs_the_diagnostic_and_only_submitted_submits[EpisodeDeadline-]",
+    "PASSED experiments/tools/test_v2_cue_terminal.py::test_every_terminal_path_runs_the_diagnostic_and_only_submitted_submits[ReceiptError-]",
+    "PASSED experiments/tools/test_v2_cue_terminal.py::test_a_capture_error_never_escapes_the_wrapper_and_cleanup_still_runs[capture raises]",
+    "PASSED experiments/tools/test_v2_cue_terminal.py::test_a_capture_error_never_escapes_the_wrapper_and_cleanup_still_runs[out_dir missing]",
+    "PASSED experiments/tools/test_v2_cue_terminal.py::test_a_capture_error_never_escapes_the_wrapper_and_cleanup_still_runs[diagnostic exists]",
+    "PASSED experiments/tools/test_v2_cue_terminal.py::test_a_capture_error_never_escapes_the_wrapper_and_cleanup_still_runs[write raises]",
+    "PASSED experiments/tools/test_v2_cue_terminal.py::test_no_verified_container_makes_the_diagnostic_unavailable_not_empty",
+    "PASSED experiments/tools/test_v2_cue_terminal.py::test_an_unanchorable_phase_skips_the_diagnostic_and_cleanup_keeps_the_existing_cap",
+    "PASSED experiments/tools/test_v2_cue_terminal.py::test_an_endpoint_that_raises_still_gets_the_diagnostic_and_cleanup_and_submits_nothing",
+    "PASSED experiments/tools/test_v2_cue_terminal.py::test_a_malformed_endpoint_is_recorded_as_an_error_and_submits_nothing[endpoint0]",
+    "PASSED experiments/tools/test_v2_cue_terminal.py::test_a_malformed_endpoint_is_recorded_as_an_error_and_submits_nothing[endpoint1]",
+    "PASSED experiments/tools/test_v2_cue_terminal.py::test_a_malformed_endpoint_is_recorded_as_an_error_and_submits_nothing[endpoint2]",
+    "PASSED experiments/tools/test_v2_cue_terminal.py::test_a_malformed_endpoint_is_recorded_as_an_error_and_submits_nothing[not a mapping]",
+    "PASSED experiments/tools/test_v2_cue_terminal.py::test_a_cleanup_that_raises_is_recorded_and_the_records_are_still_written",
+    "PASSED experiments/tools/test_v2_cue_terminal.py::test_the_terminal_record_is_write_once",
+    "PASSED experiments/tools/test_v2_cue_terminal.py::test_a_non_submitted_exit_submits_nothing_and_runs_no_command",
+    "PASSED experiments/tools/test_v2_cue_terminal.py::test_submitted_without_a_starting_tree_is_a_capture_failure_that_keeps_the_base_error",
+    "PASSED experiments/tools/test_v2_cue_terminal.py::test_a_failed_final_capture_is_a_capture_failure_never_an_empty_submission",
+    "PASSED experiments/tools/test_v2_cue_terminal.py::test_any_other_exception_names_the_exit_as_the_frozen_outer_handler_does",
+    "PASSED experiments/tools/test_v2_cue_terminal.py::test_an_operator_abort_passes_through_the_endpoint_rule",
+    "PASSED experiments/tools/test_v2_cue_terminal.py::test_a_submitted_exit_submits_the_whole_tree_diff_from_the_recorded_start",
+    "PASSED experiments/tools/test_v2_cue_terminal.py::test_docker_exec_argv_mirrors_the_pinned_environment_execute",
+    "PASSED experiments/tools/test_v2_cue_terminal.py::test_docker_exec_argv_refuses_anything_but_a_full_container_id[None]",
+    "PASSED experiments/tools/test_v2_cue_terminal.py::test_docker_exec_argv_refuses_anything_but_a_full_container_id[12]",
+    "PASSED experiments/tools/test_v2_cue_terminal.py::test_docker_exec_argv_refuses_anything_but_a_full_container_id[abc]",
+    "PASSED experiments/tools/test_v2_cue_terminal.py::test_docker_exec_argv_refuses_anything_but_a_full_container_id[ABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABAB]",
+    "PASSED experiments/tools/test_v2_cue_terminal.py::test_docker_exec_argv_refuses_anything_but_a_full_container_id[abababababababababababababababababababababababababababababababab\\n]",
+    "PASSED experiments/tools/test_v2_cue_terminal.py::test_docker_exec_argv_refuses_anything_but_a_full_container_id[ababababababababababababababababababababababababababababababababab]",
+    "PASSED experiments/tools/test_v2_cue_terminal.py::test_an_interrupt_after_the_leader_exited_still_kills_the_same_group_descendant",
+    "PASSED experiments/tools/test_v2_cue_terminal.py::test_a_descendant_that_leaves_the_group_and_keeps_the_pipe_is_recorded_as_escaped",
+    "PASSED experiments/tools/test_v2_cue_terminal.py::test_a_killed_group_whose_pipe_closes_is_not_reported_as_escaped",
+    "PASSED experiments/tools/test_v2_cue_terminal.py::test_time_spent_building_the_argv_is_charged_to_the_command_bound",
+    "PASSED experiments/tools/test_v2_cue_terminal.py::test_each_command_gets_only_the_remaining_diagnostic_time",
+    "PASSED experiments/tools/test_v2_cue_terminal.py::test_the_sixty_second_term_binds_when_a_plan_leaves_more_time",
+    "PASSED experiments/tools/test_v2_cue_terminal.py::test_a_pre_existing_endpoint_file_with_other_bytes_is_a_conflict_not_unchanged",
+    "PASSED experiments/tools/test_v2_cue_terminal.py::test_a_partial_endpoint_file_left_by_a_failed_write_is_a_conflict",
+    "PASSED experiments/tools/test_v2_cue_terminal.py::test_an_endpoint_evaluated_inside_the_phase_is_recorded_when_it_breaks_the_cleanup_reserve"
+   ]
+  },
+  {
+   "file": "experiments/tools/test_v2_cue_admission.py",
+   "command": ".venv/bin/python -m pytest -q -rA -p no:cacheprovider experiments/tools/test_v2_cue_admission.py",
+   "returncode": 0,
+   "seconds": 51.2,
+   "final_line": "87 passed in 51.13s",
+   "output_lines": [
+    "........................................................................ [ 82%]",
+    "...............                                                          [100%]",
+    "==================================== PASSES ====================================",
+    "=========================== short test summary info ============================",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_binding_binds_every_required_execution_module_and_the_import_closure",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_binding_records_the_accepted_cue_detector_coding_guide_and_plan",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_binding_reuses_the_frozen_pilot_pin_sources_without_restating_them",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_binding_settings_deadlines_and_storage_are_the_lead_numbers",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_binding_runtime_binds_the_pinned_harness_sources_and_sdk_records",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_the_binding_holds_no_absolute_or_host_path",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_a_one_byte_change_in_each_bound_source_class_refuses_admission[cue_episode.py:modules/cue_episode.py]",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_a_one_byte_change_in_each_bound_source_class_refuses_admission[cue_transport.py:modules/cue_transport.py]",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_a_one_byte_change_in_each_bound_source_class_refuses_admission[cue_terminal.py:modules/cue_terminal.py]",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_a_one_byte_change_in_each_bound_source_class_refuses_admission[cue_admission.py:modules/cue_admission.py]",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_a_one_byte_change_in_each_bound_source_class_refuses_admission[cue_runner.py:modules/cue_runner.py]",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_a_one_byte_change_in_each_bound_source_class_refuses_admission[exit_capture.py:modules/exit_capture.py]",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_a_one_byte_change_in_each_bound_source_class_refuses_admission[request_receipt.py:modules/request_receipt.py]",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_a_one_byte_change_in_each_bound_source_class_refuses_admission[trajectory_triples.py:modules/trajectory_triples.py]",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_a_one_byte_change_in_each_bound_source_class_refuses_admission[cue_cohort.py:modules/cue_cohort.py]",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_a_one_byte_change_in_each_bound_source_class_refuses_admission[cue_detector.py:modules/cue_detector.py]",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_a_one_byte_change_in_each_bound_source_class_refuses_admission[workspace_capture.py:modules/workspace_capture.py]",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_a_one_byte_change_in_each_bound_source_class_refuses_admission[cue_detector.py:cue/sha256]",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_a_one_byte_change_in_each_bound_source_class_refuses_admission[cue_detector.py:detector/trigger_note]",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_a_one_byte_change_in_each_bound_source_class_refuses_admission[req005_visible_evidence_guide_20260923.md:coding_guide/sha256]",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_a_one_byte_change_in_each_bound_source_class_refuses_admission[cue_cohort.py:plan/plan_sha256]",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_a_one_byte_change_in_each_bound_source_class_refuses_admission[pilot_frame_20260922.json:pins/images/psf__requests-1142]",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_a_one_byte_change_in_each_bound_source_class_refuses_admission[coder_conversion_20260922.json:pins/models/small/gguf_sha256]",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_a_one_byte_change_in_each_bound_source_class_refuses_admission[v2_fixed_backend_development_pilot_yaml_v1_20260922.json:pins/pin_sources/configs/v2_fixed_backend_development_pilot_yaml_v1_20260922.json]",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_a_one_byte_change_in_each_bound_source_class_refuses_admission[cohort_binding.json:pins/pin_sources/results/v2_agent/pilot_20260922_yaml_v1/cohort_binding.json]",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_a_one_byte_change_in_each_bound_source_class_refuses_admission[default.yaml:runtime/mini_swe_agent_sources/config/default.yaml]",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_a_one_byte_change_in_each_bound_source_class_refuses_admission[pilot_cohort.py:pins/frozen_reference/pilot_cohort.py]",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_a_one_byte_change_in_each_bound_source_class_refuses_admission[pilot_report.py:pins/frozen_reference/pilot_report.py]",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_a_one_byte_change_in_each_bound_source_class_refuses_admission[pilot_grade.py:pins/frozen_reference/pilot_grade.py]",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_a_one_byte_change_in_each_bound_source_class_refuses_admission[v2_fixed_backend_development_pilot_20260922.json:settings/context_per_slot]",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_a_one_byte_change_in_each_bound_source_class_refuses_admission[pilot_episode.py:settings/max_tokens]",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_a_one_byte_change_in_each_bound_source_class_refuses_admission[pilot_runner.py:deadlines/server_cleanup_reserve_s]",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_a_one_byte_change_in_each_bound_source_class_refuses_admission[litellm_textbased_model.py:runtime/mini_swe_agent_sources/models/litellm_textbased_model.py]",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_a_one_byte_change_in_each_bound_source_class_refuses_admission[RECORD:runtime/sdk_distributions/litellm/record_sha256]",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_the_cue_plan_and_settings_changes_also_name_the_violated_frozen_choice",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_the_frozen_binding_file_is_write_once_and_self_verifying",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_resume_refuses_after_a_changed_bound_input_and_dispatches_nothing",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_a_bound_input_changed_mid_session_stops_before_the_next_dispatch",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_the_running_runner_must_be_the_bound_runner_bytes",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_the_runner_refuses_to_launch_unless_validation_passes",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_the_576_request_cap_holds_across_two_simulated_resumes",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_an_unknown_request_count_keeps_its_48_reservation_across_a_resume",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_the_assignment_budget_is_the_smaller_of_48_and_the_cohort_remainder",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_duplicate_replacement_extension_and_outcome_stops_are_refused[record0-assignment 2 was already dispatched (no duplicate or repeat)]",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_duplicate_replacement_extension_and_outcome_stops_are_refused[record1-assignment id 'psf__requests-1142__large__cue-v1__baseline' is not the frozen assignment 'psf__requests-1142__large__cue-v1__cue' (no replacement)]",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_duplicate_replacement_extension_and_outcome_stops_are_refused[record2-assignment 4 dispatched out of the frozen order (next is 3)]",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_duplicate_replacement_extension_and_outcome_stops_are_refused[record3-position 13 is outside the frozen 1..12 frame (no extension)]",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_duplicate_replacement_extension_and_outcome_stops_are_refused[record4-stop code 'no_submission_yet' is not a predeclared stop]",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_a_record_of_another_cohort_is_refused",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_a_recorded_dispatch_while_an_integrity_issue_is_open_is_refused",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_a_second_runner_is_refused_while_a_session_holds_the_ledger",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_a_stop_record_must_preserve_every_remaining_assignment_state[3-True]",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_a_stop_record_must_preserve_every_remaining_assignment_state[4-False]",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_a_count_above_48_cannot_be_recorded",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_an_edited_removed_or_torn_ledger_record_is_refused",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_outcomes_never_change_dispatch",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_a_legacy_result_directory_is_refused_as_runtime_state",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_a_report_or_projection_file_is_refused_as_runtime_state",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_the_infrastructure_stop_preserves_the_affected_and_remaining_assignment_states",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_a_storage_preflight_failure_stops_before_dispatch_and_touches_no_assignment",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_an_episode_exception_is_recorded_reserves_48_and_stops_the_queue",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_an_interrupted_assignment_needs_reconciliation_and_is_never_redispatched",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_a_reconciliation_must_name_an_open_issue",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_the_free_space_preflight_needs_6_gib_above_a_supplied_host_reserve",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_dry_run_lists_the_exact_twelve_assignments_in_frozen_order",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_the_command_line_refuses_a_live_launch_and_starts_nothing",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_validation_and_dry_run_never_create_this_checkout_s_cue_v1_namespace",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_a_pre_launch_edit_of_an_accepted_source_refuses_the_launch[experiments/v2_agent/exit_capture.py-DTR-REQ-005 all-exit diagnostic-DTR-REQ-005 All-exit diagnostic-6e4f265759b3dbe22ba161382412cc9cd076dce822d76f4ac844fde987f699b9-docs/audits/req005_component_review_20260923.json source_sha256]",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_a_pre_launch_edit_of_an_accepted_source_refuses_the_launch[experiments/v2_agent/request_receipt.py-DTR-REQ-005 pre-dispatch request receipts-DTR-REQ-005 Pre-dispatch request receipts-a751a43c6a2ef431c7119129308b740caed376536e6b6edcc7568368fde5cc46-docs/audits/req005_component_review_20260923.json source_sha256]",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_a_pre_launch_edit_of_an_accepted_source_refuses_the_launch[experiments/v2_agent/pilot_grade.py-DTR-REQ-002 pilot grading-DTR-REQ-002 Pilot grading-0c2a5a5da861a42fd1dbc79c01ff4b031bff8d0a3cbcda8b90e869161f70e7f1-docs/audits/req005_component_review_20260923.json preservation.frozen_runtime_sha256]",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_a_pre_launch_edit_of_an_accepted_source_refuses_the_launch[experiments/v2_agent/pilot_report.py-Finite descriptive DEV report-finite descriptive DEV report-1afa9002344557f4fd518044313f2fd277528a06a5fef667966175804711e10f-docs/req005_fixture_landmarks_20260923.json source_pins.frozen_yaml_v1_sources_unchanged]",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_a_pre_launch_edit_of_an_accepted_source_refuses_the_launch[docs/req005_visible_evidence_guide_20260923.md-visible-evidence coding guide-visible-evidence Coding guide-ea7f67d4c1a0cf93d271f30fb1c48d027d8f4f97c28eaed0451c4a554c142625-docs/audits/req005_component_review_20260923.json source_sha256]",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_a_pre_launch_edit_of_an_accepted_source_refuses_the_launch[experiments/v2_agent/workspace_capture.py-DTR-REQ-002 workspace-capture binding-DTR-REQ-002 Workspace-capture binding-96f194f4854ab75e6235bec7b8289a41928b036cd7bddbe66eff4afbdbd5302f-docs/req005_fixture_landmarks_20260923.json source_pins.new_modules]",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_the_traced_sdk_files_pth_and_site_hooks_are_bound",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_a_symlinked_directory_inside_the_pinned_harness_is_refused",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_the_enforcing_modules_state_the_contract_bounds_and_the_driver_passes_no_override",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_a_ledger_truncated_at_a_record_boundary_is_refused_not_resumed",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_a_crash_between_the_ledger_append_and_the_head_update_is_still_admitted",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_deleting_the_namespace_never_opens_a_second_launch",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_a_run_directory_error_can_be_reconciled_and_the_queue_resumes",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_surrogate_escaped_text_is_recorded_escaped_and_never_breaks_the_ledger",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_only_the_bound_episode_function_is_dispatched_outside_a_fixture_copy",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_a_report_or_symlink_written_mid_session_stops_before_the_next_dispatch",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_a_run_directory_may_hold_only_cue_v1_episode_output",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_a_torn_final_record_is_preserved_repaired_and_the_queue_resumes",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_a_corrupted_receipt_of_a_clean_terminal_assignment_refuses_the_resume",
+    "PASSED experiments/tools/test_v2_cue_admission.py::test_an_episode_is_admitted_only_as_the_open_assignment_of_a_runner_session"
+   ]
+  },
+  {
+   "file": "experiments/tools/test_v2_cue_detector.py",
+   "command": ".venv/bin/python -m pytest -q -rA -p no:cacheprovider experiments/tools/test_v2_cue_detector.py",
+   "returncode": 0,
+   "seconds": 0.2,
+   "final_line": "89 passed in 0.09s",
+   "output_lines": [
+    "........................................................................ [ 80%]",
+    ".................                                                        [100%]",
+    "==================================== PASSES ====================================",
+    "=========================== short test summary info ============================",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_cue_text_is_the_lead_blockquote_and_its_digest_is_a_hand_written_literal",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_three_identical_consecutive_triples_trigger_aaa",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_three_repetitions_of_an_ordered_pair_trigger_ababab",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_a_nonrepeating_sequence_never_triggers",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_a_changed_return_code_never_triggers",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_a_changed_observation_text_never_triggers",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_a_str_observation_and_its_utf8_bytes_are_the_same_visible_feedback",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_a_three_element_sequence_is_an_accepted_record_form",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_incomplete_records_never_trigger_and_are_never_skipped[third0-missing or unparsable observation]",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_incomplete_records_never_trigger_and_are_never_skipped[third1-missing or unparsable observation]",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_incomplete_records_never_trigger_and_are_never_skipped[third2-missing or unparsable observation]",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_incomplete_records_never_trigger_and_are_never_skipped[third3-observation recorded as unparsable]",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_incomplete_records_never_trigger_and_are_never_skipped[third4-missing returncode]",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_incomplete_records_never_trigger_and_are_never_skipped[third5-missing returncode]",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_incomplete_records_never_trigger_and_are_never_skipped[third6-non-integer returncode treated as missing]",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_incomplete_records_never_trigger_and_are_never_skipped[third7-non-integer returncode treated as missing]",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_incomplete_records_never_trigger_and_are_never_skipped[third8-missing command]",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_incomplete_records_never_trigger_and_are_never_skipped[third9-unparsable command]",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_incomplete_records_never_trigger_and_are_never_skipped[trajectory row that is not a triple-record is not a (command, returncode, observation) triple]",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_incomplete_records_never_trigger_and_are_never_skipped[None-record is not a (command, returncode, observation) triple]",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_record_triple_and_record_call_id_report_their_own_verdicts",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_a_dropped_record_cannot_fabricate_three_consecutive_calls",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_duplicate_logical_call_ids_never_trigger",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_the_records_own_call_ids_set_the_trigger_and_delivery_calls",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_an_unusable_call_id_degrades_to_an_incomplete_record_and_never_raises[1]",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_an_unusable_call_id_degrades_to_an_incomplete_record_and_never_raises[1.0]",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_an_unusable_call_id_degrades_to_an_incomplete_record_and_never_raises[None]",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_an_unusable_call_id_degrades_to_an_incomplete_record_and_never_raises[0]",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_an_unusable_call_id_degrades_to_an_incomplete_record_and_never_raises[-3]",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_an_unusable_call_id_degrades_to_an_incomplete_record_and_never_raises[True]",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_negative_call_ids_never_schedule_a_cue_for_a_call_that_cannot_exist",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_one_cue_maximum_per_episode",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_the_live_arm_asks_call_by_call_as_the_episode_runs",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_a_cue_is_never_handed_to_a_call_id_that_is_not_a_positive_integer[None]",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_a_cue_is_never_handed_to_a_call_id_that_is_not_a_positive_integer[4.0]",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_a_cue_is_never_handed_to_a_call_id_that_is_not_a_positive_integer[4]",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_a_cue_is_never_handed_to_a_call_id_that_is_not_a_positive_integer[True]",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_a_cue_is_never_handed_to_a_call_id_that_is_not_a_positive_integer[0]",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_a_cue_is_never_handed_to_a_call_id_that_is_not_a_positive_integer[-1]",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_trigger_on_the_final_budgeted_call_is_recorded_without_delivery",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_a_trigger_inside_the_horizon_still_delivers_when_the_horizon_is_smaller",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_observe_only_baseline_records_the_same_landmark_without_emitting",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_an_unknown_mode_is_refused_before_any_episode_work[LIVE]",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_an_unknown_mode_is_refused_before_any_episode_work[silent]",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_an_unknown_mode_is_refused_before_any_episode_work[None]",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_an_unknown_mode_is_refused_before_any_episode_work[1]",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_an_unknown_mode_is_refused_before_any_episode_work[]",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_a_nonpositive_or_nonintegral_horizon_is_refused[0]",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_a_nonpositive_or_nonintegral_horizon_is_refused[-1]",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_a_nonpositive_or_nonintegral_horizon_is_refused[1.5]",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_a_nonpositive_or_nonintegral_horizon_is_refused[24]",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_a_nonpositive_or_nonintegral_horizon_is_refused[None]",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_a_nonpositive_or_nonintegral_horizon_is_refused[True]",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_the_landmark_is_json_serializable_exactly_as_recorded",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_scan_does_not_mutate_or_reorder_the_records_it_is_shown",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_the_detector_runs_over_every_archived_yaml_v1_episode[astropy__astropy-12907-large]",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_the_detector_runs_over_every_archived_yaml_v1_episode[astropy__astropy-12907-small]",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_the_detector_runs_over_every_archived_yaml_v1_episode[matplotlib__matplotlib-13989-large]",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_the_detector_runs_over_every_archived_yaml_v1_episode[matplotlib__matplotlib-13989-small]",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_the_detector_runs_over_every_archived_yaml_v1_episode[mwaskom__seaborn-3069-large]",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_the_detector_runs_over_every_archived_yaml_v1_episode[mwaskom__seaborn-3069-small]",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_the_detector_runs_over_every_archived_yaml_v1_episode[psf__requests-1142-large]",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_the_detector_runs_over_every_archived_yaml_v1_episode[psf__requests-1142-small]",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_the_detector_runs_over_every_archived_yaml_v1_episode[pytest-dev__pytest-10051-large]",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_the_detector_runs_over_every_archived_yaml_v1_episode[pytest-dev__pytest-10051-small]",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_the_detector_runs_over_every_archived_yaml_v1_episode[scikit-learn__scikit-learn-10297-large]",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_the_detector_runs_over_every_archived_yaml_v1_episode[scikit-learn__scikit-learn-10297-small]",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_the_detector_runs_over_every_archived_yaml_v1_episode[sphinx-doc__sphinx-10323-large]",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_the_detector_runs_over_every_archived_yaml_v1_episode[sphinx-doc__sphinx-10323-small]",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_the_detector_runs_over_every_archived_yaml_v1_episode[sympy__sympy-11618-large]",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_the_detector_runs_over_every_archived_yaml_v1_episode[sympy__sympy-11618-small]",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_twenty_one_of_the_thirty_two_archived_episodes_would_have_triggered",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_the_one_archived_episode_without_any_observation_is_incomplete_not_a_nonrepeat",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_the_archived_repeat_that_triggers_aaa_is_the_same_bytes_three_times",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_the_archived_ababab_repeat_alternates_two_distinct_triples",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_the_adapter_refuses_a_trajectory_it_does_not_understand",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_the_adapter_links_only_the_immediate_ordinary_observation",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_format_error_is_an_incomplete_logical_call_and_breaks_false_aaa",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_format_error_words_in_user_text_are_not_logical_call_evidence",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_missing_evidence_does_not_silently_relabel_assistant_positions_as_calls",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_ambiguous_call_crosswalk_is_refused[count]",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_ambiguous_call_crosswalk_is_refused[ledger_gap]",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_ambiguous_call_crosswalk_is_refused[duplicate]",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_ambiguous_call_crosswalk_is_refused[unsuccessful_response]",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_ambiguous_call_crosswalk_is_refused[incomplete_attempt]",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_ambiguous_call_crosswalk_is_refused[malformed_parser_event]",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_legacy_sympy_large_landmark_uses_logical_call_22_not_assistant_21",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_all_32_archives_reconcile_682_calls_and_ten_incomplete_records",
+    "PASSED experiments/tools/test_v2_cue_detector.py::test_trailing_context_rejection_requires_matching_failure_and_terminal_evidence"
+   ]
+  },
+  {
+   "file": "experiments/tools/test_v2_cue_cohort.py",
+   "command": ".venv/bin/python -m pytest -q -rA -p no:cacheprovider experiments/tools/test_v2_cue_cohort.py",
+   "returncode": 0,
+   "seconds": 0.1,
+   "final_line": "18 passed in 0.01s",
+   "output_lines": [
+    "..................                                                       [100%]",
+    "==================================== PASSES ====================================",
+    "=========================== short test summary info ============================",
+    "PASSED experiments/tools/test_v2_cue_cohort.py::test_the_twelve_assignments_are_in_the_lead_s_frozen_order_with_their_arm_labels",
+    "PASSED experiments/tools/test_v2_cue_cohort.py::test_each_row_carries_its_detector_mode_and_a_unique_assignment_id",
+    "PASSED experiments/tools/test_v2_cue_cohort.py::test_the_frame_is_balanced_exactly_as_the_lead_specified",
+    "PASSED experiments/tools/test_v2_cue_cohort.py::test_the_task_list_is_lexicographic_and_holds_only_the_three_exposed_diagnostic_tasks",
+    "PASSED experiments/tools/test_v2_cue_cohort.py::test_the_cohort_names_its_own_output_directory_and_creates_nothing",
+    "PASSED experiments/tools/test_v2_cue_cohort.py::test_the_declared_limits_are_the_lead_s_numbers",
+    "PASSED experiments/tools/test_v2_cue_cohort.py::test_the_plan_digest_is_over_the_plan_itself_and_moves_with_the_order",
+    "PASSED experiments/tools/test_v2_cue_cohort.py::test_the_baseline_arm_is_declared_as_instrumentation_only",
+    "PASSED experiments/tools/test_v2_cue_cohort.py::test_the_within_pair_letter_decides_which_arm_runs_first[B-expected0]",
+    "PASSED experiments/tools/test_v2_cue_cohort.py::test_the_within_pair_letter_decides_which_arm_runs_first[C-expected1]",
+    "PASSED experiments/tools/test_v2_cue_cohort.py::test_an_unknown_within_pair_letter_is_refused[b]",
+    "PASSED experiments/tools/test_v2_cue_cohort.py::test_an_unknown_within_pair_letter_is_refused[c]",
+    "PASSED experiments/tools/test_v2_cue_cohort.py::test_an_unknown_within_pair_letter_is_refused[A]",
+    "PASSED experiments/tools/test_v2_cue_cohort.py::test_an_unknown_within_pair_letter_is_refused[]",
+    "PASSED experiments/tools/test_v2_cue_cohort.py::test_an_unknown_within_pair_letter_is_refused[None]",
+    "PASSED experiments/tools/test_v2_cue_cohort.py::test_an_unknown_within_pair_letter_is_refused[1]",
+    "PASSED experiments/tools/test_v2_cue_cohort.py::test_a_mismatched_pair_order_length_is_refused",
+    "PASSED experiments/tools/test_v2_cue_cohort.py::test_this_registry_imports_no_frozen_execution_source"
+   ]
+  },
+  {
+   "file": "experiments/tools/test_v2_exit_capture.py",
+   "command": ".venv/bin/python -m pytest -q -rA -p no:cacheprovider experiments/tools/test_v2_exit_capture.py",
+   "returncode": 0,
+   "seconds": 6.3,
+   "final_line": "53 passed in 6.20s",
+   "output_lines": [
+    ".....................................................                    [100%]",
+    "==================================== PASSES ====================================",
+    "=========================== short test summary info ============================",
+    "PASSED experiments/tools/test_v2_exit_capture.py::test_a_clean_workspace_is_recorded_as_no_change_not_unavailable",
+    "PASSED experiments/tools/test_v2_exit_capture.py::test_tracked_modifications_appear_in_the_diff_and_the_status_snapshot",
+    "PASSED experiments/tools/test_v2_exit_capture.py::test_untracked_files_are_recorded_with_digests_and_bounded_contents",
+    "PASSED experiments/tools/test_v2_exit_capture.py::test_an_oversized_file_and_diff_are_truncated_with_flags_and_recorded_caps",
+    "PASSED experiments/tools/test_v2_exit_capture.py::test_untracked_path_and_content_caps_are_counted_and_flagged",
+    "PASSED experiments/tools/test_v2_exit_capture.py::test_a_binary_file_keeps_its_digest_and_a_broken_symlink_is_unavailable",
+    "PASSED experiments/tools/test_v2_exit_capture.py::test_an_unsafe_or_oversized_path_is_not_published_as_a_truncated_prefix",
+    "PASSED experiments/tools/test_v2_exit_capture.py::test_an_executor_that_raises_is_recorded_as_failed_without_raising",
+    "PASSED experiments/tools/test_v2_exit_capture.py::test_an_executor_that_times_out_is_recorded_as_timeout_without_raising",
+    "PASSED experiments/tools/test_v2_exit_capture.py::test_a_mixture_of_degraded_states_never_rolls_up_as_a_completed_observation",
+    "PASSED experiments/tools/test_v2_exit_capture.py::test_the_total_budget_stops_dispatch_and_is_recorded_as_timeout",
+    "PASSED experiments/tools/test_v2_exit_capture.py::test_a_slow_executor_exhausts_the_budget_and_the_remaining_sections_are_timeout",
+    "PASSED experiments/tools/test_v2_exit_capture.py::test_a_missing_starting_tree_is_unavailable_not_no_change",
+    "PASSED experiments/tools/test_v2_exit_capture.py::test_a_base_tree_that_is_not_a_sha_string_cannot_block_the_capture[12]",
+    "PASSED experiments/tools/test_v2_exit_capture.py::test_a_base_tree_that_is_not_a_sha_string_cannot_block_the_capture[0000000000000000000000000000000000000000]",
+    "PASSED experiments/tools/test_v2_exit_capture.py::test_a_base_tree_that_is_not_a_sha_string_cannot_block_the_capture[0.5]",
+    "PASSED experiments/tools/test_v2_exit_capture.py::test_a_base_tree_that_is_not_a_sha_string_cannot_block_the_capture[base3]",
+    "PASSED experiments/tools/test_v2_exit_capture.py::test_a_base_tree_that_is_not_a_sha_string_cannot_block_the_capture[base4]",
+    "PASSED experiments/tools/test_v2_exit_capture.py::test_a_base_tree_that_is_not_a_sha_string_cannot_block_the_capture[True]",
+    "PASSED experiments/tools/test_v2_exit_capture.py::test_an_internal_capture_error_still_records_every_section_key",
+    "PASSED experiments/tools/test_v2_exit_capture.py::test_a_truncated_untracked_listing_is_never_recorded_as_an_empty_workspace",
+    "PASSED experiments/tools/test_v2_exit_capture.py::test_a_truncated_listing_with_a_failed_tree_still_reports_changes_from_the_status_snapshot",
+    "PASSED experiments/tools/test_v2_exit_capture.py::test_a_partially_truncated_listing_keeps_its_recorded_paths_and_flags_the_gap",
+    "PASSED experiments/tools/test_v2_exit_capture.py::test_dict_shaped_executor_results_and_timeout_return_codes_are_classified",
+    "PASSED experiments/tools/test_v2_exit_capture.py::test_an_executor_result_the_module_cannot_parse_is_named_as_a_contract_failure[result0-tuple]",
+    "PASSED experiments/tools/test_v2_exit_capture.py::test_an_executor_result_the_module_cannot_parse_is_named_as_a_contract_failure[just a string-str]",
+    "PASSED experiments/tools/test_v2_exit_capture.py::test_an_executor_result_the_module_cannot_parse_is_named_as_a_contract_failure[None-NoneType]",
+    "PASSED experiments/tools/test_v2_exit_capture.py::test_an_executor_result_the_module_cannot_parse_is_named_as_a_contract_failure[0-int]",
+    "PASSED experiments/tools/test_v2_exit_capture.py::test_an_executor_result_the_module_cannot_parse_is_named_as_a_contract_failure[result4-list]",
+    "PASSED experiments/tools/test_v2_exit_capture.py::test_one_line_of_container_noise_does_not_demote_a_successful_capture",
+    "PASSED experiments/tools/test_v2_exit_capture.py::test_output_without_the_bound_header_is_a_failure_not_an_empty_observation",
+    "PASSED experiments/tools/test_v2_exit_capture.py::test_a_body_that_disagrees_with_its_own_byte_count_is_not_a_clean_capture",
+    "PASSED experiments/tools/test_v2_exit_capture.py::test_the_command_log_cap_drops_entries_but_keeps_the_count",
+    "PASSED experiments/tools/test_v2_exit_capture.py::test_the_diagnostic_is_never_written_to_submission_diff",
+    "PASSED experiments/tools/test_v2_exit_capture.py::test_a_nonexistent_out_dir_is_refused_rather_than_written_as_a_file",
+    "PASSED experiments/tools/test_v2_exit_capture.py::test_capture_output_is_write_once_and_a_second_write_refuses",
+    "PASSED experiments/tools/test_v2_exit_capture.py::test_every_exit_kind_is_captured_and_none_is_marked_submitted_or_graded",
+    "PASSED experiments/tools/test_v2_exit_capture.py::test_all_bounds_and_exclusions_are_recorded_explicitly",
+    "PASSED experiments/tools/test_v2_exit_capture.py::test_a_malformed_cap_declaration_is_named_and_the_declared_default_is_published[caps0-declared caps ignored: not a mapping of cap name to a non-negative integer; the defaults above apply]",
+    "PASSED experiments/tools/test_v2_exit_capture.py::test_a_malformed_cap_declaration_is_named_and_the_declared_default_is_published[262144-declared caps ignored: not a mapping of cap name to a non-negative integer; the defaults above apply]",
+    "PASSED experiments/tools/test_v2_exit_capture.py::test_a_malformed_cap_declaration_is_named_and_the_declared_default_is_published[caps2-cap 'diff_bytes'='262144' ignored (a non-negative integer is required); the default 262144 applies]",
+    "PASSED experiments/tools/test_v2_exit_capture.py::test_a_malformed_cap_declaration_is_named_and_the_declared_default_is_published[caps3-cap 'untracked_paths'=None ignored (a non-negative integer is required); the default 64 applies]",
+    "PASSED experiments/tools/test_v2_exit_capture.py::test_a_malformed_cap_declaration_is_named_and_the_declared_default_is_published[caps4-cap 'untracked_list_bytes'=-1 ignored (a non-negative integer is required); the default 65536 applies]",
+    "PASSED experiments/tools/test_v2_exit_capture.py::test_a_malformed_cap_declaration_is_named_and_the_declared_default_is_published[caps5-cap 'diff_bytes'=True ignored (a non-negative integer is required); the default 262144 applies]",
+    "PASSED experiments/tools/test_v2_exit_capture.py::test_a_malformed_cap_declaration_is_named_and_the_declared_default_is_published[caps6-unknown cap 'nonsense' ignored]",
+    "PASSED experiments/tools/test_v2_exit_capture.py::test_untracked_symlinks_never_capture_the_target_content_or_digest",
+    "PASSED experiments/tools/test_v2_exit_capture.py::test_damaged_untracked_listing_is_failed_not_an_observed_empty_or_complete_list[8--64]",
+    "PASSED experiments/tools/test_v2_exit_capture.py::test_damaged_untracked_listing_is_failed_not_an_observed_empty_or_complete_list[8-x\\x00-64]",
+    "PASSED experiments/tools/test_v2_exit_capture.py::test_damaged_untracked_listing_is_failed_not_an_observed_empty_or_complete_list[80--8]",
+    "PASSED experiments/tools/test_v2_exit_capture.py::test_damaged_untracked_listing_is_failed_not_an_observed_empty_or_complete_list[80-x\\x00-8]",
+    "PASSED experiments/tools/test_v2_exit_capture.py::test_damaged_untracked_listing_is_failed_not_an_observed_empty_or_complete_list[0-x\\x00-64]",
+    "PASSED experiments/tools/test_v2_exit_capture.py::test_untracked_file_read_failure_does_not_publish_partial_content_or_digest",
+    "PASSED experiments/tools/test_v2_exit_capture.py::test_malformed_output_directory_cannot_escape_the_capture_cleanup_boundary"
+   ]
+  },
+  {
+   "file": "experiments/tools/test_v2_request_receipt.py",
+   "command": ".venv/bin/python -m pytest -q -rA -p no:cacheprovider experiments/tools/test_v2_request_receipt.py",
+   "returncode": 0,
+   "seconds": 0.2,
+   "final_line": "104 passed in 0.15s",
+   "output_lines": [
+    "........................................................................ [ 69%]",
+    "................................                                         [100%]",
+    "==================================== PASSES ====================================",
+    "=========================== short test summary info ============================",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_successful_request_writes_private_raw_and_public_records_with_two_distinct_digests",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_the_published_record_is_sealed_over_canonically_ordered_bytes",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_serialized_request_must_be_the_exact_dispatched_bytes",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_the_private_raw_bytes_exist_before_the_published_record_is_written",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_a_payload_that_cannot_be_canonicalised_refuses_without_burning_the_attempt",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_an_identity_that_cannot_be_serialized_is_refused_before_any_request_is_written",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_failed_or_rejected_request_keeps_a_full_durable_record_with_unknown_usage_null[APIConnectionError-False-transport failure talking to 127.0.0.1:8291]",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_failed_or_rejected_request_keeps_a_full_durable_record_with_unknown_usage_null[ContextWindowExceededError-True-requested 17032 tokens; the slot serves 16384]",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_failed_request_without_an_error_class_is_refused",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_an_outcome_flag_that_is_not_a_bool_is_refused[kwargs0]",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_an_outcome_flag_that_is_not_a_bool_is_refused[kwargs1]",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_an_outcome_flag_that_is_not_a_bool_is_refused[kwargs2]",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_an_outcome_flag_that_is_not_a_bool_is_refused[kwargs3]",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_a_successful_outcome_carrying_error_fields_is_refused[contradiction0]",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_a_successful_outcome_carrying_error_fields_is_refused[contradiction1]",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_a_successful_outcome_carrying_error_fields_is_refused[contradiction2]",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_an_outcome_without_a_durable_pre_dispatch_record_is_refused",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_an_outcome_never_republishes_a_raw_digest_the_retained_bytes_contradict[raw_digest]",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_an_outcome_never_republishes_a_raw_digest_the_retained_bytes_contradict[raw_bytes]",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_an_outcome_never_republishes_a_raw_digest_the_retained_bytes_contradict[not_an_object]",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_a_missing_raw_file_leaves_the_agreement_unknown_not_true",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_public_projection_replaces_home_paths_and_withholds_secrets_with_transformation_metadata",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_a_credential_in_a_list_or_under_a_token_key_is_withheld",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_the_home_prefix_is_masked_only_at_a_path_component_boundary",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_the_default_home_prefix_comes_from_the_environment_and_is_recorded",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_a_pathological_home_prefix_is_refused[/]",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_a_pathological_home_prefix_is_refused[//]",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_a_pathological_home_prefix_is_refused[/Users]",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_a_pathological_home_prefix_is_refused[relative/path]",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_a_pathological_home_prefix_is_refused[12]",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_a_pathological_home_prefix_is_refused[home5]",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_masking_can_be_disabled_only_explicitly_and_is_recorded_as_disabled",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_error_detail_is_sanitized_before_publication",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_a_truncated_error_detail_says_so_and_a_short_one_does_not",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_a_non_json_request_keeps_its_record_and_withholds_the_payload_projection",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_a_second_write_to_the_same_record_path_refuses[request]",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_a_second_write_to_the_same_record_path_refuses[outcome]",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_completeness_names_every_hole_in_the_published_set",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_preflight_token_count_is_always_published_with_its_method",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_a_preflight_token_count_without_its_method_string_or_with_extra_claims_is_refused[15021_0]",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_a_preflight_token_count_without_its_method_string_or_with_extra_claims_is_refused[15021_1]",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_a_preflight_token_count_without_its_method_string_or_with_extra_claims_is_refused[bare2]",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_a_preflight_token_count_without_its_method_string_or_with_extra_claims_is_refused[bare3]",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_a_preflight_token_count_without_its_method_string_or_with_extra_claims_is_refused[bare4]",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_a_preflight_token_count_without_its_method_string_or_with_extra_claims_is_refused[bare5]",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_a_preflight_token_count_without_its_method_string_or_with_extra_claims_is_refused[bare6]",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_a_preflight_token_count_without_its_method_string_or_with_extra_claims_is_refused[bare7]",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_a_preflight_token_count_without_its_method_string_or_with_extra_claims_is_refused[bare8]",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_preflight_helper_refuses_a_missing_method_and_a_non_integer_count",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_known_usage_totals_and_partially_unknown_usage_stays_unknown",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_a_server_reported_total_is_kept_even_when_the_pair_is_unknown",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_a_server_total_that_disagrees_with_the_reported_pair_is_recorded_not_overwritten",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_identity_requires_model_decoding_server_and_tokenizer[model]",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_identity_requires_model_decoding_server_and_tokenizer[decoding]",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_identity_requires_model_decoding_server_and_tokenizer[server]",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_identity_requires_model_decoding_server_and_tokenizer[tokenizer]",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_identity_requires_model_decoding_server_and_tokenizer[model.model_sha256]",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_identity_requires_model_decoding_server_and_tokenizer[decoding.max_tokens]",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_raw_request_bytes_may_not_be_stored_inside_the_published_tree[results/v2_agent/cue_v1_private-None]",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_raw_request_bytes_may_not_be_stored_inside_the_published_tree[results/v2_agent/cue_v1_private-repo]",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_raw_request_bytes_may_not_be_stored_inside_the_published_tree[published/cue-v1-None]",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_raw_request_bytes_may_not_be_stored_inside_the_published_tree[published/cue-v1/raw-None]",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_raw_request_bytes_may_not_be_stored_inside_the_published_tree[work_private/receipts-None]",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_a_published_directory_inside_the_private_directory_is_refused",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_a_private_directory_outside_the_declared_root_says_the_label_rests_on_that_declaration",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_cohort_namespace_is_required",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_call_and_attempt_ids_must_be_positive_integers[0-1]",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_call_and_attempt_ids_must_be_positive_integers[1-0]",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_call_and_attempt_ids_must_be_positive_integers[-1-1]",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_call_and_attempt_ids_must_be_positive_integers[1.0-1]",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_call_and_attempt_ids_must_be_positive_integers[True-1]",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_recorded_dispatch_keeps_the_record_when_the_dispatch_raises",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_recorded_dispatch_records_a_successful_outcome_with_reported_usage",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_a_receipt_failure_after_dispatch_never_replaces_or_aborts_the_episode_result",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_a_pre_dispatch_receipt_failure_still_refuses_before_the_model_is_called",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_verify_refuses_a_tampered_or_mislabelled_published_projection[payload]",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_verify_refuses_a_tampered_or_mislabelled_published_projection[marker]",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_verify_refuses_a_tampered_or_mislabelled_published_projection[projection_digest_presented_as_raw]",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_verify_refuses_a_tampered_or_mislabelled_published_projection[missing_raw_digest]",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_verify_refuses_a_tampered_or_mislabelled_published_projection[phase]",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_verify_refuses_a_tampered_or_mislabelled_published_projection[not_an_object]",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_verify_refuses_a_tampered_or_mislabelled_published_projection[reworded_equality_semantics]",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_verify_refuses_an_unparsable_or_absent_published_record",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_a_raising_receipt_callback_never_replaces_the_dispatch_result[False]",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_a_raising_receipt_callback_never_replaces_the_dispatch_result[True]",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_quoted_credential_assignments_in_message_text_are_withheld[export API_KEY='fixture-dummy-12345']",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_quoted_credential_assignments_in_message_text_are_withheld[token=\"fixture dummy 12345\"]",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_quoted_credential_assignments_in_message_text_are_withheld[Authorization: \"Bearer fixture-dummy-12345\"]",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_completeness_validates_receipts_and_links_instead_of_only_filenames[invalid_json]",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_completeness_validates_receipts_and_links_instead_of_only_filenames[empty_object]",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_completeness_validates_receipts_and_links_instead_of_only_filenames[bad_seal]",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_completeness_validates_receipts_and_links_instead_of_only_filenames[wrong_link]",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_completeness_validates_receipts_and_links_instead_of_only_filenames[wrong_raw_link]",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_completeness_validates_receipts_and_links_instead_of_only_filenames[wrong_recomputed_raw]",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_completeness_validates_receipts_and_links_instead_of_only_filenames[wrong_attempt]",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_completeness_validates_receipts_and_links_instead_of_only_filenames[wrong_cohort]",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_completeness_validates_receipts_and_links_instead_of_only_filenames[empty_usage]",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_completeness_validates_receipts_and_links_instead_of_only_filenames[raw_proof_claim]",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_completeness_validates_receipts_and_links_instead_of_only_filenames[missing_raw]",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_completeness_validates_receipts_and_links_instead_of_only_filenames[changed_raw]",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_completeness_requires_identity_groups_even_when_all_hash_links_are_valid[model]",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_completeness_requires_identity_groups_even_when_all_hash_links_are_valid[decoding]",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_completeness_requires_identity_groups_even_when_all_hash_links_are_valid[server]",
+    "PASSED experiments/tools/test_v2_request_receipt.py::test_completeness_requires_identity_groups_even_when_all_hash_links_are_valid[tokenizer]"
+   ]
+  }
+ ],
+ "full_suite": {
+  "command": "PYTHONPATH=src .venv/bin/python -m pytest -q tests experiments/code_routing/test_estimators_absorbing.py experiments/tools/",
+  "final_line": "1024 passed, 8 subtests passed in 258.23s (0:04:18)",
+  "exit_code": 0,
+  "note": "run once after every file in the source manifest was final"
+ }
+}

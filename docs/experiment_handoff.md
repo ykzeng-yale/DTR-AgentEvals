@@ -4560,3 +4560,55 @@ Nothing live runs; the first comparison stays held for your inspection of that a
 | DTR-REQ-004 (P0) | **completed** for the historical 06:15–07:45 window; **a fresh peer/ownership/resource check is required** before any later block, and the 06:19 release is not treated as current availability | `22c4a82` |
 
 **Next observed publication slot:** this commit now; then the integration package when its verification completes. No question for you this tick.
+
+## Worker checkpoint — 2026-09-23T18:26:56Z (host `date -u`; local 14:26 EDT) — DTR-REQ-005 integrated cue-v1 no-model package DELIVERED for your review
+
+Code/config commit at checkpoint start: `98c8dcc`. Last lead checkpoint read: issue #4 "Scientific lead reply" at 17:23:14Z (no additional experiment request; **PROCEED integration, HOLD live release**). **Authorized runs:** none; nothing live ran, and `cue_episode.run_assignment` raises `LiveReleaseHeld`.
+
+**Artifact for your acceptance review:** [`req005_integration_acceptance_20260923.json`](req005_integration_acceptance_20260923.json), with a 38-entry source manifest (path + SHA-256), literal test output and your acceptance items mapped to test names. Human summary: [`req005_integration_acceptance_20260923.md`](req005_integration_acceptance_20260923.md). Transport evidence: [`req005_transport_map_20260923.md`](req005_transport_map_20260923.md), with file:line citations into the pinned packages.
+
+**New sources, in the `cue-v1` namespace only:**
+- `cue_episode.py` — driver: authoritative logical IDs, cue insertion, delivery states;
+- `cue_transport.py` — capture at the outbound HTTP layer, plus bounded receipts;
+- `cue_terminal.py` — endpoint, then diagnostic, then cleanup, with supervisor-killed timeouts;
+- `cue_admission.py` and `cue_runner.py` — frozen binding, 12 assignments and the 576-request cap across resumes; the runner offers `--dry-run`/`--validate` only;
+- fixtures plus pinned-venv harnesses.
+
+**Checks I ran myself, not taking the agents' word:**
+- Full suite **1024 passed, 8 subtests**, up 264 from 760: exactly the new files (integration 14, episode 16, transport 68, terminal 79, admission 87).
+- `git diff --quiet HEAD` over `pilot_episode.py`, `pilot_runner.py`, `pilot_cohort.py`, `pilot_report.py` and `pilot_grade.py`: **unchanged**. Your accepted helpers (`cue_detector`, `exit_capture`, `request_receipt`, `trajectory_triples`, `cue_cohort`) are also **unchanged**.
+- No tracked file under `results/` changed. `results/v2_agent/pilot_20260923_cue_v1` does not exist.
+- No local username in any new file. The only `/Users/` strings are `/Users/example-worker` redaction-fixture placeholders.
+- All 38 manifest hashes match the files on disk.
+
+**Final independent refuter: 13 checks pass, 1 failed (now fixed), 2 inconclusive, no blocking problem.** Passes include:
+- baseline request bodies, headers and model-visible messages byte-identical to the **unmodified frozen `pilot_episode.main()`**, driven with the same stubs rather than re-implemented;
+- exactly one wire send per logical attempt on the real SDK path, including canned 500 and 400 responses;
+- a hung diagnostic subprocess group actually killed (`group_empty_confirmed`), with cleanup still running;
+- `A,A,FormatError,A` not triggering;
+- a retry not creating a second cue;
+- an H24 final-call trigger left undelivered;
+- a storage refusal after insertion recorded as not delivered.
+
+The failed check was the acceptance JSON overstating which files anchor the frozen digests. I corrected it: `cohort_binding.json` binds only `pilot_episode`, `pilot_runner` and `pilot_cohort`; your audit adds `pilot_grade`; `pilot_report` is anchored by git history only.
+
+**Transport finding, and it is now closed for the completed cohorts.** The pinned stack is litellm 1.102.0 → openai 2.54.0 → httpx 0.28.1, and it has retry layers beyond our `num_retries=0`: litellm's second pass on certain 400s, and followed redirects. The frozen `attempts.jsonl` records tenacity-level attempts, not wire sends, so I checked our published counts against **server-side evidence** — the committed llama-server logs, which write one `launch_slot_` per processed completion request, context rejections included. Result: [`server_request_reconciliation_20260923.json`](../results/v2_agent/analysis_20260922/server_request_reconciliation_20260923.json).
+- **legacy:** 334 server requests = 327 answered + 3 context-rejected + 4 preflight probes.
+- **yaml-v1:** 356 = 350 + 2 + 4.
+- **Zero unexplained server requests in either cohort.** The 5 context rejections each appear as one `launch_slot_` plus one `send_error`, with the same 31,179 / 35,199 token counts we published.
+- So the published 330 / 352 request counts equal what the server processed. **No hidden resend occurred.**
+
+**Decisions needed from you before live release:**
+1. **Hidden second pass.** The capture takes the contract's "disable" option, enforcing one send per attempt. So a server 400 that litellm's pass 2 would have repaired surfaces as an error in cue-v1, where the frozen path would have succeeded after a second send. This is flagged in the outcome record as `frozen_path_parity: deviated` and does not stop the queue. Accept, or specify otherwise?
+2. **Cue form, which interacts with 1.** The cue is one user message appended after an observation, which is also a user message. That creates the only adjacent same-role pair in the history, and it is exactly the pattern litellm's disabled pass 2 exists to repair. If the served Qwen chat template rejects consecutive user messages, every cue delivery would error rather than be repaired. The refuter left this **inconclusive**. A non-generating `/apply-template` check against the served template would settle it, but it needs a running server, so it belongs to the pre-live host step. Do you want that check as a required pre-live gate, and do you confirm the cue form?
+3. **Host disk reserve value.** No repository source declares it. The episode requires `--host-reserve-bytes`, and the fixtures used 1 GiB. Please set the live value; the 6 GiB free-space preflight sits on top of it.
+4. **Diagnostic deadline is 4 s stricter than your formula** — `min(start+30 s, cleanup_deadline − 90 s − 4 s)`. Without the margin, the supervisor's post-kill confirmation left cleanup 89.97 s in the hang fixture.
+5. Pins for `workspace_capture.py` and `pilot_report.py` come from the worker-published landmarks, because your audit lists no digest for them. Please confirm.
+6. The integrated SIGALRM inference-deadline path is covered at **unit level only**, since its timing is not deterministic end to end.
+
+| Request | Status | Artifact / reason |
+|---|---|---|
+| DTR-REQ-005 (P0) | integration package **completed** for your review; live comparison **blocked** on your acceptance of this artifact, decisions 1–3, and a fresh host agreement | this commit |
+| DTR-REQ-002 (P1) | **completed** (corrections accepted) | `2874246` |
+| DTR-REQ-002 Django | **deferred** | — |
+| DTR-REQ-004 (P0) | **completed** historically; a fresh peer/ownership/resource check is required before any block | `22c4a82` |
