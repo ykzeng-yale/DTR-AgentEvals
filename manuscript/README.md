@@ -1,5 +1,12 @@
 # Dynamic Agent Regimes — full theory-first manuscript
 
+**Current revision, 23 September 2026:** 38-page draft, with both failed repository-repair DEV
+cohorts and their measurement/provenance limits integrated in Section 12.3. Current QA:
+[validation_20260923_pilots.json](validation_20260923_pilots.json); previous dated snapshots below
+are historical. Formal results and primary target unchanged. Readiness **55%, 0 points, 45–65%**;
+validated inference/comparisons, final synthesis and reproducibility/metadata/package remain.
+
+
 **Working draft, updated 22 September 2026 (37 pages).** [Read the current PDF](DTR_Agent_Regimes_Theory_Draft.pdf), [edit the source](main.tex), or read the [validation and status record](STATUS.md).
 
 The current paper develops the theory, complete proofs for its stated results, introduction, related-work positioning, discussion, and prospective empirical methods. The archived coding experiment is now integrated as a descriptive case study, including all six live-policy comparisons, limited feedback/repair opportunities, the fixed learned schedule, unfavorable replay comparison and unresolved calibration/inference. The empirical section, abstract and discussion also report scoped synthetic development, fixed-score coverage, replication sensitivity, honest-split repeated-training and five-fixed-fit diagnostics; the unsuccessful sixteen-episode repository-repair DEV pilot and its configuration deviation are now integrated in Section 12.3. Broader inference validation and prospective routing evaluation remain incomplete. Historical arithmetic pilots are not treated as confirmatory evidence.

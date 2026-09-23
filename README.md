@@ -10,7 +10,13 @@ The proposed contribution is a sequentially randomized evaluation design with ve
 
 ## Current priority: theory and paper
 
-**20 September 2026:** the [35-page manuscript](manuscript/README.md) now combines the scoped theory and proofs with a critical descriptive coding-agent case study, including unfavorable results and unresolved inference. [Read the paper PDF](manuscript/DTR_Agent_Regimes_Theory_Draft.pdf) or [edit the LaTeX source](manuscript/main.tex). New model/GPU and Monte Carlo studies remain deferred. Archived observations are preserved; descriptive integration does not establish confirmatory validation or adaptive improvement.
+**23 September 2026:** the [38-page manuscript](manuscript/README.md) combines scoped theory and
+proofs, synthetic development evidence, a critical coding-agent case study and both failed SWE-bench
+DEV cohorts. [Read the paper PDF](manuscript/DTR_Agent_Regimes_Theory_Draft.pdf) or
+[edit the LaTeX source](manuscript/main.tex). The [current lead decision](docs/theory_feedback_20260923_completed_pilots.md)
+selects a bounded recovery-cue repair with diagnostic capture and a controlled DEV design.
+New model/GPU and Monte Carlo work remains deferred for the theory task; separately authorized worker
+work is distinct. No routing/CONFIRM or successful repair evidence is inferred from these pilots.
 
 **21 September design update:** a [primary-literature and official-code review](docs/literature_design_review_20260921.md)
 now informs the [v2 prospective protocol](docs/experiment_protocol_v2.md): separate evaluator calibration from

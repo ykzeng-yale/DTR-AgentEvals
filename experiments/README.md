@@ -5,28 +5,37 @@ directory and `results/sim/`, `results/code_routing/` are written only by this w
 Theory, proposal, literature and the reference library under `src/` belong to the theory
 agent and are not edited from here. Rules in [`AGENTS.md`](../AGENTS.md) apply.
 
-## Current status — 22 September 2026, 06:08 UTC
+## Current status — 23 September 2026 UTC
 
-The archived MBPP/HumanEval study and designated synthetic checks remain integrated descriptively;
-useful primary branch inference and the broader v2 validation gates remain unresolved.
-The twelve-task SWE-bench qualification produced ten qualified tasks, with original Django/Pylint failures retained.
+Both fixed-backend DEV cohorts are complete and separate: legacy 16 operational zeros / 330 requests;
+corrected yaml-v1 16 operational zeros / 352 requests. Neither produced an eligible nonempty submitted
+patch. The [lead review](../docs/theory_feedback_20260923_completed_pilots.md) and independent audits
+accept recorded counts, preserve unknown token usage and distinguish verified published projections
+from unverified raw execution identity. They correct attempted-write/testing/workspace interpretations.
 
-The first Coder 7B/14B fixed-backend development cohort is now complete: **16/16 terminal, no nonempty patches,
-16 operational zeros, 330 requests**. Published records and identities reconcile independently. This is an
-unfavorable result under a harness defect: the driver omitted the pinned YAML's model/environment settings.
-Two context failures involved oversized observations; a third came from cumulative history. No algorithmic
-correctness denominator or routing/capability conclusion follows.
+The next priority is **DTR-REQ-005**: diagnostic capture and one neutral recovery-cue implementation,
+with deterministic acceptance checks before a frozen controlled DEV comparison. No new live stage is
+released yet. The old shared-host reservation is completed; current coordination precedes any new use.
+The existing primary target, source pins, negative outcomes and v2 routing/CONFIRM gates are preserved.
 
-The [lead review](../docs/theory_feedback_20260922_yaml_binding.md) integrates the full-YAML repair, corrected
-history reporting and source/configuration receipts. **One separate corrected `yaml-v1` DEV cohort is authorized**,
-with the same eight tasks and 16 assignments, models/order/budgets, after the existing host handoff. Do not create
-a second `v3` cohort, change decoding or mix old/new results. MultiRound's accepted 07:10–08:20 UTC window is
-preserved; explicit peer release and fresh checks are required before corrected inference. No corrected outcome
-exists yet. The original cohort and report remain archived; a separate lead report preserves zeros and missingness.
+**Readiness 55%, change 0 points, range 45–65%.** Useful validated inference/adequate comparisons,
+final empirical synthesis, and independent reproducibility/metadata/package remain.
 
-See [evidence and remaining milestones](../docs/experiment_results.md) and the
-[lead/worker handoff](../docs/experiment_handoff.md). Readiness **55%, change 0 points, range 45–65%**:
-useful validated inference/adequate comparisons, final empirical synthesis, and reproducibility/metadata/package.
+### Published configuration reports
+
+Default `pilot_report.py` continues strict raw receipt validation. For an explicitly publication-only
+report use `--cohort yaml-v1 --publication-manifest
+results/v2_agent/pilot_20260922_yaml_v1/sanitization_yaml_v1_block1.json` with a **new unique stamp**.
+This checks listed published bytes, canonical configuration hashes and recorded identity links;
+`published_projection_verified` never means raw execution identity was independently validated.
+It cannot admit runtime reuse or grading. The additive lead projection report is
+[`docs/audits/yaml_v1_publication_20260923.json`](../docs/audits/yaml_v1_publication_20260923.json).
+
+Focused checks (these tools tests are outside the default `tests/` collection):
+
+```sh
+.venv/bin/python -m pytest -q experiments/tools/test_v2_publication_report.py experiments/tools/test_v2_pilot_report.py experiments/tools/test_v2_pilot_cohort.py experiments/tools/test_v2_pilot_binding.py
+```
 
 ## Historical status (18 September 2026)
 

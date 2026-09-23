@@ -84,7 +84,7 @@ The replay implementation will first be checked against both positive and adapti
 
 The primary statistical outputs will be bias, root mean squared error, confidence-interval coverage and length, false improvement declarations, and computation. Weight tails, zero-match rates, stage-specific effective sample sizes, empty nuisance-fit cells, and numerical failures will be retained. Monte Carlo uncertainty will accompany performance summaries. An interval that fails under misspecification will be reported as a failure under the relevant assumptions rather than hidden by selective reporting or undeclared truncation.
 
-\subsection{Repository-repair development pilot and configuration deviation}
+\subsection{Repository-repair development pilots and execution limitations}
 A separate development pilot used eight SWE-bench Verified repository-repair tasks
 \citep{jimenez2023swebench}. The task list was frozen before model outcomes from a feasibility-qualified
 frame; it is not a representative benchmark sample. Each task received one fixed-backend episode with
@@ -107,9 +107,40 @@ routing-benefit or intended-configuration performance claim. The archived record
 attest the exact remote script bytes executed. The archive and retrospective audit are available under
 \texttt{results/v2\_agent/pilot\_20260922/} and
 \texttt{docs/audits/pilot\_block1\_20260922\_lead.json}.
-A separate corrected development cohort is authorized with the same tasks, model pins, decoding and
-limits; it has not begun at this revision. Its results will remain separate from the original cohort.
-These exposed development tasks cannot supply confirmatory evidence for a subsequently selected router.
+A separate development cohort used repaired source and serialized records consistent with the complete
+YAML configuration, while retaining the eight tasks, model pins, decoding settings and limits.
+It also incorporated deadline, cleanup and receipt repairs, so the comparison does not isolate YAML
+restoration. All sixteen corrected-cohort episodes terminated: thirteen
+reached the call limit, two exceeded context capacity and one returned an empty submission. Again,
+all sixteen were operational failures, with no eligible algorithmic-success observations and no
+hidden-test evaluation. The cohort used 352 physical requests; token usage is incomplete for two
+failed requests. Independent saved-record checks reconcile assignments, grades, attempt counts and
+all 59 published-file hashes in the sanitization manifest. The published configuration receipts contain
+sanitized executable paths, so their canonical hashes differ from the recorded raw-payload hashes.
+The manifest supports verification of the published projection; the worker's pre-publication validation
+of the raw execution receipts is reported evidence, not independently reproduced raw-byte identity.
+The corrected cohort and independent audit are archived under
+\texttt{results/v2\_agent/pilot\_20260922\_yaml\_v1/} and
+\texttt{docs/audits/yaml\_v1\_20260923\_lead.json}.
+
+The unchanged operational result does not imply that the configuration repair had no effect.
+Across the two cohorts, twelve of sixteen task--backend pairs had identical complete command sequences;
+the remaining pairs had different sequence lengths or commands, and earlier tool observations could
+differ despite temperature zero. Retrospective inspection found terminal command cycles in 28 of 32
+episodes (periods one through six, with at least two repetitions). Of 446 command repetitions,
+443 returned identical rendered observation text to the previous occurrence
+and 437 as the first occurrence. These descriptive counts support investigating stagnant action loops;
+they do not identify the effect of a recovery intervention or justify a larger budget.
+
+No eligible patch is also distinct from no attempted edit. Some commands attempted file writes, but
+the repeated write commands in the requests/small episodes failed with shell syntax errors before the
+edit executed. Other episodes executed ad hoc Python reproducers, including a self-written test script;
+no explicit repository test-runner invocation was observed. The frozen capture rule saved the final
+workspace tree only for the two Submitted exits, so the final workspace state of the other thirty
+episodes is unobserved in these records. We retain the Submitted-only operational endpoint and treat
+all-exit workspace capture as a separate future diagnostic. The cohorts remain separate development
+evidence about the executed systems, with no routing-benefit or general model-capability conclusion.
+These exposed tasks cannot supply confirmatory evidence for a subsequently selected router.
 
 \subsection{Prospective open-weight agent experiment}
 The subsequent routing study will fix a model pool, prompts, decoding settings, tool interface, execution environment, stopping rules, and objective verifier. Development tasks will establish a feasible configuration and a nondegenerate outcome distribution. Before collection, the protocol will also set adequacy thresholds for visible-feedback informativeness, consequential routing opportunities and per-action support, with checks on development tasks. Handling of tasks with zero usable visible checks will be specified prospectively; the archived evaluation cohort will not be filtered retrospectively. After that choice, all evaluation tasks will be newly drawn or held out at the task-family level. Model weights and framework software will have separately documented licenses and immutable version identifiers.

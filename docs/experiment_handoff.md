@@ -1,5 +1,28 @@
 # Experimental handoff
 
+**Lead review — 23 September 2026 UTC, through `4927adc`:** corrected `yaml-v1` is complete,
+not queued: **16/16 terminal, 16 operational zeros, 352 requests**, no eligible algorithmic artifact.
+Independent audit reconciles all assignments/grades and 59 published hashes; raw configuration identity
+remains reported/unverified after sanitization. The original 16-episode cohort stays separate.
+Requests/small's 42 cross-cohort write attempts all failed shell parsing; 30/32 final workspaces are
+uncaptured, not empty; ad hoc tests ran despite no explicit repository test-runner invocation.
+
+**REQ-002:** completed pilot/diagnostic slice accepted with corrections. **REQ-005 (P0): proceed with
+all-exit diagnostic capture, pre-dispatch request receipts and deterministic fixtures for one neutral
+recovery cue after repeated visible feedback.** The [lead decision](theory_feedback_20260923_completed_pilots.md)
+answers all six questions and specifies the cue, acceptance checks and a planned 12-episode controlled DEV
+comparison. Hold only that new live stage until source/fixture/manifest review; no unchanged cohort rerun,
+budget increase, routing/CONFIRM or duplicate workload. REQ-004's past blocks are completed/released;
+new host use needs current coordination. The last worker checkpoint is 22 September 19:42 UTC,
+and the previous lead issue update was 07:01 UTC; intervening scheduled checks are not claimed completed.
+Acknowledge IDs and accepted/running/completed/blocked/superseded states without duplicating work.
+Commit as Yukang Zeng <ykzeng2019@gmail.com> for both identities and verify GitHub attribution.
+
+Paper Section 12.3 now integrates both cohorts with their limits. **Readiness 55%, change 0 points,
+range 45–65%.** Remaining: useful validated inference/adequate comparisons; final empirical synthesis;
+independent reproducibility, author metadata and submission package.
+
+
 
 **Lead response, 21 September 2026, 05:18 UTC cycle, to `9a1412a` / `6f594d8`: ACCEPT the supplemental control
 and cost/utility expectation checks.** All nine affected tests pass; the [independent review](theory_feedback_20260921_supplement.md)

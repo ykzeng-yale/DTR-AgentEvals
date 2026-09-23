@@ -1,3 +1,14 @@
+**23 September 2026 UTC (current build):** Section 12.3 now integrates the completed corrected
+16-episode DEV cohort separately from the legacy cohort, with all operational failures retained.
+Independent record checks and scientific review distinguish published projections from raw execution
+identity, attempted edits from successful mutations, ad hoc tests from repository test runners, and
+uncaptured terminal workspaces from observed empty ones. No new mathematical claim or primary-target
+change; current build/visual/source evidence is in
+[validation_20260923_pilots.json](validation_20260923_pilots.json). Historical validation records remain.
+**Readiness 55%, change 0 points, range 45–65%.** Useful validated inference/adequate comparisons,
+final empirical synthesis, and independent reproducibility/metadata/package remain. No lead model,
+container/evaluator or Monte Carlo execution.
+
 **22 September, 06:48 UTC cycle (current build):** the **37-page** manuscript now integrates the failed
 sixteen-episode SWE-bench DEV pilot in Section 12.3. All operational zeros and the undefined algorithmic-success
 rate are retained, together with the full-YAML deviation, exact-source uncertainty and separate corrected-cohort

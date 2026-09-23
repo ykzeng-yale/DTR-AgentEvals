@@ -126,12 +126,18 @@ def attempt_telemetry(directory, episode):
     return values, subtotals, detail, issued, max_attempts
 
 
-def configuration_provenance(directory, episode, expected_binding=None, expected_source=None):
+def configuration_provenance(directory, episode, expected_binding=None, expected_source=None, publication=None):
     """Report admission evidence without removing an assignment or its observed outcome."""
     result = dict(status='not_checked', expected_binding=expected_binding, expected_source=expected_source,
                   reported_binding=episode.get('configuration_binding'),
                   reported_episode_source=episode.get('episode_source_sha256'),
                   effective_config_sha256=episode.get('effective_config_sha256'), reason=None)
+    if publication is not None:
+        try:
+            projection = publication.configuration_provenance(directory, episode, expected_binding, expected_source)
+        except (ValueError, TypeError, AttributeError, KeyError, OSError) as exc:
+            return dict(result, status='invalid', reason=str(exc), raw_execution_binding='reported_unverified')
+        return dict(result, **projection)
     if expected_binding is None:
         return result
     if episode.get('configuration_binding') not in (None, expected_binding):
@@ -149,7 +155,7 @@ def configuration_provenance(directory, episode, expected_binding=None, expected
     return dict(result, status='validated')
 
 
-def episode_summary(directory, expected=None, *, expected_binding=None, expected_source=None):
+def episode_summary(directory, expected=None, *, expected_binding=None, expected_source=None, publication=None):
     directory = Path(directory)
     ep = read_json(directory / 'episode.json')
     expected = expected or dict(instance_id=ep.get('instance_id'), backend=ep.get('backend'))
@@ -200,7 +206,7 @@ def episode_summary(directory, expected=None, *, expected_binding=None, expected
     valid = (grade or {}).get('grade_valid')
     # An evaluator integrity refusal does not invalidate an intact local candidate.
     eligible = ep['exit_status'] == 'Submitted' and bool(raw.strip()) and patch_matches
-    provenance = configuration_provenance(directory, ep, expected_binding, expected_source)
+    provenance = configuration_provenance(directory, ep, expected_binding, expected_source, publication)
     return dict(instance_id=ep['instance_id'], backend=ep['backend'], run_id=ep['run_id'], state='terminal',
                 configuration_provenance=provenance, configuration_provenance_status=provenance['status'],
                 exit_status=ep['exit_status'], nonempty_patch=ep['exit_status'] == 'Submitted' and bool(raw.strip()),
@@ -229,7 +235,7 @@ def incomplete_evidence(directory):
                 known_max_attempts_on_one_call=maximum)
 
 
-def collect(frame, out, *, expected_binding=None, expected_source=None):
+def collect(frame, out, *, expected_binding=None, expected_source=None, publication=None):
     assigned, rows, missing = [], [], []
     for task in sorted(frame['pilot']['tasks'], key=lambda t: t['position']):
         if sorted(task['backend_order']) != ['large', 'small']:
@@ -245,7 +251,7 @@ def collect(frame, out, *, expected_binding=None, expected_source=None):
                 raise ReportIntegrityError('two terminal episodes for %s/%s' % key)
             if terminal:
                 row = episode_summary(terminal[0], dict(instance_id=key[0], backend=key[1], image=task.get('instance_image')),
-                                      expected_binding=expected_binding, expected_source=expected_source)
+                                      expected_binding=expected_binding, expected_source=expected_source, publication=publication)
                 row['retained_incomplete_run_dirs'] = [d.name for d in directories if d not in terminal]
                 row['incomplete_attempt_evidence'] = [incomplete_evidence(d) for d in directories if d not in terminal]
                 rows.append(row)
@@ -349,11 +355,21 @@ def paired(rows):
                 operational_difference_sum_on_valid_pairs=cells['0,1']-cells['1,0'], paired_cost_differences=differences)
 
 
-def report(frame, out, *, expected_binding=None, expected_source=None):
-    assigned, rows, missing = collect(frame, out, expected_binding=expected_binding, expected_source=expected_source)
+def report(frame, out, *, expected_binding=None, expected_source=None, publication_manifest=None):
+    publication = None
+    if publication_manifest is not None:
+        from publication_manifest import PublicationManifest
+        try:
+            publication = PublicationManifest(publication_manifest, out)
+        except (ValueError, TypeError, AttributeError, KeyError, OSError) as exc:
+            raise ReportIntegrityError('publication manifest refused: ' + str(exc)) from exc
+        if expected_binding is None or expected_source is None:
+            raise ReportIntegrityError('publication report requires expected cohort binding and frozen episode source')
+    assigned, rows, missing = collect(frame, out, expected_binding=expected_binding, expected_source=expected_source,
+                                     publication=publication)
     backends = {backend: backend_table(rows, backend) for backend in ('small', 'large')}
     bounds = [b['operational_completion_bounds'] for b in backends.values()]
-    return dict(request='DTR-REQ-002', kind='fixed-backend DEVELOPMENT pilot, descriptive only (no efficacy, precision or routing claim)',
+    result = dict(request='DTR-REQ-002', kind='fixed-backend DEVELOPMENT pilot, descriptive only (no efficacy, precision or routing claim)',
                 configuration_provenance=dict(expected_binding=expected_binding, expected_source=expected_source,
                                               terminal_status_counts=count_by([r for r in rows if r['state'] == 'terminal'], 'configuration_provenance_status'),
                                               scope='configuration/source admission only; outcomes and all assigned episodes remain visible regardless of admission'),
@@ -362,6 +378,12 @@ def report(frame, out, *, expected_binding=None, expected_source=None):
                 operational_completion_bounds=dict(kind='finite assignment completion bounds, not confidence intervals',
                                                    denominator=len(assigned), **{k: sum(b[k] for b in bounds) for k in ('low', 'high', 'unknown')}),
                 backends=backends, paired=paired(rows), episodes=rows)
+    if publication is not None:
+        result['publication_provenance'] = publication.metadata
+        result['configuration_provenance']['scope'] = (
+            'Published projection checks only; raw execution binding remains reported/unverified. '
+            'All assignments and observed outcomes remain visible; this report cannot admit runtime reuse or grading.')
+    return result
 
 
 def cohort_metadata(cohort, out):
@@ -402,11 +424,13 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('stamp', nargs='?', default='current')
     parser.add_argument('--cohort', choices=('legacy', 'yaml-v1'), default='legacy')
+    parser.add_argument('--publication-manifest', type=Path,
+                        help='Explicit published-projection report only; paths in the manifest are relative to its archive directory')
     args = parser.parse_args(argv)
     out = cohort_output(args.cohort)
     provenance = cohort_metadata(args.cohort, out)
     rep = report(read_json(FRAME), out, expected_binding='yaml-v1' if args.cohort == 'yaml-v1' else None,
-                 expected_source=provenance['expected_episode_source_sha256'])
+                 expected_source=provenance['expected_episode_source_sha256'], publication_manifest=args.publication_manifest)
     rep['cohort'] = args.cohort
     rep['cohort_provenance'] = provenance
     out.mkdir(parents=True, exist_ok=True)

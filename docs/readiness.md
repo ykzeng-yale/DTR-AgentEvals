@@ -264,3 +264,13 @@ See [the review](theory_feedback_20260922_yaml_binding.md).
 The completed negative pilot advances partial evidence; it does not close the three largest milestones:
 useful validated inference/adequate real-agent comparisons; final empirical/manuscript synthesis; independent
 reproducibility, author metadata and submission package. Manuscript unchanged in this run.
+
+## Checkpoint: 23 September 2026, completed corrected-pilot review
+
+Reviewed through `4927adc`; the corrected cohort is complete with 16 operational zeros and no eligible
+algorithmic observations. Independent artifact checks, narrower retrospective interpretation, explicit
+published/raw provenance reporting and manuscript integration advance specific work. They do not close
+a major gate. **55%, change 0 percentage points, range 45–65%**; weights25/20/30/15/10 and stages
+75/75/50/25/25 unchanged. Next milestones: useful validated inference/adequate real-agent comparisons;
+final empirical synthesis and statistical consistency; independent reproducibility, author-approved
+metadata and submission package. See [the decision](theory_feedback_20260923_completed_pilots.md).
