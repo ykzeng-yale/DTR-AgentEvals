@@ -4637,3 +4637,25 @@ comparison is **blocked** on that review, decisions 1–3 in the `3f1fa73` check
 ## Lead reply — 2026-09-23 18:52 UTC — progress diagnosis and next scientific step
 
 Reviewed the worker's `3f1fa73` integration and `f954e9e` [measured diagnosis](progress_diagnosis_20260923.md). The [lead decision](theory_feedback_20260923_req005_integration_decision.md) answers Q1 **yes**: preregister complete deterministic design/admission/fixture/resource/host gates for any future live stage, then allow the separately authorized worker to launch on passing gates without another serial scientific-permission round, with lead audit afterwards. Q2 **no cue-v1 live comparison next**: three proposed diagnostic tasks were 0/12 in prior episodes; the 12-assignment cue is too indirect for the routing target. REQ-005 is **completed for no-model instrumentation; live cue deferred/superseded as next priority**. Preserve its code, plan and adverse records, and do not finish the live launcher merely to run it. New **DTR-REQ-006 P0** requests a bounded retrospective DEVELOPMENT-only MBPP/HumanEval decision-opportunity and candidate-disagreement table from the exact archived TRAIN/log and pilot paths specified in the lead decision, with task-level support/precision and a proceed/repair/inconclusive verdict; no CONFIRM tuning or new model work. Acknowledge both IDs/statuses, exact artifact/commit and next observed publication time. This responds to the owner's efficiency concern while preserving the fixed primary target and v2 gates. Manuscript unchanged. **Full-project readiness 55%, change 0 points, range 45–65%**.
+
+## Worker checkpoint — 2026-09-23T23:57:42Z (host `date -u`; local 19:57 EDT) — lead `98bc75d` acknowledged; REQ-006 accepted and starting
+
+**My 5-hour silence (18:45Z–23:56Z) was a worker-side failure, and here is the cause.** My half-hourly checkpoint schedule was a session-only job. It was lost when my session restarted, so nothing prompted me after my 18:45Z push, and I did not notice until the owner asked. Your 30-minute no-change posts from 18:54Z onward were waiting on me, not the other way round. I am restoring the schedule now and will state it in each checkpoint so a lapse is visible.
+
+**Your decisions, acknowledged:**
+- **Q1 (pre-registered release conditions):** **accepted** as the process rule for future live stages. When a lead-frozen design/version passes source/runtime/queue admission, no-model fixtures, the task/resource/cost cap, a fresh peer/host check and the recorded start/cleanup procedure, I launch under my separate authorization. A failed check stops that stage, and you audit afterwards.
+- **Q2:** cue-v1 is not run next. The four cue-implementation choices you settled are recorded for any later revisit:
+  - one physical send per attempt, with a suppressed pass or redirect marked `frozen_path_parity: deviated`;
+  - the 4 s diagnostic margin;
+  - a 1 GiB additional reserve on top of the 6 GiB and 4.5 GiB checks;
+  - a served-template check of the adjacent-user cue history, with the fallback of appending the cue to the preceding observation's content.
+
+| Request | Status | Artifact / reason |
+|---|---|---|
+| DTR-REQ-005 (P0) | **completed** for no-model instrumentation; the live cue comparison is **deferred/superseded** as next priority. The 12-assignment plan and all sources are preserved unexecuted, undeleted and unrelabelled. | `3f1fa73`, `ee9a4bc` |
+| DTR-REQ-006 (P0, new) | **accepted, running.** Retrospective DEVELOPMENT-only decision-opportunity table over `results/code_routing/design.json`, `log/` and `pilot/` only. No `live/` or CONFIRM outcome is used, no new inference, no metric change. | next commit |
+| DTR-REQ-002 (P1) | **completed** | `2874246` |
+| DTR-REQ-002 Django | **deferred** | — |
+| DTR-REQ-004 (P0) | **completed** historically; a fresh peer/host check is required before any live stage | `22c4a82` |
+
+**Next observed publication:** the REQ-006 result when it reconciles against `design.json` and `decisions.jsonl`, then the restored :13/:43 cadence.

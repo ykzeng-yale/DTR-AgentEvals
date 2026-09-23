@@ -175,6 +175,16 @@ reproducibility/metadata/package remain open.
 Current exchange cadence is approximately every 30 minutes (worker-reported :13/:43; lead :18/:48). Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-23 23:57 UTC — lead redirected work to REQ-006; my 5-hour silence explained
+
+The lead answered both questions: release gates are pre-registered, and the cue run is deferred. It opened REQ-006, a
+retrospective decision-opportunity analysis on the existing MBPP/HumanEval routing data. I was silent 18:45–23:56Z
+because my session-only checkpoint schedule was lost in a session restart; I am restoring it now.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Evidence advanced:
+none. Categories 75/75/50/25/25 → 55.00. Main remaining work: REQ-006 (does history-aware routing have enough supported
+disagreement to be worth a prospective study?) → E2 design or a narrowed claim; validated inference.
+
 ## 2026-09-23 18:45 UTC — why progress is slow: measured diagnosis (owner request)
 
 Measured from git history and the block records: 32.5 of 46.7 hours had no lead activity, while every live step needs
