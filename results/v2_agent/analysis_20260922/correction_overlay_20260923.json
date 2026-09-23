@@ -1,0 +1,68 @@
+{
+ "request": "DTR-REQ-002",
+ "kind": "additive correction overlay for the cross-cohort diagnostic (lead review 3cbd524, 2026-09-23 04:03Z)",
+ "note": "Additive only. No file under results/v2_agent/analysis_20260922/ or the two cohort archives is modified; the original artifacts and their defect register stand as published.",
+ "corrects": [
+  "docs/experiment_handoff.md worker checkpoint of 2026-09-22T19:4xZ",
+  "docs/experiment_results.md entry of 2026-09-22 19:4x UTC",
+  "results/v2_agent/analysis_20260922/action_profile.json (edit_write_target_location_counts wording)"
+ ],
+ "corrections": [
+  {
+   "id": "COR-1",
+   "severity": "material",
+   "worker_claim": "\"installed_package_outside_repo_tree: requests/7B 21 writes - edits to the installed package\"",
+   "corrected": "21 write-command ATTEMPTS per cohort (42 total), none executed. Every one returned exit code 2 from bash before sed ran.",
+   "worker_reverification": "I recomputed the return-code distribution over the complete trajectories: {2: 21} in each cohort. First error text verbatim: \"/usr/bin/bash: -c: line 1: unexpected EOF while looking for matching ''\" then \"syntax error: unexpected end of file\".",
+   "status": "lead correction ACCEPTED; my published wording overstated attempts as executed mutations",
+   "consequence": "No installed-package mutation is evidenced anywhere in either cohort. The intended target was outside /testbed, but the proposed mutation did not run."
+  },
+  {
+   "id": "COR-2",
+   "severity": "wording",
+   "worker_claim": "\"No episode in either cohort ever ran the repository's tests\" / \"run_tests 0 across all 674 commands\"",
+   "corrected": "No explicit repository test-runner invocation was recorded (0 of 674 commands match pytest/py.test/unittest/tox/runtests/manage.py test in either cohort). Agent-written reproducers WERE executed, so \"no testing occurred\" is too broad.",
+   "worker_reverification": "Verified per episode: sympy/large ran \"python test_distance.py\" and it exited 0 with program output (both cohorts). sklearn/small wrote and launched reproducers: 14 script-run commands per cohort, return codes {1, 128}, 0 successful; its first attempt used the placeholder path /path/to/your/script (rc 1) and a later run executed Python and raised a Traceback (rc 1).",
+   "status": "lead correction ACCEPTED, with one worker addition: sklearn/small's reproducer executed but never exited 0, so it evidences an attempted, failing reproducer rather than a working one.",
+   "consequence": "Distinguish three things: invoked repository test runners (0 observed), agent-written reproducers executed (sympy/large exit 0; sklearn/small nonzero), and commands merely mentioning tests."
+  },
+  {
+   "id": "COR-3",
+   "severity": "reaffirmation",
+   "worker_claim": "30 of 32 episodes have no captured final tree",
+   "corrected": "Unchanged and reaffirmed: those 30 terminal workspace states are UNOBSERVED, not observed empty. All 32 endpoint submission.diff files are empty under the frozen Submitted-only / no-salvage rule.",
+   "worker_reverification": "final_tree_recorded is true for exactly the 2 Submitted episodes across the 32 records.",
+   "status": "consistent with the lead review"
+  },
+  {
+   "id": "COR-4",
+   "severity": "convention",
+   "worker_claim": "443/446 identical-observation repeats (previous-occurrence baseline)",
+   "corrected": "Report BOTH baselines: previous-occurrence 443/446 is the primary local repetition diagnostic, first-occurrence 437/446 is the sensitivity figure. The convention was selected after inspection, and both are frozen for the next comparison before execution.",
+   "status": "lead answer 4 ACCEPTED; already registered as defect REP-1 in the original artifact"
+  },
+  {
+   "id": "COR-5",
+   "severity": "provenance",
+   "worker_claim": "the committed report records configuration provenance \"validated: 16\"",
+   "corrected": "That validated:16 refers to worker-reported PRE-PUBLICATION validation of the raw files. Of the 16 published (sanitized) configuration receipts, 0 reproduce their embedded raw-payload digest, because the home-path substitution changes the payload. Publication evidence classes must be separated: published_projection_verified vs raw binding reported_unverified.",
+   "worker_reverification": "Recomputing the report over the published files marks configuration provenance invalid for all 16; the committed report was computed pre-sanitization and is byte-identical to its raw-archive copy.",
+   "status": "lead answer 6 option (a) ACCEPTED; strict default runtime/reporting validation stays strict"
+  }
+ ],
+ "preserved_defect_register": [
+  "ACT-2: target-reference count is 4 of 8, not 5 (prose only)",
+  "ACT-1: published command-family method omits its quote-masking rule",
+  "BUD-1: the 4 nonidentical prompt-token series include 2 pure truncations",
+  "REP-1: the identical-observation headline is baseline-dependent"
+ ],
+ "unchanged_numbers": [
+  "32/32 empty submissions and operational zeros",
+  "682 logical calls, 674 recorded commands, gap 8",
+  "2,667,613 known prompt and 66,041 known completion tokens (totals unknown: 5 failed requests)",
+  "12 of 16 byte-identical paired command sequences, identical-prefix sum 292",
+  "28/32 episodes end in a terminal command cycle",
+  "exits: legacy 1/12/3, yaml-v1 1/13/2 (Submitted/LimitsExceeded/ContextWindowExceeded)"
+ ],
+ "scope": "Descriptive corrections to worker reporting of already-completed episodes. No model, container, evaluator or grading ran; no cohort was rerun; no endpoint or eligibility changed."
+}

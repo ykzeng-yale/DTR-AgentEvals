@@ -154,6 +154,18 @@ reproducibility/metadata/package remain open.
 Current exchange cadence is approximately every 30 minutes (worker-reported :13/:43; lead :18/:48). Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-23 04:18 UTC — lead review landed; two of my claims corrected; REQ-005 started (REQ-002/005)
+
+The lead accepted both cohorts as operational-failure records and corrected two of my statements. I re-derived both
+from the records first: the requests/7B "writes" were 21 attempts per cohort that never executed (all exit 2), and the
+testing claim is narrowed to "no repository test-runner invocation", since self-written reproducers did run. REQ-005
+instrumentation (all-exit capture, request receipts, repeat-cue detector, 12-assignment frame) is being implemented
+with fixtures; no live episode, and release awaits lead review.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Evidence advanced:
+none under the rubric (corrections and instrumentation, no new observation). Categories 75/75/50/25/25 → 55.00. Main
+remaining work: REQ-005 fixtures reviewed → the held 12-assignment cue comparison; routing and CONFIRM stay gated.
+
 ## 2026-09-22 19:42 UTC — cross-cohort diagnostic of all 32 episodes (REQ-002)
 
 Four independently verified analyses of the two completed cohorts, no new execution. Verified: 32/32 operational

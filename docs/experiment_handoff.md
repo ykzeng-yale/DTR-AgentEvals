@@ -4398,3 +4398,32 @@ Code/config commit at checkpoint start: `e8a3d39`. Last lead checkpoint read: is
 | DTR-REQ-002 (P1) cross-cohort diagnostic | **completed** (this commit); awaiting your review | `results/v2_agent/analysis_20260922/` |
 | DTR-REQ-002 Django | **deferred** | — |
 | DTR-REQ-004 (P0) | **completed** for today's blocks; host idle; no DTR work planned | — |
+
+## Worker checkpoint — 2026-09-23T04:18:21Z (host `date -u`; local 00:18 EDT) — lead `3cbd524` acknowledged; REQ-002 corrections applied; REQ-005 accepted
+
+Code/config commit at checkpoint start: `3cbd524` (lead `3cbd524` pulled). Last lead checkpoint read: `docs/theory_feedback_20260923_completed_pilots.md` and issue #4 at 04:04:36Z. **Authorized runs:** none started; REQ-005 live use is gated on your review of the fixtures. State at this tick: 4 code-routing stages verified OK; no stage process; 8191/8193/8291/8293 down; `foreign_busy_servers` empty.
+
+**Your two material corrections: both re-derived by me from the complete records before conceding, both ACCEPTED.** Overlay (additive, originals untouched): [`correction_overlay_20260923.json`](../results/v2_agent/analysis_20260922/correction_overlay_20260923.json).
+- **COR-1, requests/7B.** You are right and my wording was wrong. I published "21 writes … edits to the installed package"; they are **21 write-command attempts per cohort (42 total), none executed**. I recomputed the return-code distribution over the full trajectories: **{2: 21} in each cohort**, with bash reporting `unexpected EOF while looking for matching '` before `sed` ran. My own earlier table already showed zero of them succeeding, so this was an overstatement I should have caught. No installed-package mutation is evidenced anywhere in either cohort.
+- **COR-2, testing.** Accepted with one addition of mine. No explicit repository test-runner invocation is recorded (0 of 674 commands), and agent-written reproducers **were** executed, so "no testing occurred" is too broad. My verification: sympy/large ran `python test_distance.py` to **exit 0** with output in both cohorts; sklearn/small wrote and launched reproducers with **14 script-run commands per cohort, return codes {1, 128} and 0 successes** — its first attempt used the placeholder path `/path/to/your/script`. So sklearn/small evidences an **attempted, failing** reproducer rather than a working one; I flag that rather than repeating "ran an ad hoc reproducer" unqualified.
+- COR-3 reaffirmed (30 terminal trees unobserved, not empty), COR-4 both repetition baselines frozen (443/446 primary, 437/446 sensitivity, convention selected after inspection), COR-5 provenance classes separated (`published_projection_verified` vs raw `reported_unverified`; 0/16 published receipts reproduce their embedded raw digest, and the report's `validated: 16` was pre-publication). My ACT-1/ACT-2/BUD-1/REP-1 register is preserved unmodified.
+
+**Your six answers are recorded and need no further question from me.** Nothing in them changes an endpoint, H24, temperature, context or model pins.
+
+**DTR-REQ-005 (P0) accepted; implementation is running now, live use held for your review.** I am implementing in a **new namespace** and have confirmed why that is mandatory: `pilot_cohort.freeze_source_binding` hashes `pilot_episode.py`, `pilot_runner.py` and `pilot_cohort.py`, so editing any of them would break the frozen yaml-v1 binding. New modules only:
+- `cue_detector.py` — exact-triple `(command, returncode, rendered observation)` detector, AAA and ABABAB, at most one cue per episode, no trigger on missing/unparsable records and no skipping over them to form a pattern, trigger-without-delivery recorded when no next call is budgeted, plus a silent observe-only mode so the baseline arm records the same would-trigger landmark. The cue text is byte-exact from your review, with its SHA-256 published.
+- `exit_capture.py` — all-exit bounded diagnostic tree/status/tracked diff plus untracked digests, explicit caps/truncation/timeout/failure states, absent capture never labelled empty, never written to `submission.diff`, never graded, and never able to block cleanup.
+- `request_receipt.py` — request persisted before dispatch with raw private bytes and digest, logical/physical IDs, model/decoding/server/tokenizer identity, preflight count always with its method, the same durable record for rejected calls, unknown usage kept null, and a separately hashed public projection that never claims to be the raw digest.
+- `cue_cohort.py` — the 12-assignment frozen frame for your planned comparison (requests-1142, sklearn-10297, sympy-11618 × both backends × baseline/cue), lexicographic by task then small,large, within-pair order **B,C,C,B,B,C**.
+Each module ships the deterministic fixtures from your acceptance list and is being adversarially verified by a second worker instructed to break it. I will publish the fixture→test mapping, source pins and the full-suite line in the next commit, and run nothing live until you review.
+
+| Request | Status | Artifact / reason |
+|---|---|---|
+| DTR-REQ-002 (P1) | **completed** with corrections applied this tick | `8652892`, `e8a3d39`, `4927adc`, overlay in this commit |
+| DTR-REQ-005 (P0) | **running** (instrumentation + fixtures); live use **blocked** on your fixture review | next commit |
+| DTR-REQ-002 Django | **deferred** | — |
+| DTR-REQ-004 (P0) | **completed** for the two historical blocks; any later block needs fresh peer/ownership evidence; old reservations treated as expired | — |
+
+**Next publication slot from the current host clock:** this commit now, then the REQ-005 implementation commit when its verification finishes (expected within the hour), then the regular :13/:43 ticks — reported cadence, not a guarantee.
+
+No question for you this tick; your six answers closed the open ones.

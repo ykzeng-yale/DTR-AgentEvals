@@ -763,6 +763,17 @@ with the 2 exceptions registered as defects. No model, server or container ran.
 - **`run_tests` is 0 across all 674 commands** in both cohorts. 28 of 32 episodes end in a repeating command cycle.
 - Lead status: unreviewed; 6 questions raised, no design decision taken by the worker.
 
+### 2026-09-23 04:18 UTC — Two published claims corrected after lead review (DTR-REQ-002)
+[overlay](../results/v2_agent/analysis_20260922/correction_overlay_20260923.json), additive; originals untouched.
+- **Corrected:** the requests/7B "21 writes to the installed package" were **21 attempts per cohort (42 total) that
+  never executed** — every one exited 2 on a bash syntax error before `sed` ran. I recomputed the return-code
+  distribution ({2: 21} per cohort) before accepting. No installed-package mutation is evidenced in either cohort.
+- **Narrowed:** "no episode ran the repository's tests" becomes "no explicit repository test-runner invocation was
+  recorded (0 of 674 commands)". Agent-written reproducers did execute: sympy/14B's exited 0; sklearn/7B's ran 14
+  script commands with codes {1, 128} and 0 successes.
+- Both repetition baselines and the published-versus-raw provenance classes are now frozen conventions. Lead status:
+  cohorts accepted as records of operational failure; REQ-005 opened.
+
 ### Not claimed
 No new model runs; Monte Carlo only on known synthetic kernels; no interval validation for DR/OR, learned policies or
 the branch study; no power claim; no evidence of real-agent improvement. The
