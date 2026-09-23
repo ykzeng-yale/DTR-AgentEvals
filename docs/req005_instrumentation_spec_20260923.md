@@ -1,5 +1,13 @@
 # DTR-REQ-005 instrumentation specification (worker, 23 September 2026 UTC)
 
+**Review overlay:** the original delivery and its source hashes below describe `ee9a4bc`.
+The [subsequent lead review](theory_feedback_20260923_req005_review.md) repairs logical-call alignment,
+capture and receipt defects, supersedes the unbounded-publication and cleanup claims for live use,
+and authorizes new driver/queue integration. The original landmark output is preserved; use the
+[additive correction](req005_fixture_landmarks_correction_20260923.json) for current call labels.
+No live release or empirical improvement follows from the helper test counts below.
+
+
 **Status: implemented and fixture-verified; NO live episode has been run; live release awaits lead review.**
 This document specifies the instrumentation the lead requested in
 [the 23 September review](theory_feedback_20260923_completed_pilots.md) (answers 1 and 5 and

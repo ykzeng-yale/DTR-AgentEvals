@@ -37,12 +37,13 @@ Declared rule:
     those names case-insensitively and any `.diff`/`.patch` suffix), never sets/implies Submitted, is never
     graded and never changes eligibility or endpoint bytes. The frozen Submitted-only/no-salvage endpoint
     rule of workspace_capture is unchanged.
-  * CLEANUP IS NEVER BLOCKED. capture() and capture_exit_diagnostic() do not raise Exception to the caller
-    for ANY argument or executor behaviour: a failing, hanging, refusing or malformed capture becomes a
+  * CAPTURE FAILURES ARE CONTAINED. capture_exit_diagnostic() contains ordinary capture/write exceptions;
+    a failing, refusing or malformed capture becomes a
     recorded state, and every section key is present in the record even when the capture breaks internally.
     Only KeyboardInterrupt/SystemExit pass through (an operator abort must stay an abort). Work is
-    additionally bounded by `total_budget_s`, checked against the injected clock before every command, so a
-    slow executor cannot delay cleanup indefinitely.
+    checked against `total_budget_s` before every command. This check does NOT interrupt an in-flight
+    executor or enforce a cleanup deadline. The caller must inject an executor whose enforced timeout is
+    no greater than the remaining diagnostic/cleanup budget; a hanging executor is not contained here.
 
 The command executor is INJECTED (`execute(command)`), as in workspace_capture, so fixtures need no container.
 It may return `(returncode, output)` or mini-swe-agent's `{'returncode','output','exception_info'}` dict; any
@@ -109,7 +110,7 @@ DIFF_WORKTREE_CMD = ('cd %(wd)s && t="$(mktemp)" && git diff --binary --full-ind
 LIST_CMD = ('cd %(wd)s && t="$(mktemp)" && git ls-files --others --exclude-standard -z >"$t"; rc=$?; '
             'if [ $rc -ne 0 ]; then rm -f "$t"; exit $rc; fi; b=$(wc -c <"$t" | tr -d " "); '
             'echo "DTR-XC1-META bytes=$b"; ' + _TMP_BODY)
-FILE_CMD = ('cd %(wd)s && p=%(path)s; if [ ! -f "$p" ]; then exit 3; fi; b=$(wc -c <"$p" | tr -d " "); '
+FILE_CMD = ('cd %(wd)s && p=%(path)s; if [ -L "$p" ] || [ ! -f "$p" ]; then exit 3; fi; b=$(wc -c <"$p" | tr -d " "); '
             + (_DIGEST % dict(f='$p')) + '; echo "DTR-XC1-META bytes=$b sha256=$h"; '
             'head -c %(limit)d "$p"; exit $?')
 
@@ -339,6 +340,11 @@ def _untracked(runner, wd, caps):
     full_bytes, _digest, body, preamble = _meta(out)
     if full_bytes is None:
         return dict(base, state='failed', reason='untracked listing produced no parsable bound header')
+    recorded_bytes = _body_bytes(body)
+    expected_bytes = min(full_bytes, cap_list)
+    if recorded_bytes != expected_bytes:
+        return dict(base, state='failed', reason='untracked listing body is %d bytes, expected %d from its '
+                    'full-byte header and cap; the paths are unobserved' % (recorded_bytes, expected_bytes))
     truncated = full_bytes > cap_list or _body_bytes(body) > cap_list
     parts = body.split('\x00')
     tail = parts.pop() if parts else ''                       # `-z` terminates every path; a remainder is partial
@@ -520,14 +526,14 @@ def capture_exit_diagnostic(execute, base_tree, exit_status=None, out_dir=None, 
                     write=dict(state='not_requested', file=None))
     if out_dir is None:
         return dict(record, write=dict(state='not_requested', file=None))
-    directory = Path(out_dir)
-    if not directory.is_dir():
-        return dict(record, write=dict(state='refused_missing_out_dir', file=None,
-                                       reason='out_dir %r is not an existing directory; the diagnostic is '
-                                              'never written as a file named after it' % directory.name))
-    target = directory / OUTPUT_NAME
-    record['write'] = dict(state='attempted', file=target.name)
     try:
+        directory = Path(out_dir)
+        if not directory.is_dir():
+            return dict(record, write=dict(state='refused_missing_out_dir', file=None,
+                                           reason='out_dir %r is not an existing directory; the diagnostic is '
+                                                  'never written as a file named after it' % directory.name))
+        target = directory / OUTPUT_NAME
+        record['write'] = dict(state='attempted', file=target.name)
         written = write_diagnostic(target, record)
         return dict(record, write=dict(state='written', file=written.name))
     except (KeyboardInterrupt, SystemExit):

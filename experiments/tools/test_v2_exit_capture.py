@@ -791,3 +791,47 @@ def test_a_malformed_cap_declaration_is_named_and_the_declared_default_is_publis
     assert rec['capture_error'] is None
     assert rec['status'] == 'no_change'
     assert rec['sections']['status']['state'] == 'no_change'
+
+
+def test_untracked_symlinks_never_capture_the_target_content_or_digest(tmp_path):
+    repo = make_repo(tmp_path)
+    base = whole_worktree_tree(repo)
+    outside = tmp_path / 'outside.txt'
+    outside.write_text('outside fixture bytes\n')
+    (repo / 'link.txt').symlink_to(outside)
+    record = XC.capture(executor(repo), base, wd=str(repo))
+    entry = record['sections']['untracked']['paths'][0]
+    assert entry['path'] == 'link.txt'
+    assert entry['content_state'] == 'unavailable'
+    assert entry['content'] is None
+    assert entry['sha256'] is None
+    assert entry['bytes'] is None
+    assert 'outside fixture bytes' not in json.dumps(record)
+
+
+@pytest.mark.parametrize('full_bytes,body,cap', [(8, '', 64), (8, 'x\x00', 64), (80, '', 8),
+                                               (80, 'x\x00', 8), (0, 'x\x00', 64)])
+def test_damaged_untracked_listing_is_failed_not_an_observed_empty_or_complete_list(full_bytes, body, cap):
+    runner = XC._Runner(lambda cmd: (0, 'DTR-XC1-META bytes=%d\n%s' % (full_bytes, body)),
+                        300, lambda: 0, 64)
+    record = XC._untracked(runner, '/testbed', dict(XC.DEFAULT_CAPS, untracked_list_bytes=cap))
+    assert record['state'] == 'failed'
+    assert record['paths'] is None
+    assert record['n_paths'] is None
+    assert record['paths_complete'] is None
+
+
+def test_untracked_file_read_failure_does_not_publish_partial_content_or_digest():
+    runner = XC._Runner(lambda cmd: (1, 'DTR-XC1-META bytes=6 sha256=' + HELLO_SHA + '\nhello\n'),
+                        300, lambda: 0, 64)
+    record = XC._untracked_entry(runner, '/testbed', 'new.txt', XC.DEFAULT_CAPS, with_content=True)
+    assert record['content_state'] == 'failed'
+    assert record['content'] is None
+    assert record['sha256'] is None
+    assert record['bytes'] is None
+
+
+def test_malformed_output_directory_cannot_escape_the_capture_cleanup_boundary():
+    record = XC.capture_exit_diagnostic(lambda cmd: (1, ''), 'f' * 40, out_dir=1)
+    assert record['write']['state'] == 'failed'
+    assert record['write']['reason'].startswith('TypeError:')

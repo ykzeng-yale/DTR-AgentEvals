@@ -547,6 +547,7 @@ def test_completeness_names_every_hole_in_the_published_set(tmp_path):
         cohort='cue-v1', run_id=RUN_ID, attempt_keys=['call001_attempt01'], n_raw=1, n_published=1,
         n_outcomes=1, complete=True, raw_without_published_record=[], published_record_without_raw=[],
         published_record_without_outcome=[], outcome_without_published_record=[],
+        invalid_records=[],
         note='A published receipt set with a hole is a pattern formed by skipping incomplete records: '
              'do not report subtotals over it without this list')
 
@@ -808,7 +809,10 @@ def test_a_receipt_failure_after_dispatch_never_replaces_or_aborts_the_episode_r
     assert [failure['attempt_key'] for failure in seen] == ['call003_attempt01', 'call004_attempt01']
     assert json.loads(public_file(tmp_path, 'call004_attempt01.outcome.json').read_text()) == {
         'pre-existing': True}
-    assert store.completeness()['complete'] is True             # both attempts still carry an outcome FILE
+    completeness = store.completeness()
+    assert completeness['complete'] is False                   # filenames alone never establish completeness
+    assert [r['file'] for r in completeness['invalid_records']] == [
+        'call003_attempt01.outcome.json', 'call004_attempt01.outcome.json']
 
 
 def test_a_pre_dispatch_receipt_failure_still_refuses_before_the_model_is_called(tmp_path):
@@ -858,3 +862,109 @@ def test_verify_refuses_an_unparsable_or_absent_published_record(tmp_path):
     broken.write_text('{not json')
     with pytest.raises(RR.ReceiptError):
         RR.verify_published_projection(broken)
+
+
+@pytest.mark.parametrize('dispatch_fails', [False, True])
+def test_a_raising_receipt_callback_never_replaces_the_dispatch_result(tmp_path, monkeypatch, dispatch_fails):
+    store = make_store(tmp_path)
+    def fail_write(**kwargs):
+        raise OSError('receipt disk fixture failure')
+    def fail_callback(failure):
+        raise ValueError('callback fixture failure')
+    monkeypatch.setattr(store, 'record_outcome', fail_write)
+    holder = None
+    try:
+        with RR.recorded_dispatch(store, logical_call_id=1, physical_attempt_id=1, serialized=PLAIN_REQUEST,
+                                  on_receipt_error=fail_callback) as holder:
+            if dispatch_fails:
+                raise TimeoutError('original dispatch failure')
+    except TimeoutError as exc:
+        assert dispatch_fails
+        assert str(exc) == 'original dispatch failure'
+    else:
+        assert not dispatch_fails
+    assert [e['error_class'] for e in holder.receipt_errors] == ['OSError', 'ValueError']
+    assert holder.receipt_errors[1]['phase'] == 'receipt_error_callback'
+    assert store.completeness()['complete'] is False
+    assert store.completeness()['published_record_without_outcome'] == ['call001_attempt01']
+
+
+@pytest.mark.parametrize('text', ["export API_KEY='fixture-dummy-12345'", 'token="fixture dummy 12345"',
+                                'Authorization: "Bearer fixture-dummy-12345"'])
+def test_quoted_credential_assignments_in_message_text_are_withheld(text):
+    projection, transforms = RR.sanitize({'messages': [{'content': text}]}, '', field='request_payload')
+    assert 'fixture' not in projection['messages'][0]['content']
+    assert '<WITHHELD>' in projection['messages'][0]['content']
+    assert transforms[0]['transformation'] == 'secret_value_masked_in_text'
+    assert transforms[0]['field'] == 'request_payload.messages[0].content'
+    assert transforms[0]['occurrences'] == 1
+
+
+@pytest.mark.parametrize('damage', ['invalid_json', 'empty_object', 'bad_seal', 'wrong_link', 'wrong_raw_link',
+                                  'wrong_recomputed_raw', 'wrong_attempt', 'wrong_cohort', 'empty_usage',
+                                  'raw_proof_claim', 'missing_raw', 'changed_raw'])
+def test_completeness_validates_receipts_and_links_instead_of_only_filenames(tmp_path, damage):
+    store = make_store(tmp_path)
+    store.record_request(logical_call_id=1, physical_attempt_id=1, serialized=PLAIN_REQUEST)
+    store.record_outcome(logical_call_id=1, physical_attempt_id=1, ok=True)
+    path = public_file(tmp_path, 'call001_attempt01.outcome.json')
+    if damage == 'invalid_json':
+        path.write_text('{')
+    elif damage == 'empty_object':
+        path.write_text('{}')
+    elif damage == 'missing_raw':
+        private_file(tmp_path, 'call001_attempt01.request.raw').unlink()
+    elif damage == 'changed_raw':
+        private_file(tmp_path, 'call001_attempt01.request.raw').write_bytes(b'changed')
+    else:
+        record = json.loads(path.read_text())
+        if damage == 'bad_seal':
+            record['finish_reason'] = 'changed'
+        else:
+            if damage == 'wrong_link':
+                record['pre_dispatch_projection_sha256'] = '0' * 64
+            elif damage == 'wrong_raw_link':
+                record['raw_request_sha256'] = '0' * 64
+            elif damage == 'wrong_recomputed_raw':
+                record['raw_request_recomputed_sha256'] = '0' * 64
+            elif damage == 'wrong_attempt':
+                record['logical_call_id'] = 2
+            elif damage == 'wrong_cohort':
+                record['cohort'] = 'other'
+            elif damage == 'empty_usage':
+                record['server_reported_usage'] = {}
+            elif damage == 'raw_proof_claim':
+                record['raw_bytes_independently_verified'] = True
+            payload = {k: v for k, v in record.items() if k != 'published_projection_sha256'}
+            record['published_projection_sha256'] = hashlib.sha256(json.dumps(
+                payload, sort_keys=True, separators=(',', ':'), ensure_ascii=False).encode()).hexdigest()
+        path.write_text(json.dumps(record))
+    result = store.completeness()
+    assert result['complete'] is False
+    assert result['n_published'] == result['n_outcomes'] == 1  # adverse records are never dropped
+    if damage == 'missing_raw':
+        assert result['published_record_without_raw'] == ['call001_attempt01']
+        outcome = json.loads(path.read_text())
+        assert outcome['server_reported_usage']['prompt_tokens'] is None
+        assert outcome['server_reported_usage']['completion_tokens'] is None
+    else:
+        assert result['invalid_records']
+
+
+@pytest.mark.parametrize('missing_group', ['model', 'decoding', 'server', 'tokenizer'])
+def test_completeness_requires_identity_groups_even_when_all_hash_links_are_valid(tmp_path, missing_group):
+    store = make_store(tmp_path)
+    store.record_request(logical_call_id=1, physical_attempt_id=1, serialized=PLAIN_REQUEST)
+    path = public_file(tmp_path, 'call001_attempt01.request.json')
+    record = json.loads(path.read_text())
+    record['identity'].pop(missing_group)
+    payload = {k: v for k, v in record.items() if k != 'published_projection_sha256'}
+    record['published_projection_sha256'] = hashlib.sha256(json.dumps(
+        payload, sort_keys=True, separators=(',', ':'), ensure_ascii=False).encode()).hexdigest()
+    path.write_text(json.dumps(record))
+    # The outcome links to this resealed projection, so mere digest/link checking cannot detect the defect.
+    store.record_outcome(logical_call_id=1, physical_attempt_id=1, ok=True)
+    result = store.completeness()
+    assert result['complete'] is False
+    assert result['invalid_records'][0]['file'] == 'call001_attempt01.request.json'
+    assert missing_group in result['invalid_records'][0]['error']

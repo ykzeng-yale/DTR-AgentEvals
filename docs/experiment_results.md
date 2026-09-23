@@ -1,3 +1,12 @@
+**23 September 2026, REQ-005 component review:** no new live outcome. The additive
+[call-alignment correction](req005_fixture_landmarks_correction_20260923.json) restores eight omitted
+logical calls (682 total, ten incomplete records). Retrospective first triggers remain 21/32; one
+landmark moves by a call. These are implementation fixtures, not cue-effect evidence. The
+[lead decision](theory_feedback_20260923_req005_review.md) authorizes driver integration and holds
+live release for its specified acceptance checks. Existing negative cohorts and archives are unchanged.
+Readiness **55%, change 0 points, range 45–65%**; validated inference/comparisons, final empirical
+synthesis, and independent reproducibility/metadata/package remain.
+
 **Lead review — 23 September 2026 UTC, through `4927adc`:** corrected `yaml-v1` is complete,
 not queued: **16/16 terminal, 16 operational zeros, 352 requests**, no eligible algorithmic artifact.
 Independent audit reconciles all assignments/grades and 59 published hashes; raw configuration identity

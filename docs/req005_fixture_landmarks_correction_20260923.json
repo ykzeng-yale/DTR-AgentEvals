@@ -1,0 +1,1771 @@
+{
+  "kind": "Additive retrospective correction of logical-call alignment; no live cue, model call, outcome, or archive change",
+  "request": "DTR-REQ-005",
+  "reviewed_commit": "22c4a82040700ded7fd54ffbf14d9001b2f089c2",
+  "supersedes_only": "Assistant-ordinal logical-call labels and missing-record counts in the original fixture output; original file retained unchanged",
+  "original_file": "docs/req005_fixture_landmarks_20260923.json",
+  "original_sha256": "4dcd4b325ee014b49d708df678ed56705708e1e8cd6a6dbecbd522aae17f91ba",
+  "source_sha256": {
+    "experiments/v2_agent/trajectory_triples.py": "59ffe8f46706373f7ef4d8a443e89098036d29f0c06058c74653f5238850b24d",
+    "experiments/v2_agent/cue_detector.py": "3407e6355018dc5fd6708f9c368162cb846fc588d47d636d41e9ac7a18251d6f",
+    "experiments/tools/test_v2_cue_detector.py": "26065b889724689cc538a4128aaf11a955f7406e714da50763f9e5086187e69f"
+  },
+  "alignment_rule": "Reconcile typed assistant/FormatError events with complete attempt-ledger call IDs and episode n_model_calls. Recover a final no-assistant context rejection only from matching terminal and failed-attempt evidence. Refuse other ambiguous gaps; user-text error words are not call evidence.",
+  "evidence_scope": "Archived mini-swe-agent-1.1 records only. Published byte consistency is not independent proof of execution. Runtime instrumentation must supply actual logical call IDs, including failed/missing calls; retrospective adapter is not live wiring.",
+  "summary": {
+    "episodes": 32,
+    "original_assistant_records": 674,
+    "corrected_logical_records": 682,
+    "recovered_format_error_calls": 3,
+    "recovered_terminal_context_rejections": 5,
+    "original_incomplete_records": 2,
+    "corrected_incomplete_records": 10,
+    "triggered": 21,
+    "AAA": 12,
+    "ABABAB": 9,
+    "no_trigger": 11,
+    "triggered_without_next_call": 0,
+    "delivered": 0,
+    "episodes_with_changed_alignment": 7,
+    "episodes_with_changed_first_landmark": 1
+  },
+  "changes": [
+    {
+      "cohort": "pilot_20260922",
+      "run": "matplotlib__matplotlib-13989__small__pilot-cp2-wc2__20260922T052510Z-0a446a",
+      "changed_fields": {
+        "records_observed": {
+          "original": 23,
+          "corrected": 24
+        },
+        "incomplete_call_ids": {
+          "original": [],
+          "corrected": [
+            24
+          ]
+        }
+      }
+    },
+    {
+      "cohort": "pilot_20260922",
+      "run": "mwaskom__seaborn-3069__large__pilot-cp2-wc2__20260922T053759Z-610089",
+      "changed_fields": {
+        "records_observed": {
+          "original": 4,
+          "corrected": 5
+        },
+        "incomplete_call_ids": {
+          "original": [],
+          "corrected": [
+            5
+          ]
+        }
+      }
+    },
+    {
+      "cohort": "pilot_20260922",
+      "run": "sympy__sympy-11618__large__pilot-cp2-wc2__20260922T053340Z-fa1672",
+      "changed_fields": {
+        "records_observed": {
+          "original": 23,
+          "corrected": 24
+        },
+        "trigger_call_id": {
+          "original": 21,
+          "corrected": 22
+        },
+        "delivery_call_id": {
+          "original": 22,
+          "corrected": 23
+        },
+        "pattern_call_ids": {
+          "original": [
+            16,
+            17,
+            18,
+            19,
+            20,
+            21
+          ],
+          "corrected": [
+            17,
+            18,
+            19,
+            20,
+            21,
+            22
+          ]
+        },
+        "incomplete_call_ids": {
+          "original": [],
+          "corrected": [
+            13
+          ]
+        }
+      }
+    },
+    {
+      "cohort": "pilot_20260922",
+      "run": "sympy__sympy-11618__small__pilot-cp2-wc2__20260922T053700Z-067273",
+      "changed_fields": {
+        "records_observed": {
+          "original": 11,
+          "corrected": 12
+        },
+        "incomplete_call_ids": {
+          "original": [],
+          "corrected": [
+            12
+          ]
+        }
+      }
+    },
+    {
+      "cohort": "pilot_20260922_yaml_v1",
+      "run": "matplotlib__matplotlib-13989__small__pilot-cp2-wc2-yaml-v1__20260922T073449Z-bc05f4",
+      "changed_fields": {
+        "records_observed": {
+          "original": 23,
+          "corrected": 24
+        },
+        "incomplete_call_ids": {
+          "original": [],
+          "corrected": [
+            24
+          ]
+        }
+      }
+    },
+    {
+      "cohort": "pilot_20260922_yaml_v1",
+      "run": "sympy__sympy-11618__large__pilot-cp2-wc2-yaml-v1__20260922T074338Z-1b5364",
+      "changed_fields": {
+        "records_observed": {
+          "original": 22,
+          "corrected": 24
+        },
+        "incomplete_call_ids": {
+          "original": [],
+          "corrected": [
+            12,
+            19
+          ]
+        }
+      }
+    },
+    {
+      "cohort": "pilot_20260922_yaml_v1",
+      "run": "sympy__sympy-11618__small__pilot-cp2-wc2-yaml-v1__20260922T074845Z-5b988f",
+      "changed_fields": {
+        "records_observed": {
+          "original": 14,
+          "corrected": 15
+        },
+        "incomplete_call_ids": {
+          "original": [],
+          "corrected": [
+            15
+          ]
+        }
+      }
+    }
+  ],
+  "episodes": [
+    {
+      "cohort": "pilot_20260922",
+      "run": "astropy__astropy-12907__large__pilot-cp2-wc2__20260922T050935Z-27c33e",
+      "instance_id": "astropy__astropy-12907",
+      "backend": "large",
+      "input_sha256": {
+        "trajectory.json": "9bff0ae796e47f4ad1579ee9fba53b7929cdc99757bbdb796391e8efd582ab1b",
+        "episode.json": "baf947a0237d18eabca88cd9e521ec2a345a3d5d18dba6294e9e54390da303ec",
+        "attempts.jsonl": "ed7d134ea623c90e91151c40538e90a7a1a16599d37f7525c973a8fde1e7fccb"
+      },
+      "changed_fields": {},
+      "adapter_notes": [],
+      "landmark": {
+        "detector": "repeated-action-cue-v1",
+        "detector_source_sha256": "3407e6355018dc5fd6708f9c368162cb846fc588d47d636d41e9ac7a18251d6f",
+        "mode": "observe",
+        "horizon": 24,
+        "records_observed": 24,
+        "triggered": true,
+        "pattern": "ABABAB",
+        "trigger_call_id": 9,
+        "trigger_position": 9,
+        "delivery_call_id": 10,
+        "delivery_planned": false,
+        "delivered": false,
+        "cue_emissions": 0,
+        "cue_emitted": false,
+        "cue_emitted_call_ids": [],
+        "cue_requests_refused": [],
+        "cue_text": "Recent actions returned the same visible feedback repeatedly. Use the existing /testbed checkout. Choose a different action that will provide useful new evidence, or explain why repeating the action is necessary. Check the current working directory and the existing submission instructions.",
+        "cue_sha256": "80d52625bd593cd6fecafeb06daca898792979592272d9fadcf0ddd04bd39d9e",
+        "pattern_call_ids": [
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "incomplete_call_ids": [],
+        "incomplete_records": [],
+        "call_id_discontinuities": [],
+        "reason": "observe-only baseline: would-trigger landmark recorded, no cue emitted and no model-visible message changed",
+        "note": "trigger means repeated visible feedback, not proven unchanged state"
+      }
+    },
+    {
+      "cohort": "pilot_20260922",
+      "run": "astropy__astropy-12907__small__pilot-cp2-wc2__20260922T051348Z-7cc0d0",
+      "instance_id": "astropy__astropy-12907",
+      "backend": "small",
+      "input_sha256": {
+        "trajectory.json": "b93bd87cd857aed98046c4c45d710f7dd5739f329979eecf1b1f2eaf0e15fc61",
+        "episode.json": "67b4ea6e939296c78b3e2cb1e6176fbdb54938ea897f0c381931c9ddf4e435c8",
+        "attempts.jsonl": "2dac6dc966ca19b1a3d009d29de66e9f6e70cf9ba63c3709b53eadf7387c6b88"
+      },
+      "changed_fields": {},
+      "adapter_notes": [
+        {
+          "call": 1,
+          "reason": "the next message is 'exit', not an ordinary observation"
+        }
+      ],
+      "landmark": {
+        "detector": "repeated-action-cue-v1",
+        "detector_source_sha256": "3407e6355018dc5fd6708f9c368162cb846fc588d47d636d41e9ac7a18251d6f",
+        "mode": "observe",
+        "horizon": 24,
+        "records_observed": 1,
+        "triggered": false,
+        "pattern": null,
+        "trigger_call_id": null,
+        "trigger_position": null,
+        "delivery_call_id": null,
+        "delivery_planned": false,
+        "delivered": false,
+        "cue_emissions": 0,
+        "cue_emitted": false,
+        "cue_emitted_call_ids": [],
+        "cue_requests_refused": [],
+        "cue_text": null,
+        "cue_sha256": null,
+        "pattern_call_ids": [],
+        "incomplete_call_ids": [
+          1
+        ],
+        "incomplete_records": [
+          {
+            "call_id": 1,
+            "position": 1,
+            "reason": "observation recorded as unparsable"
+          }
+        ],
+        "call_id_discontinuities": [],
+        "reason": "no repeated-action pattern in the complete records observed",
+        "note": "trigger means repeated visible feedback, not proven unchanged state"
+      }
+    },
+    {
+      "cohort": "pilot_20260922",
+      "run": "matplotlib__matplotlib-13989__large__pilot-cp2-wc2__20260922T052837Z-2c553e",
+      "instance_id": "matplotlib__matplotlib-13989",
+      "backend": "large",
+      "input_sha256": {
+        "trajectory.json": "53906ee9b6a2c6ff60c9c1978946f8db9ec2176cd374252562b8d723e9ec8ee6",
+        "episode.json": "ea38e3a3305abd281ae8203b05a9bfdeb74847d8b51d3df396e9d1b79ce5bc6f",
+        "attempts.jsonl": "f2c74fde64185ca871692224bfe19cf46990d08fd511b7143c885c0a53983f50"
+      },
+      "changed_fields": {},
+      "adapter_notes": [],
+      "landmark": {
+        "detector": "repeated-action-cue-v1",
+        "detector_source_sha256": "3407e6355018dc5fd6708f9c368162cb846fc588d47d636d41e9ac7a18251d6f",
+        "mode": "observe",
+        "horizon": 24,
+        "records_observed": 24,
+        "triggered": true,
+        "pattern": "AAA",
+        "trigger_call_id": 7,
+        "trigger_position": 7,
+        "delivery_call_id": 8,
+        "delivery_planned": false,
+        "delivered": false,
+        "cue_emissions": 0,
+        "cue_emitted": false,
+        "cue_emitted_call_ids": [],
+        "cue_requests_refused": [],
+        "cue_text": "Recent actions returned the same visible feedback repeatedly. Use the existing /testbed checkout. Choose a different action that will provide useful new evidence, or explain why repeating the action is necessary. Check the current working directory and the existing submission instructions.",
+        "cue_sha256": "80d52625bd593cd6fecafeb06daca898792979592272d9fadcf0ddd04bd39d9e",
+        "pattern_call_ids": [
+          5,
+          6,
+          7
+        ],
+        "incomplete_call_ids": [],
+        "incomplete_records": [],
+        "call_id_discontinuities": [],
+        "reason": "observe-only baseline: would-trigger landmark recorded, no cue emitted and no model-visible message changed",
+        "note": "trigger means repeated visible feedback, not proven unchanged state"
+      }
+    },
+    {
+      "cohort": "pilot_20260922",
+      "run": "matplotlib__matplotlib-13989__small__pilot-cp2-wc2__20260922T052510Z-0a446a",
+      "instance_id": "matplotlib__matplotlib-13989",
+      "backend": "small",
+      "input_sha256": {
+        "trajectory.json": "0c3b637cdca5f93bbae526c236b027e1be9236a277773efc301ef365c862a66c",
+        "episode.json": "22666d9fcb05951e5b2db49a8960400b67a1c1ec93a7cc34fe23c6747dfe9c73",
+        "attempts.jsonl": "4584325666f46526ce90e6377d3dda1fc50e3fdd802df2152dc59cdd9ae7a3df"
+      },
+      "changed_fields": {
+        "records_observed": {
+          "original": 23,
+          "corrected": 24
+        },
+        "incomplete_call_ids": {
+          "original": [],
+          "corrected": [
+            24
+          ]
+        }
+      },
+      "adapter_notes": [
+        {
+          "call": 24,
+          "reason": "terminal context-rejected logical call; no assistant or ordinary observation"
+        }
+      ],
+      "landmark": {
+        "detector": "repeated-action-cue-v1",
+        "detector_source_sha256": "3407e6355018dc5fd6708f9c368162cb846fc588d47d636d41e9ac7a18251d6f",
+        "mode": "observe",
+        "horizon": 24,
+        "records_observed": 24,
+        "triggered": true,
+        "pattern": "AAA",
+        "trigger_call_id": 13,
+        "trigger_position": 13,
+        "delivery_call_id": 14,
+        "delivery_planned": false,
+        "delivered": false,
+        "cue_emissions": 0,
+        "cue_emitted": false,
+        "cue_emitted_call_ids": [],
+        "cue_requests_refused": [],
+        "cue_text": "Recent actions returned the same visible feedback repeatedly. Use the existing /testbed checkout. Choose a different action that will provide useful new evidence, or explain why repeating the action is necessary. Check the current working directory and the existing submission instructions.",
+        "cue_sha256": "80d52625bd593cd6fecafeb06daca898792979592272d9fadcf0ddd04bd39d9e",
+        "pattern_call_ids": [
+          11,
+          12,
+          13
+        ],
+        "incomplete_call_ids": [
+          24
+        ],
+        "incomplete_records": [
+          {
+            "call_id": 24,
+            "position": 24,
+            "reason": "observation recorded as unparsable"
+          }
+        ],
+        "call_id_discontinuities": [],
+        "reason": "observe-only baseline: would-trigger landmark recorded, no cue emitted and no model-visible message changed",
+        "note": "trigger means repeated visible feedback, not proven unchanged state"
+      }
+    },
+    {
+      "cohort": "pilot_20260922",
+      "run": "mwaskom__seaborn-3069__large__pilot-cp2-wc2__20260922T053759Z-610089",
+      "instance_id": "mwaskom__seaborn-3069",
+      "backend": "large",
+      "input_sha256": {
+        "trajectory.json": "643ea90710e400060b15a1006d36f683dc77ac4513cef9799c2df003acf874c9",
+        "episode.json": "c75f799d054c1ce4ae8f63b474fabe23e845b91d3e14658bbcdd163bffd5f236",
+        "attempts.jsonl": "b67e020354e340c0ff52487275df56324cb0d529909603fc04a0a95526729172"
+      },
+      "changed_fields": {
+        "records_observed": {
+          "original": 4,
+          "corrected": 5
+        },
+        "incomplete_call_ids": {
+          "original": [],
+          "corrected": [
+            5
+          ]
+        }
+      },
+      "adapter_notes": [
+        {
+          "call": 5,
+          "reason": "terminal context-rejected logical call; no assistant or ordinary observation"
+        }
+      ],
+      "landmark": {
+        "detector": "repeated-action-cue-v1",
+        "detector_source_sha256": "3407e6355018dc5fd6708f9c368162cb846fc588d47d636d41e9ac7a18251d6f",
+        "mode": "observe",
+        "horizon": 24,
+        "records_observed": 5,
+        "triggered": false,
+        "pattern": null,
+        "trigger_call_id": null,
+        "trigger_position": null,
+        "delivery_call_id": null,
+        "delivery_planned": false,
+        "delivered": false,
+        "cue_emissions": 0,
+        "cue_emitted": false,
+        "cue_emitted_call_ids": [],
+        "cue_requests_refused": [],
+        "cue_text": null,
+        "cue_sha256": null,
+        "pattern_call_ids": [],
+        "incomplete_call_ids": [
+          5
+        ],
+        "incomplete_records": [
+          {
+            "call_id": 5,
+            "position": 5,
+            "reason": "observation recorded as unparsable"
+          }
+        ],
+        "call_id_discontinuities": [],
+        "reason": "no repeated-action pattern in the complete records observed",
+        "note": "trigger means repeated visible feedback, not proven unchanged state"
+      }
+    },
+    {
+      "cohort": "pilot_20260922",
+      "run": "mwaskom__seaborn-3069__small__pilot-cp2-wc2__20260922T053834Z-7dcda8",
+      "instance_id": "mwaskom__seaborn-3069",
+      "backend": "small",
+      "input_sha256": {
+        "trajectory.json": "0c5961dca05c26240dde64f9cd0bfcad2c9046593502661ec6bebd1d56c6e430",
+        "episode.json": "4a99a2dbedd8c0c906ae7585cb1afd37a5c6623882af7043f14fe41481a23c17",
+        "attempts.jsonl": "e72760b8355345389289a6487112a3af58c3629425527a390d631a726e060211"
+      },
+      "changed_fields": {},
+      "adapter_notes": [],
+      "landmark": {
+        "detector": "repeated-action-cue-v1",
+        "detector_source_sha256": "3407e6355018dc5fd6708f9c368162cb846fc588d47d636d41e9ac7a18251d6f",
+        "mode": "observe",
+        "horizon": 24,
+        "records_observed": 24,
+        "triggered": true,
+        "pattern": "ABABAB",
+        "trigger_call_id": 13,
+        "trigger_position": 13,
+        "delivery_call_id": 14,
+        "delivery_planned": false,
+        "delivered": false,
+        "cue_emissions": 0,
+        "cue_emitted": false,
+        "cue_emitted_call_ids": [],
+        "cue_requests_refused": [],
+        "cue_text": "Recent actions returned the same visible feedback repeatedly. Use the existing /testbed checkout. Choose a different action that will provide useful new evidence, or explain why repeating the action is necessary. Check the current working directory and the existing submission instructions.",
+        "cue_sha256": "80d52625bd593cd6fecafeb06daca898792979592272d9fadcf0ddd04bd39d9e",
+        "pattern_call_ids": [
+          8,
+          9,
+          10,
+          11,
+          12,
+          13
+        ],
+        "incomplete_call_ids": [],
+        "incomplete_records": [],
+        "call_id_discontinuities": [],
+        "reason": "observe-only baseline: would-trigger landmark recorded, no cue emitted and no model-visible message changed",
+        "note": "trigger means repeated visible feedback, not proven unchanged state"
+      }
+    },
+    {
+      "cohort": "pilot_20260922",
+      "run": "psf__requests-1142__large__pilot-cp2-wc2__20260922T055112Z-48dc58",
+      "instance_id": "psf__requests-1142",
+      "backend": "large",
+      "input_sha256": {
+        "trajectory.json": "8052cd8ed197ec5d810a86aa11e885e55314da55572eb9371de9e9adc6133402",
+        "episode.json": "a65a60ad13d204bac0d3bdedb9f502525c66ed1c5be98b6ffa6396615dcbf35d",
+        "attempts.jsonl": "c282d87bf348f4ee93f0ba5cd659297f046302c81785f5dba4c1dca13a1a7d89"
+      },
+      "changed_fields": {},
+      "adapter_notes": [],
+      "landmark": {
+        "detector": "repeated-action-cue-v1",
+        "detector_source_sha256": "3407e6355018dc5fd6708f9c368162cb846fc588d47d636d41e9ac7a18251d6f",
+        "mode": "observe",
+        "horizon": 24,
+        "records_observed": 24,
+        "triggered": false,
+        "pattern": null,
+        "trigger_call_id": null,
+        "trigger_position": null,
+        "delivery_call_id": null,
+        "delivery_planned": false,
+        "delivered": false,
+        "cue_emissions": 0,
+        "cue_emitted": false,
+        "cue_emitted_call_ids": [],
+        "cue_requests_refused": [],
+        "cue_text": null,
+        "cue_sha256": null,
+        "pattern_call_ids": [],
+        "incomplete_call_ids": [],
+        "incomplete_records": [],
+        "call_id_discontinuities": [],
+        "reason": "no repeated-action pattern in the complete records observed",
+        "note": "trigger means repeated visible feedback, not proven unchanged state"
+      }
+    },
+    {
+      "cohort": "pilot_20260922",
+      "run": "psf__requests-1142__small__pilot-cp2-wc2__20260922T054827Z-85153d",
+      "instance_id": "psf__requests-1142",
+      "backend": "small",
+      "input_sha256": {
+        "trajectory.json": "15d07a73870204ac74c13beebea31da20be014e35b15f1010d5027f704554493",
+        "episode.json": "9c466591ee7fd203175f269af7bd95d531fc73829d77c9e248aef582907a1a22",
+        "attempts.jsonl": "e575c2dc9765b0e426626a72704abe14fcaa84f09c36e51592807723b4d87ef6"
+      },
+      "changed_fields": {},
+      "adapter_notes": [],
+      "landmark": {
+        "detector": "repeated-action-cue-v1",
+        "detector_source_sha256": "3407e6355018dc5fd6708f9c368162cb846fc588d47d636d41e9ac7a18251d6f",
+        "mode": "observe",
+        "horizon": 24,
+        "records_observed": 24,
+        "triggered": true,
+        "pattern": "AAA",
+        "trigger_call_id": 6,
+        "trigger_position": 6,
+        "delivery_call_id": 7,
+        "delivery_planned": false,
+        "delivered": false,
+        "cue_emissions": 0,
+        "cue_emitted": false,
+        "cue_emitted_call_ids": [],
+        "cue_requests_refused": [],
+        "cue_text": "Recent actions returned the same visible feedback repeatedly. Use the existing /testbed checkout. Choose a different action that will provide useful new evidence, or explain why repeating the action is necessary. Check the current working directory and the existing submission instructions.",
+        "cue_sha256": "80d52625bd593cd6fecafeb06daca898792979592272d9fadcf0ddd04bd39d9e",
+        "pattern_call_ids": [
+          4,
+          5,
+          6
+        ],
+        "incomplete_call_ids": [],
+        "incomplete_records": [],
+        "call_id_discontinuities": [],
+        "reason": "observe-only baseline: would-trigger landmark recorded, no cue emitted and no model-visible message changed",
+        "note": "trigger means repeated visible feedback, not proven unchanged state"
+      }
+    },
+    {
+      "cohort": "pilot_20260922",
+      "run": "pytest-dev__pytest-10051__large__pilot-cp2-wc2__20260922T051527Z-caa8a2",
+      "instance_id": "pytest-dev__pytest-10051",
+      "backend": "large",
+      "input_sha256": {
+        "trajectory.json": "303314146517fa73862642acaad66e7fc923787ee82c036b8f4cb98272ebac43",
+        "episode.json": "6042e020dba6aecc2ba8f9812290e6bd39297a041e39fa3d9b0be68e02b5bc36",
+        "attempts.jsonl": "c90ea1c5916a93c4e33f01d77bc21e67c40c403840c52d2c61ca407311473993"
+      },
+      "changed_fields": {},
+      "adapter_notes": [],
+      "landmark": {
+        "detector": "repeated-action-cue-v1",
+        "detector_source_sha256": "3407e6355018dc5fd6708f9c368162cb846fc588d47d636d41e9ac7a18251d6f",
+        "mode": "observe",
+        "horizon": 24,
+        "records_observed": 24,
+        "triggered": true,
+        "pattern": "AAA",
+        "trigger_call_id": 5,
+        "trigger_position": 5,
+        "delivery_call_id": 6,
+        "delivery_planned": false,
+        "delivered": false,
+        "cue_emissions": 0,
+        "cue_emitted": false,
+        "cue_emitted_call_ids": [],
+        "cue_requests_refused": [],
+        "cue_text": "Recent actions returned the same visible feedback repeatedly. Use the existing /testbed checkout. Choose a different action that will provide useful new evidence, or explain why repeating the action is necessary. Check the current working directory and the existing submission instructions.",
+        "cue_sha256": "80d52625bd593cd6fecafeb06daca898792979592272d9fadcf0ddd04bd39d9e",
+        "pattern_call_ids": [
+          3,
+          4,
+          5
+        ],
+        "incomplete_call_ids": [],
+        "incomplete_records": [],
+        "call_id_discontinuities": [],
+        "reason": "observe-only baseline: would-trigger landmark recorded, no cue emitted and no model-visible message changed",
+        "note": "trigger means repeated visible feedback, not proven unchanged state"
+      }
+    },
+    {
+      "cohort": "pilot_20260922",
+      "run": "pytest-dev__pytest-10051__small__pilot-cp2-wc2__20260922T051357Z-473ac3",
+      "instance_id": "pytest-dev__pytest-10051",
+      "backend": "small",
+      "input_sha256": {
+        "trajectory.json": "72d90d66d4bad4ed4365f35c277e73fd14363975d911ab0cc9a3945a9e4d2bcd",
+        "episode.json": "0b8083711eb13e4636dd091da50969cc136b35b4fb75bae582ae42b28d685055",
+        "attempts.jsonl": "91ebaf055851e7308ab17b30357e6be766a044bde6ccd1967db40fc2b8c3c55c"
+      },
+      "changed_fields": {},
+      "adapter_notes": [],
+      "landmark": {
+        "detector": "repeated-action-cue-v1",
+        "detector_source_sha256": "3407e6355018dc5fd6708f9c368162cb846fc588d47d636d41e9ac7a18251d6f",
+        "mode": "observe",
+        "horizon": 24,
+        "records_observed": 24,
+        "triggered": true,
+        "pattern": "ABABAB",
+        "trigger_call_id": 7,
+        "trigger_position": 7,
+        "delivery_call_id": 8,
+        "delivery_planned": false,
+        "delivered": false,
+        "cue_emissions": 0,
+        "cue_emitted": false,
+        "cue_emitted_call_ids": [],
+        "cue_requests_refused": [],
+        "cue_text": "Recent actions returned the same visible feedback repeatedly. Use the existing /testbed checkout. Choose a different action that will provide useful new evidence, or explain why repeating the action is necessary. Check the current working directory and the existing submission instructions.",
+        "cue_sha256": "80d52625bd593cd6fecafeb06daca898792979592272d9fadcf0ddd04bd39d9e",
+        "pattern_call_ids": [
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "incomplete_call_ids": [],
+        "incomplete_records": [],
+        "call_id_discontinuities": [],
+        "reason": "observe-only baseline: would-trigger landmark recorded, no cue emitted and no model-visible message changed",
+        "note": "trigger means repeated visible feedback, not proven unchanged state"
+      }
+    },
+    {
+      "cohort": "pilot_20260922",
+      "run": "scikit-learn__scikit-learn-10297__large__pilot-cp2-wc2__20260922T051926Z-faa4a9",
+      "instance_id": "scikit-learn__scikit-learn-10297",
+      "backend": "large",
+      "input_sha256": {
+        "trajectory.json": "9af61496e8bc84a4ed62a18f15bd48b0eca9920e5a335501f154e3bec727fb98",
+        "episode.json": "8ea961068a0929148f43e3b9d4d41c18b81429606636f6ba0a331bbed2290663",
+        "attempts.jsonl": "e4fd7479f3798cd2721c6c70d42a49578e2d664192e7d6d60cec800c4378b5b8"
+      },
+      "changed_fields": {},
+      "adapter_notes": [],
+      "landmark": {
+        "detector": "repeated-action-cue-v1",
+        "detector_source_sha256": "3407e6355018dc5fd6708f9c368162cb846fc588d47d636d41e9ac7a18251d6f",
+        "mode": "observe",
+        "horizon": 24,
+        "records_observed": 24,
+        "triggered": true,
+        "pattern": "ABABAB",
+        "trigger_call_id": 11,
+        "trigger_position": 11,
+        "delivery_call_id": 12,
+        "delivery_planned": false,
+        "delivered": false,
+        "cue_emissions": 0,
+        "cue_emitted": false,
+        "cue_emitted_call_ids": [],
+        "cue_requests_refused": [],
+        "cue_text": "Recent actions returned the same visible feedback repeatedly. Use the existing /testbed checkout. Choose a different action that will provide useful new evidence, or explain why repeating the action is necessary. Check the current working directory and the existing submission instructions.",
+        "cue_sha256": "80d52625bd593cd6fecafeb06daca898792979592272d9fadcf0ddd04bd39d9e",
+        "pattern_call_ids": [
+          6,
+          7,
+          8,
+          9,
+          10,
+          11
+        ],
+        "incomplete_call_ids": [],
+        "incomplete_records": [],
+        "call_id_discontinuities": [],
+        "reason": "observe-only baseline: would-trigger landmark recorded, no cue emitted and no model-visible message changed",
+        "note": "trigger means repeated visible feedback, not proven unchanged state"
+      }
+    },
+    {
+      "cohort": "pilot_20260922",
+      "run": "scikit-learn__scikit-learn-10297__small__pilot-cp2-wc2__20260922T052252Z-def348",
+      "instance_id": "scikit-learn__scikit-learn-10297",
+      "backend": "small",
+      "input_sha256": {
+        "trajectory.json": "9366591df8b3a95b4b8538027400fdd68ba8b0f84a205ae0aa44e48a06a8ab77",
+        "episode.json": "e272e7988622eb9da39f4293c9a294b62ba13f2ab0cb5dbd8a4664965068b165",
+        "attempts.jsonl": "b9d945d72d7fb9ed4e4e12c5e35ce2b91c39a9e9f1fd51315d2a52fec0c851c3"
+      },
+      "changed_fields": {},
+      "adapter_notes": [],
+      "landmark": {
+        "detector": "repeated-action-cue-v1",
+        "detector_source_sha256": "3407e6355018dc5fd6708f9c368162cb846fc588d47d636d41e9ac7a18251d6f",
+        "mode": "observe",
+        "horizon": 24,
+        "records_observed": 24,
+        "triggered": false,
+        "pattern": null,
+        "trigger_call_id": null,
+        "trigger_position": null,
+        "delivery_call_id": null,
+        "delivery_planned": false,
+        "delivered": false,
+        "cue_emissions": 0,
+        "cue_emitted": false,
+        "cue_emitted_call_ids": [],
+        "cue_requests_refused": [],
+        "cue_text": null,
+        "cue_sha256": null,
+        "pattern_call_ids": [],
+        "incomplete_call_ids": [],
+        "incomplete_records": [],
+        "call_id_discontinuities": [],
+        "reason": "no repeated-action pattern in the complete records observed",
+        "note": "trigger means repeated visible feedback, not proven unchanged state"
+      }
+    },
+    {
+      "cohort": "pilot_20260922",
+      "run": "sphinx-doc__sphinx-10323__large__pilot-cp2-wc2__20260922T053958Z-57036a",
+      "instance_id": "sphinx-doc__sphinx-10323",
+      "backend": "large",
+      "input_sha256": {
+        "trajectory.json": "7d7638a8b5c9d08b29acba09a4dcc9db359691a05219beb41fc145d039878b2a",
+        "episode.json": "9714158c5dbdc3ba02694d842a265dffedafcdc6205b3c5e3dd211e2f678308d",
+        "attempts.jsonl": "49abdb8edefdd8b785da831adec594001ad5d46456e72cf257df948817111d13"
+      },
+      "changed_fields": {},
+      "adapter_notes": [],
+      "landmark": {
+        "detector": "repeated-action-cue-v1",
+        "detector_source_sha256": "3407e6355018dc5fd6708f9c368162cb846fc588d47d636d41e9ac7a18251d6f",
+        "mode": "observe",
+        "horizon": 24,
+        "records_observed": 24,
+        "triggered": false,
+        "pattern": null,
+        "trigger_call_id": null,
+        "trigger_position": null,
+        "delivery_call_id": null,
+        "delivery_planned": false,
+        "delivered": false,
+        "cue_emissions": 0,
+        "cue_emitted": false,
+        "cue_emitted_call_ids": [],
+        "cue_requests_refused": [],
+        "cue_text": null,
+        "cue_sha256": null,
+        "pattern_call_ids": [],
+        "incomplete_call_ids": [],
+        "incomplete_records": [],
+        "call_id_discontinuities": [],
+        "reason": "no repeated-action pattern in the complete records observed",
+        "note": "trigger means repeated visible feedback, not proven unchanged state"
+      }
+    },
+    {
+      "cohort": "pilot_20260922",
+      "run": "sphinx-doc__sphinx-10323__small__pilot-cp2-wc2__20260922T054445Z-15b460",
+      "instance_id": "sphinx-doc__sphinx-10323",
+      "backend": "small",
+      "input_sha256": {
+        "trajectory.json": "b50e2d6a423a156a5324a48765b2cb78d88a21f9bedb9528548c10c128c72afe",
+        "episode.json": "0e17925639108ba9dca41a28aaf5453d20a8359978efada6a0f53f818ed4da26",
+        "attempts.jsonl": "3e89c55416e1dbab9b5552fe5bd90383641a161761627eeb1b3f14cbb0ab6687"
+      },
+      "changed_fields": {},
+      "adapter_notes": [],
+      "landmark": {
+        "detector": "repeated-action-cue-v1",
+        "detector_source_sha256": "3407e6355018dc5fd6708f9c368162cb846fc588d47d636d41e9ac7a18251d6f",
+        "mode": "observe",
+        "horizon": 24,
+        "records_observed": 24,
+        "triggered": true,
+        "pattern": "AAA",
+        "trigger_call_id": 7,
+        "trigger_position": 7,
+        "delivery_call_id": 8,
+        "delivery_planned": false,
+        "delivered": false,
+        "cue_emissions": 0,
+        "cue_emitted": false,
+        "cue_emitted_call_ids": [],
+        "cue_requests_refused": [],
+        "cue_text": "Recent actions returned the same visible feedback repeatedly. Use the existing /testbed checkout. Choose a different action that will provide useful new evidence, or explain why repeating the action is necessary. Check the current working directory and the existing submission instructions.",
+        "cue_sha256": "80d52625bd593cd6fecafeb06daca898792979592272d9fadcf0ddd04bd39d9e",
+        "pattern_call_ids": [
+          5,
+          6,
+          7
+        ],
+        "incomplete_call_ids": [],
+        "incomplete_records": [],
+        "call_id_discontinuities": [],
+        "reason": "observe-only baseline: would-trigger landmark recorded, no cue emitted and no model-visible message changed",
+        "note": "trigger means repeated visible feedback, not proven unchanged state"
+      }
+    },
+    {
+      "cohort": "pilot_20260922",
+      "run": "sympy__sympy-11618__large__pilot-cp2-wc2__20260922T053340Z-fa1672",
+      "instance_id": "sympy__sympy-11618",
+      "backend": "large",
+      "input_sha256": {
+        "trajectory.json": "685505b68daa3338ae2200a7f38cd84ea6cd2bb46dcb1960207d7892966a88ed",
+        "episode.json": "338574494eca9224ad8b4cbfaab2ffcfbc6e414995e523f6a229cfae0e92920c",
+        "attempts.jsonl": "9bd7b18aa29c0304c8477d4356ddc7650b04c2d0d76d97390939acc2f08f03a0"
+      },
+      "changed_fields": {
+        "records_observed": {
+          "original": 23,
+          "corrected": 24
+        },
+        "trigger_call_id": {
+          "original": 21,
+          "corrected": 22
+        },
+        "delivery_call_id": {
+          "original": 22,
+          "corrected": 23
+        },
+        "pattern_call_ids": {
+          "original": [
+            16,
+            17,
+            18,
+            19,
+            20,
+            21
+          ],
+          "corrected": [
+            17,
+            18,
+            19,
+            20,
+            21,
+            22
+          ]
+        },
+        "incomplete_call_ids": {
+          "original": [],
+          "corrected": [
+            13
+          ]
+        }
+      },
+      "adapter_notes": [
+        {
+          "call": 13,
+          "reason": "logical call returned a FormatError; no parsed action or ordinary observation"
+        }
+      ],
+      "landmark": {
+        "detector": "repeated-action-cue-v1",
+        "detector_source_sha256": "3407e6355018dc5fd6708f9c368162cb846fc588d47d636d41e9ac7a18251d6f",
+        "mode": "observe",
+        "horizon": 24,
+        "records_observed": 24,
+        "triggered": true,
+        "pattern": "ABABAB",
+        "trigger_call_id": 22,
+        "trigger_position": 22,
+        "delivery_call_id": 23,
+        "delivery_planned": false,
+        "delivered": false,
+        "cue_emissions": 0,
+        "cue_emitted": false,
+        "cue_emitted_call_ids": [],
+        "cue_requests_refused": [],
+        "cue_text": "Recent actions returned the same visible feedback repeatedly. Use the existing /testbed checkout. Choose a different action that will provide useful new evidence, or explain why repeating the action is necessary. Check the current working directory and the existing submission instructions.",
+        "cue_sha256": "80d52625bd593cd6fecafeb06daca898792979592272d9fadcf0ddd04bd39d9e",
+        "pattern_call_ids": [
+          17,
+          18,
+          19,
+          20,
+          21,
+          22
+        ],
+        "incomplete_call_ids": [
+          13
+        ],
+        "incomplete_records": [
+          {
+            "call_id": 13,
+            "position": 13,
+            "reason": "observation recorded as unparsable"
+          }
+        ],
+        "call_id_discontinuities": [],
+        "reason": "observe-only baseline: would-trigger landmark recorded, no cue emitted and no model-visible message changed",
+        "note": "trigger means repeated visible feedback, not proven unchanged state"
+      }
+    },
+    {
+      "cohort": "pilot_20260922",
+      "run": "sympy__sympy-11618__small__pilot-cp2-wc2__20260922T053700Z-067273",
+      "instance_id": "sympy__sympy-11618",
+      "backend": "small",
+      "input_sha256": {
+        "trajectory.json": "9d8af220960695d218fb7748aab4ed58ca228646f20aee17aa38120965e28413",
+        "episode.json": "899d6634f9cad31a0a9c9db2dda572fc09e5af81b3c2b71ea9d7a62b16d6922c",
+        "attempts.jsonl": "e4e849d86a0643f4ebb6d151396d0d2ecc97d7af10fcc6e9de9bc4be6a11b4eb"
+      },
+      "changed_fields": {
+        "records_observed": {
+          "original": 11,
+          "corrected": 12
+        },
+        "incomplete_call_ids": {
+          "original": [],
+          "corrected": [
+            12
+          ]
+        }
+      },
+      "adapter_notes": [
+        {
+          "call": 12,
+          "reason": "terminal context-rejected logical call; no assistant or ordinary observation"
+        }
+      ],
+      "landmark": {
+        "detector": "repeated-action-cue-v1",
+        "detector_source_sha256": "3407e6355018dc5fd6708f9c368162cb846fc588d47d636d41e9ac7a18251d6f",
+        "mode": "observe",
+        "horizon": 24,
+        "records_observed": 12,
+        "triggered": false,
+        "pattern": null,
+        "trigger_call_id": null,
+        "trigger_position": null,
+        "delivery_call_id": null,
+        "delivery_planned": false,
+        "delivered": false,
+        "cue_emissions": 0,
+        "cue_emitted": false,
+        "cue_emitted_call_ids": [],
+        "cue_requests_refused": [],
+        "cue_text": null,
+        "cue_sha256": null,
+        "pattern_call_ids": [],
+        "incomplete_call_ids": [
+          12
+        ],
+        "incomplete_records": [
+          {
+            "call_id": 12,
+            "position": 12,
+            "reason": "observation recorded as unparsable"
+          }
+        ],
+        "call_id_discontinuities": [],
+        "reason": "no repeated-action pattern in the complete records observed",
+        "note": "trigger means repeated visible feedback, not proven unchanged state"
+      }
+    },
+    {
+      "cohort": "pilot_20260922_yaml_v1",
+      "run": "astropy__astropy-12907__large__pilot-cp2-wc2-yaml-v1__20260922T071912Z-d5c042",
+      "instance_id": "astropy__astropy-12907",
+      "backend": "large",
+      "input_sha256": {
+        "trajectory.json": "7f0bd883bd296a46854cfbdec5ecb0e52d81db003b222dfa333b2a3f11ca9b48",
+        "episode.json": "d4cabda5073a490b9ed2dc4025b267d407895ad1fc60edd0d7835050c01c68a4",
+        "attempts.jsonl": "b019bffed2f1e759d07d597c83fb9f258cfd089cfce88ef47dd1befda10eccc4"
+      },
+      "changed_fields": {},
+      "adapter_notes": [],
+      "landmark": {
+        "detector": "repeated-action-cue-v1",
+        "detector_source_sha256": "3407e6355018dc5fd6708f9c368162cb846fc588d47d636d41e9ac7a18251d6f",
+        "mode": "observe",
+        "horizon": 24,
+        "records_observed": 24,
+        "triggered": true,
+        "pattern": "ABABAB",
+        "trigger_call_id": 9,
+        "trigger_position": 9,
+        "delivery_call_id": 10,
+        "delivery_planned": false,
+        "delivered": false,
+        "cue_emissions": 0,
+        "cue_emitted": false,
+        "cue_emitted_call_ids": [],
+        "cue_requests_refused": [],
+        "cue_text": "Recent actions returned the same visible feedback repeatedly. Use the existing /testbed checkout. Choose a different action that will provide useful new evidence, or explain why repeating the action is necessary. Check the current working directory and the existing submission instructions.",
+        "cue_sha256": "80d52625bd593cd6fecafeb06daca898792979592272d9fadcf0ddd04bd39d9e",
+        "pattern_call_ids": [
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "incomplete_call_ids": [],
+        "incomplete_records": [],
+        "call_id_discontinuities": [],
+        "reason": "observe-only baseline: would-trigger landmark recorded, no cue emitted and no model-visible message changed",
+        "note": "trigger means repeated visible feedback, not proven unchanged state"
+      }
+    },
+    {
+      "cohort": "pilot_20260922_yaml_v1",
+      "run": "astropy__astropy-12907__small__pilot-cp2-wc2-yaml-v1__20260922T072332Z-8548bb",
+      "instance_id": "astropy__astropy-12907",
+      "backend": "small",
+      "input_sha256": {
+        "trajectory.json": "36fa33dbbfa5b049d1099571e6d7022eaa8cf2df070b240d979d7532469774d1",
+        "episode.json": "79c820383ea0f4a003aa10e9708266c04932dbf92b12b2d95678b4c6eb725c58",
+        "attempts.jsonl": "277b4f962c2e92bec73e4deac55bc72d437f01f9c42fcf82acc12a6ae65919f3"
+      },
+      "changed_fields": {},
+      "adapter_notes": [
+        {
+          "call": 1,
+          "reason": "the next message is 'exit', not an ordinary observation"
+        }
+      ],
+      "landmark": {
+        "detector": "repeated-action-cue-v1",
+        "detector_source_sha256": "3407e6355018dc5fd6708f9c368162cb846fc588d47d636d41e9ac7a18251d6f",
+        "mode": "observe",
+        "horizon": 24,
+        "records_observed": 1,
+        "triggered": false,
+        "pattern": null,
+        "trigger_call_id": null,
+        "trigger_position": null,
+        "delivery_call_id": null,
+        "delivery_planned": false,
+        "delivered": false,
+        "cue_emissions": 0,
+        "cue_emitted": false,
+        "cue_emitted_call_ids": [],
+        "cue_requests_refused": [],
+        "cue_text": null,
+        "cue_sha256": null,
+        "pattern_call_ids": [],
+        "incomplete_call_ids": [
+          1
+        ],
+        "incomplete_records": [
+          {
+            "call_id": 1,
+            "position": 1,
+            "reason": "observation recorded as unparsable"
+          }
+        ],
+        "call_id_discontinuities": [],
+        "reason": "no repeated-action pattern in the complete records observed",
+        "note": "trigger means repeated visible feedback, not proven unchanged state"
+      }
+    },
+    {
+      "cohort": "pilot_20260922_yaml_v1",
+      "run": "matplotlib__matplotlib-13989__large__pilot-cp2-wc2-yaml-v1__20260922T073826Z-0b4b85",
+      "instance_id": "matplotlib__matplotlib-13989",
+      "backend": "large",
+      "input_sha256": {
+        "trajectory.json": "de199ff3ee7fd7b4990c23ba031333045b809ddb481f0ea22fc0b5b5309ec994",
+        "episode.json": "7aeebbfdca0368f22678343854797c02ae3082f7e566a93b21fa3b67fd374856",
+        "attempts.jsonl": "e0fa81a7dd260919835ae9377ada57f627d6a9a8b3fb124bbf74f1f06a8633fb"
+      },
+      "changed_fields": {},
+      "adapter_notes": [],
+      "landmark": {
+        "detector": "repeated-action-cue-v1",
+        "detector_source_sha256": "3407e6355018dc5fd6708f9c368162cb846fc588d47d636d41e9ac7a18251d6f",
+        "mode": "observe",
+        "horizon": 24,
+        "records_observed": 24,
+        "triggered": true,
+        "pattern": "AAA",
+        "trigger_call_id": 7,
+        "trigger_position": 7,
+        "delivery_call_id": 8,
+        "delivery_planned": false,
+        "delivered": false,
+        "cue_emissions": 0,
+        "cue_emitted": false,
+        "cue_emitted_call_ids": [],
+        "cue_requests_refused": [],
+        "cue_text": "Recent actions returned the same visible feedback repeatedly. Use the existing /testbed checkout. Choose a different action that will provide useful new evidence, or explain why repeating the action is necessary. Check the current working directory and the existing submission instructions.",
+        "cue_sha256": "80d52625bd593cd6fecafeb06daca898792979592272d9fadcf0ddd04bd39d9e",
+        "pattern_call_ids": [
+          5,
+          6,
+          7
+        ],
+        "incomplete_call_ids": [],
+        "incomplete_records": [],
+        "call_id_discontinuities": [],
+        "reason": "observe-only baseline: would-trigger landmark recorded, no cue emitted and no model-visible message changed",
+        "note": "trigger means repeated visible feedback, not proven unchanged state"
+      }
+    },
+    {
+      "cohort": "pilot_20260922_yaml_v1",
+      "run": "matplotlib__matplotlib-13989__small__pilot-cp2-wc2-yaml-v1__20260922T073449Z-bc05f4",
+      "instance_id": "matplotlib__matplotlib-13989",
+      "backend": "small",
+      "input_sha256": {
+        "trajectory.json": "7efaefc5daf5a7393085daabd4c5d46c69090cef53d1511db6e7bad676382683",
+        "episode.json": "a407ea5c4b271dfc5c35277be1e5838783b50f4b819b5324e9e1142609cd6e12",
+        "attempts.jsonl": "5b8dd45c8901046ad5848e61a778406562acf39379399024416ff68fb1f36532"
+      },
+      "changed_fields": {
+        "records_observed": {
+          "original": 23,
+          "corrected": 24
+        },
+        "incomplete_call_ids": {
+          "original": [],
+          "corrected": [
+            24
+          ]
+        }
+      },
+      "adapter_notes": [
+        {
+          "call": 24,
+          "reason": "terminal context-rejected logical call; no assistant or ordinary observation"
+        }
+      ],
+      "landmark": {
+        "detector": "repeated-action-cue-v1",
+        "detector_source_sha256": "3407e6355018dc5fd6708f9c368162cb846fc588d47d636d41e9ac7a18251d6f",
+        "mode": "observe",
+        "horizon": 24,
+        "records_observed": 24,
+        "triggered": true,
+        "pattern": "AAA",
+        "trigger_call_id": 13,
+        "trigger_position": 13,
+        "delivery_call_id": 14,
+        "delivery_planned": false,
+        "delivered": false,
+        "cue_emissions": 0,
+        "cue_emitted": false,
+        "cue_emitted_call_ids": [],
+        "cue_requests_refused": [],
+        "cue_text": "Recent actions returned the same visible feedback repeatedly. Use the existing /testbed checkout. Choose a different action that will provide useful new evidence, or explain why repeating the action is necessary. Check the current working directory and the existing submission instructions.",
+        "cue_sha256": "80d52625bd593cd6fecafeb06daca898792979592272d9fadcf0ddd04bd39d9e",
+        "pattern_call_ids": [
+          11,
+          12,
+          13
+        ],
+        "incomplete_call_ids": [
+          24
+        ],
+        "incomplete_records": [
+          {
+            "call_id": 24,
+            "position": 24,
+            "reason": "observation recorded as unparsable"
+          }
+        ],
+        "call_id_discontinuities": [],
+        "reason": "observe-only baseline: would-trigger landmark recorded, no cue emitted and no model-visible message changed",
+        "note": "trigger means repeated visible feedback, not proven unchanged state"
+      }
+    },
+    {
+      "cohort": "pilot_20260922_yaml_v1",
+      "run": "mwaskom__seaborn-3069__large__pilot-cp2-wc2-yaml-v1__20260922T075057Z-3cd2d1",
+      "instance_id": "mwaskom__seaborn-3069",
+      "backend": "large",
+      "input_sha256": {
+        "trajectory.json": "16f90acc42c526130ee17fbdc9a711cdd4f3e60b38a4cc8b9eb6989bef6ae6c0",
+        "episode.json": "3f2ecf70fcdc154b487d3b3147ae67b7f61a60f49e197f042303c84be9cb41c7",
+        "attempts.jsonl": "e2ffccfd43bc7ad68cdde1c54e5bea8fa1f504f855f4de1a666eedb1d8967310"
+      },
+      "changed_fields": {},
+      "adapter_notes": [],
+      "landmark": {
+        "detector": "repeated-action-cue-v1",
+        "detector_source_sha256": "3407e6355018dc5fd6708f9c368162cb846fc588d47d636d41e9ac7a18251d6f",
+        "mode": "observe",
+        "horizon": 24,
+        "records_observed": 24,
+        "triggered": true,
+        "pattern": "AAA",
+        "trigger_call_id": 10,
+        "trigger_position": 10,
+        "delivery_call_id": 11,
+        "delivery_planned": false,
+        "delivered": false,
+        "cue_emissions": 0,
+        "cue_emitted": false,
+        "cue_emitted_call_ids": [],
+        "cue_requests_refused": [],
+        "cue_text": "Recent actions returned the same visible feedback repeatedly. Use the existing /testbed checkout. Choose a different action that will provide useful new evidence, or explain why repeating the action is necessary. Check the current working directory and the existing submission instructions.",
+        "cue_sha256": "80d52625bd593cd6fecafeb06daca898792979592272d9fadcf0ddd04bd39d9e",
+        "pattern_call_ids": [
+          8,
+          9,
+          10
+        ],
+        "incomplete_call_ids": [],
+        "incomplete_records": [],
+        "call_id_discontinuities": [],
+        "reason": "observe-only baseline: would-trigger landmark recorded, no cue emitted and no model-visible message changed",
+        "note": "trigger means repeated visible feedback, not proven unchanged state"
+      }
+    },
+    {
+      "cohort": "pilot_20260922_yaml_v1",
+      "run": "mwaskom__seaborn-3069__small__pilot-cp2-wc2-yaml-v1__20260922T075455Z-809e31",
+      "instance_id": "mwaskom__seaborn-3069",
+      "backend": "small",
+      "input_sha256": {
+        "trajectory.json": "fa3489bce23789fa56fbbe3d9bad10321a2c51bd1ccc7c8aad4b013a3bedee96",
+        "episode.json": "0338db9dbdb01fd19ffc5dc2499c2aadce27b5b0ca8825c1390844b970b8ecf9",
+        "attempts.jsonl": "85ad4812f52141d9edb1d1dabe1e13c31f3fd2508757c22a6bdde6179a6e327b"
+      },
+      "changed_fields": {},
+      "adapter_notes": [],
+      "landmark": {
+        "detector": "repeated-action-cue-v1",
+        "detector_source_sha256": "3407e6355018dc5fd6708f9c368162cb846fc588d47d636d41e9ac7a18251d6f",
+        "mode": "observe",
+        "horizon": 24,
+        "records_observed": 24,
+        "triggered": true,
+        "pattern": "ABABAB",
+        "trigger_call_id": 13,
+        "trigger_position": 13,
+        "delivery_call_id": 14,
+        "delivery_planned": false,
+        "delivered": false,
+        "cue_emissions": 0,
+        "cue_emitted": false,
+        "cue_emitted_call_ids": [],
+        "cue_requests_refused": [],
+        "cue_text": "Recent actions returned the same visible feedback repeatedly. Use the existing /testbed checkout. Choose a different action that will provide useful new evidence, or explain why repeating the action is necessary. Check the current working directory and the existing submission instructions.",
+        "cue_sha256": "80d52625bd593cd6fecafeb06daca898792979592272d9fadcf0ddd04bd39d9e",
+        "pattern_call_ids": [
+          8,
+          9,
+          10,
+          11,
+          12,
+          13
+        ],
+        "incomplete_call_ids": [],
+        "incomplete_records": [],
+        "call_id_discontinuities": [],
+        "reason": "observe-only baseline: would-trigger landmark recorded, no cue emitted and no model-visible message changed",
+        "note": "trigger means repeated visible feedback, not proven unchanged state"
+      }
+    },
+    {
+      "cohort": "pilot_20260922_yaml_v1",
+      "run": "psf__requests-1142__large__pilot-cp2-wc2-yaml-v1__20260922T080700Z-49aae1",
+      "instance_id": "psf__requests-1142",
+      "backend": "large",
+      "input_sha256": {
+        "trajectory.json": "9675b76eea1375574561e827b8675f92bb44e8d8d732cd95f92f15f39f4226b6",
+        "episode.json": "428efdcabbef8ca3851efeb1358ca07d8c823149c5159c5166efe0a8d764512f",
+        "attempts.jsonl": "a3660bd86265e71bc42f77328c917084b88cc43413cb358a6e52d8a6d85719fb"
+      },
+      "changed_fields": {},
+      "adapter_notes": [],
+      "landmark": {
+        "detector": "repeated-action-cue-v1",
+        "detector_source_sha256": "3407e6355018dc5fd6708f9c368162cb846fc588d47d636d41e9ac7a18251d6f",
+        "mode": "observe",
+        "horizon": 24,
+        "records_observed": 24,
+        "triggered": false,
+        "pattern": null,
+        "trigger_call_id": null,
+        "trigger_position": null,
+        "delivery_call_id": null,
+        "delivery_planned": false,
+        "delivered": false,
+        "cue_emissions": 0,
+        "cue_emitted": false,
+        "cue_emitted_call_ids": [],
+        "cue_requests_refused": [],
+        "cue_text": null,
+        "cue_sha256": null,
+        "pattern_call_ids": [],
+        "incomplete_call_ids": [],
+        "incomplete_records": [],
+        "call_id_discontinuities": [],
+        "reason": "no repeated-action pattern in the complete records observed",
+        "note": "trigger means repeated visible feedback, not proven unchanged state"
+      }
+    },
+    {
+      "cohort": "pilot_20260922_yaml_v1",
+      "run": "psf__requests-1142__small__pilot-cp2-wc2-yaml-v1__20260922T080423Z-7ad659",
+      "instance_id": "psf__requests-1142",
+      "backend": "small",
+      "input_sha256": {
+        "trajectory.json": "8e2ff4b9b671467b54b8240a7091a6f68b11e1d890e9cbebfc968d3d6ec63fc1",
+        "episode.json": "2690f71c30b1438706fd2286356e549318c848adf9211cc74b1af1d9708b4544",
+        "attempts.jsonl": "1a54635fa554162c8df2dec2523b1a80918ac279003afec6c722541f1574fa34"
+      },
+      "changed_fields": {},
+      "adapter_notes": [],
+      "landmark": {
+        "detector": "repeated-action-cue-v1",
+        "detector_source_sha256": "3407e6355018dc5fd6708f9c368162cb846fc588d47d636d41e9ac7a18251d6f",
+        "mode": "observe",
+        "horizon": 24,
+        "records_observed": 24,
+        "triggered": true,
+        "pattern": "AAA",
+        "trigger_call_id": 6,
+        "trigger_position": 6,
+        "delivery_call_id": 7,
+        "delivery_planned": false,
+        "delivered": false,
+        "cue_emissions": 0,
+        "cue_emitted": false,
+        "cue_emitted_call_ids": [],
+        "cue_requests_refused": [],
+        "cue_text": "Recent actions returned the same visible feedback repeatedly. Use the existing /testbed checkout. Choose a different action that will provide useful new evidence, or explain why repeating the action is necessary. Check the current working directory and the existing submission instructions.",
+        "cue_sha256": "80d52625bd593cd6fecafeb06daca898792979592272d9fadcf0ddd04bd39d9e",
+        "pattern_call_ids": [
+          4,
+          5,
+          6
+        ],
+        "incomplete_call_ids": [],
+        "incomplete_records": [],
+        "call_id_discontinuities": [],
+        "reason": "observe-only baseline: would-trigger landmark recorded, no cue emitted and no model-visible message changed",
+        "note": "trigger means repeated visible feedback, not proven unchanged state"
+      }
+    },
+    {
+      "cohort": "pilot_20260922_yaml_v1",
+      "run": "pytest-dev__pytest-10051__large__pilot-cp2-wc2-yaml-v1__20260922T072522Z-dd9d41",
+      "instance_id": "pytest-dev__pytest-10051",
+      "backend": "large",
+      "input_sha256": {
+        "trajectory.json": "60f3a39d2135e7a21a35f65b92d498a6a220d41b07056a4697bc961fb14bd100",
+        "episode.json": "800f6be02eb8b4a354f194be58521fabd76aec8261781dd1d9732a44790cc85f",
+        "attempts.jsonl": "6ec7c3c1015ce6a297d35036926362d44c1a5716195e99c9d87e01ca428b10f4"
+      },
+      "changed_fields": {},
+      "adapter_notes": [],
+      "landmark": {
+        "detector": "repeated-action-cue-v1",
+        "detector_source_sha256": "3407e6355018dc5fd6708f9c368162cb846fc588d47d636d41e9ac7a18251d6f",
+        "mode": "observe",
+        "horizon": 24,
+        "records_observed": 24,
+        "triggered": true,
+        "pattern": "AAA",
+        "trigger_call_id": 5,
+        "trigger_position": 5,
+        "delivery_call_id": 6,
+        "delivery_planned": false,
+        "delivered": false,
+        "cue_emissions": 0,
+        "cue_emitted": false,
+        "cue_emitted_call_ids": [],
+        "cue_requests_refused": [],
+        "cue_text": "Recent actions returned the same visible feedback repeatedly. Use the existing /testbed checkout. Choose a different action that will provide useful new evidence, or explain why repeating the action is necessary. Check the current working directory and the existing submission instructions.",
+        "cue_sha256": "80d52625bd593cd6fecafeb06daca898792979592272d9fadcf0ddd04bd39d9e",
+        "pattern_call_ids": [
+          3,
+          4,
+          5
+        ],
+        "incomplete_call_ids": [],
+        "incomplete_records": [],
+        "call_id_discontinuities": [],
+        "reason": "observe-only baseline: would-trigger landmark recorded, no cue emitted and no model-visible message changed",
+        "note": "trigger means repeated visible feedback, not proven unchanged state"
+      }
+    },
+    {
+      "cohort": "pilot_20260922_yaml_v1",
+      "run": "pytest-dev__pytest-10051__small__pilot-cp2-wc2-yaml-v1__20260922T072351Z-97023d",
+      "instance_id": "pytest-dev__pytest-10051",
+      "backend": "small",
+      "input_sha256": {
+        "trajectory.json": "68cc6d90d04da414f6db053a7b9a64437180b8302148d4e898dbd648695ca7b1",
+        "episode.json": "788039bae1939d7e3ee0d85338f5231c0dffc1f3c2d6b5c0e3fbec78b6e1261d",
+        "attempts.jsonl": "d744002afa5553bf72792fc88d28dd3e4b5d89dfe796dd3934c4a1258c858d00"
+      },
+      "changed_fields": {},
+      "adapter_notes": [],
+      "landmark": {
+        "detector": "repeated-action-cue-v1",
+        "detector_source_sha256": "3407e6355018dc5fd6708f9c368162cb846fc588d47d636d41e9ac7a18251d6f",
+        "mode": "observe",
+        "horizon": 24,
+        "records_observed": 24,
+        "triggered": true,
+        "pattern": "ABABAB",
+        "trigger_call_id": 7,
+        "trigger_position": 7,
+        "delivery_call_id": 8,
+        "delivery_planned": false,
+        "delivered": false,
+        "cue_emissions": 0,
+        "cue_emitted": false,
+        "cue_emitted_call_ids": [],
+        "cue_requests_refused": [],
+        "cue_text": "Recent actions returned the same visible feedback repeatedly. Use the existing /testbed checkout. Choose a different action that will provide useful new evidence, or explain why repeating the action is necessary. Check the current working directory and the existing submission instructions.",
+        "cue_sha256": "80d52625bd593cd6fecafeb06daca898792979592272d9fadcf0ddd04bd39d9e",
+        "pattern_call_ids": [
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "incomplete_call_ids": [],
+        "incomplete_records": [],
+        "call_id_discontinuities": [],
+        "reason": "observe-only baseline: would-trigger landmark recorded, no cue emitted and no model-visible message changed",
+        "note": "trigger means repeated visible feedback, not proven unchanged state"
+      }
+    },
+    {
+      "cohort": "pilot_20260922_yaml_v1",
+      "run": "scikit-learn__scikit-learn-10297__large__pilot-cp2-wc2-yaml-v1__20260922T072856Z-4e3eb7",
+      "instance_id": "scikit-learn__scikit-learn-10297",
+      "backend": "large",
+      "input_sha256": {
+        "trajectory.json": "f45be968515337860d66832dc07bdd09a3d5b32f0fdc7a25a17842c05f2ea8ab",
+        "episode.json": "22cbc2e2d5bb1198d556c9700cdb8d37aedd6cd03d76cd3a021fc5805e94f058",
+        "attempts.jsonl": "c1be8ba39ed657b1a475475a1cb489ed18528c74c3f0aa4f18c8b105c69527ec"
+      },
+      "changed_fields": {},
+      "adapter_notes": [],
+      "landmark": {
+        "detector": "repeated-action-cue-v1",
+        "detector_source_sha256": "3407e6355018dc5fd6708f9c368162cb846fc588d47d636d41e9ac7a18251d6f",
+        "mode": "observe",
+        "horizon": 24,
+        "records_observed": 24,
+        "triggered": true,
+        "pattern": "ABABAB",
+        "trigger_call_id": 11,
+        "trigger_position": 11,
+        "delivery_call_id": 12,
+        "delivery_planned": false,
+        "delivered": false,
+        "cue_emissions": 0,
+        "cue_emitted": false,
+        "cue_emitted_call_ids": [],
+        "cue_requests_refused": [],
+        "cue_text": "Recent actions returned the same visible feedback repeatedly. Use the existing /testbed checkout. Choose a different action that will provide useful new evidence, or explain why repeating the action is necessary. Check the current working directory and the existing submission instructions.",
+        "cue_sha256": "80d52625bd593cd6fecafeb06daca898792979592272d9fadcf0ddd04bd39d9e",
+        "pattern_call_ids": [
+          6,
+          7,
+          8,
+          9,
+          10,
+          11
+        ],
+        "incomplete_call_ids": [],
+        "incomplete_records": [],
+        "call_id_discontinuities": [],
+        "reason": "observe-only baseline: would-trigger landmark recorded, no cue emitted and no model-visible message changed",
+        "note": "trigger means repeated visible feedback, not proven unchanged state"
+      }
+    },
+    {
+      "cohort": "pilot_20260922_yaml_v1",
+      "run": "scikit-learn__scikit-learn-10297__small__pilot-cp2-wc2-yaml-v1__20260922T073224Z-a920da",
+      "instance_id": "scikit-learn__scikit-learn-10297",
+      "backend": "small",
+      "input_sha256": {
+        "trajectory.json": "c9460e16c7ed000851ffbeee74382a7243c8143d2efad6461a2b73db61bd89d0",
+        "episode.json": "8b14f7fe392df711f0063de898affc85eeb5dd65dc44a9cac544b8f6ca1f8ab6",
+        "attempts.jsonl": "6fbaf3f27358bc06c5542ed561e63e351cee4d4e182861dc1b928185a082a6e4"
+      },
+      "changed_fields": {},
+      "adapter_notes": [],
+      "landmark": {
+        "detector": "repeated-action-cue-v1",
+        "detector_source_sha256": "3407e6355018dc5fd6708f9c368162cb846fc588d47d636d41e9ac7a18251d6f",
+        "mode": "observe",
+        "horizon": 24,
+        "records_observed": 24,
+        "triggered": false,
+        "pattern": null,
+        "trigger_call_id": null,
+        "trigger_position": null,
+        "delivery_call_id": null,
+        "delivery_planned": false,
+        "delivered": false,
+        "cue_emissions": 0,
+        "cue_emitted": false,
+        "cue_emitted_call_ids": [],
+        "cue_requests_refused": [],
+        "cue_text": null,
+        "cue_sha256": null,
+        "pattern_call_ids": [],
+        "incomplete_call_ids": [],
+        "incomplete_records": [],
+        "call_id_discontinuities": [],
+        "reason": "no repeated-action pattern in the complete records observed",
+        "note": "trigger means repeated visible feedback, not proven unchanged state"
+      }
+    },
+    {
+      "cohort": "pilot_20260922_yaml_v1",
+      "run": "sphinx-doc__sphinx-10323__large__pilot-cp2-wc2-yaml-v1__20260922T075619Z-5db7a6",
+      "instance_id": "sphinx-doc__sphinx-10323",
+      "backend": "large",
+      "input_sha256": {
+        "trajectory.json": "c411d10c26432edd38ff96281ee9bf5054d0932b0203f196217bf1b6ee047463",
+        "episode.json": "6f3bb22142f4b2df9bb66f536ac5f6177e46b74a140ec840f4c6dacc5fc2f46a",
+        "attempts.jsonl": "c0f9c4663f44050b4819883dca40e002519b0368a36b779f9dc1e0be0eb02e84"
+      },
+      "changed_fields": {},
+      "adapter_notes": [],
+      "landmark": {
+        "detector": "repeated-action-cue-v1",
+        "detector_source_sha256": "3407e6355018dc5fd6708f9c368162cb846fc588d47d636d41e9ac7a18251d6f",
+        "mode": "observe",
+        "horizon": 24,
+        "records_observed": 24,
+        "triggered": false,
+        "pattern": null,
+        "trigger_call_id": null,
+        "trigger_position": null,
+        "delivery_call_id": null,
+        "delivery_planned": false,
+        "delivered": false,
+        "cue_emissions": 0,
+        "cue_emitted": false,
+        "cue_emitted_call_ids": [],
+        "cue_requests_refused": [],
+        "cue_text": null,
+        "cue_sha256": null,
+        "pattern_call_ids": [],
+        "incomplete_call_ids": [],
+        "incomplete_records": [],
+        "call_id_discontinuities": [],
+        "reason": "no repeated-action pattern in the complete records observed",
+        "note": "trigger means repeated visible feedback, not proven unchanged state"
+      }
+    },
+    {
+      "cohort": "pilot_20260922_yaml_v1",
+      "run": "sphinx-doc__sphinx-10323__small__pilot-cp2-wc2-yaml-v1__20260922T080104Z-452291",
+      "instance_id": "sphinx-doc__sphinx-10323",
+      "backend": "small",
+      "input_sha256": {
+        "trajectory.json": "29c2f304ea749877ac34f039b18b5e7f3b24a2df604305420c6eec0eef2b95dd",
+        "episode.json": "b80eb149af305b836aeb47d987af166079a496d1d115656e53ed807bf52cec60",
+        "attempts.jsonl": "973e4f9ff7b8db9bb9595ef66d6da976c433e75613a6df7199f7fc68e9b20bcc"
+      },
+      "changed_fields": {},
+      "adapter_notes": [],
+      "landmark": {
+        "detector": "repeated-action-cue-v1",
+        "detector_source_sha256": "3407e6355018dc5fd6708f9c368162cb846fc588d47d636d41e9ac7a18251d6f",
+        "mode": "observe",
+        "horizon": 24,
+        "records_observed": 24,
+        "triggered": true,
+        "pattern": "AAA",
+        "trigger_call_id": 7,
+        "trigger_position": 7,
+        "delivery_call_id": 8,
+        "delivery_planned": false,
+        "delivered": false,
+        "cue_emissions": 0,
+        "cue_emitted": false,
+        "cue_emitted_call_ids": [],
+        "cue_requests_refused": [],
+        "cue_text": "Recent actions returned the same visible feedback repeatedly. Use the existing /testbed checkout. Choose a different action that will provide useful new evidence, or explain why repeating the action is necessary. Check the current working directory and the existing submission instructions.",
+        "cue_sha256": "80d52625bd593cd6fecafeb06daca898792979592272d9fadcf0ddd04bd39d9e",
+        "pattern_call_ids": [
+          5,
+          6,
+          7
+        ],
+        "incomplete_call_ids": [],
+        "incomplete_records": [],
+        "call_id_discontinuities": [],
+        "reason": "observe-only baseline: would-trigger landmark recorded, no cue emitted and no model-visible message changed",
+        "note": "trigger means repeated visible feedback, not proven unchanged state"
+      }
+    },
+    {
+      "cohort": "pilot_20260922_yaml_v1",
+      "run": "sympy__sympy-11618__large__pilot-cp2-wc2-yaml-v1__20260922T074338Z-1b5364",
+      "instance_id": "sympy__sympy-11618",
+      "backend": "large",
+      "input_sha256": {
+        "trajectory.json": "e54eef1e60a69c72d86a94fe05552f97d9b12dfef65bb4c660cdb5f560c8a03b",
+        "episode.json": "4c6950507eb68f62e79e8b295b7587a5c93dad073678a26438ca5862c30fd9da",
+        "attempts.jsonl": "70bf231fdb873bb1df639f1d6b29ac6e34200c2c462d08c00a2ce27cb4e59774"
+      },
+      "changed_fields": {
+        "records_observed": {
+          "original": 22,
+          "corrected": 24
+        },
+        "incomplete_call_ids": {
+          "original": [],
+          "corrected": [
+            12,
+            19
+          ]
+        }
+      },
+      "adapter_notes": [
+        {
+          "call": 12,
+          "reason": "logical call returned a FormatError; no parsed action or ordinary observation"
+        },
+        {
+          "call": 19,
+          "reason": "logical call returned a FormatError; no parsed action or ordinary observation"
+        }
+      ],
+      "landmark": {
+        "detector": "repeated-action-cue-v1",
+        "detector_source_sha256": "3407e6355018dc5fd6708f9c368162cb846fc588d47d636d41e9ac7a18251d6f",
+        "mode": "observe",
+        "horizon": 24,
+        "records_observed": 24,
+        "triggered": false,
+        "pattern": null,
+        "trigger_call_id": null,
+        "trigger_position": null,
+        "delivery_call_id": null,
+        "delivery_planned": false,
+        "delivered": false,
+        "cue_emissions": 0,
+        "cue_emitted": false,
+        "cue_emitted_call_ids": [],
+        "cue_requests_refused": [],
+        "cue_text": null,
+        "cue_sha256": null,
+        "pattern_call_ids": [],
+        "incomplete_call_ids": [
+          12,
+          19
+        ],
+        "incomplete_records": [
+          {
+            "call_id": 12,
+            "position": 12,
+            "reason": "observation recorded as unparsable"
+          },
+          {
+            "call_id": 19,
+            "position": 19,
+            "reason": "observation recorded as unparsable"
+          }
+        ],
+        "call_id_discontinuities": [],
+        "reason": "no repeated-action pattern in the complete records observed",
+        "note": "trigger means repeated visible feedback, not proven unchanged state"
+      }
+    },
+    {
+      "cohort": "pilot_20260922_yaml_v1",
+      "run": "sympy__sympy-11618__small__pilot-cp2-wc2-yaml-v1__20260922T074845Z-5b988f",
+      "instance_id": "sympy__sympy-11618",
+      "backend": "small",
+      "input_sha256": {
+        "trajectory.json": "35e52fb42a5b83efae5fc37a77035795bd6bede340b47cff1d31072e1d3e164e",
+        "episode.json": "63edf8e4447f06a7d7d582029fd3a20e07af5994bb5d532d485eecfe15aafa52",
+        "attempts.jsonl": "614b46151a21214fd6bb59c6410c8b3b057bced7891de10443ffa1e2c2909fcd"
+      },
+      "changed_fields": {
+        "records_observed": {
+          "original": 14,
+          "corrected": 15
+        },
+        "incomplete_call_ids": {
+          "original": [],
+          "corrected": [
+            15
+          ]
+        }
+      },
+      "adapter_notes": [
+        {
+          "call": 15,
+          "reason": "terminal context-rejected logical call; no assistant or ordinary observation"
+        }
+      ],
+      "landmark": {
+        "detector": "repeated-action-cue-v1",
+        "detector_source_sha256": "3407e6355018dc5fd6708f9c368162cb846fc588d47d636d41e9ac7a18251d6f",
+        "mode": "observe",
+        "horizon": 24,
+        "records_observed": 15,
+        "triggered": true,
+        "pattern": "AAA",
+        "trigger_call_id": 13,
+        "trigger_position": 13,
+        "delivery_call_id": 14,
+        "delivery_planned": false,
+        "delivered": false,
+        "cue_emissions": 0,
+        "cue_emitted": false,
+        "cue_emitted_call_ids": [],
+        "cue_requests_refused": [],
+        "cue_text": "Recent actions returned the same visible feedback repeatedly. Use the existing /testbed checkout. Choose a different action that will provide useful new evidence, or explain why repeating the action is necessary. Check the current working directory and the existing submission instructions.",
+        "cue_sha256": "80d52625bd593cd6fecafeb06daca898792979592272d9fadcf0ddd04bd39d9e",
+        "pattern_call_ids": [
+          11,
+          12,
+          13
+        ],
+        "incomplete_call_ids": [
+          15
+        ],
+        "incomplete_records": [
+          {
+            "call_id": 15,
+            "position": 15,
+            "reason": "observation recorded as unparsable"
+          }
+        ],
+        "call_id_discontinuities": [],
+        "reason": "observe-only baseline: would-trigger landmark recorded, no cue emitted and no model-visible message changed",
+        "note": "trigger means repeated visible feedback, not proven unchanged state"
+      }
+    }
+  ],
+  "validation": {
+    "command": ".venv/bin/python -m pytest -q experiments/tools/test_v2_cue_detector.py experiments/tools/test_v2_cue_cohort.py",
+    "passed": 107,
+    "counterexample": "A, A, typed FormatError, A produces calls 1,2,3(missing),4 and no trigger",
+    "independent_review": "Lead subagent directly reconstructed all 32 message/ledger crosswalks before the adapter repair; aggregate counts retained, legacy SymPy/large trigger22 and next-call23 independently checked."
+  }
+}

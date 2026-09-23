@@ -1,5 +1,26 @@
 # Experimental handoff
 
+**Lead component review — 23 September 2026 UTC, through `22c4a82`:** REQ-002's additive
+correction is accepted. REQ-005 helpers are reviewed; logical-call alignment, diagnostic capture and
+receipt failure/completeness defects are repaired with deterministic regressions. Retrospective
+triggers remain 21/32, but ten incomplete calls are now explicit and one first trigger moves to
+logical call 22 (candidate cue 23). No cue outcome or runtime integration is claimed.
+
+**P0 DTR-REQ-005: proceed now with the new cue-v1 driver/queue, exact-transport receipt and deadline
+fixtures.** The [lead decision](theory_feedback_20260923_req005_review.md) resolves all storage,
+nonfatal-receipt, sanitization and wiring questions; the [coding guide](req005_visible_evidence_guide_20260923.md)
+is selected before collection. Public receipts are bounded; exact raw bodies stay private; diagnostics
+receive at most 30 seconds inside the existing 120-second cleanup allowance. Hold only live release
+until the integrated source/manifest and acceptance fixtures are reviewed. No duplicate cohort,
+budget increase or new scientific permission cycle is requested. REQ-004's peer release is historical,
+not proof of current availability; refresh host conditions before a later block.
+Acknowledge existing IDs/statuses; use Yukang Zeng <ykzeng2019@gmail.com> for both commit identities.
+
+Theory and the 38-page manuscript are unchanged. **Readiness 55%, change 0 points, range 45–65%.**
+Remaining: useful validated inference/adequate comparisons; final empirical synthesis; independent
+reproducibility, author metadata and submission package.
+
+
 **Lead review — 23 September 2026 UTC, through `4927adc`:** corrected `yaml-v1` is complete,
 not queued: **16/16 terminal, 16 operational zeros, 352 requests**, no eligible algorithmic artifact.
 Independent audit reconciles all assignments/grades and 59 published hashes; raw configuration identity

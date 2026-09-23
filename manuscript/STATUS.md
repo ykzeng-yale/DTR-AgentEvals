@@ -1,3 +1,10 @@
+**23 September 2026 component-review cycle:** manuscript source/PDF and formal claims unchanged.
+REQ-005 instrumentation and retrospective call-label corrections are implementation evidence, not
+new cue outcomes or paper results. Current paper validation remains `validation_20260923_pilots.json`.
+Readiness **55%, change 0 points, range 45–65%**; inference/comparisons, final empirical synthesis,
+and independent reproducibility/metadata/package remain. See the
+[component review](../docs/theory_feedback_20260923_req005_review.md).
+
 **23 September 2026 UTC (current build):** Section 12.3 now integrates the completed corrected
 16-episode DEV cohort separately from the legacy cohort, with all operational failures retained.
 Independent record checks and scientific review distinguish published projections from raw execution

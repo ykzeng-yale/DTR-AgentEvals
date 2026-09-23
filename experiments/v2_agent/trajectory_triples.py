@@ -8,8 +8,10 @@ bridge between those archives and the detector, and it is read-only: it opens ar
 no frozen execution source.
 
 Linking rule, exactly the lead's frozen shared definition (docs:119-122, answer Q8):
-  * one record per LOGICAL model call, numbered from 1 in the order the assistant messages appear, which is
-    the same numbering the frozen driver uses (pilot_episode.py increments `self.logical` before each query).
+  * one record per LOGICAL model call, reconciled with episode and attempt-ledger counts. A parsed
+    assistant and a typed FormatError each consume a call. Assistant ordinals alone are NOT call ids.
+    A final context-rejected call is recovered only with matching terminal and failed-ledger evidence.
+    Any other count/alignment discrepancy is refused rather than assigned invented call ids.
   * the command is the single parsed action of that assistant message.
   * the observation is linked ONLY to that call's IMMEDIATE ordinary recorded return-code observation --
     the very next message, when it is a user message carrying a recorded `returncode`. Anything else
@@ -29,7 +31,7 @@ from pathlib import Path
 
 TRAJECTORY_FILE = 'trajectory.json'
 SUPPORTED_FORMATS = ('mini-swe-agent-1.1',)
-ADAPTER_ID = 'trajectory-triples-v1'
+ADAPTER_ID = 'trajectory-triples-v2'
 
 
 def _actions(message):
@@ -71,13 +73,44 @@ def _observation(message):
     return returncode, content, None
 
 
-def episode_records(trajectory):
+def _call_evidence(episode, attempts):
+    """Require a complete legacy or durable ledger matching the recorded logical-call count."""
+    count = episode.get('n_model_calls') if isinstance(episode, dict) else None
+    if type(count) is not int or count < 0 or not isinstance(attempts, list):
+        raise ValueError('logical call alignment requires episode and attempt-ledger evidence')
+    starts, results = {}, {}
+    legacy = bool(attempts) and all(isinstance(r, dict) and 'event' not in r for r in attempts)
+    for row in attempts:
+        if not isinstance(row, dict):
+            raise ValueError('malformed attempt-ledger record')
+        key = (row.get('call'), row.get('attempt'))
+        if any(type(n) is not int or n < 1 for n in key):
+            raise ValueError('invalid attempt-ledger logical call or attempt id')
+        event = row.get('event')
+        if not legacy and event not in ('start', 'result'):
+            raise ValueError('mixed or unknown attempt-ledger format')
+        destinations = (starts, results) if legacy else (starts if event == 'start' else results,)
+        for target in destinations:
+            if key in target:
+                raise ValueError('duplicate attempt-ledger event')
+            target[key] = row
+    if starts.keys() != results.keys() or {call for call, _ in starts} != set(range(1, count + 1)):
+        raise ValueError('incomplete attempt ledger or logical count disagreement; alignment is ambiguous')
+    if any(type(r.get('ok')) is not bool for r in results.values()):
+        raise ValueError('attempt result lacks an observed success/failure status')
+    return count, {call: [row for (c, _), row in results.items() if c == call]
+                   for call in range(1, count + 1)}
+
+
+def episode_records(trajectory, *, episode=None, attempts=None):
     """(records, notes) for one archived trajectory dict.
 
     Each record is a Mapping carrying `call` (the logical call id), and `command` / `returncode` /
     `observation` when they exist. An incomplete record omits what is missing and carries
     `observation_error` when the observation itself is the missing part, so the DETECTOR classifies it.
-    `notes` lists this adapter's own reason per incomplete call, for publication next to the landmark."""
+    `notes` lists this adapter's own reason per incomplete call, for publication next to the landmark.
+    Nonempty trajectories require episode/ledger evidence. This archived-format crosswalk is not a live
+    driver: live instrumentation must supply the driver's actual logical ids, including failed calls."""
     if not isinstance(trajectory, dict):
         raise ValueError('an archived trajectory must be a JSON object')
     fmt = trajectory.get('trajectory_format')
@@ -87,9 +120,25 @@ def episode_records(trajectory):
     messages = trajectory.get('messages')
     if not isinstance(messages, list):
         raise ValueError('an archived trajectory must carry a messages list')
+    if not messages and episode is None and attempts is None:
+        return [], []
+    expected_calls, outcomes = _call_evidence(episode, attempts)
     records, notes, call = [], [], 0
     for index, message in enumerate(messages):
-        if not isinstance(message, dict) or message.get('role') != 'assistant':
+        if not isinstance(message, dict):
+            continue
+        extra = message.get('extra') if isinstance(message.get('extra'), dict) else {}
+        if message.get('role') == 'user' and extra.get('interrupt_type') == 'FormatError':
+            # The pinned agent records the parser exception instead of an assistant. Never infer this
+            # from words in ordinary user/tool text, and refuse malformed typed exception records.
+            if not isinstance(extra.get('response'), dict) or 'returncode' in extra:
+                raise ValueError('malformed FormatError event; logical alignment is ambiguous')
+            call += 1
+            reason = 'logical call returned a FormatError; no parsed action or ordinary observation'
+            records.append(dict(call=call, observation_error=reason))
+            notes.append(dict(call=call, reason=reason))
+            continue
+        if message.get('role') != 'assistant':
             continue
         call += 1
         command, command_reason = _command(message)
@@ -108,13 +157,36 @@ def episode_records(trajectory):
         for reason in (command_reason, observation_reason):
             if reason is not None:
                 notes.append(dict(call=call, reason=reason))
+    # Known final API rejection leaves no assistant or ordinary observation. Recover only this
+    # narrow, evidenced case; counts alone cannot locate an arbitrary missing successful call.
+    if call + 1 == expected_calls:
+        last = messages[-1] if messages and isinstance(messages[-1], dict) else {}
+        status = (last.get('extra') or {}).get('exit_status')
+        final = outcomes[expected_calls]
+        if (episode.get('exit_status') != 'ContextWindowExceededError' or last.get('role') != 'exit' or
+                status != 'ContextWindowExceededError' or not final or any(
+                    r['ok'] is not False or r.get('error') != 'ContextWindowExceededError' for r in final)):
+            raise ValueError('unlocated missing logical call; alignment is ambiguous')
+        call += 1
+        reason = 'terminal context-rejected logical call; no assistant or ordinary observation'
+        records.append(dict(call=call, observation_error=reason))
+        notes.append(dict(call=call, reason=reason))
+    if call != expected_calls:
+        raise ValueError('trajectory/episode logical count disagreement; alignment is ambiguous')
+    # Both parsed and format-rejected responses require an observed successful physical response.
+    for record in records:
+        if not record.get('observation_error', '').startswith('terminal context-rejected') and not any(
+                r['ok'] is True for r in outcomes[record['call']]):
+            raise ValueError('trajectory response has no successful attempt at its logical call id')
     return records, notes
 
 
 def read_episode(run_dir):
     """(records, notes) for an archived run directory. Read-only."""
     path = Path(run_dir) / TRAJECTORY_FILE
-    records, notes = episode_records(json.loads(path.read_text()))
+    episode = json.loads((Path(run_dir) / 'episode.json').read_text())
+    attempts = [json.loads(line) for line in (Path(run_dir) / 'attempts.jsonl').read_text().splitlines() if line.strip()]
+    records, notes = episode_records(json.loads(path.read_text()), episode=episode, attempts=attempts)
     return records, notes
 
 

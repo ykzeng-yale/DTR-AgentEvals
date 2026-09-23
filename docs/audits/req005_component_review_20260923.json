@@ -1,0 +1,125 @@
+{
+  "kind": "Lead deterministic component review; retrospective archive checks, no new empirical result",
+  "created_at_utc": "2026-09-23T15:31:21.552840+00:00",
+  "base_commit": "22c4a82040700ded7fd54ffbf14d9001b2f089c2",
+  "request": "DTR-REQ-005",
+  "source_sha256": {
+    "experiments/v2_agent/cue_detector.py": "3407e6355018dc5fd6708f9c368162cb846fc588d47d636d41e9ac7a18251d6f",
+    "experiments/v2_agent/cue_cohort.py": "20bcf472c83ca36b07b4704a39ce45d6215a4a4bd9deb7ada0ac19e198c055bd",
+    "experiments/v2_agent/trajectory_triples.py": "59ffe8f46706373f7ef4d8a443e89098036d29f0c06058c74653f5238850b24d",
+    "experiments/v2_agent/request_receipt.py": "a751a43c6a2ef431c7119129308b740caed376536e6b6edcc7568368fde5cc46",
+    "experiments/v2_agent/exit_capture.py": "6e4f265759b3dbe22ba161382412cc9cd076dce822d76f4ac844fde987f699b9",
+    "experiments/tools/test_v2_cue_detector.py": "26065b889724689cc538a4128aaf11a955f7406e714da50763f9e5086187e69f",
+    "experiments/tools/test_v2_cue_cohort.py": "ef34156a245e82518878880f60ae37e1436f7cbbc9bfa6c15c4b73c43f3d2c5e",
+    "experiments/tools/test_v2_request_receipt.py": "8cd93b3b21d1ef11ae450a38283faf807aeb97b53805ed19a22b7b8e9ebcfca4",
+    "experiments/tools/test_v2_exit_capture.py": "ac5d6a80d9d21976cee314f6e6ab588a4a99f61f45707ca78cefe752d5fef951",
+    "experiments/tools/test_v2_publication_report.py": "e6092c85fcb45f598fa031f77cee0a0beacdc3c81d50121fb207ec11d4301bc6",
+    "experiments/tools/test_v2_pilot_report.py": "0bb53ca8590479067c49367cd75ff731d5d18df63a1636590ff5483b5dcccde3",
+    "experiments/tools/test_v2_pilot_cohort.py": "ac6471012f37aacca616078177d8d952695f5d198377f48f09d47a96662ab9e4",
+    "experiments/tools/test_v2_pilot_binding.py": "9d9b540f3bf9971f93a71bd12f2611a9a4dca13fa7023b6619abbea21eecae64",
+    "docs/req005_visible_evidence_guide_20260923.md": "ea7f67d4c1a0cf93d271f30fb1c48d027d8f4f97c28eaed0451c4a554c142625"
+  },
+  "validation": [
+    {
+      "command": ".venv/bin/python -m pytest -q experiments/tools/test_v2_cue_detector.py experiments/tools/test_v2_cue_cohort.py experiments/tools/test_v2_request_receipt.py experiments/tools/test_v2_exit_capture.py experiments/tools/test_v2_publication_report.py experiments/tools/test_v2_pilot_report.py experiments/tools/test_v2_pilot_cohort.py experiments/tools/test_v2_pilot_binding.py",
+      "result": "345 passed, 1 skipped in 10.90s",
+      "skip": "test_v2_pilot_binding.py: pinned mini-swe-agent checkout/venv not present; no claim of installed runtime integration"
+    },
+    {
+      "command": ".venv/bin/python -m pytest -q",
+      "result": "37 passed in 0.56s"
+    },
+    {
+      "check": "independent code review of capture/receipt fixes",
+      "result": "24 selected regressions passed; missing identity hole identified, repaired, then four resealed missing-group regressions independently passed"
+    },
+    {
+      "check": "independent design/coding-guide review",
+      "result": "bounded storage, actual transport-byte identity, failure semantics and enforced 30s diagnostic/120s cleanup reviewed; archived positive/negative coding anchors inspected"
+    }
+  ],
+  "retrospective_alignment": {
+    "independent_count_basis": "episode n_model_calls reconciled to full attempt-ledger call set; assistant and typed FormatError counts independently counted from archived messages; not derived from corrected adapter",
+    "episodes": 32,
+    "logical_calls": 682,
+    "assistant_messages": 674,
+    "typed_format_errors": 3,
+    "terminal_context_rejections": 5,
+    "published_input_hashes_checked": 96,
+    "correction_file": "docs/req005_fixture_landmarks_correction_20260923.json",
+    "correction_sha256": "7ca110bbf93b23c02f5f2d1c797138587c468bf549434ef58e634a2021361a60",
+    "original_file": "docs/req005_fixture_landmarks_20260923.json",
+    "original_sha256": "4dcd4b325ee014b49d708df678ed56705708e1e8cd6a6dbecbd522aae17f91ba",
+    "corrected_summary": {
+      "episodes": 32,
+      "original_assistant_records": 674,
+      "corrected_logical_records": 682,
+      "recovered_format_error_calls": 3,
+      "recovered_terminal_context_rejections": 5,
+      "original_incomplete_records": 2,
+      "corrected_incomplete_records": 10,
+      "triggered": 21,
+      "AAA": 12,
+      "ABABAB": 9,
+      "no_trigger": 11,
+      "triggered_without_next_call": 0,
+      "delivered": 0,
+      "episodes_with_changed_alignment": 7,
+      "episodes_with_changed_first_landmark": 1
+    },
+    "evidence_limit": "Saved-record consistency only. No delivered cue or prospective causal/effectiveness claim."
+  },
+  "storage_proxy": {
+    "basis": "For every saved assistant in both archived 16-episode cohorts, UTF-8 json.dumps(messages[:index],ensure_ascii=False,separators=(comma,colon)); excludes response at index. Not a prepared wire body, estimate of tokens or guarantee of future sizes.",
+    "prefixes": 674,
+    "min_bytes": 3264,
+    "max_bytes": 366238,
+    "total_bytes": 28377255,
+    "over_64KiB": 100,
+    "576_times_8MiB": 4831838208,
+    "576_times_128KiB": 75497472
+  },
+  "preservation": {
+    "results_and_configs_git_diff": "empty against base",
+    "frozen_runtime_sha256": {
+      "experiments/v2_agent/pilot_episode.py": "164b7878f7a720a74ba913b97ee07ba287a556cb3ac6310aa95d2f2c91dbe6f5",
+      "experiments/v2_agent/pilot_runner.py": "974df398415db22ed6676e04f0be5c1d93a7599d725f43f03fb989d77cbba10c",
+      "experiments/v2_agent/pilot_cohort.py": "59d271bd32217bd3c3a56c3dd4c20fd8eadd441377db7334c0932a325100851a",
+      "experiments/v2_agent/pilot_grade.py": "0c2a5a5da861a42fd1dbc79c01ff4b031bff8d0a3cbcda8b90e869161f70e7f1"
+    },
+    "all_tracked_manuscript_files_except_STATUS_byte_equal_to_base": 17
+  },
+  "verdict": {
+    "component_repairs": "accepted in bounded deterministic scope",
+    "driver_integration": "proceed now under published contract",
+    "first_live_comparison": "hold pending actual transport, bounded storage/deadline, source/admission manifest, fixed coding guide and fresh host review"
+  },
+  "unresolved": [
+    "Helper receipts do not establish actual wire-byte binding.",
+    "Pre-command deadline checks do not interrupt a hanging executor.",
+    "Storage limits and 12-assignment resume admission remain to be integrated.",
+    "No model, server, benchmark container, hidden evaluator or Monte Carlo sweep executed by lead."
+  ],
+  "readiness": {
+    "overall_percent": 55,
+    "change_percentage_points": 0,
+    "judgment_range": [
+      45,
+      65
+    ],
+    "weights": [
+      25,
+      20,
+      30,
+      15,
+      10
+    ],
+    "category_stages": [
+      75,
+      75,
+      50,
+      25,
+      25
+    ]
+  }
+}

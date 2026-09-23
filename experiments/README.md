@@ -13,10 +13,12 @@ patch. The [lead review](../docs/theory_feedback_20260923_completed_pilots.md) a
 accept recorded counts, preserve unknown token usage and distinguish verified published projections
 from unverified raw execution identity. They correct attempted-write/testing/workspace interpretations.
 
-The next priority is **DTR-REQ-005**: diagnostic capture and one neutral recovery-cue implementation,
-with deterministic acceptance checks before a frozen controlled DEV comparison. No new live stage is
-released yet. The old shared-host reservation is completed; current coordination precedes any new use.
-The existing primary target, source pins, negative outcomes and v2 routing/CONFIRM gates are preserved.
+The next priority is **DTR-REQ-005**: integrate the reviewed, corrected components into a new
+cue-v1 driver/queue with exact-transport and cleanup-deadline fixtures. The
+[lead integration decision](../docs/theory_feedback_20260923_req005_review.md) resolves storage and
+failure-handling choices. Component tests and retrospective triggers are not live validation;
+no new live stage is released yet. The old peer window is completed; refresh current host conditions
+before any later authorized use. The primary target, negative outcomes and v2 confirmation gates remain.
 
 **Readiness 55%, change 0 points, range 45–65%.** Useful validated inference/adequate comparisons,
 final empirical synthesis, and independent reproducibility/metadata/package remain.
@@ -30,6 +32,12 @@ This checks listed published bytes, canonical configuration hashes and recorded 
 `published_projection_verified` never means raw execution identity was independently validated.
 It cannot admit runtime reuse or grading. The additive lead projection report is
 [`docs/audits/yaml_v1_publication_20260923.json`](../docs/audits/yaml_v1_publication_20260923.json).
+
+REQ-005 component checks (no model/container execution):
+
+```sh
+.venv/bin/python -m pytest -q experiments/tools/test_v2_cue_detector.py experiments/tools/test_v2_cue_cohort.py experiments/tools/test_v2_exit_capture.py experiments/tools/test_v2_request_receipt.py
+```
 
 Focused checks (these tools tests are outside the default `tests/` collection):
 

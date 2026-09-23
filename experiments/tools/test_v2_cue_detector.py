@@ -559,7 +559,7 @@ ARCHIVED_YAML_V1 = {
     ('astropy__astropy-12907', 'large'): (24, True, 'ABABAB', 9, 10),
     ('astropy__astropy-12907', 'small'): (1, False, None, None, None),
     ('matplotlib__matplotlib-13989', 'large'): (24, True, 'AAA', 7, 8),
-    ('matplotlib__matplotlib-13989', 'small'): (23, True, 'AAA', 13, 14),
+    ('matplotlib__matplotlib-13989', 'small'): (24, True, 'AAA', 13, 14),
     ('mwaskom__seaborn-3069', 'large'): (24, True, 'AAA', 10, 11),
     ('mwaskom__seaborn-3069', 'small'): (24, True, 'ABABAB', 13, 14),
     ('psf__requests-1142', 'large'): (24, False, None, None, None),
@@ -570,8 +570,8 @@ ARCHIVED_YAML_V1 = {
     ('scikit-learn__scikit-learn-10297', 'small'): (24, False, None, None, None),
     ('sphinx-doc__sphinx-10323', 'large'): (24, False, None, None, None),
     ('sphinx-doc__sphinx-10323', 'small'): (24, True, 'AAA', 7, 8),
-    ('sympy__sympy-11618', 'large'): (22, False, None, None, None),
-    ('sympy__sympy-11618', 'small'): (14, True, 'AAA', 13, 14),
+    ('sympy__sympy-11618', 'large'): (24, False, None, None, None),
+    ('sympy__sympy-11618', 'small'): (15, True, 'AAA', 13, 14),
 }
 
 
@@ -583,12 +583,14 @@ def archived_run(cohort_dir, instance, backend):
 
 
 def raw_triples(run_dir):
-    """The lead's linking rule applied to the archived messages directly, independently of the adapter:
-    one entry per assistant message, linked ONLY to the immediately following ordinary observation."""
+    """Independent archive crosswalk; typed parser failures consume calls without assistant messages."""
     messages = json.loads((run_dir / 'trajectory.json').read_text())['messages']
     out = {}
     call = 0
     for index, message in enumerate(messages):
+        if message.get('role') == 'user' and (message.get('extra') or {}).get('interrupt_type') == 'FormatError':
+            call += 1
+            out[call] = None
         if message.get('role') != 'assistant':
             continue
         call += 1
@@ -600,6 +602,10 @@ def raw_triples(run_dir):
         actions = (message.get('extra') or {}).get('actions') or []
         command = actions[0].get('command') if len(actions) == 1 else None
         out[call] = (command, extra['returncode'], following.get('content'))
+    episode = json.loads((run_dir / 'episode.json').read_text())
+    if episode['n_model_calls'] == call + 1:
+        assert episode['exit_status'] == 'ContextWindowExceededError'
+        out[call + 1] = None
     return out
 
 
@@ -750,7 +756,8 @@ def test_the_adapter_links_only_the_immediate_ordinary_observation():
              extra=dict(returncode=0, exception_info='Command timed out after 60 seconds')),
         dict(role='exit', content='LimitsExceeded'),
     ]
-    records, notes = TT.episode_records(dict(messages=messages, trajectory_format='mini-swe-agent-1.1'))
+    records, notes = TT.episode_records(dict(messages=messages, trajectory_format='mini-swe-agent-1.1'),
+                                       **call_evidence(4))
     assert records == [
         dict(call=1, command='ls -a',
              observation_error='the next message records no return code (ordinary observation missing)'),
@@ -770,3 +777,94 @@ def test_the_adapter_links_only_the_immediate_ordinary_observation():
     landmark = CD.scan(records, mode='live', horizon=24)
     assert landmark['triggered'] is False
     assert landmark['incomplete_call_ids'] == [1, 3, 4]
+
+
+def call_evidence(count):
+    return dict(episode=dict(n_model_calls=count, exit_status='LimitsExceeded'),
+                attempts=[dict(call=n, attempt=1, ok=True) for n in range(1, count + 1)])
+
+
+def parser_gap_messages():
+    action = dict(role='assistant', extra=dict(actions=[dict(command='ls')]))
+    observation = dict(role='user', content='same output', extra=dict(returncode=0))
+    rejected = dict(role='user', content='Expected one action',
+                    extra=dict(interrupt_type='FormatError', response=dict(content='two actions')))
+    return [action, observation, action, observation, rejected, action, observation]
+
+
+def test_format_error_is_an_incomplete_logical_call_and_breaks_false_aaa():
+    records, notes = TT.episode_records(dict(messages=parser_gap_messages(), trajectory_format='mini-swe-agent-1.1'),
+                                       **call_evidence(4))
+    assert [r['call'] for r in records] == [1, 2, 3, 4]
+    assert records[2] == dict(call=3, observation_error=
+        'logical call returned a FormatError; no parsed action or ordinary observation')
+    landmark = CD.scan(records, mode='observe')
+    assert landmark['triggered'] is False and landmark['incomplete_call_ids'] == [3]
+    assert notes[0]['call'] == 3
+
+
+def test_format_error_words_in_user_text_are_not_logical_call_evidence():
+    messages = parser_gap_messages()
+    messages[4] = dict(role='user', content='FormatError: example issue text')
+    with pytest.raises(ValueError, match='ambiguous'):
+        TT.episode_records(dict(messages=messages, trajectory_format='mini-swe-agent-1.1'), **call_evidence(4))
+
+
+def test_missing_evidence_does_not_silently_relabel_assistant_positions_as_calls():
+    with pytest.raises(ValueError, match='requires episode and attempt-ledger'):
+        TT.episode_records(dict(messages=parser_gap_messages(), trajectory_format='mini-swe-agent-1.1'))
+
+
+@pytest.mark.parametrize('damage', ['count', 'ledger_gap', 'duplicate', 'unsuccessful_response', 'incomplete_attempt',
+                                 'malformed_parser_event'])
+def test_ambiguous_call_crosswalk_is_refused(damage):
+    evidence = call_evidence(4)
+    messages = parser_gap_messages()
+    if damage == 'count':
+        evidence['episode']['n_model_calls'] = 5
+    elif damage == 'ledger_gap':
+        evidence['attempts'].pop(2)
+    elif damage == 'duplicate':
+        evidence['attempts'].append(dict(evidence['attempts'][0]))
+    elif damage == 'unsuccessful_response':
+        evidence['attempts'][0]['ok'] = False
+    elif damage == 'incomplete_attempt':
+        evidence['attempts'] = [dict(call=n, attempt=1, event='start') for n in range(1, 5)]
+    else:
+        messages[4]['extra'].pop('response')
+    with pytest.raises(ValueError):
+        TT.episode_records(dict(messages=messages, trajectory_format='mini-swe-agent-1.1'), **evidence)
+
+
+def test_legacy_sympy_large_landmark_uses_logical_call_22_not_assistant_21():
+    run = archived_run(ARCHIVES / 'pilot_20260922', 'sympy__sympy-11618', 'large')
+    records, _ = TT.read_episode(run)
+    landmark = CD.scan(records, mode='observe')
+    assert len(records) == 24 and landmark['incomplete_call_ids'] == [13]
+    assert landmark['pattern'] == 'ABABAB'
+    assert landmark['pattern_call_ids'] == [17, 18, 19, 20, 21, 22]
+    assert landmark['trigger_call_id'] == 22 and landmark['delivery_call_id'] == 23
+
+
+def test_all_32_archives_reconcile_682_calls_and_ten_incomplete_records():
+    records = [TT.read_episode(run)[0] for cohort in COHORT_DIRS for run in TT.archived_runs(ARCHIVES / cohort)]
+    assert len(records) == 32 and sum(map(len, records)) == 682
+    landmarks = [CD.scan(rows, mode='observe') for rows in records]
+    assert sum(len(row['incomplete_records']) for row in landmarks) == 10
+    assert sum(row['triggered'] for row in landmarks) == 21
+
+
+def test_trailing_context_rejection_requires_matching_failure_and_terminal_evidence():
+    messages = parser_gap_messages()[:4]
+    messages.append(dict(role='exit', extra=dict(exit_status='ContextWindowExceededError')))
+    evidence = call_evidence(3)
+    evidence['episode']['exit_status'] = 'ContextWindowExceededError'
+    evidence['attempts'][-1].update(ok=False, error='ContextWindowExceededError')
+    trajectory = dict(messages=messages, trajectory_format='mini-swe-agent-1.1')
+    records, _ = TT.episode_records(trajectory, **evidence)
+    assert records[-1] == dict(call=3, observation_error=
+        'terminal context-rejected logical call; no assistant or ordinary observation')
+    assert CD.scan(records)['triggered'] is False
+    evidence['attempts'][-1]['ok'] = True
+    with pytest.raises(ValueError, match='ambiguous'):
+        TT.episode_records(trajectory, **evidence)

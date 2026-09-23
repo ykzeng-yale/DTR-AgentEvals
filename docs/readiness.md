@@ -274,3 +274,11 @@ a major gate. **55%, change 0 percentage points, range 45–65%**; weights25/20/
 75/75/50/25/25 unchanged. Next milestones: useful validated inference/adequate real-agent comparisons;
 final empirical synthesis and statistical consistency; independent reproducibility, author-approved
 metadata and submission package. See [the decision](theory_feedback_20260923_completed_pilots.md).
+
+## Checkpoint: 23 September 2026, REQ-005 component review
+
+Through worker `22c4a82`: component implementation inspected and defects repaired; prospective driver/
+transport/deadline integration remains pending. No new outcome, theorem or manuscript change.
+**55%, change 0 percentage points, range 45–65%**; weights and stages unchanged. Remaining:
+validated inference/adequate real-agent comparisons; final empirical synthesis; independent
+reproducibility, author-approved metadata and submission package.

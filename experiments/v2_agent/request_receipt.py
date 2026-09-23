@@ -67,7 +67,7 @@ TOKEN_KEY = re.compile(r'(?:x[-_])?(?:api[-_])?(?:access|refresh|auth|session|be
 SECRET_ASSIGNMENT = re.compile(
     r'(?i)\b((?:proxy[-_])?authorization|x[-_]api[-_]?key|api[-_]?key|auth[-_]?token|access[-_]?token'
     r'|refresh[-_]?token|bearer|password|passwd|secret|credential|cookie|token)'
-    r'(\s*[:=]\s*)((?:bearer\s+)?[^\s"\',]+)')
+    r'(\s*[:=]\s*)(?:"[^"\n]*"|\'[^\'\n]*\'|(?:bearer\s+)?[^\s"\',]+)')
 SECRET_LITERAL = re.compile(r'\bsk-[A-Za-z0-9][A-Za-z0-9_\-]{5,}')
 RAW_SUFFIX = '.request.raw'
 PUBLIC_SUFFIX = '.request.json'
@@ -545,7 +545,11 @@ class RequestReceiptStore:
 
     # -- completeness -----------------------------------------------------
     def completeness(self):
-        """Every hole in the published set, so nobody reports subtotals over skipped records."""
+        """Presence plus local record integrity; never proof of actual dispatch or public/raw equality.
+
+        Invalid files remain counted and listed, but cannot make a receipt set complete. Available private
+        bytes are checked locally; their absence is a hole, never an empty request or known-zero usage.
+        """
         def keys(directory, suffix):
             return {p.name[:-len(suffix)] for p in Path(directory).glob('*' + suffix)}
         raws = keys(self.private_dir, RAW_SUFFIX)
@@ -555,9 +559,75 @@ class RequestReceiptStore:
                      published_record_without_raw=sorted(published - raws),
                      published_record_without_outcome=sorted(published - outcomes),
                      outcome_without_published_record=sorted(outcomes - published))
+        invalid = []
+
+        def validate(path, key, phase):
+            verify_published_projection(path, expect_phase=phase)
+            record = json.loads(path.read_text())
+            if (record.get('request') != 'DTR-REQ-005' or record.get('cohort') != self.cohort
+                    or record.get('run_id') != self.run_id or record.get('attempt_key') != key
+                    or attempt_key(record.get('logical_call_id'), record.get('physical_attempt_id')) != key):
+                raise ReceiptError('receipt identity does not match its episode and filename')
+            if (record.get('raw_bytes_independently_verified') is not False
+                    or record.get('sanitization_transform_independently_verified') is not False
+                    or record.get('digest_semantics') != DIGEST_SEMANTICS):
+                raise ReceiptError('receipt changes the reported/unverified provenance boundary')
+            return record
+
+        valid_pre = {}
+        for key in sorted(published):
+            path = self.record_path(key)
+            try:
+                pre = validate(path, key, 'pre_dispatch')
+                validate_identity(pre.get('identity'))
+                if (pre.get('raw_request_private_file') != self.raw_path(key).name
+                        or pre.get('dispatch_state') != 'persisted_before_dispatch'
+                        or pre.get('raw_request_published') is not False):
+                    raise ReceiptError('pre-dispatch record has invalid raw-file or dispatch metadata')
+                if key in raws:
+                    raw = self.raw_path(key).read_bytes()
+                    if (sha256_hex(raw) != pre[RAW_DIGEST_FIELD]
+                            or pre.get('raw_request_bytes') != len(raw)):
+                        raise ReceiptError('available private bytes disagree with the pre-dispatch digest/size')
+                valid_pre[key] = pre
+            except Exception as exc:  # noqa: BLE001  corruption is an incomplete set, not a reporting crash
+                invalid.append(dict(file=path.name, error='%s: %s' % (type(exc).__name__, str(exc)[:300])))
+        for key in sorted(outcomes):
+            path = self.outcome_path(key)
+            try:
+                outcome = validate(path, key, 'post_dispatch')
+                pre = valid_pre.get(key)
+                if pre is None:
+                    raise ReceiptError('outcome lacks a valid pre-dispatch record')
+                if (outcome.get('pre_dispatch_record_file') != self.record_path(key).name
+                        or outcome.get('pre_dispatch_projection_sha256') != pre[PROJECTION_DIGEST_FIELD]
+                        or outcome.get(RAW_DIGEST_FIELD) != pre[RAW_DIGEST_FIELD]):
+                    raise ReceiptError('outcome hashes/filename do not link to its pre-dispatch record')
+                if outcome.get('raw_request_retained') is True:
+                    if (outcome.get('raw_request_recomputed_sha256') != pre[RAW_DIGEST_FIELD]
+                            or outcome.get('raw_request_digest_agrees') is not True):
+                        raise ReceiptError('outcome raw-digest check contradicts its linked request')
+                elif (outcome.get('raw_request_retained') is not False
+                      or outcome.get('raw_request_recomputed_sha256') is not None
+                      or outcome.get('raw_request_digest_agrees') is not None):
+                    raise ReceiptError('missing raw bytes must have an explicitly unknown digest comparison')
+                if outcome.get('outcome') not in ('ok', 'error'):
+                    raise ReceiptError('outcome classification is missing or invalid')
+                if outcome['outcome'] == 'error' and not outcome.get('error_class'):
+                    raise ReceiptError('error outcome lacks its error class')
+                if outcome['outcome'] == 'ok' and (outcome.get('error_class') is not None
+                                                 or outcome.get('error_detail') is not None):
+                    raise ReceiptError('successful outcome contradicts its error fields')
+                if not isinstance(outcome.get('server_reported_usage'), dict):
+                    raise ReceiptError('outcome lacks explicit server usage, including unknown fields')
+                if _validated_usage(outcome['server_reported_usage']) != outcome['server_reported_usage']:
+                    raise ReceiptError('outcome server usage is incomplete or internally inconsistent')
+            except Exception as exc:  # noqa: BLE001
+                invalid.append(dict(file=path.name, error='%s: %s' % (type(exc).__name__, str(exc)[:300])))
         return dict(cohort=self.cohort, run_id=self.run_id, attempt_keys=sorted(raws | published | outcomes),
                     n_raw=len(raws), n_published=len(published), n_outcomes=len(outcomes),
-                    complete=not any(holes.values()), note=COMPLETENESS_NOTE, **holes)
+                    complete=not any(holes.values()) and not invalid, invalid_records=invalid,
+                    note=COMPLETENESS_NOTE, **holes)
 
 
 class _Dispatch:
@@ -592,7 +662,15 @@ def _record_outcome_safely(store, dispatch, *, logical_call_id, physical_attempt
                        consequence='the outcome record is missing for this attempt; completeness() lists it')
         dispatch.receipt_errors.append(failure)
         if on_receipt_error is not None:
-            on_receipt_error(failure)
+            try:
+                on_receipt_error(failure)
+            except (KeyboardInterrupt, SystemExit):
+                raise
+            except Exception as callback_exc:  # noqa: BLE001  reporting must not replace the real call result
+                dispatch.receipt_errors.append(dict(
+                    attempt_key=failure['attempt_key'], phase='receipt_error_callback',
+                    error_class=type(callback_exc).__name__, detail=str(callback_exc)[:300],
+                    consequence='callback failed; original dispatch result is unchanged'))
         return None
 
 
