@@ -4427,3 +4427,36 @@ Each module ships the deterministic fixtures from your acceptance list and is be
 **Next publication slot from the current host clock:** this commit now, then the REQ-005 implementation commit when its verification finishes (expected within the hour), then the regular :13/:43 ticks — reported cadence, not a guarantee.
 
 No question for you this tick; your six answers closed the open ones.
+
+### DTR-REQ-005 instrumentation DELIVERED for your review — 2026-09-23T05:20:46Z (host `date -u`; local 01:20 EDT)
+
+Implemented, fixture-verified, **nothing run live**. Spec with the full fixture→test map: [`req005_instrumentation_spec_20260923.md`](req005_instrumentation_spec_20260923.md). Retrospective detector output over the 32 archived episodes: [`req005_fixture_landmarks_20260923.json`](req005_fixture_landmarks_20260923.json).
+
+**New files only; the frozen sources are untouched** — I verified `pilot_episode.py`, `pilot_runner.py`, `pilot_cohort.py`, `pilot_report.py` and `pilot_grade.py` are unchanged with read-only git, and nothing under `results/` changed. That constraint is structural: `pilot_cohort.freeze_source_binding` hashes the first three into `cohort_binding.json`.
+
+| Module | Purpose |
+|---|---|
+| `cue_detector.py` | exact-triple detector, AAA and ABABAB, one cue max, trigger-without-delivery, silent observe mode |
+| `trajectory_triples.py` | adapter linking each action to its **immediate ordinary** return-code observation (your Q8 rule) |
+| `exit_capture.py` | all-exit bounded diagnostic; absent ≠ empty; never `submission.diff`; never blocks cleanup |
+| `request_receipt.py` | pre-dispatch receipts; private raw bytes vs separately hashed public projection; unknown usage stays null |
+| `cue_cohort.py` | the frozen 12-assignment frame, creating no records |
+
+**Checks I ran myself, not taking the agents' word:**
+- **Cue text is byte-identical** to your blockquote after joining its three wrapped lines with single spaces (290 chars, disclosed in the spec). `CUE_SHA256` = `80d52625bd593cd6…`, and it matches a recomputation of the literal.
+- **Frame order hand-checked** against your spec: lexicographic by task, `small` then `large`, within-pair **B,C,C,B,B,C** — requests S(B), requests L(C), sklearn S(C), sklearn L(B), sympy S(B), sympy L(C). 12 rows, no records created.
+- **Retrospective trigger rate re-derived with my own independent detector** (not the module's): **21 of 32** archived episodes would have triggered — 10 legacy, 11 yaml-v1. The module reports the same 21.
+- **Tests:** 223 new (32 detector, 30 capture, 42 receipt, 12 cohort, plus adapter cases). Full suite **719 passed**, up from 496.
+- Hygiene: no local username anywhere; the only `/Users/` strings are `\/Users\/example` placeholders in a docstring.
+
+**Adversarial verification found and fixed 34 issues** across the three modules (7 detector, 15 capture, 12 receipt) before this commit — including patterns fabricated by skipping incomplete records, absent captures reported as no-change, and a public digest presentable as raw. Two reported issues were judged **not real** with stated evidence rather than silently dropped: an unbounded published-projection volume (recorded as size + explicit `payload_projection_bound`, raised as open item 1 for you), and "silently disables masking" wording where the record already published `home_prefix_masked=false`.
+
+**Not wired into a live runner, by design:** installing the cue append, the before-cleanup capture call and the `recorded_dispatch` wrapper needs a NEW episode source in the `cue-v1` namespace, frozen after your review. `results/v2_agent/pilot_20260923_cue_v1` deliberately does not exist yet, and a fixture asserts that.
+
+**For your review before any live release:** the spec's open items, chiefly (1) whether the full sanitized projection volume is acceptable at up to 576 requests, and the wiring plan in section 5. I will not start the 12-assignment comparison until you accept these and a host block is coordinated with fresh ownership evidence.
+
+| Request | Status | Artifact / reason |
+|---|---|---|
+| DTR-REQ-005 (P0) | **completed for the implementation/fixture step; blocked** on your review for live release | this commit |
+| DTR-REQ-002 (P1) | **completed** with corrections | `2874246` overlay |
+| DTR-REQ-004 (P0) | **completed** historically; any later block needs current peer/ownership evidence | — |

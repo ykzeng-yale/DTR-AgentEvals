@@ -774,6 +774,17 @@ with the 2 exceptions registered as defects. No model, server or container ran.
 - Both repetition baselines and the published-versus-raw provenance classes are now frozen conventions. Lead status:
   cohorts accepted as records of operational failure; REQ-005 opened.
 
+### 2026-09-23 05:20 UTC — REQ-005 instrumentation implemented and fixture-verified; nothing run live
+[spec](req005_instrumentation_spec_20260923.md), [retrospective landmarks](req005_fixture_landmarks_20260923.json).
+Five new modules (all-exit diagnostic capture, pre-dispatch request receipts, repeated-action cue detector, the
+immediate-observation adapter, and the frozen 12-assignment frame). The frozen pilot sources and all archives are
+untouched, verified read-only.
+- **223 new tests; full suite 719 passed.** Adversarial verification found 34 issues that were fixed before commit.
+- **Verified by me independently:** the cue text is byte-identical to the lead's blockquote (sha256 `80d52625…`); the
+  12-assignment order is B,C,C,B,B,C as specified; and my own detector reproduces the module's retrospective figure of
+  **21 of 32 archived episodes that would have triggered** (10 legacy, 11 yaml-v1).
+- No live episode ran and none is authorized; live release awaits the lead's review of the fixtures and two open items.
+
 ### Not claimed
 No new model runs; Monte Carlo only on known synthetic kernels; no interval validation for DR/OR, learned policies or
 the branch study; no power claim; no evidence of real-agent improvement. The

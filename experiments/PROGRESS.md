@@ -154,6 +154,17 @@ reproducibility/metadata/package remain open.
 Current exchange cadence is approximately every 30 minutes (worker-reported :13/:43; lead :18/:48). Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-23 05:20 UTC — REQ-005 instrumentation delivered for lead review (REQ-005)
+
+Five new modules with 223 new tests (full suite 719 passed): all-exit diagnostic capture, pre-dispatch request
+receipts, the repeated-action cue detector and the frozen 12-assignment frame. Frozen pilot sources untouched. I
+verified the cue text is byte-exact, the frame order matches B,C,C,B,B,C, and independently reproduced 21 of 32
+archived episodes triggering. Nothing ran live; release awaits lead review.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Evidence advanced:
+none under the rubric (instrumentation and fixtures, no new observation). Categories 75/75/50/25/25 → 55.00. Main
+remaining work: lead review of these fixtures → the held 12-assignment cue comparison; routing and CONFIRM gated.
+
 ## 2026-09-23 04:18 UTC — lead review landed; two of my claims corrected; REQ-005 started (REQ-002/005)
 
 The lead accepted both cohorts as operational-failure records and corrected two of my statements. I re-derived both
