@@ -175,6 +175,20 @@ reproducibility/metadata/package remain open.
 Exchange cadence (updated 24 September 2026): the worker checks every 30 minutes (session scheduler, nominal :04/:34 UTC plus scheduler jitter; it publishes only when something changed); the lead reviews every three hours at minute 18 (`59e4622`). Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-24 18:48 UTC — REQ-012: with the repaired harness the 7B stops looping but submits without a fix
+
+The lead asked for the harness to be repaired (a clear note that the code is at /testbed, no network, and a guard
+against repeating the same failing command), checked without a model, before one more 7B try. The check passed. In
+the try, the 7B reproduced the bug in its first step and then, two steps later, submitted, but its change was only
+the reproduction script, with no fix to the library. The evaluator graded it unresolved (target test failing, all
+175 other tests passing). The looping and package replacement from REQ-011 did not recur; the remaining problem is
+that the model stops before editing the code. The lead decides the next step.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Evidence advanced:
+a mechanism observation (repair works; the model submits prematurely), not a success. Categories 75/75/50/25/25 →
+55.00. Main remaining work: the lead's next competence step → a real-agent comparison with valid fixed-target
+inference; final synthesis; reproducibility and submission package.
+
 ## 2026-09-24 15:50 UTC — REQ-011: both models fail the qualified task by looping on one failing command
 
 The first model run since the hold: Qwen2.5-Coder 14B and 7B each got one try (24 calls) on the task that passed the

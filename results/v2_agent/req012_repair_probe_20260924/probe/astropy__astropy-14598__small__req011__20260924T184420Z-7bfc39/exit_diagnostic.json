@@ -1,0 +1,151 @@
+{
+ "kind": "all-exit diagnostic capture: evidence only, never a submission and never graded",
+ "request": "DTR-REQ-005",
+ "binding": "xc1",
+ "exit_status": "Submitted",
+ "workdir": "/testbed",
+ "endpoint": {
+  "writes_submission_diff": false,
+  "marks_submitted": false,
+  "graded": false,
+  "changes_eligibility": false,
+  "changes_endpoint_bytes": false,
+  "output_file": "exit_diagnostic.json"
+ },
+ "base_tree": "1ac67f99c165ff7ac38a8079ff8318ec829b0a72",
+ "base_tree_state": "recorded",
+ "caps": {
+  "status_bytes": 65536,
+  "diff_bytes": 262144,
+  "untracked_list_bytes": 65536,
+  "untracked_paths": 64,
+  "untracked_content_files": 16,
+  "untracked_file_bytes": 32768,
+  "path_chars": 512,
+  "command_log": 64
+ },
+ "caps_error": null,
+ "per_command_timeout_s": 60,
+ "per_command_timeout_enforced_by": "injected executor",
+ "total_budget_s": 25.999366283416748,
+ "exclusions": [
+  "gitignored paths (excluded by `git add -A` under the private index and by `--exclude-standard`)",
+  "anything outside the container workdir",
+  "untracked directories are represented by their files only",
+  "untracked non-regular files (sockets, symlinks, directories) get no digest or contents",
+  "binary untracked contents are omitted; the full-content digest is still recorded",
+  "contents/paths beyond the recorded caps are counted but not recorded"
+ ],
+ "captured_at": 1790275496.277926,
+ "status": "changed",
+ "changes_observed": true,
+ "sections": {
+  "tree": {
+   "state": "captured",
+   "sha": "6953992fb09022ba97155975cbd083a5db5d7253",
+   "reason": null,
+   "incomplete_reason": null
+  },
+  "status": {
+   "state": "captured",
+   "reason": null,
+   "text": "?? test_fits_card.py\n",
+   "full_bytes": 21,
+   "sha256": "59f62346f40f5daf23668a1eee2d937e00521e068eb0bc5528cc349ee7d0d826",
+   "digest_scope": "sha256 over the FULL in-container body before truncation, not over the recorded text",
+   "truncated": false,
+   "cap_bytes": 65536,
+   "recorded_chars": 21,
+   "container_preamble": null,
+   "incomplete_reason": null
+  },
+  "diff": {
+   "state": "captured",
+   "reason": null,
+   "text": "diff --git a/test_fits_card.py b/test_fits_card.py\nnew file mode 100644\nindex 0000000000000000000000000000000000000000..76aa2cc33ac48a16887af7dd04dedf7204180ab5\n--- /dev/null\n+++ b/test_fits_card.py\n@@ -0,0 +1,9 @@\n+from astropy.io import fits\n+\n+def check_fits_card(n):\n+    card1 = fits.Card('CONFIG', \"x\" * n + \"''\")\n+    card2 = fits.Card.fromstring(str(card1))\n+    print(f\"{n}: {card1.value == card2.value}\")\n+\n+for n in range(60, 70):\n+    check_fits_card(n)\n",
+   "full_bytes": 466,
+   "sha256": "c50aa65cd1d1c6e3271dd76c6c007ce03270c650db795987ff2a81fc123746a6",
+   "digest_scope": "sha256 over the FULL in-container body before truncation, not over the recorded text",
+   "truncated": false,
+   "cap_bytes": 262144,
+   "recorded_chars": 466,
+   "container_preamble": null,
+   "incomplete_reason": null,
+   "mode": "tree_to_tree",
+   "base_tree": "1ac67f99c165ff7ac38a8079ff8318ec829b0a72",
+   "final_tree": "6953992fb09022ba97155975cbd083a5db5d7253"
+  },
+  "untracked": {
+   "paths": [
+    {
+     "path": "test_fits_card.py",
+     "path_chars": 17,
+     "bytes": 242,
+     "sha256": "4e7dfd5c167f3efedbcd00c20debb210c2598329c4ded5045df1286682c5d9ec",
+     "digest_scope": "sha256 over the FULL file content before truncation, not over the recorded content",
+     "content": "from astropy.io import fits\n\ndef check_fits_card(n):\n    card1 = fits.Card('CONFIG', \"x\" * n + \"''\")\n    card2 = fits.Card.fromstring(str(card1))\n    print(f\"{n}: {card1.value == card2.value}\")\n\nfor n in range(60, 70):\n    check_fits_card(n)\n",
+     "truncated": false,
+     "cap_bytes": 32768,
+     "content_state": "recorded",
+     "reason": null
+    }
+   ],
+   "n_paths": 1,
+   "n_recorded": 1,
+   "n_with_content": 1,
+   "n_with_digest": 1,
+   "paths_complete": true,
+   "cap_list_bytes": 65536,
+   "cap_paths": 64,
+   "cap_content_files": 16,
+   "cap_file_bytes": 32768,
+   "list_truncated": false,
+   "path_cap_reached": false,
+   "partial_path_dropped": false,
+   "n_paths_is_lower_bound": false,
+   "incomplete_reason": null,
+   "container_preamble": null,
+   "state": "captured",
+   "reason": null
+  }
+ },
+ "commands": [
+  {
+   "label": "tree",
+   "state": "ok",
+   "returncode": 0,
+   "seconds": 0.473595
+  },
+  {
+   "label": "status",
+   "state": "ok",
+   "returncode": 0,
+   "seconds": 0.457755
+  },
+  {
+   "label": "diff",
+   "state": "ok",
+   "returncode": 0,
+   "seconds": 0.330377
+  },
+  {
+   "label": "untracked_list",
+   "state": "ok",
+   "returncode": 0,
+   "seconds": 0.314372
+  },
+  {
+   "label": "untracked_file",
+   "state": "ok",
+   "returncode": 0,
+   "seconds": 0.275591
+  }
+ ],
+ "failures": [],
+ "dropped_log_entries": 0,
+ "capture_error": null,
+ "write": {
+  "state": "attempted",
+  "file": "exit_diagnostic.json"
+ }
+}

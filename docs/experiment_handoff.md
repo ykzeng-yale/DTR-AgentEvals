@@ -5348,3 +5348,65 @@ Records: [`pair_summary.json`](results/v2_agent/req011_competence_20260924/pair_
   - G6: existing local fits tests run offline;
   - G7: edits in `/testbed` are visible.
 - The gate is single-shot. **The probe refuses unless a passing gate record exists for this manifest and these source digests.**
+
+## Worker checkpoint — 2026-09-24T18:48:23Z (host `date -u`; local 14:48 EDT) — DTR-REQ-012 completed: gate PASSED; 7B probe submitted after 3 calls, but the patch is only a reproducer script (strict: unresolved)
+
+**Code executed:** `dc11e63` (manifest `configs/v2_req012_repair_probe_20260924.json`, sha256 `45afa069…`; configuration `yaml-v1-repair1`). **Authorized runs:** the gate and this single probe, both now finished; nothing is running.
+
+**1. No-model repair gate: PASSED** ([`gate.json`](results/v2_agent/req012_repair_probe_20260924/gate.json); 18:42:44–18:43:26Z; one agent-style container on the pinned image with `--network none`; removal confirmed):
+
+| Check | Observed |
+|---|---|
+| G0 working dir | `/testbed` |
+| G1 checkout | HEAD `a4ae7a38` (SWE-bench setup commit, changes only `pyproject.toml`) over base `80c3854a`; clean |
+| G2 import from `/` | `/testbed/astropy/__init__.py`, `5.3.dev940+g80c3854a5.d20260924` |
+| G3 editable status | `astropy 5.3.dev940… /testbed` |
+| G4 egress | `socket.create_connection(('pypi.org', 443))` fails at name resolution (rc 1) |
+| G5 `pip install --upgrade astropy` | rc 0 with retry warnings and "Requirement already satisfied"; **no "Successfully installed"**; G2 and G3 unchanged afterwards |
+| G6 offline local tests | `test_header.py -k card`: 61 passed |
+| G7 edit visibility | the scratch file shows in `git status` |
+
+- The recorded prompt equals the frozen template plus exactly the new rule 4, with bytes and hash in the record.
+- The gate's fixture run passed (69 of 69), and the sources were stable during the gate.
+- A first launch attempt of mine failed at the shell (\`timeout\` is not installed on macOS, rc 127) before the gate started; no namespace or container was created.
+
+**2. Single 7B probe: COMPLETED** ([`probe/pair_summary.json`](results/v2_agent/req012_repair_probe_20260924/probe/pair_summary.json)). Admission at launch: 10 of 10 passed, including the gate check (18:44:12Z). It ran **130.7 s in total, within the 3,600 s cap**.
+
+| | 7B (`small`, 8291), repair1 |
+|---|---|
+| exit | **`Submitted`** after **3 logical calls** (3 physical, of caps 24 and 48) |
+| calls | 1: wrote and ran a reproducer, **which showed the bug** (mismatch at n = 65, 67, 68, 69). 2: a FormatError (two actions in one response). 3: stated "the inconsistency occurs when the length of the value exceeds 64 characters…" and **submitted immediately** |
+| submission | nonempty and **eligible**, but it contains **only a new file `test_fits_card.py`** (the reproducer); **no change to astropy source** |
+| strict grade (unchanged evaluator, fresh container, image `ff1716c2…` before and after) | **unresolved**: FAIL_TO_PASS `test_long_string_value_with_quotes` FAILED; **all 175 PASS_TO_PASS PASSED**; the patch applied; evaluator attempt 1, 73.8 s, no retry |
+| stall guard | did not fire |
+| call 9 | not reached |
+| tokens (server-reported) | 5,528 prompt / 581 completion |
+| all-exit diagnostic | changed (the untracked reproducer only) |
+
+- **Clean shutdown:** the watchdog stood down, the server stopped, no container remained, and the ownership record is released.
+- **Publication:** 42 sanitized files, with 0 username or path hits.
+- **Inherited labels:** the run directory is named `…__req011__…` by the reused REQ-011 run-directory helper, and the receipts carry the declared DTR-REQ-005 / cue-v1 labels.
+- **Memory:** swap was already about 15.0 of 15.4 GB used before the load, and the post-load memory check passed.
+
+**Mechanism-check result (facts only; interpretation is yours):**
+- Under repair1 the 7B no longer looped, and no package was replaced.
+- It reproduced the bug on the first call and then **submitted a diagnosis-only change** (the reproducer script) without editing the source. This is an eligible nonempty submission that the strict evaluator grades unresolved: F2P 0 of 1, P2P 175 of 175.
+- 0/32 (fixed-backend DEV) and 0/2 (REQ-011) are unchanged. This probe adds one eligible but unresolved submission on an already exposed task.
+- Per your decision I stop here and return to you before any expansion.
+
+| Request | Status | Artifact |
+|---|---|---|
+| DTR-REQ-012 (P0) | **completed**: gate PASSED; probe eligible submission, **strict unresolved** (reproducer only); stopped | `dc11e63` + this commit |
+| DTR-REQ-011 (P0) | completed: 0 of 2 eligible; lead diagnosis REPAIR | `2714fda`, `6074003`, `40b4db2` |
+| DTR-REQ-010 (P0) | completed/inspected | `7805d8b`, `10be146` |
+| DTR-REQ-009 (P0) | completed/inspected | `eba48b5`, `3a1b3e1` |
+| DTR-REQ-008 (P0) | completed/inspected | `63a0b49`, `eb6027d` |
+| DTR-REQ-007 (P0) | completed/inspected; E2 live/CONFIRM on HOLD | `35c4f52`, `497c20b` |
+| DTR-REQ-006 (P0) | completed, lead-reviewed; INCONCLUSIVE | `88b3e6b`, `3911aee` |
+| DTR-REQ-005 (P0) | completed as no-model instrumentation; live cue deferred | `3f1fa73`, `98bc75d` |
+| DTR-REQ-004 (P0) | completed historically | `22c4a82` |
+| DTR-REQ-003 (P0) | scoped reporting completed; sampling held | — |
+| DTR-REQ-002 (P1) | completed; Django deferred | `2874246` |
+| DTR-REQ-001 (P0) | completed | — |
+
+**Questions (your decision):** the next fixed step. Also, whether to confirm the two declared worker choices: the fingerprint masking, which did not come into play because the guard never fired, and the 300 s / 900 s schedule. **Cadence:** job `c710b12b`, ticks at about :15/:45 UTC, session-only; I publish on change.

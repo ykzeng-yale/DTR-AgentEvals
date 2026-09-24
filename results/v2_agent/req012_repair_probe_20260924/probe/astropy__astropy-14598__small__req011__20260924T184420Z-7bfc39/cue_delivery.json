@@ -1,0 +1,77 @@
+{
+ "arm": "baseline",
+ "detector_mode": "observe",
+ "horizon": 24,
+ "logical_calls": 3,
+ "records_fed": 3,
+ "records_fed_call_ids_consecutive": true,
+ "incomplete_records": [
+  {
+   "call_id": 2,
+   "reason": "the logical call returned a FormatError: no parsed action and no ordinary observation"
+  },
+  {
+   "call_id": 3,
+   "reason": "the parsed action produced no ordinary observation (the episode ended on it, e.g. Submitted, or the executor raised)"
+  }
+ ],
+ "triggered": false,
+ "pattern": null,
+ "trigger_call_id": null,
+ "pattern_call_ids": [],
+ "planned_delivery_call_id": null,
+ "state": "not_triggered",
+ "reason": "no repeated-action pattern in the complete records observed",
+ "message_appended": false,
+ "message_appended_call_id": null,
+ "message_index": null,
+ "transport_attempted": false,
+ "response_received": false,
+ "cue_http_statuses": [],
+ "cue_send_attempt_keys": [],
+ "cue_emissions": 0,
+ "baseline_landmark_call_reached": null,
+ "cue_sha256": "80d52625bd593cd6fecafeb06daca898792979592272d9fadcf0ddd04bd39d9e",
+ "cue_role": "user",
+ "note": "message_appended: the cue message was appended to the model-visible messages of the delivery call; transport_attempted: at least one physical request carrying it was handed to the transport; response_received: an HTTP response came back for such a request. Only response_received confirms that the server received the cue; a pre-dispatch refusal after insertion is not delivery",
+ "landmark": {
+  "detector": "repeated-action-cue-v1",
+  "detector_source_sha256": "3407e6355018dc5fd6708f9c368162cb846fc588d47d636d41e9ac7a18251d6f",
+  "mode": "observe",
+  "horizon": 24,
+  "records_observed": 3,
+  "triggered": false,
+  "pattern": null,
+  "trigger_call_id": null,
+  "trigger_position": null,
+  "delivery_call_id": null,
+  "delivery_planned": false,
+  "delivered": false,
+  "cue_emissions": 0,
+  "cue_emitted": false,
+  "cue_emitted_call_ids": [],
+  "cue_requests_refused": [],
+  "cue_text": null,
+  "cue_sha256": null,
+  "pattern_call_ids": [],
+  "incomplete_call_ids": [
+   2,
+   3
+  ],
+  "incomplete_records": [
+   {
+    "call_id": 2,
+    "position": 2,
+    "reason": "observation recorded as unparsable"
+   },
+   {
+    "call_id": 3,
+    "position": 3,
+    "reason": "observation recorded as unparsable"
+   }
+  ],
+  "call_id_discontinuities": [],
+  "reason": "no repeated-action pattern in the complete records observed",
+  "note": "trigger means repeated visible feedback, not proven unchanged state"
+ }
+}

@@ -938,6 +938,19 @@ task in REQ-010. The pair ran for 9.7 minutes; admission passed 9 of 9 and clean
 - This is a single-task feasibility observation, not a population rate, a routing result or a comparison between the
   two models (the order was fixed for feasibility).
 
+### 2026-09-24 18:48 UTC — REQ-012: repaired harness passes its gate; 7B submits a reproducer-only change (eligible, unresolved)
+[gate](../results/v2_agent/req012_repair_probe_20260924/gate.json), [probe summary](../results/v2_agent/req012_repair_probe_20260924/probe/pair_summary.json). This is a DEVELOPMENT mechanism check on
+the already exposed `astropy__astropy-14598`.
+- **Repair gate passed** (live container, no model). The agent starts in `/testbed`; `import astropy` resolves to the
+  editable checkout; the network is blocked; `pip install --upgrade astropy` can no longer replace the checkout; local
+  tests run offline (61 passed); edits are visible.
+- **One 7B episode with the repair** (an explicit `/testbed` note, no network, and a stall guard) ended in 3 calls. It
+  reproduced the bug, then submitted without editing the source: the diff adds only its reproducer script.
+- **Strict grade: unresolved.** The target test fails and all 175 regression tests pass. The stall guard did not fire.
+  The probe took 130.7 s end to end.
+- Prior results are unchanged (0/32 DEV, 0/2 REQ-011). One eligible but unresolved submission on one exposed task is
+  a mechanism observation, not a success rate or a routing result.
+
 ### Not claimed
 No model runs for REQ-005 to REQ-008 (no-model instrumentation, retrospective analyses and a metadata inventory). Real-model execution since the archived coding study is limited to the SWE-bench Verified pipeline smoke (Flask episodes) and the two 16-episode Coder 7B/14B fixed-backend DEV cohorts (0/16 each), with no routing or CONFIRM run; Monte Carlo only on known synthetic kernels; no interval validation for DR/OR, learned policies or
 the branch study; no power claim; no evidence of real-agent improvement. The

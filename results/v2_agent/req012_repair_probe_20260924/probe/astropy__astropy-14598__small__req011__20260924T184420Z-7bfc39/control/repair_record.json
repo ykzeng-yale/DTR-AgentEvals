@@ -1,0 +1,51 @@
+{
+ "request": "DTR-REQ-012",
+ "configuration": "yaml-v1-repair1",
+ "entry_source_sha256": "4daa8293156e6c8f9ed1e78bffd5ff497495e1b35e46cec1edb272aab6f21754",
+ "runtime_overrides": [
+  "pilot_episode.build_effective_config -> repair_config(<the frozen function's result>)",
+  "minisweagent.agents.default.DefaultAgent -> req012_entry.RepeatedFailureGuardAgent"
+ ],
+ "stall_rule": "A turn is recorded only when the agent executed exactly one action: (normalized command, return code, output fingerprint); normalized command = the command stripped with whitespace runs collapsed to one space; output fingerprint = sha256 of the output with whitespace runs collapsed to one space and stripped, then two volatile token kinds masked (Python re): hexadecimal literals 0x[0-9a-fA-F]+ (per-process object addresses, e.g. in pip retry warnings) -> 0x_ and decimal-second durations \\b[0-9]+\\.[0-9]+s\\b (e.g. pytest 'in 3.21s') -> _s. A FormatError turn or a turn with a number of actions other than one is recorded as a chain reset. Before each model query, before the frozen limit checks and before n_calls is incremented: if the last two recorded turns are equal and their return code is nonzero, raise RepeatedFailureStall carrying the exit message; the frozen run() records it as the exit with an empty submission. No model call, nothing shown to the model.",
+ "guard": {
+  "agents_constructed": 1,
+  "agent_type": "req012_entry.RepeatedFailureGuardAgent",
+  "fired": false,
+  "fired_before_call": null,
+  "n_model_calls": 3,
+  "network": {
+   "container_id": "6ab341e02572de44a3a2bb4698e14ae07fe1c1cf45f7b30444280a6cc3a1891f",
+   "run_args": [
+    "--rm",
+    "--platform",
+    "linux/amd64",
+    "--network",
+    "none"
+   ],
+   "returncode": 0,
+   "network_mode": "none"
+  },
+  "turns": [
+   {
+    "command_sha256": "93c7d2fc5a0bc7f516ad03c0af0b5f24017acd4c3ebf89994eb15793e0ac58a5",
+    "command_chars": 284,
+    "returncode": 0,
+    "output_fingerprint": "45c1db5cff9219454c602963f7c498319c118150b2a8ce68f809dbbc57c3107c"
+   },
+   null
+  ]
+ },
+ "effective_config": {
+  "verified": true,
+  "problems": [],
+  "effective_config_sha256": "48a6f90ec6c726f3fc361ca6ebab5c7ff47cd73e5e350f298697a8c631e4f05e",
+  "instance_template_sha256": "da5fe0813e040399492196027cc45f091ddb7cf76f6df9165d6e189ca32b27f3",
+  "run_args": [
+   "--rm",
+   "--platform",
+   "linux/amd64",
+   "--network",
+   "none"
+  ]
+ }
+}

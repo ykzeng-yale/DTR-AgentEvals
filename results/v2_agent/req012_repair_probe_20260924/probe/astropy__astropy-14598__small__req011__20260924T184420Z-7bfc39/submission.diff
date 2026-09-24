@@ -1,0 +1,15 @@
+diff --git a/test_fits_card.py b/test_fits_card.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..76aa2cc33ac48a16887af7dd04dedf7204180ab5
+--- /dev/null
++++ b/test_fits_card.py
+@@ -0,0 +1,9 @@
++from astropy.io import fits
++
++def check_fits_card(n):
++    card1 = fits.Card('CONFIG', "x" * n + "''")
++    card2 = fits.Card.fromstring(str(card1))
++    print(f"{n}: {card1.value == card2.value}")
++
++for n in range(60, 70):
++    check_fits_card(n)

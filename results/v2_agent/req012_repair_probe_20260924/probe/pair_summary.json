@@ -1,0 +1,386 @@
+{
+ "request": "DTR-REQ-012",
+ "kind": "single-episode DEVELOPMENT repair probe summary (the file name pair_summary.json is that of the reused req011_pair publication)",
+ "manifest": "configs/v2_req012_repair_probe_20260924.json",
+ "manifest_sha256": "45afa0694a6965ecdd4dc0e7bcae04d0a379c7d0a2e14994a579521bfdc24cac",
+ "admission_sha256": "7afc7c283fb69582aa9b502fb0bd8b55fd1a421d34f4844df295cdccd4ec9325",
+ "configuration": "yaml-v1-repair1",
+ "started_utc": "2026-09-24T18:44:12Z",
+ "probe_deadline_utc": "2026-09-24T19:44:12Z",
+ "status": "COMPLETED",
+ "stop_reason": null,
+ "interrupted_or_error": null,
+ "environment_variables_removed": [
+  "CLAUDE_CODE_CHILD_SESSION",
+  "CLAUDE_CODE_HOST_SESSION_ID",
+  "CLAUDE_CODE_MESSAGING_TOKEN",
+  "CLAUDE_CODE_OAUTH_SCOPES",
+  "CLAUDE_CODE_SDK_HAS_HOST_AUTH_REFRESH",
+  "CLAUDE_CODE_SESSION_ATTENDED",
+  "CLAUDE_CODE_SESSION_ID",
+  "SSH_AUTH_SOCK",
+  "USE_LOCAL_OAUTH",
+  "USE_STAGING_OAUTH"
+ ],
+ "serving": {
+  "small": {
+   "load": {
+    "event": "started",
+    "role": "small",
+    "pid": 19695,
+    "port": 8291,
+    "hash_seconds": 1.7,
+    "load_seconds": 1.0,
+    "rss_kb": 5619472,
+    "swap_before": "total = 15360.00M  used = 15018.44M  free = 341.56M  (encrypted)",
+    "swap_after": "total = 15360.00M  used = 15018.44M  free = 341.56M  (encrypted)",
+    "utc": "2026-09-24T18:44:20Z"
+   },
+   "checks": {
+    "model_path": "./work/models/converted_4fea119/qwen2.5-coder-7b-instruct-c03e6d3-q4_k_m.gguf",
+    "model_alias": "qwen2.5-coder-7b-instruct-c03e6d3-q4_k_m",
+    "model_ftype": "Q4_K - Medium",
+    "build_info": "b11041-4fea119de",
+    "total_slots": 1,
+    "n_ctx": 16384,
+    "chat_template_sha256": "55b2f4a26ac9ee719330a61a0c39d9e538b0e9322212f048326318cff4f8674a",
+    "v1_models_ids": [
+     "qwen2.5-coder-7b-instruct-c03e6d3-q4_k_m"
+    ],
+    "server_pid": 19695,
+    "memory_free_pct": 47,
+    "swap": "total = 15360.00M  used = 15018.44M  free = 341.56M  (encrypted)",
+    "rss_kb": 5619568
+   },
+   "problems": []
+  }
+ },
+ "server_events": [
+  {
+   "event": "started",
+   "role": "small",
+   "pid": 19695,
+   "port": 8291,
+   "hash_seconds": 1.7,
+   "load_seconds": 1.0,
+   "rss_kb": 5619472,
+   "swap_before": "total = 15360.00M  used = 15018.44M  free = 341.56M  (encrypted)",
+   "swap_after": "total = 15360.00M  used = 15018.44M  free = 341.56M  (encrypted)",
+   "utc": "2026-09-24T18:44:20Z"
+  },
+  {
+   "event": "stopped",
+   "role": "small",
+   "pid": 19695,
+   "port": 8291,
+   "utc": "2026-09-24T18:45:08Z"
+  }
+ ],
+ "watchdog": {
+  "started": true,
+  "pid": 19648,
+  "returncode": -15,
+  "left_armed": false
+ },
+ "finished_utc": "2026-09-24T18:46:23Z",
+ "wall_seconds": 130.7,
+ "probe_cap_s": 3600,
+ "within_cap": true,
+ "assignments": [
+  {
+   "order": 1,
+   "assignment_id": "req012-1-small",
+   "backend": "small",
+   "alias": "qwen2.5-coder-7b-instruct-c03e6d3-q4_k_m",
+   "port": 8291,
+   "counted_before": 0,
+   "request_limit": 48,
+   "run_id": "astropy__astropy-14598__small__req011__20260924T184420Z-7bfc39",
+   "started_utc": "2026-09-24T18:44:20Z",
+   "episode_deadline_utc": "2026-09-24T19:14:20Z",
+   "state": "completed",
+   "child_returncode": 0,
+   "process_group_gone": true,
+   "owned_container": "6ab341e02572de44a3a2bb4698e14ae07fe1c1cf45f7b30444280a6cc3a1891f",
+   "container_removal": {
+    "refs": [
+     "6ab341e02572de44a3a2bb4698e14ae07fe1c1cf45f7b30444280a6cc3a1891f"
+    ],
+    "found": [],
+    "rm_rc": null,
+    "remaining": [],
+    "complete": true
+   },
+   "minisweagent_containers_listed_after": [],
+   "ended_utc": "2026-09-24T18:45:08Z",
+   "request_accounting": {
+    "reported": 3,
+    "reported_raw": null,
+    "counted": 3,
+    "accounting": "reported"
+   },
+   "grade": {
+    "status": "graded: evaluated",
+    "evaluable": true,
+    "grader_killed": false,
+    "grader_returncode": 0,
+    "grader_group_gone": true,
+    "evaluator_container_cleanup": {
+     "refs": [
+      "sweb.eval.astropy__astropy-14598.eval-astropy__astropy-14598__small__req011__20260924T184420Z-7bfc39-c50aa65cd1d1c6e3-a1",
+      "sweb.eval.astropy__astropy-14598.eval-astropy__astropy-14598__small__req011__20260924T184420Z-7bfc39-c50aa65cd1d1c6e3-a2"
+     ],
+     "found": [],
+     "rm_rc": null,
+     "remaining": [],
+     "complete": true
+    },
+    "classification": "evaluated",
+    "grade_valid": true,
+    "evaluated": true,
+    "strict_outcome": "unresolved",
+    "operational_resolved": 0,
+    "upstream_resolved": false,
+    "reason": null,
+    "grader": {
+     "status": "graded: evaluated",
+     "reason": null,
+     "attempts": [
+      {
+       "attempt": 1,
+       "evaluator_run_id": "eval-astropy__astropy-14598__small__req011__20260924T184420Z-7bfc39-c50aa65cd1d1c6e3-a1",
+       "budget_s": 1800,
+       "evaluator_stopped": true,
+       "returncode": 0,
+       "wall_timeout": false,
+       "container_cleanup": {
+        "name": "sweb.eval.astropy__astropy-14598.eval-astropy__astropy-14598__small__req011__20260924T184420Z-7bfc39-c50aa65cd1d1c6e3-a1",
+        "found": false,
+        "rm_rc": null,
+        "remaining": false,
+        "complete": true
+       },
+       "seconds": 73.8,
+       "classification": "report_present"
+      }
+     ],
+     "image_before": "sha256:ff1716c2ea207eeb3b717cd5deb3213f923f4d445234edd9a53d035dce834997",
+     "image_after": "sha256:ff1716c2ea207eeb3b717cd5deb3213f923f4d445234edd9a53d035dce834997",
+     "image_after_equals_pin": true
+    }
+   },
+   "episode_record_present": true,
+   "exit_status": "Submitted",
+   "error": null,
+   "logical_calls": 3,
+   "n_model_calls": 3,
+   "physical_requests": 3,
+   "wall_seconds": 34.291553020477295,
+   "server_reported_tokens": {
+    "prompt_tokens": 5528,
+    "completion_tokens": 581,
+    "outcomes_with_known_usage": 3,
+    "outcomes_with_unknown_usage": 0
+   },
+   "submission_present": true,
+   "submission_nonempty": true,
+   "submission_sha256": "c50aa65cd1d1c6e3271dd76c6c007ce03270c650db795987ff2a81fc123746a6",
+   "eligible": true,
+   "call9_reached": false,
+   "call9_pre_action": null,
+   "exit_diagnostic": {
+    "status": "changed",
+    "changes_observed": true,
+    "sections": {
+     "tree": "captured",
+     "status": "captured",
+     "diff": "captured",
+     "untracked": "captured"
+    },
+    "failures": []
+   },
+   "terminal_phase": {
+    "plan_state": "runnable",
+    "diagnostic_status": "changed",
+    "cleanup_state": "returned",
+    "cleanup_reserve_intact": true,
+    "timing": {
+     "clock": "injected epoch clock for deadlines; time.monotonic for durations",
+     "endpoint_seconds": 0.000488,
+     "diagnostic_seconds": 1.853418,
+     "diagnostic_subprocess_seconds": 1.85078,
+     "cleanup_seconds": 10.103332,
+     "terminal_seconds": 11.957539,
+     "diagnostic_started_at": 1790275496.277826,
+     "diagnostic_ended_at": 1790275498.1312509,
+     "diagnostic_overrun_s": 0.0,
+     "cleanup_started_at": 1790275498.1314309
+    }
+   },
+   "receipt_integrity": {
+    "receipt_integrity": "complete",
+    "reasons": [],
+    "infrastructure_stop": false,
+    "stop_reason": null,
+    "queue_may_continue": true,
+    "deadline_reached": false,
+    "frozen_path_parity": {
+     "state": "unchanged",
+     "suppressed_hidden_resends": [],
+     "redirects_surfaced_not_followed": [],
+     "note": "a deviation is reported for lead review; it is not an infrastructure stop by itself"
+    },
+    "budget": {
+     "limit": 48,
+     "used": 3
+    }
+   },
+   "storage_integrity": "resolved",
+   "container_cleanup": {
+    "container_id": "6ab341e02572de44a3a2bb4698e14ae07fe1c1cf45f7b30444280a6cc3a1891f",
+    "confirmed": true,
+    "state": "absent",
+    "commands": [
+     {
+      "args": [
+       "stop",
+       "--time",
+       "10",
+       "6ab341e02572de44a3a2bb4698e14ae07fe1c1cf45f7b30444280a6cc3a1891f"
+      ],
+      "returncode": 0,
+      "stdout": "Flag --time has been deprecated, use --timeout instead\n6ab341e02572de44a3a2bb4698e14ae07fe1c1cf45f7b30444280a6cc3a1891f\n",
+      "stderr": ""
+     },
+     {
+      "args": [
+       "container",
+       "inspect",
+       "--format",
+       "{{.State.Running}}",
+       "6ab341e02572de44a3a2bb4698e14ae07fe1c1cf45f7b30444280a6cc3a1891f"
+      ],
+      "returncode": 1,
+      "stdout": "\n",
+      "stderr": "Error response from daemon: No such container: 6ab341e02572de44a3a2bb4698e14ae07fe1c1cf45f7b30444280a6cc3a1891f\n"
+     }
+    ]
+   },
+   "receipts_completeness": {
+    "cohort": "cue-v1",
+    "run_id": "astropy__astropy-14598__small__req011__20260924T184420Z-7bfc39",
+    "n_raw": 3,
+    "n_published": 3,
+    "n_outcomes": 3,
+    "complete": true,
+    "invalid_records": [],
+    "raw_without_published_record": [],
+    "published_record_without_raw": [],
+    "published_record_without_outcome": [],
+    "outcome_without_published_record": [],
+    "pre_dispatch_refusals": [],
+    "invalid_refusal_records": [],
+    "records_over_public_cap": [],
+    "refusal_ordinals_missing": [],
+    "receipts_refused_before_dispatch": [],
+    "dispatched_attempt_keys": [
+     "call001_attempt01",
+     "call002_attempt01",
+     "call003_attempt01"
+    ],
+    "infrastructure_stop_recorded": false
+   },
+   "repair1": {
+    "repair_record_present": true,
+    "configuration": "yaml-v1-repair1",
+    "stall_guard_fired": false,
+    "stall_guard_fired_before_call": null,
+    "guard_turns_recorded": 2,
+    "network_mode_observed": "none",
+    "run_args_at_container_start": [
+     "--rm",
+     "--platform",
+     "linux/amd64",
+     "--network",
+     "none"
+    ],
+    "effective_config_verified": true,
+    "effective_config_problems": [],
+    "effective_config_sha256": "48a6f90ec6c726f3fc361ca6ebab5c7ff47cd73e5e350f298697a8c631e4f05e",
+    "instance_template_sha256": "da5fe0813e040399492196027cc45f091ddb7cf76f6df9165d6e189ca32b27f3",
+    "agent_type": "req012_entry.RepeatedFailureGuardAgent"
+   },
+   "outcome_source": "eligible_submission"
+  }
+ ],
+ "requests": {
+  "logical_reported_total": 3,
+  "physical_reported_total": 3,
+  "physical_counted_total": 3,
+  "max_logical": 24,
+  "max_physical": 48,
+  "within_caps": true,
+  "non_task_generation_requests": 0
+ },
+ "denominator": "the one assignment, whatever its state",
+ "outcome_sources": {
+  "eligible_submission": 1,
+  "agent": 0,
+  "stall_guard": 0,
+  "time_limit": 0,
+  "infrastructure_or_supervision": 0
+ },
+ "outcome_source_rule": "stall_guard = a completed episode whose exit is RepeatedFailureStall; otherwise req011_pair.outcome_source (agent = ['Submitted', 'LimitsExceeded', 'RepeatedFormatError', 'FormatError']; time_limit = ['TimeExceeded', 'EpisodeDeadline']; anything else = infrastructure_or_supervision, which is not evidence about competence). Every non-eligible outcome is an operational zero.",
+ "prompt_bytes": {
+  "default_yaml_sha256": "112aa58328f478a41cc2630702a4b89ef459e912870e05065157ed221f56701f",
+  "instance_template_frozen_sha256": "cdf5e8dc1972686b90e3e84a0a4b200874ad5aaf1e3d26c26ed1872c1ba2e9b0",
+  "instance_template_frozen_bytes": 2438,
+  "instance_template_repair1_sha256": "da5fe0813e040399492196027cc45f091ddb7cf76f6df9165d6e189ca32b27f3",
+  "instance_template_repair1_bytes": 2757,
+  "inserted_text": "4. The repository to fix is checked out at /testbed, which is the working directory for every action. It is installed in editable (development) mode in the active Python environment, so importing the package runs the code in /testbed and your edits there take effect immediately. The environment has no network access.\n",
+  "inserted_sha256": "0ce85105b2111ca3f1a5587d290bcb5191d97966f54dfd62074cf13ed2cfa0a1",
+  "inserted_bytes": 319
+ },
+ "prior_results": {
+  "results/v2_agent/req011_competence_20260924/pair_summary.json": {
+   "expected_sha256": "a2cc62877b6a0b7b34a50688b5a7d114697b4c743199de918cbe0711c0382d31",
+   "sha256": "a2cc62877b6a0b7b34a50688b5a7d114697b4c743199de918cbe0711c0382d31",
+   "unchanged": true
+  },
+  "results/v2_agent/pilot_20260922_yaml_v1/report_yaml_v1_block1_final.json": {
+   "expected_sha256": "ef894706d393a73b6accc07a94cfbd1a4bba1c1b12b9a1c6e682c4744ec5fb17",
+   "sha256": "ef894706d393a73b6accc07a94cfbd1a4bba1c1b12b9a1c6e682c4744ec5fb17",
+   "unchanged": true
+  },
+  "req011_eligible_submissions": {
+   "eligible": 0,
+   "of": 2
+  },
+  "statement": "the earlier 0/32 fixed-backend yaml-v1 block and the 0/2 REQ-011 pair are reported unchanged"
+ },
+ "interpretations": {
+  "nonblocking": "The all-exit diagnostic, post-dispatch receipt bookkeeping and cleanup never change the endpoint, eligibility or grading and never stop the pair. The PRE-dispatch receipt stays blocking (no dispatch without a durable receipt) per the lead's REQ-005 decision (answer 1); the disk reserve for it is checked at admission.",
+  "probe_cap": "Time expiry preserves and publishes incomplete work with its reason; no extra time, outcome-driven stopping or substitution.",
+  "gate": "The gate verifies the environment and the harness only. It sends no model request and is not evidence about model competence."
+ },
+ "inherited_labels": [
+  "Receipts from the reused request_receipt/cue_transport say request DTR-REQ-005 and cohort cue-v1.",
+  "episode.json from the reused cue_episode.run_episode has kind 'cue-v1 fixed-order DEV episode (DTR-REQ-005)' and cohort 'cue-v1'.",
+  "Private raw request bodies are stored under work/req005_request_receipts/cue-v1/<run_id>.",
+  "The baseline arm writes a silent cue_delivery.json / calls.jsonl landmark; no cue is ever appended.",
+  "The reused req011_pair components write 'request': 'DTR-REQ-011' in ledger.jsonl lines, in the control entry.json and grade_control.json, in the grader's grade_result.json and in the watchdog records. make_episode_runner names the run directory '<instance>__small__req011__<utc>-<hex>'. These are labels of reused, unedited REQ-011 code.",
+  "effective_config.json and episode.json say configuration_binding 'yaml-v1' (pilot_episode.CONFIGURATION_BINDING) and name the cue-v1 driver. Their content is the repair1 configuration, which repair_record.json and this manifest name yaml-v1-repair1.",
+  "The probe summary file is named pair_summary.json because req011_pair.publish publishes that name.",
+  "This manifest, gate.json, admission.json, repair_record.json, the ledger's order and state fields, and pair_summary.json are authoritative."
+ ],
+ "semantics_differences": [
+  "episode.json physical_requests = len(capture.sends) (one send per query attempt at the HTTP layer); the frozen pilot_episode driver used len(attempts).",
+  "Token counts come from server-reported usage in the public outcome receipts; unknown usage stays null (the frozen driver used litellm's parsed usage).",
+  "submission.diff is written write-once before the all-exit diagnostic and cleanup (same bytes as the frozen driver, which wrote it after cleanup).",
+  "exit_status RepeatedFailureStall is new. It is the guard's exit, recorded by the frozen DefaultAgent.run like any InterruptAgentFlow exit (submission '').",
+  "The agent container has no network. Commands that need the network fail where the REQ-011 container could reach PyPI; an offline `pip install --upgrade astropy` finds no index candidate and keeps the installed editable astropy (it may exit 0).",
+  "The stall guard's output fingerprint masks object addresses (0x...) and decimal-second durations before hashing (repair1.stall_rule), so an identical failing command whose output differs only in those tokens, such as offline pip retry warnings, counts as the same failure."
+ ],
+ "scope": "One single-model DEVELOPMENT repair probe on one already exposed, evaluator-qualified issue: a mechanism check of yaml-v1-repair1 only. It is not a success rate, not a model or routing comparison, not a policy value and not CONFIRM evidence.",
+ "published": "results/v2_agent/req012_repair_probe_20260924/probe"
+}

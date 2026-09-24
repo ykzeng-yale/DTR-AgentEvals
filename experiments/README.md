@@ -42,10 +42,11 @@ from unverified raw execution identity. They correct attempted-write/testing/wor
   a loop of one identical failing command, and neither submitted. By the lead's pre-stated rule, competence is failed
   ([summary](../results/v2_agent/req011_competence_20260924/pair_summary.json)). Lead diagnosis: REPAIR the harness
   ([`40b4db2`](../docs/theory_feedback_20260924_req011_decision.md)).
-- **Current request: DTR-REQ-012 (P0)**, a no-model repair gate first. The new versioned configuration has an explicit
-  `/testbed` editable-checkout prompt, no network egress for the agent container, and a stall guard for repeated
-  identical failures. Only if every gate passes, one 7B DEVELOPMENT probe follows (24 calls, one-hour cap, at most
-  48 requests). In preparation; not executed.
+- **DTR-REQ-012 (P0) is completed.** The no-model repair gate PASSED (`/testbed` editable checkout, no egress, the
+  upgrade cannot replace the checkout, tests run offline). The single 7B probe with the repaired configuration
+  submitted after 3 calls, but only its reproducer script; the strict grade is **unresolved** (target test failing,
+  175/175 regression tests passing) ([summary](../results/v2_agent/req012_repair_probe_20260924/probe/pair_summary.json)).
+  The next step belongs to the lead.
 
 **Readiness 55%, change 0 points, range 45–65%.** Useful validated inference/adequate comparisons,
 final empirical synthesis, and independent reproducibility/metadata/package remain.
