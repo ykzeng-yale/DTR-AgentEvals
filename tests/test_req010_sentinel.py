@@ -83,11 +83,19 @@ def test_own_ancestors_are_not_conflicts():
 
 
 def test_window_ends_take_the_start_date_for_a_bare_end_time():
-    ends = M.window_ends('"window_utc": "2026-09-23T06:15:00Z to 07:45:00Z hard end", "recorded": "2026-09-22T05:00Z"')
-    assert M.utc(max(ends)) == '2026-09-23T07:45:00Z' and M.utc(min(ends)) == '2026-09-22T05:00:00Z'
+    ends, unparsed = M.window_ends('"window_utc": "2026-09-23T06:15:00Z to 07:45:00Z hard end", '
+                                   '"recorded": "2026-09-22T05:00Z"')
+    assert M.utc(max(ends)) == '2026-09-23T07:45:00Z' and M.utc(min(ends)) == '2026-09-22T05:00:00Z' and unparsed == 0
 
 
-def peer_run(lease='none', updated='2026-09-24T10:38:37Z', window='2026-09-23T06:15:00Z to 07:45:00Z'):
+def test_window_ends_read_fractional_and_offset_timestamps_and_count_unparsed_ones():
+    ends, unparsed = M.window_ends('"a": "2026-09-24T12:00:00.000Z", "b": "2026-09-22T05:48:18.996883+00:00"')
+    assert sorted(M.utc(e) for e in ends) == ['2026-09-22T05:48:18Z', '2026-09-24T12:00:00Z'] and unparsed == 0
+    ends, unparsed = M.window_ends('"hard_end": "2026-09-24T12:00:00-04:00"')    # a non-UTC offset is not parsed
+    assert unparsed == 1
+
+
+def peer_run(lease='none', updated='2026-09-24T10:38:37Z', window='2026-09-23T06:15:00Z to 07:45:00Z', local='abc123'):
     status = '**Last updated: %s** — x. Run/lease: **%s**. E14: **HOLD**' % (updated, lease)
 
     def run(cmd, env=None, timeout=60):
@@ -97,7 +105,7 @@ def peer_run(lease='none', updated='2026-09-24T10:38:37Z', window='2026-09-23T06
         if 'raw.githubusercontent.com' in s:
             return 0, status, ''
         if 'rev-parse' in s:
-            return 0, 'abc123\n', ''
+            return 0, local + '\n', ''
         if 'ls-tree' in s:
             return 0, 'docs/e13a_window_request_20260923.json\ndocs/notes.md\n', ''
         if 'show' in s:
@@ -116,6 +124,10 @@ def test_peer_status_admits_only_a_fresh_no_lease_status_without_future_windows(
     assert not M.peer_status(run=peer_run(updated='2026-09-24T06:00:00Z'), now=NOW)[0]      # 5 h old
     ok, d = M.peer_status(run=peer_run(window='2026-09-24T10:30:00Z to 12:00:00Z'), now=NOW)
     assert not ok and d['window_records_reaching_the_future'][0]['latest_time'] == '2026-09-24T12:00:00Z'
+    ok, d = M.peer_status(run=peer_run(local='old999'), now=NOW)                          # stale local clone
+    assert not ok and d['local_clone_equals_remote_head'] is False
+    ok, d = M.peer_status(run=peer_run(window='2026-09-24T12:00:00-04:00'), now=NOW)      # unreadable timestamp
+    assert not ok and d['window_records_with_unparsed_timestamps']
 
 
 def test_runtime_requires_enabled_rosetta_and_no_active_qemu():
@@ -209,6 +221,37 @@ def test_interruption_writes_the_record_cleans_up_and_reraises(tmp_path):
     assert rec['stage_failed'] == 'interrupted' and cleaned
 
 
+def test_collect_failure_still_cleans_up_and_writes_the_record(tmp_path):
+    cleaned = []
+
+    def bad_collect(tag, rid):
+        raise FileExistsError('receipt exists')
+    att = M.run_attempts(tmp_path, lambda t, r, d: {'instance_id': M.TARGET, 'qualified': True}, bad_collect,
+                         lambda rid: cleaned.append(rid) or {'remaining': []}, Clock(), 1000.0, stamp=stamps())
+    rec = json.loads((tmp_path / att[0]['dir'] / 'summary.json').read_text())
+    assert cleaned and 'FileExistsError' in rec['receipts']['collect_error'] and rec['qualified'] is True
+
+
+def test_interrupt_during_cleanup_keeps_the_verdict_and_reraises_with_attempts(tmp_path):
+    def cleanup(rid):
+        raise M.Interrupted('SIGHUP')
+    with pytest.raises(M.Interrupted) as e:
+        M.run_attempts(tmp_path, lambda t, r, d: {'instance_id': M.TARGET, 'qualified': True,
+                                                  'acceptance': {'a': True}}, no_collect, cleanup, Clock(), 1000.0,
+                       stamp=stamps())
+    assert e.value.attempts[0]['qualified'] is True and M.status_of(e.value.attempts) == 'QUALIFIED'
+    rec = json.loads((tmp_path / M.TARGET / 'attempt-1-T00' / 'summary.json').read_text())
+    assert rec['interrupted_after_attempt'] == 'SIGHUP' and 'Interrupted' in rec['cleanup']['error']
+
+
+def test_retry_requires_a_passing_preflight(tmp_path):
+    calls = []
+    att = M.run_attempts(tmp_path, lambda t, r, d: calls.append(r) or {'instance_id': M.TARGET, 'stage_failed': 'stock_gold'},
+                         lambda t, r: ({}, 'timeout'), lambda rid: {}, Clock(), 1000.0, stamp=stamps(),
+                         preflight=lambda: (False, {'conflicts_ok': False}))
+    assert len(calls) == 1 and att[1]['not_started'] == 'retry preflight failed'
+
+
 def test_retry_not_started_after_the_attempt_deadline(tmp_path):
     clock = Clock(1000.0)
 
@@ -251,7 +294,7 @@ def test_real_runner_kills_the_whole_process_group_at_the_deadline(tmp_path, mon
     marker = '59.%d' % os.getpid()                                     # unique to this test process
     stub = tmp_path / 'stub.py'
     stub.write_text(STUB % marker)
-    run = M.real_run_attempt(tmp_path, dict(os.environ), py=sys.executable, script=stub)
+    run = M.real_run_attempt(tmp_path, dict(os.environ), {}, py=sys.executable, script=stub)
     t0 = time.time()
     with pytest.raises(TimeoutError, match='confirmed gone: True'):
         run('attempt-1-T00', 'rid', time.time() + 2)
@@ -267,7 +310,7 @@ def test_real_runner_kills_the_whole_process_group_at_the_deadline(tmp_path, mon
 def test_real_runner_reports_a_child_without_result(tmp_path):
     stub = tmp_path / 'stub.py'
     stub.write_text('import sys; sys.exit(3)\n')
-    run = M.real_run_attempt(tmp_path, dict(os.environ), py=sys.executable, script=stub)
+    run = M.real_run_attempt(tmp_path, dict(os.environ), {}, py=sys.executable, script=stub)
     with pytest.raises(RuntimeError, match='exited 3 without a result'):
         run('attempt-1-T00', 'rid', time.time() + 30)
 
@@ -279,15 +322,16 @@ def test_cleanup_removes_only_this_runs_container_names():
     removed = []
 
     def run(cmd, env=None, timeout=60):
-        if cmd[:2] == ['docker', 'rm']:
-            removed.append(cmd[-1])
-            listed.remove(cmd[-1])
+        if cmd[:3] == ['docker', 'rm', '-f']:
+            for n in cmd[3:]:
+                removed.append(n)
+                listed.remove(n)
             return 0, '', ''
         return 0, '\n'.join(listed), ''
     rec = M.real_cleanup({}, run)('req010-stock-gold-attempt-1-T00')
     assert removed == ['dtr-qual-astropy-astropy-14598-reference-1',
                        'sweb.eval.astropy__astropy-14598.req010-stock-gold-attempt-1-T00']
-    assert rec['remaining'] == [] and 'peer-container' in listed
+    assert rec['remaining'] == [] and rec['complete'] is True and 'peer-container' in listed
 
 
 def test_sanitize_replaces_every_occurrence():
@@ -312,15 +356,61 @@ def test_blocked_admission_writes_a_record_and_runs_nothing(tmp_path, monkeypatc
 
 def test_admitted_path_writes_a_hash_bound_summary(tmp_path, monkeypatch):
     monkeypatch.setattr(M, 'ROOT', tmp_path)
-    monkeypatch.setattr(M, 'PROBES', {'binding': lambda r: (True, {})})
-    monkeypatch.setattr(M, 'real_run_attempt', lambda root, env: (lambda t, r, d: {'instance_id': M.TARGET,
-                                                                                    'qualified': True,
-                                                                                    'acceptance': {'a': True}}))
+    monkeypatch.setattr(M, 'PROBES', {'binding': lambda r: (True, {}), 'sources': lambda r: (True, {'control_sources': {}})})
+    monkeypatch.setattr(M.signal, 'signal', lambda *a, **k: None)
+    monkeypatch.setattr(M.subprocess, 'Popen', lambda *a, **k: (_ for _ in ()).throw(OSError('no caffeinate in tests')))
+    monkeypatch.setattr(M, 'real_run_attempt', lambda root, env, sources: (lambda t, r, d: {'instance_id': M.TARGET,
+                                                                                             'qualified': True,
+                                                                                             'acceptance': {'a': True}}))
     monkeypatch.setattr(M, 'real_collect', lambda root: no_collect)
-    monkeypatch.setattr(M, 'real_cleanup', lambda env: (lambda rid: {'remaining': []}))
+    monkeypatch.setattr(M, 'real_cleanup', lambda env: (lambda rid: {'remaining': [], 'complete': True}))
     monkeypatch.setattr(M, 'probe_disk', lambda root: (True, {'vm_free_gib': 80.0}))
     monkeypatch.setattr(M, 'probe_images', lambda root: (True, {'local_images': {}}))
     M.main([])
     s = json.loads((tmp_path / M.OUT / 'sentinel_summary.json').read_text())
     assert s['status'] == 'QUALIFIED' and s['within_cap'] is True and len(s['admission_sha256']) == 64
+    assert s['cleanup_complete'] is True and not (tmp_path / M.OUT / 'USERNAME_FOUND.json').exists()
     assert s['attempts'][0]['acceptance'] == {'a': True}
+
+
+class FakeProc:
+    def __init__(self):
+        self.waits = 0
+
+    def wait(self, timeout):
+        self.waits += 1
+        raise M.subprocess.TimeoutExpired('x', timeout)
+
+    def poll(self):
+        return None
+
+
+def test_wait_uses_the_wall_clock_not_the_wait_budget():
+    clock = Clock(0.0)
+    p = FakeProc()
+    orig = p.wait
+
+    def wait(timeout):
+        clock.t += 3600                                      # the host slept for an hour during this wait
+        return orig(timeout)
+    p.wait = wait
+    with pytest.raises(M.subprocess.TimeoutExpired):
+        M.wait_wall(p, deadline=100.0, clock=clock, step=10.0)
+    assert p.waits == 1                                      # the deadline is noticed on the first wake-up
+
+
+def test_child_watchdog_condition():
+    assert M.should_stop(50, 1000.0, getppid=lambda: 50, clock=lambda: 999.0) is False
+    assert M.should_stop(50, 1000.0, getppid=lambda: 1, clock=lambda: 999.0) is True        # parent died
+    assert M.should_stop(50, 1000.0, getppid=lambda: 50, clock=lambda: 1000.0) is True      # wall deadline
+
+
+def test_first_signal_disarms_further_signals():
+    saved = {s: M.signal.getsignal(s) for s in (M.signal.SIGINT, M.signal.SIGTERM, M.signal.SIGHUP)}
+    try:
+        with pytest.raises(M.Interrupted, match='SIGTERM'):
+            M.raise_interrupted(M.signal.SIGTERM, None)
+        assert all(M.signal.getsignal(s) == M.signal.SIG_IGN for s in saved)
+    finally:
+        for s, h in saved.items():
+            M.signal.signal(s, h)

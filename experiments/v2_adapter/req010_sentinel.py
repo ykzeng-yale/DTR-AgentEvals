@@ -23,6 +23,7 @@ from __future__ import annotations
 
 import argparse
 import calendar
+import getpass
 import hashlib
 import json
 import os
@@ -32,6 +33,7 @@ import signal
 import subprocess
 import sys
 import tarfile
+import threading
 import time
 from collections import OrderedDict
 from pathlib import Path
@@ -77,7 +79,10 @@ CREDENTIAL_NAME = re.compile(r'(TOKEN|SECRET|PASSWORD|PASSWD|API_?KEY|ACCESS_KEY
 COLIMA = HOME / '.local/dtr-runtime/bin/colima'
 DOCKER_SOCK = HOME / '.colima/dtr/docker.sock'
 STOCK_RECEIPTS = ('report.json', 'eval.sh', 'patch.diff', 'run_instance.log', 'test_output.txt')
-ISO = re.compile(r'(\d{4}-\d\d-\d\d)T(\d\d:\d\d(?::\d\d)?)Z(?:\s+to\s+(?:(\d{4}-\d\d-\d\d)T)?(\d\d:\d\d(?::\d\d)?)Z)?')
+_Z = r'(?:\.\d+)?(?:Z|[+-]00:?00)'
+ISO = re.compile(r'(\d{4}-\d\d-\d\d)T(\d\d:\d\d(?::\d\d)?)' + _Z +
+                 r'(?:\s+to\s+(?:(\d{4}-\d\d-\d\d)T)?(\d\d:\d\d(?::\d\d)?)' + _Z + ')?')
+LOOSE_TIMESTAMP = re.compile(r'\d{4}-\d\d-\d\dT\d\d:\d\d')
 
 
 class Blocked(SystemExit):
@@ -317,12 +322,14 @@ def ancestors(rows, pid):
 
 
 def window_ends(text: str):
-    """End times (epoch) of every timestamp or 'start to end' span in a window record; a bare end time takes the
-    start's date."""
-    ends = []
-    for d1, t1, d2, t2 in ISO.findall(text):
+    """End times (epoch) of every timestamp or 'start to end' span in a window record (a bare end time takes the start's
+    date), and the number of timestamp-like tokens the parser could not read (fail closed if > 0)."""
+    ends, consumed = [], 0
+    for m in ISO.finditer(text):
+        d1, t1, d2, t2 = m.groups()
         ends.append(epoch(d2 or d1, t2) if t2 else epoch(d1, t1))
-    return ends
+        consumed += len(LOOSE_TIMESTAMP.findall(m.group(0)))
+    return ends, len(LOOSE_TIMESTAMP.findall(text)) - consumed
 
 
 def peer_status(peer_dir=PEER_REPO_DIR, run=sh, now=None):
@@ -353,16 +360,22 @@ def peer_status(peer_dir=PEER_REPO_DIR, run=sh, now=None):
     d['local_clone_head'] = out.strip() if rc == 0 else None
     rc, out, _ = run(['git', '-C', str(peer_dir), 'ls-tree', '-r', '--name-only', 'HEAD', 'docs'])
     windows = sorted(x for x in out.split() if re.search(r'window', x, re.I) and x.endswith('.json'))
-    open_windows = []
+    open_windows, unparsed = [], []
     for w in windows:
         rc, txt, _ = run(['git', '-C', str(peer_dir), 'show', 'HEAD:' + w])
-        future = [e for e in window_ends(txt) if e > now]
+        ends, n_unparsed = window_ends(txt)
+        future = [e for e in ends if e > now]
         if future:
             open_windows.append(OrderedDict(file=w, latest_time=utc(max(future))))
+        if n_unparsed:
+            unparsed.append(OrderedDict(file=w, unparsed_timestamps=n_unparsed))
     d['window_records'] = windows
     d['window_records_reaching_the_future'] = open_windows
-    ok = (head is not None and d['run_lease'] is not None and d['run_lease'].lower() == 'none'
-          and age is not None and 0 <= age <= PEER_STATUS_MAX_AGE_SECONDS and not open_windows)
+    d['window_records_with_unparsed_timestamps'] = unparsed
+    d['local_clone_equals_remote_head'] = head is not None and d['local_clone_head'] == head
+    ok = (head is not None and d['local_clone_equals_remote_head'] and d['run_lease'] is not None
+          and d['run_lease'].lower() == 'none' and age is not None and 0 <= age <= PEER_STATUS_MAX_AGE_SECONDS
+          and not open_windows and not unparsed)
     return ok, d
 
 
@@ -457,10 +470,12 @@ def status_of(attempts: list) -> str:
 
 
 def run_attempts(out: Path, run_attempt, collect, cleanup, clock, start: float, cap=CAP_SECONDS,
-                 reserve=CLEANUP_RESERVE_SECONDS, stamp=None):
+                 reserve=CLEANUP_RESERVE_SECONDS, stamp=None, preflight=None):
     """run_attempt(tag, stock_run_id, deadline) -> result dict (raises TimeoutError at the deadline, Interrupted on a
-    signal); collect(tag, stock_run_id) -> (receipts dict, stock classification); cleanup(stock_run_id) -> dict.
-    Each attempt record is written no-clobber to out/<TARGET>/attempt-<n>-<stamp>/summary.json."""
+    signal); collect(tag, stock_run_id) -> (receipts dict, stock classification); cleanup(stock_run_id) -> dict;
+    preflight() -> (ok, detail), re-checked before a retry. Collection errors are recorded, cleanup always runs and every
+    started attempt writes its record no-clobber to out/<TARGET>/attempt-<n>-<stamp>/summary.json. An Interrupted raised
+    anywhere is re-raised after the record is written, carrying the compact attempt list as `.attempts`."""
     stamp = stamp or (lambda: time.strftime('%Y%m%dT%H%M%SZ', time.gmtime(clock())))
     attempts = []
     for n in (1, 2):
@@ -468,6 +483,11 @@ def run_attempts(out: Path, run_attempt, collect, cleanup, clock, start: float, 
         if clock() >= deadline:
             attempts.append(OrderedDict(attempt=n, not_started='global cap reached before the attempt'))
             break
+        if n == 2 and preflight is not None:
+            ok, detail = preflight()
+            if not ok:
+                attempts.append(OrderedDict(attempt=n, not_started='retry preflight failed', preflight=detail))
+                break
         tag = 'attempt-%d-%s' % (n, stamp())
         attempt_dir = out / TARGET / tag
         attempt_dir.mkdir(parents=True, exist_ok=False)
@@ -484,18 +504,33 @@ def run_attempts(out: Path, run_attempt, collect, cleanup, clock, start: float, 
         except Exception as e:  # noqa: BLE001  retained as a diagnosis
             rec = OrderedDict(instance_id=TARGET, stage_failed='exception', error='%s: %s' % (type(e).__name__, str(e)[:500]))
         rec = OrderedDict(rec)
-        receipts, stock_class = collect(tag, stock_run_id)
-        rec['receipts'] = receipts
-        if rec.get('stage_failed') == 'stock_gold':
-            rec['stock_failure'] = stock_class
-        rec['cleanup'] = cleanup(stock_run_id)
-        rec.update(attempt=n, stock_run_id=stock_run_id, attempt_wall_seconds=round(clock() - t0, 1),
-                   finished_utc=utc(clock()))
-        digest = write_json_x(attempt_dir / 'summary.json', rec)
-        attempts.append(OrderedDict(attempt=n, dir=str(attempt_dir.relative_to(out)), summary_sha256=digest,
-                                    qualified=rec.get('qualified'), stage_failed=rec.get('stage_failed'),
-                                    stock_failure=rec.get('stock_failure'), acceptance=rec.get('acceptance')))
+        stock_class = 'unknown'
+        try:
+            try:
+                rec['receipts'], stock_class = collect(tag, stock_run_id)
+            except BaseException as e:  # noqa: BLE001  recorded; cleanup still runs
+                interrupted = interrupted or (e if isinstance(e, Interrupted) else None)
+                rec['receipts'] = OrderedDict(collect_error='%s: %s' % (type(e).__name__, str(e)[:300]))
+        finally:
+            try:
+                rec['cleanup'] = cleanup(stock_run_id)
+            except BaseException as e:  # noqa: BLE001
+                interrupted = interrupted or (e if isinstance(e, Interrupted) else None)
+                rec['cleanup'] = OrderedDict(error='%s: %s' % (type(e).__name__, str(e)[:300]))
+            if rec.get('stage_failed') == 'stock_gold':
+                rec['stock_failure'] = stock_class
+            if interrupted is not None and rec.get('stage_failed') != 'interrupted':
+                rec['interrupted_after_attempt'] = str(interrupted)
+            rec.update(attempt=n, stock_run_id=stock_run_id, attempt_wall_seconds=round(clock() - t0, 1),
+                       finished_utc=utc(clock()))
+            digest = write_json_x(attempt_dir / 'summary.json', rec)
+            attempts.append(OrderedDict(attempt=n, dir=str(attempt_dir.relative_to(out)), summary_sha256=digest,
+                                        qualified=rec.get('qualified'), stage_failed=rec.get('stage_failed'),
+                                        stock_failure=rec.get('stock_failure'), acceptance=rec.get('acceptance'),
+                                        cleanup_remaining=(rec['cleanup'] or {}).get('remaining'),
+                                        kill=rec.get('kill')))
         if interrupted is not None:
+            interrupted.attempts = attempts
             raise interrupted
         if not (rec.get('stage_failed') == 'stock_gold' and stock_class in ('timeout', 'missing_report')):
             break
@@ -507,6 +542,8 @@ def run_attempts(out: Path, run_attempt, collect, cleanup, clock, start: float, 
 def group_members(pgid: int, run=sh):
     """Live (non-zombie) processes of a process group."""
     rc, out, _ = run(['ps', '-axo', 'pid=,pgid=,stat='])
+    if rc != 0 or not out.strip():
+        return None                                               # unknown: never reported as "gone"
     return [int(p) for p, g, st in (l.split()[:3] for l in out.splitlines() if len(l.split()) >= 3)
             if g.isdigit() and int(g) == pgid and 'Z' not in st]
 
@@ -520,7 +557,7 @@ def signal_group(pgid: int, sig):
         return
     except PermissionError:
         pass
-    for pid in group_members(pgid):
+    for pid in group_members(pgid) or []:
         try:
             os.kill(pid, sig)
         except (ProcessLookupError, PermissionError):
@@ -533,30 +570,48 @@ def kill_group(pgid: int, grace=None, reap=lambda: None):
     reap()
     signal_group(pgid, signal.SIGTERM)
     end = time.time() + grace
-    while time.time() < end and group_members(pgid):
+    while time.time() < end and group_members(pgid) != []:
         reap()
         time.sleep(0.2)
     reap()
     signal_group(pgid, signal.SIGKILL)
     for _ in range(50):
         reap()
-        if not group_members(pgid):
+        if group_members(pgid) == []:
             return True
         time.sleep(0.2)
     return False
 
 
-def real_run_attempt(root: Path, env: dict, py=None, script=None):
+def wait_wall(p, deadline: float, clock=time.time, step=10.0):
+    """Wait for the child against the WALL clock (monotonic time pauses while the host sleeps). Returns when the child
+    exits; raises subprocess.TimeoutExpired once clock() >= deadline."""
+    while True:
+        remaining = deadline - clock()
+        if remaining <= 0:
+            if p.poll() is None:
+                raise subprocess.TimeoutExpired('child', 0)
+            return
+        try:
+            p.wait(timeout=min(step, max(0.1, remaining)))
+            return
+        except subprocess.TimeoutExpired:
+            continue
+
+
+def real_run_attempt(root: Path, env: dict, sources: dict, py=None, script=None):
     def run(tag: str, stock_run_id: str, deadline: float):
         raw = root / RUN / tag
         raw.mkdir(parents=True, exist_ok=False)
+        (raw / 'admitted_sources.json').write_text(json.dumps(sources, indent=1))
         result_path = raw / 'child_result.json'
         with open(raw / 'child_stdout.txt', 'x') as log:
             p = subprocess.Popen([str(py or root / VENV_PY), str(script or HERE / 'req010_sentinel.py'), '--child',
-                                  str(raw), stock_run_id, str(result_path), repr(deadline + CHILD_BACKUP_DELAY_SECONDS)],
-                                 cwd=str(root), env=env, start_new_session=True, stdout=log, stderr=subprocess.STDOUT)
+                                  str(raw), stock_run_id, str(result_path), repr(deadline + CHILD_BACKUP_DELAY_SECONDS),
+                                  str(os.getpid())], cwd=str(root), env=env, start_new_session=True, stdout=log,
+                                 stderr=subprocess.STDOUT)
             try:
-                p.wait(timeout=max(1.0, deadline - time.time()))
+                wait_wall(p, deadline)
             except subprocess.TimeoutExpired:
                 gone = kill_group(p.pid, reap=p.poll)
                 raise TimeoutError('child group killed at %s; group confirmed gone: %s' % (utc(deadline), gone))
@@ -570,13 +625,14 @@ def real_run_attempt(root: Path, env: dict, py=None, script=None):
 
 
 def real_collect(root: Path):
-    """Sanitized, hashed copies of the stock harness receipts, build logs and child output into the published dir."""
+    """Sanitized, hashed copies of the stock harness receipts, build logs and child output into the published dir.
+    Published names never end in .log (git-ignored here); raw run-level files are hashed only."""
     def collect(tag: str, stock_run_id: str):
         raw = root / RUN / tag
         pub = root / OUT / TARGET / tag
         stock = raw / 'harness/logs/run_evaluation' / stock_run_id / 'gold' / TARGET
-        files = [(stock / f, 'stock_' + f) for f in STOCK_RECEIPTS]
-        files += [(p, 'build_%s.log' % p.parent.name) for p in sorted((raw / 'harness/logs/build_images').rglob('*.log'))]
+        files = [(stock / f, 'stock_' + f + ('.txt' if f.endswith('.log') else '')) for f in STOCK_RECEIPTS]
+        files += [(p, 'build_%s.log.txt' % p.parent.name) for p in sorted((raw / 'harness/logs/build_images').rglob('*.log'))]
         files += [(p, p.name) for p in sorted(raw.glob('*.txt'))]
         receipts = OrderedDict()
         for src, name in files:
@@ -589,26 +645,63 @@ def real_collect(root: Path):
                 fh.write(clean)
             receipts[name] = OrderedDict(present=True, raw_sha256=sha_bytes(data), published_sha256=sha_bytes(clean),
                                          sanitized=clean != data)
+        hashed_only = OrderedDict()
+        for q in sorted((raw / 'harness/reports').glob('*.json')) + [raw / 'child_result.json']:
+            if q.exists():
+                hashed_only[sanitize(str(q))] = sha_file(q)
+        receipts['_raw_hashed_only'] = hashed_only
         return receipts, classify_stock(stock)
     return collect
 
 
+def container_names(stock_run_id: str):
+    return sorted(set(ADAPTER_CONTAINERS) | {'sweb.eval.%s.%s' % (TARGET, stock_run_id)})
+
+
 def real_cleanup(env: dict, run=sh):
     def clean(stock_run_id: str):
-        wanted = set(ADAPTER_CONTAINERS) | {'sweb.eval.%s.%s' % (TARGET, stock_run_id)}
-        rc, out, _ = run(['docker', 'ps', '-a', '--format', '{{.Names}}'], env=env)
+        wanted = set(container_names(stock_run_id))
+        rc, out, _ = run(['docker', 'ps', '-a', '--format', '{{.Names}}'], env=env, timeout=30)
         mine = sorted(n for n in out.split() if n in wanted)
-        removed = OrderedDict((n, run(['docker', 'rm', '-f', n], env=env, timeout=120)[0]) for n in mine)
-        rc2, out2, _ = run(['docker', 'ps', '-a', '--format', '{{.Names}}'], env=env)
-        return OrderedDict(list_rc=rc, rm_rc=removed, relist_rc=rc2,
-                           remaining=sorted(n for n in out2.split() if n in wanted))
+        rm_rc = run(['docker', 'rm', '-f'] + mine, env=env, timeout=60)[0] if mine else None
+        rc2, out2, _ = run(['docker', 'ps', '-a', '--format', '{{.Names}}'], env=env, timeout=30)
+        remaining = sorted(n for n in out2.split() if n in wanted) if rc2 == 0 else None
+        return OrderedDict(list_rc=rc, found=mine, rm_rc=rm_rc, relist_rc=rc2, remaining=remaining,
+                           complete=remaining == [])
     return clean
 
 
-def child(raw_dir: str, stock_run_id: str, result_path: str, backup_deadline: str):
-    """Runs inside the pinned evaluator venv: one unchanged `qualify` call for TARGET under its own backup alarm."""
-    signal.signal(signal.SIGALRM, lambda *_: os.killpg(0, signal.SIGKILL))
-    signal.alarm(max(1, int(float(backup_deadline) - time.time())))
+def should_stop(parent_pid: int, backup_deadline: float, getppid=os.getppid, clock=time.time):
+    """Child watchdog condition: the launching parent is gone (re-parented) or the wall-clock backup deadline passed."""
+    return getppid() != parent_pid or clock() >= backup_deadline
+
+
+def backstop(stock_run_id: str):
+    """Last resort inside the child: remove this run's containers from the VM, then kill the child's own group."""
+    try:
+        subprocess.run(['docker', 'rm', '-f'] + container_names(stock_run_id), capture_output=True, timeout=30)
+    finally:
+        os.killpg(0, signal.SIGKILL)
+
+
+def child(raw_dir: str, stock_run_id: str, result_path: str, backup_deadline: str, parent_pid: str):
+    """Runs inside the pinned evaluator venv: one unchanged `qualify` call for TARGET, guarded by a wall-clock and
+    parent-death watchdog that removes this run's containers and kills the child's group."""
+    backup, parent = float(backup_deadline), int(parent_pid)
+    signal.signal(signal.SIGALRM, lambda *_: backstop(stock_run_id))
+    signal.alarm(max(1, int(backup - time.time())))
+
+    def watchdog():
+        while True:
+            if should_stop(parent, backup):
+                backstop(stock_run_id)
+            time.sleep(5)
+    threading.Thread(target=watchdog, daemon=True).start()
+    raw = Path(raw_dir)
+    admitted = json.loads((raw / 'admitted_sources.json').read_text())
+    changed = [s for s, h in admitted.items() if sha_file(ROOT / s) != h]
+    if changed:
+        raise SystemExit('sources changed since admission: %s' % changed)
     import platform as pf
     import docker
     import pandas as pd
@@ -618,7 +711,6 @@ def child(raw_dir: str, stock_run_id: str, result_path: str, backup_deadline: st
     sys.path.insert(0, str(HERE))
     import qualification_batch as QB
     import control_adapter as A
-    raw = Path(raw_dir)
     QB.RUN = raw / 'harness'
     QB.RUN.mkdir(parents=False, exist_ok=False)
     rows = pd.read_parquet(ROOT / DATA)
@@ -636,28 +728,42 @@ def child(raw_dir: str, stock_run_id: str, result_path: str, backup_deadline: st
                         declared_timeout_seconds=QB.TIMEOUT, evaluator_commit=EVALUATOR_COMMIT, package=swebench.__version__,
                         adapter_version=A.ADAPTER_VERSION, adapter_source_sha256=A.adapter_source_sha256())
     rec = QB.qualify(client, inst, m01, platform_rec, raw, stock_run_id)
-    ts = make_test_spec(inst)
-    stock = QB.RUN / 'logs/run_evaluation' / stock_run_id / 'gold' / TARGET
-    extra = OrderedDict(test_spec_eval_script_sha256=QB.sha(ts.eval_script),
-                        stock_eval_sh_sha256=QB.sha((stock / 'eval.sh').read_text()) if (stock / 'eval.sh').exists() else None)
-    if (stock / 'test_output.txt').exists():
-        smap, found = get_logs_eval(ts, str(stock / 'test_output.txt'))
-        req = list(json.loads(inst['FAIL_TO_PASS'])) + list(json.loads(inst['PASS_TO_PASS']))
-        extra['stock_required_test_status'] = OrderedDict((t, smap.get(t)) for t in req)
-        extra['stock_get_logs_eval_found'] = found
+    extra = OrderedDict()
+    try:                                                   # extras never cost the verdict
+        ts = make_test_spec(inst)
+        stock = QB.RUN / 'logs/run_evaluation' / stock_run_id / 'gold' / TARGET
+        extra['test_spec_eval_script_sha256'] = QB.sha(ts.eval_script)
+        extra['stock_eval_sh_sha256'] = QB.sha((stock / 'eval.sh').read_text()) if (stock / 'eval.sh').exists() else None
+        extra['stock_container_run_args'] = (getattr(ts, 'docker_specs', None) or {}).get('run_args')
+        if (stock / 'test_output.txt').exists():
+            smap, found = get_logs_eval(ts, str(stock / 'test_output.txt'))
+            req = list(json.loads(inst['FAIL_TO_PASS'])) + list(json.loads(inst['PASS_TO_PASS']))
+            extra['stock_required_test_status'] = OrderedDict((t, smap.get(t)) for t in req)
+            extra['stock_get_logs_eval_found'] = found
+    except Exception as e:  # noqa: BLE001
+        extra['error'] = '%s: %s' % (type(e).__name__, str(e)[:300])
     rec['sentinel_extra'] = extra
     with open(result_path, 'x') as fh:
         fh.write(json.dumps(rec, indent=1, default=str) + '\n')
 
 
 def raise_interrupted(signum, _frame):
+    """Only the first signal counts: later ones are ignored so cleanup and the records always complete."""
+    for sig in (signal.SIGINT, signal.SIGTERM, signal.SIGHUP):
+        signal.signal(sig, signal.SIG_IGN)
     raise Interrupted(signal.Signals(signum).name)
+
+
+def username_hits(out: Path):
+    user = getpass.getuser()
+    return sorted(str(p.relative_to(out)) for p in out.rglob('*') if p.is_file()
+                  and user.encode() in p.read_bytes()) if len(user) >= 3 else []
 
 
 def main(argv=None):
     ap = argparse.ArgumentParser()
     ap.add_argument('--admission-only', action='store_true')
-    ap.add_argument('--child', nargs=4, metavar=('RAW_DIR', 'STOCK_RUN_ID', 'RESULT', 'BACKUP_DEADLINE'))
+    ap.add_argument('--child', nargs=5, metavar=('RAW_DIR', 'STOCK_RUN_ID', 'RESULT', 'BACKUP_DEADLINE', 'PARENT_PID'))
     a = ap.parse_args(argv)
     if a.child:
         return child(*a.child)
@@ -678,27 +784,55 @@ def main(argv=None):
         raise Blocked('DTR-REQ-010 BLOCKED at admission: %s (nothing executed, no substitution)' % failed)
     for sig in (signal.SIGINT, signal.SIGTERM, signal.SIGHUP):
         signal.signal(sig, raise_interrupted)
-    env, _ = scrub_env(docker_env())
-    disk_before = probe_disk(ROOT)[1]
-    status, err = None, None
     try:
-        attempts = run_attempts(out, real_run_attempt(ROOT, env), real_collect(ROOT), real_cleanup(env), time.time, start)
+        awake = subprocess.Popen(['caffeinate', '-i', '-s', '-w', str(os.getpid())])
+    except OSError:
+        awake = None
+    env, _ = scrub_env(docker_env())
+    sources = OrderedDict((k, v['sha256']) for k, v in adm['sources']['detail']['control_sources'].items())
+    attempts, status, err, disk_before = [], None, None, None
+
+    def preflight():
+        c_ok, c = probe_conflicts(ROOT)
+        d_ok, d = probe_disk(ROOT)
+        return c_ok and d_ok, OrderedDict(conflicts_ok=c_ok, disk=d, conflicts=c)
+    try:
+        disk_before = probe_disk(ROOT)[1]
+        attempts = run_attempts(out, real_run_attempt(ROOT, env, sources), real_collect(ROOT), real_cleanup(env),
+                                time.time, start, preflight=preflight)
     except Interrupted as e:
-        err = str(e)
-        attempts = [json.loads((p / 'summary.json').read_text()) for p in sorted((out / TARGET).iterdir())
-                    if (p / 'summary.json').exists()]
-        status = 'INTERRUPTED'
-    end = time.time()
-    summary = OrderedDict(
-        request='DTR-REQ-010', target=TARGET, status=status or status_of(attempts), interrupted_by=err,
-        attempts=attempts, admission_sha256=adm_sha, started_utc=utc(start), finished_utc=utc(end),
-        wall_seconds=round(end - start, 1), cap_seconds=CAP_SECONDS, within_cap=end - start <= CAP_SECONDS,
-        disk_before=disk_before, disk_after=probe_disk(ROOT)[1], images_after=probe_images(ROOT)[1]['local_images'],
-        adapter_retry_rule=('the reused control adapter retries once, identically, on a timeout, a missing/unparsable '
-                            'report or an invalid completion (control_adapter.py, unchanged)'),
-        scope='one DEVELOPMENT evaluator qualification; no model, GPU or paid service; qualifies at most this issue, '
-              'image and environment; releases no competence pilot')
-    write_json_x(out / 'sentinel_summary.json', summary)
+        err, attempts = str(e), getattr(e, 'attempts', attempts)
+        status = status_of(attempts) if attempts and attempts[-1].get('qualified') is not None else 'INTERRUPTED'
+    except Exception as e:  # noqa: BLE001
+        err, status = '%s: %s' % (type(e).__name__, str(e)[:300]), 'ERROR'
+    finally:
+        for sig in (signal.SIGINT, signal.SIGTERM, signal.SIGHUP):
+            signal.signal(sig, signal.SIG_IGN)
+        try:
+            disk_after, images = probe_disk(ROOT)[1], probe_images(ROOT)[1]['local_images']
+        except Exception as e:  # noqa: BLE001
+            disk_after, images = OrderedDict(error=str(e)[:200]), None
+        end = time.time()
+        started = [x for x in attempts if not x.get('not_started')]
+        summary = OrderedDict(
+            request='DTR-REQ-010', target=TARGET, status=status or status_of(attempts), interrupted_or_error=err,
+            attempts=attempts, admission_sha256=adm_sha, started_utc=utc(start), finished_utc=utc(end),
+            wall_seconds=round(end - start, 1), cap_seconds=CAP_SECONDS, within_cap=end - start <= CAP_SECONDS,
+            cleanup_complete=bool(started) and all(x.get('cleanup_remaining') == [] for x in started),
+            process_groups_confirmed_gone=all('confirmed gone: True' in x['kill'] for x in started if x.get('kill')),
+            disk_before=disk_before, disk_after=disk_after, images_after=images,
+            adapter_retry_rule=('the reused control adapter (control_adapter.py, unchanged) retries once, identically, on a '
+                                'timeout or a missing/unparsable report; its invalid-completion branch cannot be reached '
+                                'with the pinned get_logs_eval (found=False always comes with an empty map). The stock '
+                                'harness writes report.json for logs with bad codes, which is not retried.'),
+            scope='one DEVELOPMENT evaluator qualification; no model, GPU or paid service; qualifies at most this issue, '
+                  'image and environment; releases no competence pilot')
+        write_json_x(out / 'sentinel_summary.json', summary)
+        hits = username_hits(out)
+        if hits:
+            write_json_x(out / 'USERNAME_FOUND.json', OrderedDict(files=hits, action='do not publish until redacted'))
+        if awake is not None:
+            awake.terminate()
     print(json.dumps(sanitize(summary), indent=1, default=str))
 
 
