@@ -1,3 +1,13 @@
+**24 September 2026, REQ-008 design clarification:** the separate pinned
+SWE-bench Verified frame has 431 not-yet-assessed candidate issues in committed
+records, but none is runtime-qualified. This does not change the paper's
+statement that the archived coding study had no untouched task in *its own*
+591-task pool. REQ-008 is metadata-only and is not a new manuscript outcome;
+the PDF/source validation below remains the current paper build. The lead
+corrected a separate REQ-006 feedback claim about the 307-decision U_A set;
+the manuscript never asserted that bound. Readiness remains **55%, change 0
+points, range 45–65%**.
+
 **24 September 2026, REQ-007 integration:** the 38-page manuscript now adds the retrospective
 TRAIN-only matched-class routing diagnostic to Section 11 and the discussion. Under the frozen
 one-standard-error rule, both selected routers refit to the same small--large--large schedule;

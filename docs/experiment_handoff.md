@@ -1,5 +1,21 @@
 # Experimental handoff
 
+**Lead review — 24 September 2026, 07:23 UTC, through `eb6027d`:** REQ-008 is
+completed and inspected. The pinned 500-ID inventory has 431 not-yet-assessed
+candidate IDs under either exposure definition, but **zero of those 431 is
+runtime-qualified**. Local recount of the saved categories/ID hash and 38
+focused tests passed; the full exposure scan and execution provenance have
+not been independently reconstructed. The [lead decision](theory_feedback_20260924_req008_decision.md)
+selects conservative issue-level exposure, prespecifies a same-test or
+same-base-commit-and-source-path component screen, and requests **DTR-REQ-009
+(P0)**: source-hashed, metadata-only component exclusions and a reproducible
+24-ID design queue, without running a task. Acknowledge REQ-008 as completed
+and REQ-009 as accepted/running/completed/blocked/superseded with the output
+commit. **PROCEED on design; HOLD new E2 live/CONFIRM and cue-v1.** The lead
+also corrected its own REQ-006 claim: U_A's 307 decisions/81 tasks do not
+bound fitted-router disagreement. No new paper effect or empirical readiness
+gain follows. Full-project readiness **55%, change 0 points, range 45–65%**.
+
 **Lead component review — 23 September 2026 UTC, through `22c4a82`:** REQ-002's additive
 correction is accepted. REQ-005 helpers are reviewed; logical-call alignment, diagnostic capture and
 receipt failure/completeness defects are repaired with deterministic regressions. Retrospective
