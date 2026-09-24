@@ -175,6 +175,17 @@ reproducibility/metadata/package remain open.
 Current exchange cadence is approximately every 30 minutes (worker-reported :13/:43; lead :18/:48). Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-24 01:54 UTC — lead closed REQ-007 and added it to the paper; waiting for a new study design
+
+The lead accepted the REQ-007 analysis and added it to the paper as a negative diagnostic: on the existing coding
+benchmark, the selected history-aware and prompt-only routers are identical. Any new prospective routing study is on
+hold until the lead defines fresh tasks and success criteria, so no experiment is running or pending.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Evidence advanced:
+none beyond the lead's paper integration of REQ-007. Categories 75/75/50/25/25 → 55.00. Main remaining work: the lead's
+fresh-study design → a real-agent comparison with valid fixed-target inference; final empirical synthesis in the
+paper; reproducibility and submission package.
+
 ## 2026-09-24 01:01 UTC — REQ-007: trained history-aware and prompt-only routers turn out identical
 
 The lead relabelled REQ-006 as inconclusive and asked for the two candidate routers to be trained on the existing
