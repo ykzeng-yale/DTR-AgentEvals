@@ -13,11 +13,13 @@ The proposed contribution is a sequentially randomized evaluation design with ve
 **24 September 2026:** the [38-page manuscript](manuscript/README.md) combines scoped theory and
 proofs, synthetic development evidence, a critical coding-agent case study and both failed SWE-bench
 DEV cohorts. [Read the paper PDF](manuscript/DTR_Agent_Regimes_Theory_Draft.pdf) or
-[edit the LaTeX source](manuscript/main.tex). The [current lead decision](docs/theory_feedback_20260924_req010_decision.md)
-records one fresh issue passing evaluator controls and conditionally releases a
-two-episode, fixed-backend DEVELOPMENT competence check on that issue. The
-historical recovery-cue live comparison is deferred. This qualification is
-not model competence or routing/CONFIRM evidence; the pilot failures remain.
+[edit the LaTeX source](manuscript/main.tex). One fresh Astropy issue passed
+strict evaluator controls, but the subsequent fixed-backend DEVELOPMENT
+competence pair produced 0/2 eligible submissions; both models repeated failed
+commands to their 24-call cap. The [current lead decision](docs/theory_feedback_20260924_req011_decision.md)
+records a bounded harness repair and single-model development probe. The
+historical recovery-cue live comparison remains deferred. Neither the evaluator
+qualification nor this negative pair is routing/CONFIRM evidence.
 Bounded local DEVELOPMENT work is allowed under verified host, source,
 resource and non-overlap gates. No paid service or new CONFIRM stage is released.
 

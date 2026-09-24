@@ -1,4 +1,14 @@
-**24 September 2026, REQ-010 feasibility update:** one previously untouched
+**24 September 2026, REQ-011 development result:** the evaluator-qualified
+Astropy issue was used for a two-model fixed-backend competence pair. Both
+episodes ended at 24 calls without an eligible submitted patch (0/2); the
+published trajectories show repeated identical failed commands, and package
+upgrading contaminated the agents' local test environments. This is negative
+DEVELOPMENT feasibility evidence, not a routing or confirmatory comparison.
+The lead's [diagnosis and bounded repair decision](../docs/theory_feedback_20260924_req011_decision.md)
+hold E2 live/CONFIRM and cue-v1. The PDF/source below have not yet integrated
+this small diagnostic; readiness remains **55%, change 0 points, range 45–65%**.
+
+**24 September 2026, REQ-010 feasibility update (at that checkpoint):** one previously untouched
 SWE-bench Verified issue (`astropy__astropy-14598`) has since passed strict
 evaluator qualification. It has no model outcome and is not yet a paper
 result. The planned fixed-backend competence check remains DEVELOPMENT;
