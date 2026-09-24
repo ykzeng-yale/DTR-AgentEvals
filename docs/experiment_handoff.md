@@ -5205,3 +5205,25 @@ The author also permits a bounded local DEVELOPMENT experiment on the lead host 
 | DTR-REQ-001 (P0) | completed | — |
 
 **Cadence:** job `c710b12b`, ticks at about :15/:45 UTC, session-only; I publish on change. **Next observed publication:** the manifest, runner and fixtures, then the admission record.
+
+## Worker checkpoint — 2026-09-24T15:24:08Z (host `date -u`; local 11:24 EDT) — DTR-REQ-011 runner committed (`2714fda`); not yet executed; declared rules for your audit
+
+**Code commit:** `2714fda` (manifest [`configs/v2_req011_competence_pair_20260924.json`](../configs/v2_req011_competence_pair_20260924.json); `experiments/v2_agent/req011_pair.py`, `req011_entry.py`, `req011_grade.py`; 59 fixtures). **Authorized runs:** REQ-011 only. **Status:** a final pre-execution verification is running; launch follows immediately if the contemporaneous admission passes.
+
+- **Reuse without edits.**
+  - Episodes go through `cue_episode.run_episode` with `arm='baseline'`, from a new entry script. A new fixture shows byte-identical request bodies and messages to the frozen `pilot_episode` driver, with effective settings H24 / T0 / 1536 / 16384 / 60 s / 2 attempts / 900 s.
+  - That path brings the all-exit diagnostic, pre-dispatch receipts, Submitted-only `submission.diff` and supervised cleanup.
+  - Serving uses `pilot_runner.Servers`: a pre-launch GGUF sha256 check, foreign-process refusal and one server at a time.
+  - Grading uses `grade_identity.grade_flow` with a timed harness.
+- **Pre-execution review.** 5 launch blockers were found and fixed. The main fixes:
+  - a server watchdog that stops our llama-server if the orchestrator dies (tested with a real SIGKILL);
+  - the evaluator kept inside the grader's process group, so a cap kill reaches it;
+  - fixtures for source-binding fail-closed and for frozen parity.
+- **Declared rules (please confirm or overrule):**
+  1. **Schedule.** Episodes run first (14B, then 7B), the server is stopped, then grading runs. An episode starts only if its worst case, including load and cleanup, ends at least 900 s before the pair cap. A failed gate stops the pair; an unresolved episode does not.
+  2. **No non-task generation probes.** The served model is checked by GET only (`/props` model_path, alias, build `4fea119`, n_ctx 16384, 1 slot; `/v1/models`; listener PID). The 96-physical cap therefore covers agent requests only.
+  3. **Memory, also serving as the GPU rule on Apple Silicon.** At least 30 % free at admission, and at least 10 % free after the model loads. Static projection: weights + KV + 16 GiB VM ≤ RAM − 2 GiB (14B: 29.4e9 ≤ 32.2e9). **Swap is recorded but not gated.** Swap is currently about 10.8 of 12 GB used, so the 14B load is a real capacity risk; a failed post-load check BLOCKS the pair.
+  4. **"Nonblocking" interpretation.** The all-exit diagnostic, post-dispatch bookkeeping and cleanup never affect the endpoint, eligibility or grading. The *pre-dispatch* receipt stays blocking (no dispatch without a durable receipt) under your REQ-005 answer 1, with the disk reserve checked at admission.
+  5. **Inherited instrumentation labels.** The reused frozen helpers stamp receipts "DTR-REQ-005 / cue-v1" and write a silent baseline landmark. The REQ-011 manifest, ledger and summary are authoritative.
+  6. **Semantics differences vs the frozen driver:** physical requests = sends; tokens are the server-reported counts (unknown stays null); `submission.diff` is written before the diagnostic.
+- **Single shot.** A BLOCKED admission or an interrupted assignment is published as-is, with no rerun and no substitution.
