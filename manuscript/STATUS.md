@@ -1,3 +1,14 @@
+**24 September 2026, REQ-007 integration:** the 38-page manuscript now adds the retrospective
+TRAIN-only matched-class routing diagnostic to Section 11 and the discussion. Under the frozen
+one-standard-error rule, both selected routers refit to the same small--large--large schedule;
+there is no demonstrated history-aware versus prompt-only policy contrast on this benchmark.
+The 183/924 second-decision occupancy and no untouched task pool constrain a prospective E2 test.
+The original coding outcomes and unfavorable comparisons remain unchanged. The paper build is clean,
+and affected pages 28 and 35 were visually checked; see [validation_20260924_req007.json](validation_20260924_req007.json).
+No new model inference, Monte Carlo or mathematical claim. Full-project readiness **55%, change
+0 percentage points, judgment range 45--65%**; fresh comparative evidence/fixed-target inference,
+final empirical synthesis, and independent reproducibility/metadata/package remain.
+
 **23 September 2026 component-review cycle:** manuscript source/PDF and formal claims unchanged.
 REQ-005 instrumentation and retrospective call-label corrections are implementation evidence, not
 new cue outcomes or paper results. Current paper validation remains `validation_20260923_pilots.json`.

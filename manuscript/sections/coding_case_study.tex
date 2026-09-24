@@ -85,6 +85,17 @@ counterfactual claim that additional calls would correct those failures. A diffe
 would define a new harness and require a prospective evaluation; hidden verification cannot become a deployed
 stopping signal. The present data are retained in full, including zero-check tasks.
 
+As a retrospective development diagnostic, we compared two candidate routing classes with the same initial
+small-model call and the same frozen success-minus-call-penalty objective. Of 924 initial-small episodes on the
+231 training tasks, only 183 (19.8\%) reached a second eligible decision. The candidates were prompt-only and
+history-aware trees of depth at most two at each subsequent decision; task-level training/validation separation
+and a one-standard-error complexity rule selected depth zero for both. Refit on all training tasks at that selected
+depth, both take the same small--large--large eligible-stage schedule and disagree at none of the 309 observed,
+supported second- or third-decision histories. Deeper fitted trees can disagree on these records, but the selected
+comparison has no history-dependent treatment contrast. This analysis reuses development tasks, has no untouched
+task in the existing benchmark, and is neither a fresh-policy effect estimate nor evidence that no useful
+history-aware policy exists. It strengthens the design diagnosis, while leaving the original live outcomes intact.
+
 \subsection{Offline/live discrepancies and their unresolved interpretation}
 Table~\ref{tab:coding-calibration} retains every live policy in the offline/live comparison. Offline entries are
 the archived three-fold task-split DR estimates; the class-tailored estimate and its original fitting procedure
