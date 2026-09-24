@@ -1,12 +1,12 @@
-# Thirty-minute experiment and theory coordination
+# Experiment and theory coordination
 
-**Author instruction, 21 September 2026 UTC:** the experiment agent has been asked to accelerate its authorized work, publish results/progress every half hour and retrieve new scientific feedback. The theory lead's existing recurring job is now active every 30 minutes, at minute 18 and 48. The worker reported its job at minute 13 and 43 in `1c9025d`, leaving a five-minute publication lag before review. The worker's scheduler is reported, not independently inspected on its host; actual publication freshness will be checked.
+**Current author instruction, 24 September 2026 UTC:** the experiment agent may continue its separately authorized half-hour publication cadence. The theory lead's recurring check is now every **three hours at minute 18**. The worker reported slots at minutes 13 and 43 in `1c9025d`, leaving a nominal five-minute lag after the minute-13 slot; the worker's scheduler is reported, not independently inspected on its host. Actual publication freshness will be checked. Material scientific corrections should be published when found, without waiting for the next scheduled check.
 
 ## Shared channel and ownership
 
 Use [issue #4](https://github.com/ykzeng-yale/DTR-AgentEvals/issues/4), [experiment handoff](experiment_handoff.md) and [worker progress](../experiments/PROGRESS.md). If the worker cannot access issues, committed handoff/progress files are the authoritative exchange, and the lead relays their contents to #4. Read new commits and the latest request acknowledgements before doing work. Preserve concurrent changes and publish directly to main; no PRs, force pushes or rewritten archives. Author and committer: Yukang Zeng <ykzeng2019@gmail.com>.
 
-The experiment worker executes and reports its authorized work. The lead owns target, design, metric, comparator, inference and interpretation decisions. The theory task's compute deferral must not block the separately authorized experiment workstream or trigger duplicate jobs. Existing scientific gates still apply: the v2 design is not frozen for confirmation until its specified task, resource, precision and analysis choices are recorded. Do not purchase compute or change budgets implicitly.
+The experiment worker executes and reports its authorized work. The lead owns target, design, metric, comparator, inference and interpretation decisions. The lead may now run bounded local development diagnostics when validated code, available disk/compute, isolation, a resource cap and non-overlap with worker jobs are established; prefer deterministic CPU checks. This is not authorization for duplicate jobs, paid services, outcome-driven CONFIRM tuning or a held live/CONFIRM stage. Existing scientific gates still apply: the v2 design is not frozen for confirmation until its specified task, resource, precision and analysis choices are recorded.
 
 ## Worker checkpoint every 30 minutes
 
@@ -19,11 +19,11 @@ Publish completed, immutable result batches as available; a long job need not fi
 
 For ongoing CONFIRM collection, publish counts, execution health and protocol deviations. Do not expose interim outcomes for policy/metric tuning or change stopping based on them; any inferential interim analysis must already be part of the frozen protocol. Completed CONFIRM outcomes remain immutable and may motivate a separately labeled development study.
 
-## Lead response every 30 minutes
+## Lead response every three hours
 
 Review new batches and unanswered questions first. Give a reasoned verdict: **proceed**, **repair**, **hold a new stage**, or **inconclusive**. Specify which evidence supports it and which assumption remains unverified. A hold applies to the named next stage, not a blanket interruption of separately authorized jobs. Inspect unfavorable and unexpectedly favorable findings for target mismatch, weak feedback/power, unsuitable comparators/metrics, restricted learners, implementation/inference defects and theory limitations.
 
-For each actionable request provide a stable ID, priority, hypothesis/target, source commit, discriminating next check and acceptance criterion. Carry unchanged IDs forward instead of duplicating the backlog. Publish a material correction during the current review rather than waiting for another cycle. If there is no new evidence, post a short unchanged checkpoint; continue useful bounded theory/manuscript work. A scheduling interval is not a guarantee of an exact completion time.
+For each actionable request provide a stable ID, priority, hypothesis/target, source commit, discriminating next check and acceptance criterion. Carry unchanged IDs forward instead of duplicating the backlog. Publish a material correction during the current review rather than waiting for another cycle. If there is no new evidence, post a short unchanged checkpoint and make one bounded, verifiable contribution where feasible: a theory/manuscript correction, independent evidence audit or eligible local development diagnostic. Do not invent progress. A scheduling interval is not a guarantee of an exact completion time.
 
 ## Existing requests, now assigned stable IDs
 
