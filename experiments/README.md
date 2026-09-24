@@ -46,7 +46,10 @@ from unverified raw execution identity. They correct attempted-write/testing/wor
   upgrade cannot replace the checkout, tests run offline). The single 7B probe with the repaired configuration
   submitted after 3 calls, but only its reproducer script; the strict grade is **unresolved** (target test failing,
   175/175 regression tests passing) ([summary](../results/v2_agent/req012_repair_probe_20260924/probe/pair_summary.json)).
-  The next step belongs to the lead.
+  Lead-reviewed: gate accepted, probe unresolved ([`702e58a`](../docs/theory_feedback_20260924_req012_decision.md)).
+- **Current request: DTR-REQ-013 (P0).** Step 1 is no-model: transcript reconciliation, 14B repair1 binding fixtures
+  and a watchdog check on this host. Step 2 is one 14B repair1 episode if every gate passes, including a new
+  ≥ 4 GiB free-swap gate. Step 2 is currently **BLOCKED for capacity** (about 0.36 GiB swap free).
 
 **Readiness 55%, change 0 points, range 45–65%.** Useful validated inference/adequate comparisons,
 final empirical synthesis, and independent reproducibility/metadata/package remain.

@@ -5416,3 +5416,36 @@ Records: [`pair_summary.json`](results/v2_agent/req011_competence_20260924/pair_
 **Decision:** [lead review and exact acceptance criteria](theory_feedback_20260924_req012_decision.md). REQ-012 is completed: the no-model repair gate passed on the worker host, but the single 7B DEVELOPMENT probe submitted only a reproducer and graded unresolved (F2P 0/1, P2P 175/175). It does not demonstrate repair competence. The worker's fingerprint masking and 300 s load/900 s grading schedule are acceptable for this bounded development design; neither was tested as an efficacy mechanism by the three-call probe. Keep new E2 live/CONFIRM and cue-v1 on **HOLD**. Preserve earlier failures and the current strict endpoint.
 
 **DTR-REQ-013 P0:** first reconcile the saved REQ-012 patch/grade and verify the current-host watchdog SIGKILL/command-identity fixture without model calls. Then, only if it passes and fresh source/image, peer, disk, memory and **at least 4 GiB unused swap** gates pass, run **one** 14B repair1 DEVELOPMENT episode on the already exposed Astropy issue, with unchanged prompt/guard/24-call/48-physical/Submitted-only settings and one-hour cap. No other model, task or prompt variant follows automatically. Record any capacity block or operational zero as such; return to the lead before expansion. A resolved source patch would be single-task development feasibility only. A failure ends this local model-pair competence path pending a different demonstrated-capable executor or benchmark design. Acknowledge REQ-012 completed and REQ-013 accepted/running/completed/blocked/superseded with exact artifact/commit. Use Yukang Zeng <ykzeng2019@gmail.com> for both Git author and committer.
+
+## Worker checkpoint — 2026-09-24T19:46:55Z (host `date -u`; local 15:46 EDT) — lead `702e58a` acknowledged: REQ-012 completed; DTR-REQ-013 accepted; the live 14B episode is currently BLOCKED for capacity (swap gate)
+
+**Read:** [lead REQ-012 decision](theory_feedback_20260924_req012_decision.md) (19:22Z) and issue #4 up to 19:24:11Z. **Code/config commit:** `8bcca8a`. **Authorized runs:** DTR-REQ-013 only: the no-model step 1, then one 14B episode only if every gate passes.
+
+- **DTR-REQ-012:** **completed and inspected**. The gate was accepted; the probe is **unresolved, not a success**. I will not count its eligible submission as resolved.
+- **DTR-REQ-013 (P0): accepted.**
+  - **Step 1 (no model) is running now:**
+    - (a) reconcile the saved three-call transcript, the exact test-only diff and the strict grade;
+    - (b) deterministic fixtures proving that the 14B assignment gets the identical repair1 prompt, environment and guard binding;
+    - (c) re-run the watchdog command-identity / SIGKILL fixture on this host and report the observed live-versus-recorded command comparison, failing closed.
+  - **Step 2 (one 14B episode) is BLOCKED for capacity as of now.** `vm.swapusage` reads `total = 15360.00M  used = 14994.44M  free = 365.56M  (encrypted)`. That is about 0.36 GiB unused against your ≥ 4 GiB gate, while physical memory is 65 % free. No job will be killed or interrupted and no substitute will start.
+- **Measurement note for your decision.** On macOS the pager grows swap files on demand, and `vm.swapusage` "free" is only the unused part of the files already allocated. It may therefore not rise above 4 GiB without a restart or an owner action, even when physical memory is ample.
+  - My proposal: keep `vm.swapusage` free ≥ 4 GiB as the literal gate, re-check it read-only at each tick, and launch only if every gate passes then, under your pre-registered release rule.
+  - Please confirm this, or define the capacity measure differently.
+
+| Request | Status | Artifact |
+|---|---|---|
+| DTR-REQ-013 (P0) | **accepted; step 1 (no model) running; step 2 BLOCKED for capacity (swap 0.36 GiB free < 4 GiB)** | next commits |
+| DTR-REQ-012 (P0) | completed/inspected: gate accepted; probe unresolved | `dc11e63`, `8bcca8a`, `702e58a` |
+| DTR-REQ-011 (P0) | completed: 0 of 2 eligible | `2714fda`, `6074003`, `40b4db2` |
+| DTR-REQ-010 (P0) | completed/inspected | `7805d8b`, `10be146` |
+| DTR-REQ-009 (P0) | completed/inspected | `eba48b5`, `3a1b3e1` |
+| DTR-REQ-008 (P0) | completed/inspected | `63a0b49`, `eb6027d` |
+| DTR-REQ-007 (P0) | completed/inspected; E2 live/CONFIRM on HOLD | `35c4f52`, `497c20b` |
+| DTR-REQ-006 (P0) | completed, lead-reviewed; INCONCLUSIVE | `88b3e6b`, `3911aee` |
+| DTR-REQ-005 (P0) | completed as no-model instrumentation; live cue deferred | `3f1fa73`, `98bc75d` |
+| DTR-REQ-004 (P0) | completed historically | `22c4a82` |
+| DTR-REQ-003 (P0) | scoped reporting completed; sampling held | — |
+| DTR-REQ-002 (P1) | completed; Django deferred | `2874246` |
+| DTR-REQ-001 (P0) | completed | — |
+
+**Cadence:** job `c710b12b`, ticks at about :15/:45 UTC, session-only; I publish on change.
