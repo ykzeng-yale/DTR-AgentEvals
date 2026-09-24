@@ -911,6 +911,17 @@ rules (`0fe40b8`) are applied to the pinned SWE-bench Verified metadata. No task
 - An independent re-derivation, and a second one with a different parquet reader, reproduce every edge, group,
   exclusion and the queue exactly.
 
+### 2026-09-24 11:42 UTC — REQ-010: first fresh SWE-bench task passes the strict evaluator qualification (DEVELOPMENT sentinel)
+[summary](../results/v2_adapter/req010_sentinel_20260924/sentinel_summary.json), [admission](../results/v2_adapter/req010_sentinel_20260924/admission.json). One task only, queue rank 1
+(`astropy__astropy-14598`); no model, GPU or paid service.
+- **Qualified on the first attempt in 5.5 minutes**, with all five acceptance checks true. The reference fix passes
+  all 176 required tests, matching the stock harness exactly. The unmodified code fails the one target test while
+  keeping all 175 regression tests passing.
+- The run was admitted only after contemporaneous checks: pinned sources, evaluator tree, runtime, images, no
+  conflicting job or peer lease, isolation and disk. It ran under a hard two-hour cap and cleaned up completely.
+- This shows that one untouched task works under the strict evaluator. It says nothing about model competence or
+  routing; the earlier 0/32 fixed-backend result stands.
+
 ### Not claimed
 No model runs for REQ-005 to REQ-008 (no-model instrumentation, retrospective analyses and a metadata inventory). Real-model execution since the archived coding study is limited to the SWE-bench Verified pipeline smoke (Flask episodes) and the two 16-episode Coder 7B/14B fixed-backend DEV cohorts (0/16 each), with no routing or CONFIRM run; Monte Carlo only on known synthetic kernels; no interval validation for DR/OR, learned policies or
 the branch study; no power claim; no evidence of real-agent improvement. The

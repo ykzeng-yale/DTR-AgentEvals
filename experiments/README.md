@@ -34,9 +34,10 @@ from unverified raw execution identity. They correct attempted-write/testing/wor
   near-duplicate component screen leaves 412 candidates, and a reproducible 24-ID design queue spans 11 repositories
   ([record](../docs/req009_component_queue.md)). It is for qualification planning only; no task is run, none is
   qualified, and it releases no stage. Lead-reviewed and accepted ([`20246b8`](../docs/theory_feedback_20260924_req009_decision.md)).
-- **Current request: DTR-REQ-010 (P0)**, one DEVELOPMENT evaluator-qualification sentinel on queue rank 1 only
-  (stock gold / adapter reference / adapter no-change controls). No model or GPU is used; there is a two-hour cap
-  and contemporaneous admission checks. If admission fails, the request is blocked and no other task is substituted.
+- **DTR-REQ-010 (P0) is completed: queue rank 1 (`astropy__astropy-14598`) QUALIFIED** under the strict evaluator
+  controls (all five acceptance keys true, 330 s, no retry; `7805d8b` + publication commit;
+  [summary](../results/v2_adapter/req010_sentinel_20260924/sentinel_summary.json)). This is evaluator qualification
+  only, not model competence. The next step is the lead's bounded fixed-backend competence check.
 
 **Readiness 55%, change 0 points, range 45–65%.** Useful validated inference/adequate comparisons,
 final empirical synthesis, and independent reproducibility/metadata/package remain.

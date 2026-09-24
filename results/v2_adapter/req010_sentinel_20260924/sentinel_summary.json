@@ -1,0 +1,67 @@
+{
+ "request": "DTR-REQ-010",
+ "target": "astropy__astropy-14598",
+ "status": "QUALIFIED",
+ "interrupted_or_error": null,
+ "attempts": [
+  {
+   "attempt": 1,
+   "dir": "astropy__astropy-14598/attempt-1-20260924T113537Z",
+   "summary_sha256": "d85a9f75bc26804a285e4040217c243807e0b817a0d594230686654271645464",
+   "qualified": true,
+   "stage_failed": null,
+   "stock_failure": null,
+   "acceptance": {
+    "pins_and_script_hashes_agree": true,
+    "stock_reference_required_test_maps_agree": true,
+    "stock_reference_strict_outcomes_agree": true,
+    "reference_passes_required_tests": true,
+    "no_change_meets_rule": true
+   },
+   "cleanup_remaining": [],
+   "kill": null
+  }
+ ],
+ "admission_sha256": "04788ab994d67245793f81c4cb58b9f0c00c4084d019dba8238d3b1bca2c8e09",
+ "started_utc": "2026-09-24T11:35:35Z",
+ "finished_utc": "2026-09-24T11:41:05Z",
+ "wall_seconds": 330.4,
+ "cap_seconds": 7200,
+ "within_cap": true,
+ "cleanup_complete": true,
+ "process_groups_confirmed_gone": true,
+ "disk_before": {
+  "vm_free_gib": 81.4,
+  "host_free_gib": 86.2,
+  "min_vm_gib": 20,
+  "min_host_gib": 15
+ },
+ "disk_after": {
+  "vm_free_gib": 81.2,
+  "host_free_gib": 89.2,
+  "min_vm_gib": 20,
+  "min_host_gib": 15
+ },
+ "images_after": {
+  "base": {
+   "key": "sweb.base.py.x86_64:latest",
+   "present": true,
+   "digest": "sha256:f7d1dba08fbc14f5232016debb02d9ace25c84e2a088ec8ec6c776fc3c2f07d5",
+   "arch": "amd64"
+  },
+  "env": {
+   "key": "sweb.env.py.x86_64.7d2281f8cd4608b2972430:latest",
+   "present": true,
+   "digest": "sha256:ee4f7d3a3ec176acd95cadc6aaa7712e047f347091f3536784933dfffe9d9cfa",
+   "arch": "amd64"
+  },
+  "instance": {
+   "key": "sweb.eval.x86_64.astropy__astropy-14598:latest",
+   "present": true,
+   "digest": "sha256:ff1716c2ea207eeb3b717cd5deb3213f923f4d445234edd9a53d035dce834997",
+   "arch": "amd64"
+  }
+ },
+ "adapter_retry_rule": "the reused control adapter (control_adapter.py, unchanged) retries once, identically, on a timeout or a missing/unparsable report; its invalid-completion branch cannot be reached with the pinned get_logs_eval (found=False always comes with an empty map). The stock harness writes report.json for logs with bad codes, which is not retried.",
+ "scope": "one DEVELOPMENT evaluator qualification; no model, GPU or paid service; qualifies at most this issue, image and environment; releases no competence pilot"
+}

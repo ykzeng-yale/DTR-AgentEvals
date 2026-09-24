@@ -5092,3 +5092,64 @@ The author also permits a bounded local DEVELOPMENT experiment on the lead host 
 | DTR-REQ-001 (P0) | completed | — |
 
 **Cadence:** job `c710b12b`, ticks at about :15/:45 UTC, session-only; I publish on change. **Next observed publication:** the driver and admission record, then the sentinel result.
+
+## Worker checkpoint — 2026-09-24T11:42:36Z (host `date -u`; local 07:42 EDT) — DTR-REQ-010 completed: `astropy__astropy-14598` QUALIFIED (one DEVELOPMENT evaluator sentinel)
+
+**Read:** lead `20246b8`; no lead activity since. **Code commit executed:** `7805d8b` (driver `experiments/v2_adapter/req010_sentinel.py`, 44 tests). The executed evaluator tree was verified against the pinned `f7bbbb2` tarball (660 of 660 files). **Authorized runs:** this one only, now finished; nothing is running.
+
+**Admission, recorded at launch (11:35:35Z), 7 of 7 passed** ([`admission.json`](results/v2_adapter/req010_sentinel_20260924/admission.json)):
+- REQ-009 binding: queue sha256 `d19efbc4…`, with rank 1 = the target.
+- Exact source and lock hashes: dataset `a45b1fe4…`, M01 `cee2e876…`, lock `3997c202…` equal to the venv freeze, evaluator tarball `b36fe073…`, and all control sources tracked and unchanged.
+- Colima vz, with Rosetta binfmt enabled and qemu-x86_64 disabled. Base and env images present and amd64.
+- No conflicting process, no listener on the watched ports, no leftover containers and no pause file.
+- Peer: DTR-MultiRoundLLM lease "none", status 11:09Z, local clone equal to the remote head, and no window record reaching the future.
+- Isolation: the adapter's container creation has no mounts, environment variables or privileges. The child environment was scrubbed of credential-like variables (names recorded, no values). The containers used the default bridge network.
+- Disk: 81.4 GiB free in the VM and 86.2 GiB on the host.
+
+**Result ([summary](results/v2_adapter/req010_sentinel_20260924/sentinel_summary.json); [attempt record](results/v2_adapter/req010_sentinel_20260924/astropy__astropy-14598/attempt-1-20260924T113537Z/summary.json)).** **QUALIFIED on attempt 1, with no retry.** All five `bae161f` acceptance keys are true:
+
+| Key | Evidence (from the committed receipts) |
+|---|---|
+| pins_and_script_hashes_agree | TestSpec, stock `eval.sh`, reference and no-change eval scripts all `caabde10…` = M01 |
+| stock_reference_required_test_maps_agree | 0 differences over 176 required tests |
+| stock_reference_strict_outcomes_agree | stock strict `resolved`; the harness report has FAIL_TO_PASS 1/1 and PASS_TO_PASS 175/175 successes |
+| reference_passes_required_tests | reference: all 176 PASSED |
+| no_change_meets_rule | no-change: the FAIL_TO_PASS test FAILED and all 175 PASS_TO_PASS tests PASSED |
+
+- **Images:**
+  - base `f7d1dba0…` and env `ee4f7d3a…`, the same as the earlier Astropy qualification;
+  - new instance image `ff1716c2…`, built locally with `--namespace none`;
+  - all amd64.
+- **Timing:** 330.4 s end to end, of which 188 s was the stock run. That is well inside the 7,200 s cap.
+- **Disk:** VM free went from 81.4 to 81.2 GiB.
+- **Cleanup:** no sentinel container remained, and no process remained.
+- **Published receipts** (sanitized; 0 hits for the username or local paths; none git-ignored):
+  - the stock report, `eval.sh`, patch, run log and test output;
+  - the instance build log;
+  - the adapter reference and no-change outputs.
+  - Raw copies and the run-level harness report stay under git-ignored `work/runs`, with their sha256 recorded.
+- **Scope:** this qualifies only this issue, image and environment. It is not model competence or a routing result, and it releases no competence pilot. The 0/32 fixed-backend DEV record stands.
+
+**Pre-execution review (disclosed):**
+- Two adversarial reviews found 20 issues and then 4 launch blockers. All were fixed before execution. The main ones:
+  - the cap now holds even if the parent dies (child watchdog plus container backstop);
+  - the peer lease and window records are read live;
+  - retries are limited to a stock timeout or missing report;
+  - waits use the wall clock;
+  - receipts are sanitized and hashed.
+- The process-conflict probe was tightened from substring matching to argv tokens after a transient false positive, a sibling unit-test process. Also recorded: the reused adapter's invalid-completion retry branch cannot be reached with the pinned parser.
+
+| Request | Status | Artifact |
+|---|---|---|
+| DTR-REQ-010 (P0) | **completed: QUALIFIED** (one DEVELOPMENT evaluator sentinel) | `7805d8b` + this commit |
+| DTR-REQ-009 (P0) | completed/inspected | `eba48b5`, `3a1b3e1`, `20246b8` |
+| DTR-REQ-008 (P0) | completed/inspected | `63a0b49`, `eb6027d`, `0fe40b8` |
+| DTR-REQ-007 (P0) | completed/inspected; E2 live/CONFIRM on HOLD | `35c4f52`, `497c20b` |
+| DTR-REQ-006 (P0) | completed, lead-reviewed; INCONCLUSIVE | `88b3e6b`, `3911aee` |
+| DTR-REQ-005 (P0) | completed as no-model instrumentation; live cue deferred | `3f1fa73`, `98bc75d` |
+| DTR-REQ-004 (P0) | completed historically | `22c4a82` |
+| DTR-REQ-003 (P0) | scoped reporting completed; sampling held | — |
+| DTR-REQ-002 (P1) | completed; Django deferred | `2874246` |
+| DTR-REQ-001 (P0) | completed | — |
+
+**Question (your decision):** you said you would choose the bounded fixed-backend competence check that addresses the 0/32 failure once this sentinel is reviewed. No other queued task has been touched. **Cadence:** job `c710b12b`, ticks at about :15/:45 UTC, session-only; I publish on change.

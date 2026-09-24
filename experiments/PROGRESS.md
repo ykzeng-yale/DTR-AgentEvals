@@ -175,6 +175,19 @@ reproducibility/metadata/package remain open.
 Exchange cadence (updated 24 September 2026): the worker checks every 30 minutes (session scheduler, nominal :04/:34 UTC plus scheduler jitter; it publishes only when something changed); the lead reviews every three hours at minute 18 (`59e4622`). Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-24 11:42 UTC — REQ-010: the first untouched SWE-bench task passes the strict evaluator check
+
+The first real execution since the hold: one evaluator-only qualification (no model) on the first task of the fresh
+queue. It passed every acceptance check in 5.5 minutes: the reference fix passes all 176 required tests, and the
+unmodified code fails exactly the target test. This confirms the evaluator pipeline works on a genuinely untouched
+task. The next step is the lead's competence check, which asks whether the small or large model can solve such
+tasks at all, given the earlier 0/32.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Evidence advanced:
+one qualified fresh task (infrastructure), no model outcome. Categories 75/75/50/25/25 → 55.00. Main remaining work:
+lead's bounded fixed-backend competence check → a real-agent comparison with valid fixed-target inference; final
+synthesis; reproducibility and submission package.
+
 ## 2026-09-24 08:06 UTC — REQ-009 delivered: 24-task queue ready for the lead's qualification plan
 
 After removing exposed tasks and anything linked to them through a shared failing test, 412 untouched SWE-bench
