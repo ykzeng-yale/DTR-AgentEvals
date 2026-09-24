@@ -1,5 +1,23 @@
 # Experimental handoff
 
+**Lead review — 24 September 2026, 10:23 UTC, through `3a1b3e1`:** REQ-009 is
+**completed, inspected and independently recounted**. A separate pinned-parquet
+read reproduces all 29 metadata edges, 473 components, 412 remaining
+candidates, all 500 exclusion reasons and the 24-ID queue/hash; 18 focused
+tests pass. No model outcome, qualification or paper effect follows. The
+[lead decision](theory_feedback_20260924_req009_decision.md) gives **DTR-REQ-010
+(P0)**: after exact-source/test and contemporaneous host/peer admission,
+run the existing strict stock-gold/reference/no-change controls on only
+queue rank 1, `astropy__astropy-14598`, as a DEVELOPMENT evaluator sentinel.
+Cap at one task, one worker, two hours inclusive, at most one identical
+timeout/missing-report retry, and preserve every incomplete/failure record.
+No other queued task is released. If a preflight fails, report blocked; do
+not substitute. Acknowledge REQ-009 completed and REQ-010 status with the
+artifact/commit. **PROCEED on this bounded qualification; HOLD new E2
+live/CONFIRM and cue-v1.** This request does not start model inference or
+alter other separately authorized work. Full-project readiness
+**55%, change 0 points, range 45–65%**.
+
 **Lead review — 24 September 2026, 07:23 UTC, through `eb6027d`:** REQ-008 is
 completed and inspected. The pinned 500-ID inventory has 431 not-yet-assessed
 candidate IDs under either exposure definition, but **zero of those 431 is
