@@ -1,0 +1,132 @@
+{
+ "kind": "all-exit diagnostic capture: evidence only, never a submission and never graded",
+ "request": "DTR-REQ-005",
+ "binding": "xc1",
+ "exit_status": "LimitsExceeded",
+ "workdir": "/testbed",
+ "endpoint": {
+  "writes_submission_diff": false,
+  "marks_submitted": false,
+  "graded": false,
+  "changes_eligibility": false,
+  "changes_endpoint_bytes": false,
+  "output_file": "exit_diagnostic.json"
+ },
+ "base_tree": "1ac67f99c165ff7ac38a8079ff8318ec829b0a72",
+ "base_tree_state": "recorded",
+ "caps": {
+  "status_bytes": 65536,
+  "diff_bytes": 262144,
+  "untracked_list_bytes": 65536,
+  "untracked_paths": 64,
+  "untracked_content_files": 16,
+  "untracked_file_bytes": 32768,
+  "path_chars": 512,
+  "command_log": 64
+ },
+ "caps_error": null,
+ "per_command_timeout_s": 60,
+ "per_command_timeout_enforced_by": "injected executor",
+ "total_budget_s": 25.999824047088623,
+ "exclusions": [
+  "gitignored paths (excluded by `git add -A` under the private index and by `--exclude-standard`)",
+  "anything outside the container workdir",
+  "untracked directories are represented by their files only",
+  "untracked non-regular files (sockets, symlinks, directories) get no digest or contents",
+  "binary untracked contents are omitted; the full-content digest is still recorded",
+  "contents/paths beyond the recorded caps are counted but not recorded"
+ ],
+ "captured_at": 1790264685.4825668,
+ "status": "no_change",
+ "changes_observed": false,
+ "sections": {
+  "tree": {
+   "state": "captured",
+   "sha": "1ac67f99c165ff7ac38a8079ff8318ec829b0a72",
+   "reason": null,
+   "incomplete_reason": null
+  },
+  "status": {
+   "state": "no_change",
+   "reason": null,
+   "text": "",
+   "full_bytes": 0,
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "digest_scope": "sha256 over the FULL in-container body before truncation, not over the recorded text",
+   "truncated": false,
+   "cap_bytes": 65536,
+   "recorded_chars": 0,
+   "container_preamble": null,
+   "incomplete_reason": null
+  },
+  "diff": {
+   "state": "no_change",
+   "reason": null,
+   "text": "",
+   "full_bytes": 0,
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "digest_scope": "sha256 over the FULL in-container body before truncation, not over the recorded text",
+   "truncated": false,
+   "cap_bytes": 262144,
+   "recorded_chars": 0,
+   "container_preamble": null,
+   "incomplete_reason": null,
+   "mode": "tree_to_tree",
+   "base_tree": "1ac67f99c165ff7ac38a8079ff8318ec829b0a72",
+   "final_tree": "1ac67f99c165ff7ac38a8079ff8318ec829b0a72"
+  },
+  "untracked": {
+   "paths": [],
+   "n_paths": 0,
+   "n_recorded": 0,
+   "n_with_content": 0,
+   "n_with_digest": 0,
+   "paths_complete": true,
+   "cap_list_bytes": 65536,
+   "cap_paths": 64,
+   "cap_content_files": 16,
+   "cap_file_bytes": 32768,
+   "list_truncated": false,
+   "path_cap_reached": false,
+   "partial_path_dropped": false,
+   "n_paths_is_lower_bound": false,
+   "incomplete_reason": null,
+   "container_preamble": null,
+   "state": "no_change",
+   "reason": null
+  }
+ },
+ "commands": [
+  {
+   "label": "tree",
+   "state": "ok",
+   "returncode": 0,
+   "seconds": 0.522626
+  },
+  {
+   "label": "status",
+   "state": "ok",
+   "returncode": 0,
+   "seconds": 0.451201
+  },
+  {
+   "label": "diff",
+   "state": "ok",
+   "returncode": 0,
+   "seconds": 0.325243
+  },
+  {
+   "label": "untracked_list",
+   "state": "ok",
+   "returncode": 0,
+   "seconds": 0.313022
+  }
+ ],
+ "failures": [],
+ "dropped_log_entries": 0,
+ "capture_error": null,
+ "write": {
+  "state": "attempted",
+  "file": "exit_diagnostic.json"
+ }
+}

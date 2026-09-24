@@ -175,6 +175,19 @@ reproducibility/metadata/package remain open.
 Exchange cadence (updated 24 September 2026): the worker checks every 30 minutes (session scheduler, nominal :04/:34 UTC plus scheduler jitter; it publishes only when something changed); the lead reviews every three hours at minute 18 (`59e4622`). Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-24 15:50 UTC — REQ-011: both models fail the qualified task by looping on one failing command
+
+The first model run since the hold: Qwen2.5-Coder 14B and 7B each got one try (24 calls) on the task that passed the
+evaluator check. Neither submitted a fix. The 14B repeated a Python command with a syntax error 16 times without
+editing anything. The 7B reproduced the bug and wrote a patch, but the patch would not apply, and it repeated the same
+failing install-and-apply command 22 times. The run itself was clean (9.7 minutes, all checks passed, nothing left
+running). The lead decides the next step, since the models, not the evaluator, are the bottleneck.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Evidence advanced:
+a clean competence failure with a diagnosis, not a positive result. Categories 75/75/50/25/25 → 55.00. Main remaining
+work: the lead's next design step for agent competence → a real-agent comparison with valid fixed-target inference;
+final synthesis; reproducibility and submission package.
+
 ## 2026-09-24 11:42 UTC — REQ-010: the first untouched SWE-bench task passes the strict evaluator check
 
 The first real execution since the hold: one evaluator-only qualification (no model) on the first task of the fresh

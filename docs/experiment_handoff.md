@@ -5227,3 +5227,72 @@ The author also permits a bounded local DEVELOPMENT experiment on the lead host 
   5. **Inherited instrumentation labels.** The reused frozen helpers stamp receipts "DTR-REQ-005 / cue-v1" and write a silent baseline landmark. The REQ-011 manifest, ledger and summary are authoritative.
   6. **Semantics differences vs the frozen driver:** physical requests = sends; tokens are the server-reported counts (unknown stays null); `submission.diff` is written before the diagnostic.
 - **Single shot.** A BLOCKED admission or an interrupted assignment is published as-is, with no rerun and no substitution.
+
+## Worker checkpoint — 2026-09-24T15:50:45Z (host `date -u`; local 11:50 EDT) — DTR-REQ-011 completed: 0 of 2 eligible submissions; both arms hit the 24-call limit in repetition loops
+
+**Code executed:** `fbac0ac` (runner `2714fda`). The run started at 15:38:34Z and finished at 15:48:15Z: **580.9 s, within the 7,200 s cap**. **Admission at launch: 9 of 9 passed**:
+- manifest `3ff94cf3…`;
+- tracked, unchanged sources and the evaluator tree;
+- runtime and Rosetta;
+- all three image pins;
+- conflicts plus the live peer lease "none";
+- isolation;
+- disk (VM 81.2, host 83.5 GiB);
+- both GGUFs and the llama.cpp tool hashes;
+- memory (47 % free).
+
+Records: [`pair_summary.json`](results/v2_agent/req011_competence_20260924/pair_summary.json), [`admission.json`](results/v2_agent/req011_competence_20260924/admission.json), `ledger.jsonl`, and both run directories with trajectories, attempts, public receipts, the exit diagnostic and the terminal phase. There are 143 sanitized files, with 0 username or path hits; private raw request bodies stay under `work/`.
+
+| | 14B (`large`, 8293) | 7B (`small`, 8291) |
+|---|---|---|
+| exit | `LimitsExceeded` (24 of 24 logical calls) | `LimitsExceeded` (24 of 24) |
+| physical requests | 24 (no retries) | 24 (no retries) |
+| server-reported tokens (prompt / completion) | 104,408 / 2,972 | 174,677 / 2,247 |
+| episode wall | 345 s | 179 s |
+| submission | none (empty `submission.diff`) | none |
+| eligible / strict grade | no / operational zero, not evaluated | no / operational zero, not evaluated |
+| call 9 reached | yes: 8 prior calls and attempts, 40 requests of budget left, 87.6 s after the first request | yes |
+| all-exit workspace diagnostic | **no change** | **2 untracked files** (`test_fits_cards.py`, `fix_fits_cards.patch`); **no source file edited** |
+| receipts | complete; frozen-path parity unchanged | complete; parity unchanged |
+
+- **Pair totals:** 48 logical and 48 physical requests (caps 48 and 96), and 0 non-task generation requests.
+- **Serving:** served identity was verified after each load (`/props`: model path, alias, build `b11041`, n_ctx 16384, 1 slot; `/v1/models`; listener PID).
+- **Cleanup:** both servers stopped, and the watchdog stood down. Every agent container was removed and none is listed afterwards. The ownership record is released.
+- **Memory:** swap rose from 10.8 to 14.2 of 14.3 GB during the 14B load. The post-load memory check passed; this is recorded as a capacity observation.
+
+**Your pre-stated rule:** neither arm submitted a nonempty eligible patch, so **task/harness competence on this pair is FAILED**. Per your decision I stop here and return to you before expanding tasks or call limits.
+
+**Descriptive evidence for the diagnosis** (facts from the published trajectories and diagnostic; no interpretation):
+- **14B:**
+  - Calls 1–8 explored the repository and packages, including an `ls` of a non-existent `/path/to/astropy` and, at call 8, `pip install --upgrade astropy`, which returned rc 0.
+  - Calls 9–24 were the **identical `python -c` reproduction command, 16 times**. Each attempt failed with `SyntaxError: invalid syntax`, because the one-liner places a `for` statement after `;`.
+  - It made no edits and no submit attempt. Return codes: 17 of 24 were 1.
+- **7B:**
+  - Call 1 wrote and ran a reproduction script, which **reproduced the reported bug** (value mismatch at n = 65 and 67).
+  - Call 2 wrote its own patch file; `git apply` failed ("patch failed: astropy/io/fits/card.py:100").
+  - Calls 3–24 were the **identical `pip install --upgrade astropy` plus `git apply fix_fits_cards.patch`, 22 times**. The patch never applied, so no source edit was made and nothing was submitted.
+- **An environment observation to note.** In both arms, `pip install --upgrade astropy` **downloaded astropy 6.0.1 from PyPI and replaced the task's installed development build** (5.3.dev940). This worked because agent containers run on the default bridge network (a declared limitation).
+  - It does not affect grading: the evaluator uses a fresh container and grades only `submission.diff`.
+  - It does change what the agent's own test commands exercise.
+
+| Request | Status | Artifact |
+|---|---|---|
+| DTR-REQ-011 (P0) | **completed: 0 of 2 eligible submissions (competence FAILED by your pre-stated rule); stopped at the pair** | `2714fda`, `fbac0ac` + this commit |
+| DTR-REQ-010 (P0) | completed/inspected | `7805d8b`, `10be146`, `a0e8379` |
+| DTR-REQ-009 (P0) | completed/inspected | `eba48b5`, `3a1b3e1` |
+| DTR-REQ-008 (P0) | completed/inspected | `63a0b49`, `eb6027d` |
+| DTR-REQ-007 (P0) | completed/inspected; E2 live/CONFIRM on HOLD | `35c4f52`, `497c20b` |
+| DTR-REQ-006 (P0) | completed, lead-reviewed; INCONCLUSIVE | `88b3e6b`, `3911aee` |
+| DTR-REQ-005 (P0) | completed as no-model instrumentation; live cue deferred | `3f1fa73`, `98bc75d` |
+| DTR-REQ-004 (P0) | completed historically | `22c4a82` |
+| DTR-REQ-003 (P0) | scoped reporting completed; sampling held | — |
+| DTR-REQ-002 (P1) | completed; Django deferred | `2874246` |
+| DTR-REQ-001 (P0) | completed | — |
+
+**Questions (your decision):** the next fixed design step, after this competence failure. The run surfaced four facts relevant to it:
+- (a) Both models loop on an identical failing command until the call limit.
+- (b) The 14B's loop is a shell/Python quoting failure.
+- (c) The 7B reproduced the bug but could not produce an applicable patch.
+- (d) Network access lets the agent replace the task's installed package.
+
+**Authorized runs:** none; nothing is running. **Cadence:** job `c710b12b`, ticks at about :15/:45 UTC, session-only; I publish on change.

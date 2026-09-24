@@ -38,9 +38,10 @@ from unverified raw execution identity. They correct attempted-write/testing/wor
   controls (all five acceptance keys true, 330 s, no retry; `7805d8b` + publication commit;
   [summary](../results/v2_adapter/req010_sentinel_20260924/sentinel_summary.json)). This is evaluator qualification
   only, not model competence. Lead-accepted ([`a0e8379`](../docs/theory_feedback_20260924_req010_decision.md)).
-- **Current request: DTR-REQ-011 (P0)**, a bounded fixed-backend DEVELOPMENT competence pair on that task (Coder-14B,
-  then 7B; `yaml-v1`, T = 0, 24 calls, strict evaluator, no cue). The pair has a two-hour cap and at most 48 logical
-  and 96 physical requests. It is conditional on live admission and in preparation; not yet executed.
+- **DTR-REQ-011 (P0) is completed: 0 of 2 eligible submissions.** Coder-14B and then 7B each hit the 24-call limit in
+  a loop of one identical failing command, and neither submitted. By the lead's pre-stated rule, competence is failed
+  ([summary](../results/v2_agent/req011_competence_20260924/pair_summary.json)). The pair stopped here; the next
+  design step belongs to the lead.
 
 **Readiness 55%, change 0 points, range 45–65%.** Useful validated inference/adequate comparisons,
 final empirical synthesis, and independent reproducibility/metadata/package remain.

@@ -922,6 +922,22 @@ rules (`0fe40b8`) are applied to the pinned SWE-bench Verified metadata. No task
 - This shows that one untouched task works under the strict evaluator. It says nothing about model competence or
   routing; the earlier 0/32 fixed-backend result stands.
 
+### 2026-09-24 15:50 UTC — REQ-011: neither Qwen2.5-Coder 14B nor 7B submits a fix on the qualified task (0 of 2)
+[pair summary](../results/v2_agent/req011_competence_20260924/pair_summary.json). Two fixed-backend DEVELOPMENT episodes (14B, then 7B) on
+`astropy__astropy-14598`, using the frozen yaml-v1 agent, T = 0 and 24 calls. The strict evaluator had qualified this
+task in REQ-010. The pair ran for 9.7 minutes; admission passed 9 of 9 and cleanup was complete.
+- **Both episodes used all 24 calls without submitting** (`LimitsExceeded`), so both are operational zeros. By the
+  lead's pre-stated rule, task/harness competence on this pair is **failed**.
+- **The 14B** repeated the same `python -c` command 16 times; it fails with a SyntaxError (a `for` after `;`). It
+  never edited a file.
+- **The 7B** reproduced the reported bug, wrote a patch that did not apply, then repeated
+  `pip install --upgrade astropy` plus `git apply` 22 times. It edited no source file.
+- **Both** upgraded the task's installed astropy from PyPI through the container's network access. This does not
+  affect grading, which uses a fresh container.
+- Requests: 48 logical and 48 physical (caps 48 and 96), with server-reported tokens recorded. Both reached call 9.
+- This is a single-task feasibility observation, not a population rate, a routing result or a comparison between the
+  two models (the order was fixed for feasibility).
+
 ### Not claimed
 No model runs for REQ-005 to REQ-008 (no-model instrumentation, retrospective analyses and a metadata inventory). Real-model execution since the archived coding study is limited to the SWE-bench Verified pipeline smoke (Flask episodes) and the two 16-episode Coder 7B/14B fixed-backend DEV cohorts (0/16 each), with no routing or CONFIRM run; Monte Carlo only on known synthetic kernels; no interval validation for DR/OR, learned policies or
 the branch study; no power claim; no evidence of real-agent improvement. The
