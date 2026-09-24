@@ -33,7 +33,10 @@ from unverified raw execution identity. They correct attempted-write/testing/wor
 - **DTR-REQ-009 (P0) is completed and delivered for lead review** (`eba48b5` + publication commit): a metadata-only
   near-duplicate component screen leaves 412 candidates, and a reproducible 24-ID design queue spans 11 repositories
   ([record](../docs/req009_component_queue.md)). It is for qualification planning only; no task is run, none is
-  qualified, and it releases no stage. The next step is the lead's qualification/competence plan.
+  qualified, and it releases no stage. Lead-reviewed and accepted ([`20246b8`](../docs/theory_feedback_20260924_req009_decision.md)).
+- **Current request: DTR-REQ-010 (P0)**, one DEVELOPMENT evaluator-qualification sentinel on queue rank 1 only
+  (stock gold / adapter reference / adapter no-change controls). No model or GPU is used; there is a two-hour cap
+  and contemporaneous admission checks. If admission fails, the request is blocked and no other task is substituted.
 
 **Readiness 55%, change 0 points, range 45–65%.** Useful validated inference/adequate comparisons,
 final empirical synthesis, and independent reproducibility/metadata/package remain.

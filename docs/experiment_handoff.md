@@ -5059,3 +5059,36 @@ The author also permits a bounded local DEVELOPMENT experiment on the lead host 
 | DTR-REQ-001 (P0) | completed | — |
 
 **Cadence:** job `c710b12b`, ticks at about :15/:45 UTC, session-only; I publish on change. **Next observed publication:** after your next :18 review.
+
+## Worker checkpoint — 2026-09-24T10:47:18Z (host `date -u`; local 06:47 EDT) — lead `20246b8` acknowledged: REQ-009 completed; DTR-REQ-010 accepted, driver in preparation
+
+**Read:** [lead REQ-009 decision](theory_feedback_20260924_req009_decision.md) (10:23Z), the runbook update and issue #4 up to 10:24:29Z. **Code/config commit:** `3a1b3e1`. **Authorized runs:** DTR-REQ-010 only, released under your stated admission conditions.
+
+- **DTR-REQ-009:** **completed, inspected and independently recounted** (`eba48b5`, `3a1b3e1`).
+- **DTR-REQ-010 (P0): accepted. It is preparing and has not executed yet.** This is one DEVELOPMENT evaluator-qualification sentinel on queue rank 1, `astropy__astropy-14598` only, with no substitution.
+- **Plan:**
+  - A thin no-clobber sentinel driver that calls the existing, validated `qualification_batch.qualify`, unchanged: stock gold, adapter reference, adapter no-change and the five-key `bae161f` acceptance.
+  - It is bound to the REQ-009 queue hash `d19efbc4…` (rank 1 re-verified), the dataset parquet `a45b1fe4…`, M01 `instances.jsonl` and evaluator `f7bbbb2`.
+  - Deterministic tests come first: selection and binding, admission failure meaning blocked with nothing executed, the deadline path with cleanup and a preserved incomplete record, and the single identical retry only for a timeout or missing report.
+  - The driver is committed before any execution. Admission is recorded at launch; a failure means REQ-010 is blocked.
+- **Current read-only host state (not yet the admission record):**
+  - Colima profile `dtr` is running (aarch64 VM, 6 CPUs, 16 GiB, 120 GiB disk).
+  - The pinned evaluator venv `work/venvs/swebench_f7bbbb2` (swebench 4.1.0 from the `f7bbbb2` checkout) is present.
+  - The host has about 85 GiB free.
+  - No evaluator, pilot, llama-server or other worker job is running.
+- **For comparison:** the earlier Astropy qualification (`astropy__astropy-12907`) took about 9 minutes. The two-hour cap covers setup and cleanup.
+
+| Request | Status | Artifact |
+|---|---|---|
+| DTR-REQ-010 (P0) | **accepted; preparing driver and tests (not yet executed)** | next commits |
+| DTR-REQ-009 (P0) | completed/inspected | `eba48b5`, `3a1b3e1`, `20246b8` |
+| DTR-REQ-008 (P0) | completed/inspected | `63a0b49`, `eb6027d`, `0fe40b8` |
+| DTR-REQ-007 (P0) | completed/inspected; E2 live/CONFIRM on HOLD | `35c4f52`, `497c20b` |
+| DTR-REQ-006 (P0) | completed, lead-reviewed; INCONCLUSIVE | `88b3e6b`, `3911aee` |
+| DTR-REQ-005 (P0) | completed as no-model instrumentation; live cue deferred | `3f1fa73`, `98bc75d` |
+| DTR-REQ-004 (P0) | completed historically | `22c4a82` |
+| DTR-REQ-003 (P0) | scoped reporting completed; sampling held | — |
+| DTR-REQ-002 (P1) | completed; Django deferred | `2874246` |
+| DTR-REQ-001 (P0) | completed | — |
+
+**Cadence:** job `c710b12b`, ticks at about :15/:45 UTC, session-only; I publish on change. **Next observed publication:** the driver and admission record, then the sentinel result.
