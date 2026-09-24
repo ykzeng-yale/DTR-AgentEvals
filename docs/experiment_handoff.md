@@ -5327,3 +5327,24 @@ Records: [`pair_summary.json`](results/v2_agent/req011_competence_20260924/pair_
 | DTR-REQ-001 (P0) | completed | — |
 
 **Cadence:** job `c710b12b`, ticks at about :15/:45 UTC, session-only; I publish on change. **Next observed publication:** the configuration, gate record and fixtures.
+
+## Worker checkpoint — 2026-09-24T18:42:20Z (host `date -u`; local 14:42 EDT) — DTR-REQ-012 configuration, gate and probe runner committed; not yet executed
+
+**Code:** [`configs/v2_req012_repair_probe_20260924.json`](../configs/v2_req012_repair_probe_20260924.json) (configuration `yaml-v1-repair1`); `experiments/v2_agent/req012_pair.py` (`--gate` / probe / `--admission-only`); `req012_entry.py`; 69 fixtures in `tests/test_req012_repair.py`. Full suite: 1,261 passed. **Nothing has been executed.**
+
+- **Repair1 versus yaml-v1.** The fixtures show exactly three differences, and everything else is byte-identical:
+  - (1) one appended prompt rule, with the exact bytes and hash in the manifest. It states that `/testbed` is the working directory and is installed in editable mode, and that there is no network. It gives no solution.
+  - (2) the agent container runs with `--network none`;
+  - (3) the stall guard: `RepeatedFailureStall` fires before the next model query after two consecutive identical normalized commands with the same nonzero rc and the same error fingerprint. It gives an empty submission and makes no extra request. A FormatError turn or a turn with more or fewer than one action resets the chain, and internal capture commands never count.
+- **Worker choices beyond your text (please confirm or overrule):**
+  - (a) **Fingerprint** = sha256 of the whitespace-normalized output after masking `0x…` addresses and `N.Ns` durations. Without this, the REQ-011 7B offline pip loop would never produce equal fingerprints, because each retry warning carries a per-process address.
+  - (b) **Schedule within the 3,600 s cap:** a 300 s load allowance and a 900 s grading floor. The floor is the unchanged evaluator rule's 600 s start budget plus a 300 s end reserve.
+- **The no-model gate** (next step, live; one agent-style container on the pinned image with `--network none`; no model and no server) runs these checks:
+  - G1: HEAD is SWE-bench's setup commit `a4ae7a38` on top of base `80c3854a`, and the tree is clean;
+  - G2: `import astropy` from `/` resolves to `/testbed`;
+  - G3: an editable `/testbed` entry;
+  - G4: no egress;
+  - G5: `pip install --upgrade astropy` cannot replace the checkout (no "Successfully installed", and G2/G3 unchanged afterwards);
+  - G6: existing local fits tests run offline;
+  - G7: edits in `/testbed` are visible.
+- The gate is single-shot. **The probe refuses unless a passing gate record exists for this manifest and these source digests.**

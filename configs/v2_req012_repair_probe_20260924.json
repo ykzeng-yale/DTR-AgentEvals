@@ -1,0 +1,264 @@
+{
+ "request": "DTR-REQ-012",
+ "kind": "DTR-REQ-012 single-assignment DEVELOPMENT repair probe manifest: the no-model repair gate first, then one 7B episode under yaml-v1-repair1 (single-shot, no-clobber, no resume)",
+ "lead_commit": "40b4db2",
+ "lead_decision": "docs/theory_feedback_20260924_req011_decision.md",
+ "source_commit": "6074003",
+ "instance_id": "astropy__astropy-14598",
+ "images": {
+  "base": {
+   "key": "sweb.base.py.x86_64:latest",
+   "id": "sha256:f7d1dba08fbc14f5232016debb02d9ace25c84e2a088ec8ec6c776fc3c2f07d5"
+  },
+  "env": {
+   "key": "sweb.env.py.x86_64.7d2281f8cd4608b2972430:latest",
+   "id": "sha256:ee4f7d3a3ec176acd95cadc6aaa7712e047f347091f3536784933dfffe9d9cfa"
+  },
+  "instance": {
+   "key": "sweb.eval.x86_64.astropy__astropy-14598:latest",
+   "id": "sha256:ff1716c2ea207eeb3b717cd5deb3213f923f4d445234edd9a53d035dce834997"
+  }
+ },
+ "assignments": [
+  {
+   "order": 1,
+   "assignment_id": "req012-1-small",
+   "backend": "small",
+   "arm": "baseline",
+   "model": "Qwen/Qwen2.5-Coder-7B-Instruct",
+   "model_commit": "c03e6d358207e414f1eca0bb1891e29f1db0e242",
+   "port": 8291,
+   "alias": "qwen2.5-coder-7b-instruct-c03e6d3-q4_k_m",
+   "gguf": "work/models/converted_4fea119/qwen2.5-coder-7b-instruct-c03e6d3-q4_k_m.gguf",
+   "gguf_sha256": "87a3665ca3247c54dfa198010f6e1f48d41611029bbcb5ed185a5ad05fcd3b81",
+   "gguf_bytes": 4683074208
+  }
+ ],
+ "settings": {
+  "step_limit": 24,
+  "cost_limit": 0.0,
+  "wall_time_limit_seconds": 1800,
+  "temperature": 0.0,
+  "max_tokens": 1536,
+  "command_timeout_s": 60,
+  "physical_attempts_per_call_max": 2,
+  "request_timeout_s": 900,
+  "context_per_slot": 16384,
+  "configuration_binding": "yaml-v1-repair1",
+  "workspace_binding": "wc2",
+  "template_platform_binding": "cp2",
+  "mini_swe_agent": "04d809ceab9df28f9adaed044884180159172930",
+  "default_yaml_sha256": "112aa58328f478a41cc2630702a4b89ef459e912870e05065157ed221f56701f",
+  "base_configuration_binding": "yaml-v1"
+ },
+ "repair1": {
+  "configuration": "yaml-v1-repair1",
+  "base_configuration": "yaml-v1",
+  "section": "## Important Rules",
+  "prompt_addition": "4. The repository to fix is checked out at /testbed, which is the working directory for every action. It is installed in editable (development) mode in the active Python environment, so importing the package runs the code in /testbed and your edits there take effect immediately. The environment has no network access.",
+  "inserted_after": "   However, you can prefix any action with `MY_ENV_VAR=MY_VALUE cd /path/to/working/dir && ...` or write/load environment variables from files\n",
+  "run_args_frozen": [
+   "--rm",
+   "--platform",
+   "linux/amd64"
+  ],
+  "run_args": [
+   "--rm",
+   "--platform",
+   "linux/amd64",
+   "--network",
+   "none"
+  ],
+  "agent_class": "req012_entry.RepeatedFailureGuardAgent",
+  "agent_base": "minisweagent.agents.default.DefaultAgent (mini-swe-agent 04d809c, unmodified)",
+  "stall_exit_message": {
+   "role": "exit",
+   "content": "RepeatedFailureStall",
+   "extra": {
+    "exit_status": "RepeatedFailureStall",
+    "submission": ""
+   }
+  },
+  "stall_rule": "A turn is recorded only when the agent executed exactly one action: (normalized command, return code, output fingerprint); normalized command = the command stripped with whitespace runs collapsed to one space; output fingerprint = sha256 of the output with whitespace runs collapsed to one space and stripped, then two volatile token kinds masked (Python re): hexadecimal literals 0x[0-9a-fA-F]+ (per-process object addresses, e.g. in pip retry warnings) -> 0x_ and decimal-second durations \\b[0-9]+\\.[0-9]+s\\b (e.g. pytest 'in 3.21s') -> _s. A FormatError turn or a turn with a number of actions other than one is recorded as a chain reset. Before each model query, before the frozen limit checks and before n_calls is incremented: if the last two recorded turns are equal and their return code is nonzero, raise RepeatedFailureStall carrying the exit message; the frozen run() records it as the exit with an empty submission. No model call, nothing shown to the model.",
+  "runtime_overrides": [
+   "pilot_episode.build_effective_config -> repair_config(<the frozen function's result>)",
+   "minisweagent.agents.default.DefaultAgent -> req012_entry.RepeatedFailureGuardAgent"
+  ]
+ },
+ "prompt_bytes": {
+  "default_yaml_sha256": "112aa58328f478a41cc2630702a4b89ef459e912870e05065157ed221f56701f",
+  "instance_template_frozen_sha256": "cdf5e8dc1972686b90e3e84a0a4b200874ad5aaf1e3d26c26ed1872c1ba2e9b0",
+  "instance_template_frozen_bytes": 2438,
+  "instance_template_repair1_sha256": "da5fe0813e040399492196027cc45f091ddb7cf76f6df9165d6e189ca32b27f3",
+  "instance_template_repair1_bytes": 2757,
+  "inserted_text": "4. The repository to fix is checked out at /testbed, which is the working directory for every action. It is installed in editable (development) mode in the active Python environment, so importing the package runs the code in /testbed and your edits there take effect immediately. The environment has no network access.\n",
+  "inserted_sha256": "0ce85105b2111ca3f1a5587d290bcb5191d97966f54dfd62074cf13ed2cfa0a1",
+  "inserted_bytes": 319
+ },
+ "serving": {
+  "llama_cpp_commit": "4fea119de30f6a923992780f6fd5ccb0bee5d47d",
+  "llama_server": "work/upstream/llama.cpp-4fea119/build/bin/llama-server",
+  "flags": [
+   "-ngl",
+   "99",
+   "-np",
+   "1",
+   "-c",
+   "16384"
+  ],
+  "host": "127.0.0.1",
+  "build_info_contains": "4fea119",
+  "conversion_record": "results/v2_agent/coder_conversion_20260922.json",
+  "conversion_record_sha256": "7e165c220b2d4f045375a98e3edc35ccc5a0133221bfd8bff18c397cbab61c1f",
+  "non_task_generation_probes": 0
+ },
+ "evaluator": {
+  "commit": "f7bbbb2ccdf479001d6467c9e34af59e44a840f9",
+  "python": "work/venvs/swebench_f7bbbb2/bin/python"
+ },
+ "caps": {
+  "pair_wall_s": 3600,
+  "episode_wall_s": 1800,
+  "episode_load_allowance_s": 300,
+  "child_cleanup_grace_s": 120,
+  "child_wait_slack_s": 30,
+  "server_cleanup_reserve_s": 90,
+  "grading_floor_s": 900,
+  "evaluator_attempt_max_s": 1800,
+  "evaluator_min_start_budget_s": 600,
+  "evaluator_max_attempts": 2,
+  "evaluator_end_reserve_s": 300,
+  "grader_wait_slack_s": 120,
+  "max_logical_requests": 24,
+  "max_physical_requests": 48,
+  "per_episode_logical": 24,
+  "per_episode_physical": 48,
+  "host_reserve_bytes": 1073741824
+ },
+ "memory_rule": {
+  "admission_min_free_pct": 30,
+  "post_load_min_free_pct": 10,
+  "kv_gib": {
+   "large": 3.0,
+   "small": 0.88
+  },
+  "vm_gib": 16,
+  "margin_gib": 2
+ },
+ "disk_rule": {
+  "vm_min_gib": 20,
+  "host_min_gib": 15,
+  "work_free_min_above_reserve_gib": 6
+ },
+ "watchdog": {
+  "poll_s": 5,
+  "grace_s": 20,
+  "ready_timeout_s": 60
+ },
+ "gate": {
+  "commands": {
+   "G0": "pwd",
+   "G1": "cd /testbed && git rev-parse HEAD HEAD^ && git log -1 --format=%s && git diff --name-only HEAD^ HEAD && git status --porcelain",
+   "G2": "cd / && python -c \"import astropy,sys; print(astropy.__file__); print(astropy.__version__)\"",
+   "G3": "pip list 2>/dev/null | grep -i '^astropy '",
+   "G4": "python -c \"import socket; socket.create_connection(('pypi.org', 443), timeout=5)\"",
+   "G5": "pip install --upgrade astropy",
+   "G6": "cd /testbed && python -m pytest astropy/io/fits/tests/test_header.py -q -x -k \"card\" -p no:cacheprovider",
+   "G7": "cd /testbed && echo req012 > req012_gate_scratch.txt && git status --porcelain"
+  },
+  "expectations": {
+   "G0": "rc 0 and the output is exactly '/testbed' (the working directory of every action)",
+   "G1": "rc 0; the output is exactly four lines: HEAD = gate.image_head (SWE-bench's image setup commit), HEAD^ = the dataset base_commit, the HEAD subject 'SWE-bench' and 'pyproject.toml' (the only file HEAD changes); no status line (clean checkout)",
+   "G2": "rc 0; the last two output lines are '/testbed/astropy/__init__.py' and a version containing '.dev'",
+   "G3": "rc 0; exactly one 'astropy ' line, whose last field is '/testbed' (editable location)",
+   "G4": "a nonzero integer rc (no egress)",
+   "G5": "pip's integer rc and output are recorded, no particular rc is required (offline pip may keep the installed editable astropy and exit 0); the output has no 'Successfully installed' line; then the G2 command again (G5_then_G2): rc 0 and the same last two lines as G2; then the G3 command again (G5_then_G3): rc 0 and the same single 'astropy ' line as G3",
+   "G6": "rc 0 or 1 and a pytest summary line (the local tests ran offline)",
+   "G7": "rc 0 and the line '?? req012_gate_scratch.txt' in the status (edits in /testbed are visible)"
+  },
+  "command_timeout_s": 60,
+  "image_head": "a4ae7a3808de3c53b0788875b6c97b20d5a12ee0",
+  "image_head_evidence": "results/v2_adapter/req010_sentinel_20260924/astropy__astropy-14598/attempt-1-20260924T113537Z/summary.json (repo_state_pre.head of the adapter_reference and adapter_no_change attempts on the pinned instance image) and stock_test_output.txt (git show: subject 'SWE-bench', pyproject.toml only); the image's setup_repo.sh ends with `git commit --allow-empty -am SWE-bench` after pinning setuptools in pyproject.toml",
+  "container": "one repair1 agent container: the unmodified mini-swe-agent 04d809c DockerEnvironment with the repair1 environment config (pinned instance image ID, --rm --platform linux/amd64 --network none, cwd /testbed, the frozen container env), every command through its execute() with the frozen 60 s timeout; stopped and removed afterwards. It starts only if the VM lists no minisweagent-* container; if the start fails before the container ID is known, minisweagent-* containers listed afterwards (none were listed before) are removed by name and recorded",
+  "preflight": "before the namespace is created (a refusal consumes nothing): the manifest check, every source tracked and unchanged from HEAD, no other REQ-012 process, and no minisweagent-* container listed",
+  "order": "manifest, sources, fixtures, images, container; a check runs only while every earlier one passed (a skipped check fails), so the container is never started after a failed check",
+  "interruption": "SIGINT, SIGTERM and SIGHUP raise S.Interrupted on the first signal (later ones are ignored); the container is stopped and removed (the cleanup runs once more if the signal cut it short) and gate.json records the signal with passed false",
+  "egress_evidence": "the fixtures check no-egress at the configuration level only (the fake docker receives --network none and reports NetworkMode none); the actual blocking is shown only by the live G4 and G5",
+  "fixtures": [
+   ".venv/bin/python",
+   "-m",
+   "pytest",
+   "-q",
+   "-p",
+   "no:cacheprovider",
+   "tests/test_req012_repair.py"
+  ],
+  "fixtures_timeout_s": 1800,
+  "record": "results/v2_agent/req012_repair_probe_20260924/gate.json",
+  "passes_only_if": "the manifest check (including prompt bytes from the pinned default.yaml), every source tracked, unchanged from HEAD and stable during the gate, the fixtures passing with none skipped, the image pins, every G0-G7 expectation, docker NetworkMode none, confirmed container stop and removal, no minisweagent-* container listed afterwards, and no operator signal"
+ },
+ "runtime": {
+  "episode_python": "work/venvs/minisweagent_04d809c/bin/python",
+  "grader_python": "work/venvs/swebench_f7bbbb2/bin/python",
+  "orchestrator": "experiments/v2_agent/req012_pair.py",
+  "entry": "experiments/v2_agent/req012_entry.py",
+  "grader": "experiments/v2_agent/req011_grade.py",
+  "fixtures_python": ".venv/bin/python"
+ },
+ "outputs": {
+  "raw": "work/runs/req012_repair_probe_20260924",
+  "published": "results/v2_agent/req012_repair_probe_20260924",
+  "pause_file": "work/REQ012_PAUSE",
+  "private_receipts": "work/req005_request_receipts/cue-v1"
+ },
+ "prior_results": {
+  "results/v2_agent/req011_competence_20260924/pair_summary.json": "a2cc62877b6a0b7b34a50688b5a7d114697b4c743199de918cbe0711c0382d31",
+  "results/v2_agent/pilot_20260922_yaml_v1/report_yaml_v1_block1_final.json": "ef894706d393a73b6accc07a94cfbd1a4bba1c1b12b9a1c6e682c4744ec5fb17"
+ },
+ "declared_rules": [
+  "Task exposure: astropy__astropy-14598 is already DEVELOPMENT-exposed (REQ-011) and may never enter CONFIRM. The probe is a mechanism check on this one exposed issue. The lead chose it from observed data (the 7B's first REQ-011 call reproduced the bug), so it is not confirmatory selection, a success rate or a routing contrast.",
+  "Configuration yaml-v1-repair1 (new, versioned, DEVELOPMENT) is the frozen yaml-v1 configuration with exactly three changes: (i) the instance template gets repair1.prompt_addition as item 4 at the end of its '## Important Rules' list, inserted after repair1.inserted_after (exact bytes and sha256 before and after in prompt_bytes; no solution content); (ii) the agent container run_args are repair1.run_args (--network none: no egress); (iii) the agent class is repair1.agent_class, a subclass of the unmodified DefaultAgent that adds only the stall guard. Every other setting is the REQ-011 one, as are the model request path, the receipts, the Submitted-only wc2 endpoint, the all-exit diagnostic and cleanup. No cue, no forced call, no salvage, no substitution, no endpoint or metric change, no second model, task or cohort.",
+  "Runtime overrides (declared; req012_entry.py, in the entry process only). They are installed after the REQ-011-style admission of the running code and before cue_episode.run_episode (unchanged) builds anything: (a) pilot_episode.build_effective_config is wrapped so its result passes through repair_config; (b) minisweagent.agents.default.DefaultAgent is set to the guard subclass, which run_episode imports at call time. No source file is edited. entry_admitted.json records the overrides and the entry source sha256. After the episode, repair_record.json records the guard's turns and whether effective_config.json equals the expected repair1 config; a mismatch is reported in the summary, never repaired. Before the first query the guard records the episode container's docker NetworkMode once (observational).",
+  "Stall guard (observational; RepeatedFailureStall): repair1.stall_rule. The exit message is exactly repair1.stall_exit_message. It saves calls only after two identical failing turns, makes no model call, shows nothing to the model and never produces a submission; the all-exit diagnostic, the receipts and cleanup run as on every exit.",
+  "No-model repair gate (req012_pair.py --gate; no model, no llama-server, no request). gate.preflight runs first and a refusal there creates no namespace. Then, in gate.order with short-circuiting, the manifest, sources, fixtures and image checks run, and one repair1 agent container runs gate.commands G0-G7 through the unmodified DockerEnvironment.execute with the frozen 60 s command timeout. Each command is recorded as (command, rc, output sha256, bounded excerpt); then the container is stopped and removed. The gate passes only if gate.passes_only_if holds. The record results/v2_agent/req012_repair_probe_20260924/gate.json is write-once and sanitized, with a raw copy under work/. It records the preflight, the manifest sha256, the repair1 prompt bytes, both template texts, the effective environment, the digest of every source and any operator signal (gate.interruption). The gate is single-shot (a second --gate refuses) and is part of this namespace. G0 (pwd) is a declared addition to the lead's G1-G7, checking that /testbed is the working directory the prompt states. gate.egress_evidence states what the fixtures do and do not show.",
+  "Gate revisions before the first --gate run (review of the uncommitted build; no gate had run). (1) G1: the pinned instance image's HEAD is not the dataset base_commit. SWE-bench's image setup pins setuptools in pyproject.toml and runs `git commit --allow-empty -am SWE-bench`, so HEAD is gate.image_head, whose parent is the base commit (gate.image_head_evidence). G1 therefore checks HEAD, HEAD^, the HEAD subject, the files HEAD changes and a clean status. (2) G5: offline, pip finds no index candidate and may keep the installed editable astropy ('Requirement already satisfied', rc 0). No rc is required; the check is that nothing was installed and the checkout path, version and editable location are unchanged afterwards (G5_then_G2, G5_then_G3). (3) The gate arms signal handling, refuses before its namespace on a failed preflight, and short-circuits before the container after a failed check. These revisions make the checks match the pinned image; they do not change the lead's acceptance criteria.",
+  "Probe precondition: the probe refuses before creating anything unless the published gate.json passed for this manifest sha256 and for the current digest of every source, and the raw copy under work/ agrees with it on passed, interrupted, manifest sha256, source digests and start/finish times. The same check is repeated as an admission probe.",
+  "Queue: exactly one assignment, req012-1-small: Qwen2.5-Coder-7B ('small', port 8291, the 87a3665c GGUF), arm 'baseline', on astropy__astropy-14598 under yaml-v1-repair1. No automatic second model, task or cohort.",
+  "Single shot: work/runs/req012_repair_probe_20260924/probe and results/v2_agent/req012_repair_probe_20260924/probe are created with exist_ok=False at launch, so a second launch refuses. A started assignment is never re-dispatched, and a start without an end in the ledger is 'interrupted'. A BLOCKED admission also consumes the probe namespace.",
+  "Admission (any failure or crashing probe -> admission.json and pair_summary.json with status BLOCKED; nothing is run and nothing is substituted) consists of the REQ-011 probes plus a passing gate record. The REQ-011 probes are: manifest values bound to the code, including the repair1 prompt bytes from the pinned default.yaml; every reused and new source tracked and unchanged from HEAD, and the cue-v1 binding without problems; the evaluator tree; the colima runtime; the three image pins; conflicts, including the live peer lease and windows, the ownership record, no REQ-011 or REQ-012 PAUSE file and no other REQ-011 or REQ-012 process; isolation, where the repair1 environment must have run_args exactly --rm --platform linux/amd64 --network none and otherwise meet the REQ-011 sandbox rule; disk; the 7B GGUF and llama.cpp tool hashes; memory.",
+  "Memory, disk, serving, served identity and the watchdog are as in REQ-011: req011_pair.probe_memory and probe_disk; Servers with the ownership holder rewritten to DTR-REQ-012; GET-only served-identity checks; 0 non-task generation requests; the watchdog is started before the load and left armed while a server of ours is live.",
+  "Schedule (3600 s): the probe deadline is launch time + caps.pair_wall_s. It covers admission, load, the episode, grading, cleanup and publication. The episode starts only if now + episode_load_allowance_s (300) + episode_wall_s (1800) + child_cleanup_grace_s (120) + child_wait_slack_s (30) + server_cleanup_reserve_s (90) <= deadline - grading_floor_s (900). This is re-checked after the load with a zero load allowance; otherwise the episode is 'not_started: pair cap'. The episode's block deadline is deadline - grading_floor_s. The grading floor is evaluator_min_start_budget_s (600) + evaluator_end_reserve_s (300), so an episode admitted by the post-load check leaves the first evaluator attempt its 600 s start budget even at the full 1800 s episode wall. The pre-load allowance of 300 s is 100 times the 7B's REQ-011 hash plus load time (3.1 s) and only gates the dispatch; the post-load check with zero allowance still enforces the full budget. The worker specification's 600 s floor was inconsistent with the unchanged evaluator start rule and was corrected before the gate.",
+  "Gates that stop the probe are as in REQ-011 and never outcome-driven: a server load failure or refusal, served identity, post-load memory, the PAUSE file, an entry refusal, a record not written durably, and unconfirmed process-group termination or container removal.",
+  "Episode supervision is as in REQ-011 (req011_pair.make_episode_runner), with req012_entry.py as the child. The entry refuses unless its control record matches this manifest (binding sha256; instance; expected image; assignment id, order, backend, port, alias and model sha256; the repair1 prompt bytes) and the request limit is min(48, 48 - counted_before).",
+  "Request accounting: at most 24 logical calls (the frozen step limit) and at most 48 physical requests (2 attempts per call). counted_before is 0 and the request limit is 48. Unknown or invalid counts reserve 48 (cue_admission.account_requests). No non-task generation request is sent.",
+  "Grading is as in REQ-011: req011_grade.py unchanged, grade_identity.grade_flow, the stock f7bbbb2 evaluator and strict declared_outcome. It runs after the server is stopped, in a fresh evaluator container created by the stock harness from the pinned instance image; the image ID must equal the pin before and after grading, and the agent container is never used. Each evaluator attempt has a wall budget of min(1800, deadline - 300 - now) and starts only if that budget is >= 600 s; otherwise the record is 'ungraded: pair cap' (never imputed). One identical retry is allowed only after a stock timeout, a wall kill, or test output without a report.",
+  "Outcome rule: RepeatedFailureStall, LimitsExceeded, any other non-Submitted exit and a Submitted empty patch are operational zeros; grade_flow writes them without the evaluator. Only a Submitted nonempty submission.diff is graded.",
+  "Publication is as in REQ-011 (req011_pair.publish: sanitized copies with raw and published sha256, and the username guard), under results/v2_agent/req012_repair_probe_20260924/probe. Private raw request bodies stay under outputs.private_receipts/<run_id>.",
+  "Summary (pair_summary.json): the REQ-011 assignment row, with outcome_source 'stall_guard' for a completed episode whose exit is RepeatedFailureStall. It adds per row the repair1 facts: whether the guard fired and before which logical call, the docker NetworkMode observed, the run_args at container start, the effective-config verification, the effective-config and instance-template sha256, and the agent class. It also adds the manifest prompt bytes and the prior results: the REQ-011 pair_summary and yaml-v1 block report sha256 unchanged, and REQ-011 eligible 0 of 2.",
+  "Interpretation (lead decision): this is a mechanism check, not success-rate evidence. An eligible nonempty patch graded by the unchanged evaluator would show single-task feasibility of the repair1 intervention and nothing more. Another zero would localize the remaining failure from the saved actions and edits. Either way the earlier 0/32 and 0/2 results are reported unchanged, and the worker returns to the lead before any expansion."
+ ],
+ "interpretations": {
+  "nonblocking": "The all-exit diagnostic, post-dispatch receipt bookkeeping and cleanup never change the endpoint, eligibility or grading and never stop the pair. The PRE-dispatch receipt stays blocking (no dispatch without a durable receipt) per the lead's REQ-005 decision (answer 1); the disk reserve for it is checked at admission.",
+  "probe_cap": "Time expiry preserves and publishes incomplete work with its reason; no extra time, outcome-driven stopping or substitution.",
+  "gate": "The gate verifies the environment and the harness only. It sends no model request and is not evidence about model competence."
+ },
+ "inherited_labels": [
+  "Receipts from the reused request_receipt/cue_transport say request DTR-REQ-005 and cohort cue-v1.",
+  "episode.json from the reused cue_episode.run_episode has kind 'cue-v1 fixed-order DEV episode (DTR-REQ-005)' and cohort 'cue-v1'.",
+  "Private raw request bodies are stored under work/req005_request_receipts/cue-v1/<run_id>.",
+  "The baseline arm writes a silent cue_delivery.json / calls.jsonl landmark; no cue is ever appended.",
+  "The reused req011_pair components write 'request': 'DTR-REQ-011' in ledger.jsonl lines, in the control entry.json and grade_control.json, in the grader's grade_result.json and in the watchdog records. make_episode_runner names the run directory '<instance>__small__req011__<utc>-<hex>'. These are labels of reused, unedited REQ-011 code.",
+  "effective_config.json and episode.json say configuration_binding 'yaml-v1' (pilot_episode.CONFIGURATION_BINDING) and name the cue-v1 driver. Their content is the repair1 configuration, which repair_record.json and this manifest name yaml-v1-repair1.",
+  "The probe summary file is named pair_summary.json because req011_pair.publish publishes that name.",
+  "This manifest, gate.json, admission.json, repair_record.json, the ledger's order and state fields, and pair_summary.json are authoritative."
+ ],
+ "semantics_differences": [
+  "episode.json physical_requests = len(capture.sends) (one send per query attempt at the HTTP layer); the frozen pilot_episode driver used len(attempts).",
+  "Token counts come from server-reported usage in the public outcome receipts; unknown usage stays null (the frozen driver used litellm's parsed usage).",
+  "submission.diff is written write-once before the all-exit diagnostic and cleanup (same bytes as the frozen driver, which wrote it after cleanup).",
+  "exit_status RepeatedFailureStall is new. It is the guard's exit, recorded by the frozen DefaultAgent.run like any InterruptAgentFlow exit (submission '').",
+  "The agent container has no network. Commands that need the network fail where the REQ-011 container could reach PyPI; an offline `pip install --upgrade astropy` finds no index candidate and keeps the installed editable astropy (it may exit 0).",
+  "The stall guard's output fingerprint masks object addresses (0x...) and decimal-second durations before hashing (repair1.stall_rule), so an identical failing command whose output differs only in those tokens, such as offline pip retry warnings, counts as the same failure."
+ ],
+ "scope": "One single-model DEVELOPMENT repair probe on one already exposed, evaluator-qualified issue: a mechanism check of yaml-v1-repair1 only. It is not a success rate, not a model or routing comparison, not a policy value and not CONFIRM evidence."
+}
