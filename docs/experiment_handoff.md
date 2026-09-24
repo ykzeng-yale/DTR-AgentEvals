@@ -4707,3 +4707,73 @@ Reviewed your 00:19Z checkpoint. REQ-006 is **delivered for review**. Everything
 ## Lead reply — 2026-09-24T00:54Z — REQ-006 reviewed; REQ-007 P0 selected
 
 See [the full scientific decision](theory_feedback_20260924_req006_decision.md). A separate raw TRAIN/pilot recount confirms the central denominators and 183/924 continuation, not all worker checks or execution provenance. **Q3:** the v2 section 5 `<50%` flag does not retrospectively preregister a pass/fail rule for this archived logger. The primary history-aware versus matched prompt-only contrast is **INCONCLUSIVE**; sparse opportunities and no untouched task pool mean **HOLD a new E2 live/CONFIRM stage and REPAIR its prospective design**. **Q4:** execute the frozen `REQ006-E2DEV-TREE-v0` on TRAIN only as `DTR-REQ-007 P0`, a bounded deterministic retrospective fit/disagreement diagnostic; no new model inference or CONFIRM tuning. Acknowledge REQ-006 completed/lead-reviewed and REQ-007 accepted/running/completed/blocked/superseded with its exact artifact. Acceptance: matched same-class trees, task split, support/weights/uncertainty, realized disagreement counts and immutable source hashes as specified in the linked decision. Do not force a second call in the old harness. Readiness **55%, change 0 points, range 45–65%**; manuscript unchanged.
+
+## Worker checkpoint — 2026-09-24T01:01:17Z (host `date -u`; local 21:01 EDT) — lead `3911aee` acknowledged; DTR-REQ-007 completed: both routers collapse to the same fixed schedule
+
+Read your [REQ-006 decision](theory_feedback_20260924_req006_decision.md) (00:54Z). **Acknowledged:**
+- **DTR-REQ-006** is **completed and lead-reviewed; INCONCLUSIVE** for the primary history-aware versus prompt-only contrast. The 50% flag is not a pass/fail rule for the archived logger, and I withdraw my REPAIR label.
+- A new E2 live or CONFIRM stage is on **HOLD**. The old harness will not be changed to force a second call.
+- **DTR-REQ-007 (P0)** is **accepted and completed** in this commit.
+
+**What was run.** The frozen `REQ006-E2DEV-TREE-v0`, exactly as written in §5(c) of the [v2 summary](../results/code_routing/analysis/req006/REQ006_SUMMARY_v2.md), on TRAIN only.
+- Code: `experiments/v2_agent/analysis/req007_e2dev_tree_fit.py`, sha256 `fd8a003c…`.
+- Outputs (write-once): [`e2dev_tree_fit.json`](../results/code_routing/analysis/req007/e2dev_tree_fit.json) `67dfd76d…` and [`REQ007_SUMMARY.md`](../results/code_routing/analysis/req007/REQ007_SUMMARY.md) `4a39f58c…`.
+- Inputs: `design.json` and `log/{episodes,decisions}.jsonl` only. CONFIRM-task lines were discarded before parsing: 2640 of 4488 episode lines and 3662 of 6063 decision lines. Nothing under `live/`, `branch/` or `pilot/` was opened.
+- 0.42 CPU seconds. No model call, GPU or Monte Carlo.
+
+**Provenance checks:**
+- 231 tasks × 8 episodes, with the first action blocked 4 small / 4 large in every task.
+- All 2401 decisions matched `decisions.jsonl` on 24,010 field comparisons.
+- Every assignment probability verified as `p_large = 0.5`, with both actions available.
+- 924 episodes start on the small model (a0 = S), by number of decisions: 741 / 57 / 126 for 1 / 2 / 3.
+- Split: mbpp 112/56 and humaneval 42/21, as the frozen text expects. Task-ID hashes: FIT `361c1a79…`, VALIDATION `25abc59f…`.
+
+**Result: complexity selection on FIT, then VALIDATION** (utility, self-normalized IPW, task-clustered SE):
+
+| Class | d = 0 | d = 1 | d = 2 | Chosen by the one-SE rule |
+|---|---|---|---|---|
+| prompt-only | 0.6270 (0.0489) | 0.6086 (0.0536) | 0.6086 (0.0536) | **0** (best is d = 0) |
+| history-aware | 0.6270 (0.0489) | 0.6138 (0.0541) | **0.6522** (0.0543) | **0**, because 0.6270 ≥ 0.6522 − 0.0543 = 0.5979 |
+
+- **Final routers**, refit on all 231 TRAIN tasks at depth 0: both are **S → L → L**. They are the same constant schedule, and structurally and behaviourally fixed.
+  - In-sample utility is 0.7046, with success 0.7224, 0.259 large and 1.000 small calls, 98.6 completion and 239.7 prompt tokens, and 6.49 s LLM wall time.
+  - Weights: 800 of 924 episodes are nonzero; Kish effective sample is 667.7 episodes and 210.5 tasks.
+  - The final trees have no unsupported leaves.
+- **Realized disagreement at observed supported TRAIN histories: 0.** That is 0 of 183 t=1 and 0 of 126 t=2 decisions, or 0 of 50 counting only t=2 histories reachable under both routers. The validation contrast is 0.0000 (SE 0.0000, 77 tasks) because the routers are identical.
+- **Descriptive only, not the pre-specified result.** Forcing depth ≤ 1 or ≤ 2 and refitting on all TRAIN gives routers that do disagree:
+  - d ≤ 1: 111 of 309 observed decisions in 42 tasks;
+  - d ≤ 2: 100 decisions in 55 tasks (43 decisions in 26 tasks on histories reachable by both).
+  - In-sample utility for history-aware / prompt-only: 0.7106 / 0.7098 at d ≤ 1 and 0.7253 / 0.7098 at d ≤ 2.
+- **The collapse is marginal.** The history-aware d = 2 tree beats d = 0 on validation by 0.025, which is less than one SE (0.054). Changing the split seed or the rule to see whether that flips would be tuning, so I have not done it.
+
+**Independent verification (worker).** I wrote a second implementation in my scratchpad; it is not committed and shares no code with the script. It parses the log itself, enumerates depth-≤2 functions directly as truth tables (166 at t1, 352 at t2, and 16/16 for prompt-only) and brute-forces all pairs from cell aggregates. It reproduces, to 6 decimals, every FIT maximum, every validation value and SE at d = 0, 1, 2 for both classes, and every all-TRAIN maximum.
+
+**Tests.** New `tests/test_req007_tree_fit.py` has 9 tests, all hand-computed or property-based:
+- tree-class expressiveness: 16, 6, 8 and 2 distinct functions;
+- a hand-worked SNIPW value and SE;
+- hand-worked weights;
+- a hand-worked optimum on a toy log;
+- the one-SE rule;
+- CONFIRM lines skipped even when they are invalid JSON;
+- split sizes;
+- consistency of the committed record.
+
+**Choices I made where §5(c) is silent (please confirm or overrule):**
+- (i) class d means trees of depth *at most* d, with no feature split twice on one path;
+- (ii) the task-clustered SE uses the CR1 factor n/(n−1);
+- (iii) when validation values tie exactly, the best depth is the smallest;
+- (iv) task IDs are sorted as strings before the seeded permutation.
+
+**Questions for the lead:**
+- **Q5.** Your decision said that if both routers collapse to the same choices, the existing benchmark gives no demonstrated adaptive-policy comparison. They collapsed under the pre-specified rule. What do you want next? The E2 prospective design repair stays on hold unless you release it.
+- **Q6.** Do you accept implementation choices (i)–(iv), or should any be changed? Any change would be a new versioned run, and this record stays as it is.
+
+| Request | Status | Artifact |
+|---|---|---|
+| DTR-REQ-007 (P0) | **completed**: both one-SE routers collapse to S→L→L, with 0 realized disagreement | this commit |
+| DTR-REQ-006 (P0) | **completed, lead-reviewed; INCONCLUSIVE** for the primary contrast | `88b3e6b`, `3911aee` |
+| DTR-REQ-005 (P0) | completed for no-model instrumentation; live cue deferred | `3f1fa73` |
+| DTR-REQ-004 (P0) | completed historically; a fresh peer/host check is required before any live stage | `22c4a82` |
+| DTR-REQ-002 Django | deferred | — |
+
+**Authorized runs:** none live, and nothing is running (no stage process; ports 8191/8193/8291/8293 down). **Last lead checkpoint read:** `3911aee`, 00:54Z. **Next observed publication:** the :13/:43 slot after your reply, or a no-change line.

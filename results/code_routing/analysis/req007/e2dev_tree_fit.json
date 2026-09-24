@@ -1,0 +1,1440 @@
+{
+ "request": "DTR-REQ-007",
+ "lead_decision": "docs/theory_feedback_20260924_req006_decision.md (3911aee)",
+ "specification": "REQ006-E2DEV-TREE-v0",
+ "specification_source": "results/code_routing/analysis/req006/REQ006_SUMMARY_v2.md section 5(c), commit 88b3e6b",
+ "evidence_status": "retrospective DEVELOPMENT-only feasibility diagnostic on archived TRAIN log records; not confirmatory, not an effect estimate, no counterfactual CONFIRM prediction, no endpoint change",
+ "implementation_choices": "* class of depth d = all trees of depth AT MOST d (nested classes); a feature is not split twice on one path\n    (such a split has an unreachable branch and equals a smaller tree, which the fewer-leaves tie-break prefers anyway)\n  * a candidate pair uses the same depth bound d at both stages\n  * values are compared exactly (integer numerators in hundredths of utility, integer IPW weights), so ties are exact\n  * task-clustered SE of the self-normalized value V = sum_i N_i / sum_i D_i (i = task):\n    SE^2 = n/(n-1) * sum_i (N_i - V D_i)^2 / (sum_i D_i)^2  (linearization with the CR1 small-sample factor)\n  * one-SE rule: best = highest validation value (smallest d among exact ties); choose the smallest d whose validation\n    value >= best - SE(best)\n  * TRAIN task ids are sorted as strings before the seeded permutation",
+ "provenance": {
+  "script": "experiments/v2_agent/analysis/req007_e2dev_tree_fit.py",
+  "script_sha256": "fd8a003c683d3d4a7bb2af42f8b66480e5feca1b9e68a2cdec953364eb94e1ec",
+  "inputs": {
+   "design.json": "230638a757c581138d1a3611a9c5788ed79b80a655313d316cac63cbba4ff43d",
+   "design.sha256": "a4048ff6c6762ea5fd9dd4634e68e39c9f2f47588c9bcf5a5afc22dcfaabe19d",
+   "log/episodes.jsonl": "e643ee44c7ef658fff65efb5e17763ee78c990d21184d060f5823025a100414e",
+   "log/decisions.jsonl": "7ef183d9c75794e9803f5849af7cbd9c860d1fee9eb344bcf8de7ac4a54d4cfd"
+  },
+  "design_sha256_matches": true,
+  "python": "3.12.13",
+  "numpy": "2.5.3",
+  "not_opened": [
+   "results/code_routing/live/",
+   "results/code_routing/branch/",
+   "results/code_routing/pilot/"
+  ],
+  "confirm_exclusion": {
+   "method": "task id from the raw leading episode_id; CONFIRM-task lines skipped before JSON parsing; input files hashed whole for provenance only",
+   "files": {
+    "log/episodes.jsonl": {
+     "nonblank_lines": 4488,
+     "confirm_task_lines_discarded_unparsed": 2640,
+     "lines_parsed": 1848
+    },
+    "log/decisions.jsonl": {
+     "nonblank_lines": 6063,
+     "confirm_task_lines_discarded_unparsed": 3662,
+     "lines_parsed": 2401
+    }
+   }
+  }
+ },
+ "checks": {
+  "tasks": 231,
+  "field_matches": 24010,
+  "assignment_probabilities_verified": 2401,
+  "train_episodes": 1848,
+  "train_decisions": 2401,
+  "a0_small_episodes": 924,
+  "a0_small_by_n_decisions": {
+   "1": 741,
+   "2": 57,
+   "3": 126
+  }
+ },
+ "split": {
+  "seed": 20260923,
+  "method": "sorted ids per benchmark, one default_rng(seed), mbpp then humaneval, first round(2/3 n) to FIT",
+  "sizes": {
+   "mbpp": {
+    "fit": 112,
+    "validation": 56
+   },
+   "humaneval": {
+    "fit": 42,
+    "validation": 21
+   }
+  },
+  "fit_task_ids": [
+   "mbpp/630",
+   "mbpp/75",
+   "mbpp/603",
+   "mbpp/267",
+   "mbpp/637",
+   "mbpp/791",
+   "mbpp/595",
+   "mbpp/129",
+   "mbpp/287",
+   "mbpp/311",
+   "mbpp/268",
+   "mbpp/579",
+   "mbpp/8",
+   "mbpp/580",
+   "mbpp/105",
+   "mbpp/405",
+   "mbpp/776",
+   "mbpp/773",
+   "mbpp/586",
+   "mbpp/434",
+   "mbpp/785",
+   "mbpp/742",
+   "mbpp/807",
+   "mbpp/253",
+   "mbpp/779",
+   "mbpp/95",
+   "mbpp/593",
+   "mbpp/470",
+   "mbpp/799",
+   "mbpp/412",
+   "mbpp/97",
+   "mbpp/600",
+   "mbpp/133",
+   "mbpp/264",
+   "mbpp/639",
+   "mbpp/67",
+   "mbpp/628",
+   "mbpp/309",
+   "mbpp/246",
+   "mbpp/408",
+   "mbpp/479",
+   "mbpp/474",
+   "mbpp/404",
+   "mbpp/607",
+   "mbpp/763",
+   "mbpp/9",
+   "mbpp/166",
+   "mbpp/94",
+   "mbpp/737",
+   "mbpp/444",
+   "mbpp/765",
+   "mbpp/733",
+   "mbpp/171",
+   "mbpp/115",
+   "mbpp/120",
+   "mbpp/615",
+   "mbpp/778",
+   "mbpp/740",
+   "mbpp/784",
+   "mbpp/777",
+   "mbpp/11",
+   "mbpp/735",
+   "mbpp/554",
+   "mbpp/632",
+   "mbpp/748",
+   "mbpp/113",
+   "mbpp/772",
+   "mbpp/557",
+   "mbpp/244",
+   "mbpp/626",
+   "mbpp/4",
+   "mbpp/394",
+   "mbpp/250",
+   "mbpp/261",
+   "mbpp/473",
+   "mbpp/426",
+   "mbpp/438",
+   "mbpp/135",
+   "mbpp/260",
+   "mbpp/12",
+   "mbpp/407",
+   "mbpp/440",
+   "mbpp/605",
+   "mbpp/432",
+   "mbpp/743",
+   "mbpp/297",
+   "mbpp/627",
+   "mbpp/80",
+   "mbpp/766",
+   "mbpp/635",
+   "mbpp/170",
+   "mbpp/301",
+   "mbpp/6",
+   "mbpp/454",
+   "mbpp/406",
+   "mbpp/240",
+   "mbpp/471",
+   "mbpp/559",
+   "mbpp/563",
+   "mbpp/569",
+   "mbpp/84",
+   "mbpp/14",
+   "mbpp/242",
+   "mbpp/430",
+   "mbpp/797",
+   "mbpp/100",
+   "mbpp/724",
+   "mbpp/643",
+   "mbpp/90",
+   "mbpp/232",
+   "mbpp/792",
+   "mbpp/273",
+   "humaneval/54",
+   "humaneval/84",
+   "humaneval/117",
+   "humaneval/143",
+   "humaneval/0",
+   "humaneval/106",
+   "humaneval/6",
+   "humaneval/128",
+   "humaneval/72",
+   "humaneval/30",
+   "humaneval/50",
+   "humaneval/9",
+   "humaneval/88",
+   "humaneval/29",
+   "humaneval/34",
+   "humaneval/80",
+   "humaneval/53",
+   "humaneval/27",
+   "humaneval/149",
+   "humaneval/28",
+   "humaneval/16",
+   "humaneval/152",
+   "humaneval/130",
+   "humaneval/15",
+   "humaneval/97",
+   "humaneval/1",
+   "humaneval/119",
+   "humaneval/62",
+   "humaneval/111",
+   "humaneval/12",
+   "humaneval/155",
+   "humaneval/18",
+   "humaneval/40",
+   "humaneval/101",
+   "humaneval/93",
+   "humaneval/17",
+   "humaneval/42",
+   "humaneval/105",
+   "humaneval/43",
+   "humaneval/41",
+   "humaneval/68",
+   "humaneval/90"
+  ],
+  "validation_task_ids": [
+   "mbpp/732",
+   "mbpp/139",
+   "mbpp/612",
+   "mbpp/465",
+   "mbpp/631",
+   "mbpp/271",
+   "mbpp/395",
+   "mbpp/398",
+   "mbpp/806",
+   "mbpp/624",
+   "mbpp/417",
+   "mbpp/594",
+   "mbpp/801",
+   "mbpp/625",
+   "mbpp/793",
+   "mbpp/764",
+   "mbpp/400",
+   "mbpp/744",
+   "mbpp/769",
+   "mbpp/307",
+   "mbpp/574",
+   "mbpp/96",
+   "mbpp/247",
+   "mbpp/577",
+   "mbpp/163",
+   "mbpp/238",
+   "mbpp/566",
+   "mbpp/109",
+   "mbpp/101",
+   "mbpp/770",
+   "mbpp/126",
+   "mbpp/445",
+   "mbpp/286",
+   "mbpp/760",
+   "mbpp/103",
+   "mbpp/442",
+   "mbpp/237",
+   "mbpp/464",
+   "mbpp/745",
+   "mbpp/312",
+   "mbpp/389",
+   "mbpp/99",
+   "mbpp/82",
+   "mbpp/421",
+   "mbpp/61",
+   "mbpp/58",
+   "mbpp/123",
+   "mbpp/70",
+   "mbpp/759",
+   "mbpp/567",
+   "mbpp/619",
+   "mbpp/455",
+   "mbpp/462",
+   "mbpp/118",
+   "mbpp/282",
+   "mbpp/79",
+   "humaneval/135",
+   "humaneval/13",
+   "humaneval/116",
+   "humaneval/98",
+   "humaneval/121",
+   "humaneval/132",
+   "humaneval/103",
+   "humaneval/124",
+   "humaneval/59",
+   "humaneval/144",
+   "humaneval/133",
+   "humaneval/83",
+   "humaneval/122",
+   "humaneval/163",
+   "humaneval/123",
+   "humaneval/23",
+   "humaneval/14",
+   "humaneval/136",
+   "humaneval/75",
+   "humaneval/139",
+   "humaneval/85"
+  ],
+  "fit_ids_sha256": "361c1a79d85ede48dab30860f088661fad69555bc8d4df015e472d6133afb9fc",
+  "validation_ids_sha256": "25abc59fbb156f639b130a9b10bff5a0105f024fec60013c7e9dd9f1942bed3e"
+ },
+ "classes": {
+  "prompt_only": {
+   "features": {
+    "t1": [
+     "x_humaneval",
+     "zero_visible_checks"
+    ],
+    "t2": [
+     "x_humaneval",
+     "zero_visible_checks"
+    ]
+   },
+   "trees_enumerated": {
+    "t1": 74,
+    "t2": 74
+   },
+   "by_depth_fit_on_FIT": {
+    "0": {
+     "fit_router": {
+      "a0": "S",
+      "tree_t1": "S",
+      "tree_t2": "L",
+      "depth_t1": 0,
+      "depth_t2": 0,
+      "leaves": 2,
+      "structurally_fixed_schedule": true
+     },
+     "fit_value_utility": 0.734838,
+     "search": {
+      "n_candidates": 4,
+      "zero_denominator_candidates": 0,
+      "n_exact_ties": 1,
+      "tie_break_applied": "none",
+      "ties_by_leaves": {
+       "2": 1
+      }
+     },
+     "validation": {
+      "components_self_normalized_ipw": {
+       "utility": {
+        "value": 0.627044,
+        "task_clustered_se": 0.048937
+       },
+       "success": {
+        "value": 0.647799,
+        "task_clustered_se": 0.048141
+       },
+       "large_calls": {
+        "value": 0.264151,
+        "task_clustered_se": 0.051942
+       },
+       "small_calls": {
+        "value": 1.283019,
+        "task_clustered_se": 0.052762
+       },
+       "completion_tokens": {
+        "value": 123.59434,
+        "task_clustered_se": 18.734541
+       },
+       "prompt_tokens": {
+        "value": 389.301887,
+        "task_clustered_se": 57.315419
+       },
+       "llm_wall_seconds": {
+        "value": 8.234572,
+        "task_clustered_se": 1.39534
+       }
+      },
+      "weights": {
+       "episodes_in_set": 308,
+       "episodes_with_nonzero_weight": 252,
+       "weight_values": {
+        "0": 56,
+        "2": 228,
+        "4": 3,
+        "8": 21
+       },
+       "sum_weights": 636,
+       "kish_effective_episodes": 175.56,
+       "tasks_in_set": 77,
+       "tasks_with_nonzero_weight": 76,
+       "kish_effective_tasks": 66.97
+      }
+     }
+    },
+    "1": {
+     "fit_router": {
+      "a0": "S",
+      "tree_t1": "[x_humaneval: 0->S, 1->L]",
+      "tree_t2": "[x_humaneval: 0->L, 1->S]",
+      "depth_t1": 1,
+      "depth_t2": 1,
+      "leaves": 4,
+      "structurally_fixed_schedule": false
+     },
+     "fit_value_utility": 0.742404,
+     "search": {
+      "n_candidates": 100,
+      "zero_denominator_candidates": 0,
+      "n_exact_ties": 1,
+      "tie_break_applied": "none",
+      "ties_by_leaves": {
+       "4": 1
+      }
+     },
+     "validation": {
+      "components_self_normalized_ipw": {
+       "utility": {
+        "value": 0.608606,
+        "task_clustered_se": 0.053572
+       },
+       "success": {
+        "value": 0.630303,
+        "task_clustered_se": 0.052433
+       },
+       "large_calls": {
+        "value": 0.290909,
+        "task_clustered_se": 0.055643
+       },
+       "small_calls": {
+        "value": 1.29697,
+        "task_clustered_se": 0.055738
+       },
+       "completion_tokens": {
+        "value": 137.233333,
+        "task_clustered_se": 19.338204
+       },
+       "prompt_tokens": {
+        "value": 420.242424,
+        "task_clustered_se": 62.293339
+       },
+       "llm_wall_seconds": {
+        "value": 9.3111,
+        "task_clustered_se": 1.472775
+       }
+      },
+      "weights": {
+       "episodes_in_set": 308,
+       "episodes_with_nonzero_weight": 256,
+       "weight_values": {
+        "0": 52,
+        "2": 228,
+        "8": 23,
+        "4": 5
+       },
+       "sum_weights": 660,
+       "kish_effective_episodes": 176.79,
+       "tasks_in_set": 77,
+       "tasks_with_nonzero_weight": 75,
+       "kish_effective_tasks": 64.59
+      }
+     }
+    },
+    "2": {
+     "fit_router": {
+      "a0": "S",
+      "tree_t1": "[x_humaneval: 0->S, 1->L]",
+      "tree_t2": "[x_humaneval: 0->L, 1->S]",
+      "depth_t1": 1,
+      "depth_t2": 1,
+      "leaves": 4,
+      "structurally_fixed_schedule": false
+     },
+     "fit_value_utility": 0.742404,
+     "search": {
+      "n_candidates": 5476,
+      "zero_denominator_candidates": 0,
+      "n_exact_ties": 225,
+      "tie_break_applied": "fewer leaves / lower large-call rate / lexicographic",
+      "ties_by_leaves": {
+       "4": 1,
+       "5": 12,
+       "6": 52,
+       "7": 96,
+       "8": 64
+      }
+     },
+     "validation": {
+      "components_self_normalized_ipw": {
+       "utility": {
+        "value": 0.608606,
+        "task_clustered_se": 0.053572
+       },
+       "success": {
+        "value": 0.630303,
+        "task_clustered_se": 0.052433
+       },
+       "large_calls": {
+        "value": 0.290909,
+        "task_clustered_se": 0.055643
+       },
+       "small_calls": {
+        "value": 1.29697,
+        "task_clustered_se": 0.055738
+       },
+       "completion_tokens": {
+        "value": 137.233333,
+        "task_clustered_se": 19.338204
+       },
+       "prompt_tokens": {
+        "value": 420.242424,
+        "task_clustered_se": 62.293339
+       },
+       "llm_wall_seconds": {
+        "value": 9.3111,
+        "task_clustered_se": 1.472775
+       }
+      },
+      "weights": {
+       "episodes_in_set": 308,
+       "episodes_with_nonzero_weight": 256,
+       "weight_values": {
+        "0": 52,
+        "2": 228,
+        "8": 23,
+        "4": 5
+       },
+       "sum_weights": 660,
+       "kish_effective_episodes": 176.79,
+       "tasks_in_set": 77,
+       "tasks_with_nonzero_weight": 75,
+       "kish_effective_tasks": 64.59
+      }
+     }
+    }
+   },
+   "one_se_rule": {
+    "best_validation_depth": 0,
+    "best_validation_value": 0.627044,
+    "best_validation_se": 0.048937,
+    "threshold": 0.578107,
+    "chosen_depth": 0
+   },
+   "final_router_refit_on_all_TRAIN": {
+    "a0": "S",
+    "tree_t1": "L",
+    "tree_t2": "L",
+    "depth_t1": 0,
+    "depth_t2": 0,
+    "leaves": 2,
+    "structurally_fixed_schedule": true
+   },
+   "final_search": {
+    "n_candidates": 4,
+    "zero_denominator_candidates": 0,
+    "n_exact_ties": 1,
+    "tie_break_applied": "none",
+    "ties_by_leaves": {
+     "2": 1
+    }
+   },
+   "final_in_sample_all_TRAIN": {
+    "components_self_normalized_ipw": {
+     "utility": {
+      "value": 0.704649,
+      "task_clustered_se": 0.028941
+     },
+     "success": {
+      "value": 0.722408,
+      "task_clustered_se": 0.028338
+     },
+     "large_calls": {
+      "value": 0.25864,
+      "task_clustered_se": 0.042256
+     },
+     "small_calls": {
+      "value": 1.0,
+      "task_clustered_se": 0.0
+     },
+     "completion_tokens": {
+      "value": 98.583055,
+      "task_clustered_se": 7.42868
+     },
+     "prompt_tokens": {
+      "value": 239.655518,
+      "task_clustered_se": 22.700083
+     },
+     "llm_wall_seconds": {
+      "value": 6.491817,
+      "task_clustered_se": 0.620043
+     }
+    },
+    "weights": {
+     "episodes_in_set": 924,
+     "episodes_with_nonzero_weight": 800,
+     "weight_values": {
+      "2": 741,
+      "0": 124,
+      "8": 19,
+      "4": 40
+     },
+     "sum_weights": 1794,
+     "kish_effective_episodes": 667.73,
+     "tasks_in_set": 231,
+     "tasks_with_nonzero_weight": 224,
+     "kish_effective_tasks": 210.47
+    }
+   },
+   "final_leaf_support": [
+    {
+     "stage": 1,
+     "path": "(root)",
+     "action": "L",
+     "supporting_decisions": 183,
+     "unsupported_default": false
+    },
+    {
+     "stage": 2,
+     "path": "(root)",
+     "action": "L",
+     "supporting_decisions": 126,
+     "unsupported_default": false
+    }
+   ]
+  },
+  "history_aware": {
+   "features": {
+    "t1": [
+     "x_humaneval",
+     "zero_visible_checks",
+     "exc_last",
+     "allfail_last"
+    ],
+    "t2": [
+     "x_humaneval",
+     "zero_visible_checks",
+     "exc_last",
+     "allfail_last",
+     "prev_large"
+    ]
+   },
+   "trees_enumerated": {
+    "t1": 786,
+    "t2": 1622
+   },
+   "by_depth_fit_on_FIT": {
+    "0": {
+     "fit_router": {
+      "a0": "S",
+      "tree_t1": "S",
+      "tree_t2": "L",
+      "depth_t1": 0,
+      "depth_t2": 0,
+      "leaves": 2,
+      "structurally_fixed_schedule": true
+     },
+     "fit_value_utility": 0.734838,
+     "search": {
+      "n_candidates": 4,
+      "zero_denominator_candidates": 0,
+      "n_exact_ties": 1,
+      "tie_break_applied": "none",
+      "ties_by_leaves": {
+       "2": 1
+      }
+     },
+     "validation": {
+      "components_self_normalized_ipw": {
+       "utility": {
+        "value": 0.627044,
+        "task_clustered_se": 0.048937
+       },
+       "success": {
+        "value": 0.647799,
+        "task_clustered_se": 0.048141
+       },
+       "large_calls": {
+        "value": 0.264151,
+        "task_clustered_se": 0.051942
+       },
+       "small_calls": {
+        "value": 1.283019,
+        "task_clustered_se": 0.052762
+       },
+       "completion_tokens": {
+        "value": 123.59434,
+        "task_clustered_se": 18.734541
+       },
+       "prompt_tokens": {
+        "value": 389.301887,
+        "task_clustered_se": 57.315419
+       },
+       "llm_wall_seconds": {
+        "value": 8.234572,
+        "task_clustered_se": 1.39534
+       }
+      },
+      "weights": {
+       "episodes_in_set": 308,
+       "episodes_with_nonzero_weight": 252,
+       "weight_values": {
+        "0": 56,
+        "2": 228,
+        "4": 3,
+        "8": 21
+       },
+       "sum_weights": 636,
+       "kish_effective_episodes": 175.56,
+       "tasks_in_set": 77,
+       "tasks_with_nonzero_weight": 76,
+       "kish_effective_tasks": 66.97
+      }
+     }
+    },
+    "1": {
+     "fit_router": {
+      "a0": "S",
+      "tree_t1": "[x_humaneval: 0->S, 1->L]",
+      "tree_t2": "[exc_last: 0->S, 1->L]",
+      "depth_t1": 1,
+      "depth_t2": 1,
+      "leaves": 4,
+      "structurally_fixed_schedule": false
+     },
+     "fit_value_utility": 0.746562,
+     "search": {
+      "n_candidates": 396,
+      "zero_denominator_candidates": 0,
+      "n_exact_ties": 1,
+      "tie_break_applied": "none",
+      "ties_by_leaves": {
+       "4": 1
+      }
+     },
+     "validation": {
+      "components_self_normalized_ipw": {
+       "utility": {
+        "value": 0.613826,
+        "task_clustered_se": 0.05408
+       },
+       "success": {
+        "value": 0.630872,
+        "task_clustered_se": 0.053047
+       },
+       "large_calls": {
+        "value": 0.134228,
+        "task_clustered_se": 0.049536
+       },
+       "small_calls": {
+        "value": 1.302013,
+        "task_clustered_se": 0.073594
+       },
+       "completion_tokens": {
+        "value": 128.963087,
+        "task_clustered_se": 22.023284
+       },
+       "prompt_tokens": {
+        "value": 343.610738,
+        "task_clustered_se": 52.929551
+       },
+       "llm_wall_seconds": {
+        "value": 7.701123,
+        "task_clustered_se": 1.34901
+       }
+      },
+      "weights": {
+       "episodes_in_set": 308,
+       "episodes_with_nonzero_weight": 248,
+       "weight_values": {
+        "8": 15,
+        "2": 228,
+        "4": 5,
+        "0": 60
+       },
+       "sum_weights": 596,
+       "kish_effective_episodes": 181.98,
+       "tasks_in_set": 77,
+       "tasks_with_nonzero_weight": 76,
+       "kish_effective_tasks": 69.49
+      }
+     }
+    },
+    "2": {
+     "fit_router": {
+      "a0": "S",
+      "tree_t1": "[exc_last: 0->[x_humaneval: 0->L, 1->S], 1->[x_humaneval: 0->S, 1->L]]",
+      "tree_t2": "[allfail_last: 0->[x_humaneval: 0->L, 1->S], 1->[prev_large: 0->L, 1->S]]",
+      "depth_t1": 2,
+      "depth_t2": 2,
+      "leaves": 8,
+      "structurally_fixed_schedule": false
+     },
+     "fit_value_utility": 0.753506,
+     "search": {
+      "n_candidates": 1274892,
+      "zero_denominator_candidates": 0,
+      "n_exact_ties": 2,
+      "tie_break_applied": "fewer leaves / lower large-call rate / lexicographic",
+      "ties_by_leaves": {
+       "8": 2
+      }
+     },
+     "validation": {
+      "components_self_normalized_ipw": {
+       "utility": {
+        "value": 0.652237,
+        "task_clustered_se": 0.054343
+       },
+       "success": {
+        "value": 0.671053,
+        "task_clustered_se": 0.053421
+       },
+       "large_calls": {
+        "value": 0.236842,
+        "task_clustered_se": 0.052639
+       },
+       "small_calls": {
+        "value": 1.171053,
+        "task_clustered_se": 0.043685
+       },
+       "completion_tokens": {
+        "value": 108.424342,
+        "task_clustered_se": 12.994785
+       },
+       "prompt_tokens": {
+        "value": 301.960526,
+        "task_clustered_se": 42.892389
+       },
+       "llm_wall_seconds": {
+        "value": 7.287558,
+        "task_clustered_se": 1.026327
+       }
+      },
+      "weights": {
+       "episodes_in_set": 308,
+       "episodes_with_nonzero_weight": 254,
+       "weight_values": {
+        "0": 54,
+        "2": 228,
+        "4": 14,
+        "8": 12
+       },
+       "sum_weights": 608,
+       "kish_effective_episodes": 194.15,
+       "tasks_in_set": 77,
+       "tasks_with_nonzero_weight": 74,
+       "kish_effective_tasks": 65.92
+      }
+     }
+    }
+   },
+   "one_se_rule": {
+    "best_validation_depth": 2,
+    "best_validation_value": 0.652237,
+    "best_validation_se": 0.054343,
+    "threshold": 0.597894,
+    "chosen_depth": 0
+   },
+   "final_router_refit_on_all_TRAIN": {
+    "a0": "S",
+    "tree_t1": "L",
+    "tree_t2": "L",
+    "depth_t1": 0,
+    "depth_t2": 0,
+    "leaves": 2,
+    "structurally_fixed_schedule": true
+   },
+   "final_search": {
+    "n_candidates": 4,
+    "zero_denominator_candidates": 0,
+    "n_exact_ties": 1,
+    "tie_break_applied": "none",
+    "ties_by_leaves": {
+     "2": 1
+    }
+   },
+   "final_in_sample_all_TRAIN": {
+    "components_self_normalized_ipw": {
+     "utility": {
+      "value": 0.704649,
+      "task_clustered_se": 0.028941
+     },
+     "success": {
+      "value": 0.722408,
+      "task_clustered_se": 0.028338
+     },
+     "large_calls": {
+      "value": 0.25864,
+      "task_clustered_se": 0.042256
+     },
+     "small_calls": {
+      "value": 1.0,
+      "task_clustered_se": 0.0
+     },
+     "completion_tokens": {
+      "value": 98.583055,
+      "task_clustered_se": 7.42868
+     },
+     "prompt_tokens": {
+      "value": 239.655518,
+      "task_clustered_se": 22.700083
+     },
+     "llm_wall_seconds": {
+      "value": 6.491817,
+      "task_clustered_se": 0.620043
+     }
+    },
+    "weights": {
+     "episodes_in_set": 924,
+     "episodes_with_nonzero_weight": 800,
+     "weight_values": {
+      "2": 741,
+      "0": 124,
+      "8": 19,
+      "4": 40
+     },
+     "sum_weights": 1794,
+     "kish_effective_episodes": 667.73,
+     "tasks_in_set": 231,
+     "tasks_with_nonzero_weight": 224,
+     "kish_effective_tasks": 210.47
+    }
+   },
+   "final_leaf_support": [
+    {
+     "stage": 1,
+     "path": "(root)",
+     "action": "L",
+     "supporting_decisions": 183,
+     "unsupported_default": false
+    },
+    {
+     "stage": 2,
+     "path": "(root)",
+     "action": "L",
+     "supporting_decisions": 126,
+     "unsupported_default": false
+    }
+   ]
+  }
+ },
+ "validation_contrast": {
+  "history_minus_prompt_utility": 0.0,
+  "task_clustered_paired_se": 0.0,
+  "validation_tasks": 77,
+  "label": "DEVELOPMENT-only; FIT-selected routers at their one-SE depths; not confirmatory, not fresh-policy superiority"
+ },
+ "realized_disagreement_final_routers": {
+  "summary": {
+   "all_observed": {
+    "t1_decisions": 183,
+    "t1_disagree": 0,
+    "t2_decisions": 126,
+    "t2_disagree": 0,
+    "disagree_decisions": 0,
+    "distinct_tasks_with_disagreement": 0,
+    "distinct_tasks_t1": 0,
+    "distinct_tasks_t2": 0
+   },
+   "reachable_by_both": {
+    "t1_decisions": 183,
+    "t1_disagree": 0,
+    "t2_decisions": 50,
+    "t2_disagree": 0,
+    "disagree_decisions": 0,
+    "distinct_tasks_with_disagreement": 0,
+    "distinct_tasks_t1": 0,
+    "distinct_tasks_t2": 0
+   }
+  },
+  "cells": [
+   {
+    "t": 1,
+    "family": "humaneval",
+    "zero_visible_checks": 0,
+    "fail_class": "assertion",
+    "frac_bin": "all_checks_failed",
+    "prev_actions": "S",
+    "prompt_only": "L",
+    "history_aware": "L",
+    "decisions": 19,
+    "tasks": 8,
+    "reachable_by_both": 19,
+    "disagree": false
+   },
+   {
+    "t": 1,
+    "family": "humaneval",
+    "zero_visible_checks": 0,
+    "fail_class": "assertion",
+    "frac_bin": "partial",
+    "prev_actions": "S",
+    "prompt_only": "L",
+    "history_aware": "L",
+    "decisions": 25,
+    "tasks": 11,
+    "reachable_by_both": 25,
+    "disagree": false
+   },
+   {
+    "t": 1,
+    "family": "humaneval",
+    "zero_visible_checks": 0,
+    "fail_class": "exception",
+    "frac_bin": "all_checks_failed",
+    "prev_actions": "S",
+    "prompt_only": "L",
+    "history_aware": "L",
+    "decisions": 7,
+    "tasks": 6,
+    "reachable_by_both": 7,
+    "disagree": false
+   },
+   {
+    "t": 1,
+    "family": "humaneval",
+    "zero_visible_checks": 1,
+    "fail_class": "exception",
+    "frac_bin": "all_checks_failed",
+    "prev_actions": "S",
+    "prompt_only": "L",
+    "history_aware": "L",
+    "decisions": 1,
+    "tasks": 1,
+    "reachable_by_both": 1,
+    "disagree": false
+   },
+   {
+    "t": 1,
+    "family": "mbpp",
+    "zero_visible_checks": 0,
+    "fail_class": "assertion",
+    "frac_bin": "all_checks_failed",
+    "prev_actions": "S",
+    "prompt_only": "L",
+    "history_aware": "L",
+    "decisions": 26,
+    "tasks": 14,
+    "reachable_by_both": 26,
+    "disagree": false
+   },
+   {
+    "t": 1,
+    "family": "mbpp",
+    "zero_visible_checks": 0,
+    "fail_class": "assertion",
+    "frac_bin": "partial",
+    "prev_actions": "S",
+    "prompt_only": "L",
+    "history_aware": "L",
+    "decisions": 76,
+    "tasks": 39,
+    "reachable_by_both": 76,
+    "disagree": false
+   },
+   {
+    "t": 1,
+    "family": "mbpp",
+    "zero_visible_checks": 0,
+    "fail_class": "exception",
+    "frac_bin": "all_checks_failed",
+    "prev_actions": "S",
+    "prompt_only": "L",
+    "history_aware": "L",
+    "decisions": 15,
+    "tasks": 12,
+    "reachable_by_both": 15,
+    "disagree": false
+   },
+   {
+    "t": 1,
+    "family": "mbpp",
+    "zero_visible_checks": 0,
+    "fail_class": "exception",
+    "frac_bin": "partial",
+    "prev_actions": "S",
+    "prompt_only": "L",
+    "history_aware": "L",
+    "decisions": 14,
+    "tasks": 9,
+    "reachable_by_both": 14,
+    "disagree": false
+   },
+   {
+    "t": 2,
+    "family": "humaneval",
+    "zero_visible_checks": 0,
+    "fail_class": "assertion",
+    "frac_bin": "all_checks_failed",
+    "prev_actions": "SL",
+    "prompt_only": "L",
+    "history_aware": "L",
+    "decisions": 5,
+    "tasks": 3,
+    "reachable_by_both": 5,
+    "disagree": false
+   },
+   {
+    "t": 2,
+    "family": "humaneval",
+    "zero_visible_checks": 0,
+    "fail_class": "assertion",
+    "frac_bin": "all_checks_failed",
+    "prev_actions": "SS",
+    "prompt_only": "L",
+    "history_aware": "L",
+    "decisions": 7,
+    "tasks": 3,
+    "reachable_by_both": 0,
+    "disagree": false
+   },
+   {
+    "t": 2,
+    "family": "humaneval",
+    "zero_visible_checks": 0,
+    "fail_class": "assertion",
+    "frac_bin": "partial",
+    "prev_actions": "SL",
+    "prompt_only": "L",
+    "history_aware": "L",
+    "decisions": 7,
+    "tasks": 6,
+    "reachable_by_both": 7,
+    "disagree": false
+   },
+   {
+    "t": 2,
+    "family": "humaneval",
+    "zero_visible_checks": 0,
+    "fail_class": "assertion",
+    "frac_bin": "partial",
+    "prev_actions": "SS",
+    "prompt_only": "L",
+    "history_aware": "L",
+    "decisions": 9,
+    "tasks": 6,
+    "reachable_by_both": 0,
+    "disagree": false
+   },
+   {
+    "t": 2,
+    "family": "humaneval",
+    "zero_visible_checks": 0,
+    "fail_class": "exception",
+    "frac_bin": "all_checks_failed",
+    "prev_actions": "SL",
+    "prompt_only": "L",
+    "history_aware": "L",
+    "decisions": 5,
+    "tasks": 4,
+    "reachable_by_both": 5,
+    "disagree": false
+   },
+   {
+    "t": 2,
+    "family": "humaneval",
+    "zero_visible_checks": 0,
+    "fail_class": "exception",
+    "frac_bin": "all_checks_failed",
+    "prev_actions": "SS",
+    "prompt_only": "L",
+    "history_aware": "L",
+    "decisions": 4,
+    "tasks": 4,
+    "reachable_by_both": 0,
+    "disagree": false
+   },
+   {
+    "t": 2,
+    "family": "humaneval",
+    "zero_visible_checks": 1,
+    "fail_class": "exception",
+    "frac_bin": "all_checks_failed",
+    "prev_actions": "SL",
+    "prompt_only": "L",
+    "history_aware": "L",
+    "decisions": 1,
+    "tasks": 1,
+    "reachable_by_both": 1,
+    "disagree": false
+   },
+   {
+    "t": 2,
+    "family": "mbpp",
+    "zero_visible_checks": 0,
+    "fail_class": "assertion",
+    "frac_bin": "all_checks_failed",
+    "prev_actions": "SL",
+    "prompt_only": "L",
+    "history_aware": "L",
+    "decisions": 4,
+    "tasks": 3,
+    "reachable_by_both": 4,
+    "disagree": false
+   },
+   {
+    "t": 2,
+    "family": "mbpp",
+    "zero_visible_checks": 0,
+    "fail_class": "assertion",
+    "frac_bin": "all_checks_failed",
+    "prev_actions": "SS",
+    "prompt_only": "L",
+    "history_aware": "L",
+    "decisions": 10,
+    "tasks": 9,
+    "reachable_by_both": 0,
+    "disagree": false
+   },
+   {
+    "t": 2,
+    "family": "mbpp",
+    "zero_visible_checks": 0,
+    "fail_class": "assertion",
+    "frac_bin": "partial",
+    "prev_actions": "SL",
+    "prompt_only": "L",
+    "history_aware": "L",
+    "decisions": 9,
+    "tasks": 9,
+    "reachable_by_both": 9,
+    "disagree": false
+   },
+   {
+    "t": 2,
+    "family": "mbpp",
+    "zero_visible_checks": 0,
+    "fail_class": "assertion",
+    "frac_bin": "partial",
+    "prev_actions": "SS",
+    "prompt_only": "L",
+    "history_aware": "L",
+    "decisions": 36,
+    "tasks": 26,
+    "reachable_by_both": 0,
+    "disagree": false
+   },
+   {
+    "t": 2,
+    "family": "mbpp",
+    "zero_visible_checks": 0,
+    "fail_class": "exception",
+    "frac_bin": "all_checks_failed",
+    "prev_actions": "SL",
+    "prompt_only": "L",
+    "history_aware": "L",
+    "decisions": 19,
+    "tasks": 14,
+    "reachable_by_both": 19,
+    "disagree": false
+   },
+   {
+    "t": 2,
+    "family": "mbpp",
+    "zero_visible_checks": 0,
+    "fail_class": "exception",
+    "frac_bin": "all_checks_failed",
+    "prev_actions": "SS",
+    "prompt_only": "L",
+    "history_aware": "L",
+    "decisions": 7,
+    "tasks": 6,
+    "reachable_by_both": 0,
+    "disagree": false
+   },
+   {
+    "t": 2,
+    "family": "mbpp",
+    "zero_visible_checks": 0,
+    "fail_class": "exception",
+    "frac_bin": "partial",
+    "prev_actions": "SS",
+    "prompt_only": "L",
+    "history_aware": "L",
+    "decisions": 3,
+    "tasks": 2,
+    "reachable_by_both": 0,
+    "disagree": false
+   }
+  ],
+  "behaviour_on_reachable_histories": {
+   "prompt_only": {
+    "t1": "L",
+    "t2": "L"
+   },
+   "history_aware": {
+    "t1": "L",
+    "t2": "L"
+   }
+  },
+  "behaviourally_fixed_schedule": {
+   "prompt_only": true,
+   "history_aware": true
+  }
+ },
+ "realized_disagreement_all_TRAIN_refit_by_depth": {
+  "note": "descriptive: the best pair of each class refit on all TRAIN at each depth bound; only the one-SE depths above are the pre-specified result",
+  "by_depth": {
+   "0": {
+    "prompt_only": {
+     "a0": "S",
+     "tree_t1": "L",
+     "tree_t2": "L",
+     "depth_t1": 0,
+     "depth_t2": 0,
+     "leaves": 2,
+     "structurally_fixed_schedule": true
+    },
+    "history_aware": {
+     "a0": "S",
+     "tree_t1": "L",
+     "tree_t2": "L",
+     "depth_t1": 0,
+     "depth_t2": 0,
+     "leaves": 2,
+     "structurally_fixed_schedule": true
+    },
+    "in_sample_value_prompt_only": 0.704649,
+    "in_sample_value_history_aware": 0.704649,
+    "summary": {
+     "all_observed": {
+      "t1_decisions": 183,
+      "t1_disagree": 0,
+      "t2_decisions": 126,
+      "t2_disagree": 0,
+      "disagree_decisions": 0,
+      "distinct_tasks_with_disagreement": 0,
+      "distinct_tasks_t1": 0,
+      "distinct_tasks_t2": 0
+     },
+     "reachable_by_both": {
+      "t1_decisions": 183,
+      "t1_disagree": 0,
+      "t2_decisions": 50,
+      "t2_disagree": 0,
+      "disagree_decisions": 0,
+      "distinct_tasks_with_disagreement": 0,
+      "distinct_tasks_t1": 0,
+      "distinct_tasks_t2": 0
+     }
+    },
+    "behaviourally_fixed_schedule": {
+     "prompt_only": true,
+     "history_aware": true
+    }
+   },
+   "1": {
+    "prompt_only": {
+     "a0": "S",
+     "tree_t1": "[x_humaneval: 0->L, 1->S]",
+     "tree_t2": "L",
+     "depth_t1": 1,
+     "depth_t2": 0,
+     "leaves": 3,
+     "structurally_fixed_schedule": false
+    },
+    "history_aware": {
+     "a0": "S",
+     "tree_t1": "[exc_last: 0->L, 1->S]",
+     "tree_t2": "[x_humaneval: 0->L, 1->S]",
+     "depth_t1": 1,
+     "depth_t2": 1,
+     "leaves": 4,
+     "structurally_fixed_schedule": false
+    },
+    "in_sample_value_prompt_only": 0.709775,
+    "in_sample_value_history_aware": 0.71059,
+    "summary": {
+     "all_observed": {
+      "t1_decisions": 183,
+      "t1_disagree": 73,
+      "t2_decisions": 126,
+      "t2_disagree": 38,
+      "disagree_decisions": 111,
+      "distinct_tasks_with_disagreement": 42,
+      "distinct_tasks_t1": 38,
+      "distinct_tasks_t2": 18
+     },
+     "reachable_by_both": {
+      "t1_decisions": 183,
+      "t1_disagree": 73,
+      "t2_decisions": 29,
+      "t2_disagree": 3,
+      "disagree_decisions": 76,
+      "distinct_tasks_with_disagreement": 40,
+      "distinct_tasks_t1": 38,
+      "distinct_tasks_t2": 3
+     }
+    },
+    "behaviourally_fixed_schedule": {
+     "prompt_only": false,
+     "history_aware": false
+    }
+   },
+   "2": {
+    "prompt_only": {
+     "a0": "S",
+     "tree_t1": "[x_humaneval: 0->L, 1->S]",
+     "tree_t2": "L",
+     "depth_t1": 1,
+     "depth_t2": 0,
+     "leaves": 3,
+     "structurally_fixed_schedule": false
+    },
+    "history_aware": {
+     "a0": "S",
+     "tree_t1": "[allfail_last: 0->[x_humaneval: 0->L, 1->S], 1->[exc_last: 0->S, 1->L]]",
+     "tree_t2": "[prev_large: 0->[allfail_last: 0->S, 1->L], 1->[x_humaneval: 0->L, 1->S]]",
+     "depth_t1": 2,
+     "depth_t2": 2,
+     "leaves": 8,
+     "structurally_fixed_schedule": false
+    },
+    "in_sample_value_prompt_only": 0.709775,
+    "in_sample_value_history_aware": 0.725279,
+    "summary": {
+     "all_observed": {
+      "t1_decisions": 183,
+      "t1_disagree": 34,
+      "t2_decisions": 126,
+      "t2_disagree": 66,
+      "disagree_decisions": 100,
+      "distinct_tasks_with_disagreement": 55,
+      "distinct_tasks_t1": 21,
+      "distinct_tasks_t2": 41
+     },
+     "reachable_by_both": {
+      "t1_decisions": 183,
+      "t1_disagree": 34,
+      "t2_decisions": 41,
+      "t2_disagree": 9,
+      "disagree_decisions": 43,
+      "distinct_tasks_with_disagreement": 26,
+      "distinct_tasks_t1": 21,
+      "distinct_tasks_t2": 6
+     }
+    },
+    "behaviourally_fixed_schedule": {
+     "prompt_only": false,
+     "history_aware": false
+    }
+   }
+  }
+ },
+ "cpu_seconds": 0.42
+}

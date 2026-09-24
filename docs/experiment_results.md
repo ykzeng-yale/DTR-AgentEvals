@@ -835,6 +835,24 @@ TRAIN-log and pilot records; no model call and no fitted router were used, and n
   logger, the verdict is INCONCLUSIVE, never PROCEED. The decisive counts were recomputed independently by the worker
   and match exactly.
 
+### 2026-09-24 01:01 UTC — REQ-006 re-labelled by the lead; REQ-007: trained routers collapse to one fixed schedule (retrospective, DEVELOPMENT-only)
+- **Correction to the entry above (lead `3911aee`):** the REQ-006 verdict is **INCONCLUSIVE** for the
+  history-aware vs prompt-only contrast, not REPAIR. The 50% development flag is not a pass/fail rule for the archived
+  logger. The 19.8% continuation rate stays as a descriptive reason to repair any future E2 logger. A new E2 live or
+  CONFIRM stage is on hold.
+- **REQ-007** ([summary](../results/code_routing/analysis/req007/REQ007_SUMMARY.md),
+  [record](../results/code_routing/analysis/req007/e2dev_tree_fit.json)) fits the frozen `REQ006-E2DEV-TREE-v0` on TRAIN
+  only. Both routers start with the small model; each is a tree of depth up to 2 per step, and the search is exhaustive
+  (1,274,892 history-aware pairs at depth 2). Depth is chosen on a 154/77-task FIT/VALIDATION split by the one-SE rule.
+- **Result: both routers collapse to the same fixed schedule, small → large → large, so they never disagree** at the
+  309 observed TRAIN decisions. The history-aware depth-2 tree had the best validation utility, 0.652 (SE 0.054),
+  against 0.627 for the fixed schedule. The gap is less than one SE, so the rule picks depth 0.
+- Descriptive, not the pre-specified result: with depth forced to 2, the routers would disagree on 100 decisions in 55
+  tasks, with in-sample utility 0.725 vs 0.710. In-sample values are optimistic.
+- Verified: every probability is 0.5, and the decisions match `decisions.jsonl` on 24,010 fields. An independent
+  truth-table brute force reproduces every fitted maximum, validation value and SE to 6 decimals. No CONFIRM, live,
+  branch or pilot record was read, and no model call was made.
+
 ### Not claimed
 No new model runs; Monte Carlo only on known synthetic kernels; no interval validation for DR/OR, learned policies or
 the branch study; no power claim; no evidence of real-agent improvement. The

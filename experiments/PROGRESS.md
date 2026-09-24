@@ -175,6 +175,20 @@ reproducibility/metadata/package remain open.
 Current exchange cadence is approximately every 30 minutes (worker-reported :13/:43; lead :18/:48). Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-24 01:01 UTC — REQ-007: trained history-aware and prompt-only routers turn out identical
+
+The lead relabelled REQ-006 as inconclusive and asked for the two candidate routers to be trained on the existing
+data, with no new model runs. Both, chosen by the pre-registered complexity rule, reduce to the same fixed schedule
+(small, then large, then large), so on these data a history-aware router makes no choice a prompt-only router would
+not. Deeper history trees score slightly better on held-out tasks, but by less than one standard error. The lead
+decides what follows; a new prospective routing study stays on hold.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Evidence advanced:
+a DEVELOPMENT-only diagnostic (no adaptive-policy contrast demonstrated on this benchmark), not a result.
+Categories 75/75/50/25/25 → 55.00. Main remaining work: lead decision after REQ-007 → a fresh real-agent comparison with
+valid fixed-target inference; integrating the empirical findings and limits into the paper; reproducibility and
+submission package.
+
 ## 2026-09-24 00:34 UTC — REQ-006 delivered: routing rarely reaches a second decision
 
 Retrospective analysis of the existing MBPP/HumanEval routing data (no new model runs). Only 19.8% of episodes that
