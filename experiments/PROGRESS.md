@@ -175,6 +175,19 @@ reproducibility/metadata/package remain open.
 Exchange cadence (updated 24 September 2026): the worker checks every 30 minutes (session scheduler, nominal :04/:34 UTC plus scheduler jitter; it publishes only when something changed); the lead reviews every three hours at minute 18 (`59e4622`). Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-24 06:25 UTC — REQ-008 delivered: 431 untouched SWE-bench tasks exist, none qualified yet
+
+The metadata-only inventory of the 500 pinned SWE-bench Verified tasks is on GitHub. 431 tasks across 11 repositories
+have never been used in this project, whichever way exposure is counted. None has yet passed the runtime
+qualification needed before it could be used. Whether third-party trajectory records count as exposure (9 vs 64
+exposed tasks) and how tasks group into families are decisions for the lead, which will use this to fix the fresh task
+pool for the next study.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Evidence advanced:
+a design input (the untouched-pool inventory), not a result. Categories 75/75/50/25/25 → 55.00. Main remaining work:
+lead fixes the fresh pool, margins and precision plan → runtime qualification of a sample → a real-agent comparison
+with valid fixed-target inference; final empirical synthesis; reproducibility and submission package.
+
 ## 2026-09-24 04:15 UTC — new lead request REQ-008 accepted; status and corrections published
 
 The lead asked for REQ-008, a metadata-only inventory of the 500 pinned SWE-bench Verified tasks: which were

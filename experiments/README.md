@@ -23,10 +23,13 @@ from unverified raw execution identity. They correct attempted-write/testing/wor
   are the same small→large→large schedule with zero realized disagreement
   ([`497c20b`](../docs/theory_feedback_20260924_req007_integration.md)). New E2 live/CONFIRM and cue stages are on
   **HOLD**.
-- **Current request: DTR-REQ-008 (P0)**, a read-only, metadata-only inventory of the pinned
+- **DTR-REQ-008 (P0) is completed and delivered for lead review** (`63a0b49` + publication commit): a read-only,
+  metadata-only inventory of the pinned
   SWE-bench_Verified@c104f840 frame (all 500 IDs by exposure, qualification and family), requested in lead
-  `c88c90c`. No model, evaluator, container, GPU or download is used, and it releases no stage. Outputs:
-  `docs/req008_fresh_pool_inventory.md` and `results/v2_adapter/req008_pool_inventory.json`.
+  `c88c90c`. No model, evaluator, container, GPU or download was used, and it releases no stage. Result: 431 tasks
+  are untouched under either exposure definition, and none is runtime-qualified yet. See
+  [the inventory](../docs/req008_fresh_pool_inventory.md) and `results/v2_adapter/req008_pool_inventory.json`. The
+  next step is the lead's choice of the fresh task pool.
 
 **Readiness 55%, change 0 points, range 45–65%.** Useful validated inference/adequate comparisons,
 final empirical synthesis, and independent reproducibility/metadata/package remain.

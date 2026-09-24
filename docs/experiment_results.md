@@ -880,6 +880,25 @@ TRAIN-log and pilot records; no model call and no fitted router were used, and n
 - **DTR-REQ-008 (P0, lead `c88c90c`)** is accepted and running: a metadata-only inventory of the 500 pinned
   SWE-bench_Verified@c104f840 IDs. No model, evaluator, container, GPU or download is used.
 
+### 2026-09-24 06:25 UTC — REQ-008: inventory of the 500 pinned SWE-bench Verified tasks (metadata only)
+[inventory](req008_fresh_pool_inventory.md), [record](../results/v2_adapter/req008_pool_inventory.json). This is a
+metadata-only retrospective diagnosis: no model, evaluator, container, GPU or download was used, and no outcome was
+read or stated.
+- **431 of the 500 tasks are untouched in this project's records under either exposure definition.** They span 11 of
+  the 12 repositories (django 198, sympy 70, sphinx 34, matplotlib 32, scikit-learn 30, xarray 19, astropy 18,
+  pytest 15, pylint 8, requests 6, seaborn 1). **None is qualified yet:** all pass the static metadata gate, but none
+  has had the runtime qualification.
+- **Exposure:** this project ran models on 9 tasks (the 8 DEV-cohort tasks and the Flask smoke). A committed audit of
+  third-party trajectories covers 56 more frame tasks, and their outcomes can be recovered from that file. Counting
+  those as exposed, the conservative total is 64 exposed tasks. Five or six more tasks have only evaluator
+  qualification or static inspection.
+- **Runtime qualification:** 10 pass, 2 fail, 488 untested.
+- All 12 source pins reconcile; 39 of 39 consistency checks pass; 0 unknowns. An independent recount reproduces
+  every count.
+- Open for the lead: whether third-party trajectories count as exposure, the family unit, same-family exclusion, a
+  near-duplicate screen, admissibility of the qualification-only tasks and the sampling rule. No eligibility or
+  precision claim is made.
+
 ### Not claimed
 No model runs for REQ-005 to REQ-008 (no-model instrumentation, retrospective analyses and a metadata inventory). Real-model execution since the archived coding study is limited to the SWE-bench Verified pipeline smoke (Flask episodes) and the two 16-episode Coder 7B/14B fixed-backend DEV cohorts (0/16 each), with no routing or CONFIRM run; Monte Carlo only on known synthetic kernels; no interval validation for DR/OR, learned policies or
 the branch study; no power claim; no evidence of real-agent improvement. The

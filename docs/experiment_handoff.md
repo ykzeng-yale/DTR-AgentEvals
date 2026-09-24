@@ -4859,3 +4859,75 @@ The author also permits a bounded local DEVELOPMENT experiment on the lead host 
 | DTR-REQ-001 (P0) | completed | — |
 
 **Questions:** none blocking. **Cadence:** job `c710b12b`, nominal :04/:34 UTC, session-only; I publish on change. **Next observed publication:** the REQ-008 inventory when it reconciles.
+
+## Worker checkpoint — 2026-09-24T06:25:24Z (host `date -u`; local 02:25 EDT) — DTR-REQ-008 completed: fresh-pool inventory delivered for review
+
+**Read:** lead `c88c90c`, `59e4622`; no lead activity since. **Code commit:** `63a0b49` (script and tests only); the outputs were generated from that commit with a clean tree and are published in this commit. **Authorized runs:** none; no model, evaluator, container, GPU, Monte Carlo or download was used.
+
+**Artifacts** (write-once):
+- [`docs/req008_fresh_pool_inventory.md`](req008_fresh_pool_inventory.md), sha256 `397a75be…`.
+- [`results/v2_adapter/req008_pool_inventory.json`](../results/v2_adapter/req008_pool_inventory.json), sha256 `95aceb0d…`.
+- Script: `experiments/v2_adapter/req008_pool_inventory.py`, sha256 `9639a802…`, with 38 tests in `tests/test_req008_pool_inventory.py`.
+
+**Provenance and checks:**
+- The script was tracked and matched `HEAD`, and the tree was clean at generation.
+- The source checkpoint `cc88526` is an ancestor of `HEAD`, and no pinned ID was added in any of the 6 files changed since it (`results/code_routing` excluded).
+- **Pins:** all 12 pin links reconcile, from dataset revision `c104f840` through the parquet sha256, the M01 summary, `instances.jsonl`, the qualification manifest, the legacy manifest and the pilot frame. The 500-ID set sha256 is `a6b0fd7c…`.
+- **Checks:** 39 of 39 consistency checks pass, and **0 IDs are UNKNOWN**.
+
+**Result (counts only; no outcome read or stated):**
+
+| Category (mutually exclusive) | Conservative definition | Project-only definition |
+|---|---:|---:|
+| Model-outcome exposed | 64 | 9 |
+| Qualification or inspection only (evaluator-touched / static source inspection) | 5 (2 / 3) | 6 (3 / 3) |
+| Third-party recorded trajectories only | — | 54 |
+| **Not yet assessed** | **431** | **431** |
+
+- **Project exposure:** 9 IDs, the 8 DEV-cohort tasks plus the Flask smoke task.
+- **Third-party exposure:** \`results/replay_gap_audit/audit.json\` covers 56 frame IDs. The conservative definition counts them as exposed; the project-only definition gives them their own category. Their per-trajectory third-party outcomes can be recovered from that committed file. The script drops those keys unread, and no value is stated.
+- **The not-yet-assessed pool is the same 431 IDs under both definitions** (ID-list sha256 \`7883a5f0…\`).
+  - They span 11 of the 12 repository families and 70 of the 80 repo@version groups, with 53 distinct environment images; 8 have an empty PASS_TO_PASS limitation.
+  - By family: django 198, sympy 70, sphinx 34, matplotlib 32, scikit-learn 30, xarray 19, astropy 18, pytest 15, pylint 8, requests 6, seaborn 1, flask 0.
+- **Families with no exposed ID:** 0 under the conservative definition and 3 under project-only.
+- **Gates:**
+  - Metadata (M01/M02 static gate): all 500 pass.
+  - Runtime qualification (\`bae161f\` five-key acceptance): 10 pass, 2 fail, 488 untested. **No not-yet-assessed ID is qualified.**
+- **Required before eligibility** (status: required, not run), listed in the inventory:
+  - image build with \`--namespace none\` and digest pinning;
+  - host verification;
+  - isolated workers;
+  - the five acceptance keys and control rules, with the acceptance-record schema;
+  - an empty-P2P declaration;
+  - a near-duplicate/family-variant screen (protocol v2 §4, not assessed);
+  - an outcome-independent failure decision.
+- **No viability, eligibility or precision claim is made.**
+
+**Decisions for you (the full list is in the inventory):**
+- (1) Should the third-party recorded trajectories exclude an ID? That is the difference between 64 and 9 exposed IDs.
+- (2) Is the family unit the repository (12) or repo@version (80)?
+- (3) Does any exposure in a family exclude the whole family? Under the conservative definition, that would leave no family.
+- (4) Which near-duplicate screen applies?
+- (5) Are qualification-only and inspection-only IDs admissible? If the 3 static reset-check flags count as metadata-only, the not-yet-assessed pool is 434.
+- (6) Are empty-P2P IDs admissible?
+- (7) What is the outcome-independent sampling rule (strata, caps, seed)?
+
+**How this was built, and its limits:**
+- The script is larger than the task needed: 2,259 lines plus 786 lines of tests.
+- An independent re-derivation from raw sources, written separately and not reading the script, reproduces every count, ID list, family table, gate count and pin on the final record. There were 0 mismatches across all 500 rows under both definitions.
+- Two adversarial review rounds found 27 issues; all are fixed except one latent display issue. If any ID were UNKNOWN, some pool-scope counts would still print as plain integers. That is not triggered here, because 0 IDs are UNKNOWN.
+- Exposure is measured from this repository's committed records only. Pretraining or public-web exposure of these public issues is not measured.
+
+| Request | Status | Artifact |
+|---|---|---|
+| DTR-REQ-008 (P0) | **completed; delivered for lead review** | `63a0b49` + this commit |
+| DTR-REQ-007 (P0) | completed/inspected; E2 live/CONFIRM on HOLD | `35c4f52`, `497c20b` |
+| DTR-REQ-006 (P0) | completed, lead-reviewed; INCONCLUSIVE | `88b3e6b`, `3911aee` |
+| DTR-REQ-005 (P0) | completed as no-model instrumentation; live cue deferred | `3f1fa73`, `98bc75d` |
+| DTR-REQ-004 (P0) | completed historically; a fresh peer/host check is required before any live stage | `22c4a82` |
+| DTR-REQ-003 (P0) | scoped reporting completed; sampling held | — |
+| DTR-REQ-002 (P1) | completed | `2874246` |
+| DTR-REQ-002 Django | deferred | — |
+| DTR-REQ-001 (P0) | completed | — |
+
+**Cadence:** job `c710b12b`, nominal :04/:34 UTC, session-only; I publish on change. **Next observed publication:** after your review at the next :18 check.
