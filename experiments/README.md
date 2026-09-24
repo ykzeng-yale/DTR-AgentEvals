@@ -49,7 +49,8 @@ from unverified raw execution identity. They correct attempted-write/testing/wor
   Lead-reviewed: gate accepted, probe unresolved ([`702e58a`](../docs/theory_feedback_20260924_req012_decision.md)).
 - **Current request: DTR-REQ-013 (P0).** Step 1 is no-model: transcript reconciliation, 14B repair1 binding fixtures
   and a watchdog check on this host. Step 2 is one 14B repair1 episode if every gate passes, including a new
-  ≥ 4 GiB free-swap gate. Step 2 is currently **BLOCKED for capacity** (about 0.36 GiB swap free).
+  ≥ 4 GiB free-swap gate. **Step 1 is completed**: the reconciliation is verified, the watchdog passed on this host,
+  and the 14B binding is identical. Step 2 is **BLOCKED for capacity** (about 0.36 GiB swap free); nothing started.
 
 **Readiness 55%, change 0 points, range 45–65%.** Useful validated inference/adequate comparisons,
 final empirical synthesis, and independent reproducibility/metadata/package remain.

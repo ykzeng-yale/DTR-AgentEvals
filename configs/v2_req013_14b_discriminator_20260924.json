@@ -1,0 +1,259 @@
+{
+ "request": "DTR-REQ-013",
+ "kind": "DTR-REQ-013 single-assignment DEVELOPMENT 14B discriminator manifest: the no-model step 1 first, then one Qwen2.5-Coder-14B episode under the unchanged yaml-v1-repair1 configuration only if every gate passes (single-shot, no-clobber, no resume)",
+ "lead_commit": "702e58a",
+ "lead_decision": "docs/theory_feedback_20260924_req012_decision.md",
+ "source_commit": "8bcca8a",
+ "instance_id": "astropy__astropy-14598",
+ "images": {
+  "base": {
+   "key": "sweb.base.py.x86_64:latest",
+   "id": "sha256:f7d1dba08fbc14f5232016debb02d9ace25c84e2a088ec8ec6c776fc3c2f07d5"
+  },
+  "env": {
+   "key": "sweb.env.py.x86_64.7d2281f8cd4608b2972430:latest",
+   "id": "sha256:ee4f7d3a3ec176acd95cadc6aaa7712e047f347091f3536784933dfffe9d9cfa"
+  },
+  "instance": {
+   "key": "sweb.eval.x86_64.astropy__astropy-14598:latest",
+   "id": "sha256:ff1716c2ea207eeb3b717cd5deb3213f923f4d445234edd9a53d035dce834997"
+  }
+ },
+ "assignments": [
+  {
+   "order": 1,
+   "assignment_id": "req013-1-large",
+   "backend": "large",
+   "arm": "baseline",
+   "model": "Qwen/Qwen2.5-Coder-14B-Instruct",
+   "model_commit": "aedcc2d42b622764e023cf882b6652e646b95671",
+   "port": 8293,
+   "alias": "qwen2.5-coder-14b-instruct-aedcc2d-q4_k_m",
+   "gguf": "work/models/converted_4fea119/qwen2.5-coder-14b-instruct-aedcc2d-q4_k_m.gguf",
+   "gguf_sha256": "b179f09d5f73776e68623384d95a0dbd73ccf038e34db50b508e9c3baf468066",
+   "gguf_bytes": 8988110944
+  }
+ ],
+ "settings": {
+  "step_limit": 24,
+  "cost_limit": 0.0,
+  "wall_time_limit_seconds": 1800,
+  "temperature": 0.0,
+  "max_tokens": 1536,
+  "command_timeout_s": 60,
+  "physical_attempts_per_call_max": 2,
+  "request_timeout_s": 900,
+  "context_per_slot": 16384,
+  "configuration_binding": "yaml-v1-repair1",
+  "workspace_binding": "wc2",
+  "template_platform_binding": "cp2",
+  "mini_swe_agent": "04d809ceab9df28f9adaed044884180159172930",
+  "default_yaml_sha256": "112aa58328f478a41cc2630702a4b89ef459e912870e05065157ed221f56701f",
+  "base_configuration_binding": "yaml-v1"
+ },
+ "repair1": {
+  "configuration": "yaml-v1-repair1",
+  "base_configuration": "yaml-v1",
+  "section": "## Important Rules",
+  "prompt_addition": "4. The repository to fix is checked out at /testbed, which is the working directory for every action. It is installed in editable (development) mode in the active Python environment, so importing the package runs the code in /testbed and your edits there take effect immediately. The environment has no network access.",
+  "inserted_after": "   However, you can prefix any action with `MY_ENV_VAR=MY_VALUE cd /path/to/working/dir && ...` or write/load environment variables from files\n",
+  "run_args_frozen": [
+   "--rm",
+   "--platform",
+   "linux/amd64"
+  ],
+  "run_args": [
+   "--rm",
+   "--platform",
+   "linux/amd64",
+   "--network",
+   "none"
+  ],
+  "agent_class": "req012_entry.RepeatedFailureGuardAgent",
+  "agent_base": "minisweagent.agents.default.DefaultAgent (mini-swe-agent 04d809c, unmodified)",
+  "stall_exit_message": {
+   "role": "exit",
+   "content": "RepeatedFailureStall",
+   "extra": {
+    "exit_status": "RepeatedFailureStall",
+    "submission": ""
+   }
+  },
+  "stall_rule": "A turn is recorded only when the agent executed exactly one action: (normalized command, return code, output fingerprint); normalized command = the command stripped with whitespace runs collapsed to one space; output fingerprint = sha256 of the output with whitespace runs collapsed to one space and stripped, then two volatile token kinds masked (Python re): hexadecimal literals 0x[0-9a-fA-F]+ (per-process object addresses, e.g. in pip retry warnings) -> 0x_ and decimal-second durations \\b[0-9]+\\.[0-9]+s\\b (e.g. pytest 'in 3.21s') -> _s. A FormatError turn or a turn with a number of actions other than one is recorded as a chain reset. Before each model query, before the frozen limit checks and before n_calls is incremented: if the last two recorded turns are equal and their return code is nonzero, raise RepeatedFailureStall carrying the exit message; the frozen run() records it as the exit with an empty submission. No model call, nothing shown to the model.",
+  "runtime_overrides": [
+   "pilot_episode.build_effective_config -> repair_config(<the frozen function's result>)",
+   "minisweagent.agents.default.DefaultAgent -> req012_entry.RepeatedFailureGuardAgent"
+  ]
+ },
+ "prompt_bytes": {
+  "default_yaml_sha256": "112aa58328f478a41cc2630702a4b89ef459e912870e05065157ed221f56701f",
+  "instance_template_frozen_sha256": "cdf5e8dc1972686b90e3e84a0a4b200874ad5aaf1e3d26c26ed1872c1ba2e9b0",
+  "instance_template_frozen_bytes": 2438,
+  "instance_template_repair1_sha256": "da5fe0813e040399492196027cc45f091ddb7cf76f6df9165d6e189ca32b27f3",
+  "instance_template_repair1_bytes": 2757,
+  "inserted_text": "4. The repository to fix is checked out at /testbed, which is the working directory for every action. It is installed in editable (development) mode in the active Python environment, so importing the package runs the code in /testbed and your edits there take effect immediately. The environment has no network access.\n",
+  "inserted_sha256": "0ce85105b2111ca3f1a5587d290bcb5191d97966f54dfd62074cf13ed2cfa0a1",
+  "inserted_bytes": 319
+ },
+ "serving": {
+  "llama_cpp_commit": "4fea119de30f6a923992780f6fd5ccb0bee5d47d",
+  "llama_server": "work/upstream/llama.cpp-4fea119/build/bin/llama-server",
+  "flags": [
+   "-ngl",
+   "99",
+   "-np",
+   "1",
+   "-c",
+   "16384"
+  ],
+  "host": "127.0.0.1",
+  "build_info_contains": "4fea119",
+  "conversion_record": "results/v2_agent/coder_conversion_20260922.json",
+  "conversion_record_sha256": "7e165c220b2d4f045375a98e3edc35ccc5a0133221bfd8bff18c397cbab61c1f",
+  "non_task_generation_probes": 0
+ },
+ "evaluator": {
+  "commit": "f7bbbb2ccdf479001d6467c9e34af59e44a840f9",
+  "python": "work/venvs/swebench_f7bbbb2/bin/python"
+ },
+ "caps": {
+  "pair_wall_s": 3600,
+  "episode_wall_s": 1800,
+  "episode_load_allowance_s": 300,
+  "child_cleanup_grace_s": 120,
+  "child_wait_slack_s": 30,
+  "server_cleanup_reserve_s": 90,
+  "grading_floor_s": 900,
+  "evaluator_attempt_max_s": 1800,
+  "evaluator_min_start_budget_s": 600,
+  "evaluator_max_attempts": 2,
+  "evaluator_end_reserve_s": 300,
+  "grader_wait_slack_s": 120,
+  "max_logical_requests": 24,
+  "max_physical_requests": 48,
+  "per_episode_logical": 24,
+  "per_episode_physical": 48,
+  "host_reserve_bytes": 1073741824
+ },
+ "memory_rule": {
+  "admission_min_free_pct": 30,
+  "post_load_min_free_pct": 10,
+  "kv_gib": {
+   "large": 3.0,
+   "small": 0.88
+  },
+  "vm_gib": 16,
+  "margin_gib": 2
+ },
+ "disk_rule": {
+  "vm_min_gib": 20,
+  "host_min_gib": 15,
+  "work_free_min_above_reserve_gib": 6
+ },
+ "swap_rule": {
+  "command": [
+   "sysctl",
+   "-n",
+   "vm.swapusage"
+  ],
+  "min_free_bytes": 4294967296,
+  "min_free_gib": 4,
+  "parse": "exactly one 'free = <number><unit>' field, unit K, M or G read as KiB, MiB or GiB (sysctl prints M); a nonzero return code, no such field or more than one fails closed",
+  "rule": "unused swap >= 4 GiB at admission (the literal lead rule), in addition to memory_rule",
+  "note": "On macOS 'free' counts only unused space inside the swap files already allocated. The pager adds swap files on demand and does not shrink them promptly, so this can stay below 4 GiB while physical memory is ample",
+  "on_failure": "status BLOCKED_FOR_CAPACITY; nothing is started and nothing is substituted; no job is killed or interrupted to create capacity",
+  "when": "read-only before the probe namespace (a refusal there consumes nothing: exit 4), then again as the admission probe 'swap' (a failure there consumes the namespace like any failed admission)"
+ },
+ "watchdog": {
+  "poll_s": 5,
+  "grace_s": 20,
+  "ready_timeout_s": 60
+ },
+ "precondition": {
+  "req012_gate_record": "results/v2_agent/req012_repair_probe_20260924/gate.json",
+  "req012_gate_raw_record": "work/runs/req012_repair_probe_20260924/gate/gate.json",
+  "req012_manifest": "configs/v2_req012_repair_probe_20260924.json",
+  "req012_manifest_sha256": "45afa0694a6965ecdd4dc0e7bcae04d0a379c7d0a2e14994a579521bfdc24cac",
+  "req012_entry": "experiments/v2_agent/req012_entry.py",
+  "req012_entry_sha256": "4daa8293156e6c8f9ed1e78bffd5ff497495e1b35e46cec1edb272aab6f21754",
+  "rule": "req012_pair.probe_gate passes: the REQ-012 gate passed and was not interrupted, for the REQ-012 manifest sha256 and the current digest of every REQ-012 source, and its raw copy agrees. The gate record's repair1 section and prompt bytes equal this manifest's and the REQ-012 manifest's, and its configuration is yaml-v1-repair1. Its container environment ran the pinned instance image with run_args --rm --platform linux/amd64 --network none and observed NetworkMode none. Its image pins equal this manifest's, all three equal to the local images. The REQ-012 manifest and req012_entry.py have the sha256 bound here (the latter is the entry_source_sha256 of the REQ-012 probe's repair_record.json). The configuration proof passes. The live gate is not re-run",
+  "configuration_proof": {
+   "allowed_differences": [
+    "model.model_name",
+    "model.model_kwargs.api_base"
+   ],
+   "rule": "The pinned default.yaml (sha256 checked) goes through pilot_episode.build_effective_config for the REQ-012 7B assignment and for this manifest's 14B assignment (same image pin), then through req012_entry.repair_config. The two results are compared leaf by leaf. They must differ exactly at model.model_name ('openai/' + alias) and model.model_kwargs.api_base (the port) and nowhere else. The agent section (repair1 instance template, whose sha256 must equal prompt_bytes.instance_template_repair1_sha256), the environment (run_args with --network none) and every other model field are then identical. The backend, GGUF and model sha256 are assignment fields outside the configuration. The agent class, stall rule and fingerprint rule are req012_entry code, used unchanged by req013_entry.py"
+  },
+  "when": "before the probe namespace (a refusal consumes nothing) and again as the admission probe 'gate'"
+ },
+ "step1": {
+  "reconciliation": "results/v2_agent/req013_14b_discriminator_20260924/reconciliation.json",
+  "watchdog_host_check": "results/v2_agent/req013_14b_discriminator_20260924/watchdog_host_check.json",
+  "rule": "both records present, tracked and unchanged from HEAD; the reconciliation says verified true and the watchdog host check says passed true",
+  "when": "before the probe namespace (a refusal consumes nothing) and again as the admission probe 'step1'"
+ },
+ "runtime": {
+  "episode_python": "work/venvs/minisweagent_04d809c/bin/python",
+  "grader_python": "work/venvs/swebench_f7bbbb2/bin/python",
+  "orchestrator": "experiments/v2_agent/req013_pair.py",
+  "entry": "experiments/v2_agent/req013_entry.py",
+  "grader": "experiments/v2_agent/req011_grade.py",
+  "fixtures_python": ".venv/bin/python"
+ },
+ "outputs": {
+  "raw": "work/runs/req013_14b_discriminator_20260924",
+  "published": "results/v2_agent/req013_14b_discriminator_20260924",
+  "pause_file": "work/REQ013_PAUSE",
+  "private_receipts": "work/req005_request_receipts/cue-v1"
+ },
+ "prior_results": {
+  "results/v2_agent/req011_competence_20260924/pair_summary.json": "a2cc62877b6a0b7b34a50688b5a7d114697b4c743199de918cbe0711c0382d31",
+  "results/v2_agent/pilot_20260922_yaml_v1/report_yaml_v1_block1_final.json": "ef894706d393a73b6accc07a94cfbd1a4bba1c1b12b9a1c6e682c4744ec5fb17",
+  "results/v2_agent/req012_repair_probe_20260924/gate.json": "de29636aed8ef690b312b504b12fd8707874afed8dbec4d76e58c49264f807ab",
+  "results/v2_agent/req012_repair_probe_20260924/probe/pair_summary.json": "2d13b8c099555b1028de5099aebd94e88141dfd8a9a0d67f604c5996d6f0df76"
+ },
+ "declared_rules": [
+  "Target (lead 702e58a, docs/theory_feedback_20260924_req012_decision.md): one DEVELOPMENT discriminator of whether the previously failing Qwen2.5-Coder-14B executor can edit the source and resolve the evaluator-qualified, already DEVELOPMENT-exposed astropy__astropy-14598 under the unchanged yaml-v1-repair1 scaffold. It is a deliberate follow-up to an unfavorable result. It is not a policy comparison, a success rate or CONFIRM evidence, and the task may never enter CONFIRM.",
+  "Step 1 comes first and uses no model, no server and no container. (a) experiments/v2_agent/req013_reconcile.py reconciles the published REQ-012 probe records, computing every value from the committed files. It checks: three model calls; one executed tool command; one FormatError turn whose two proposed actions were not executed; the final submit; 3/3 request and outcome receipts; the 466-byte test-only submission.diff, whose sha256 equals the grade record's; FAIL_TO_PASS 0/1, PASS_TO_PASS 175/175, strict unresolved; and the image equal to the pin before and after grading. It writes step1.reconciliation (write-once, sanitized) only if every value matches; otherwise it exits nonzero with no output. (b) experiments/tools/req013_watchdog_check.py reruns the REQ-011 watchdog command-identity/SIGKILL scenario on this host with the fixture's own stub parent. For each recorded server it records the stored command, the live `ps -ww -o args=` and their comparison under the watchdog rule. It then SIGKILLs the stub parent, records whether the watchdog stopped the owned stub within its grace, and runs the existing fixture. It writes step1.watchdog_host_check and exits nonzero unless the owned stub was stopped within its grace, the decoy was untouched, the watchdog exited and the fixture passed. (c) The fixtures in tests/test_req013_discriminator.py.",
+  "Configuration: yaml-v1-repair1 exactly as in REQ-012. The manifest sections images, settings, repair1, prompt_bytes, serving, evaluator, caps, memory_rule, disk_rule and watchdog equal those of the committed REQ-012 manifest. That fixes the prompt-addition bytes; run_args --rm --platform linux/amd64 --network none; the RepeatedFailureGuardAgent stall guard and its fingerprint rule; the action parser; the output cap (max_tokens 1536); the request path and receipts; the Submitted-only wc2 endpoint; the all-exit diagnostic; and cleanup. Nothing about the prompt, parser, output cap, endpoint or task changes because of the REQ-012 result. No cue, forced call, salvage, substitution, second model, task or cohort.",
+  "Queue: exactly one assignment, req013-1-large: Qwen2.5-Coder-14B ('large', port 8293, alias qwen2.5-coder-14b-instruct-aedcc2d-q4_k_m, the b179f09d GGUF), arm 'baseline', on astropy__astropy-14598 under yaml-v1-repair1. The row equals the REQ-011 manifest's 14B row apart from its assignment_id. No automatic second model, task or cohort.",
+  "Entry: experiments/v2_agent/req013_entry.py runs req012_entry.main unedited in the pinned mini-swe-agent venv. In that process only, bind() does two things. It rebinds req012_entry.MANIFEST_REL to this manifest and req012_entry.REQUEST to DTR-REQ-013, so the entry's manifest, assignment and prompt-byte refusals check this manifest and its records carry this label. It also adds the entry's own sha256 to the admitted-source check. The repair1 runtime overrides, the guard, the effective-config verification and every other refusal are req012_entry's. The budget rule is min(48, 48 - counted_before). req012_entry.py must be byte-identical to the file whose sha256 the REQ-012 probe recorded (precondition.req012_entry_sha256).",
+  "Precondition: read-only and before the probe namespace, so a refusal consumes nothing. It is repeated as the admission probes 'gate' and 'step1'. The rule is precondition.rule, including the configuration proof (precondition.configuration_proof.rule), plus step1.rule. The live repair gate is not re-run. The REQ-012 gate verified the /testbed import, offline operation and the repair1 container on this host for the same configuration bytes and image; the model is not part of what it checked.",
+  "Swap capacity gate (the literal lead rule): swap_rule.rule, measured as swap_rule.command and parsed as swap_rule.parse. A failure before the namespace prints status BLOCKED_FOR_CAPACITY and exits 4; nothing is created or started and nothing is substituted, so the gate can be re-checked read-only later (the worker's proposal, pending lead confirmation). If the admission's own swap probe fails after a passing pre-check, the admission is BLOCKED_FOR_CAPACITY and consumes the namespace like any failed admission. Declared note: swap_rule.note. No job is killed or interrupted to create capacity.",
+  "Memory, disk, serving, served identity and the watchdog are as in REQ-011/REQ-012. Memory: admission free >= 30 %; post-load free >= 10 %; and the static projection for the 14B, 8988110944 GGUF bytes + (3.0 KV + 16 VM) GiB = 29389205600 bytes, must be <= hw.memsize - 2 GiB. Disk: req011_pair.probe_disk. Serving: Servers with the ownership holder rewritten to DTR-REQ-013, GET-only served-identity checks and 0 non-task generation requests. Watchdog: req013_pair.py --watchdog runs the unedited req011_pair.watchdog; it is started before the load and left armed while a server of ours is live.",
+  "Schedule (3600 s) and caps: equal to REQ-012. The probe deadline is launch time + caps.pair_wall_s and covers admission, load, the episode, grading, cleanup and publication. The episode starts only if now + episode_load_allowance_s (300) + episode_wall_s (1800) + child_cleanup_grace_s (120) + child_wait_slack_s (30) + server_cleanup_reserve_s (90) <= deadline - grading_floor_s (900). This is re-checked after the load with a zero load allowance. The grading floor is evaluator_min_start_budget_s (600) + evaluator_end_reserve_s (300). The 300 s load allowance is kept for the 14B: its REQ-011 hash plus load time was 13.2 s (4.1 s + 9.1 s), so 300 s is about 23 times that. It only gates the dispatch; the post-load check with zero allowance still enforces the full budget. At most 24 logical calls and 48 physical requests (2 attempts per call); counted_before is 0.",
+  "Single shot: work/runs/req013_14b_discriminator_20260924/probe and results/v2_agent/req013_14b_discriminator_20260924/probe are created with exist_ok=False at launch, so a second launch refuses. A BLOCKED or BLOCKED_FOR_CAPACITY admission consumes the namespace. A started assignment is never re-dispatched. A start without an end in the ledger is 'interrupted' and is preserved as such.",
+  "Admission: any failure or crashing probe writes admission.json and pair_summary.json with status BLOCKED, or BLOCKED_FOR_CAPACITY when the swap probe failed; nothing is run or substituted. The probes are the REQ-012 ones for this manifest: the manifest bound to the code, including the repair1 prompt bytes from the pinned default.yaml and equality with the REQ-012 and REQ-011 manifests; every REQ-011, REQ-012 and REQ-013 source tracked and unchanged from HEAD, and the cue-v1 binding; the evaluator tree and colima runtime; the three image pins; conflicts, including the live peer lease and windows, the ownership record released, no REQ-011/012/013 PAUSE file and no other REQ-011/012/013 process; repair1 isolation; disk; the 14B GGUF and llama.cpp tool hashes; and memory. Added to these are swap, gate (the precondition) and step1.",
+  "Gates that stop the probe are as in REQ-011 and are never outcome-driven: a server load failure or refusal, served identity, post-load memory, the PAUSE file, an entry refusal, a record not written durably, and unconfirmed process-group termination or container removal.",
+  "Grading and the outcome rule are as in REQ-011/REQ-012: req011_grade.py unchanged, grade_identity.grade_flow, the stock f7bbbb2 evaluator and strict declared_outcome, after the server is stopped. Grading uses a fresh evaluator container from the pinned instance image, whose ID must equal the pin before and after grading. A submitted reproducer or a test-only patch with FAIL_TO_PASS still failing is unresolved. RepeatedFailureStall, LimitsExceeded, any other non-Submitted exit and a Submitted empty patch are operational zeros.",
+  "Publication is as in REQ-012: req012_pair.finish runs with its OUTPUTS and PRIOR_RESULTS rebound to REQ-013's for the duration of the call, followed by req011_pair.publish with sanitized copies, raw and published sha256 and the username guard, under results/v2_agent/req013_14b_discriminator_20260924/probe. Private raw request bodies stay under outputs.private_receipts/<run_id>. The summary adds the step-1 record digests and the REQ-012 reconciliation statement.",
+  "Interpretation (lead decision): a genuine resolved source patch would establish single-task DEVELOPMENT feasibility of repair1 with the 14B, and nothing about routing value. Any other outcome ends this local model-pair competence path, and the worker returns a no-model proposal for a different demonstrated-capable executor or benchmark before more calls. Either way the earlier 0/32, the REQ-011 0/2 and the unresolved REQ-012 probe are reported unchanged. No automatic additional task, model, prompt variant or CONFIRM release."
+ ],
+ "interpretations": {
+  "nonblocking": "The all-exit diagnostic, post-dispatch receipt bookkeeping and cleanup never change the endpoint, eligibility or grading and never stop the pair. The PRE-dispatch receipt stays blocking (no dispatch without a durable receipt) per the lead's REQ-005 decision (answer 1); the disk reserve for it is checked at admission.",
+  "probe_cap": "Time expiry preserves and publishes incomplete work with its reason; no extra time, outcome-driven stopping or substitution.",
+  "capacity": "BLOCKED_FOR_CAPACITY is not an outcome: nothing was started. It is never imputed as a zero, and it is never replaced by another model, task or host.",
+  "step1": "Step 1 verifies archived records and the host watchdog. It is not evidence about model competence."
+ },
+ "inherited_labels": [
+  "Receipts from the reused request_receipt/cue_transport say request DTR-REQ-005 and cohort cue-v1.",
+  "episode.json from the reused cue_episode.run_episode has kind 'cue-v1 fixed-order DEV episode (DTR-REQ-005)' and cohort 'cue-v1'.",
+  "Private raw request bodies are stored under work/req005_request_receipts/cue-v1/<run_id>.",
+  "The baseline arm writes a silent cue_delivery.json / calls.jsonl landmark; no cue is ever appended.",
+  "The reused req011_pair components write 'request': 'DTR-REQ-011' in ledger.jsonl lines, in the control entry.json and grade_control.json, in the grader's grade_result.json and in the watchdog records. make_episode_runner names the run directory '<instance>__large__req011__<utc>-<hex>'. These are labels of reused, unedited REQ-011 code.",
+  "effective_config.json and episode.json say configuration_binding 'yaml-v1' (pilot_episode.CONFIGURATION_BINDING) and name the cue-v1 driver. Their content is the repair1 configuration, which repair_record.json and this manifest name yaml-v1-repair1.",
+  "The probe summary file is named pair_summary.json because req011_pair.publish publishes that name.",
+  "req012_entry's records (entry_admitted.json, repair_record.json) name the configuration yaml-v1-repair1. Through the req013_entry binding they carry request DTR-REQ-013. The guard class keeps its module name, req012_entry.RepeatedFailureGuardAgent.",
+  "The reused req012_pair.finish writes 'not_started: probe ...' row states and the REQ-012 prior-results statement text. PRIOR_RESULTS and the published path are REQ-013's.",
+  "This manifest, the step-1 records, admission.json, repair_record.json, the ledger's order and state fields, and pair_summary.json are authoritative."
+ ],
+ "semantics_differences": [
+  "episode.json physical_requests = len(capture.sends) (one send per query attempt at the HTTP layer); the frozen pilot_episode driver used len(attempts).",
+  "Token counts come from server-reported usage in the public outcome receipts; unknown usage stays null (the frozen driver used litellm's parsed usage).",
+  "submission.diff is written write-once before the all-exit diagnostic and cleanup (same bytes as the frozen driver, which wrote it after cleanup).",
+  "exit_status RepeatedFailureStall is new. It is the guard's exit, recorded by the frozen DefaultAgent.run like any InterruptAgentFlow exit (submission '').",
+  "The agent container has no network. Commands that need the network fail where the REQ-011 container could reach PyPI; an offline `pip install --upgrade astropy` finds no index candidate and keeps the installed editable astropy (it may exit 0).",
+  "The stall guard's output fingerprint masks object addresses (0x...) and decimal-second durations before hashing (repair1.stall_rule), so an identical failing command whose output differs only in those tokens, such as offline pip retry warnings, counts as the same failure."
+ ],
+ "scope": "One single-model DEVELOPMENT discriminator on one already exposed, evaluator-qualified issue: whether the 14B can edit the source and resolve it under the unchanged yaml-v1-repair1 scaffold. It is not a success rate, not a model or routing comparison, not a policy value and not CONFIRM evidence."
+}

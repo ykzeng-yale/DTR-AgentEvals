@@ -175,6 +175,20 @@ reproducibility/metadata/package remain open.
 Exchange cadence (updated 24 September 2026): the worker checks every 30 minutes (session scheduler, nominal :04/:34 UTC plus scheduler jitter; it publishes only when something changed); the lead reviews every three hours at minute 18 (`59e4622`). Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-24 20:38 UTC — REQ-013: no-model checks done; the 14B run is blocked by low free swap
+
+Before one last 14B try with the repaired harness, the lead asked for three checks, all done without a model: a
+recount of the previous 7B run (verified: it submitted only its reproduction script), a watchdog kill test on this
+machine (passed), and proof that the 14B would get exactly the same repaired setup (identical except the model name
+and endpoint). The lead also required at least 4 GiB of unused swap before loading the 14B. The machine shows only
+0.36 GiB, even though 65% of memory is free, so the 14B run is blocked for capacity and nothing was started. Freeing
+swap would take a restart or closing large apps, which is the owner's call.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Evidence advanced:
+verification only. Categories 75/75/50/25/25 → 55.00. Main remaining work: the 14B discriminator (capacity-gated), then
+the lead's decision on the executor/benchmark path; a real-agent comparison with valid fixed-target inference; final
+synthesis; reproducibility and submission package.
+
 ## 2026-09-24 18:48 UTC — REQ-012: with the repaired harness the 7B stops looping but submits without a fix
 
 The lead asked for the harness to be repaired (a clear note that the code is at /testbed, no network, and a guard

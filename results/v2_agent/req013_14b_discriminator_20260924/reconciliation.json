@@ -1,0 +1,231 @@
+{
+ "request": "DTR-REQ-013",
+ "kind": "DTR-REQ-013 step 1a: reconciliation of the published REQ-012 probe (no model, no server, no container; every value computed from committed files)",
+ "lead_decision": "docs/theory_feedback_20260924_req012_decision.md",
+ "source": "results/v2_agent/req012_repair_probe_20260924/probe",
+ "manifest": "configs/v2_req012_repair_probe_20260924.json",
+ "inputs": {
+  "results/v2_agent/req012_repair_probe_20260924/probe/publication_manifest.json": "7432b2090f8c57b289c60e394bf4fa63d8ab11f79ca8ce1bdf2bf944dfeeff73",
+  "results/v2_agent/req012_repair_probe_20260924/probe/pair_summary.json": "2d13b8c099555b1028de5099aebd94e88141dfd8a9a0d67f604c5996d6f0df76",
+  "results/v2_agent/req012_repair_probe_20260924/probe/ledger.jsonl": "fd6551b5c30f02bd3ed2e8798f60e0bd75c73b4e9ed5740ee8975f3a31ef00ac",
+  "configs/v2_req012_repair_probe_20260924.json": "45afa0694a6965ecdd4dc0e7bcae04d0a379c7d0a2e14994a579521bfdc24cac",
+  "results/v2_agent/req012_repair_probe_20260924/probe/astropy__astropy-14598__small__req011__20260924T184420Z-7bfc39/episode.json": "f3815ccd414156dec5c17415e35b267dc7122fc67bf36c0ff3a1f6d7d2c2c48f",
+  "results/v2_agent/req012_repair_probe_20260924/probe/astropy__astropy-14598__small__req011__20260924T184420Z-7bfc39/trajectory.json": "a830e98d6c7f87b0d377fddb80bc0a04a3bd34c3b47162c27e6a68afbf2e603c",
+  "results/v2_agent/req012_repair_probe_20260924/probe/astropy__astropy-14598__small__req011__20260924T184420Z-7bfc39/calls.jsonl": "966eb85c7f614fda8bd7e07d16fd985e7da9ac08f8f3863cf413c2788968f46c",
+  "results/v2_agent/req012_repair_probe_20260924/probe/astropy__astropy-14598__small__req011__20260924T184420Z-7bfc39/attempts.jsonl": "2dc2f61ee7a58e8dacce60c3e073e15ea1db1a103547557e82fd1e0cce5911e2",
+  "results/v2_agent/req012_repair_probe_20260924/probe/astropy__astropy-14598__small__req011__20260924T184420Z-7bfc39/submission.diff": "c50aa65cd1d1c6e3271dd76c6c007ce03270c650db795987ff2a81fc123746a6",
+  "results/v2_agent/req012_repair_probe_20260924/probe/astropy__astropy-14598__small__req011__20260924T184420Z-7bfc39/grade.json": "213f51d512994364ec57d64f4c2595c4f2b1aea0d04ca0dedb1887f09b829923",
+  "results/v2_agent/req012_repair_probe_20260924/probe/astropy__astropy-14598__small__req011__20260924T184420Z-7bfc39/control/grade_result.json": "73ec6f47dda5bf65a65ad32d847495cb7701b4c5be7efe5f899ed58530c0282b",
+  "results/v2_agent/req012_repair_probe_20260924/probe/astropy__astropy-14598__small__req011__20260924T184420Z-7bfc39/control/repair_record.json": "3fdf9eff1ffaa5a3d42af4095aa746b2ff2bafc925b44cee8835dd32ae0dd533",
+  "results/v2_agent/req012_repair_probe_20260924/probe/astropy__astropy-14598__small__req011__20260924T184420Z-7bfc39/receipts/call001_attempt01.request.json": "fd20467980826a69680708ee61a21ee96aa414ce4e3e4bf696952694b5ddaa4a",
+  "results/v2_agent/req012_repair_probe_20260924/probe/astropy__astropy-14598__small__req011__20260924T184420Z-7bfc39/receipts/call002_attempt01.request.json": "0dc5a50bf64f0d74d299d2c408907c478c956b417c81270e99d343633f6a6260",
+  "results/v2_agent/req012_repair_probe_20260924/probe/astropy__astropy-14598__small__req011__20260924T184420Z-7bfc39/receipts/call003_attempt01.request.json": "db9aa2993f0493848887f6cd1fcc2b1447e3c7c126cc348a2516370d7586a33e",
+  "results/v2_agent/req012_repair_probe_20260924/probe/astropy__astropy-14598__small__req011__20260924T184420Z-7bfc39/receipts/call001_attempt01.outcome.json": "7b3066584cd48a4e2d79ef662f7092920d6be64cb2aa66a96e1cc54fdff7ee8e",
+  "results/v2_agent/req012_repair_probe_20260924/probe/astropy__astropy-14598__small__req011__20260924T184420Z-7bfc39/receipts/call002_attempt01.outcome.json": "71e4fe355fbcd306c1c69e21f371efe23261d8ace03a393e1c0d3a651299e072",
+  "results/v2_agent/req012_repair_probe_20260924/probe/astropy__astropy-14598__small__req011__20260924T184420Z-7bfc39/receipts/call003_attempt01.outcome.json": "99eb3cfc547f7acf2a4c7ddb999e549f75b5dfc5733615d200cf98f642ae8b5e",
+  "results/v2_agent/req012_repair_probe_20260924/probe/grading/logs/run_evaluation/eval-astropy__astropy-14598__small__req011__20260924T184420Z-7bfc39-c50aa65cd1d1c6e3-a1/qwen2.5-coder-7b-instruct-c03e6d3-q4_k_m/astropy__astropy-14598/report.json": "f2e183bb4c2876a35426aae47dd1d314743122747985570e2ad8f7c66cbcd4aa"
+ },
+ "expected": {
+  "model_calls": 3,
+  "executed_tool_commands": 1,
+  "format_error_turns": 1,
+  "format_error_proposed_actions": 2,
+  "format_error_actions_executed": 0,
+  "final_action": "echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT",
+  "exit_status": "Submitted",
+  "request_receipts": 3,
+  "outcome_receipts": 3,
+  "submission_bytes": 466,
+  "submission_files": [
+   "test_fits_card.py"
+  ],
+  "submission_new_files": [
+   "test_fits_card.py"
+  ],
+  "submission_source_files": [],
+  "fail_to_pass": [
+   0,
+   1
+  ],
+  "pass_to_pass": [
+   175,
+   175
+  ],
+  "strict_outcome": "unresolved",
+  "upstream_resolved": false,
+  "image_equal_to_pin": true,
+  "stall_guard_fired": false
+ },
+ "observed": {
+  "model_calls": 3,
+  "executed_tool_commands": 1,
+  "format_error_turns": 1,
+  "format_error_proposed_actions": 2,
+  "format_error_actions_executed": 0,
+  "final_action": "echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT",
+  "exit_status": "Submitted",
+  "request_receipts": 3,
+  "outcome_receipts": 3,
+  "submission_bytes": 466,
+  "submission_files": [
+   "test_fits_card.py"
+  ],
+  "submission_new_files": [
+   "test_fits_card.py"
+  ],
+  "submission_source_files": [],
+  "fail_to_pass": [
+   0,
+   1
+  ],
+  "pass_to_pass": [
+   175,
+   175
+  ],
+  "strict_outcome": "unresolved",
+  "upstream_resolved": false,
+  "image_equal_to_pin": true,
+  "stall_guard_fired": false
+ },
+ "facts": {
+  "run_id": "astropy__astropy-14598__small__req011__20260924T184420Z-7bfc39",
+  "image_pin": "sha256:ff1716c2ea207eeb3b717cd5deb3213f923f4d445234edd9a53d035dce834997",
+  "transcript": {
+   "model_calls": 3,
+   "model_call_sources": {
+    "episode_n_model_calls": 3,
+    "episode_logical_calls": 3,
+    "trajectory_api_calls": 3,
+    "calls_jsonl_opened": 3,
+    "attempt_results_ok": 3,
+    "assistant_messages_plus_format_errors": 3
+   },
+   "executed_tool_commands": 1,
+   "format_error_turns": 1,
+   "calls": [
+    {
+     "call": 1,
+     "kind": "executed tool command",
+     "command_sha256": "e5f223700c9d847dfc90d0e1edd72f70f4ab396e40d3f2a7fdcc3511a88987f0",
+     "command_chars": 302,
+     "wrote_files": [
+      "test_fits_card.py"
+     ],
+     "returncode": 0,
+     "observation_returned": true
+    },
+    {
+     "call": 2,
+     "kind": "FormatError (no action executed)",
+     "n_actions": 2,
+     "proposed_actions": [
+      {
+       "command_sha256": "b2804b7fbf06982812d60098841d2586f02d6be85955ec236b623c8796489053",
+       "command_chars": 426,
+       "first_line": "cat <<'EOF' > patch_fits_card.py",
+       "is_submit_command": false,
+       "would_write_files": [
+        "patch_fits_card.py"
+       ],
+       "would_run": [
+        "patch_fits_card.py"
+       ],
+       "defines_python_functions": [
+        "fix_fits_card"
+       ],
+       "string_replace_calls": [
+        "\"''\", \"'\""
+       ],
+       "repository_source_paths": [],
+       "executed": false
+      },
+      {
+       "command_sha256": "2e2577cea459e468a3c7237d52cfd7c074569f65082e4f900514a7f20923eecd",
+       "command_chars": 42,
+       "first_line": "echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT",
+       "is_submit_command": true,
+       "would_write_files": [],
+       "would_run": [],
+       "defines_python_functions": [],
+       "string_replace_calls": [],
+       "repository_source_paths": [],
+       "executed": false
+      }
+     ]
+    },
+    {
+     "call": 3,
+     "kind": "final submit",
+     "action": "echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT",
+     "exit_status": "Submitted",
+     "observation_returned": false
+    }
+   ],
+   "format_error_proposed_actions": 2,
+   "format_error_actions_executed": 0,
+   "final_action": "echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT",
+   "exit_status": "Submitted",
+   "not_executed_evidence": "calls.jsonl has no parsed_action or observation event for call 2; the trajectory has no observation between the FormatError and the call-3 assistant message; the stall guard recorded the call-2 turn as a reset (null)"
+  },
+  "receipts": {
+   "request_receipts": 3,
+   "outcome_receipts": 3,
+   "attempt_keys": [
+    "call001_attempt01",
+    "call002_attempt01",
+    "call003_attempt01"
+   ]
+  },
+  "submission": {
+   "bytes": 466,
+   "sha256": "c50aa65cd1d1c6e3271dd76c6c007ce03270c650db795987ff2a81fc123746a6",
+   "equals_grade_submission_sha256": true,
+   "files": [
+    "test_fits_card.py"
+   ],
+   "new_files": [
+    "test_fits_card.py"
+   ],
+   "modified_or_deleted_existing_files": [],
+   "source_files": [],
+   "added_lines": 9,
+   "removed_lines": 0,
+   "written_by_the_call1_command": true
+  },
+  "grade": {
+   "fail_to_pass": [
+    0,
+    1
+   ],
+   "failing_fail_to_pass_tests": [
+    "astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_long_string_value_with_quotes"
+   ],
+   "pass_to_pass": [
+    175,
+    175
+   ],
+   "strict_outcome": "unresolved",
+   "upstream_resolved": false,
+   "patch_successfully_applied": true,
+   "evaluator_commit": "f7bbbb2ccdf479001d6467c9e34af59e44a840f9",
+   "stock_report": "results/v2_agent/req012_repair_probe_20260924/probe/grading/logs/run_evaluation/eval-astropy__astropy-14598__small__req011__20260924T184420Z-7bfc39-c50aa65cd1d1c6e3-a1/qwen2.5-coder-7b-instruct-c03e6d3-q4_k_m/astropy__astropy-14598/report.json",
+   "stock_report_equals_grade_record": true
+  },
+  "image": {
+   "pin": "sha256:ff1716c2ea207eeb3b717cd5deb3213f923f4d445234edd9a53d035dce834997",
+   "grade_image_id": "sha256:ff1716c2ea207eeb3b717cd5deb3213f923f4d445234edd9a53d035dce834997",
+   "before": "sha256:ff1716c2ea207eeb3b717cd5deb3213f923f4d445234edd9a53d035dce834997",
+   "after": "sha256:ff1716c2ea207eeb3b717cd5deb3213f923f4d445234edd9a53d035dce834997",
+   "after_equals_pin_recorded": true,
+   "equal_to_pin": true
+  },
+  "stall_guard": {
+   "fired": false,
+   "network_mode": "none",
+   "effective_config_verified": true
+  }
+ },
+ "verified": true,
+ "statement": "REQ-012 probe astropy__astropy-14598__small__req011__20260924T184420Z-7bfc39: 3 model calls; 1 executed tool command (it wrote test_fits_card.py); 1 FormatError turn with 2 proposed actions, none executed; then 'echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT' ended the episode as Submitted. The 466-byte submission adds only test_fits_card.py (a new file, no source file). The unchanged evaluator applied it: FAIL_TO_PASS 0/1 (astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_long_string_value_with_quotes failing), PASS_TO_PASS 175/175, strict unresolved. The image equalled the pin before and after grading.",
+ "interpretation": "A submitted reproducer with FAIL_TO_PASS still failing is unresolved, not a repair. The proposed fix_fits_card function in the FormatError response was never executed and would not have edited the astropy source."
+}

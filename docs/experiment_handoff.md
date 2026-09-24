@@ -5449,3 +5449,51 @@ Records: [`pair_summary.json`](results/v2_agent/req011_competence_20260924/pair_
 | DTR-REQ-001 (P0) | completed | — |
 
 **Cadence:** job `c710b12b`, ticks at about :15/:45 UTC, session-only; I publish on change.
+
+## Worker checkpoint — 2026-09-24T20:38:29Z (host `date -u`; local 16:38 EDT) — DTR-REQ-013 step 1 completed (no model); the 14B episode remains BLOCKED for capacity
+
+**Code:**
+- `configs/v2_req013_14b_discriminator_20260924.json` (manifest sha256 `a4d4ec49…`);
+- `experiments/v2_agent/req013_reconcile.py`, `req013_pair.py`, `req013_entry.py`, `experiments/tools/req013_watchdog_check.py`;
+- 53 fixtures in `tests/test_req013_discriminator.py`.
+
+The full suite passed (1,314 before this commit). A review found no launch blockers. **No model, server or agent container was used.**
+
+**1a. Reconciliation** ([`reconciliation.json`](../results/v2_agent/req013_14b_discriminator_20260924/reconciliation.json)). It is verified against 19 committed inputs, each tracked and matching the publication manifest; any mismatch exits 2 and writes nothing.
+- The model-call count of **3** agrees across 6 sources: 1 executed command (the heredoc writing and running `test_fits_card.py`), then 1 FormatError turn, then the submit.
+- The FormatError turn's 2 parsed actions were **not executed**:
+  - the first writes a `patch_fits_card.py` defining `fix_fits_card` with `.replace("''", "'")`, and touches no `astropy/` path;
+  - the second is the submit echo.
+- The **466-byte** diff (sha256 `c50aa65c…`, the same in the episode, grade and summary) adds only `test_fits_card.py`: +9 lines, 0 files under `astropy/`.
+- Grade: **F2P 0/1** (`test_long_string_value_with_quotes`), **P2P 175/175**, **strict unresolved**. The image equalled the pin before and after.
+
+**1b. Watchdog on this host: PASSED** ([`watchdog_host_check.json`](../results/v2_agent/req013_14b_discriminator_20260924/watchdog_host_check.json)):
+- **Live vs recorded:** for the owned stub, the live `ps -ww -o args=` equals the recorded command except that the model path is absolute live and repo-relative as recorded. Raw equality is false; after root-prefix removal it is true, and the watchdog rule (`is_recorded_server`) matches. The decoy did not match and was never signalled.
+- After a real SIGKILL of the stub parent, the watchdog stopped the owned stub **0.22 s** later (bound 10.2 s) and then exited.
+- The existing fixture `test_the_server_watchdog_stops_the_recorded_server_after_the_parent_is_sigkilled` passed on this host.
+- Host interpreter: `.venv/bin/python` → uv CPython 3.12.13; `ps` shows argv[0] as launched.
+- A hypothesis (unverified) for your host's failure: an interpreter that re-executes itself, such as a framework Python, would show a different argv[0].
+
+**1c. 14B binding:** the REQ-013 effective repair1 config equals REQ-012's leaf by leaf over 26 leaves. It differs only at `model.model_name` and `model.model_kwargs.api_base` (8293 versus 8291). The prompt bytes, `--network none`, the stall-guard agent class and the fingerprint rule are identical. A pinned-venv harness shows 7B versus 14B request bodies byte-identical except for the alias.
+
+**Declared addition:** `req013_entry.py` (48 lines) runs the unedited `req012_entry.main`, rebinding its manifest and request constants in-process. Without it, `req012_entry` would refuse the 14B assignment.
+
+**Step 2 (one 14B episode): BLOCKED for capacity.** Read-only admission at this checkpoint:
+- **passing:** manifest, runtime, images (all 3 pins), conflicts (ownership released, no PAUSE, no REQ-011/012/013 processes), isolation, disk, models (14B GGUF `b179f09d…` and tools), memory (65 % free; projection ≤ limit), and the REQ-012 gate precondition with a config proof;
+- **failing:** **swap**, where `vm.swapusage` reads `total = 15360.00M  used = 14978.44M  free = 381.56M  (encrypted)`, about 0.36 GiB free against the ≥ 4 GiB gate. (Sources and step 1 failed only because they were uncommitted, which this commit fixes.)
+- A capacity block before the namespace consumes nothing and starts nothing.
+
+**Questions (your decision):**
+- (1) Confirm the literal `vm.swapusage`-free rule, or redefine the capacity measure. On macOS it may not reach 4 GiB without the owner restarting the machine or closing large processes.
+- (2) Confirm that I may launch the single 14B episode automatically at a later tick if every gate, including swap, passes at that time. Until you answer, I only re-check read-only.
+- (3) Accept `req013_entry.py`.
+
+| Request | Status | Artifact |
+|---|---|---|
+| DTR-REQ-013 (P0) | **step 1 completed (reconciliation verified, watchdog passed on this host, 14B binding identical); step 2 BLOCKED for capacity (swap)** | this commit |
+| DTR-REQ-012 (P0) | completed/inspected: gate accepted; probe unresolved | `dc11e63`, `8bcca8a`, `702e58a` |
+| DTR-REQ-011 (P0) | completed: 0 of 2 eligible | `2714fda`, `6074003` |
+| DTR-REQ-010 (P0) | completed/inspected | `7805d8b`, `10be146` |
+| DTR-REQ-009 / 008 / 007 / 006 / 005 / 004 / 003 / 002 / 001 | as in the previous table | — |
+
+**Cadence:** job `c710b12b`, ticks at about :15/:45 UTC, session-only; I publish on change.
