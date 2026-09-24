@@ -1,0 +1,107 @@
+{
+ "request": "DTR-REQ-011",
+ "kind": "two-assignment fixed-backend DEVELOPMENT competence pair manifest (single-shot, no-clobber, no resume)",
+ "lead_commit": "a0e8379",
+ "lead_decision": "docs/theory_feedback_20260924_req010_decision.md",
+ "source_commit": "10be146",
+ "instance_id": "astropy__astropy-14598",
+ "images": {
+  "base": {"key": "sweb.base.py.x86_64:latest", "id": "sha256:f7d1dba08fbc14f5232016debb02d9ace25c84e2a088ec8ec6c776fc3c2f07d5"},
+  "env": {"key": "sweb.env.py.x86_64.7d2281f8cd4608b2972430:latest", "id": "sha256:ee4f7d3a3ec176acd95cadc6aaa7712e047f347091f3536784933dfffe9d9cfa"},
+  "instance": {"key": "sweb.eval.x86_64.astropy__astropy-14598:latest", "id": "sha256:ff1716c2ea207eeb3b717cd5deb3213f923f4d445234edd9a53d035dce834997"}
+ },
+ "assignments": [
+  {"order": 1, "assignment_id": "req011-1-large", "backend": "large", "arm": "baseline",
+   "model": "Qwen/Qwen2.5-Coder-14B-Instruct", "model_commit": "aedcc2d42b622764e023cf882b6652e646b95671",
+   "port": 8293, "alias": "qwen2.5-coder-14b-instruct-aedcc2d-q4_k_m",
+   "gguf": "work/models/converted_4fea119/qwen2.5-coder-14b-instruct-aedcc2d-q4_k_m.gguf",
+   "gguf_sha256": "b179f09d5f73776e68623384d95a0dbd73ccf038e34db50b508e9c3baf468066", "gguf_bytes": 8988110944},
+  {"order": 2, "assignment_id": "req011-2-small", "backend": "small", "arm": "baseline",
+   "model": "Qwen/Qwen2.5-Coder-7B-Instruct", "model_commit": "c03e6d358207e414f1eca0bb1891e29f1db0e242",
+   "port": 8291, "alias": "qwen2.5-coder-7b-instruct-c03e6d3-q4_k_m",
+   "gguf": "work/models/converted_4fea119/qwen2.5-coder-7b-instruct-c03e6d3-q4_k_m.gguf",
+   "gguf_sha256": "87a3665ca3247c54dfa198010f6e1f48d41611029bbcb5ed185a5ad05fcd3b81", "gguf_bytes": 4683074208}
+ ],
+ "settings": {
+  "step_limit": 24, "cost_limit": 0.0, "wall_time_limit_seconds": 1800, "temperature": 0.0, "max_tokens": 1536,
+  "command_timeout_s": 60, "physical_attempts_per_call_max": 2, "request_timeout_s": 900, "context_per_slot": 16384,
+  "configuration_binding": "yaml-v1", "workspace_binding": "wc2", "template_platform_binding": "cp2",
+  "mini_swe_agent": "04d809ceab9df28f9adaed044884180159172930",
+  "default_yaml_sha256": "112aa58328f478a41cc2630702a4b89ef459e912870e05065157ed221f56701f"
+ },
+ "serving": {
+  "llama_cpp_commit": "4fea119de30f6a923992780f6fd5ccb0bee5d47d",
+  "llama_server": "work/upstream/llama.cpp-4fea119/build/bin/llama-server",
+  "flags": ["-ngl", "99", "-np", "1", "-c", "16384"],
+  "host": "127.0.0.1",
+  "build_info_contains": "4fea119",
+  "conversion_record": "results/v2_agent/coder_conversion_20260922.json",
+  "conversion_record_sha256": "7e165c220b2d4f045375a98e3edc35ccc5a0133221bfd8bff18c397cbab61c1f",
+  "non_task_generation_probes": 0
+ },
+ "evaluator": {
+  "commit": "f7bbbb2ccdf479001d6467c9e34af59e44a840f9",
+  "python": "work/venvs/swebench_f7bbbb2/bin/python"
+ },
+ "caps": {
+  "pair_wall_s": 7200, "episode_wall_s": 1800, "episode_load_allowance_s": 600, "child_cleanup_grace_s": 120,
+  "child_wait_slack_s": 30, "server_cleanup_reserve_s": 90, "grading_floor_s": 900,
+  "evaluator_attempt_max_s": 1800, "evaluator_min_start_budget_s": 600, "evaluator_max_attempts": 2,
+  "evaluator_end_reserve_s": 300, "grader_wait_slack_s": 120,
+  "max_logical_requests": 48, "max_physical_requests": 96, "per_episode_logical": 24, "per_episode_physical": 48,
+  "host_reserve_bytes": 1073741824
+ },
+ "memory_rule": {
+  "admission_min_free_pct": 30, "post_load_min_free_pct": 10, "kv_gib": {"large": 3.0, "small": 0.88},
+  "vm_gib": 16, "margin_gib": 2
+ },
+ "disk_rule": {"vm_min_gib": 20, "host_min_gib": 15, "work_free_min_above_reserve_gib": 6},
+ "watchdog": {"poll_s": 5, "grace_s": 20, "ready_timeout_s": 60},
+ "runtime": {
+  "episode_python": "work/venvs/minisweagent_04d809c/bin/python",
+  "grader_python": "work/venvs/swebench_f7bbbb2/bin/python",
+  "orchestrator": "experiments/v2_agent/req011_pair.py",
+  "entry": "experiments/v2_agent/req011_entry.py",
+  "grader": "experiments/v2_agent/req011_grade.py"
+ },
+ "outputs": {
+  "raw": "work/runs/req011_competence_20260924",
+  "published": "results/v2_agent/req011_competence_20260924",
+  "pause_file": "work/REQ011_PAUSE",
+  "private_receipts": "work/req005_request_receipts/cue-v1"
+ },
+ "declared_rules": [
+  "Task exposure: astropy__astropy-14598 is DEVELOPMENT-exposed from this pair on and may never enter CONFIRM.",
+  "Queue: exactly the two assignments above, in this order (Coder-14B 'large' on 8293, then Coder-7B 'small' on 8291), arm 'baseline' only: no cue, no forced extra call, no salvage of an unsubmitted workspace, no model/task/endpoint substitution, no third assignment. Arm order is for feasibility, not a paired causal comparison.",
+  "Single shot: the raw directory (outputs.raw) and the published directory (outputs.published) are created with exist_ok=False at launch, so a second launch refuses; a started assignment is never re-dispatched and a start without an end in the ledger is 'interrupted'. A BLOCKED admission also consumes the namespace.",
+  "Admission (any failure or crashing probe -> admission.json + pair_summary.json status BLOCKED, nothing run, no substitution): this manifest equals the bound code, pilot_runner, conversion-record and REQ-010 values; every reused and new source is tracked and unchanged from HEAD, the cue-v1 binding computes without problems (accepted pins, pinned SDK runtime); the colima runtime (vz, Rosetta); the three image IDs equal the pins; no conflicting process, listener, running container or leftover, fresh peer status with no lease or open window, work/code_routing_servers.json release_confirmed with no servers, no REQ-011 PAUSE file and no other REQ-011 process; the agent sandbox (forward_env empty, container env keys within PAGER/MANPAGER/LESS/PIP_PROGRESS_BAR/TQDM_DISABLE, run_args exactly --rm --platform linux/amd64, no other environment keys), no proxy, no LITELLM_* or EXPERIMENTAL_OPENAI_BASE_LLM_HTTP_HANDLER variable and no mini-swe-agent global .env; disk; full GGUF sha256 of both models and the llama-server binary plus its 10 dylibs equal the conversion record; memory.",
+  "Memory (declared): memory_pressure 'System-wide memory free percentage' >= admission_min_free_pct at admission; static projection gguf_bytes + kv_gib + vm_gib <= hw.memsize - margin_gib for each model; post-load free percentage >= post_load_min_free_pct or the pair stops; swap is recorded from sysctl vm.swapusage with no swap gate. On Apple Silicon unified memory this memory rule is also the GPU-capacity rule: the frozen flags offload all layers (-ngl 99), and the 4fea119 server log at default verbosity prints no per-layer offload line (checked against the yaml-v1 server logs), so full offload is not separately gated; generation throughput stays descriptive in the receipts and server log.",
+  "Disk (declared): colima VM >= vm_min_gib and host >= host_min_gib free (req010_sentinel.probe_disk); cue_admission.free_space_check(work/, host_reserve_bytes) requires host_reserve_bytes + 6 GiB free.",
+  "Serving: pilot_runner.Servers unchanged (pre-launch full GGUF hash, foreign accelerator process refusal, port check, /health poll, owned stop), with only the ownership holder label rewritten to DTR-REQ-011; one server at a time; stopped in a finally block and, if that stop was cut short by a first signal, once more. Before the first load a server watchdog (req011_pair.py --watchdog, its own session, the scrubbed environment) must report ready, or no server starts (a gate). It polls every watchdog.poll_s seconds; when the orchestrator is gone (re-parented, e.g. after SIGKILL or a memory-pressure kill) or the pair deadline passed, it stops (SIGTERM, grace_s, SIGKILL) only a server listed in work/code_routing_servers.json under the DTR-REQ-011 holder whose live command line is exactly the recorded one, writes watchdog_action.json and exits; after the orchestrator died and every listed server was confirmed stopped it also releases the ownership record. It signals nothing else and sends no request. It is terminated only once no server of ours is live; otherwise it stays armed past the orchestrator. After load, and without any generation request: GET /props model_path equals the absolute hashed GGUF path, model_alias equals the alias, build_info contains 4fea119, total_slots 1, default_generation_settings.n_ctx 16384; GET /v1/models lists the alias; the port's listener PID equals the server PID. The frozen generation preflight is replaced by these GET-only checks (0 non-task generation requests).",
+  "Schedule: episodes first in manifest order, then the server is stopped, then grading in arm order. An episode starts only if now + episode_load_allowance_s + episode_wall_s + child_cleanup_grace_s + child_wait_slack_s + server_cleanup_reserve_s <= pair deadline - grading_floor_s (re-checked after the load with a zero load allowance); otherwise it is 'not_started: pair cap'. The pair deadline is launch time + pair_wall_s and includes admission, loads, episodes, grading, cleanup and publication.",
+  "Gates (stop the pair; remaining assignments 'not_started: <reason>'; never outcome-driven): server load/refusal, served identity, post-load memory, the PAUSE file, an entry admission refusal of the running code, a record that could not be written durably (ledger or control record), unconfirmed process-group termination or unconfirmed removal of the episode-owned container. A failed, unsubmitted or unresolved episode of any kind does NOT stop the pair.",
+  "Episode supervision: per episode the child gets episode deadline now + episode_wall_s and block deadline pair deadline - grading_floor_s; the parent waits on the wall clock until episode deadline + child_cleanup_grace_s + child_wait_slack_s, then kills the child's whole process group (SIGTERM, 20 s, SIGKILL) and removes only the container recorded in that run's container_ownership.json (docker rm -f by exact full ID, only if still listed; docker timeouts shrink with the time left); any other minisweagent-* container still listed is recorded, never removed. If a first signal cuts this cleanup short, it is retried once before the summary (later signals are ignored). The entry refuses unless its control record matches the committed manifest (binding digest, instance, expected image, and the assignment's id, order, backend, port, alias and model sha256). Every child (llama-server, entry, grader) gets the credential-scrubbed environment (req010_sentinel.scrub_env); entry and grader also get DOCKER_HOST set to the colima dtr socket (req010_sentinel.docker_env).",
+  "Request accounting: counted_before starts at 0; after an episode counted = its reported physical_requests when it is a valid integer 0..48, otherwise 48 is reserved (cue_admission.account_requests); the next episode's limit is min(per_episode_physical, max_physical_requests - counted_before). Logical calls are bounded by the frozen step limit (24 per episode, 48 per pair). No non-task generation request is sent.",
+  "Grading: only an explicit Submitted episode with a nonempty submission.diff is evaluated, by grade_identity.grade_flow (stock f7bbbb2 run_evaluation --namespace none --max_workers 1 --timeout 1800 --cache_level instance --split train, strict declared_outcome) in the pinned evaluator venv; non-Submitted or empty submissions are operational zeros written by grade_flow without the evaluator. Each evaluator attempt has a wall budget min(evaluator_attempt_max_s, pair deadline - evaluator_end_reserve_s - now) and starts only if that budget >= evaluator_min_start_budget_s (non-evaluable episodes are still passed to the grader, which writes their operational zero without the evaluator, whatever the time). The grader is a session and process-group leader and the stock evaluator runs inside its group (as grade_submission.py's subprocess.run does), so the parent's group kill (at deadline - evaluator_end_reserve_s + grader_wait_slack_s, or on an operator signal) reaches the evaluator and anything it starts; the grader arms SIGINT/SIGTERM/SIGHUP before grading, and after every attempt, however it ends, stops the evaluator (SIGTERM, 20 s, SIGKILL) and removes only 'sweb.eval.astropy__astropy-14598.<evaluator run id>' by exact name; the parent removes the same exact names again afterwards (never an adapter or other container). No second evaluator is started while an earlier one's termination is unconfirmed, and grading stops if a grader's process group is not confirmed gone. One identical retry only when the stock run timed out (test output ends with 'Timeout error:'), was killed at its attempt wall budget, or produced test output but no report; a setup failure (no test output: image build or patch application) or an unusable present report is recorded as a diagnosis and not retried. The instance image ID must equal the pin before grading (otherwise refused) and after it (otherwise the status becomes 'invalid: instance image differs from the pin after grading'). A grading attempt that cannot start or a grader killed at the pair cap is recorded as 'ungraded: pair cap' (a grade record written before such a kill is kept separately and never used) and never imputed.",
+  "Publication: sanitized copies (repository path -> '.', home -> '~') of every run-directory record, public receipts, grade records and evaluator receipts, admission, ledger and summary, with raw and published SHA-256; a username guard writes USERNAME_FOUND.json on any hit. Private raw request bodies stay under outputs.private_receipts/<run_id> (git-ignored) and are never published.",
+  "Summary: each assignment row carries an outcome_source (eligible_submission; agent = Submitted-empty, LimitsExceeded, RepeatedFormatError, FormatError; time_limit = TimeExceeded, EpisodeDeadline; infrastructure_or_supervision = anything else, including killed, interrupted, not started, no episode record, InfrastructureStop, StartPreflightRefused and transport errors), which is descriptive and not evidence about competence when it is infrastructure_or_supervision; when call 9 was reached, call9_pre_action records the message count, logical calls (8) and physical attempts before it, the remaining request budget, the seconds since the first request and the seconds left to the episode deadline. One unreadable run record is recorded as episode_facts_error and never prevents the summary.",
+  "Interpretation (lead decision): both assignments are in the denominator. If neither submits a nonempty eligible patch, this task/harness competence is classified as failed and diagnosed (loops, actual edits, stopping, model behavior) before any task or call-limit expansion. A nonempty submission or a resolution establishes only single-task pipeline feasibility, not history adaptation, policy superiority, a population success rate or inference. Stop at this pair and return to the lead."
+ ],
+ "interpretations": {
+  "nonblocking": "The all-exit diagnostic, post-dispatch receipt bookkeeping and cleanup never change the endpoint, eligibility or grading and never stop the pair. The PRE-dispatch receipt stays blocking (no dispatch without a durable receipt) per the lead's REQ-005 decision (answer 1); the disk reserve for it is checked at admission.",
+  "pair_cap": "Time expiry preserves and publishes incomplete assignments with their reason; no extra time, outcome-driven stopping or substitution."
+ },
+ "inherited_labels": [
+  "Receipts from the reused request_receipt/cue_transport say request DTR-REQ-005 and cohort cue-v1.",
+  "episode.json from the reused cue_episode.run_episode has kind 'cue-v1 fixed-order DEV episode (DTR-REQ-005)' and cohort 'cue-v1'.",
+  "Private raw request bodies are stored under work/req005_request_receipts/cue-v1/<run_id>.",
+  "The baseline arm writes a silent cue_delivery.json / calls.jsonl landmark; no cue is ever appended.",
+  "These are instrumentation labels of reused frozen helpers only; this manifest, the REQ-011 ledger and pair_summary.json are authoritative."
+ ],
+ "semantics_differences": [
+  "episode.json physical_requests = len(capture.sends) (one send per query attempt at the HTTP layer); the frozen pilot_episode driver used len(attempts).",
+  "Token counts come from server-reported usage in the public outcome receipts; unknown usage stays null (the frozen driver used litellm's parsed usage).",
+  "submission.diff is written write-once before the all-exit diagnostic and cleanup (same bytes as the frozen driver, which wrote it after cleanup)."
+ ],
+ "scope": "One fixed-backend DEVELOPMENT competence pair on one evaluator-qualified issue: descriptive feasibility only; not a paired causal comparison, not a policy value, not a population rate and not CONFIRM evidence."
+}
