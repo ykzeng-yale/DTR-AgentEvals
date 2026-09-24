@@ -4816,3 +4816,46 @@ Readiness remains **55%, change 0 percentage points, judgment range 45–65%** u
 The author changed the lead check from every 30 minutes to every **three hours at minute 18**. The experiment worker's separately authorized cadence is unchanged; no exact publication time or host scheduler state is assumed. Continue REQ-008 and report its status/artifact in this committed handoff. Scientific questions or material corrections can be published when ready rather than waiting for the next lead check.
 
 The author also permits a bounded local DEVELOPMENT experiment on the lead host if validated repository code, disk/compute capacity, isolation, an explicit resource cap and non-overlap with worker jobs are verified. This does not release E2 live/CONFIRM or cue-v1, authorize a duplicate REQ-008 inventory or change the fixed target. The current lead checkout has about 26 GiB free, but no model/runtime readiness or non-overlap has been established for a local model run. No lead-side experiment was launched in this update. Readiness remains **55%, change 0 points, range 45–65%**.
+
+## Worker checkpoint — 2026-09-24T04:15:07Z (host `date -u`; local 00:15 EDT) — DTR-REQ-008 accepted and running; README status fixed; corrections and cadence disclosure
+
+**Read:** lead `c88c90c` (03:56Z, REQ-008), `59e4622` (04:02Z, three-hourly lead check at :18; bounded local development permitted) and issue #4 up to 03:57:33Z. **Code/config commit:** `59e4622` (no code change in this checkpoint). **Authorized runs:** none. Nothing is running; ports 8191/8193/8291/8293 are down.
+
+**DTR-REQ-008 (P0): accepted, running.** This is a metadata-only inventory of all 500 pinned `princeton-nlp/SWE-bench_Verified@c104f840` IDs. It will be reconciled to `results/v2_agent/pilot_frame_20260922.json`, `results/v2_adapter/m01_c104f840_f7bbbb2/instances.jsonl` and the committed qualification/pilot manifests. For each ID it records exposure, qualification, family and what is known about the strict evaluator metadata gate, and counts are marked unknown where an artifact is missing.
+- Planned outputs: `docs/req008_fresh_pool_inventory.md` and `results/v2_adapter/req008_pool_inventory.json`, both source-hashed and write-once.
+- Scope: no model, evaluator, container, GPU, Monte Carlo or download. No held-out outcome is read or summarized, and no task or outcome-based selection is made. No archive changes. MiniWoB is not substituted.
+- Source checkpoint: `cc88526`.
+
+**`experiments/README.md`:** the current-status paragraph now shows REQ-005 completed and the live cue deferred, REQ-006 INCONCLUSIVE, REQ-007 completed/inspected with E2 on HOLD, and REQ-008 as the current read-only request. The historical sections are unchanged.
+
+**Cadence, with the true cause of the missed check-ins.** My 01:54Z entry promised "a no-change line at :13/:43". I broke that promise at 02:13–03:43Z, but the cause was not a lost scheduler this time.
+- The job (`bcc38479`) fired every half hour. By its own instructions it skips the commit when nothing changed, so my published promise contradicted my actual policy. **Correct policy: the worker publishes only when something changes.**
+- The ticks fired at **:24/:54 UTC**, not :13/:43, because of scheduler jitter. The observed tick times were 00:54:08, 01:24:08, … 03:54:08Z.
+- I replaced the job with `c710b12b`, nominally :04/:34, so that a tick should land before your :18 check. The job is session-only and expires after 7 days. A durable scheduler is the owner's decision, and I have not claimed one.
+- The new job takes the current request from your latest handoff entry instead of hard-coding it; the old one still named REQ-006.
+
+**Corrections (appended to `docs/experiment_results.md`; earlier entries unchanged):**
+- The 0.627 validation utility belongs to the FIT-selected small→small→large schedule, not to the final small→large→large routers, which have only an in-sample 0.705.
+- U_A (307 decisions / 81 tasks) is not an upper bound on disagreement between two fitted routers. The forced-depth refits disagree at humaneval/116, outside U_A; I re-derived this from the REQ-007 fits.
+- The zero-disagreement finding applies only to the routers the rule selected.
+- The "Not claimed" block no longer says "No new model runs". It now names the SWE-bench smoke and the two DEV cohorts.
+
+**Other items found by a read-only audit of the committed docs (each re-derived by me):**
+- **The REQ-005 acceptance record is wrong about `results/`.** `docs/req005_integration_acceptance_20260923.json` says in `results_tree` that nothing under `results/` was created. In fact commit `3f1fa73` also **added** `results/v2_agent/analysis_20260922/server_request_reconciliation_20260923.json` (sha256 `9bf5384d92c721801de2242b1dc534e642b6e5874b6c7471e5f5460413b812c6`). That file was written once by `experiments/v2_agent/analysis/server_request_reconciliation.py` (sha256 `65cf0cc5f5abec543bab0a0cc6dab39180e03bb45dc27458a73d391203af2977`, unchanged since). No pre-existing file under `results/` was modified. The acceptance JSON itself is left as committed.
+- **Open, non-blocking, and relevant only if the cue stage is revived:** decision 5 of my `3f1fa73` checkpoint (the `workspace_capture.py`/`pilot_report.py` pins come from worker landmarks) was never confirmed. Any revival re-checks it under the `98bc75d` Q1 gates.
+- **My `51d14cb` summary of your four cue decisions left out two binding conditions.** They are: "any larger peer-required reserve", and, if the template check fails, appending the cue with two newline separators, then rebinding and retesting **before** any outcome. The binding text is `docs/theory_feedback_20260923_req005_integration_decision.md` line 21.
+- **For you (lead-owned text, which I have not edited):** four places still present REQ-005 or the recovery cue as current. They are the top blocks of `docs/experiment_handoff.md` (line 9), `experiments/PROGRESS.md` (line 9) and `docs/experiment_results.md` (line 17), and the root `README.md` "current lead decision" (lines 16–17).
+
+| Request | Status | Artifact |
+|---|---|---|
+| DTR-REQ-008 (P0) | **accepted, running** (metadata-only inventory) | next commit |
+| DTR-REQ-007 (P0) | completed/inspected; E2 live/CONFIRM on HOLD | `35c4f52`, `497c20b` |
+| DTR-REQ-006 (P0) | completed, lead-reviewed; INCONCLUSIVE | `88b3e6b`, `3911aee` |
+| DTR-REQ-005 (P0) | completed as no-model instrumentation; live cue deferred | `3f1fa73`, `98bc75d` |
+| DTR-REQ-004 (P0) | completed historically; a fresh peer/host check is required before any live stage | `22c4a82` |
+| DTR-REQ-003 (P0) | scoped reporting completed; sampling held | — |
+| DTR-REQ-002 (P1) | completed | `2874246` |
+| DTR-REQ-002 Django | deferred | — |
+| DTR-REQ-001 (P0) | completed | — |
+
+**Questions:** none blocking. **Cadence:** job `c710b12b`, nominal :04/:34 UTC, session-only; I publish on change. **Next observed publication:** the REQ-008 inventory when it reconciles.

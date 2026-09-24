@@ -5,7 +5,7 @@ directory and `results/sim/`, `results/code_routing/` are written only by this w
 Theory, proposal, literature and the reference library under `src/` belong to the theory
 agent and are not edited from here. Rules in [`AGENTS.md`](../AGENTS.md) apply.
 
-## Current status — 23 September 2026 UTC
+## Current status — 24 September 2026 UTC
 
 Both fixed-backend DEV cohorts are complete and separate: legacy 16 operational zeros / 330 requests;
 corrected yaml-v1 16 operational zeros / 352 requests. Neither produced an eligible nonempty submitted
@@ -13,12 +13,20 @@ patch. The [lead review](../docs/theory_feedback_20260923_completed_pilots.md) a
 accept recorded counts, preserve unknown token usage and distinguish verified published projections
 from unverified raw execution identity. They correct attempted-write/testing/workspace interpretations.
 
-The next priority is **DTR-REQ-005**: integrate the reviewed, corrected components into a new
-cue-v1 driver/queue with exact-transport and cleanup-deadline fixtures. The
-[lead integration decision](../docs/theory_feedback_20260923_req005_review.md) resolves storage and
-failure-handling choices. Component tests and retrospective triggers are not live validation;
-no new live stage is released yet. The old peer window is completed; refresh current host conditions
-before any later authorized use. The primary target, negative outcomes and v2 confirmation gates remain.
+- **DTR-REQ-005** is completed as no-model instrumentation (`3f1fa73`). Its live cue comparison is
+  deferred/superseded ([lead `98bc75d`](../docs/theory_feedback_20260923_req005_integration_decision.md)); the
+  12-assignment plan and sources are preserved unexecuted.
+- **DTR-REQ-006** (retrospective MBPP/HumanEval decision-opportunity table, `88b3e6b`) is completed and
+  lead-reviewed as **INCONCLUSIVE** for the history-aware vs prompt-only contrast
+  ([`3911aee`](../docs/theory_feedback_20260924_req006_decision.md)).
+- **DTR-REQ-007** (frozen depth-≤2 router fit on TRAIN, `35c4f52`) is completed/inspected: both one-SE routers
+  are the same small→large→large schedule with zero realized disagreement
+  ([`497c20b`](../docs/theory_feedback_20260924_req007_integration.md)). New E2 live/CONFIRM and cue stages are on
+  **HOLD**.
+- **Current request: DTR-REQ-008 (P0)**, a read-only, metadata-only inventory of the pinned
+  SWE-bench_Verified@c104f840 frame (all 500 IDs by exposure, qualification and family), requested in lead
+  `c88c90c`. No model, evaluator, container, GPU or download is used, and it releases no stage. Outputs:
+  `docs/req008_fresh_pool_inventory.md` and `results/v2_adapter/req008_pool_inventory.json`.
 
 **Readiness 55%, change 0 points, range 45–65%.** Useful validated inference/adequate comparisons,
 final empirical synthesis, and independent reproducibility/metadata/package remain.

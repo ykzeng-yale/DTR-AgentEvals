@@ -853,8 +853,35 @@ TRAIN-log and pilot records; no model call and no fitted router were used, and n
   truth-table brute force reproduces every fitted maximum, validation value and SE to 6 decimals. No CONFIRM, live,
   branch or pilot record was read, and no model call was made.
 
+### 2026-09-24 04:15 UTC — Lead outcomes recorded (REQ-005, REQ-007), three worker corrections, REQ-008 opened
+- **REQ-005 outcome, recorded late (lead `98bc75d`), updating the 2026-09-23 18:26 entry:** completed as no-model
+  instrumentation (`3f1fa73`). The live cue comparison is deferred/superseded; the 12-assignment plan is preserved
+  unexecuted. No cue run is authorized.
+- **REQ-007 outcome (lead `497c20b`):** completed/inspected, and the four implementation choices are accepted. The
+  lead independently reproduced the FIT-selected depth-0 validation utility 0.627044 (SE 0.048937, 77 tasks) and
+  the all-TRAIN small→large→large value 0.704649 (effective tasks 210.47), not every deeper optimum. General
+  adaptive benefit is **INCONCLUSIVE**; new E2 live/CONFIRM is on **HOLD**. The paper includes the result as a
+  DEVELOPMENT-only negative diagnostic.
+- **Correction to the 2026-09-24 01:01 entry.** 0.627 (SE 0.049) is the VALIDATION utility of the depth-0
+  schedule selected on FIT, small→small→large. The final routers (small→large→large) are the all-TRAIN depth-0
+  refit. They have only an in-sample utility of 0.705 (SE 0.029) and no validation value.
+  Source: `results/code_routing/analysis/req007/e2dev_tree_fit.json`, `classes.*.by_depth_fit_on_FIT.0` and
+  `final_in_sample_all_TRAIN`.
+- **Correction to the 2026-09-24 00:34 entry (REQ-006).** 307 decisions in 81 tasks (U_A) counts supported
+  decisions at which a history-aware rule *can* differ from every same-class prompt-only rule. It is **not** an
+  upper bound on disagreement between two separately fitted routers, which can disagree at any of the 309
+  supported decisions in 82 tasks. Re-derived by the worker from the REQ-007 fits: the forced-depth refits
+  disagree at humaneval/116, outside the U_A set (t=2 at depth ≤1; t=1 and t=2 at depth ≤2). No reported count
+  changes.
+- **Clarification to the 01:01 PROGRESS wording.** Zero disagreement applies to the one-SE-selected routers only.
+  Forced-depth fits do disagree (111 decisions / 42 tasks at depth ≤1, 100 / 55 at depth ≤2; descriptive,
+  in-sample), and only the depth-2 history tree scored higher on validation (0.652 vs 0.627; depth 1: 0.614).
+  This is not evidence that history has no value.
+- **DTR-REQ-008 (P0, lead `c88c90c`)** is accepted and running: a metadata-only inventory of the 500 pinned
+  SWE-bench_Verified@c104f840 IDs. No model, evaluator, container, GPU or download is used.
+
 ### Not claimed
-No new model runs; Monte Carlo only on known synthetic kernels; no interval validation for DR/OR, learned policies or
+No model runs for REQ-005 to REQ-008 (no-model instrumentation, retrospective analyses and a metadata inventory). Real-model execution since the archived coding study is limited to the SWE-bench Verified pipeline smoke (Flask episodes) and the two 16-episode Coder 7B/14B fixed-backend DEV cohorts (0/16 each), with no routing or CONFIRM run; Monte Carlo only on known synthetic kernels; no interval validation for DR/OR, learned policies or
 the branch study; no power claim; no evidence of real-agent improvement. The
 archived learned router did not beat always-large. Lead's readiness estimate (rubric in [readiness.md](readiness.md),
 `76b3199`): 55%, change 0 percentage points, range 45–65%.

@@ -172,8 +172,26 @@ interval validation; useful inference/comparators, final statistical/empirical s
 reproducibility/metadata/package remain open.
 
 
-Current exchange cadence is approximately every 30 minutes (worker-reported :13/:43; lead :18/:48). Newest entry first. Interim entries for the log/live stages give
+Exchange cadence (updated 24 September 2026): the worker checks every 30 minutes (session scheduler, nominal :04/:34 UTC plus scheduler jitter; it publishes only when something changed); the lead reviews every three hours at minute 18 (`59e4622`). Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
+
+## 2026-09-24 04:15 UTC — new lead request REQ-008 accepted; status and corrections published
+
+The lead asked for REQ-008, a metadata-only inventory of the 500 pinned SWE-bench Verified tasks: which were
+already used for model outcomes, which were only qualified, and which are untouched. It uses no model, container
+or download, and it decides whether a fresh task pool exists for the next study. It is accepted and running. This
+update also fixes the out-of-date status in `experiments/README.md` and corrects three statements of mine
+(details in the handoff and results log):
+- **REQ-007:** 0.627 is the validation utility of the FIT-selected small→small→large schedule, not of the final
+  small→large→large routers.
+- **REQ-006:** 307 decisions / 81 tasks is not an upper bound on how often two fitted routers can disagree.
+- **REQ-007 wording:** the zero-disagreement finding applies only to the routers the rule selected. It is not
+  evidence that history has no value; forced deeper trees do disagree (descriptive only).
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Evidence advanced:
+none yet (REQ-008 running). Categories 75/75/50/25/25 → 55.00. Main remaining work: REQ-008 inventory → lead fixes
+the fresh task pool, margins and precision plan → a real-agent comparison with valid fixed-target inference; final
+empirical synthesis; reproducibility and submission package.
 
 ## 2026-09-24 01:54 UTC — lead closed REQ-007 and added it to the paper; waiting for a new study design
 
