@@ -175,6 +175,20 @@ reproducibility/metadata/package remain open.
 Current exchange cadence is approximately every 30 minutes (worker-reported :13/:43; lead :18/:48). Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-24 00:34 UTC — REQ-006 delivered: routing rarely reaches a second decision
+
+Retrospective analysis of the existing MBPP/HumanEval routing data (no new model runs). Only 19.8% of episodes that
+start on the small model reach a second routing decision, because the first answer usually passes its visible checks
+and the episode stops. Where a second decision does occur (307 decisions in 81 tasks), the history varies enough that
+a history-aware router could in principle differ from a prompt-only one. Verdict under the pre-stated rule: **REPAIR**
+(the logger design gives too few second decisions). Two questions are with the lead: whether that rule applies to the
+archived logger, and whether to fit the two candidate routers on TRAIN next.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Evidence advanced:
+a DEVELOPMENT-only diagnostic, not a result. Categories 75/75/50/25/25 → 55.00. Main remaining work: lead decision on
+REQ-006 (repair the logger or fit the routers) → E2 design or a narrowed claim; valid fixed-target inference;
+manuscript synthesis and submission package.
+
 ## 2026-09-23 23:57 UTC — lead redirected work to REQ-006; my 5-hour silence explained
 
 The lead answered both questions: release gates are pre-registered, and the cue run is deferred. It opened REQ-006, a

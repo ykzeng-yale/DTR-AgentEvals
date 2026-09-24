@@ -4659,3 +4659,47 @@ Reviewed the worker's `3f1fa73` integration and `f954e9e` [measured diagnosis](p
 | DTR-REQ-004 (P0) | **completed** historically; a fresh peer/host check is required before any live stage | `22c4a82` |
 
 **Next observed publication:** the REQ-006 result when it reconciles against `design.json` and `decisions.jsonl`, then the restored :13/:43 cadence.
+
+## Worker checkpoint — 2026-09-24T00:34:20Z (host `date -u`; local 20:34 EDT) — DTR-REQ-006 delivered: rule R006-v1 gives REPAIR; one question on its applicability
+
+Reviewed your 00:19Z checkpoint. REQ-006 is **delivered for review**. Everything is retrospective DEVELOPMENT evidence from `results/code_routing/design.json`, `log/` and `pilot/`. No model call, server, GPU, network or Monte Carlo was used, and no router was fitted.
+
+**Artifacts** (`results/code_routing/analysis/req006/`; sha256 prefixes):
+- v2 is current: [summary](../results/code_routing/analysis/req006/REQ006_SUMMARY_v2.md) `cd02f9ca…` and [table](../results/code_routing/analysis/req006/decision_opportunity_table_v2.json) `fe4c18de…`, from `experiments/v2_agent/analysis/req006_decision_opportunity_v2.py` `955e81c5…`.
+- v1 is kept unchanged as the first version: `REQ006_SUMMARY.md` `58a3c935…` and `decision_opportunity_table.json` `7ba262e5…`, from `req006_decision_opportunity.py` `b57c9f9c…`.
+- v2 imports v1 unchanged. It corrects 16 declared documentation paths, and every numeric table is identical to v1.
+
+**Acceptance checks you listed:**
+
+| Check | Result | Verified independently by me |
+|---|---|---|
+| Split IDs | pilot 30 / TRAIN 231 / CONFIRM 330, pairwise disjoint; untouched tasks in the 591-task benchmark: **0** | yes, from `design.json` |
+| Actual probabilities | all 2564 eligible decisions (2401 TRAIN + 163 pilot) logged `p_large = 0.5` with both actions available; 0 mismatches over 35 field checks against `decisions.jsonl` | TRAIN yes (2401, all 0.5) |
+| Eligible counts | 924 TRAIN initial-small episodes, of which **183 (19.8%)** reach an eligible second decision; all TRAIN 317 / 1848 (17.2%); pilot initial-small 29.8% | TRAIN yes |
+| Why occupancy is low | 741 of 924 (80.2%) stop after a first call that passes its visible checks: 576 hidden success, 165 hidden failure, 119 on zero-visible-check tasks | yes |
+| Supported disagreement (model-free upper bound U_A) | 309 supported initial-small second/third decisions; **307 in 81 TRAIN tasks** (59 MBPP / 22 HumanEval) lie in prompt cells where history takes more than one value; at most **152** differ from the closest prompt-only rule | yes, exactly |
+| Candidate routers | **not trained.** `learned_policy.json` is a tabular fitted-Q lookup, not the depth-two trees E2 compares. A frozen specification `REQ006-E2DEV-TREE-v0` is written in the summary but **not executed**. | read `learned_policy.json` |
+| Task-level precision | half-width 0.05 at the protocol's s_D² = 0.20 needs **308** tasks. The half-width would be 0.097 on the 81 opportunity tasks and 0.058 on all 231 TRAIN tasks. No untouched pool exists. | arithmetic only |
+
+**Verdict under rule R006-v1: REPAIR.**
+- Step 1a fires, because fewer than 50% of initial-small TRAIN episodes reach decision 2 (183 against the 462 needed).
+- Step 1b does not fire: supported disagreement opportunity exists, with 307 decisions in 81 tasks.
+- PROCEED was unavailable in any case, because the two routers are untrained and no untouched task pool exists.
+
+**Disclosures:**
+1. **The rule was written after the data were partly known.** Before fixing R006-v1, the builder knew the pilot's decision-2 occupancy (22.5%), the CONFIRM occupancy published in A6 (21.4%) and the TRAIN decisions-per-episode counts. So the 1a outcome was foreseeable, even though the 50% threshold itself is copied from `docs/experiment_protocol_v2.md` §5.
+2. **CONFIRM lines were parsed in two places.** v1 JSON-parsed the CONFIRM lines of the mixed log files and then dropped them by task ID, without using any outcome field. v2 discards them unparsed: 2640 of 4488 episode lines and 3662 of 6063 decision lines. My own independent recount also JSON-parsed all 4488 episode lines, but it only filtered on `task_uid`; no CONFIRM field other than `split` was aggregated or printed. No file under `live/` or `branch/` was opened.
+3. **A documentation correction in v2.** The load-failure branch of `validate()` records `frac_fail = 1.0` even when n_asserts = n_fail = 0. This affects 7 of 2401 TRAIN validations (5 of them pre-action states) on humaneval/116, mbpp/260 and mbpp/440. The tables use the recorded values, so no count changes.
+
+**Questions for the lead (your decision):**
+- **Q3.** Does the §5 "<50% reaching decision 2" flag apply to this **archived** logger? It was written for the prospective E2 logger. If it does not apply, R006-v1 gives **INCONCLUSIVE, never PROCEED**. Either way, the fact is unchanged: the archived logger reaches decision 2 in only 17–20% of TRAIN episodes, because most first attempts pass their visible checks and stop.
+- **Q4.** Do you want the frozen `REQ006-E2DEV-TREE-v0` executed? It is TRAIN-only, uses no model call, fits both depth-two routers and reports realized disagreement at common supported histories, labelled DEVELOPMENT-only. That would turn the 307-decision upper bound into an observed disagreement count. Or should the next step go straight to the repair, for example a logger that forces or incentivizes a second decision?
+
+| Request | Status | Artifact |
+|---|---|---|
+| DTR-REQ-006 (P0) | **delivered for review**: REPAIR under R006-v1, pending Q3/Q4 | this commit |
+| DTR-REQ-005 (P0) | completed for no-model instrumentation; live cue deferred | `3f1fa73` |
+| DTR-REQ-004 (P0) | completed historically; a fresh peer/host check is required before any live stage | `22c4a82` |
+| DTR-REQ-002 Django | deferred | — |
+
+**Cadence:** the half-hourly checkpoint schedule is running again (:13/:43). **Next observed publication:** the first slot after your reply on Q3/Q4, or a no-change line at :13/:43.

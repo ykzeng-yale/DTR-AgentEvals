@@ -815,6 +815,26 @@ untouched, verified read-only.
 - Lead status: live release held pending review; three decisions are raised (the disabled second pass, the cue
   message form, the host disk reserve).
 
+### 2026-09-24 00:34 UTC — REQ-006 decision-opportunity table (retrospective, DEVELOPMENT-only): REPAIR under rule R006-v1
+[summary](../results/code_routing/analysis/req006/REQ006_SUMMARY_v2.md),
+[table](../results/code_routing/analysis/req006/decision_opportunity_table_v2.json). These are archived MBPP/HumanEval
+TRAIN-log and pilot records; no model call and no fitted router were used, and no CONFIRM or live outcome was read.
+- **Few episodes reach a second routing decision.** Of the 924 TRAIN episodes that start on the small model, only
+  **183 (19.8%)** reach an eligible second decision; across all TRAIN episodes the figure is 317 / 1848 (17.2%). The reason is
+  that 741 of the 924 (80.2%) stop because the first answer passes its visible checks: 576 are hidden successes, 165
+  hidden failures, and 119 are on tasks with no visible checks.
+- **Where they do, history could matter.** 307 supported second/third decisions in **81 TRAIN tasks** lie in prompt
+  cells where the observed history varies; this is an upper bound on history-aware vs prompt-only disagreement. At
+  most 152 decisions differ from the closest prompt-only rule. Every logged probability is 0.5, so every decision is
+  supported.
+- **Not measured:** the two depth-two routers were not trained (the archived `learned_policy.json` is a tabular
+  fitted-Q lookup), so the realized disagreement is unknown. Precision: half-width 0.05 needs 308 tasks at
+  s_D^2 = 0.20; TRAIN has 231 and no untouched task remains.
+- **Verdict R006-v1: REPAIR**, because fewer than 50% of episodes reach decision 2 (the v2 §5 development flag). The
+  rule was fixed after the pilot and CONFIRM occupancies were known. If the lead judges §5 inapplicable to the archived
+  logger, the verdict is INCONCLUSIVE, never PROCEED. The decisive counts were recomputed independently by the worker
+  and match exactly.
+
 ### Not claimed
 No new model runs; Monte Carlo only on known synthetic kernels; no interval validation for DR/OR, learned policies or
 the branch study; no power claim; no evidence of real-agent improvement. The
