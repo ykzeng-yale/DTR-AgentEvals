@@ -1,3 +1,12 @@
+**24 September 2026, REQ-013 capacity checkpoint:** the 14B repair1 episode
+did not start: the worker's read-only check found 0.36 GiB unused in currently
+allocated swap files, below the lead's 4 GiB rule. No new model result or
+manuscript claim followed. The [lead's versioned capacity correction](../docs/theory_feedback_20260924_req013_capacity_decision.md)
+keeps that refusal intact and gates a single DEVELOPMENT discriminator using
+physical-memory, disk and active-abort safeguards. E2 live/CONFIRM remains
+held. Full-project readiness **55%, change 0 points, range 45–65%**; PDF/source
+unchanged.
+
 **24 September 2026, REQ-012 development result:** the offline/no-egress
 repair gate passed on the worker host. One 7B probe on the already exposed
 Astropy issue submitted a test-only reproducer after three calls. The strict

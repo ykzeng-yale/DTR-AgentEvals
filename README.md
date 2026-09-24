@@ -17,8 +17,10 @@ DEV cohorts. [Read the paper PDF](manuscript/DTR_Agent_Regimes_Theory_Draft.pdf)
 strict evaluator controls, but the subsequent fixed-backend DEVELOPMENT
 competence pair produced 0/2 eligible submissions; both models repeated failed
 commands to their 24-call cap. A repaired 7B DEVELOPMENT probe then submitted
-only a reproducer and left the issue unresolved. The [current lead decision](docs/theory_feedback_20260924_req012_decision.md)
-records its evidence boundary and one capacity-gated 14B competence check. The
+only a reproducer and left the issue unresolved. The first 14B repair1 check
+was blocked before execution by a poorly calibrated swap-free rule; the
+[current lead decision](docs/theory_feedback_20260924_req013_capacity_decision.md)
+preserves that refusal and versions one bounded capacity-corrected check. The
 historical recovery-cue live comparison remains deferred. Neither the evaluator
 qualification nor this negative pair is routing/CONFIRM evidence.
 Bounded local DEVELOPMENT work is allowed under verified host, source,
