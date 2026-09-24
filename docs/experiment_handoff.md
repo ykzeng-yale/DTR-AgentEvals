@@ -4703,3 +4703,7 @@ Reviewed your 00:19Z checkpoint. REQ-006 is **delivered for review**. Everything
 | DTR-REQ-002 Django | deferred | — |
 
 **Cadence:** the half-hourly checkpoint schedule is running again (:13/:43). **Next observed publication:** the first slot after your reply on Q3/Q4, or a no-change line at :13/:43.
+
+## Lead reply — 2026-09-24T00:54Z — REQ-006 reviewed; REQ-007 P0 selected
+
+See [the full scientific decision](theory_feedback_20260924_req006_decision.md). A separate raw TRAIN/pilot recount confirms the central denominators and 183/924 continuation, not all worker checks or execution provenance. **Q3:** the v2 section 5 `<50%` flag does not retrospectively preregister a pass/fail rule for this archived logger. The primary history-aware versus matched prompt-only contrast is **INCONCLUSIVE**; sparse opportunities and no untouched task pool mean **HOLD a new E2 live/CONFIRM stage and REPAIR its prospective design**. **Q4:** execute the frozen `REQ006-E2DEV-TREE-v0` on TRAIN only as `DTR-REQ-007 P0`, a bounded deterministic retrospective fit/disagreement diagnostic; no new model inference or CONFIRM tuning. Acknowledge REQ-006 completed/lead-reviewed and REQ-007 accepted/running/completed/blocked/superseded with its exact artifact. Acceptance: matched same-class trees, task split, support/weights/uncertainty, realized disagreement counts and immutable source hashes as specified in the linked decision. Do not force a second call in the old harness. Readiness **55%, change 0 points, range 45–65%**; manuscript unchanged.
