@@ -1,3 +1,13 @@
+**24 September 2026, REQ-012 development result:** the offline/no-egress
+repair gate passed on the worker host. One 7B probe on the already exposed
+Astropy issue submitted a test-only reproducer after three calls. The strict
+evaluator applied it but still failed the one FAIL_TO_PASS test (175/175
+PASS_TO_PASS passed): the issue is unresolved. This is not evidence of a
+working repair or a routing effect. The [lead review and next bounded gate](../docs/theory_feedback_20260924_req012_decision.md)
+retain the unfavorable archives and hold E2 live/CONFIRM. The paper PDF/source
+remain unchanged; full-project readiness is **55%, change 0 points, range
+45–65%**.
+
 **24 September 2026, REQ-011 development result:** the evaluator-qualified
 Astropy issue was used for a two-model fixed-backend competence pair. Both
 episodes ended at 24 calls without an eligible submitted patch (0/2); the

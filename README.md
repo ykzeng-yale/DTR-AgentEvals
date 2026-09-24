@@ -16,8 +16,9 @@ DEV cohorts. [Read the paper PDF](manuscript/DTR_Agent_Regimes_Theory_Draft.pdf)
 [edit the LaTeX source](manuscript/main.tex). One fresh Astropy issue passed
 strict evaluator controls, but the subsequent fixed-backend DEVELOPMENT
 competence pair produced 0/2 eligible submissions; both models repeated failed
-commands to their 24-call cap. The [current lead decision](docs/theory_feedback_20260924_req011_decision.md)
-records a bounded harness repair and single-model development probe. The
+commands to their 24-call cap. A repaired 7B DEVELOPMENT probe then submitted
+only a reproducer and left the issue unresolved. The [current lead decision](docs/theory_feedback_20260924_req012_decision.md)
+records its evidence boundary and one capacity-gated 14B competence check. The
 historical recovery-cue live comparison remains deferred. Neither the evaluator
 qualification nor this negative pair is routing/CONFIRM evidence.
 Bounded local DEVELOPMENT work is allowed under verified host, source,
