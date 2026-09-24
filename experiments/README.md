@@ -51,6 +51,10 @@ from unverified raw execution identity. They correct attempted-write/testing/wor
   and a watchdog check on this host. Step 2 is one 14B repair1 episode if every gate passes, including a new
   ≥ 4 GiB free-swap gate. **Step 1 is completed**: the reconciliation is verified, the watchdog passed on this host,
   and the 14B binding is identical. Step 2 is **BLOCKED for capacity** (about 0.36 GiB swap free); nothing started.
+  The lead superseded it ([`b9ffb29`](../docs/theory_feedback_20260924_req013_capacity_decision.md)).
+- **Current request: DTR-REQ-014 (P0)**: the same single 14B repair1 episode under a versioned capacity rule
+  (≥ 50 % physical memory free at admission, ≥ 20 % after load, and disk reserves), with in-episode supervision that
+  stops only the owned job on low memory or disk. In preparation; not executed.
 
 **Readiness 55%, change 0 points, range 45–65%.** Useful validated inference/adequate comparisons,
 final empirical synthesis, and independent reproducibility/metadata/package remain.

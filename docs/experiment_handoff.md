@@ -5503,3 +5503,29 @@ The full suite passed (1,314 before this commit). A review found no launch block
 **Verdict and source:** [exact capacity decision and acceptance](theory_feedback_20260924_req013_capacity_decision.md), following worker `16d1d9b`. I checked 19/19 saved reconciliation hashes; the watchdog and 14B binding checks are inspected worker-host records. No model outcome exists for REQ-013. Its 14B step is **blocked under the committed 4 GiB unused-swap rule and superseded for future execution**; do not mutate that manifest, automatically retry it, restart the host or stop another job. The `req013_entry.py` binding shim is accepted for bounded DEVELOPMENT use with source checks. The 4 GiB threshold was my poorly calibrated proxy: prior 14B allocation grew while physical-memory checks passed. Full-project readiness remains **55%, change 0 points, range 45–65%**.
 
 **DTR-REQ-014 P0:** version a new capacity gate, keep the same repair1 prompt/model/task/endpoints/call and one-hour limits, and prove binding/supervision with no-model fixtures. Admission needs ≥50% physical free, the existing projection, ≥30 GiB VM and ≥25 GiB host disk, plus all existing source/peer/image/isolation checks. Post-load needs ≥20% physical free and those disk reserves. During execution, sample at most every 10 seconds and stop only the owned job on <10% physical free, <20 GiB VM disk or <15 GiB host disk, preserving an explicit capacity-interruption record. Record swap use but do not gate on free space inside already allocated swap files. Only if every gate passes, run **one** 14B DEVELOPMENT episode on the already exposed Astropy task. No substitute, prompt variant, cue, salvage or automatic expansion; E2 live/CONFIRM stays held. Acknowledge REQ-013 step 1 completed/live step blocked-superseded and REQ-014 accepted/running/completed/blocked/superseded with artifact/commit; retain Yukang Zeng <ykzeng2019@gmail.com> as author and committer.
+
+## Worker checkpoint — 2026-09-24T22:46:20Z (host `date -u`; local 18:46 EDT) — lead `b9ffb29` acknowledged: REQ-013 step 1 completed, live step blocked and superseded; DTR-REQ-014 accepted, preparation started (not executed)
+
+**Read:** [lead REQ-013 capacity decision](theory_feedback_20260924_req013_capacity_decision.md) (22:21Z) and issue #4 up to 22:23:12Z. **Code/config commit:** `16d1d9b`. **Authorized runs:** DTR-REQ-014 only: no-model preparation, then at most one 14B episode if every gate passes.
+
+- **DTR-REQ-013:**
+  - **Step 1 completed** (`16d1d9b`).
+  - **The live step is blocked under the committed 4 GiB unused-swap rule and superseded.** Its manifest and refusal stay unchanged, it will never be retried automatically, and nothing was restarted or stopped.
+  - `req013_entry.py` is accepted by you as a DEVELOPMENT binding shim.
+- **DTR-REQ-014 (P0): accepted. It is in preparation and nothing has been executed.**
+  - **The new capacity rule** (a new manifest and a new namespace; everything else identical to the REQ-013 live design):
+    - **admission:** ≥ 50 % physical memory free, the model + KV + VM projection ≤ RAM − 2 GiB, ≥ 30 GiB VM disk and ≥ 25 GiB host disk free, plus peer ownership, no conflicts and the source/image/isolation checks. Swap total/used/free is recorded but not gated.
+    - **post-load, before the first agent request:** ≥ 20 % physical free and the same disk reserves.
+    - **during the episode:** sampling at most every 10 s. Physical free < 10 %, VM disk < 20 GiB or host disk < 15 GiB stops only the owned agent and server, preserving receipts and all-exit state where possible, and is classified as a **capacity interruption**, never an algorithmic zero. A missing measurement fails closed.
+  - Deterministic fixtures will prove the identical task, intervention and endpoint binding and the fail-closed supervision. The watchdog and source checks will be re-verified on this host without inference. Inherited labels will be disclosed.
+
+| Request | Status | Artifact |
+|---|---|---|
+| DTR-REQ-014 (P0) | **accepted; preparing manifest, supervisor and fixtures (not executed)** | next commits |
+| DTR-REQ-013 (P0) | step 1 completed; live step BLOCKED (4 GiB swap rule) and superseded by REQ-014 | `16d1d9b`, `b9ffb29` |
+| DTR-REQ-012 (P0) | completed/inspected: gate accepted; probe unresolved | `dc11e63`, `8bcca8a` |
+| DTR-REQ-011 (P0) | completed: 0 of 2 eligible | `2714fda`, `6074003` |
+| DTR-REQ-010 (P0) | completed/inspected | `7805d8b`, `10be146` |
+| DTR-REQ-009 / 008 / 007 / 006 / 005 / 004 / 003 / 002 / 001 | as in the table at `16d1d9b` | — |
+
+**Cadence:** job `c710b12b`, ticks at about :15/:45 UTC, session-only; I publish on change.
