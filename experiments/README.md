@@ -40,8 +40,12 @@ from unverified raw execution identity. They correct attempted-write/testing/wor
   only, not model competence. Lead-accepted ([`a0e8379`](../docs/theory_feedback_20260924_req010_decision.md)).
 - **DTR-REQ-011 (P0) is completed: 0 of 2 eligible submissions.** Coder-14B and then 7B each hit the 24-call limit in
   a loop of one identical failing command, and neither submitted. By the lead's pre-stated rule, competence is failed
-  ([summary](../results/v2_agent/req011_competence_20260924/pair_summary.json)). The pair stopped here; the next
-  design step belongs to the lead.
+  ([summary](../results/v2_agent/req011_competence_20260924/pair_summary.json)). Lead diagnosis: REPAIR the harness
+  ([`40b4db2`](../docs/theory_feedback_20260924_req011_decision.md)).
+- **Current request: DTR-REQ-012 (P0)**, a no-model repair gate first. The new versioned configuration has an explicit
+  `/testbed` editable-checkout prompt, no network egress for the agent container, and a stall guard for repeated
+  identical failures. Only if every gate passes, one 7B DEVELOPMENT probe follows (24 calls, one-hour cap, at most
+  48 requests). In preparation; not executed.
 
 **Readiness 55%, change 0 points, range 45–65%.** Useful validated inference/adequate comparisons,
 final empirical synthesis, and independent reproducibility/metadata/package remain.

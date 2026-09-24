@@ -5296,3 +5296,34 @@ Records: [`pair_summary.json`](results/v2_agent/req011_competence_20260924/pair_
 - (d) Network access lets the agent replace the task's installed package.
 
 **Authorized runs:** none; nothing is running. **Cadence:** job `c710b12b`, ticks at about :15/:45 UTC, session-only; I publish on change.
+
+## Worker checkpoint — 2026-09-24T16:46:36Z (host `date -u`; local 12:46 EDT) — lead `40b4db2` acknowledged: REQ-011 completed; DTR-REQ-012 accepted, preparation started (not executed)
+
+**Read:** [lead REQ-011 decision](theory_feedback_20260924_req011_decision.md) (16:20Z) and issue #4 up to 16:22:16Z. **Code/config commit:** `6074003`. **Authorized runs:** DTR-REQ-012 only: first the no-model gate, then, only if every gate passes, one 7B probe.
+
+- **DTR-REQ-011:** **completed** (0 of 2 eligible submissions; `2714fda`, `fbac0ac`, `6074003`). The archive `results/v2_agent/req011_competence_20260924/` stays immutable and the historical pair is not rewritten.
+- **DTR-REQ-012 (P0): accepted. It is in preparation and nothing has been executed.**
+  - **Step 1, the no-model repair gate.** A new, explicitly versioned DEVELOPMENT configuration will:
+    - (a) state in the task prompt that the checkout is at `/testbed` and installed in editable mode, without giving any solution;
+    - (b) run the agent container with no network egress (`--network none`);
+    - (c) add the observational stall guard: two consecutive identical normalized commands with the same nonzero return code and error fingerprint end the episode as a distinct operational failure, with all-exit capture and no submission.
+  - Step 1 must prove, live and without a model, that the agent can still inspect and edit `/testbed`, import the pinned checkout and run local tests offline, and that a package upgrade cannot replace the checkout. It also needs deterministic fixtures for the guard, no-egress behaviour, receipt/endpoint preservation and grading in a fresh image.
+  - **Step 2, run only if every gate passes.** Exactly one 7B episode on `astropy__astropy-14598` with the new configuration: 24 logical calls, 2 attempts per call, the strict Submitted-only endpoint, a one-hour total cap and at most 48 physical requests. No cue, no forced call, no salvage, and no second model, task or cohort.
+- The exact prompt wording and effective settings will be recorded in bytes with hashes in the new manifest, for your audit.
+
+| Request | Status | Artifact |
+|---|---|---|
+| DTR-REQ-012 (P0) | **accepted; preparing config, gate and fixtures (not executed)** | next commits |
+| DTR-REQ-011 (P0) | completed: 0 of 2 eligible; lead diagnosis REPAIR | `2714fda`, `6074003`, `40b4db2` |
+| DTR-REQ-010 (P0) | completed/inspected | `7805d8b`, `10be146` |
+| DTR-REQ-009 (P0) | completed/inspected | `eba48b5`, `3a1b3e1` |
+| DTR-REQ-008 (P0) | completed/inspected | `63a0b49`, `eb6027d` |
+| DTR-REQ-007 (P0) | completed/inspected; E2 live/CONFIRM on HOLD | `35c4f52`, `497c20b` |
+| DTR-REQ-006 (P0) | completed, lead-reviewed; INCONCLUSIVE | `88b3e6b`, `3911aee` |
+| DTR-REQ-005 (P0) | completed as no-model instrumentation; live cue deferred | `3f1fa73`, `98bc75d` |
+| DTR-REQ-004 (P0) | completed historically | `22c4a82` |
+| DTR-REQ-003 (P0) | scoped reporting completed; sampling held | — |
+| DTR-REQ-002 (P1) | completed; Django deferred | `2874246` |
+| DTR-REQ-001 (P0) | completed | — |
+
+**Cadence:** job `c710b12b`, ticks at about :15/:45 UTC, session-only; I publish on change. **Next observed publication:** the configuration, gate record and fixtures.
