@@ -30,8 +30,10 @@ from unverified raw execution identity. They correct attempted-write/testing/wor
   are untouched under either exposure definition, and none is runtime-qualified yet. See
   [the inventory](../docs/req008_fresh_pool_inventory.md) and `results/v2_adapter/req008_pool_inventory.json`. The
   lead has reviewed it and chosen conservative exposure ([`0fe40b8`](../docs/theory_feedback_20260924_req008_decision.md)).
-- **Current request: DTR-REQ-009 (P0)**, a metadata-only near-duplicate component screen and a 24-ID design queue.
-  It is for qualification planning only; no task is run and it releases no stage.
+- **DTR-REQ-009 (P0) is completed and delivered for lead review** (`eba48b5` + publication commit): a metadata-only
+  near-duplicate component screen leaves 412 candidates, and a reproducible 24-ID design queue spans 11 repositories
+  ([record](../docs/req009_component_queue.md)). It is for qualification planning only; no task is run, none is
+  qualified, and it releases no stage. The next step is the lead's qualification/competence plan.
 
 **Readiness 55%, change 0 points, range 45–65%.** Useful validated inference/adequate comparisons,
 final empirical synthesis, and independent reproducibility/metadata/package remain.

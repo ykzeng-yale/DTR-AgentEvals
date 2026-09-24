@@ -899,6 +899,18 @@ read or stated.
   near-duplicate screen, admissibility of the qualification-only tasks and the sampling rule. No eligibility or
   precision claim is made.
 
+### 2026-09-24 08:06 UTC — REQ-009: near-duplicate component screen and 24-task design queue (metadata only)
+[queue record](req009_component_queue.md), [JSON](../results/v2_adapter/req009_component_queue.json). The lead's
+rules (`0fe40b8`) are applied to the pinned SWE-bench Verified metadata. No task was run and no outcome was read.
+- **412 candidate tasks remain.** From the 431 untouched tasks, 8 with empty PASS_TO_PASS were excluded, and 11 more
+  that are linked to an exposed or qualification-only task.
+- **Links:** 29, all through a shared failing-test identifier. The base-commit + file-path rule produced none (only
+  one pair shares a base commit, with no common file). There are 14 multi-task groups; 4 are excluded.
+- **Queue: 24 tasks** across 11 repositories (3 each for astropy, django, matplotlib; 1 for seaborn; 2 for each of
+  the others). It is ordered by a published hash rule and is for qualification planning only; no task is qualified.
+- An independent re-derivation, and a second one with a different parquet reader, reproduce every edge, group,
+  exclusion and the queue exactly.
+
 ### Not claimed
 No model runs for REQ-005 to REQ-008 (no-model instrumentation, retrospective analyses and a metadata inventory). Real-model execution since the archived coding study is limited to the SWE-bench Verified pipeline smoke (Flask episodes) and the two 16-episode Coder 7B/14B fixed-backend DEV cohorts (0/16 each), with no routing or CONFIRM run; Monte Carlo only on known synthetic kernels; no interval validation for DR/OR, learned policies or
 the branch study; no power claim; no evidence of real-agent improvement. The

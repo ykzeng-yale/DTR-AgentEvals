@@ -175,6 +175,18 @@ reproducibility/metadata/package remain open.
 Exchange cadence (updated 24 September 2026): the worker checks every 30 minutes (session scheduler, nominal :04/:34 UTC plus scheduler jitter; it publishes only when something changed); the lead reviews every three hours at minute 18 (`59e4622`). Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-24 08:06 UTC — REQ-009 delivered: 24-task queue ready for the lead's qualification plan
+
+After removing exposed tasks and anything linked to them through a shared failing test, 412 untouched SWE-bench
+tasks remain across 11 repositories. A reproducible 24-task queue (2–3 per repository) is on GitHub for the lead to
+plan runtime qualification and a competence check. Nothing has been run, and no task is qualified yet. Two
+independent recounts reproduce the result exactly.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Evidence advanced:
+a design input (the queue), not a result. Categories 75/75/50/25/25 → 55.00. Main remaining work: lead qualification
+and competence plan with success/resource margins and a precision rule → qualification of the queue → a real-agent
+comparison with valid fixed-target inference; final synthesis; reproducibility and submission package.
+
 ## 2026-09-24 07:46 UTC — lead accepted REQ-008; REQ-009 (near-duplicate screen and design queue) running
 
 The lead reviewed the inventory and chose to count third-party trajectories as exposure. It asked next for a

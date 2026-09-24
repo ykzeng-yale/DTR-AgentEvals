@@ -4979,3 +4979,65 @@ The author also permits a bounded local DEVELOPMENT experiment on the lead host 
 | DTR-REQ-001 (P0) | completed | — |
 
 **Questions:** none. **Cadence:** job `c710b12b`; ticks observed at about :15/:45 UTC; session-only; I publish on change. **Next observed publication:** the REQ-009 record when it reconciles.
+
+## Worker checkpoint — 2026-09-24T08:06:48Z (host `date -u`; local 04:06 EDT) — DTR-REQ-009 completed: component screen and 24-ID design queue
+
+**Read:** lead `0fe40b8` (07:23Z); no lead activity since. **Code commit:** `eba48b5` (script and tests only). The outputs were generated from that commit with a clean tree and are published in this commit. **Authorized runs:** none; no model, evaluator, container, GPU, Monte Carlo or download was used.
+
+**Artifacts** (write-once):
+- [`docs/req009_component_queue.md`](req009_component_queue.md), sha256 `7b23e50f…`.
+- [`results/v2_adapter/req009_component_queue.json`](../results/v2_adapter/req009_component_queue.json), sha256 `16d63496…`.
+- Script: `experiments/v2_adapter/req009_component_queue.py` (sha256 `ac1b5d82…`, 421 lines), which reuses the committed REQ-008 parquet reader. It has 18 tests with hand-built fixtures, including missing columns and fields, edge construction, renames, transitive exclusion, empty-P2P bridges and lexicographic repository order.
+
+**Checks (11 of 11 pass):**
+- The inputs reconcile to the REQ-008 pins: `instances.jsonl`, the parquet sha256, dataset revision `c104f840`, the 500-ID set, `pins_reconciled` and 0 UNKNOWN.
+- The conservative counts are 64/5/431, and the not-yet-assessed list equals your hash `7883a5f0…`.
+- The FAIL_TO_PASS counts equal the REQ-008 metadata for all 500 rows.
+- Field audit: 0 missing fields and 0 unparsed headers.
+
+**Result, applying your rules exactly:**
+
+| Exclusion reason (500-ID frame) | IDs |
+|---|---:|
+| model-outcome exposed | 64 |
+| qualification/inspection only | 5 |
+| empty PASS_TO_PASS (not yet assessed) | 8 |
+| component touches an exposed or qualification-only ID | 11 |
+| **candidates** | **412** |
+
+- **Edges: 29, all shared FAIL_TO_PASS identifiers** (41 shared identifiers as witnesses). **The base-commit + path edge kind is empty.** Only one within-repository pair shares a base commit (in django), and its two patches share no path.
+- **Components:** 473 in total, 14 with more than one member (8 of size 2, 2 of size 3, 3 of size 4 and 1 of size 7). Four multi-member components are excluded: three in django (sizes 7, 4 and 2) and one in requests (size 4).
+- **Queue: 24 IDs (full)**, queue sha256 `d19efbc4…`, drawn from the complete ordered list of 412 candidates (sha256 `c79a3d1d…`).
+  - By repository: astropy 3, django 3, matplotlib 3, requests 2, xarray 2, pylint 2, pytest 2, scikit-learn 2, sphinx 2, sympy 2, seaborn 1, flask 0 (no candidate).
+  - No two queued IDs share a component. Two queued IDs have component-mates that remain candidates, and the record flags them. Any later split must keep whole components together.
+
+**Independent verification (not by me).**
+- One agent re-derived everything from the raw sources without reading my script, using the same stdlib reader. It found 0 mismatches across the counts, all 500 exclusion reasons, the 29 edges and their witnesses, the 14 components, the 412 rank keys, the full ordered list, the queue and both hashes.
+- A spec reviewer re-derived the result again with a separate `pyarrow` reader and got the same answer.
+- The review's 9 wording and robustness issues are fixed:
+  - The patch column **is decoded in memory**, and each line is tested only for the `diff --git ` prefix; only header paths are kept.
+  - A missing column now stops the run and names the field.
+  - The default output paths are refused unless the script is committed and the tree is clean.
+  - Both outputs are checked write-once before either is written.
+  - Component labels are shown per candidate.
+- The queue hashes did not change.
+
+**Readings for you to confirm:**
+- (1) Empty-PASS_TO_PASS exclusion is individual and does not spread to a component. One django component of 4 has 2 empty-P2P members, and its other 2 members remain candidates, outside the queue.
+- (2) FAIL_TO_PASS identifiers are compared as declared strings. Some repositories, such as sympy, declare bare function names, so that edge is only as specific as the names.
+- (3) **Interaction with REQ-008.** The REQ-009 record necessarily names candidate IDs. A future *regeneration* of the REQ-008 inventory would therefore flag these files as unexplained mentions. The committed REQ-008 record is unaffected.
+
+| Request | Status | Artifact |
+|---|---|---|
+| DTR-REQ-009 (P0) | **completed; delivered for lead review** | `eba48b5` + this commit |
+| DTR-REQ-008 (P0) | completed/inspected | `63a0b49`, `eb6027d`, `0fe40b8` |
+| DTR-REQ-007 (P0) | completed/inspected; E2 live/CONFIRM on HOLD | `35c4f52`, `497c20b` |
+| DTR-REQ-006 (P0) | completed, lead-reviewed; INCONCLUSIVE | `88b3e6b`, `3911aee` |
+| DTR-REQ-005 (P0) | completed as no-model instrumentation; live cue deferred | `3f1fa73`, `98bc75d` |
+| DTR-REQ-004 (P0) | completed historically; a fresh peer/host check is required before any live stage | `22c4a82` |
+| DTR-REQ-003 (P0) | scoped reporting completed; sampling held | — |
+| DTR-REQ-002 (P1) | completed | `2874246` |
+| DTR-REQ-002 Django | deferred | — |
+| DTR-REQ-001 (P0) | completed | — |
+
+**Cadence:** job `c710b12b`, ticks at about :15/:45 UTC, session-only; I publish on change. **Next observed publication:** after your next :18 review.
