@@ -4947,3 +4947,35 @@ The author also permits a bounded local DEVELOPMENT experiment on the lead host 
 | DTR-REQ-001 (P0) | completed | — |
 
 **Cadence:** job `c710b12b`, nominal :04/:34 UTC, session-only; I publish on change. **Next observed publication:** after your review at the next :18 check.
+
+## Worker checkpoint — 2026-09-24T07:46:48Z (host `date -u`; local 03:46 EDT) — lead `0fe40b8` acknowledged: REQ-008 completed; DTR-REQ-009 accepted and running
+
+**Read:** [lead REQ-008 decision](theory_feedback_20260924_req008_decision.md) (07:23Z) and issue #4 up to 07:25:42Z, including your correction to your own REQ-006 text about U_A. **Code/config commit:** `eb6027d`. **Authorized runs:** none; nothing is running.
+
+- **DTR-REQ-008:** **completed and inspected** (`63a0b49`, `eb6027d`).
+- **DTR-REQ-009 (P0): accepted, running.** The design choices are yours, and I apply them exactly:
+  - conservative exposure;
+  - exclusion from the first queue of the 64 exposed IDs, the 5 qualification/inspection-only IDs and the 8 not-yet-assessed IDs with empty PASS_TO_PASS;
+  - within-repository connected components, with an edge for an identical declared FAIL_TO_PASS identifier, or for the same `base_commit` plus at least one identical reference-patch path, and whole-component exclusion when a component touches any of the 69 exposed or qualification-only IDs;
+  - a 24-ID round-robin queue ordered by SHA-256 of `DTR-REQ-009|c104f840|<instance_id>`.
+- **Feasibility check before building.** The pinned dataset parquet (git-ignored locally, sha256 `a45b1fe4…`, pinned by the REQ-008 chain) supports both edges deterministically:
+  - FAIL_TO_PASS is a JSON list for all 500 rows (none empty);
+  - `base_commit` is a 40-hex value for all 500;
+  - every reference patch has `diff --git` headers.
+- **What is read from the parquet:** only identifiers, commits and header paths. No test outcome and no patch body is read, stored or printed.
+- **Outputs (planned):** `results/v2_adapter/req009_component_queue.json` and `docs/req009_component_queue.md`, from a lean script with negative fixtures for missing fields and edge construction.
+
+| Request | Status | Artifact |
+|---|---|---|
+| DTR-REQ-009 (P0) | **accepted, running** (metadata-only component screen and 24-ID design queue) | next commit |
+| DTR-REQ-008 (P0) | completed/inspected | `63a0b49`, `eb6027d`, `0fe40b8` |
+| DTR-REQ-007 (P0) | completed/inspected; E2 live/CONFIRM on HOLD | `35c4f52`, `497c20b` |
+| DTR-REQ-006 (P0) | completed, lead-reviewed; INCONCLUSIVE | `88b3e6b`, `3911aee` |
+| DTR-REQ-005 (P0) | completed as no-model instrumentation; live cue deferred | `3f1fa73`, `98bc75d` |
+| DTR-REQ-004 (P0) | completed historically; a fresh peer/host check is required before any live stage | `22c4a82` |
+| DTR-REQ-003 (P0) | scoped reporting completed; sampling held | — |
+| DTR-REQ-002 (P1) | completed | `2874246` |
+| DTR-REQ-002 Django | deferred | — |
+| DTR-REQ-001 (P0) | completed | — |
+
+**Questions:** none. **Cadence:** job `c710b12b`; ticks observed at about :15/:45 UTC; session-only; I publish on change. **Next observed publication:** the REQ-009 record when it reconciles.

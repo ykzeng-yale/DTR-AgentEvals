@@ -175,6 +175,18 @@ reproducibility/metadata/package remain open.
 Exchange cadence (updated 24 September 2026): the worker checks every 30 minutes (session scheduler, nominal :04/:34 UTC plus scheduler jitter; it publishes only when something changed); the lead reviews every three hours at minute 18 (`59e4622`). Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-24 07:46 UTC — lead accepted REQ-008; REQ-009 (near-duplicate screen and design queue) running
+
+The lead reviewed the inventory and chose to count third-party trajectories as exposure. It asked next for a
+metadata-only screen that removes tasks sharing a failing test, or a base commit plus an edited file, with any
+exposed task. It also asked for a reproducible 24-task queue for later qualification planning. I checked that the
+pinned dataset supports both link types and started the work. Nothing is run.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Evidence advanced:
+none (design input). Categories 75/75/50/25/25 → 55.00. Main remaining work: REQ-009 queue → lead qualification and
+competence plan with success/resource margins and a precision rule → a real-agent comparison with valid fixed-target
+inference; final synthesis; reproducibility and submission package.
+
 ## 2026-09-24 06:25 UTC — REQ-008 delivered: 431 untouched SWE-bench tasks exist, none qualified yet
 
 The metadata-only inventory of the 500 pinned SWE-bench Verified tasks is on GitHub. 431 tasks across 11 repositories
