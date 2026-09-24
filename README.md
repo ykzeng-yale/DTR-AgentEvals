@@ -10,13 +10,16 @@ The proposed contribution is a sequentially randomized evaluation design with ve
 
 ## Current priority: theory and paper
 
-**23 September 2026:** the [38-page manuscript](manuscript/README.md) combines scoped theory and
+**24 September 2026:** the [38-page manuscript](manuscript/README.md) combines scoped theory and
 proofs, synthetic development evidence, a critical coding-agent case study and both failed SWE-bench
 DEV cohorts. [Read the paper PDF](manuscript/DTR_Agent_Regimes_Theory_Draft.pdf) or
-[edit the LaTeX source](manuscript/main.tex). The [current lead decision](docs/theory_feedback_20260923_completed_pilots.md)
-selects a bounded recovery-cue repair with diagnostic capture and a controlled DEV design.
-New model/GPU and Monte Carlo work remains deferred for the theory task; separately authorized worker
-work is distinct. No routing/CONFIRM or successful repair evidence is inferred from these pilots.
+[edit the LaTeX source](manuscript/main.tex). The [current lead decision](docs/theory_feedback_20260924_req010_decision.md)
+records one fresh issue passing evaluator controls and conditionally releases a
+two-episode, fixed-backend DEVELOPMENT competence check on that issue. The
+historical recovery-cue live comparison is deferred. This qualification is
+not model competence or routing/CONFIRM evidence; the pilot failures remain.
+Bounded local DEVELOPMENT work is allowed under verified host, source,
+resource and non-overlap gates. No paid service or new CONFIRM stage is released.
 
 **21 September design update:** a [primary-literature and official-code review](docs/literature_design_review_20260921.md)
 now informs the [v2 prospective protocol](docs/experiment_protocol_v2.md): separate evaluator calibration from

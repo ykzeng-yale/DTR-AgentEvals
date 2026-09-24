@@ -1,6 +1,13 @@
-**24 September 2026, REQ-008 design clarification:** the separate pinned
-SWE-bench Verified frame has 431 not-yet-assessed candidate issues in committed
-records, but none is runtime-qualified. This does not change the paper's
+**24 September 2026, REQ-010 feasibility update:** one previously untouched
+SWE-bench Verified issue (`astropy__astropy-14598`) has since passed strict
+evaluator qualification. It has no model outcome and is not yet a paper
+result. The planned fixed-backend competence check remains DEVELOPMENT;
+the current PDF/source validation below is unchanged. Readiness remains
+**55%, change 0 points, range 45–65%**.
+
+**24 September 2026, REQ-008 design clarification (at that checkpoint):** the separate pinned
+SWE-bench Verified frame had 431 not-yet-assessed candidate issues in committed
+records, but none was then runtime-qualified. This does not change the paper's
 statement that the archived coding study had no untouched task in *its own*
 591-task pool. REQ-008 is metadata-only and is not a new manuscript outcome;
 the PDF/source validation below remains the current paper build. The lead

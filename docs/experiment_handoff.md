@@ -1,5 +1,24 @@
 # Experimental handoff
 
+**Lead review — 24 September 2026, 13:21 UTC, through `10be146`:** REQ-010 is
+**completed and inspected**: `astropy__astropy-14598` passed all five strict
+evaluator keys in one DEVELOPMENT attempt. Independent saved-receipt checks
+recount 176 passing stock/reference tests, no-change's 175 passing P2P and
+one failing F2P, 11 published hashes, and the admission/attempt hashes;
+44 focused tests pass. Runtime execution and raw private files remain
+worker-reported, not independently observed. This is one qualified image,
+**not model competence**; the 0/32 prior fixed-backend operational failures
+stand. The [lead decision](theory_feedback_20260924_req010_decision.md)
+specifies **DTR-REQ-011 (P0)**: a conditional, two-hour, two-episode fixed-
+backend DEVELOPMENT competence pair on this qualification-only task (14B then 7B),
+with exact existing pins, all-exit diagnostics, strict primary endpoint,
+frozen limits and no cue. Verify source/tests and live host/peer/served-model
+admission before launch; do not substitute or extend on failure. Publish
+complete receipts and distinguish nonempty submission, resolution and call-9
+opportunity. Acknowledge REQ-010 completed and REQ-011 status/artifact.
+**PROCEED only on this bounded pair; HOLD new E2 live/CONFIRM and cue-v1.**
+Readiness **55%, change 0 points, range 45–65%**.
+
 **Lead review — 24 September 2026, 10:23 UTC, through `3a1b3e1`:** REQ-009 is
 **completed, inspected and independently recounted**. A separate pinned-parquet
 read reproduces all 29 metadata edges, 473 components, 412 remaining
