@@ -5172,3 +5172,36 @@ The author also permits a bounded local DEVELOPMENT experiment on the lead host 
 | DTR-REQ-001 (P0) | completed | — |
 
 **Question (your decision):** you said you would choose the bounded fixed-backend competence check that addresses the 0/32 failure once this sentinel is reviewed. No other queued task has been touched. **Cadence:** job `c710b12b`, ticks at about :15/:45 UTC, session-only; I publish on change.
+
+## Worker checkpoint — 2026-09-24T13:46:22Z (host `date -u`; local 09:46 EDT) — lead `a0e8379` acknowledged: REQ-010 completed; DTR-REQ-011 accepted, preparation started (not executed)
+
+**Read:** [lead REQ-010 decision](theory_feedback_20260924_req010_decision.md) (13:21Z) and issue #4 up to 13:23:11Z. **Code/config commit:** `10be146`. **Authorized runs:** DTR-REQ-011 only, released conditionally under your gates.
+
+- **DTR-REQ-010:** **completed and inspected** (`7805d8b`, `10be146`).
+- **DTR-REQ-011 (P0): accepted. It is in preparation and nothing has been executed.**
+  - The pair is two fixed-backend DEVELOPMENT episodes on `astropy__astropy-14598`: Coder-14B first, then 7B.
+  - `astropy__astropy-14598` is now DEVELOPMENT-exposed and will never enter CONFIRM.
+  - Frozen settings: `yaml-v1`, T = 0, 16,384 context, 1,536 output cap, 24 logical calls, at most 2 physical attempts per call, 60 s command cap, Submitted-only patch capture and the strict evaluator on the REQ-010 image.
+  - No cue, no forced calls, no salvaging of workspaces, no substitution and no endpoint change.
+- **Plan:**
+  - A minimal no-clobber two-assignment manifest and a thin runner reusing the validated pilot code.
+  - The REQ-005 all-exit workspace diagnostic and pre-dispatch request receipts, integrated without blocking and never graded.
+  - Deterministic fixtures first, covering binding, the exact two-arm queue, all-exit capture including failure and timeout, receipt accounting, immutable resume and deadline cleanup.
+  - Then live admission (served shard hashes, evaluator and image pins, disk and GPU capacity, a credential-free sandbox, fresh peer ownership), a pre-execution review, and launch under the two-hour pair cap with at most 48 logical and 96 physical requests.
+  - If a gate fails, REQ-011 is BLOCKED with no substitution.
+
+| Request | Status | Artifact |
+|---|---|---|
+| DTR-REQ-011 (P0) | **accepted; preparing manifest, runner and fixtures (not executed)** | next commits |
+| DTR-REQ-010 (P0) | completed/inspected: `astropy__astropy-14598` evaluator-qualified | `7805d8b`, `10be146`, `a0e8379` |
+| DTR-REQ-009 (P0) | completed/inspected | `eba48b5`, `3a1b3e1` |
+| DTR-REQ-008 (P0) | completed/inspected | `63a0b49`, `eb6027d` |
+| DTR-REQ-007 (P0) | completed/inspected; E2 live/CONFIRM on HOLD | `35c4f52`, `497c20b` |
+| DTR-REQ-006 (P0) | completed, lead-reviewed; INCONCLUSIVE | `88b3e6b`, `3911aee` |
+| DTR-REQ-005 (P0) | completed as no-model instrumentation; live cue deferred | `3f1fa73`, `98bc75d` |
+| DTR-REQ-004 (P0) | completed historically | `22c4a82` |
+| DTR-REQ-003 (P0) | scoped reporting completed; sampling held | — |
+| DTR-REQ-002 (P1) | completed; Django deferred | `2874246` |
+| DTR-REQ-001 (P0) | completed | — |
+
+**Cadence:** job `c710b12b`, ticks at about :15/:45 UTC, session-only; I publish on change. **Next observed publication:** the manifest, runner and fixtures, then the admission record.

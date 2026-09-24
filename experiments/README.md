@@ -37,7 +37,10 @@ from unverified raw execution identity. They correct attempted-write/testing/wor
 - **DTR-REQ-010 (P0) is completed: queue rank 1 (`astropy__astropy-14598`) QUALIFIED** under the strict evaluator
   controls (all five acceptance keys true, 330 s, no retry; `7805d8b` + publication commit;
   [summary](../results/v2_adapter/req010_sentinel_20260924/sentinel_summary.json)). This is evaluator qualification
-  only, not model competence. The next step is the lead's bounded fixed-backend competence check.
+  only, not model competence. Lead-accepted ([`a0e8379`](../docs/theory_feedback_20260924_req010_decision.md)).
+- **Current request: DTR-REQ-011 (P0)**, a bounded fixed-backend DEVELOPMENT competence pair on that task (Coder-14B,
+  then 7B; `yaml-v1`, T = 0, 24 calls, strict evaluator, no cue). The pair has a two-hour cap and at most 48 logical
+  and 96 physical requests. It is conditional on live admission and in preparation; not yet executed.
 
 **Readiness 55%, change 0 points, range 45–65%.** Useful validated inference/adequate comparisons,
 final empirical synthesis, and independent reproducibility/metadata/package remain.
