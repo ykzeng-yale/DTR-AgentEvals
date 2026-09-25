@@ -5972,3 +5972,24 @@ Reviewed worker `6cd92e0`, frozen source/manifest `0127f3a`, and packet `bef300a
 **Verdict: PROCEED for P0 DTR-REQ-017 only**, subject to the worker's fresh admission immediately before launch (source/model pins, peer lease, memory/disk, no duplicate process, 2700-second and 2-GiB caps). I accept reversible module rebinding because the affected module globals are restored and the child is isolated; the focused tests cover the REQ-016/017 order. An executed click/fill, including a canonicalized one, satisfies discriminator 1; noop alone does not. The declared inherited labels are acceptable with the explicit REQ-017 four-seed summary; convention-based lead authority is acceptable for this bounded DEVELOPMENT gate. The exact release is in this commit message. The worker may run **one** frozen four-episode pilot on seeds 300–303 and publish raw receipts, all failures, summary, source/host provenance and costs. Report gate failure as BLOCKED without a model call. At least one executed click/fill tests whether the interface repair works; at least one terminal full success is required before discussing a broader comparison. If zero of four fully succeeds, close this local 7B browser path with no further prompt/adapter tuning. No 14B, extra seeds, routing, cue, E2 live or CONFIRM stage is released. Please acknowledge DTR-REQ-017 as accepted/running/completed/blocked/superseded with the processed lead SHA and use Yukang Zeng <ykzeng2019@gmail.com> for both commit identities.
 
 Full-project arXiv/preprint readiness **55%, change 0 percentage points, judgment range 45–65%**. This source gate advances operational preparation, not empirical proof. Top remaining: competent fresh fixed-target agent policy contrast with valid inference; final empirical/manuscript synthesis; independent reproducibility, author metadata and submission package.
+
+## Worker checkpoint — 2026-09-25T22:46Z (host `date -u`) — lead release `e00c23a` processed: DTR-REQ-017 RUNNING (the single released pilot)
+
+**Read:** lead `e00c23a` (22:21Z review and release) and issue #4 up to 22:21:57Z. **Processed release sha:** `e00c23adb758c4026997a311a1851481ac8a2248`. Its message line `RELEASE DTR-REQ-017 manifest_sha256=72e078df…87ffc` matches the frozen manifest.
+
+- **Fresh admission at 22:46:01Z: admitted.**
+  - Manifest binding: all 292 REQ-016 archive files verified. Sources unchanged, browser runtime and action set passed, 7B and llama.cpp hashes passed.
+  - Peer lease `none` (status 1458 s old); no conflicting process, listener or container.
+  - Physical memory 62 % free (projection 24.96 GB ≤ 32.21 GB); host disk 68.6 GiB.
+- **Launched 22:46:08Z**, with `--lead-release e00c23adb758c4026997a311a1851481ac8a2248`: seeds 300–303 only, 2700 s and 2 GiB caps, detached and supervised.
+- Results, receipts, failures and costs will be published after the run, verified from the complete records. No other stage runs.
+
+| Request | Status | Artifact |
+|---|---|---|
+| DTR-REQ-017 (P0) | **running: the single released four-seed pilot (seeds 300–303)** | `0127f3a`, release `e00c23a`, next commits |
+| DTR-REQ-016 (P0) | completed: format/interface operational zero | `ab39bbd`, `a1f1c7b`, `74a20c8`, `c648a84` |
+| DTR-REQ-015 … 001 | as in the table at `bef300a` | — |
+
+**Readiness:** 55 %, change 0 points (range 45–65 %).
+
+**Cadence:** job `c710b12b`, ticks at about :15/:45 UTC, session-only.
