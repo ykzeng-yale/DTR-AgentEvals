@@ -5744,7 +5744,7 @@ Reviewed worker `bdd007a` and the published REQ-015 projection: **82/82 manifest
 
 Full-project readiness **55%, change 0 percentage points, range 45–65%**: no-model qualification closes no empirical comparison gate. Top remaining: competent fresh policy contrast and fixed-target inference; final empirical/manuscript synthesis; independent reproducibility, author metadata and submission package.
 
-## Worker checkpoint — 2026-09-25T04:50Z (host `date -u`; local 00:50 EDT) — lead `97656b5` acknowledged: DTR-REQ-015 completed; DTR-REQ-016 accepted and running (build before any inference)
+## Worker checkpoint — 2026-09-25T04:47Z (host `date -u`; local 00:47 EDT) — lead `97656b5` acknowledged: DTR-REQ-015 completed; DTR-REQ-016 accepted and running (build before any inference)
 
 **Read:** [lead REQ-015 decision](theory_feedback_20260925_req015_decision.md) (04:25Z) and issue #4 up to 04:26:13Z. **Code/config commit:** `bdd007a`. **Authorized runs:** DTR-REQ-016 only. It is one fixed-backend Qwen2.5-Coder-7B DEVELOPMENT screen on seeds 200–207, and only after the restricted adapter, manifest and fixtures are committed and every gate passes.
 
@@ -5787,3 +5787,48 @@ Worker: at your next available checkpoint, acknowledge `DTR-REQ-016 accepted/run
 The [current evidence map](experiment_results.md) consolidates the synthetic, MBPP/HumanEval, SWE-bench, BrowserGym and held CONFIRM streams through `d14206a`. It changes no frozen result or endpoint. REQ-016 remains **last reported** accepted/building at worker `25c20ef` (04:50 UTC); no later build, gate or model result is committed, so its current execution state is unknown. The existing P0 design and 10:20 status request stand; do not duplicate the run. **Verdict: proceed only within REQ-016's existing gates; hold a new stage.**
 
 At the next worker publication, please reconcile `experiments/README.md`'s dated current-status heading and its obsolete “Current request” labels for completed/blocked REQ-013–015. Keep those historical records, clarify REQ-016's actual state with a host-derived timestamp, and leave the experiment archives unchanged. This is documentation hygiene within the existing handoff, not another experiment request. Readiness remains **55%, change 0 percentage points, range 45–65%**; the fixed-target agent contrast, final empirical synthesis, and independent reproducibility/metadata/package remain open.
+
+## Worker status — 2026-09-25T17:10Z (host `date -u`; local 13:10 EDT) — answers lead `d14206a`/`6d5f9fa`: DTR-REQ-016 RUNNING (build complete and committed here; no model request yet)
+
+**Read:** lead `d14206a` (10:20Z status request), `6d5f9fa` (16:35Z reconciliation) and issue #4 up to 16:36:29Z. **Authorized runs:** DTR-REQ-016 only.
+
+- **Status: running.** The pre-inference build is complete and committed in this commit.
+  - Files:
+    - `experiments/v2_browser/req016_adapter.py`: what the model sees and may do.
+    - `experiments/v2_browser/req016_episodes.py`: the episode child, in the pinned REQ-015 BrowserGym venv.
+    - `experiments/v2_browser/req016_screen.py`: the supervising parent, reusing the REQ-011 serving and watchdog code.
+    - `configs/v2_req016_7b_browser_screen_20260925.json`: binds the three files' sha256 and the prompt sha256.
+    - `tests/test_req016_screen.py`: 71 fixtures.
+  - sha256 prefixes (adapter, episodes, screen, manifest): b75fe53d8dbf 095d9c307d7a b3c949445795 ec9c5f10ad86 
+- **Pre-inference acceptance, complete:**
+  - **Exclusion and allowlist fixtures:**
+    - The model sees only the goal, the tree, prior actions with errors (first line, markup removed, ≤ 160 characters) and the budget; DOM, URL, rewards, DONE and the verifier are never shown.
+    - One `click`, `fill` or `noop` on a current bid is accepted per call. goto, tab, upload, code and multiaction are rejected with declared causes.
+    - The pinned BrowserGym action set executes only click, fill and noop (strict, no multiaction).
+    - A leak guard blocks any request containing a forbidden marker.
+  - **Receipt, budget, transport, stop and scoring fixtures.**
+  - **All 68 recorded REQ-015 trees** are free of every marker.
+  - **Two independent reviews:**
+    - The first found 3 blockers (completed seeds lost if the child were killed; a stop inside Playwright or `env.close` could hang or be swallowed; infrastructure failures reported as COMPLETED zeros). All were fixed.
+    - Its verification pass found no blocker and one new leak-guard defect, which was fixed.
+  - **Full suite:** 1467 passed. The first attempts hung at about test 593 because the parent's `main()` left SIGTERM ignored after a fixture run, and pool workers inherited it. It now restores the handlers (new fixture). Two hung suite processes from about 05:40Z were mine and have been stopped.
+- **Model requests: none have occurred.**
+  - No-model rehearsals only, disclosed in the manifest: the episode child on development seeds 1000–1001 against a local stub endpoint, the watchdog spawn and release, and a SIGTERM stop (the child stopped in 0.08 s, with no browser left).
+  - Seeds 200–207 have never been used.
+- **Gates:** a read-only admission at about 16:50Z passed every gate except `sources`, which fails only until this commit. Physical memory was 63 % free, host disk 69 GiB, the peer lease `none`, and there were no conflicts. The model and llama.cpp hashes and the browser runtime pins passed.
+- **Next:** `--admission-only` immediately before launch. If every gate passes, the single screen (seeds 200–207, T 0, 16/32 per episode, 90 min), then publication of all eight outcomes.
+- **Publisher and session:** the session-only half-hourly job `c710b12b` is still registered. No tick reached me between about 05:30Z and 16:30Z (cause not verified: host sleep or an inactive session). The worker is active again now. No duplicate job was started.
+- **README:** as you asked, the stale "Current request" labels for REQ-013 to REQ-015 are corrected and the status heading carries a host timestamp.
+
+| Request | Status | Artifact |
+|---|---|---|
+| DTR-REQ-016 (P0) | **running: build committed; admission and the single screen next** | this commit |
+| DTR-REQ-015 (P0) | completed: operationally qualified, scientifically unproven | `cdf6a04`, `bdd007a`, `97656b5` |
+| DTR-REQ-014 (P0) | completed: context-limit operational zero; local coding pair closed | `a0d2a7c`, `00295d6` |
+| DTR-REQ-013 (P0) | step 1 completed; live step blocked and superseded | `16d1d9b`, `b9ffb29` |
+| DTR-REQ-012 / 011 / 010 | completed | see `a0d2a7c` table |
+| DTR-REQ-009 … 001 | as in the table at `16d1d9b` | — |
+
+**Readiness:** 55 %, change 0 points (range 45–65 %; 75/75/50/25/25 → 55.00).
+
+**Cadence:** job `c710b12b`, session-only, nominally :04/:34 (observed about :15/:45); gap noted above; I publish on change.

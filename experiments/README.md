@@ -5,7 +5,7 @@ directory and `results/sim/`, `results/code_routing/` are written only by this w
 Theory, proposal, literature and the reference library under `src/` belong to the theory
 agent and are not edited from here. Rules in [`AGENTS.md`](../AGENTS.md) apply.
 
-## Current status — 24 September 2026 UTC
+## Current status — 25 September 2026, 17:10 UTC (host `date -u`)
 
 Both fixed-backend DEV cohorts are complete and separate: legacy 16 operational zeros / 330 requests;
 corrected yaml-v1 16 operational zeros / 352 requests. Neither produced an eligible nonempty submitted
@@ -47,12 +47,12 @@ from unverified raw execution identity. They correct attempted-write/testing/wor
   submitted after 3 calls, but only its reproducer script; the strict grade is **unresolved** (target test failing,
   175/175 regression tests passing) ([summary](../results/v2_agent/req012_repair_probe_20260924/probe/pair_summary.json)).
   Lead-reviewed: gate accepted, probe unresolved ([`702e58a`](../docs/theory_feedback_20260924_req012_decision.md)).
-- **Current request: DTR-REQ-013 (P0).** Step 1 is no-model: transcript reconciliation, 14B repair1 binding fixtures
+- **DTR-REQ-013 (P0), step 1 completed; live step blocked and superseded by REQ-014.** Step 1 is no-model: transcript reconciliation, 14B repair1 binding fixtures
   and a watchdog check on this host. Step 2 is one 14B repair1 episode if every gate passes, including a new
   ≥ 4 GiB free-swap gate. **Step 1 is completed**: the reconciliation is verified, the watchdog passed on this host,
   and the 14B binding is identical. Step 2 is **BLOCKED for capacity** (about 0.36 GiB swap free); nothing started.
   The lead superseded it ([`b9ffb29`](../docs/theory_feedback_20260924_req013_capacity_decision.md)).
-- **Current request: DTR-REQ-014 (P0)**: the same single 14B repair1 episode under a versioned capacity rule
+- **DTR-REQ-014 (P0), completed**: the same single 14B repair1 episode under a versioned capacity rule
   (≥ 50 % physical memory free at admission, ≥ 20 % after load, and disk reserves), with in-episode supervision that
   stops only the owned job on low memory or disk. Built and verified (`5c5fc2f`; watchdog prerequisite `09982dc`).
   Admission passed at 00:36:01Z on 25 September (63 % memory free; 81/78 GiB VM/host disk). Post-load was 20 % free,
@@ -62,7 +62,7 @@ from unverified raw execution identity. They correct attempted-write/testing/wor
   ([summary](../results/v2_agent/req014_14b_capacity_probe_20260924/probe/pair_summary.json)). This ends the local
   model-pair path pending the lead's decision. Lead-reviewed ([`00295d6`](../docs/theory_feedback_20260925_req014_decision.md)):
   an agent/scaffold-generated context-limit operational zero. The local 7B/14B SWE-bench pair is closed.
-- **Current request: DTR-REQ-015 (P0)**: a no-model qualification of the pinned MiniWoB *book-flight* task (BrowserGym
+- **DTR-REQ-015 (P0), completed**: a no-model qualification of the pinned MiniWoB *book-flight* task (BrowserGym
   fallback). It needs a scripted full-success trace, a failing trace, and at least 2 visible feedback-dependent
   decisions, under caps of 30 min, 8 GiB and 2 GiB. **Completed (`cdf6a04`): QUALIFIED, 10/10 checks.** Results:
   - Reset is reproducible, and all 5 scripted positive seeds reach full success.
@@ -73,10 +73,16 @@ from unverified raw execution identity. They correct attempted-write/testing/wor
   - No model ran; any model pilot is the lead's decision.
   - Lead-reviewed ([`97656b5`](../docs/theory_feedback_20260925_req015_decision.md)): operationally qualified,
     scientifically unproven. Only the flight choice is shown to affect the outcome.
-- **Current request: DTR-REQ-016 (P0)**: one fixed-backend 7B DEVELOPMENT screen on seeds 200–207. It needs a
-  restricted adapter (goal, accessibility tree, history and budget only; one click, fill or noop per call) proved by
-  fixtures before any inference. Caps: 16 logical and 32 physical calls per episode, 90 min per batch. Accepted;
-  building.
+- **Current request: DTR-REQ-016 (P0), running**: one fixed-backend 7B DEVELOPMENT screen on seeds 200–207, through a
+  restricted adapter. The model sees only the goal, the accessibility tree, history and budget, and may do one click,
+  fill or noop per call; this is proved by fixtures before any inference. Caps: 16 logical and 32 physical calls per
+  episode, 90 min per batch.
+  - As of 17:10 UTC on 25 September: the adapter, supervisor, manifest and 71 fixtures are built. Two independent
+    reviews found 3 blockers and 1 regression, all fixed. The full suite passes (1467), and the code is committed with
+    this update.
+  - No model request has been made. The only runs so far were no-model rehearsals on development seeds 1000–1001
+    against a local stub, disclosed in the manifest.
+  - Next: admission, then the single screen if every gate passes.
 
 **Readiness 55%, change 0 points, range 45–65%.** Useful validated inference/adequate comparisons,
 final empirical synthesis, and independent reproducibility/metadata/package remain.
