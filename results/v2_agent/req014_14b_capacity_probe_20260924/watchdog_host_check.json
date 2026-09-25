@@ -1,0 +1,127 @@
+{
+ "request": "DTR-REQ-014",
+ "kind": "DTR-REQ-013 step 1b: current-host watchdog command-identity / SIGKILL check (no model, no server; a sleeping Python stub is the recorded server)",
+ "lead_decision": "docs/theory_feedback_20260924_req012_decision.md",
+ "started_utc": "2026-09-25T00:35:20Z",
+ "finished_utc": "2026-09-25T00:35:26Z",
+ "host": {
+  "interpreter": {
+   "executable": "./.venv/bin/python",
+   "is_symlink": true,
+   "realpath": "~/.local/share/uv/python/cpython-3.12.13-macos-aarch64-none/bin/python3.12",
+   "version": "3.12.13",
+   "implementation": "CPython",
+   "platform": "macOS-26.5.2-arm64-arm-64bit",
+   "machine": "arm64"
+  },
+  "ps": "ps -ww -o args= -p <pid>"
+ },
+ "scenario_source": {
+  "fixture": "tests/test_req011_pair.py::test_the_server_watchdog_stops_the_recorded_server_after_the_parent_is_sigkilled",
+  "stub_parent": "tests/test_req011_pair.py STUB_PARENT and SLEEPER",
+  "fixture_file_sha256": "65087f6faea57213dd70306f753aedc5c525395f7c3f63c5896b1264083c350e",
+  "watchdog_source_sha256": "f7b9562d7709a4dfb1926491094eab4f8e676bb55465c58de69fc415ed455983"
+ },
+ "raw_dir": "work/runs/req014_14b_capacity_probe_20260924/watchdog_check/20260925T003520Z-98033",
+ "recorded_servers": [
+  {
+   "role": "large",
+   "pid": 98118,
+   "port": 8293,
+   "recorded_command": "./.venv/bin/python -c import time; time.sleep(300) -m work/models/fixture.gguf --alias fixture --host 127.0.0.1 --port 8293 -ngl 99 -np 1 -c 16384",
+   "live_args": "./.venv/bin/python -c import time; time.sleep(300) -m ./work/runs/req014_14b_capacity_probe_20260924/watchdog_check/20260925T003520Z-98033/work/models/fixture.gguf --alias fixture --host 127.0.0.1 --port 8293 -ngl 99 -np 1 -c 16384",
+   "live_args_root_prefix_removed": "./.venv/bin/python -c import time; time.sleep(300) -m work/models/fixture.gguf --alias fixture --host 127.0.0.1 --port 8293 -ngl 99 -np 1 -c 16384",
+   "equal_raw": false,
+   "equal_after_root_prefix_removal": true,
+   "watchdog_rule_match": true
+  },
+  {
+   "role": "small",
+   "pid": 98119,
+   "port": 8291,
+   "recorded_command": "llama-server -m other.gguf --port 8291",
+   "live_args": "./.venv/bin/python -c import time; time.sleep(300) decoy",
+   "live_args_root_prefix_removed": "./.venv/bin/python -c import time; time.sleep(300) decoy",
+   "equal_raw": false,
+   "equal_after_root_prefix_removal": false,
+   "watchdog_rule_match": false
+  }
+ ],
+ "owned_stub": {
+  "recorded_vs_live_equal_raw": false,
+  "recorded_vs_live_equal_under_the_watchdog_rule": true,
+  "stopped": true,
+  "seconds_from_parent_sigkill_to_stop": 0.21,
+  "stop_bound_s": 10.2,
+  "stopped_within_grace": true
+ },
+ "decoy_untouched": true,
+ "watchdog_exited": true,
+ "scenario": {
+  "stub_parent_pid": 98117,
+  "pids_written": true,
+  "pids": {
+   "server": 98118,
+   "decoy": 98119,
+   "watchdog": 98120,
+   "ready": true
+  },
+  "watchdog_ready": true,
+  "holder": "DTR-AgentEvals worker (DTR-REQ-011 competence pair)",
+  "poll_s": 0.2,
+  "grace_s": 5,
+  "stop_bound_s": 10.2,
+  "server_alive_while_parent_lives": true,
+  "seconds_from_parent_sigkill_to_stub_stop": 0.21,
+  "owned_stub_stopped": true,
+  "watchdog_exited": true,
+  "decoy_untouched": true,
+  "watchdog_action": {
+   "request": "DTR-REQ-011",
+   "reason": "parent process gone",
+   "utc": "2026-09-25T00:35:21Z",
+   "watchdog_pid": 98120,
+   "record_holder": "DTR-AgentEvals worker (DTR-REQ-011 competence pair)",
+   "servers": [
+    {
+     "pid": 98118,
+     "port": 8293,
+     "matched": true,
+     "signals": [
+      "SIGTERM"
+     ],
+     "recorded_command_still_running": false
+    },
+    {
+     "pid": 98119,
+     "port": 8291,
+     "matched": false,
+     "signals": [],
+     "recorded_command_still_running": false
+    }
+   ],
+   "record_released": false,
+   "action": "stopped"
+  },
+  "stopped_within_grace": true
+ },
+ "fixture": {
+  "nodeid": "tests/test_req011_pair.py::test_the_server_watchdog_stops_the_recorded_server_after_the_parent_is_sigkilled",
+  "command": [
+   "<python>",
+   "-m",
+   "pytest",
+   "-q",
+   "-p",
+   "no:cacheprovider",
+   "tests/test_req011_pair.py::test_the_server_watchdog_stops_the_recorded_server_after_the_parent_is_sigkilled"
+  ],
+  "returncode": 0,
+  "summary": "1 passed in 4.02s",
+  "passed": true,
+  "output": "work/runs/req014_14b_capacity_probe_20260924/watchdog_check/20260925T003520Z-98033/fixture_output.txt",
+  "output_sha256": "c4a1731913c21d63384fe6a7e1d4887b52254a59035a5b5848eed6e6dfc36960"
+ },
+ "passed": true,
+ "rule": "passed = the watchdog was ready; the owned stub matched its record under the watchdog rule while the parent lived and stayed alive until the parent was SIGKILLed; the watchdog then stopped it with SIGTERM within poll_s + grace_s + 5 s; the decoy (recorded PID, other command) was untouched; the watchdog exited; and the existing fixture passed"
+}
