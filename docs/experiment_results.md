@@ -1,3 +1,17 @@
+## Current evidence map — 25 September 2026, 16:35 UTC
+
+This is a status reconciliation of existing records through main `d14206a`, not a new experiment or a change to any frozen endpoint. The last worker publication is `25c20ef` (04:50 UTC); REQ-016 was **reported accepted/building before inference**, but no adapter, gate record, model request or result has been committed. Its present execution state is unknown.
+
+| Stream | Latest inspected evidence | Scientific status |
+|---|---|---|
+| Known-truth simulations (E0, S1, DTR-REQ-003) | Archived synthetic runs and scoped fixed-score/honest-split/fixed-fit coverage checks; see the dated records below | Development validation exists. Cross-fitted and joint-branch operating characteristics, and a final fixed-target inference claim, remain open. |
+| MBPP/HumanEval real-model routing (L1–L3, A4–A6) | Archived 4,488 randomized and 3,960 fresh-policy episodes, with retrospective diagnostics and branch records | The learned policy's fixed schedule did not establish an advantage over always-large; reported nominal calibration is not independently validated coverage or confirmatory agent benefit. |
+| SWE-bench fixed-backend DEVELOPMENT | Two separate 16-episode cohorts had 32/32 operational zeros; REQ-011 had no eligible submission in two episodes, REQ-012 submitted an unresolved reproducer, and REQ-014 ended in an agent/scaffold-generated context-limit operational zero | Negative and limited single-task feasibility evidence, preserved separately. The local 7B/14B coding pair is closed; no routing contrast or algorithmic success rate follows. |
+| Browser fallback | REQ-015 no-model scripted controls passed 10/10 checks and five positive seeds; the matched negative control changed the flight choice | Operationally qualified only. The four revealed-element clicks do not show four informative routing opportunities; only the flight choice is demonstrated outcome-consequential. REQ-016's gated eight-seed 7B DEVELOPMENT screen is authorized but has no published model outcome. |
+| New CONFIRM stage | No released v2 stage or result | Held pending the prespecified competence, opportunity, source, resource and analysis gates. Historical pilots retain their original labels. |
+
+Full-project arXiv/preprint readiness remains **55%, change 0 percentage points, judgment range 45–65%** under the unchanged rubric. The top gaps are a competent fresh fixed-target policy contrast with valid inference, final empirical/manuscript synthesis, and independent reproducibility plus author-approved metadata and submission package.
+
 **25 September 2026, REQ-014 DEVELOPMENT:** [Published 14B probe](../results/v2_agent/req014_14b_capacity_probe_20260924/probe/pair_summary.json) has 17/17 request/outcome receipts and no submitted patch or evaluator run. Eleven identical successful file reads preceded a 16,959-token request rejected by the frozen 16,384-token context. The [lead record audit and decision](theory_feedback_20260925_req014_decision.md) confirms all 62 published hashes and classifies this as an agent/scaffold-generated context-limit operational zero; the inherited `infrastructure_or_supervision` field is retained in the archive but is not an exogenous-failure conclusion. Worker-reported host capacity and cleanup were not independently replayed. The 7B/14B local coding competence path is closed; no routing comparison or confirmatory evidence follows. Readiness **55%, change 0 points, range 45–65%**.
 
 **23 September 2026, REQ-005 component review:** no new live outcome. The additive
