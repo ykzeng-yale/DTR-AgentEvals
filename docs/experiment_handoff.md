@@ -5580,3 +5580,57 @@ The full suite passed (1,314 before this commit). A review found no launch block
 **Readiness:** 55 %, change 0 points (range 45–65 %; categories 75/75/50/25/25 → 55.00). Largest remaining: the REQ-014 outcome and your executor/benchmark decision; a real-agent comparison with valid fixed-target inference; final synthesis; reproducibility/metadata/package.
 
 **Cadence:** job `c710b12b`, ticks at about :15/:45 UTC, session-only; I publish on change.
+
+## Worker checkpoint — 2026-09-25T00:44Z (host `date -u`; local 20:44 EDT) — DTR-REQ-014 COMPLETED: the one 14B episode is an operational zero (context overflow after a successful-read loop); returning to the lead
+
+**Read:** no new lead commit or issue #4 comment since `b9ffb29` / 22:23:12Z. **Code/config:** `5c5fc2f`, prerequisite `09982dc`, launch checkpoint `5b35398`. **Results:** [`results/v2_agent/req014_14b_capacity_probe_20260924/probe/`](../results/v2_agent/req014_14b_capacity_probe_20260924/probe/pair_summary.json) (this commit). **Authorized runs:** none remain. Per your REQ-013/014 rule, a non-resolved result stops the local model-pair path, so nothing further has started.
+
+**Facts, all from the committed records:**
+
+- **Capacity (versioned rule `req014-capacity-v1`):**
+  - **Admission, 00:36:01Z:** passed. Physical memory 63 % free, VM disk 81.2 GiB, host disk 78.2 GiB, projection 29.39 GB (limit 32.21 GB). Swap 14.61 of 15 GiB used (recorded, not gated).
+  - **Post-load:** 20 % free, which is ≥ 20 % and passes. The 14B server loaded in 2.0 s, since the model was already in the page cache.
+  - **Episode:** 60 samples, maximum gap 5.01 s. Physical free 20–22 %, VM and host disk unchanged, swap used 14.59–14.61 GiB.
+  - **Stops:** no breach, no measurement error, and no SIGALRM (`capacity_latch.json`: `sigalrm_received` 0).
+  - **Total wall time:** 310.3 s of the 3600 s cap.
+- **Episode (`…__large__req011__20260925T003615Z-2f22be`):**
+  - **Calls 1–5:** `ls -la /testbed/astropy/io/fits`, `cat card.py` (truncated with the long-output warning), `grep -n "_format_value"`, `sed -n '1265,1300p'` and `sed -n '100,200p'`.
+  - **Calls 6–16:** 11 byte-identical responses, each "view `Card.fromstring`" with `sed -n '200,300p' card.py`. Each returned rc 0 with an identical 4,117-character observation.
+  - **Stall guard:** it did not fire, as specified; it covers only repeated *failing* commands.
+  - **Context growth:** the server-reported prompt grew from 6,905 to 16,045 tokens, about 914 per repeat. Call 17's request (16,959 tokens) got HTTP 400 against the frozen `-c 16384`.
+  - **Exit:** `ContextWindowExceededError` after 17 logical and 17 physical requests (caps 24 and 48).
+  - **Submission and workspace:** the submission is empty. The all-exit diagnostic shows no status, diff or untracked change, so no source was edited.
+- **Grade:** an operational zero under the frozen Submitted-only rule, not evaluated. The image ID was equal before and after, and no evaluator container ran.
+- **Integrity:**
+  - Receipts are 17/17 complete.
+  - All 62 published files match `publication_manifest.json` (9 sanitized). The resource series hash matches its raw file.
+  - The owned container was removed, and no container remains.
+  - The server was stopped (port 8293 is free), and the watchdog was released.
+  - The prior archives' hashes are unchanged.
+
+**Decisions and questions for you** (I have not changed any classification):
+
+1. **Outcome label.** The inherited `req011_pair.outcome_source` maps this exit to `infrastructure_or_supervision`, since ContextWindowExceededError is not in its agent list. The overflow was produced by the model's own 11-fold identical read under the frozen 16,384-token context. The same exit appears in 3/16 `pilot_20260922` and 2/16 yaml-v1 episodes. Should it be reported as an agent/algorithmic operational zero, or kept as labeled?
+2. **Path decision.** Here is the evidence on this exposed task:
+   - REQ-011: 0/2 eligible; both models looped with failing commands.
+   - REQ-012: the 7B submitted a reproducer-only change, graded unresolved.
+   - REQ-014: the 14B looped on a successful read until its context overflowed.
+
+   Neither local Coder model edited the source under any configuration. Per your rule this ends the local model-pair competence path pending a different demonstrated-capable executor or benchmark design. That choice is yours; I will not start a variant, such as a longer context, a stricter guard or another task.
+3. **Build-review questions** (moot for this run because no SIGALRM occurred; relevant only if the supervisor is reused):
+   - (a) a breach during the child's terminal phase is classified as capacity_interruption;
+   - (b) sampling gaps over 10 s are counted, not fail-closed;
+   - (c) the entry latch overrides are declared as supervision, not as a configuration change.
+
+| Request | Status | Artifact |
+|---|---|---|
+| DTR-REQ-014 (P0) | **completed: 1 episode, operational zero (ContextWindowExceededError after a successful-read loop), not evaluated; no capacity breach** | `5c5fc2f`, `09982dc`, this commit |
+| DTR-REQ-013 (P0) | step 1 completed; live step BLOCKED (4 GiB swap rule) and superseded by REQ-014 | `16d1d9b`, `b9ffb29` |
+| DTR-REQ-012 (P0) | completed/inspected: gate accepted; probe unresolved | `dc11e63`, `8bcca8a` |
+| DTR-REQ-011 (P0) | completed: 0 of 2 eligible | `2714fda`, `6074003` |
+| DTR-REQ-010 (P0) | completed/inspected | `7805d8b`, `10be146` |
+| DTR-REQ-009 / 008 / 007 / 006 / 005 / 004 / 003 / 002 / 001 | as in the table at `16d1d9b` | — |
+
+**Readiness:** 55 %, change 0 points (range 45–65 %; categories 75/75/50/25/25 → 55.00). No empirical category advanced: one more operational zero is a feasibility observation. Largest remaining: your executor/benchmark decision; a real-agent comparison with valid fixed-target inference; final synthesis; reproducibility/metadata/package.
+
+**Cadence:** job `c710b12b`, ticks at about :15/:45 UTC, session-only; I publish on change. With no authorized run pending, ticks only check for your reply.

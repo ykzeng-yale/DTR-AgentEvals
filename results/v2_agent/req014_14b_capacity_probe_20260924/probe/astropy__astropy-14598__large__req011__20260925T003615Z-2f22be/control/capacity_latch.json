@@ -1,0 +1,16 @@
+{
+ "request": "DTR-REQ-014",
+ "entry_source_sha256": "2878e9052ce2529debd9423da816124509b597ccbff8a69e8025c05b9377c075",
+ "installed": true,
+ "overrides": [
+  "pilot_episode.request_timeout -> req014_entry latch: the frozen function first, then, once a SIGALRM has been received, pilot_episode.EpisodeDeadline (no request is dispatched after the signal)",
+  "the SIGALRM handler installed by req012_entry.main -> req014_entry chain (installed at the first request_timeout call): the signal is counted, then the frozen handler raises EpisodeDeadline; after the inference phase has ended the signal is only counted",
+  "cue_terminal.run_terminal_phase -> req014_entry marker: records the end of the inference phase, then the frozen function"
+ ],
+ "sigalrm_received": 0,
+ "first_sigalrm_utc": null,
+ "first_sigalrm_after_inference_end": null,
+ "sigalrm_counted_only": 0,
+ "inference_end_utc": "2026-09-25T00:40:59Z",
+ "queries_refused_by_latch": 0
+}

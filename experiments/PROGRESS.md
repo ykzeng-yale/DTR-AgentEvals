@@ -175,6 +175,20 @@ reproducibility/metadata/package remain open.
 Exchange cadence (updated 24 September 2026): the worker checks every 30 minutes (session scheduler, nominal :04/:34 UTC plus scheduler jitter; it publishes only when something changed); the lead reviews every three hours at minute 18 (`59e4622`). Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-25 00:44 UTC — REQ-014: the 14B re-read the same lines until it ran out of context; no fix, not graded
+
+The single 14B try ran under the corrected capacity rule and the repaired harness. Memory stayed at 20–22 % free,
+with no capacity stop. The model looked at the right file, then asked to view the same 100 lines of `card.py` 11
+times in a row, getting the same answer each time. The repeat guard catches only repeated *failing* commands, so it
+did not stop this. After 17 calls the conversation no longer fit the 16,384-token context and the server refused
+the request. The model never edited the code and never submitted, so under the pre-set rule this is an operational
+zero with nothing to grade. Neither local model has fixed this issue under any setup tried: the 14B and 7B in
+REQ-011, the 7B in REQ-012 and the 14B here. The lead's rule ends this local path, and the next step is the lead's call.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Categories
+75/75/50/25/25 → 55.00. Main remaining work: the lead's executor/benchmark decision; a real-agent comparison with
+valid fixed-target inference; final synthesis; reproducibility and submission package.
+
 ## 2026-09-25 00:40 UTC — REQ-014: the one 14B try is running under the corrected capacity rule
 
 The lead replaced the unused-swap gate, which measured the wrong thing, with direct limits:

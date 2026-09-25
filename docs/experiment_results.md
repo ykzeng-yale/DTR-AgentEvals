@@ -951,8 +951,36 @@ the already exposed `astropy__astropy-14598`.
 - Prior results are unchanged (0/32 DEV, 0/2 REQ-011). One eligible but unresolved submission on one exposed task is
   a mechanism observation, not a success rate or a routing result.
 
+### 2026-09-25 00:41 UTC — REQ-014: the 14B, with the repaired harness and under the corrected capacity rule, re-reads one file until its context overflows (not Submitted, not graded)
+[summary](../results/v2_agent/req014_14b_capacity_probe_20260924/probe/pair_summary.json), [resource series](../results/v2_agent/req014_14b_capacity_probe_20260924/probe/resource_samples.jsonl).
+One Qwen2.5-Coder-14B episode ran on the already exposed `astropy__astropy-14598`. The setup matched REQ-012/013
+(`yaml-v1-repair1`: the `/testbed` note, `--network none`, the stall guard). The lead's versioned capacity rule applied
+(manifest `16c3e167…`).
+- **Capacity:** every admission gate passed at 00:36:01Z. Physical memory was 63 % free, VM disk 81.2 GiB, host disk
+  78.2 GiB, and the projection was 29.39 GB (limit 32.21 GB). Swap was 14.61 of 15 GiB used, which is recorded but not
+  gated. After the load, memory was 20 % free, which meets the ≥ 20 % gate. During the episode, 60 samples at a maximum
+  gap of 5.0 s showed 20–22 % physical free, disk unchanged and swap used 14.59–14.61 GiB. There was no breach, no
+  measurement error and no supervision stop. The whole probe took 310.3 s (cap 3600).
+- **Agent behaviour:** calls 1–5 inspected `astropy/io/fits` (`ls`, `cat card.py`, a `grep`, two `sed` ranges). Calls 6–16
+  were the byte-identical response `sed -n '200,300p' card.py`. It succeeded each time (rc 0) with an identical
+  observation, so the stall guard, which covers only repeated failing commands, did not fire. The prompt grew by about
+  914 tokens per call, from 6,905 to 16,045. Call 17's request (16,959 tokens) exceeded the frozen 16,384-token server
+  context (HTTP 400).
+- **Outcome:** exit `ContextWindowExceededError` after 17 logical and 17 physical requests (caps 24 and 48). The
+  submission is empty and the final workspace has no change (all-exit diagnostic: no status, diff or untracked
+  changes). Under the frozen Submitted-only rule it is an **operational zero, not evaluated**. The inherited
+  `req011_pair.outcome_source` mapping labels this exit `infrastructure_or_supervision`, because
+  ContextWindowExceededError is not in its agent list. The overflow followed the model's own repetition at the frozen
+  context, and the lead decides the label. The same exit occurred in 3 of 16 `pilot_20260922` episodes and 2 of 16
+  yaml-v1 episodes.
+- **Records:** 17/17 receipts are complete. All 62 published files match the publication manifest. The owned
+  container was removed, the server stopped and the watchdog released. The image was unchanged before and after.
+- **Scope:** this is a single-task DEVELOPMENT observation on an exposed issue. It is not a success rate, a routing
+  result or a comparison. Prior results are unchanged: 0/32 DEV, 0/2 REQ-011, and REQ-012 unresolved. Under the lead's
+  REQ-013/014 rule, a non-resolved result ends this local model-pair competence path pending the lead's decision.
+
 ### Not claimed
-No model runs for REQ-005 to REQ-008 (no-model instrumentation, retrospective analyses and a metadata inventory). Real-model execution since the archived coding study is limited to the SWE-bench Verified pipeline smoke (Flask episodes) and the two 16-episode Coder 7B/14B fixed-backend DEV cohorts (0/16 each), with no routing or CONFIRM run; Monte Carlo only on known synthetic kernels; no interval validation for DR/OR, learned policies or
+No model runs for REQ-005 to REQ-008 (no-model instrumentation, retrospective analyses and a metadata inventory). Real-model execution since the archived coding study is limited to the SWE-bench Verified pipeline smoke (Flask episodes), the two 16-episode Coder 7B/14B fixed-backend DEV cohorts (0/16 each) and the single-task DEVELOPMENT probes REQ-011 (0/2 eligible), REQ-012 (7B, eligible, unresolved) and REQ-014 (14B, operational zero), with no routing or CONFIRM run; Monte Carlo only on known synthetic kernels; no interval validation for DR/OR, learned policies or
 the branch study; no power claim; no evidence of real-agent improvement. The
 archived learned router did not beat always-large. Lead's readiness estimate (rubric in [readiness.md](readiness.md),
 `76b3199`): 55%, change 0 percentage points, range 45–65%.

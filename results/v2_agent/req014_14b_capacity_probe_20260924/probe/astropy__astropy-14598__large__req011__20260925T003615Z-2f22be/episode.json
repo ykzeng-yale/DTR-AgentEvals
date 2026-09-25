@@ -1,0 +1,190 @@
+{
+ "kind": "cue-v1 fixed-order DEV episode (DTR-REQ-005); descriptive, not a causal effect, not CONFIRM",
+ "request": "DTR-REQ-005",
+ "cohort": "cue-v1",
+ "driver": "cue-v1 episode driver (cue_episode.py)",
+ "run_id": "astropy__astropy-14598__large__req011__20260925T003615Z-2f22be",
+ "position": 1,
+ "assignment_id": "req014-1-large",
+ "arm": "baseline",
+ "detector_mode": "observe",
+ "instance_id": "astropy__astropy-14598",
+ "backend": "large",
+ "backend_alias": "qwen2.5-coder-14b-instruct-aedcc2d-q4_k_m",
+ "served": {
+  "build_info": "b11041-4fea119de",
+  "llama_cpp": "4fea119de30f6a923992780f6fd5ccb0bee5d47d",
+  "model_file": "qwen2.5-coder-14b-instruct-aedcc2d-q4_k_m.gguf",
+  "model_path": "./work/models/converted_4fea119/qwen2.5-coder-14b-instruct-aedcc2d-q4_k_m.gguf",
+  "model_sha256": "b179f09d5f73776e68623384d95a0dbd73ccf038e34db50b508e9c3baf468066",
+  "server_pid": 98759,
+  "server_started_utc": "2026-09-25T00:36:09Z"
+ },
+ "server": {
+  "port": 8293,
+  "total_slots": 1,
+  "n_ctx_per_slot": 16384,
+  "model_file": "qwen2.5-coder-14b-instruct-aedcc2d-q4_k_m.gguf"
+ },
+ "pins": {
+  "mini_swe_agent": "04d809ceab9df28f9adaed044884180159172930",
+  "default_yaml_sha256": "112aa58328f478a41cc2630702a4b89ef459e912870e05065157ed221f56701f",
+  "image_ref": "sweb.eval.x86_64.astropy__astropy-14598:latest",
+  "image_id": "sha256:ff1716c2ea207eeb3b717cd5deb3213f923f4d445234edd9a53d035dce834997"
+ },
+ "binding_sha256": "16c3e167dc51892f41dc5de31d7e75b0d34402e2b03f03ba3a1026b556395675",
+ "episode_source_sha256": "872ce526bce82d23a73fdf983f9f6aea1c965e2df9aeb054d3418c34946700e9",
+ "frozen_driver_source_sha256": "164b7878f7a720a74ba913b97ee07ba287a556cb3ac6310aa95d2f2c91dbe6f5",
+ "configuration_binding": "yaml-v1",
+ "effective_config_sha256": "e8937b480095e4731d644480cff3edad57ba6266a014348c468cb4a8f01820de",
+ "runtime_check": "the running SDK and mini-swe-agent files are the bound bytes (checked at admission)",
+ "transport_install": {
+  "hook": "litellm.client_session",
+  "follow_redirects": false,
+  "inner_transport": "HTTPTransport",
+  "sends_per_query_attempt": 1,
+  "preflight_problems": [],
+  "litellm_num_retries": null,
+  "litellm_drop_params": false,
+  "environment_proxies": [],
+  "client_cache_entries_at_install": 4,
+  "client_cache_openai_clients_at_install": [],
+  "client_cache_other_entry_types_at_install": [
+   "AsyncHTTPHandler"
+  ]
+ },
+ "settings": {
+  "step_limit": 24,
+  "cost_limit": 0.0,
+  "wall_time_limit_seconds": 1800,
+  "temperature": 0.0,
+  "max_tokens": 1536,
+  "command_timeout_s": 60,
+  "physical_attempts_per_call_max": 2,
+  "request_timeout_s": 900
+ },
+ "workspace_binding": "wc2",
+ "template_platform_binding": "cp2",
+ "container_platform": {
+  "system": "Linux",
+  "release": "6.8.0-117-generic",
+  "version": "#117-Ubuntu SMP PREEMPT_DYNAMIC Thu May  7 17:26:37 UTC 2026",
+  "machine": "x86_64"
+ },
+ "base_tree": "1ac67f99c165ff7ac38a8079ff8318ec829b0a72",
+ "final_tree": null,
+ "capture_error": null,
+ "exit_status": "ContextWindowExceededError",
+ "error": "litellm.ContextWindowExceededError: litellm.BadRequestError: ContextWindowExceededError: OpenAIException - request (16959 tokens) exceeds the available context size (16384 tokens), try increasing it",
+ "submission_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+ "submission_bytes": 0,
+ "submission_empty": true,
+ "endpoint_file": {
+  "state": "written",
+  "file": "submission.diff"
+ },
+ "endpoint_check_after_cleanup": {
+  "in_memory_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "file_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "file_present": true,
+  "state": "unchanged"
+ },
+ "n_model_calls": 17,
+ "logical_calls": 17,
+ "wall_seconds": 280.4975790977478,
+ "physical_requests": 17,
+ "attempt_ledger_rows": 17,
+ "max_attempts_on_one_call": 1,
+ "failed_attempts": 1,
+ "incomplete_attempt_results": 0,
+ "server_reported_usage": {
+  "prompt_tokens": 146390,
+  "completion_tokens": 1365,
+  "outcomes_with_unknown_usage": 1,
+  "note": "summed over outcome records whose server reported usage; unknown usage is never counted as 0"
+ },
+ "cue": {
+  "state": "baseline_silent_landmark",
+  "triggered": true,
+  "pattern": "AAA",
+  "trigger_call_id": 8,
+  "planned_delivery_call_id": 9,
+  "message_appended": false,
+  "message_appended_call_id": null,
+  "transport_attempted": false,
+  "response_received": false,
+  "cue_emissions": 0,
+  "baseline_landmark_call_reached": 9,
+  "records_fed": 17,
+  "records_fed_call_ids_consecutive": true,
+  "cue_sha256": "80d52625bd593cd6fecafeb06daca898792979592272d9fadcf0ddd04bd39d9e"
+ },
+ "receipt_integrity": {
+  "receipt_integrity": "complete",
+  "reasons": [],
+  "infrastructure_stop": false,
+  "stop_reason": null,
+  "queue_may_continue": true,
+  "deadline_reached": false,
+  "frozen_path_parity": {
+   "state": "unchanged",
+   "suppressed_hidden_resends": [],
+   "redirects_surfaced_not_followed": [],
+   "note": "a deviation is reported for lead review; it is not an infrastructure stop by itself"
+  },
+  "budget": {
+   "limit": 48,
+   "used": 17
+  }
+ },
+ "storage_integrity": "resolved",
+ "storage_integrity_detail": null,
+ "terminal_phase": {
+  "plan_state": "runnable",
+  "diagnostic_status": "no_change",
+  "cleanup_state": "returned",
+  "cleanup_reserve_intact": true,
+  "timing": {
+   "clock": "injected epoch clock for deadlines; time.monotonic for durations",
+   "endpoint_seconds": 9.7e-05,
+   "diagnostic_seconds": 1.588365,
+   "diagnostic_subprocess_seconds": 1.5866,
+   "cleanup_seconds": 10.134289,
+   "terminal_seconds": 11.722907,
+   "diagnostic_started_at": 1790296859.2672808,
+   "diagnostic_ended_at": 1790296860.855662,
+   "diagnostic_overrun_s": 0.0,
+   "cleanup_started_at": 1790296860.855732
+  }
+ },
+ "container_cleanup": {
+  "container_id": "89c944acd800d404a4adb16483022f24981c36433a858b48d4d1d42eebce403e",
+  "confirmed": true,
+  "state": "stopped",
+  "commands": [
+   {
+    "args": [
+     "stop",
+     "--time",
+     "10",
+     "89c944acd800d404a4adb16483022f24981c36433a858b48d4d1d42eebce403e"
+    ],
+    "returncode": 0,
+    "stdout": "Flag --time has been deprecated, use --timeout instead\n89c944acd800d404a4adb16483022f24981c36433a858b48d4d1d42eebce403e\n",
+    "stderr": ""
+   },
+   {
+    "args": [
+     "container",
+     "inspect",
+     "--format",
+     "{{.State.Running}}",
+     "89c944acd800d404a4adb16483022f24981c36433a858b48d4d1d42eebce403e"
+    ],
+    "returncode": 0,
+    "stdout": "false\n",
+    "stderr": ""
+   }
+  ]
+ }
+}

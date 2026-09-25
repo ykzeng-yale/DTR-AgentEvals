@@ -1,0 +1,473 @@
+{
+ "request": "DTR-REQ-014",
+ "kind": "single-episode DEVELOPMENT 14B capacity-probe summary (the file name pair_summary.json is that of the reused req011_pair publication)",
+ "manifest": "configs/v2_req014_14b_capacity_probe_20260924.json",
+ "manifest_sha256": "16c3e167dc51892f41dc5de31d7e75b0d34402e2b03f03ba3a1026b556395675",
+ "admission_sha256": "84bde775f23c83b07e9df2b1a06981847050c4092db8067fa060ddc608c85712",
+ "configuration": "yaml-v1-repair1",
+ "started_utc": "2026-09-25T00:36:01Z",
+ "probe_deadline_utc": "2026-09-25T01:36:01Z",
+ "status": "COMPLETED",
+ "stop_reason": null,
+ "interrupted_or_error": null,
+ "step1": {
+  "reconciliation": {
+   "record": "results/v2_agent/req013_14b_discriminator_20260924/reconciliation.json",
+   "sha256": "6ece3f7f402e1dee1749bd38dfee4bcf7b24c56d4b41c06ca0f5d858df433a60"
+  },
+  "watchdog_host_check": {
+   "record": "results/v2_agent/req013_14b_discriminator_20260924/watchdog_host_check.json",
+   "sha256": "4cf63b5272e9b58aa33054a6685cc77d0e2f7943ab77785a75aa8e8497953874"
+  },
+  "req012_probe": "REQ-012 probe astropy__astropy-14598__small__req011__20260924T184420Z-7bfc39: 3 model calls; 1 executed tool command (it wrote test_fits_card.py); 1 FormatError turn with 2 proposed actions, none executed; then 'echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT' ended the episode as Submitted. The 466-byte submission adds only test_fits_card.py (a new file, no source file). The unchanged evaluator applied it: FAIL_TO_PASS 0/1 (astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_long_string_value_with_quotes failing), PASS_TO_PASS 175/175, strict unresolved. The image equalled the pin before and after grading."
+ },
+ "prereq": {
+  "record": "results/v2_agent/req014_14b_capacity_probe_20260924/watchdog_host_check.json",
+  "sha256": "cef2ade5e957edc218395e4e9eefeee71ff6a5a6c1645dfc3d3f33d09d4035bc"
+ },
+ "environment_variables_removed": [
+  "CLAUDE_CODE_CHILD_SESSION",
+  "CLAUDE_CODE_HOST_SESSION_ID",
+  "CLAUDE_CODE_MESSAGING_TOKEN",
+  "CLAUDE_CODE_OAUTH_SCOPES",
+  "CLAUDE_CODE_SDK_HAS_HOST_AUTH_REFRESH",
+  "CLAUDE_CODE_SESSION_ATTENDED",
+  "CLAUDE_CODE_SESSION_ID",
+  "SSH_AUTH_SOCK",
+  "USE_LOCAL_OAUTH",
+  "USE_STAGING_OAUTH"
+ ],
+ "serving": {
+  "large": {
+   "load": {
+    "event": "started",
+    "role": "large",
+    "pid": 98759,
+    "port": 8293,
+    "hash_seconds": 3.4,
+    "load_seconds": 2.0,
+    "rss_kb": 12022784,
+    "swap_before": "total = 15360.00M  used = 14962.44M  free = 397.56M  (encrypted)",
+    "swap_after": "total = 15360.00M  used = 14962.44M  free = 397.56M  (encrypted)",
+    "utc": "2026-09-25T00:36:14Z"
+   },
+   "checks": {
+    "model_path": "./work/models/converted_4fea119/qwen2.5-coder-14b-instruct-aedcc2d-q4_k_m.gguf",
+    "model_alias": "qwen2.5-coder-14b-instruct-aedcc2d-q4_k_m",
+    "model_ftype": "Q4_K - Medium",
+    "build_info": "b11041-4fea119de",
+    "total_slots": 1,
+    "n_ctx": 16384,
+    "chat_template_sha256": "55b2f4a26ac9ee719330a61a0c39d9e538b0e9322212f048326318cff4f8674a",
+    "v1_models_ids": [
+     "qwen2.5-coder-14b-instruct-aedcc2d-q4_k_m"
+    ],
+    "server_pid": 98759,
+    "memory_free_pct": 20,
+    "swap": "total = 15360.00M  used = 14962.44M  free = 397.56M  (encrypted)",
+    "rss_kb": 12022976
+   },
+   "problems": []
+  }
+ },
+ "server_events": [
+  {
+   "event": "started",
+   "role": "large",
+   "pid": 98759,
+   "port": 8293,
+   "hash_seconds": 3.4,
+   "load_seconds": 2.0,
+   "rss_kb": 12022784,
+   "swap_before": "total = 15360.00M  used = 14962.44M  free = 397.56M  (encrypted)",
+   "swap_after": "total = 15360.00M  used = 14962.44M  free = 397.56M  (encrypted)",
+   "utc": "2026-09-25T00:36:14Z"
+  },
+  {
+   "event": "stopped",
+   "role": "large",
+   "pid": 98759,
+   "port": 8293,
+   "utc": "2026-09-25T00:41:11Z"
+  }
+ ],
+ "watchdog": {
+  "started": true,
+  "pid": 98732,
+  "returncode": -15,
+  "left_armed": false
+ },
+ "capacity": {
+  "version": "req014-capacity-v1",
+  "thresholds": {
+   "admission": {
+    "physical_free_pct": 50,
+    "vm_disk_free_gib": 30,
+    "host_disk_free_gib": 25
+   },
+   "post_load": {
+    "physical_free_pct": 20,
+    "vm_disk_free_gib": 30,
+    "host_disk_free_gib": 25
+   },
+   "episode": {
+    "physical_free_pct": 10,
+    "vm_disk_free_gib": 20,
+    "host_disk_free_gib": 15
+   }
+  },
+  "series": {
+   "samples": 62,
+   "samples_by_phase": {
+    "admission": 1,
+    "post_load": 1,
+    "episode": 60
+   },
+   "min_physical_free_pct": 20,
+   "min_vm_disk_free_gib": 81.14171600341797,
+   "min_host_disk_free_gib": 78.21695327758789,
+   "peak_swap_used_gib": 14.612,
+   "max_episode_sampling_gap_s": 5.01,
+   "episode_gaps_over_max": 0,
+   "samples_with_measurement_errors": 0,
+   "samples_with_problems": 0,
+   "unparsable_lines": 0
+  },
+  "series_files": {
+   "raw": "work/runs/req014_14b_capacity_probe_20260924/probe/resource_samples.jsonl",
+   "published": "results/v2_agent/req014_14b_capacity_probe_20260924/probe/resource_samples.jsonl",
+   "raw_sha256": "f406bfca48dc074228a673b708ad6baeca903b713455fa1026ff1b57cfd513d1",
+   "published_sha256": "f406bfca48dc074228a673b708ad6baeca903b713455fa1026ff1b57cfd513d1",
+   "sanitized": false
+  },
+  "post_load_block": null,
+  "interruption": null,
+  "breach_after_child_exit": null,
+  "outcome_rule": "the assignment state is 'capacity_interruption' (an authoritative ledger end event follows the reused runner's): never graded, never eligible, never an algorithmic or operational zero, whatever the child's exit_status (EpisodeDeadline, or even Submitted), also when the signal arrived after the child's inference phase had ended (the latch record says so). Probe status CAPACITY_INTERRUPTION. A post-load failure stops the owned server before any agent request: probe status BLOCKED, no episode"
+ },
+ "capacity_outcome_rule_precedence": "The reused req012_pair.finish writes outcome_source_rule ending 'Every non-eligible outcome is an operational zero.' That sentence does not apply to a row whose outcome_source is capacity_interruption, nor to a row not started because the probe was BLOCKED for capacity at admission or after the load (the reused req011_pair.outcome_source labels it infrastructure_or_supervision). supervision.classification and interpretations.capacity and capacity_interruption govern those rows: they are not outcomes, never zeros and never graded. pair_summary.json repeats this rule as capacity_outcome_rule_precedence",
+ "finished_utc": "2026-09-25T00:41:11Z",
+ "wall_seconds": 310.3,
+ "probe_cap_s": 3600,
+ "within_cap": true,
+ "assignments": [
+  {
+   "order": 1,
+   "assignment_id": "req014-1-large",
+   "backend": "large",
+   "alias": "qwen2.5-coder-14b-instruct-aedcc2d-q4_k_m",
+   "port": 8293,
+   "counted_before": 0,
+   "request_limit": 48,
+   "run_id": "astropy__astropy-14598__large__req011__20260925T003615Z-2f22be",
+   "started_utc": "2026-09-25T00:36:15Z",
+   "episode_deadline_utc": "2026-09-25T01:06:15Z",
+   "state": "completed",
+   "child_returncode": 0,
+   "process_group_gone": true,
+   "owned_container": "89c944acd800d404a4adb16483022f24981c36433a858b48d4d1d42eebce403e",
+   "container_removal": {
+    "refs": [
+     "89c944acd800d404a4adb16483022f24981c36433a858b48d4d1d42eebce403e"
+    ],
+    "found": [],
+    "rm_rc": null,
+    "remaining": [],
+    "complete": true
+   },
+   "minisweagent_containers_listed_after": [],
+   "ended_utc": "2026-09-25T00:41:11Z",
+   "request_accounting": {
+    "reported": 17,
+    "reported_raw": null,
+    "counted": 17,
+    "accounting": "reported"
+   },
+   "grade": {
+    "status": "graded: operational_zero",
+    "evaluable": false,
+    "grader_killed": false,
+    "grader_returncode": 0,
+    "grader_group_gone": true,
+    "evaluator_container_cleanup": {
+     "refs": [],
+     "found": [],
+     "rm_rc": null,
+     "remaining": [],
+     "complete": true
+    },
+    "classification": "operational_zero",
+    "grade_valid": true,
+    "evaluated": false,
+    "strict_outcome": null,
+    "operational_resolved": 0,
+    "upstream_resolved": null,
+    "reason": "not a Submitted episode (ContextWindowExceededError): operational zero, not evaluated",
+    "grader": {
+     "status": "graded: operational_zero",
+     "reason": null,
+     "attempts": [],
+     "image_before": "sha256:ff1716c2ea207eeb3b717cd5deb3213f923f4d445234edd9a53d035dce834997",
+     "image_after": "sha256:ff1716c2ea207eeb3b717cd5deb3213f923f4d445234edd9a53d035dce834997",
+     "image_after_equals_pin": true
+    }
+   },
+   "episode_record_present": true,
+   "exit_status": "ContextWindowExceededError",
+   "error": "litellm.ContextWindowExceededError: litellm.BadRequestError: ContextWindowExceededError: OpenAIException - request (16959 tokens) exceeds the available context size (16384 tokens), try increasing it",
+   "logical_calls": 17,
+   "n_model_calls": 17,
+   "physical_requests": 17,
+   "wall_seconds": 280.4975790977478,
+   "server_reported_tokens": {
+    "prompt_tokens": 146390,
+    "completion_tokens": 1365,
+    "outcomes_with_known_usage": 16,
+    "outcomes_with_unknown_usage": 1
+   },
+   "submission_present": true,
+   "submission_nonempty": false,
+   "submission_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "eligible": false,
+   "call9_reached": true,
+   "call9_pre_action": {
+    "captured_utc": "2026-09-25T00:38:35Z",
+    "message_count": 18,
+    "logical_calls_before": 8,
+    "physical_attempts_before": 8,
+    "request_budget_remaining": 40,
+    "seconds_since_first_request": 135.2,
+    "seconds_to_episode_deadline": 1660.6,
+    "source": "call9_history.json captured_at and messages; attempts.jsonl start events; control entry.json"
+   },
+   "exit_diagnostic": {
+    "status": "no_change",
+    "changes_observed": false,
+    "sections": {
+     "tree": "captured",
+     "status": "no_change",
+     "diff": "no_change",
+     "untracked": "no_change"
+    },
+    "failures": []
+   },
+   "terminal_phase": {
+    "plan_state": "runnable",
+    "diagnostic_status": "no_change",
+    "cleanup_state": "returned",
+    "cleanup_reserve_intact": true,
+    "timing": {
+     "clock": "injected epoch clock for deadlines; time.monotonic for durations",
+     "endpoint_seconds": 9.7e-05,
+     "diagnostic_seconds": 1.588365,
+     "diagnostic_subprocess_seconds": 1.5866,
+     "cleanup_seconds": 10.134289,
+     "terminal_seconds": 11.722907,
+     "diagnostic_started_at": 1790296859.2672808,
+     "diagnostic_ended_at": 1790296860.855662,
+     "diagnostic_overrun_s": 0.0,
+     "cleanup_started_at": 1790296860.855732
+    }
+   },
+   "receipt_integrity": {
+    "receipt_integrity": "complete",
+    "reasons": [],
+    "infrastructure_stop": false,
+    "stop_reason": null,
+    "queue_may_continue": true,
+    "deadline_reached": false,
+    "frozen_path_parity": {
+     "state": "unchanged",
+     "suppressed_hidden_resends": [],
+     "redirects_surfaced_not_followed": [],
+     "note": "a deviation is reported for lead review; it is not an infrastructure stop by itself"
+    },
+    "budget": {
+     "limit": 48,
+     "used": 17
+    }
+   },
+   "storage_integrity": "resolved",
+   "container_cleanup": {
+    "container_id": "89c944acd800d404a4adb16483022f24981c36433a858b48d4d1d42eebce403e",
+    "confirmed": true,
+    "state": "stopped",
+    "commands": [
+     {
+      "args": [
+       "stop",
+       "--time",
+       "10",
+       "89c944acd800d404a4adb16483022f24981c36433a858b48d4d1d42eebce403e"
+      ],
+      "returncode": 0,
+      "stdout": "Flag --time has been deprecated, use --timeout instead\n89c944acd800d404a4adb16483022f24981c36433a858b48d4d1d42eebce403e\n",
+      "stderr": ""
+     },
+     {
+      "args": [
+       "container",
+       "inspect",
+       "--format",
+       "{{.State.Running}}",
+       "89c944acd800d404a4adb16483022f24981c36433a858b48d4d1d42eebce403e"
+      ],
+      "returncode": 0,
+      "stdout": "false\n",
+      "stderr": ""
+     }
+    ]
+   },
+   "receipts_completeness": {
+    "cohort": "cue-v1",
+    "run_id": "astropy__astropy-14598__large__req011__20260925T003615Z-2f22be",
+    "n_raw": 17,
+    "n_published": 17,
+    "n_outcomes": 17,
+    "complete": true,
+    "invalid_records": [],
+    "raw_without_published_record": [],
+    "published_record_without_raw": [],
+    "published_record_without_outcome": [],
+    "outcome_without_published_record": [],
+    "pre_dispatch_refusals": [],
+    "invalid_refusal_records": [],
+    "records_over_public_cap": [],
+    "refusal_ordinals_missing": [],
+    "receipts_refused_before_dispatch": [],
+    "dispatched_attempt_keys": [
+     "call001_attempt01",
+     "call002_attempt01",
+     "call003_attempt01",
+     "call004_attempt01",
+     "call005_attempt01",
+     "call006_attempt01",
+     "call007_attempt01",
+     "call008_attempt01",
+     "call009_attempt01",
+     "call010_attempt01",
+     "call011_attempt01",
+     "call012_attempt01",
+     "call013_attempt01",
+     "call014_attempt01",
+     "call015_attempt01",
+     "call016_attempt01",
+     "call017_attempt01"
+    ],
+    "infrastructure_stop_recorded": false
+   },
+   "repair1": {
+    "repair_record_present": true,
+    "configuration": "yaml-v1-repair1",
+    "stall_guard_fired": false,
+    "stall_guard_fired_before_call": null,
+    "guard_turns_recorded": 16,
+    "network_mode_observed": "none",
+    "run_args_at_container_start": [
+     "--rm",
+     "--platform",
+     "linux/amd64",
+     "--network",
+     "none"
+    ],
+    "effective_config_verified": true,
+    "effective_config_problems": [],
+    "effective_config_sha256": "e8937b480095e4731d644480cff3edad57ba6266a014348c468cb4a8f01820de",
+    "instance_template_sha256": "da5fe0813e040399492196027cc45f091ddb7cf76f6df9165d6e189ca32b27f3",
+    "agent_type": "req012_entry.RepeatedFailureGuardAgent"
+   },
+   "outcome_source": "infrastructure_or_supervision"
+  }
+ ],
+ "requests": {
+  "logical_reported_total": 17,
+  "physical_reported_total": 17,
+  "physical_counted_total": 17,
+  "max_logical": 24,
+  "max_physical": 48,
+  "within_caps": true,
+  "non_task_generation_requests": 0
+ },
+ "denominator": "the one assignment, whatever its state",
+ "outcome_sources": {
+  "eligible_submission": 0,
+  "agent": 0,
+  "stall_guard": 0,
+  "time_limit": 0,
+  "infrastructure_or_supervision": 1,
+  "capacity_interruption": 0
+ },
+ "outcome_source_rule": "stall_guard = a completed episode whose exit is RepeatedFailureStall; otherwise req011_pair.outcome_source (agent = ['Submitted', 'LimitsExceeded', 'RepeatedFormatError', 'FormatError']; time_limit = ['TimeExceeded', 'EpisodeDeadline']; anything else = infrastructure_or_supervision, which is not evidence about competence). Every non-eligible outcome is an operational zero.",
+ "prompt_bytes": {
+  "default_yaml_sha256": "112aa58328f478a41cc2630702a4b89ef459e912870e05065157ed221f56701f",
+  "instance_template_frozen_sha256": "cdf5e8dc1972686b90e3e84a0a4b200874ad5aaf1e3d26c26ed1872c1ba2e9b0",
+  "instance_template_frozen_bytes": 2438,
+  "instance_template_repair1_sha256": "da5fe0813e040399492196027cc45f091ddb7cf76f6df9165d6e189ca32b27f3",
+  "instance_template_repair1_bytes": 2757,
+  "inserted_text": "4. The repository to fix is checked out at /testbed, which is the working directory for every action. It is installed in editable (development) mode in the active Python environment, so importing the package runs the code in /testbed and your edits there take effect immediately. The environment has no network access.\n",
+  "inserted_sha256": "0ce85105b2111ca3f1a5587d290bcb5191d97966f54dfd62074cf13ed2cfa0a1",
+  "inserted_bytes": 319
+ },
+ "prior_results": {
+  "results/v2_agent/req011_competence_20260924/pair_summary.json": {
+   "expected_sha256": "a2cc62877b6a0b7b34a50688b5a7d114697b4c743199de918cbe0711c0382d31",
+   "sha256": "a2cc62877b6a0b7b34a50688b5a7d114697b4c743199de918cbe0711c0382d31",
+   "unchanged": true
+  },
+  "results/v2_agent/pilot_20260922_yaml_v1/report_yaml_v1_block1_final.json": {
+   "expected_sha256": "ef894706d393a73b6accc07a94cfbd1a4bba1c1b12b9a1c6e682c4744ec5fb17",
+   "sha256": "ef894706d393a73b6accc07a94cfbd1a4bba1c1b12b9a1c6e682c4744ec5fb17",
+   "unchanged": true
+  },
+  "results/v2_agent/req012_repair_probe_20260924/gate.json": {
+   "expected_sha256": "de29636aed8ef690b312b504b12fd8707874afed8dbec4d76e58c49264f807ab",
+   "sha256": "de29636aed8ef690b312b504b12fd8707874afed8dbec4d76e58c49264f807ab",
+   "unchanged": true
+  },
+  "results/v2_agent/req012_repair_probe_20260924/probe/pair_summary.json": {
+   "expected_sha256": "2d13b8c099555b1028de5099aebd94e88141dfd8a9a0d67f604c5996d6f0df76",
+   "sha256": "2d13b8c099555b1028de5099aebd94e88141dfd8a9a0d67f604c5996d6f0df76",
+   "unchanged": true
+  },
+  "req011_eligible_submissions": {
+   "eligible": 0,
+   "of": 2
+  },
+  "statement": "the earlier 0/32 fixed-backend yaml-v1 block and the 0/2 REQ-011 pair are reported unchanged"
+ },
+ "interpretations": {
+  "nonblocking": "The all-exit diagnostic, post-dispatch receipt bookkeeping and cleanup never change the endpoint, eligibility or grading and never stop the pair. The PRE-dispatch receipt stays blocking (no dispatch without a durable receipt) per the lead's REQ-005 decision (answer 1); the disk reserve for it is checked at admission.",
+  "probe_cap": "Time expiry preserves and publishes incomplete work with its reason; no extra time, outcome-driven stopping or substitution.",
+  "capacity": "BLOCKED for capacity (at admission or after the load) is not an outcome: no agent request was made. It is never imputed as a zero, and it is never replaced by another model, task or host.",
+  "capacity_interruption": "A capacity interruption is not an outcome: the supervision stopped the episode; neither the agent nor its time limit ended it. It is never graded, never an algorithmic or operational zero, never a submitted patch and never re-run.",
+  "step1": "REQ-013 step 1 and the REQ-014 prerequisite verify archived records and the host watchdog. They are not evidence about model competence."
+ },
+ "inherited_labels": [
+  "Receipts from the reused request_receipt/cue_transport say request DTR-REQ-005 and cohort cue-v1.",
+  "episode.json from the reused cue_episode.run_episode has kind 'cue-v1 fixed-order DEV episode (DTR-REQ-005)' and cohort 'cue-v1'.",
+  "Private raw request bodies are stored under work/req005_request_receipts/cue-v1/<run_id>.",
+  "The baseline arm writes a silent cue_delivery.json / calls.jsonl landmark; no cue is ever appended.",
+  "The reused req011_pair components write 'request': 'DTR-REQ-011' in ledger.jsonl lines (including the REQ-014 capacity_interruption end event), in the control entry.json and grade_control.json, in the grader's grade_result.json and in the watchdog records. make_episode_runner names the run directory '<instance>__large__req011__<utc>-<hex>'. These are labels of reused, unedited REQ-011 code.",
+  "effective_config.json and episode.json say configuration_binding 'yaml-v1' (pilot_episode.CONFIGURATION_BINDING) and name the cue-v1 driver. Their content is the repair1 configuration, which repair_record.json and this manifest name yaml-v1-repair1.",
+  "The probe summary file is named pair_summary.json because req011_pair.publish publishes that name.",
+  "req012_entry's records (entry_admitted.json, repair_record.json) name the configuration yaml-v1-repair1. Through the req014_entry binding (via req013_entry.bind) they carry request DTR-REQ-014, and entry_admitted.json lists both req013_entry.py and req014_entry.py among the running sources. Their runtime_overrides list only the two repair1 overrides; the three capacity-latch overrides of req014_entry are declared in supervision.entry_latch and listed in capacity_latch.json. The guard class keeps its module name, req012_entry.RepeatedFailureGuardAgent. req012_entry's cue-arm refusal text names DTR-REQ-012.",
+  "The reused req012_pair.finish writes 'not_started: probe ...' row states and the REQ-012 prior-results statement text. PRIOR_RESULTS (equal to REQ-013's) and the published path are REQ-014's.",
+  "The reused req012_pair.finish writes outcome_source_rule ending 'Every non-eligible outcome is an operational zero.' That sentence does not apply to a capacity_interruption row, nor to a row not started because the probe was BLOCKED for capacity at admission or after the load, whose reused outcome_source is infrastructure_or_supervision. supervision.outcome_rule_precedence (repeated in pair_summary.json as capacity_outcome_rule_precedence), supervision.classification and interpretations.capacity and capacity_interruption govern those rows.",
+  "The prerequisite record, written by the unedited req013_watchdog_check.main, keeps that module's kind text ('DTR-REQ-013 step 1b: ...') and lead_decision (docs/theory_feedback_20260924_req012_decision.md). Its request field, record path and raw directory are REQ-014's.",
+  "The admission probe 'gate' is req013_pair.probe_precondition. Its detail keys and the precondition rule text refer to 'this manifest', which for the call is this REQ-014 manifest. The admission probe 'step1' checks the REQ-013 step-1 records.",
+  "The admission probes 'memory' and 'disk' record the replaced REQ-011 rules under replaced_rule next to this rule.",
+  "This manifest, the prerequisite record, admission.json, capacity_interruption.json, capacity_latch.json, the ledger's order and state fields (the last event of an order is authoritative), resource_samples.jsonl and pair_summary.json are authoritative."
+ ],
+ "semantics_differences": [
+  "episode.json physical_requests = len(capture.sends) (one send per query attempt at the HTTP layer); the frozen pilot_episode driver used len(attempts).",
+  "Token counts come from server-reported usage in the public outcome receipts; unknown usage stays null (the frozen driver used litellm's parsed usage).",
+  "submission.diff is written write-once before the all-exit diagnostic and cleanup (same bytes as the frozen driver, which wrote it after cleanup).",
+  "exit_status RepeatedFailureStall is new. It is the guard's exit, recorded by the frozen DefaultAgent.run like any InterruptAgentFlow exit (submission '').",
+  "The agent container has no network. Commands that need the network fail where the REQ-011 container could reach PyPI; an offline `pip install --upgrade astropy` finds no index candidate and keeps the installed editable astropy (it may exit 0).",
+  "The stall guard's output fingerprint masks object addresses (0x...) and decimal-second durations before hashing (repair1.stall_rule), so an identical failing command whose output differs only in those tokens, such as offline pip retry warnings, counts as the same failure.",
+  "A capacity interruption ends the episode through the entry's alarm handler (SIGALRM -> EpisodeDeadline), the same path as the inference deadline, so episode.json may say exit_status EpisodeDeadline; the assignment is nevertheless 'capacity_interruption'. The pinned DockerEnvironment.execute turns an exception raised during a container command into a returncode -1 observation shown to the model; the entry's latch (supervision.entry_latch) then refuses the next query before dispatch, so the agent still leaves through the frozen exception path, and the owned server is already stopped. If the signal arrives before the entry has installed its handler, SIGALRM's default action ends the child (no container or request exists yet). After the inference phase has ended it is only counted, so the terminal phase and the records run unharmed; only in the few statements between the timer disarm and the terminal phase would it still raise. In every case the records written so far are preserved, and the child's process group is killed if it outlives the grace.",
+  "After a capacity interruption the ledger holds the reused runner's end event (state completed, exited_without_episode_record or killed) followed by an end event with state capacity_interruption. The last event is authoritative (req011_pair.Ledger.states)."
+ ],
+ "scope": "One single-model DEVELOPMENT discriminator on one already exposed, evaluator-qualified issue, under a versioned capacity rule: whether the 14B can edit the source and resolve it under the unchanged yaml-v1-repair1 scaffold. It is not a success rate, not a model or routing comparison, not a policy value and not CONFIRM evidence. A capacity block or interruption is not evidence about competence.",
+ "published": "results/v2_agent/req014_14b_capacity_probe_20260924/probe"
+}

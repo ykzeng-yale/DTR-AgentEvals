@@ -56,7 +56,11 @@ from unverified raw execution identity. They correct attempted-write/testing/wor
   (≥ 50 % physical memory free at admission, ≥ 20 % after load, and disk reserves), with in-episode supervision that
   stops only the owned job on low memory or disk. Built and verified (`5c5fc2f`; watchdog prerequisite `09982dc`).
   Admission passed at 00:36:01Z on 25 September (63 % memory free; 81/78 GiB VM/host disk). Post-load was 20 % free,
-  which passes. **The single 14B episode is running**; no outcome yet.
+  which passes. **Completed:** the 14B repeated one successful `sed` read 11 times until its request exceeded the
+  16,384-token context (`ContextWindowExceededError`, 17 calls). It made no edit and did not submit, so the result is
+  an operational zero, not evaluated. There was no capacity breach (20–22 % memory free)
+  ([summary](../results/v2_agent/req014_14b_capacity_probe_20260924/probe/pair_summary.json)). This ends the local
+  model-pair path pending the lead's decision.
 
 **Readiness 55%, change 0 points, range 45–65%.** Useful validated inference/adequate comparisons,
 final empirical synthesis, and independent reproducibility/metadata/package remain.

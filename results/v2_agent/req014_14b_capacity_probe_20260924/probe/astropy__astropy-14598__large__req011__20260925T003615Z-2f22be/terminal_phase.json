@@ -1,0 +1,287 @@
+{
+ "kind": "cue-v1 terminal phase: endpoint, then diagnostic, then cleanup (evidence; never graded)",
+ "request": "DTR-REQ-005",
+ "binding": "cue-v1-terminal-t1",
+ "contract": "docs/theory_feedback_20260923_req005_review.md, \"Concrete integration contract\", bullet \"Endpoint then diagnostic then cleanup\"",
+ "order": [
+  "endpoint",
+  "diagnostic",
+  "cleanup"
+ ],
+ "endpoint_rule": "Submitted-only, no salvage (workspace_capture wc2): only an explicit Submitted exit with a recorded starting tree submits `git diff --binary --full-index <base> <final>`; every other exit submits nothing",
+ "constants": {
+  "phase_window_s": 120,
+  "diagnostic_max_s": 30,
+  "cleanup_reserve_s": 90,
+  "handoff_margin_s": 4.0,
+  "subprocess_max_s": 60,
+  "kill_grace_s": 1.0,
+  "output_cap_bytes": 4194304,
+  "exit_capture_default_budget_s_used": false
+ },
+ "steps": [
+  "endpoint",
+  "diagnostic",
+  "cleanup"
+ ],
+ "endpoint": {
+  "state": "frozen",
+  "exit_status": "ContextWindowExceededError",
+  "final_tree": null,
+  "capture_error": null,
+  "error": "litellm.ContextWindowExceededError: litellm.BadRequestError: ContextWindowExceededError: OpenAIException - request (16959 tokens) exceeds the available context size (16384 tokens), try increasing it",
+  "submission_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "submission_chars": 0,
+  "submission_utf8_bytes": 0,
+  "submission_empty": true
+ },
+ "endpoint_write": {
+  "state": "written",
+  "file": "submission.diff"
+ },
+ "endpoint_check_after_diagnostic": {
+  "in_memory_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "file_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "file_present": true,
+  "state": "unchanged"
+ },
+ "endpoint_check_after_cleanup": {
+  "in_memory_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "file_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "file_present": true,
+  "state": "unchanged"
+ },
+ "plan": {
+  "inference_end": 1790296859.267144,
+  "existing_absolute_cleanup_cap": 1790298495.641829,
+  "diagnostic_start": 1790296859.2672808,
+  "phase_window_s": 120,
+  "diagnostic_max_s": 30,
+  "cleanup_reserve_s": 90,
+  "handoff_margin_s": 4.0,
+  "anchored_deadline": 1790296979.267144,
+  "absolute_cleanup_deadline": 1790296979.267144,
+  "absolute_cleanup_binding": "inference_end + 120",
+  "cleanup_reserve_start": 1790296889.267144,
+  "diagnostic_deadline": 1790296885.267144,
+  "diagnostic_deadline_binding": "cleanup_reserve_90s",
+  "diagnostic_budget_s": 25.999863147735596,
+  "anchor_consistent": true,
+  "anchor_note": null,
+  "state": "runnable",
+  "reason": null
+ },
+ "diagnostic": {
+  "status": "no_change",
+  "changes_observed": false,
+  "total_budget_s": 25.999840021133423,
+  "skipped": false,
+  "skip_reason": null,
+  "capture_error": null,
+  "section_states": {
+   "tree": "captured",
+   "status": "no_change",
+   "diff": "no_change",
+   "untracked": "no_change"
+  },
+  "failures": [],
+  "write": {
+   "state": "written",
+   "file": "exit_diagnostic.json"
+  },
+  "command_labels": [
+   "tree",
+   "status",
+   "diff",
+   "untracked_list"
+  ]
+ },
+ "supervisor": {
+  "state": "completed",
+  "reason": null,
+  "enforced_by": "cue_terminal.SupervisedExecutor: every command is a subprocess in its own process group; output is read by a bounded non-blocking loop; at the computed bound the whole group gets SIGKILL and the leader is reaped within kill_grace_s; a command without remaining time is never started",
+  "subprocess_max_s": 60,
+  "kill_grace_s": 1.0,
+  "output_cap_bytes": 4194304,
+  "counts": {
+   "requested": 4,
+   "not_dispatched": 0,
+   "argv_errors": 0,
+   "spawn_errors": 0,
+   "supervisor_errors": 0,
+   "spawned": 4,
+   "exited": 4,
+   "killed": 0,
+   "kill_unconfirmed": 0,
+   "group_not_empty": 0,
+   "escaped_descendant_suspected": 0,
+   "output_overflow": 0
+  },
+  "subprocess_seconds": 1.5866,
+  "log": [
+   {
+    "index": 1,
+    "command_sha256": "a3c921cd9c50ad12ed86f5c0371f72ec00bca053838a470ac6ac4cc207099203",
+    "command_chars": 171,
+    "now": 1790296859.26733,
+    "remaining_diagnostic_s": 25.9998140335083,
+    "to_cleanup_reserve_s": 29.9998140335083,
+    "subprocess_max_s": 60,
+    "timeout_s": 25.9998140335083,
+    "binding": "remaining_diagnostic_time",
+    "dispatch": true,
+    "outcome": "exited",
+    "pid": 1687,
+    "returncode": 0,
+    "elapsed_s": 0.483206,
+    "killed": false,
+    "kill_signal": null,
+    "kill_confirmed": null,
+    "kill_error": null,
+    "group_sweep": "no_lingering_members",
+    "group_empty_confirmed": true,
+    "escaped_descendant_suspected": null,
+    "output_bytes": 41,
+    "output_dropped_bytes": 0
+   },
+   {
+    "index": 2,
+    "command_sha256": "ef0a64e95447d080132c2687029536f36fa7ffa31696357c77121099a5ff9213",
+    "command_chars": 368,
+    "now": 1790296859.751322,
+    "remaining_diagnostic_s": 25.515821933746338,
+    "to_cleanup_reserve_s": 29.515821933746338,
+    "subprocess_max_s": 60,
+    "timeout_s": 25.515821933746338,
+    "binding": "remaining_diagnostic_time",
+    "dispatch": true,
+    "outcome": "exited",
+    "pid": 1688,
+    "returncode": 0,
+    "elapsed_s": 0.461035,
+    "killed": false,
+    "kill_signal": null,
+    "kill_confirmed": null,
+    "kill_error": null,
+    "group_sweep": "no_lingering_members",
+    "group_empty_confirmed": true,
+    "escaped_descendant_suspected": null,
+    "output_bytes": 93,
+    "output_dropped_bytes": 0
+   },
+   {
+    "index": 3,
+    "command_sha256": "d10fee08ccbd3fe682549ef3411cabee65bf40e1219c7dfe658ee8a4f8ffe206",
+    "command_chars": 437,
+    "now": 1790296860.2125719,
+    "remaining_diagnostic_s": 25.054572105407715,
+    "to_cleanup_reserve_s": 29.054572105407715,
+    "subprocess_max_s": 60,
+    "timeout_s": 25.054572105407715,
+    "binding": "remaining_diagnostic_time",
+    "dispatch": true,
+    "outcome": "exited",
+    "pid": 1689,
+    "returncode": 0,
+    "elapsed_s": 0.331946,
+    "killed": false,
+    "kill_signal": null,
+    "kill_confirmed": null,
+    "kill_error": null,
+    "group_sweep": "no_lingering_members",
+    "group_empty_confirmed": true,
+    "escaped_descendant_suspected": null,
+    "output_bytes": 93,
+    "output_dropped_bytes": 0
+   },
+   {
+    "index": 4,
+    "command_sha256": "e4a347e933ddece702ff017632c43cb0002e1f9367fd2f226cd6d16460a83ec7",
+    "command_chars": 248,
+    "now": 1790296860.5446882,
+    "remaining_diagnostic_s": 24.722455739974976,
+    "to_cleanup_reserve_s": 28.722455739974976,
+    "subprocess_max_s": 60,
+    "timeout_s": 24.722455739974976,
+    "binding": "remaining_diagnostic_time",
+    "dispatch": true,
+    "outcome": "exited",
+    "pid": 1690,
+    "returncode": 0,
+    "elapsed_s": 0.310413,
+    "killed": false,
+    "kill_signal": null,
+    "kill_confirmed": null,
+    "kill_error": null,
+    "group_sweep": "no_lingering_members",
+    "group_empty_confirmed": true,
+    "escaped_descendant_suspected": null,
+    "output_bytes": 21,
+    "output_dropped_bytes": 0
+   }
+  ],
+  "dropped_log_entries": 0
+ },
+ "cleanup": {
+  "state": "returned",
+  "deadline": 1790296979.267144,
+  "time_available_s": 118.41141200065613,
+  "deadline_within_existing_cap": true,
+  "reserve_s": 90,
+  "reserve_intact": true,
+  "receipt": {
+   "container_id": "89c944acd800d404a4adb16483022f24981c36433a858b48d4d1d42eebce403e",
+   "confirmed": true,
+   "state": "stopped",
+   "commands": [
+    {
+     "args": [
+      "stop",
+      "--time",
+      "10",
+      "89c944acd800d404a4adb16483022f24981c36433a858b48d4d1d42eebce403e"
+     ],
+     "returncode": 0,
+     "stdout": "Flag --time has been deprecated, use --timeout instead\n89c944acd800d404a4adb16483022f24981c36433a858b48d4d1d42eebce403e\n",
+     "stderr": ""
+    },
+    {
+     "args": [
+      "container",
+      "inspect",
+      "--format",
+      "{{.State.Running}}",
+      "89c944acd800d404a4adb16483022f24981c36433a858b48d4d1d42eebce403e"
+     ],
+     "returncode": 0,
+     "stdout": "false\n",
+     "stderr": ""
+    }
+   ]
+  },
+  "error": null
+ },
+ "timing": {
+  "clock": "injected epoch clock for deadlines; time.monotonic for durations",
+  "endpoint_seconds": 9.7e-05,
+  "diagnostic_seconds": 1.588365,
+  "diagnostic_subprocess_seconds": 1.5866,
+  "cleanup_seconds": 10.134289,
+  "terminal_seconds": 11.722907,
+  "diagnostic_started_at": 1790296859.2672808,
+  "diagnostic_ended_at": 1790296860.855662,
+  "diagnostic_overrun_s": 0.0,
+  "cleanup_started_at": 1790296860.855732
+ },
+ "cost_accounting": {
+  "diagnostic_seconds": 1.588365,
+  "note": "diagnostic wall time is terminal-phase overhead, recorded separately from inference and cleanup; it is not tokens, money or energy"
+ },
+ "interrupted": null,
+ "terminal_error": null,
+ "record_write": {
+  "state": "attempted",
+  "file": "terminal_phase.json"
+ },
+ "endpoint_mode": "determined before the phase (the frozen driver's order)"
+}

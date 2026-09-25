@@ -1,0 +1,140 @@
+{
+ "request": "DTR-REQ-014",
+ "configuration": "yaml-v1-repair1",
+ "entry_source_sha256": "4daa8293156e6c8f9ed1e78bffd5ff497495e1b35e46cec1edb272aab6f21754",
+ "runtime_overrides": [
+  "pilot_episode.build_effective_config -> repair_config(<the frozen function's result>)",
+  "minisweagent.agents.default.DefaultAgent -> req012_entry.RepeatedFailureGuardAgent"
+ ],
+ "stall_rule": "A turn is recorded only when the agent executed exactly one action: (normalized command, return code, output fingerprint); normalized command = the command stripped with whitespace runs collapsed to one space; output fingerprint = sha256 of the output with whitespace runs collapsed to one space and stripped, then two volatile token kinds masked (Python re): hexadecimal literals 0x[0-9a-fA-F]+ (per-process object addresses, e.g. in pip retry warnings) -> 0x_ and decimal-second durations \\b[0-9]+\\.[0-9]+s\\b (e.g. pytest 'in 3.21s') -> _s. A FormatError turn or a turn with a number of actions other than one is recorded as a chain reset. Before each model query, before the frozen limit checks and before n_calls is incremented: if the last two recorded turns are equal and their return code is nonzero, raise RepeatedFailureStall carrying the exit message; the frozen run() records it as the exit with an empty submission. No model call, nothing shown to the model.",
+ "guard": {
+  "agents_constructed": 1,
+  "agent_type": "req012_entry.RepeatedFailureGuardAgent",
+  "fired": false,
+  "fired_before_call": null,
+  "n_model_calls": 17,
+  "network": {
+   "container_id": "89c944acd800d404a4adb16483022f24981c36433a858b48d4d1d42eebce403e",
+   "run_args": [
+    "--rm",
+    "--platform",
+    "linux/amd64",
+    "--network",
+    "none"
+   ],
+   "returncode": 0,
+   "network_mode": "none"
+  },
+  "turns": [
+   {
+    "command_sha256": "b3956a9d33566da6b1c72b58664572260682e64d791e28dbb7041c6cd53d766e",
+    "command_chars": 31,
+    "returncode": 0,
+    "output_fingerprint": "4969815bc0d79bbe47b1a0ff8412811676c863e9624e492bb161e0936051c80d"
+   },
+   {
+    "command_sha256": "6647f9c1b888e406253e1dbf6b1e846b134c4b473ba706ce5a60340267db4b0e",
+    "command_chars": 36,
+    "returncode": 0,
+    "output_fingerprint": "832907c2fec36b66c9cb90724c2a066cfe855824fde1dd3c116335605af5cd11"
+   },
+   {
+    "command_sha256": "93fe36265ae717ff0c5038c58aa1207f629b7e911d54c8091b5dc9b4984dd04e",
+    "command_chars": 56,
+    "returncode": 0,
+    "output_fingerprint": "f9e85033269cd177a5febdb24df5cdcc1bf79224927c818b43e66e048a433b18"
+   },
+   {
+    "command_sha256": "a96052861e1e3120f7e23129f11e992508bac27c73f0fef19421a5ab0d07f82f",
+    "command_chars": 52,
+    "returncode": 0,
+    "output_fingerprint": "cee11e65fe171b2f4111b0aefa4eab006f26223b2f33696a8cd66d8c7259e101"
+   },
+   {
+    "command_sha256": "ceafeaf0dc7db567d5f37f90fff12cca8598c147d9ab59ce3bcb6863e2df8608",
+    "command_chars": 50,
+    "returncode": 0,
+    "output_fingerprint": "ad3fb5006c7369ad9e8e5ef54563c7b75f4268f479c13b36acf733dfbe129709"
+   },
+   {
+    "command_sha256": "97aa619c7c9ee4d8bd141f65cb9061cbbe273ecb9432a04963ab3bc843af1845",
+    "command_chars": 50,
+    "returncode": 0,
+    "output_fingerprint": "bf20ed7287202350aeb3615238b21da2baf7e1bb5182200a625bffa6d738df63"
+   },
+   {
+    "command_sha256": "97aa619c7c9ee4d8bd141f65cb9061cbbe273ecb9432a04963ab3bc843af1845",
+    "command_chars": 50,
+    "returncode": 0,
+    "output_fingerprint": "bf20ed7287202350aeb3615238b21da2baf7e1bb5182200a625bffa6d738df63"
+   },
+   {
+    "command_sha256": "97aa619c7c9ee4d8bd141f65cb9061cbbe273ecb9432a04963ab3bc843af1845",
+    "command_chars": 50,
+    "returncode": 0,
+    "output_fingerprint": "bf20ed7287202350aeb3615238b21da2baf7e1bb5182200a625bffa6d738df63"
+   },
+   {
+    "command_sha256": "97aa619c7c9ee4d8bd141f65cb9061cbbe273ecb9432a04963ab3bc843af1845",
+    "command_chars": 50,
+    "returncode": 0,
+    "output_fingerprint": "bf20ed7287202350aeb3615238b21da2baf7e1bb5182200a625bffa6d738df63"
+   },
+   {
+    "command_sha256": "97aa619c7c9ee4d8bd141f65cb9061cbbe273ecb9432a04963ab3bc843af1845",
+    "command_chars": 50,
+    "returncode": 0,
+    "output_fingerprint": "bf20ed7287202350aeb3615238b21da2baf7e1bb5182200a625bffa6d738df63"
+   },
+   {
+    "command_sha256": "97aa619c7c9ee4d8bd141f65cb9061cbbe273ecb9432a04963ab3bc843af1845",
+    "command_chars": 50,
+    "returncode": 0,
+    "output_fingerprint": "bf20ed7287202350aeb3615238b21da2baf7e1bb5182200a625bffa6d738df63"
+   },
+   {
+    "command_sha256": "97aa619c7c9ee4d8bd141f65cb9061cbbe273ecb9432a04963ab3bc843af1845",
+    "command_chars": 50,
+    "returncode": 0,
+    "output_fingerprint": "bf20ed7287202350aeb3615238b21da2baf7e1bb5182200a625bffa6d738df63"
+   },
+   {
+    "command_sha256": "97aa619c7c9ee4d8bd141f65cb9061cbbe273ecb9432a04963ab3bc843af1845",
+    "command_chars": 50,
+    "returncode": 0,
+    "output_fingerprint": "bf20ed7287202350aeb3615238b21da2baf7e1bb5182200a625bffa6d738df63"
+   },
+   {
+    "command_sha256": "97aa619c7c9ee4d8bd141f65cb9061cbbe273ecb9432a04963ab3bc843af1845",
+    "command_chars": 50,
+    "returncode": 0,
+    "output_fingerprint": "bf20ed7287202350aeb3615238b21da2baf7e1bb5182200a625bffa6d738df63"
+   },
+   {
+    "command_sha256": "97aa619c7c9ee4d8bd141f65cb9061cbbe273ecb9432a04963ab3bc843af1845",
+    "command_chars": 50,
+    "returncode": 0,
+    "output_fingerprint": "bf20ed7287202350aeb3615238b21da2baf7e1bb5182200a625bffa6d738df63"
+   },
+   {
+    "command_sha256": "97aa619c7c9ee4d8bd141f65cb9061cbbe273ecb9432a04963ab3bc843af1845",
+    "command_chars": 50,
+    "returncode": 0,
+    "output_fingerprint": "bf20ed7287202350aeb3615238b21da2baf7e1bb5182200a625bffa6d738df63"
+   }
+  ]
+ },
+ "effective_config": {
+  "verified": true,
+  "problems": [],
+  "effective_config_sha256": "e8937b480095e4731d644480cff3edad57ba6266a014348c468cb4a8f01820de",
+  "instance_template_sha256": "da5fe0813e040399492196027cc45f091ddb7cf76f6df9165d6e189ca32b27f3",
+  "run_args": [
+   "--rm",
+   "--platform",
+   "linux/amd64",
+   "--network",
+   "none"
+  ]
+ }
+}
