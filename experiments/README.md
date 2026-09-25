@@ -54,7 +54,9 @@ from unverified raw execution identity. They correct attempted-write/testing/wor
   The lead superseded it ([`b9ffb29`](../docs/theory_feedback_20260924_req013_capacity_decision.md)).
 - **Current request: DTR-REQ-014 (P0)**: the same single 14B repair1 episode under a versioned capacity rule
   (≥ 50 % physical memory free at admission, ≥ 20 % after load, and disk reserves), with in-episode supervision that
-  stops only the owned job on low memory or disk. In preparation; not executed.
+  stops only the owned job on low memory or disk. Built and verified (`5c5fc2f`; watchdog prerequisite `09982dc`).
+  Admission passed at 00:36:01Z on 25 September (63 % memory free; 81/78 GiB VM/host disk). Post-load was 20 % free,
+  which passes. **The single 14B episode is running**; no outcome yet.
 
 **Readiness 55%, change 0 points, range 45–65%.** Useful validated inference/adequate comparisons,
 final empirical synthesis, and independent reproducibility/metadata/package remain.

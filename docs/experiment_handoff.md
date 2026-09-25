@@ -5529,3 +5529,54 @@ The full suite passed (1,314 before this commit). A review found no launch block
 | DTR-REQ-009 / 008 / 007 / 006 / 005 / 004 / 003 / 002 / 001 | as in the table at `16d1d9b` | — |
 
 **Cadence:** job `c710b12b`, ticks at about :15/:45 UTC, session-only; I publish on change.
+
+## Worker checkpoint — 2026-09-25T00:40Z (host `date -u`; local 20:40 EDT) — DTR-REQ-014 built, verified, admitted; the single 14B episode is RUNNING
+
+**Read:** lead `b9ffb29` ([capacity decision](theory_feedback_20260924_req013_capacity_decision.md)); no new lead commit or issue #4 comment since 22:23:12Z. **Code/config commit:** `5c5fc2f`. **Prerequisite record:** `09982dc`. **Authorized runs:** DTR-REQ-014 only (one 14B repair1 DEVELOPMENT episode if every gate passes).
+
+- **Build (`5c5fc2f`, new files only):**
+  - `configs/v2_req014_14b_capacity_probe_20260924.json` (sha256 `16c3e167…`): the REQ-013 live design with only the versioned capacity rule.
+  - `experiments/v2_agent/req014_pair.py`: a thin wrapper over `req013_pair`.
+  - `experiments/v2_agent/req014_entry.py`: `req012_entry` rebound, plus a declared latch.
+  - `tests/test_req014_capacity.py`: 62 fixtures.
+  - **Results:** full suite 1376 passed.
+  - **Independent review** found 4 launch blockers, all fixed and re-verified (0 remaining):
+    - The pinned environment's `except Exception` around `docker exec` could swallow the capacity SIGALRM during a container command. Fixed with an entry latch that refuses every later query, plus an immediate stop of the owned server.
+    - A stop that lands during `docker run -d` could leave an unrecorded container. Fixed with a sweep of that container only, by exact ID and pinned image.
+    - The inherited 'operational zero' summary text contradicted your rule. It is now disclosed as not applying to capacity rows.
+- **Prerequisite, no model (`09982dc`):**
+  - The watchdog host check passed on this host: the owned stub stopped 0.21 s after the parent SIGKILL (bound 10.2 s), and the REQ-011 fixture passed 1 of 1.
+  - The sources were verified.
+- **Admission, 00:36:01Z: every gate passed.**
+
+  | Measurement | Observed | Gate |
+  |---|---|---|
+  | Physical memory free | 63 % (64 % in the dry run) | ≥ 50 % |
+  | Projection | 29.39 GB | ≤ 32.21 GB (RAM − 2 GiB) |
+  | VM disk free | 81.2 GiB | ≥ 30 GiB |
+  | Host disk free | 78.2 GiB | ≥ 25 GiB |
+  | Swap used | 14.61 of 15.0 GiB | recorded, not gated |
+
+  Also passed: peer lease `none` (MultiRound status 00:11:09Z), no conflicts, sources, images, isolation (`--network none`), models, the REQ-012 gate precondition, REQ-013 step 1 and the prerequisite record.
+- **Post-load, 00:36:14Z:** physical free **20 %**, exactly at the ≥ 20 % gate, which passes (`>=`). VM and host disk are unchanged. The episode started at 00:36:15Z.
+- **In-episode supervision** samples every ≤ 10 s. It stops the owned agent and server if physical free < 10 %, VM disk < 20 GiB, host disk < 15 GiB, or a measurement is unavailable.
+- **No outcome has been examined.** The run writes only under `work/runs/req014_14b_capacity_probe_20260924/probe` and `results/…/probe`. There are no git pulls during the run.
+
+**Decisions for you:** from the build review, declared and not blocking:
+
+1. **A breach during the child's terminal phase** (after its own Submitted exit, before the process exits) still classifies the episode as capacity_interruption, and it is not graded. `capacity_latch.json` records `first_sigalrm_after_inference_end`.
+2. **Sampling gaps over 10 s** (possible only in a host stall) are counted as `episode_gaps_over_max` and do not fail closed.
+3. **The entry latch's three runtime overrides** are declared under `supervision.entry_latch`, not as a configuration change. `repair1` is byte-identical to REQ-013.
+
+| Request | Status | Artifact |
+|---|---|---|
+| DTR-REQ-014 (P0) | **built and verified; admitted; the single 14B episode RUNNING (started 00:36:15Z, cap 3600 s from 00:36:01Z)** | `5c5fc2f`, `09982dc`, next commit |
+| DTR-REQ-013 (P0) | step 1 completed; live step BLOCKED (4 GiB swap rule) and superseded by REQ-014 | `16d1d9b`, `b9ffb29` |
+| DTR-REQ-012 (P0) | completed/inspected: gate accepted; probe unresolved | `dc11e63`, `8bcca8a` |
+| DTR-REQ-011 (P0) | completed: 0 of 2 eligible | `2714fda`, `6074003` |
+| DTR-REQ-010 (P0) | completed/inspected | `7805d8b`, `10be146` |
+| DTR-REQ-009 / 008 / 007 / 006 / 005 / 004 / 003 / 002 / 001 | as in the table at `16d1d9b` | — |
+
+**Readiness:** 55 %, change 0 points (range 45–65 %; categories 75/75/50/25/25 → 55.00). Largest remaining: the REQ-014 outcome and your executor/benchmark decision; a real-agent comparison with valid fixed-target inference; final synthesis; reproducibility/metadata/package.
+
+**Cadence:** job `c710b12b`, ticks at about :15/:45 UTC, session-only; I publish on change.

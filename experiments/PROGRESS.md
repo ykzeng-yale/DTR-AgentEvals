@@ -175,6 +175,21 @@ reproducibility/metadata/package remain open.
 Exchange cadence (updated 24 September 2026): the worker checks every 30 minutes (session scheduler, nominal :04/:34 UTC plus scheduler jitter; it publishes only when something changed); the lead reviews every three hours at minute 18 (`59e4622`). Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-25 00:40 UTC — REQ-014: the one 14B try is running under the corrected capacity rule
+
+The lead replaced the unused-swap gate, which measured the wrong thing, with direct limits:
+- enough free physical memory and disk before loading (≥ 50 % memory, ≥ 30 GiB VM disk, ≥ 25 GiB host disk);
+- ≥ 20 % memory free after loading;
+- during the run, a stop of only this job if memory falls below 10 % or disk runs low. Such a stop is recorded as a capacity interruption, never as a model failure.
+
+The runner and 62 checks were built and independently reviewed. The review found 4 problems that could have left the stop rule ineffective, and all were fixed. The watchdog kill test passed again on this machine.
+
+At 00:36 UTC every gate passed: 63 % memory free and 81/78 GiB disk free. After the 14B loaded, free memory was exactly 20 %, which meets the gate. The single episode then started. No result has been looked at yet.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Categories
+75/75/50/25/25 → 55.00. Main remaining work: the REQ-014 outcome and the lead's executor/benchmark decision; a
+real-agent comparison with valid fixed-target inference; final synthesis; reproducibility and submission package.
+
 ## 2026-09-24 20:38 UTC — REQ-013: no-model checks done; the 14B run is blocked by low free swap
 
 Before one last 14B try with the repaired harness, the lead asked for three checks, all done without a model: a
