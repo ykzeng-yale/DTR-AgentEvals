@@ -5929,3 +5929,38 @@ Full-project arXiv/preprint readiness **55%, change 0 percentage points, range 4
 **Readiness:** 55 %, change 0 points (range 45–65 %; 75/75/50/25/25 → 55.00).
 
 **Cadence:** job `c710b12b`, ticks at about :15/:45 UTC, session-only; I publish on change.
+
+## Worker checkpoint — 2026-09-25T20:26Z (host `date -u`) — DTR-REQ-017: build FROZEN and admitted, awaiting your review and release (no model call)
+
+**Read:** lead `c648a84` (19:23Z) and issue #4 up to 19:25:19Z. **Frozen build:** `0127f3a`. **Review packet:** [docs/req017_review_packet_20260925.md](req017_review_packet_20260925.md). **Authorized runs:** none until your release.
+
+- **Built as you specified:**
+  - A versioned adapter whose only change is canonicalizing a bracketed *current-tree* id ('[19]' → '19', full match, no whitespace).
+  - Unchanged: the REQ-016 prompt bytes, model view, feedback, leak guard, 7B/llama.cpp pins, task, T 0, the 16/32 caps and the scorer.
+  - Seeds **300–303** and a **2700 s / 2 GiB** cap.
+  - REQ-016 sources and all 292 archive files are verified byte-identical at admission.
+- **Checks:**
+  - 58 fixtures pass, including bracket/bare equivalence on all 68 saved REQ-015 trees, and the full suite passes (1525).
+  - Three adversarial review passes; every finding was repaired.
+  - No-model stub rehearsals on development seeds only.
+  - Admission on the committed tree at 2026-09-25T20:26Z: admitted.
+- **Model requests: none.** A launch naming your hold commit `c648a84` is refused before any namespace.
+- **To release:** publish a lead commit on main after `0127f3a` whose message contains exactly this line (outside any fenced block):
+  `RELEASE DTR-REQ-017 manifest_sha256=72e078df363b8ce35d52d29a4ebd3a8aa2b9a86151b64639b476f0ce1af87ffc`
+  A later `REVOKE DTR-REQ-017` or `HOLD DTR-REQ-017` line cancels it. After a valid release I run the single pilot once, verify it and publish.
+- **Questions for you:**
+  1. Do you accept the reuse of the frozen REQ-016 child and parent through reversible rebinding, rather than copied code, as "only the adapter changed"?
+  2. Discriminator (1) counts executed click/fill only; noop does not count, and canonicalized executions are reported. Is that your intended reading of "an action executes"?
+  3. Are the declared residuals acceptable? They are: convention-based lead authority (shared git identity), and inherited REQ-016 labels in some console lines and admission keys.
+
+| Request | Status | Artifact |
+|---|---|---|
+| DTR-REQ-017 (P0) | **build frozen and admitted; awaiting lead review and explicit release (no model call)** | `0127f3a`, this commit |
+| DTR-REQ-016 (P0) | completed: format/interface operational zero (0/8; 0 actions executed) | `ab39bbd`, `a1f1c7b`, `74a20c8`, `c648a84` |
+| DTR-REQ-015 (P0) | completed: operationally qualified, scientifically unproven | `cdf6a04`, `bdd007a` |
+| DTR-REQ-014 / 013 / 012 / 011 / 010 | completed (013 live step superseded) | see `74a20c8` table |
+| DTR-REQ-009 … 001 | as in the table at `16d1d9b` | — |
+
+**Readiness:** 55 %, change 0 points (range 45–65 %; 75/75/50/25/25 → 55.00).
+
+**Cadence:** job `c710b12b`, ticks at about :15/:45 UTC, session-only; I publish on change.

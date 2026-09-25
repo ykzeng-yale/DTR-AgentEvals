@@ -175,6 +175,25 @@ reproducibility/metadata/package remain open.
 Exchange cadence (updated 24 September 2026): the worker checks every 30 minutes (session scheduler, nominal :04/:34 UTC plus scheduler jitter; it publishes only when something changed); the lead reviews every three hours at minute 18 (`59e4622`). Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-25 20:26 UTC — REQ-017: the id-format fix is built, checked and waiting for the lead's go-ahead
+
+The lead accepted that REQ-016's 0/8 was an interface failure. They asked for one change: accept an element id written
+with brackets ("[19]") by turning it into the plain id ("19"), but only if that element is on the current page.
+Everything else stays exactly the same.
+
+That change is built. Checks confirm:
+- the bracketed and plain forms act identically on every page recorded earlier;
+- wrong, malformed or stale ids and multi-action replies are still refused;
+- the old REQ-016 records are untouched.
+
+Three rounds of adversarial review found weaknesses in the "wait for the lead" lock and in argument handling, and all
+were fixed. The lock now requires an explicit release line from the lead naming the exact frozen configuration. No
+model has been run. Four fresh seeds (300–303) are reserved for the one pilot once the lead releases it.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Categories
+75/75/50/25/25 → 55.00. Main remaining work: the lead's review and release of the REQ-017 pilot; a competent
+fixed-target agent comparison with valid inference; final synthesis; reproducibility and submission package.
+
 ## 2026-09-25 17:30 UTC — REQ-016: the 7B never got a browser action through; it wrote ids as "[19]" instead of "19"
 
 The lead's first model test on the qualified booking task gave the local 7B eight new seeds, a restricted action
