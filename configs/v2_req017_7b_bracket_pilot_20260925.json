@@ -1,0 +1,284 @@
+{
+ "request": "DTR-REQ-017",
+ "kind": "one prospective four-seed fixed-backend 7B DEVELOPMENT pilot on MiniWoB book-flight with a versioned bracket-id adapter (no router); held until the lead releases it",
+ "status": "DEVELOPMENT",
+ "lead_commit": "c648a84",
+ "lead_decision": "docs/theory_feedback_20260925_req016_decision.md",
+ "source_commit": "74a20c8",
+ "hypothesis": "canonicalizing the bracketed ids actually used by the 7B, while preserving the one-action rule, permits at least a first browser action without changing the scoring target; multi-action may still prevent task completion (lead)",
+ "assignment": {
+  "backend": "small",
+  "model": "Qwen/Qwen2.5-Coder-7B-Instruct",
+  "model_commit": "c03e6d358207e414f1eca0bb1891e29f1db0e242",
+  "port": 8291,
+  "alias": "qwen2.5-coder-7b-instruct-c03e6d3-q4_k_m",
+  "gguf": "work/models/converted_4fea119/qwen2.5-coder-7b-instruct-c03e6d3-q4_k_m.gguf",
+  "gguf_sha256": "87a3665ca3247c54dfa198010f6e1f48d41611029bbcb5ed185a5ad05fcd3b81",
+  "gguf_bytes": 4683074208
+ },
+ "model_source": {
+  "manifest": "configs/v2_req011_competence_pair_20260924.json",
+  "manifest_sha256": "3ff94cf3def9c4b50848b617c26861edca5411b4dae6770f51cfce2b1a8b519a",
+  "row": "assignments[backend=small]"
+ },
+ "lead_pins": {
+  "gguf_sha256": "87a3665ca3247c54dfa198010f6e1f48d41611029bbcb5ed185a5ad05fcd3b81",
+  "llama_cpp_commit": "4fea119de30f6a923992780f6fd5ccb0bee5d47d"
+ },
+ "serving": {
+  "code": "req011_pair.Servers (pilot_runner.Servers) with the REQ-017 holder label (DTR-AgentEvals worker (DTR-REQ-017 7B bracket-id pilot)); llama.cpp 4fea119 llama-server -ngl 99 -np 1 -c 16384 on 127.0.0.1:8291; served identity by req011_pair.check_served (GET /props and /v1/models only, no generation probe); the separate req011_pair.watchdog stops the recorded server if this parent dies or the batch deadline passes"
+ },
+ "seeds": [
+  300,
+  301,
+  302,
+  303
+ ],
+ "episodes_per_seed": 1,
+ "order": "ascending, one episode each, in one batch; fresh, never used by REQ-015/016 or any rehearsal",
+ "settings": {
+  "temperature": 0,
+  "max_tokens": 1536,
+  "context": 16384,
+  "stream": false,
+  "other_sampling": "llama.cpp server defaults (temperature 0 is greedy)"
+ },
+ "caps": {
+  "logical_per_episode": 16,
+  "physical_per_episode": 32,
+  "attempts_per_call": 2,
+  "request_timeout_s": 300,
+  "batch_wall_s": 2700,
+  "cleanup_reserve_s": 240,
+  "child_stop_grace_s": 60,
+  "artifact_gib": 2
+ },
+ "accounting": {
+  "logical_call": "one model query whose reply is parsed (a valid, invalid or unparsable reply all count); a call with no reply after its attempts ends the episode",
+  "physical_attempt": "one HTTP POST; a second attempt of the same call only after a connection error, timeout or HTTP 5xx; an HTTP 400 context-size error or any other 4xx is not retried and ends the episode",
+  "executed_action": "a valid parsed action sent to the environment"
+ },
+ "adapter": {
+  "module": "experiments/v2_browser/req017_adapter.py",
+  "files": {
+   "experiments/v2_browser/req016_adapter.py": "b75fe53d8dbf602e6debb11b77b757fbc30b0f420a1c2e78001ecce25e0d2609",
+   "experiments/v2_browser/req017_adapter.py": "68aa9625ffae45ab791ebfdcdb2b7fadea47d47f11f38c8dc9a71cc68d006fc6",
+   "experiments/v2_browser/req016_episodes.py": "095d9c307d7a294484e25405f71b8d07696127a54cb27c848ee00b377a97603e",
+   "experiments/v2_browser/req017_episodes.py": "4e1587270e3f06999b70406fdc2171e9d88985fb1dffea884067a55213c3e505",
+   "experiments/v2_browser/req016_screen.py": "b3c949445795d298215c8883fc77c2e6ba2983426a259ca890f9a6e846e902a0",
+   "experiments/v2_browser/req017_screen.py": "95ad99a98c2f257c0fd2306b41a6d69925fa93c5ca5a6d2b6bbc1e85d3c00443"
+  },
+  "prompt_sha256": "119a398490a8b4de33cf935b39217ead71f1a55af748a1caea7827879db79c28",
+  "prompt_sha256_rule": "sha256 of SYSTEM_PROMPT + \"\\n\\x00\\n\" + USER_TEMPLATE",
+  "system_prompt": "You are a web agent. You operate one web page through its accessibility tree. Every element you can act on has an id in square brackets, for example [19].\nEach reply must end with exactly one action, alone on its own line, chosen from:\nclick('<id>')\nfill('<id>', '<text>')\nnoop()\nUse only ids that appear in the current accessibility tree. No other function and no second action is allowed. You may write one short line of reasoning before the action.",
+  "user_template": "Goal: {goal}\n\nCurrent page (accessibility tree):\n{axtree}\n\nPrevious actions (oldest first):\n{history}\n\nActions remaining: {remaining}\n\nReply with your next action.",
+  "messages": "[system: SYSTEM_PROMPT, user: USER_TEMPLATE filled with the goal, the flattened accessibility tree (browsergym.utils.obs.flatten_axtree_to_str, defaults), the history lines and the remaining logical calls]; no earlier trees and no earlier replies are resent",
+  "history_lines": "'N. <canonical action> -> ok', 'N. <canonical action> -> error: <error excerpt>' or 'N. invalid reply (<cause>): not executed'; '(none)' when empty",
+  "model_view": "goal and flattened accessibility tree (req016_adapter.model_view), plus each earlier action error only as the history excerpt (first line, any <...> markup removed, at most 160 characters; req016_adapter.error_excerpt); never dom_object, url, open_pages_urls, screenshot, extra_element_properties, chat_messages, elapsed_time, reward, terminated, truncated or task_info",
+  "grammar": "exactly one reply line that is a single call of click('<bid>'), fill('<bid>', '<text>') or noop() (backticks and an 'Action:' prefix are trimmed); positional string literals only; bid present as a line-leading [bid] of the current tree; fill text <= 200 characters; REQ-017: the bid may also be written in its bracketed display form '[<id>]' (a full match of exactly one pair of brackets around a non-empty id with no whitespace, so '[19]\\n' or '[19] ' fail), which is canonicalized to the bare '<id>' when that bare id is a line-leading [bid] of the CURRENT tree; any other bracketed, nested or malformed form, and an id present only in the history, is unknown_bid",
+  "invalid": {
+   "causes": [
+    "no_action",
+    "multiple_actions",
+    "forbidden_function",
+    "bad_arguments",
+    "unknown_bid",
+    "fill_too_long"
+   ],
+   "rule": "an invalid reply is recorded, not executed, shown in the next prompt as an invalid-reply history line, and consumes one logical call; there is no re-prompt, no repair and no retry of the same call"
+  },
+  "leak_guard": {
+   "markers": [
+    "file:",
+    "data-price",
+    "data-duration",
+    "data-result",
+    "WOB_",
+    "RAW_REWARD",
+    "REWARD_GLOBAL",
+    "DONE_GLOBAL",
+    "core.endEpisode",
+    "book-flight.html",
+    "miniwob",
+    "screenshot",
+    "dom_object"
+   ],
+   "rule": "the message text of every request is checked before its pre-dispatch receipt, after removing text the model itself typed (its fill values, echoed in the history and the page); a request containing any marker is never sent and the batch stops (cause leak_guard)"
+  },
+  "single_change": "req017_adapter.parse_action = req016_adapter.parse_action plus the bracketed current-tree id canonicalization; every other adapter object is the REQ-016 object itself (same prompt bytes, model view, history feedback, leak guard, request body, allowed functions and causes)",
+  "canonicalization_record": "a canonicalized, executed step keeps invalid_cause null and carries invalid_detail \"bracketed current-tree id canonicalized\" (the inherited REQ-016 field name); counts of canonicalized actions key on invalid_cause null AND that detail"
+ },
+ "task": {
+  "gym_id": "browsergym/miniwob.book-flight",
+  "full_success": "DONE_GLOBAL is true and RAW_REWARD_GLOBAL == 1 (the REQ-015 predicate)",
+  "terminal_causes": [
+   "full_success",
+   "wrong_booking (DONE, raw -1)",
+   "core_timeout (DONE, reason timed out)",
+   "page_or_url_changed (BrowserGym validate error)"
+  ]
+ },
+ "browser": {
+  "python": "work/venvs/browsergym_9e779f0/bin/python",
+  "entry": "experiments/v2_browser/req017_episodes.py",
+  "req015_manifest": "configs/v2_req015_miniwob_bookflight_20260925.json",
+  "req015_manifest_sha256": "90979f0fcfade8cc948244fdc86cf347c3a888c194bb6214ab01c5121df16ceb",
+  "pins": "the REQ-015 source and runtime pins, re-checked by the child (req015_qualify.check_sources and check_runtime) at admission",
+  "miniwob_html_dir": "work/third_party_req015/miniwob-plusplus/miniwob/html/miniwob",
+  "playwright_browsers_path": "work/ms-playwright-req015",
+  "exclusive_runtime_paths": [
+   "work/ms-playwright-req015",
+   "work/venvs/browsergym_9e779f0"
+  ],
+  "action_set": [
+   "click",
+   "fill",
+   "noop"
+  ],
+  "action_mapping": "browsergym HighLevelActionSet(subsets=['custom'], custom_actions=[click, fill], multiaction=False, strict=True) (noop is always included); the environment executes only the adapter's canonical action string",
+  "context": "headless Chromium (build 1117), a fresh browser and offline context per episode, task defaults unchanged (viewport 332x214, slow_mo 100 ms, timeout 5000 ms, episode_max_time 1000000 ms, human display removed)",
+  "transport": "urllib POST to the owned server with proxies disabled (ProxyHandler({})); per-request timeout min(request_timeout_s, time to the child deadline)",
+  "stop_handling": "SIGTERM/SIGINT only set a stop flag; they raise at once only while a model request is in flight (plain urllib). Playwright calls are never interrupted: the flag is checked before each reset, model call and step, and after each episode (so a stop during env.close still ends the batch). The child also stops when its supervising parent is gone (re-parented)",
+  "batch_stop_causes": [
+   "deadline",
+   "leak_guard",
+   "transport_failure",
+   "http_error",
+   "harness_error",
+   "artifact_cap",
+   "stopped_by_supervisor"
+  ],
+  "records": "per episode: steps.jsonl (reset and every call: the exact model view, history and budget shown, reply, parse result, executed action, action error, verifier-only fields), receipts/callNN_attemptKK.request.json (full body and sha256, written before dispatch) and .outcome.json, screenshots/stepNN.png, episode.json; one fsync-ed line per finished seed in episodes.jsonl (before the batch summary exists); batch_summary.json"
+ },
+ "capacity": {
+  "version": "req016-capacity-v1",
+  "basis": "the REQ-014 physical-memory thresholds (lead-accepted) with host disk; no VM disk rule (no container runs); a >10 s sampling gap fails closed (lead prospective rule)",
+  "thresholds": {
+   "admission": {
+    "physical_free_pct": 50,
+    "host_disk_free_gib": 25
+   },
+   "post_load": {
+    "physical_free_pct": 20,
+    "host_disk_free_gib": 25
+   },
+   "episode": {
+    "physical_free_pct": 10,
+    "host_disk_free_gib": 15
+   }
+  },
+  "kv_gib": 0.88,
+  "vm_gib": 16,
+  "browser_gib": 2,
+  "margin_gib": 2,
+  "projection_rule": "gguf_bytes + (kv_gib + vm_gib + browser_gib) GiB <= hw.memsize - margin_gib GiB",
+  "sample_interval_s": 5,
+  "max_gap_s": 10,
+  "measurements": "physical_free_pct: memory_pressure (3 s timeout); host_disk_free_gib: shutil.disk_usage(repository); swap total/used/free: sysctl vm.swapusage (1 s timeout), recorded, not gated",
+  "stop": "a failing or unavailable episode sample, a sample that cannot be taken or recorded, or a gap over 10 s between sample starts, while the child runs: SIGTERM to the child (it stops at its next safe point, records the stop and closes its browser), the owned 7B server stopped at once, the child waited up to child_stop_grace_s, then its process group killed; then the server is stopped if still live and processes of the exclusive browser runtime paths that were not running before the child started are swept (SIGTERM, then SIGKILL). Nothing else is signalled. The owned server exiting during the batch stops the child the same way (status SERVER_FAILURE)",
+  "classification": "status CAPACITY_INTERRUPTION; the interrupted seed is capacity_interruption and later seeds not_run_capacity: not outcomes, never zeros, never re-run"
+ },
+ "statuses": {
+  "COMPLETED": "the child exited 0 after recording every manifest seed (four) with no batch stop",
+  "CAPACITY_INTERRUPTION": "capacity.stop",
+  "DEADLINE": "the batch deadline stopped the child",
+  "SERVER_FAILURE": "the owned server process exited during the batch",
+  "CHILD_STOPPED_": "the child stopped the batch itself (suffix: the batch stop cause, e.g. TRANSPORT_FAILURE, LEAK_GUARD, HARNESS_ERROR, DEADLINE)",
+  "CHILD_FAILED": "the child exited without a complete clean batch record",
+  "BLOCKED": "an admission, serving or post-load gate failed; no episode",
+  "INTERRUPTED": "an operator signal to the parent",
+  "ERROR": "an exception in the parent"
+ },
+ "host_gates": "admission: the manifest binding, sources tracked and unchanged, the browser child admission (REQ-015 pins and the restricted action set), the 7B GGUF and llama.cpp tool hashes (req011_pair.probe_models), no conflicting job, listener, running container or pause file and a fresh peer lease none (req011_pair.probe_conflicts), no other REQ-016 or REQ-017 process, memory and host disk at the admission thresholds. Before any of these, the lead-release gate (release_gate) must pass. A pin failure refuses before the namespace (nothing consumed); any other failure is BLOCKED with the record published. After the load: the served identity and the post-load thresholds, else the server is stopped and the screen is BLOCKED",
+ "scoring": {
+  "rule": "full successes k of 4, all four seeds in the denominator (seeds read from the frozen manifest copied into the run); every non-success keeps its machine cause and sub-causes; capacity rows labelled as such; screen_complete only for COMPLETED; per seed executed_click_fill, executed_canonicalized and executed_noop from steps.jsonl",
+  "report": "the exact k/4, executed-action counts and the failure taxonomy; no rate, interval, routing or 14B claim"
+ },
+ "sources": [
+  "experiments/v2_browser/req017_adapter.py",
+  "experiments/v2_browser/req017_episodes.py",
+  "experiments/v2_browser/req017_screen.py",
+  "configs/v2_req017_7b_bracket_pilot_20260925.json",
+  "tests/test_req017_adapter.py",
+  "experiments/v2_browser/req016_adapter.py",
+  "experiments/v2_browser/req016_episodes.py",
+  "experiments/v2_browser/req016_screen.py",
+  "configs/v2_req016_7b_browser_screen_20260925.json",
+  "tests/test_req016_screen.py",
+  "experiments/v2_browser/req015_qualify.py",
+  "configs/v2_req015_miniwob_bookflight_20260925.json",
+  "configs/v2_req011_competence_pair_20260924.json",
+  "experiments/v2_agent/req011_pair.py",
+  "experiments/v2_agent/pilot_runner.py",
+  "experiments/v2_agent/pilot_cohort.py",
+  "experiments/v2_agent/workspace_capture.py",
+  "experiments/v2_agent/cue_admission.py",
+  "experiments/v2_agent/cue_transport.py",
+  "experiments/v2_agent/grade_identity.py",
+  "experiments/v2_adapter/req010_sentinel.py",
+  "experiments/v2_agent/cue_cohort.py",
+  "experiments/v2_agent/request_receipt.py"
+ ],
+ "outputs": {
+  "raw": "work/runs/req017_7b_bracket_pilot_20260925",
+  "published": "results/v2_browser/req017_7b_bracket_pilot_20260925",
+  "pause_file": "work/REQ017_PAUSE"
+ },
+ "not_authorized": [
+  "model call before the lead release",
+  "router or routing policy",
+  "14B or any other backend",
+  "extra seeds or repeated episodes",
+  "prompt, feedback, model, scorer or other adapter changes",
+  "cue",
+  "E2 live",
+  "CONFIRM",
+  "scripted or verifier rescue",
+  "rescoring REQ-016"
+ ],
+ "development_rehearsals": {
+  "statement": "no-model rehearsals only (a local stub endpoint instead of any model; development seeds 1000-1001), none on seeds 300-303; not part of the pilot record",
+  "review": "a three-lens adversarial pre-review (single change, hold/release safety, acceptance) with a verification critic found one blocker (the first release gate accepted the lead hold commit c648a84 because it substring-matched the diff) and material items (a trailing-newline bracketed id accepted via re $, noop counted by discriminator 1, an ungated child --run, inherited console denominator 8, REQ-016 texts copied into this manifest, a release not bound to the reviewed bytes); all were repaired; a second independent verification pass with an adversarial gate attack then found two argv-parsing bypasses (an empty --watchdog argument skipped the gate; abbreviated, \"=\" or repeated --run forms skipped the child guard) and hardening items (stale console line, two unbound imported modules, no revocation, a token quoted in a fenced block, a manifest swap after the gate, a mutable-file guard trigger, a substring parent check, local-only or replaced lead commits); all were repaired in this version with fixtures, and the lead-hold commit c648a84 is refused by a real-repository fixture",
+  "runs": [
+   {
+    "utc": "2026-09-25T20:18:58Z",
+    "what": "on the final code (the req017 hashes bound above): the same stub rehearsal, identical parse/execute results (canonicalized fill('19', 'Akuton') and click('27') executed without action error; [99] unknown_bid and the two-line reply multiple_actions not executed; noop and bare click unchanged), the child ran its read-once guarded config copy, refused configs with pilot seed 300 or pilot port 8291 and no lead release (exit 3, no request), and rejected the '--run=' form (argparse exit 2)"
+   },
+   {
+    "utc": "2026-09-25T20:05:35Z",
+    "what": "on an intermediate version (before the argv and gate hardening): the same stub rehearsal as below, with identical results (canonicalized fill('19', 'Akuton') and click('27') executed without action error; [99] unknown_bid and the two-line reply multiple_actions not executed; noop and bare click unchanged), and the child itself refused a config with pilot seed 300 and no lead release (exit 3, no episode directory, no request)"
+   },
+   {
+    "utc": "2026-09-25T19:50:44Z",
+    "what": "on the pre-review code (before the fullmatch and gate repairs): the REQ-017 child (req017_episodes --run, real headless browser, offline) on seeds 1000-1001 against a stub returning fixed replies: fill('[19]', 'Akuton') and click('[27]') were canonicalized to fill('19', 'Akuton') and click('27') and EXECUTED with no action error; click('[99]') stayed unknown_bid and fill+click on two lines stayed multiple_actions (neither executed); noop() and bare click('27') unchanged; request/receipt label DTR-REQ-017; no leak marker in any stub request body"
+   }
+  ]
+ },
+ "scope": "A single-backend four-seed DEVELOPMENT diagnostic of one interface change on one qualified task. It is not a success-rate estimate, not a routing or policy contrast, not CONFIRM evidence and not a repository-repair claim; the fixed primary target is unchanged.",
+ "inherited_labels": [
+  "console and refusal messages printed by the reused req016_screen code say \"DTR-REQ-016 ...\" (e.g. \"DTR-REQ-016 is single-shot\", \"DTR-REQ-016 refused before its namespace\"); req017_screen prints its own final line with the REQ-017 label and the four-seed denominator",
+  "admission.json keys other_req016_processes and req016_pause_file_present hold the REQ-017 checks (OWN_SCRIPTS covers the req016 and req017 scripts; the pause file is work/REQ017_PAUSE)",
+  "the browser admission writes its temporary config under work/runs/req016_admission_scratch and removes it (the REQ-016 archive is not touched)",
+  "the per-step field invalid_detail also carries the canonicalization note on valid, executed steps (adapter.canonicalization_record)"
+ ],
+ "req016": {
+  "manifest": "configs/v2_req016_7b_browser_screen_20260925.json",
+  "req016_manifest_sha256": "ec9c5f10ad86725562e818a4222fb674816e32e18d0ecd1769eb045e2ffed1e8",
+  "archive_publication_manifest": "results/v2_browser/req016_7b_browser_screen_20260925/publication_manifest.json",
+  "req016_archive_publication_manifest_sha256": "dd640d772323b54c478437d219de789f0e5a672fde673fe8be51534749e23259",
+  "verification_record": "results/v2_browser/req016_independent_verification_20260925.json",
+  "verification_record_sha256": "3966bc7b84896b9220f2d6a24609ac39bf4dc97a468386de78742ab3ba66c037",
+  "rule": "the REQ-016 manifest, sources and archive stay byte-for-byte (checked at admission); REQ-016 outcomes are never rescored"
+ },
+ "release_gate": {
+  "rule": "no model call until the lead reviews this frozen source and explicitly releases the one pilot. req017_screen.py parses its arguments strictly (no abbreviations; exactly one of --admission-only, --lead-release SHA or the internal --watchdog <existing file>; the user argv is never forwarded) and refuses every launch before the namespace unless --lead-release is the full 40-hex sha of a commit object whose subject starts with \"lead:\" (any case) and whose MESSAGE (never a diff; git replace objects ignored) contains, outside fenced blocks, exactly one line \"RELEASE DTR-REQ-017 manifest_sha256=<sha256 of this manifest file>\" equal to the sha256 of the manifest bytes being run; the commit must be an ancestor of HEAD and of the actual remote main (git ls-remote origin refs/heads/main, fetched if absent), must descend from the commit that last changed this manifest, must not be followed on HEAD or the remote main by a lead commit with a line \"REVOKE DTR-REQ-017\" or \"HOLD DTR-REQ-017\", and every manifest source must be unchanged between it and HEAD. The manifest the run loads must still carry the released sha256 (else BLOCKED before serving). The release is recorded in admission.json (probe lead_release), the summary and the child config. req017_episodes.py accepts exactly \"--admission PATH\" or \"--run PATH\", reads the run config once and runs exactly those bytes; a run on a pilot seed (300-303) or the pilot port (8291), constants checked against this manifest, needs that release re-verified and must be the direct child (getppid) of a live python req017_screen.py process",
+  "token": "RELEASE DTR-REQ-017 manifest_sha256=<sha256 of configs/v2_req017_7b_bracket_pilot_20260925.json>",
+  "revoke": "a later lead commit line \"REVOKE DTR-REQ-017\" or \"HOLD DTR-REQ-017\" cancels a release",
+  "residual": "the lead and worker share one git identity, so lead authority is by convention (\"lead:\" subject on the published remote main), not cryptographic",
+  "released_at_freeze": false
+ },
+ "discriminator": {
+  "predeclared": "(1) whether any click or fill action executes (episodes_with_executed_click_fill >= 1; an executed noop() does not count; executed_canonicalized_total is reported alongside) and (2) whether at least one episode reaches full success (DONE and raw reward 1)",
+  "decision": "zero terminal full successes ends this local 7B browser path without further prompt/adapter tuning; a positive pilot remains DEVELOPMENT and returns to the lead before any model pair or routing study (lead rule)"
+ }
+}
