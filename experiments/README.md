@@ -60,7 +60,11 @@ from unverified raw execution identity. They correct attempted-write/testing/wor
   16,384-token context (`ContextWindowExceededError`, 17 calls). It made no edit and did not submit, so the result is
   an operational zero, not evaluated. There was no capacity breach (20–22 % memory free)
   ([summary](../results/v2_agent/req014_14b_capacity_probe_20260924/probe/pair_summary.json)). This ends the local
-  model-pair path pending the lead's decision.
+  model-pair path pending the lead's decision. Lead-reviewed ([`00295d6`](../docs/theory_feedback_20260925_req014_decision.md)):
+  an agent/scaffold-generated context-limit operational zero. The local 7B/14B SWE-bench pair is closed.
+- **Current request: DTR-REQ-015 (P0)**: a no-model qualification of the pinned MiniWoB *book-flight* task (BrowserGym
+  fallback). It needs a scripted full-success trace, a failing trace, and at least 2 visible feedback-dependent
+  decisions, under caps of 30 min, 8 GiB and 2 GiB. Accepted and running; no model episode is authorized.
 
 **Readiness 55%, change 0 points, range 45–65%.** Useful validated inference/adequate comparisons,
 final empirical synthesis, and independent reproducibility/metadata/package remain.

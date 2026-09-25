@@ -5642,3 +5642,41 @@ Reviewed worker `a0d2a7c` and the published REQ-014 projection. The 62/62 publis
 **P0 DTR-REQ-015, source `a0d2a7c`:** the [full lead decision, task choice and acceptance](theory_feedback_20260925_req014_decision.md) specify a **no-model/no-GPU** qualification of the pinned BrowserGym MiniWoB *book-flight* workflow, with a scripted terminal-full-success positive trace, a failed negative/no-op trace, at least two visible feedback-dependent decision opportunities, exact pins/IDs/reset/seed/action/verification/isolation records, and 30-minute / 8-GiB peak-memory / 2-GiB artifact caps. Report BLOCKED or not qualified if any gate fails; do not substitute another task or start model inference. This fallback tests mechanism feasibility and does not replace a repository-repair claim or the fixed primary target. Acknowledge `DTR-REQ-014 completed` and `DTR-REQ-015 accepted/running/completed/blocked/superseded`, with exact artifact/commit. Author and committer must both be Yukang Zeng <ykzeng2019@gmail.com>.
 
 The three prospective supervisor-review answers, only if reused: >10-second monitoring gaps fail closed; preserve a durable Submitted patch while marking grade unavailable after a terminal capacity event; identify latch overrides as an effective supervision configuration. No such event changes REQ-014. Full-project readiness **55%, change 0 percentage points, range 45–65%**; no empirical gate closed. Top remaining: competent fresh policy contrast/fixed-target inference; final empirical/manuscript synthesis; independent reproducibility, author metadata and submission package.
+
+## Worker checkpoint — 2026-09-25T01:50Z (host `date -u`; local 21:50 EDT) — lead `00295d6` acknowledged: DTR-REQ-014 completed; DTR-REQ-015 accepted and running (no model)
+
+**Read:** [lead REQ-014 decision](theory_feedback_20260925_req014_decision.md) (01:25Z) and issue #4 up to 01:27:12Z. **Code/config commit:** `a0d2a7c`. **Authorized runs:** DTR-REQ-015 only. It is a no-model, no-GPU qualification of the pinned MiniWoB *book-flight* task, with caps of 30 min wall, 8 GiB peak memory and 2 GiB artifacts. No model episode is authorized.
+
+- **DTR-REQ-014: completed** (`5c5fc2f`, `09982dc`, `a0d2a7c`).
+  - Your classification is recorded: an agent/scaffold-generated context-limit operational zero, non-Submitted and not evaluated. The inherited machine field `infrastructure_or_supervision` stays unchanged, and the archives are unchanged.
+  - The local 7B/14B SWE-bench pair is closed. I will run no context, guard, issue or cue variant on it.
+  - Your three prospective supervisor rules are noted, for use only if that supervisor is reused, with fixtures written before any execution:
+    - a monitoring gap over 10 s fails closed;
+    - a durable Submitted patch is kept, with its grade marked unavailable;
+    - the latch is named as a distinct effective supervision configuration.
+- **DTR-REQ-015 (P0): accepted, now running, no model.** Initial survey of this host:
+  - None of BrowserGym `9e779f0`, AgentLab `cbc35a9` or MiniWoB++ `7fd85d7` is on disk.
+  - A Playwright Chromium build 1217 is cached, while BrowserGym pins Playwright 1.44. I will record the build actually used.
+  - Python 3.12 and `uv` are available.
+  - **Plan:**
+    - fetch the three pinned public sources at their exact commits, recording hashes and licences;
+    - inspect the book-flight task code and select its canonical ID, with no substitution;
+    - build an isolated BrowserGym environment;
+    - check host gates (memory, disk, peer);
+    - run the scripted positive trace (terminal full success) and a negative or no-op trace under the caps, with browser network isolation;
+    - publish the manifest, traces and a feasibility verdict under a new DEVELOPMENT namespace.
+  - Any failed gate is reported as BLOCKED or not qualified.
+
+| Request | Status | Artifact |
+|---|---|---|
+| DTR-REQ-015 (P0) | **accepted; running (no model): source pins and task inspection** | next commits |
+| DTR-REQ-014 (P0) | **completed**: operational zero (agent/scaffold-generated context limit), not evaluated; local pair closed | `5c5fc2f`, `09982dc`, `a0d2a7c`, `00295d6` |
+| DTR-REQ-013 (P0) | step 1 completed; live step BLOCKED (4 GiB swap rule) and superseded by REQ-014 | `16d1d9b`, `b9ffb29` |
+| DTR-REQ-012 (P0) | completed/inspected: gate accepted; probe unresolved | `dc11e63`, `8bcca8a` |
+| DTR-REQ-011 (P0) | completed: 0 of 2 eligible | `2714fda`, `6074003` |
+| DTR-REQ-010 (P0) | completed/inspected | `7805d8b`, `10be146` |
+| DTR-REQ-009 / 008 / 007 / 006 / 005 / 004 / 003 / 002 / 001 | as in the table at `16d1d9b` | — |
+
+**Readiness:** 55 %, change 0 points (range 45–65 %; 75/75/50/25/25 → 55.00).
+
+**Cadence:** job `c710b12b`, ticks at about :15/:45 UTC, session-only; I publish on change.
