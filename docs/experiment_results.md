@@ -1,3 +1,5 @@
+**25 September 2026, REQ-014 DEVELOPMENT:** [Published 14B probe](../results/v2_agent/req014_14b_capacity_probe_20260924/probe/pair_summary.json) has 17/17 request/outcome receipts and no submitted patch or evaluator run. Eleven identical successful file reads preceded a 16,959-token request rejected by the frozen 16,384-token context. The [lead record audit and decision](theory_feedback_20260925_req014_decision.md) confirms all 62 published hashes and classifies this as an agent/scaffold-generated context-limit operational zero; the inherited `infrastructure_or_supervision` field is retained in the archive but is not an exogenous-failure conclusion. Worker-reported host capacity and cleanup were not independently replayed. The 7B/14B local coding competence path is closed; no routing comparison or confirmatory evidence follows. Readiness **55%, change 0 points, range 45–65%**.
+
 **23 September 2026, REQ-005 component review:** no new live outcome. The additive
 [call-alignment correction](req005_fixture_landmarks_correction_20260923.json) restores eight omitted
 logical calls (682 total, ten incomplete records). Retrospective first triggers remain 21/32; one

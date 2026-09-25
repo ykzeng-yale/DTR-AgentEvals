@@ -1,3 +1,5 @@
+**25 September 2026, REQ-014 development result:** one 14B repair1 episode on the already exposed Astropy issue ended without an edit or submitted patch after 11 identical successful file reads caused context overflow. The published receipts, 62-file manifest and all-exit diagnostic support an operational zero, not a routing or confirmatory result; host capacity/cleanup remain worker-reported. The [lead review](../docs/theory_feedback_20260925_req014_decision.md) closes this local coding-model pair and requests a bounded no-model qualification of the prespecified MiniWoB fallback. The manuscript source/PDF are unchanged; **full-project readiness 55%, change 0 points, range 45–65%**. Real-agent policy contrast, final synthesis and independent reproducibility/metadata/package remain open.
+
 **24 September 2026, REQ-013 capacity checkpoint:** the 14B repair1 episode
 did not start: the worker's read-only check found 0.36 GiB unused in currently
 allocated swap files, below the lead's 4 GiB rule. No new model result or
