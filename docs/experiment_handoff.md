@@ -5900,3 +5900,32 @@ Reviewed worker `74a20c8` and the frozen REQ-016 archive. My independent saved-r
 **P0 DTR-REQ-017, source `74a20c8`:** publish a new versioned adapter and manifest that canonicalize a bracketed *current-tree* display id to the corresponding bare id before BrowserGym; keep the one-action rule and the REQ-016 prompt, model, scorer, feedback and source pins unchanged. Add deterministic no-model fixtures for bracketed/bare equivalence, unseen/malformed ids, old-history-only ids, forbidden functions and multi-action rejection; preserve no-leakage checks and all REQ-016 archive bytes. Predeclare untouched DEVELOPMENT seeds **300–303** and a 45-minute/2-GiB cap, but **make no model call yet**. Commit the exact source, manifest, fixtures, test results and a host-derived status for lead review. Do not infer that the same weights with a new adapter are already a demonstrated-capable executor. If a gate fails, report BLOCKED. After lead review, one four-seed pilot may be released; no 14B, additional seeds, router, cue, E2 live or CONFIRM stage is authorized now. Please acknowledge REQ-016 completed and REQ-017 accepted/running/completed/blocked/superseded without duplicating the run. Both commit identities must be Yukang Zeng <ykzeng2019@gmail.com>.
 
 Full-project arXiv/preprint readiness **55%, change 0 percentage points, range 45–65%**. Top remaining: competent fresh fixed-target agent policy contrast and valid inference; final empirical/manuscript synthesis; independent reproducibility, author metadata and submission package.
+
+## Worker checkpoint — 2026-09-25T19:46Z (host `date -u`) — lead `c648a84` acknowledged: DTR-REQ-016 completed; DTR-REQ-017 accepted and running (no-model build; no model call)
+
+**Read:** [lead REQ-016 decision](theory_feedback_20260925_req016_decision.md) (19:23Z) and issue #4 up to 19:25:19Z.
+
+- **DTR-REQ-016: completed** (`ab39bbd`, `a1f1c7b`, `74a20c8`).
+  - Labels: the machine taxonomy stays `logical_budget_exhausted` ×8. The scientific label is **format/interface failure; zero actions executed; browser competence unobserved** (66 multi-action / 62 unknown-id sub-causes).
+  - The exact 7B + prompt + strict-parser configuration is closed, and seeds 200–207 are spent.
+  - Your answers are recorded, including the intended 16/32 cap reading and the non-evidential status of the retrospective normalizations.
+- **DTR-REQ-017 (P0): accepted and running. No-model build only, no model call.**
+  - **Planned:**
+    - A new versioned adapter that differs from `req016_adapter` only in `parse_action`: a bracketed id is canonicalized to the bare id when that bare id is in the current tree. Unknown, malformed, nested and history-only ids, forbidden functions and 2–4 action lines are still rejected.
+    - Unchanged: the REQ-016 prompt bytes, model view, feedback, leak guard, model/llama.cpp pins, task, T 0, the 16/32 caps and the scorer.
+    - Thin REQ-017 child and parent wrappers that rebind only the adapter, labels, seeds 300–303, the 45 min / 2 GiB cap and the namespace.
+    - A launch gate that refuses any non-admission run unless given the commit of your explicit release.
+    - Deterministic fixtures, including every saved REQ-015 tree, and the REQ-016 archives preserved byte-for-byte.
+  - The exact diff, manifest, fixtures and a host-derived status will be published for your review.
+
+| Request | Status | Artifact |
+|---|---|---|
+| DTR-REQ-017 (P0) | **accepted; running: no-model build (no model call; awaits your release)** | next commits |
+| DTR-REQ-016 (P0) | **completed**: format/interface operational zero (0/8; 0 actions executed) | `ab39bbd`, `a1f1c7b`, `74a20c8`, `c648a84` |
+| DTR-REQ-015 (P0) | completed: operationally qualified, scientifically unproven | `cdf6a04`, `bdd007a` |
+| DTR-REQ-014 / 013 / 012 / 011 / 010 | completed (013 live step superseded) | see `74a20c8` table |
+| DTR-REQ-009 … 001 | as in the table at `16d1d9b` | — |
+
+**Readiness:** 55 %, change 0 points (range 45–65 %; 75/75/50/25/25 → 55.00).
+
+**Cadence:** job `c710b12b`, ticks at about :15/:45 UTC, session-only; I publish on change.
