@@ -1,0 +1,326 @@
+{
+ "request": "DTR-REQ-016",
+ "status": "COMPLETED",
+ "kind": "one fixed-backend 7B DEVELOPMENT competence screen on MiniWoB book-flight (no router)",
+ "manifest": "configs/v2_req016_7b_browser_screen_20260925.json",
+ "manifest_sha256": "ec9c5f10ad86725562e818a4222fb674816e32e18d0ecd1769eb045e2ffed1e8",
+ "started_utc": "2026-09-25T17:10:55Z",
+ "batch_deadline_utc": "2026-09-25T18:40:55Z",
+ "assignment": {
+  "backend": "small",
+  "model": "Qwen/Qwen2.5-Coder-7B-Instruct",
+  "model_commit": "c03e6d358207e414f1eca0bb1891e29f1db0e242",
+  "port": 8291,
+  "alias": "qwen2.5-coder-7b-instruct-c03e6d3-q4_k_m",
+  "gguf": "work/models/converted_4fea119/qwen2.5-coder-7b-instruct-c03e6d3-q4_k_m.gguf",
+  "gguf_sha256": "87a3665ca3247c54dfa198010f6e1f48d41611029bbcb5ed185a5ad05fcd3b81",
+  "gguf_bytes": 4683074208
+ },
+ "seeds": [
+  200,
+  201,
+  202,
+  203,
+  204,
+  205,
+  206,
+  207
+ ],
+ "caps": {
+  "logical_per_episode": 16,
+  "physical_per_episode": 32,
+  "attempts_per_call": 2,
+  "request_timeout_s": 300,
+  "batch_wall_s": 5400,
+  "cleanup_reserve_s": 240,
+  "child_stop_grace_s": 60,
+  "artifact_gib": 2
+ },
+ "environment_variables_removed": [
+  "CLAUDE_CODE_CHILD_SESSION",
+  "CLAUDE_CODE_HOST_SESSION_ID",
+  "CLAUDE_CODE_MESSAGING_TOKEN",
+  "CLAUDE_CODE_OAUTH_SCOPES",
+  "CLAUDE_CODE_SDK_HAS_HOST_AUTH_REFRESH",
+  "CLAUDE_CODE_SESSION_ATTENDED",
+  "CLAUDE_CODE_SESSION_ID",
+  "SSH_AUTH_SOCK",
+  "USE_LOCAL_OAUTH",
+  "USE_STAGING_OAUTH"
+ ],
+ "watchdog": {
+  "pid": 88301,
+  "ready": true,
+  "started": true,
+  "returncode": -15,
+  "left_armed": false
+ },
+ "serving": {
+  "load": {
+   "event": "started",
+   "role": "small",
+   "pid": 88344,
+   "port": 8291,
+   "hash_seconds": 1.8,
+   "load_seconds": 2.0,
+   "rss_kb": 5620080,
+   "swap_before": "total = 15360.00M  used = 14858.44M  free = 501.56M  (encrypted)",
+   "swap_after": "total = 15360.00M  used = 14858.44M  free = 501.56M  (encrypted)",
+   "utc": "2026-09-25T17:11:02Z"
+  },
+  "checks": {
+   "model_path": "./work/models/converted_4fea119/qwen2.5-coder-7b-instruct-c03e6d3-q4_k_m.gguf",
+   "model_alias": "qwen2.5-coder-7b-instruct-c03e6d3-q4_k_m",
+   "model_ftype": "Q4_K - Medium",
+   "build_info": "b11041-4fea119de",
+   "total_slots": 1,
+   "n_ctx": 16384,
+   "chat_template_sha256": "55b2f4a26ac9ee719330a61a0c39d9e538b0e9322212f048326318cff4f8674a",
+   "v1_models_ids": [
+    "qwen2.5-coder-7b-instruct-c03e6d3-q4_k_m"
+   ],
+   "server_pid": 88344,
+   "memory_free_pct": 44,
+   "swap": "total = 15360.00M  used = 14858.44M  free = 501.56M  (encrypted)",
+   "rss_kb": 5620208
+  },
+  "problems": []
+ },
+ "post_load_sample": {
+  "phase": "post_load",
+  "t": 1790356262.188086,
+  "utc": "2026-09-25T17:11:02Z",
+  "physical_free_pct": 44,
+  "host_disk_free_gib": 68.29566192626953,
+  "swap_total_gib": 15.0,
+  "swap_used_gib": 14.51,
+  "swap_free_gib": 0.49,
+  "measurement_errors": {},
+  "sample_seconds": 0.005,
+  "problems": []
+ },
+ "runtime_process_baseline": [],
+ "child": {
+  "pid": 88375,
+  "started_utc": "2026-09-25T17:11:02Z",
+  "returncode": 0
+ },
+ "supervision": {
+  "ended": "child_exited",
+  "samples": 43,
+  "max_gap_s": 5.007
+ },
+ "stops": [],
+ "server_events": [
+  {
+   "event": "started",
+   "role": "small",
+   "pid": 88344,
+   "port": 8291,
+   "hash_seconds": 1.8,
+   "load_seconds": 2.0,
+   "rss_kb": 5620080,
+   "swap_before": "total = 15360.00M  used = 14858.44M  free = 501.56M  (encrypted)",
+   "swap_after": "total = 15360.00M  used = 14858.44M  free = 501.56M  (encrypted)",
+   "utc": "2026-09-25T17:11:02Z"
+  },
+  {
+   "event": "stopped",
+   "role": "small",
+   "pid": 88344,
+   "port": 8291,
+   "utc": "2026-09-25T17:14:35Z"
+  }
+ ],
+ "browser_process_sweep": {
+  "baseline": [],
+  "found": [],
+  "remaining": []
+ },
+ "score": {
+  "full_success": 0,
+  "denominator": 8,
+  "screen_status": "COMPLETED",
+  "screen_complete": true,
+  "taxonomy": {
+   "logical_budget_exhausted": 8
+  },
+  "capacity_rows": [],
+  "rows": [
+   {
+    "seed": 200,
+    "cause": "logical_budget_exhausted",
+    "full_success": false,
+    "logical_calls": 16,
+    "physical_attempts": 16,
+    "executed_actions": 0,
+    "invalid_replies": 16,
+    "invalid_causes": {
+     "multiple_actions": 8,
+     "unknown_bid": 8
+    },
+    "action_errors": 0,
+    "prompt_tokens": 5703,
+    "completion_tokens": 459,
+    "usage_unknown_calls": 0,
+    "wall_seconds": 27.375,
+    "terminal": null,
+    "error": null
+   },
+   {
+    "seed": 201,
+    "cause": "logical_budget_exhausted",
+    "full_success": false,
+    "logical_calls": 16,
+    "physical_attempts": 16,
+    "executed_actions": 0,
+    "invalid_replies": 16,
+    "invalid_causes": {
+     "unknown_bid": 10,
+     "multiple_actions": 6
+    },
+    "action_errors": 0,
+    "prompt_tokens": 5719,
+    "completion_tokens": 347,
+    "usage_unknown_calls": 0,
+    "wall_seconds": 20.454,
+    "terminal": null,
+    "error": null
+   },
+   {
+    "seed": 202,
+    "cause": "logical_budget_exhausted",
+    "full_success": false,
+    "logical_calls": 16,
+    "physical_attempts": 16,
+    "executed_actions": 0,
+    "invalid_replies": 16,
+    "invalid_causes": {
+     "unknown_bid": 10,
+     "multiple_actions": 6
+    },
+    "action_errors": 0,
+    "prompt_tokens": 5751,
+    "completion_tokens": 534,
+    "usage_unknown_calls": 0,
+    "wall_seconds": 29.997,
+    "terminal": null,
+    "error": null
+   },
+   {
+    "seed": 203,
+    "cause": "logical_budget_exhausted",
+    "full_success": false,
+    "logical_calls": 16,
+    "physical_attempts": 16,
+    "executed_actions": 0,
+    "invalid_replies": 16,
+    "invalid_causes": {
+     "unknown_bid": 7,
+     "multiple_actions": 9
+    },
+    "action_errors": 0,
+    "prompt_tokens": 5751,
+    "completion_tokens": 375,
+    "usage_unknown_calls": 0,
+    "wall_seconds": 22.203,
+    "terminal": null,
+    "error": null
+   },
+   {
+    "seed": 204,
+    "cause": "logical_budget_exhausted",
+    "full_success": false,
+    "logical_calls": 16,
+    "physical_attempts": 16,
+    "executed_actions": 0,
+    "invalid_replies": 16,
+    "invalid_causes": {
+     "unknown_bid": 7,
+     "multiple_actions": 9
+    },
+    "action_errors": 0,
+    "prompt_tokens": 5735,
+    "completion_tokens": 503,
+    "usage_unknown_calls": 0,
+    "wall_seconds": 28.662,
+    "terminal": null,
+    "error": null
+   },
+   {
+    "seed": 205,
+    "cause": "logical_budget_exhausted",
+    "full_success": false,
+    "logical_calls": 16,
+    "physical_attempts": 16,
+    "executed_actions": 0,
+    "invalid_replies": 16,
+    "invalid_causes": {
+     "multiple_actions": 11,
+     "unknown_bid": 5
+    },
+    "action_errors": 0,
+    "prompt_tokens": 5751,
+    "completion_tokens": 404,
+    "usage_unknown_calls": 0,
+    "wall_seconds": 23.581,
+    "terminal": null,
+    "error": null
+   },
+   {
+    "seed": 206,
+    "cause": "logical_budget_exhausted",
+    "full_success": false,
+    "logical_calls": 16,
+    "physical_attempts": 16,
+    "executed_actions": 0,
+    "invalid_replies": 16,
+    "invalid_causes": {
+     "unknown_bid": 8,
+     "multiple_actions": 8
+    },
+    "action_errors": 0,
+    "prompt_tokens": 5703,
+    "completion_tokens": 510,
+    "usage_unknown_calls": 0,
+    "wall_seconds": 28.844,
+    "terminal": null,
+    "error": null
+   },
+   {
+    "seed": 207,
+    "cause": "logical_budget_exhausted",
+    "full_success": false,
+    "logical_calls": 16,
+    "physical_attempts": 16,
+    "executed_actions": 0,
+    "invalid_replies": 16,
+    "invalid_causes": {
+     "unknown_bid": 7,
+     "multiple_actions": 9
+    },
+    "action_errors": 0,
+    "prompt_tokens": 5719,
+    "completion_tokens": 562,
+    "usage_unknown_calls": 0,
+    "wall_seconds": 31.517,
+    "terminal": null,
+    "error": null
+   }
+  ]
+ },
+ "resources": {
+  "samples": 45,
+  "episode_samples": 43,
+  "min_physical_free_pct": 44,
+  "min_host_disk_free_gib": 68.28811264038086,
+  "peak_swap_used_gib": 14.51,
+  "max_episode_gap_s": 5.007,
+  "samples_with_problems": 0
+ },
+ "finished_utc": "2026-09-25T17:14:35Z",
+ "wall_seconds": 220.49,
+ "within_batch_cap": true,
+ "raw_artifact_bytes": 826109,
+ "within_artifact_cap": true
+}

@@ -5832,3 +5832,18 @@ At the next worker publication, please reconcile `experiments/README.md`'s dated
 **Readiness:** 55 %, change 0 points (range 45–65 %; 75/75/50/25/25 → 55.00).
 
 **Cadence:** job `c710b12b`, session-only, nominally :04/:34 (observed about :15/:45); gap noted above; I publish on change.
+
+## Worker status — 2026-09-25T17:29Z (host `date -u`) — DTR-REQ-016 screen RUN and records PUBLISHED: 0/8; independent verification in progress
+
+- **Run:** admission passed at 17:10:46Z. Physical memory was 62 % free, host disk 68.3 GiB, the peer lease `none`, and the pins passed. The screen ran from 17:10:55Z to 17:14:43Z (220.5 s of the 5400 s cap).
+- **Serving:** 7B identity checked (alias, n_ctx 16384, 1 slot). Post-load memory was 44 % free, and at least 44 % throughout. The maximum sampling gap was 5.0 s, with no capacity problem.
+- **Outcome:** status **COMPLETED, 0 of 8 full successes**. All 8 seeds are `logical_budget_exhausted`.
+  - Calls: 128 logical and 128 physical (no retries).
+  - **0 executed actions and 128 invalid replies:** 66 `multiple_actions` and 62 `unknown_bid`.
+  - Tokens: 45,832 prompt and 3,694 completion.
+- **Cleanup:** the server started and stopped, the watchdog was released, and no browser process was left.
+- **Records:** [`results/v2_browser/req016_7b_browser_screen_20260925/`](../results/v2_browser/req016_7b_browser_screen_20260925/screen_summary.json). 292 published files are hash-verified, with 128 request/outcome receipt pairs.
+- **Worker observation (not yet verified):** the replies frequently write the element id with its brackets, e.g. `fill('[19]', 'Bettles, AK')`, and often give two action lines.
+  - The frozen system prompt says elements have "an id in square brackets, for example [19]". This may be a prompt ambiguity that I authored, not only model incapacity.
+  - The environment never executed an action, so there is no evidence about browser competence.
+  - An independent five-way verification of the records and this diagnosis is running. The full results entry and questions follow next. Nothing is re-run or changed.

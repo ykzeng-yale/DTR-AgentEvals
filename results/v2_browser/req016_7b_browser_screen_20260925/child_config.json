@@ -1,0 +1,46 @@
+{
+ "request": "DTR-REQ-016",
+ "seeds": [
+  200,
+  201,
+  202,
+  203,
+  204,
+  205,
+  206,
+  207
+ ],
+ "caps": {
+  "logical_per_episode": 16,
+  "physical_per_episode": 32,
+  "attempts_per_call": 2,
+  "request_timeout_s": 300,
+  "batch_wall_s": 5400,
+  "cleanup_reserve_s": 240,
+  "child_stop_grace_s": 60,
+  "artifact_gib": 2
+ },
+ "settings": {
+  "temperature": 0,
+  "max_tokens": 1536,
+  "context": 16384,
+  "stream": false,
+  "other_sampling": "llama.cpp server defaults (temperature 0 is greedy)"
+ },
+ "alias": "qwen2.5-coder-7b-instruct-c03e6d3-q4_k_m",
+ "endpoint": "http://127.0.0.1:8291/v1/chat/completions",
+ "deadline_epoch": 1790361415.28655,
+ "out_dir": "./work/runs/req016_7b_browser_screen_20260925",
+ "task": {
+  "gym_id": "browsergym/miniwob.book-flight",
+  "full_success": "DONE_GLOBAL is true and RAW_REWARD_GLOBAL == 1 (the REQ-015 predicate)",
+  "terminal_causes": [
+   "full_success",
+   "wrong_booking (DONE, raw -1)",
+   "core_timeout (DONE, reason timed out)",
+   "page_or_url_changed (BrowserGym validate error)"
+  ]
+ },
+ "parent_pid": 88230,
+ "req015_manifest": "configs/v2_req015_miniwob_bookflight_20260925.json"
+}

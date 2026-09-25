@@ -1,0 +1,24 @@
+{
+ "request": "DTR-REQ-016",
+ "seed": 207,
+ "logical_call": 1,
+ "attempt": 1,
+ "utc": "2026-09-25T17:14:04Z",
+ "body_sha256": "8078a0d27f6be13814e3e8f76ac77e025d91981c7f04abda761469e3967a4e8f",
+ "body": {
+  "max_tokens": 1536,
+  "messages": [
+   {
+    "content": "You are a web agent. You operate one web page through its accessibility tree. Every element you can act on has an id in square brackets, for example [19].\nEach reply must end with exactly one action, alone on its own line, chosen from:\nclick('<id>')\nfill('<id>', '<text>')\nnoop()\nUse only ids that appear in the current accessibility tree. No other function and no second action is allowed. You may write one short line of reasoning before the action.",
+    "role": "system"
+   },
+   {
+    "content": "Goal: Book the cheapest one-way flight from: Santa Maria, CA to: GEG on 10/24/2016.\n\nCurrent page (accessibility tree):\nRootWebArea 'Book Flight Task', focused\n\t[17] heading 'Book Your One-Way Flight'\n\t[19] textbox 'From:'\n\t[21] textbox 'To:'\n\tStaticText 'Departure Date'\n\t[25] textbox ''\n\t[27] button 'Search'\n\t[30] status '', live='assertive', atomic, relevant='additions'\n\t[32] status '', live='assertive', atomic, relevant='additions'\n\nPrevious actions (oldest first):\n(none)\n\nActions remaining: 16\n\nReply with your next action.",
+    "role": "user"
+   }
+  ],
+  "model": "qwen2.5-coder-7b-instruct-c03e6d3-q4_k_m",
+  "stream": false,
+  "temperature": 0
+ }
+}
