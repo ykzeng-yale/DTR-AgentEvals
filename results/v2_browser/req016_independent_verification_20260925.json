@@ -1,0 +1,699 @@
+{
+ "request": "DTR-REQ-016",
+ "kind": "independent read-only verification of the published REQ-016 screen records (worker-run multi-agent workflow: five dimension verifiers and a completeness critic; no model, server, browser or edit)",
+ "run_record": "results/v2_browser/req016_7b_browser_screen_20260925",
+ "workflow_finished_utc": "2026-09-25T17:28:00Z",
+ "verifiers": [
+  {
+   "dimension": "integrity",
+   "verdict": "confirmed",
+   "numbers": {
+    "publication_manifest_entries": 292,
+    "published_files_on_disk": 293,
+    "published_files_unlisted": [
+     "publication_manifest.json (self)"
+    ],
+    "raw_files": 292,
+    "published_sha_mismatches": 0,
+    "raw_sha_mismatches": 0,
+    "missing_files": 0,
+    "sanitized_files": 2,
+    "manifest_sha256": "ec9c5f10ad86725562e818a4222fb674816e32e18d0ecd1769eb045e2ffed1e8",
+    "manifest_byte_identical_to_config": true,
+    "adapter_sha256_match": true,
+    "episodes_sha256_match": true,
+    "screen_sha256_match": true,
+    "prompt_sha256_recomputed_match": true,
+    "admission_admitted": true,
+    "admission_top_level_probes_ok": 7,
+    "admission_sha_expected_pairs_equal": 37,
+    "seeds_in_order": [
+     200,
+     201,
+     202,
+     203,
+     204,
+     205,
+     206,
+     207
+    ],
+    "episodes_per_seed": 1,
+    "logical_calls_per_seed": 16,
+    "physical_attempts_per_seed": 16,
+    "attempts_per_call_max": 1,
+    "request_receipts_total": 128,
+    "outcome_receipts_total": 128,
+    "logical_calls_total": 128,
+    "physical_attempts_total": 128,
+    "executed_actions_total": 0,
+    "invalid_replies_total": 128,
+    "invalid_multiple_actions": 66,
+    "invalid_unknown_bid": 62,
+    "unknown_bid_that_are_bracketed_ids_present_in_tree": 62,
+    "replies_with_bracketed_bid_call": 128,
+    "replies_with_bare_numeric_bid_call": 0,
+    "prompt_tokens_total": 45832,
+    "prompt_tokens_cached_total": 40856,
+    "completion_tokens_total": 3694,
+    "completion_tokens_per_call_min": 10,
+    "completion_tokens_per_call_max": 53,
+    "http_200": 128,
+    "classification_ok": 128,
+    "finish_reason_stop": 128,
+    "server_log_prompt_eval_lines": 128,
+    "full_success": 0,
+    "denominator": 8,
+    "taxonomy_logical_budget_exhausted": 8,
+    "request_bodies_bad_settings": 0,
+    "request_body_sha_mismatches": 0,
+    "request_messages_not_reconstructible_from_steps": 0,
+    "leak_markers_in_requests": 0,
+    "reparse_disagreements": 0,
+    "wall_seconds": 220.49,
+    "sum_outcome_seconds": 206.97,
+    "resource_samples": 45,
+    "max_episode_sample_gap_s": 5.007,
+    "min_physical_free_pct": 44,
+    "peak_swap_used_gib": 14.51,
+    "swap_total_gib": 15,
+    "raw_artifact_bytes_reported": 826109,
+    "raw_bytes_now_incl_screen_summary": 834131
+   },
+   "findings": [
+    {
+     "severity": "info",
+     "claim": "(a) The publication manifest is complete and every hash matches. The raw-to-published mapping is exact, and sanitization only replaced absolute paths.",
+     "evidence": "results/v2_browser/req016_7b_browser_screen_20260925/publication_manifest.json has 292 entries. All 292 published files exist, every published_sha256 matches, and every raw_sha256 matches the raw file under work/runs/req016_7b_browser_screen_20260925/ (.log.txt maps to .log). The only unlisted published file is publication_manifest.json itself, and no raw file is unmapped. The sanitized flag agrees with raw!=published in all 292 entries. Exactly 2 files are sanitized (server_small_2026-09-25T171100Z.log.txt and watchdog_config.json). diff shows only absolute /Users/... paths rewritten to ./ (1 log line and 3 config keys). grep finds 0 '/Users/' strings anywhere in the published copy."
+    },
+    {
+     "severity": "info",
+     "claim": "(b) manifest.json is byte-identical to the frozen config, and all bound hashes match the committed sources.",
+     "evidence": "cmp shows the run manifest.json and configs/v2_req016_7b_browser_screen_20260925.json are identical (sha256 ec9c5f10...ffed1e8). That equals screen_summary.json manifest_sha256 and admission.json manifest_sha256. The manifest binds adapter b75fe53d..., episodes 095d9c30... and screen b3c94944.... These equal both the working files and git show HEAD:<file> (last touched in ab39bbd, which is on origin/main). The prompt_sha256 recomputed from SYSTEM_PROMPT+'\\n\\x00\\n'+USER_TEMPLATE is 119a3984..., which matches. The sources were first committed at ab39bbd 17:10:37Z, 18 s before admission at 17:10:55Z and before the first model request at 17:11:03Z."
+    },
+    {
+     "severity": "info",
+     "claim": "(c) Admission admitted the run and every probe passed.",
+     "evidence": "admission.json has admitted=true and mode=launch. The top-level probes manifest, sources, browser, models, conflicts, memory and disk are all ok=true. All 37 sha256/expected pairs are equal (GGUF 87a3665c..., the llama.cpp dylibs and binary, and the MiniWoB/BrowserGym pinned sources). All sources are tracked and unchanged_from_head. The conflicts lists are empty, there are no pause files, and the peer run_lease is none. Memory free was 62% against a threshold of 50, and projection_bytes 24955319845 is at most the limit 32212254720. Host disk had 68.3 GiB free."
+    },
+    {
+     "severity": "info",
+     "claim": "(d) Seeds 200 to 207 appear in ascending order, with exactly one episode each, in every summary record.",
+     "evidence": "The seed order [200..207] is the same in batch_summary.json seeds and episodes[], in the 8 lines of episodes.jsonl, in screen_summary score.rows and in the episodes/seed200..seed207 directories. batch_summary stop=null and child_stdout reports {full_success 0, denominator 8, stop null}. Each episode.json dict is equal to its batch_summary entry and its episodes.jsonl line, and every shared field agrees with its screen_summary row. Each seed has a distinct goal (for example 200 'Bettles, AK to PVC 12/08/2016', 201 'TCT to Huslia, AK 11/09/2016')."
+    },
+    {
+     "severity": "info",
+     "claim": "(e) Receipts are complete and contiguous, all caps were respected, and the counts equal episode.json.",
+     "evidence": "Every seed has 16 request and 16 outcome receipts: every request has an outcome, calls are numbered 01..16 contiguously, and each call made exactly 1 attempt (no retries). logical_calls=16 is within the cap of 16 and physical_attempts=16 is within the cap of 32, matching episode.json for all 8 seeds. steps.jsonl has step 0 as the reset followed by 16 kind=call rows numbered 1..16. The attempts lists match the receipts. remaining_shown runs 16 down to 1, and history length is step-1. Each seed was stopped by the logical_calls>=16 check (cause logical_budget_exhausted). There were no no_reply, http_error, context_limit or leak_guard rows. The model_view is identical across all 17 rows of every seed (the page never changed), and utc timestamps are monotonic."
+    },
+    {
+     "severity": "info",
+     "claim": "(f) All 128 request bodies use the frozen settings, hash correctly and contain only the declared model view.",
+     "evidence": "All 128 bodies have temperature 0, max_tokens 1536, stream false and model 'qwen2.5-coder-7b-instruct-c03e6d3-q4_k_m', with no other keys. Each body_sha256 equals sha256(json.dumps(body, sort_keys=True, ensure_ascii=False)). The messages are exactly [system=SYSTEM_PROMPT, user] and equal req016_adapter.build_messages(model_view, history_shown, remaining_shown) from the matching steps row (0 mismatches). leak_problems finds 0 forbidden markers in any body. Every response reports model = the alias and system_fingerprint b11041-4fea119de."
+    },
+    {
+     "severity": "info",
+     "claim": "(g) The totals recomputed from the receipts and steps reproduce the reported result exactly.",
+     "evidence": "Totals: 128 logical calls, 128 physical attempts, 0 executed actions, 128 invalid replies (multiple_actions 66, unknown_bid 62). Prompt tokens total 45832 (40856 of them cached) and completion tokens total 3694; per seed, prompt/completion was 200: 5703/459, 201: 5719/347, 202: 5751/534, 203: 5751/375, 204: 5735/503, 205: 5751/404, 206: 5703/510, 207: 5719/562. Every outcome receipt has kind=response, http_status=200 and classification=ok (128/128), and finish_reason is stop 128/128. Re-running parse_action on every reply reproduces the recorded parsed_action, invalid_cause and invalid_detail (0 disagreements). The server log has exactly 128 'prompt eval time' lines and 128 slot releases, so no extra completions were served. full_success is 0/8 with taxonomy logical_budget_exhausted x8. Wall time: 17:10:55Z to 17:14:35Z = 220.49 s. raw_artifact_bytes 826109 plus screen_summary.json 8022 equals the current 834131 bytes on disk."
+    },
+    {
+     "severity": "material",
+     "claim": "This is a harness-design confound, outside strict integrity. The 0/8 does not measure browser competence: no browser action was ever executed, because every reply used the bracketed id format that the prompt itself displays and the parser rejects. The invalid-reply feedback never tells the model which id failed or why.",
+     "evidence": "128/128 replies contain a bracketed bid call such as fill('[19]', ...), and 0/128 contain a bare numeric bid. All 62/62 unknown_bid details are bracketed ids whose inner id is in the current tree (for example '[19]', the 'From:' textbox). Cause of the mismatch: SYSTEM_PROMPT (req016_adapter.py lines 31-39) says 'has an id in square brackets, for example [19]' and then gives click('<id>'). The parser checks the bid against BID_TOKEN captures, which have the brackets stripped (line 51 and line 141). The history line is only 'N. invalid reply (unknown_bid): not executed' (line 79). For example, seed 201 repeats fill('[19]', 'TCT') on 10 of its 16 calls. tests/test_req016_screen.py has no bracketed-id fixture (only '99' and 'Search' at lines 80-81), and the rehearsals used a stub, not a model. Scoring is correct under the frozen rules, and prompt or parser changes after model output are not authorized. The 'stop this 7B browser path' reading therefore rests on an adapter-format failure, not an observed browser failure. Every seed had 5-10 single-action replies whose inner id was valid, but no success counterfactual can be inferred from that. This is the lead's decision."
+    },
+    {
+     "severity": "minor",
+     "claim": "The host was near swap exhaustion for the whole run. Swap is recorded but not gated, and memory stayed above every threshold.",
+     "evidence": "In resource_samples.jsonl (45 samples: 43 during episodes, max gap 5.007 s, 0 problems), swap_used_gib is 14.51 of 15.0 (0.49 free) at admission and throughout. physical_free_pct fell to 44 during the run, against thresholds of 20 after load and 10 during episodes. The admission sample showed 62."
+    },
+    {
+     "severity": "minor",
+     "claim": "The published run directory is not yet committed.",
+     "evidence": "git status shows results/v2_browser/req016_7b_browser_screen_20260925/ as untracked (0 files in git ls-files). origin/main is at ab39bbd, which contains the sources but not the run record."
+    }
+   ]
+  },
+  {
+   "dimension": "exposure",
+   "verdict": "confirmed",
+   "numbers": {
+    "seeds": 8,
+    "request_receipts": 128,
+    "outcome_receipts": 128,
+    "attempts_per_call_observed": 1,
+    "server_tasks_in_log": 128,
+    "server_truncated_tasks": 0,
+    "messages_exactly_system_user": 128,
+    "system_equals_SYSTEM_PROMPT": 128,
+    "user_equals_independent_reconstruction": 128,
+    "user_equals_build_messages": 128,
+    "body_sha256_matches_canonical_json": 128,
+    "body_keys_exactly_model_messages_temperature_max_tokens_stream": 128,
+    "body_settings_alias_T0_max1536_nostream": 128,
+    "forbidden_markers_in_full_body_case_sensitive": 0,
+    "forbidden_markers_in_full_body_case_insensitive": 0,
+    "extra_pattern_hits_data-_http_url_DONE_reward_image_base64_tools_grammar_task_info": 0,
+    "request_written_before_outcome_violations": 0,
+    "call_rows": 128,
+    "reset_rows": 8,
+    "call_rows_with_verifier_only": 0,
+    "call_rows_executed_false": 128,
+    "call_rows_parsed_action_null": 128,
+    "executed_actions_total": 0,
+    "action_errors_total": 0,
+    "screenshots_total_all_step00": 8,
+    "call_model_view_equal_to_reset_view": 128,
+    "remaining_and_history_shown_consistent": 128,
+    "reparse_equals_recorded": 128,
+    "invalid_multiple_actions": 66,
+    "invalid_unknown_bid": 62,
+    "invalid_unknown_bid_detail_exactly_[19]": 62,
+    "invalid_no_action_forbidden_function_bad_arguments_fill_too_long": 0,
+    "candidate_action_lines": 263,
+    "candidate_lines_fill": 205,
+    "candidate_lines_click": 58,
+    "candidate_lines_with_bracketed_id": 263,
+    "multi_action_replies_2_3_4_lines": "31/1/34",
+    "retro_valid_if_brackets_stripped_single_line_replies": 62,
+    "retro_multi_action_first_line_valid_if_brackets_stripped": 66,
+    "retro_first_valid_call_per_seed_200_to_207": "3,1,1,1,1,9,1,1",
+    "prompt_tokens_total": 45832,
+    "completion_tokens_total": 3694,
+    "finish_reason_stop": 128,
+    "published_files_listed": 292,
+    "published_hash_mismatches": 0,
+    "published_files_sanitized": 2,
+    "request_receipts_published_byte_identical": 128,
+    "code_and_prompt_sha_match_manifest": true
+   },
+   "findings": [
+    {
+     "severity": "info",
+     "claim": "No leakage: every one of the 128 request bodies contained exactly the frozen system prompt and the frozen user template, filled only with the goal, the flattened reset tree, the invalid-reply history lines and the remaining budget. No verifier field, marker, URL, DOM or image reached the model.",
+     "evidence": "Checked all 8x16 receipts in work/runs/req016_7b_browser_screen_20260925/episodes/seed*/receipts/callNN_attempt01.request.json. messages==[system,user] 128/128. system==req016_adapter.SYSTEM_PROMPT 128/128. I rebuilt the user text from steps.jsonl (model_view goal/axtree, history_shown, remaining_shown=16..1) without calling build_messages, and it matched byte for byte 128/128; build_messages also matched 128/128. sha256(json.dumps(body, sort_keys=True, ensure_ascii=False))==body_sha256 128/128. The body keys were exactly model/messages/temperature/max_tokens/stream (alias qwen2.5-coder-7b-instruct-c03e6d3-q4_k_m, temperature 0, max_tokens 1536, stream false) in 128/128. I searched the FULL canonical body, not only the message text, for all 13 FORBIDDEN_MARKERS, both case-sensitive and case-insensitive: 0 hits. Extra patterns (data-, http://, url/URL, DONE, REWARD/reward, screenshot, image_url, base64, <html/<div/<input, task_info, last_action_error, tools/grammar/response_format, MiniWoB, book-flight): 0 hits. Message content is a plain string, with no image parts. Verifier fields (task_info with REWARD_GLOBAL/RAW_REWARD_GLOBAL/DONE_GLOBAL/EPISODE_ID/TASK_READY) appear only in verifier_only on the 8 reset rows; 0 of 128 call rows carry verifier_only. The server log shows 128 launch_slot_ tasks and 128 releases with truncated=0, equal to the 128 receipts, so no request went unrecorded."
+    },
+    {
+     "severity": "info",
+     "claim": "The allowlist held and nothing touched the environment after reset. All 128 calls have executed=False and parsed_action=null, and no click/fill/noop was ever sent to BrowserGym.",
+     "evidence": "steps.jsonl: 8 reset rows plus 128 kind='call' rows, with no other kinds. executed False 128/128; parsed_action null 128/128; no call row has action_error, verifier_only, post_action_model_view or screenshot. episode.json executed_actions sums to 0 and action_errors to 0 across the 8 seeds; batch_summary.json and episodes.jsonl agree (8 rows, 0 executed, stop null, full_success 0 of 8, all logical_budget_exhausted 16/16 calls, 16/16 physical attempts). Only screenshots/step00.png exists per seed (8 total). The model_view in every call equals the reset view (128/128), consistent with no action being executed. Re-running AD.parse_action on every reply reproduced the recorded (action, cause, detail) 128/128. Only fill (205 lines) and click (58 lines) were attempted, so no goto, new_tab, press or other forbidden function appeared. Invalid causes: multiple_actions 66 and unknown_bid 62, with 0 no_action, forbidden_function, bad_arguments or fill_too_long. Per-seed counts in batch_summary match."
+    },
+    {
+     "severity": "material",
+     "claim": "The 0/8 result comes entirely from an id-format convention mismatch between the frozen prompt and the frozen grammar, not from observed browsing behaviour. All 263 action lines in all 128 replies wrote the id with its square brackets (e.g. fill('[19]', 'Bettles, AK')). The system prompt calls the id something 'in square brackets, for example [19]' and then shows click('<id>'). The parser only accepts the bare token. The history line the model saw never said which id failed. This does not break the no-leakage or allowlist constraints, but it weakens reading 0/8 as evidence of 7B browser incompetence under the lead's '0/8 stops this path' rule.",
+     "evidence": "The first argument was bracketed in 263/263 candidate lines. Retrospective only: after a mechanical bracket strip, all 62 unknown_bid replies become valid single actions, and the first line of all 66 multiple_actions replies becomes valid. With single-line replies only, the first valid call per seed (200..207) would have been 3,1,1,1,1,9,1,1, i.e. call 1 in 6 of 8 seeds. The history the model saw read only 'N. invalid reply (unknown_bid): not executed', with no detail, so it had no signal that the brackets were the problem (distinct replies per seed: 7,4,8,6,5,8,9,6). tests/test_req016_screen.py has no bracketed-bid reply fixture. The parser follows the frozen grammar ('bid present as a line-leading [bid]'), and BrowserGym also would not resolve '[19]', so this is not a code defect relative to the manifest. Any fix is a prompt or parser change after model output, which this manifest does not authorize and which needs a new lead decision. The counterfactual cannot predict success, because later trajectories were never observed."
+    },
+    {
+     "severity": "minor",
+     "claim": "The prompt's example id [19] is a live, actionable element in every seed: the 'From:' textbox. Every unknown_bid rejection is exactly '[19]'. This is a prompt cue, not verifier information, but it ties the illustrative example to the dominant failure.",
+     "evidence": "The reset axtree has '[19] textbox 'From:'' in all 8 seeds (one tree skeleton across seeds). The invalid_detail of all 62 unknown_bid rows is '[19]'. The test fixture tree in tests/test_req016_screen.py line 33 uses the same '[19] textbox 'From:''. SYSTEM_PROMPT: 'Every element you can act on has an id in square brackets, for example [19].'"
+    },
+    {
+     "severity": "minor",
+     "claim": "The dispatch leak guard scans only the joined message contents, not the full serialized body. In this run that had no effect, because the full bodies are marker-free.",
+     "evidence": "req016_episodes.py line 193: leaks = AD.leak_problems('\\n'.join(m['content'] for m in messages), typed=typed). The typed-text exemption was never used, because typed stayed empty (0 fills executed). My independent scan of the full canonical body found 0 markers in 128/128."
+    },
+    {
+     "severity": "info",
+     "claim": "What ran and what was published match the frozen specification.",
+     "evidence": "sha256 of the current req016_adapter.py/req016_episodes.py/req016_screen.py = b75fe53d.../095d9c30.../b3c94944..., equal to the manifest. The prompt sha rule gives 119a3984..., equal to adapter.prompt_sha256. The manifest's system_prompt/user_template/leak markers equal the module constants. configs/v2_req016_7b_browser_screen_20260925.json is byte-identical to run manifest.json. results/.../publication_manifest.json lists 292 files, with 0 raw or published hash mismatches and no unlisted published files. All 128 request receipts are published byte-identical to the raw files; only the server log and watchdog_config.json were sanitized."
+    }
+   ]
+  },
+  {
+   "dimension": "taxonomy",
+   "verdict": "confirmed",
+   "numbers": {
+    "calls_reparsed": 128,
+    "reparse_mismatches_action_cause_detail_executed": 0,
+    "adapter_episodes_screen_sha256_match_frozen_config": true,
+    "prompt_sha256_match": true,
+    "cause_counts": {
+     "multiple_actions": 66,
+     "unknown_bid": 62,
+     "no_action": 0,
+     "forbidden_function": 0,
+     "bad_arguments": 0,
+     "fill_too_long": 0,
+     "valid": 0
+    },
+    "invalid_detail_counts": {
+     "unknown_bid '[19]'": 62,
+     "multiple_actions 2 lines": 31,
+     "multiple_actions 3 lines": 1,
+     "multiple_actions 4 lines": 34
+    },
+    "per_seed_causes_M_U": {
+     "200": [
+      8,
+      8
+     ],
+     "201": [
+      6,
+      10
+     ],
+     "202": [
+      6,
+      10
+     ],
+     "203": [
+      9,
+      7
+     ],
+     "204": [
+      9,
+      7
+     ],
+     "205": [
+      11,
+      5
+     ],
+     "206": [
+      8,
+      8
+     ],
+     "207": [
+      9,
+      7
+     ]
+    },
+    "per_seed_causes_equal_episode_json_batch_screen_summary": true,
+    "executed_actions_total": 0,
+    "episodes_logical_budget_exhausted": 8,
+    "full_success": 0,
+    "replies_with_bracketed_id_action_lines": 128,
+    "action_lines_total": 263,
+    "action_lines_bracketed_id": 263,
+    "action_lines_unbracketed_id": 0,
+    "replies_with_more_than_one_action_line": 66,
+    "action_lines_per_reply_distribution": {
+     "1": 62,
+     "2": 31,
+     "3": 1,
+     "4": 34
+    },
+    "function_names_in_action_lines": {
+     "fill": 205,
+     "click": 58
+    },
+    "any_other_function_named_anywhere": 0,
+    "replies_with_text_after_last_action": 24,
+    "replies_with_text_before_first_action": 11,
+    "distinct_replies_per_seed": {
+     "200": 7,
+     "201": 4,
+     "202": 8,
+     "203": 6,
+     "204": 5,
+     "205": 8,
+     "206": 9,
+     "207": 6
+    },
+    "distinct_replies_overall": 53,
+    "longest_identical_consecutive_run_per_seed": {
+     "200": 4,
+     "201": 6,
+     "202": 3,
+     "203": 3,
+     "204": 5,
+     "205": 8,
+     "206": 3,
+     "207": 5
+    },
+    "finish_reason": {
+     "stop": 128
+    },
+    "completion_tokens": {
+     "min": 10,
+     "median": 28,
+     "mean": 28.86,
+     "max": 53,
+     "sum": 3694,
+     "max_tokens_cap": 1536
+    },
+    "completion_tokens_by_cause": {
+     "multiple_actions": {
+      "n": 66,
+      "median": 44,
+      "mean": 32.94,
+      "sum": 2174
+     },
+     "unknown_bid": {
+      "n": 62,
+      "median": 26.5,
+      "mean": 24.52,
+      "sum": 1520
+     }
+    },
+    "COUNTERFACTUAL_descriptive_only_strip_brackets_valid": 62,
+    "COUNTERFACTUAL_descriptive_only_strip_brackets_plus_first_line_valid": 128,
+    "COUNTERFACTUAL_descriptive_only_first_line_without_strip_valid": 0,
+    "COUNTERFACTUAL_first_actions_all_fill_19_with_goal_from_field": "128 of 128",
+    "COUNTERFACTUAL_first_call_per_seed": {
+     "200": "fill('19', 'Bettles, AK')",
+     "201": "fill('19', 'TCT')",
+     "202": "fill('19', 'Quinhagak, AK')",
+     "203": "fill('19', 'Detroit, MI - All airports')",
+     "204": "fill('19', 'Laredo, TX')",
+     "205": "fill('19', 'Cordova, AK')",
+     "206": "fill('19', 'Hayden, CO')",
+     "207": "fill('19', 'Santa Maria, CA')"
+    },
+    "receipt_reply_finish_usage_mismatches": 0,
+    "request_messages_vs_rebuilt_prompt_mismatches": 0,
+    "body_sha256_mismatches": 0,
+    "history_shown_or_remaining_shown_mismatches": 0,
+    "axtree_changes_within_episode": 0,
+    "receipt_outcomes": "128 of 128 http 200 / ok, 1 attempt per call, 32 receipt files per seed",
+    "leak_guard_flags_on_sent_requests": 0,
+    "published_copy_rederivation_identical": true
+   },
+   "findings": [
+    {
+     "severity": "info",
+     "claim": "Every recorded parse result reproduces exactly. The reported result (0/8 full success, taxonomy logical_budget_exhausted x8, 0 executed actions) is internally consistent, and I found no parser or bookkeeping defect relative to the frozen grammar.",
+     "evidence": "I reran AD.parse_action(reply, model_view['axtree']) on all 128 kind=call rows in work/runs/req016_7b_browser_screen_20260925/episodes/seed200..207/steps.jsonl. There were 0 mismatches in (parsed_action, invalid_cause, invalid_detail) and 0 in executed. Totals: multiple_actions 66, unknown_bid 62, valid 0. The per-seed counts equal episode.json, episodes.jsonl, batch_summary.json and screen_summary.json score.rows. The adapter, episodes and screen sha256 values and prompt_sha256 match configs/v2_req016_7b_browser_screen_20260925.json, and manifest.json is byte-identical to that config. Running the same checks on results/v2_browser/req016_7b_browser_screen_20260925 gives identical numbers."
+    },
+    {
+     "severity": "info",
+     "claim": "The saved steps agree with the receipts, and the prompts were rebuilt correctly. No request tripped the leak guard.",
+     "evidence": "For all 128 calls the reply, finish_reason and usage in steps.jsonl equal the content, finish_reason and usage in the receipts' .outcome.json. AD.build_messages(model_view, history_shown, remaining_shown) equals the request body messages, and sha256(AD.canonical_body(...)) equals body_sha256 (0 mismatches). An independent rebuild of history_shown and remaining_shown (16 minus i) matches. The axtree never changes within an episode, which is expected because nothing was executed. All 128 outcomes are http 200 / ok with one attempt per call, and AD.leak_problems flags 0 sent bodies."
+    },
+    {
+     "severity": "material",
+     "claim": "All 128 invalid replies come from two output-format problems. The model always wrote ids with their square brackets, and it often emitted several actions. No reply shows a semantic error such as a wrong field, a wrong function or a forbidden call. The 0/8 therefore measures whether the model follows this prompt's id notation and one-action rule. It does not show that the model cannot do the book-flight task. The frozen system prompt invites the bracket form: it says ids are 'in square brackets, for example [19]' next to the template click('<id>'). The history the model sees gives only the cause name 'unknown_bid', not the rejected id, so it could not learn to drop the brackets.",
+     "evidence": "All 263 action lines across the 128 replies use a bracketed first argument like '[19]'; 0 use a bare id. All 62 unknown_bid details are exactly '[19]'. Function names in action lines are fill 205 and click 58, and no other function name appears anywhere. Action lines per reply are 1:62, 2:31, 3:1, 4:34. The system prompt's example id [19] is also the real 'From:' textbox bid in all 8 seed trees (bids 17,19,21,25,27,30,32). The test fixture in tests/test_req016_screen.py uses the same tree and has no bracketed-id case. This follows the frozen grammar ('bid present as a line-leading [bid] of the current tree'), so it is a prompt/interface design issue for the lead to own, not an implementation defect."
+    },
+    {
+     "severity": "info",
+     "claim": "COUNTERFACTUAL, descriptive only, not an outcome. Stripping the brackets alone would make 62 of 128 replies parse to one valid action. Stripping the brackets and also keeping only the first action line would make all 128 parse. Every one of those would be fill('19', <the goal's From value>), which is the correct first field. Without bracket stripping, keeping only the first line yields 0 valid replies. Executing any of these would change later page states (for example, From autocomplete), so none of this implies anything about task success.",
+     "evidence": "With brackets stripped, 62 replies become valid (exactly the 62 unknown_bid replies) and 66 remain multiple_actions. With brackets stripped and only the first line kept, 128 of 128 are valid, all have the head fill('19', and the fill text equals the goal's 'from:' value in 128 of 128. The first call per seed would have been fill('19', ...) with: 200 'Bettles, AK'; 201 'TCT'; 202 'Quinhagak, AK'; 203 'Detroit, MI - All airports'; 204 'Laredo, TX'; 205 'Cordova, AK'; 206 'Hayden, CO'; 207 'Santa Maria, CA'."
+    },
+    {
+     "severity": "info",
+     "claim": "Descriptive run behaviour: the model repeated itself only partly at T=0 and was never cut off by the token cap. Replies vary because each prompt carries a different history and remaining count, but byte-identical replies still recur in runs of up to 8.",
+     "evidence": "Distinct replies per seed: 200:7, 201:4, 202:8, 203:6, 204:5, 205:8, 206:9, 207:6 (53 overall of 128). The longest byte-identical consecutive run per seed is 200:4, 201:6, 202:3, 203:3, 204:5, 205:8, 206:3, 207:5. finish_reason is 'stop' in all 128 replies, and none hit 'length'. completion_tokens range from 10 to 53 (median 28, mean 28.86, sum 3694, matching the episode totals), against max_tokens 1536. 24 replies put explanatory text after the last action line, which the prompt asked against ('must end with') but the grammar allows. 11 put a reasoning line first. None use backticks or an 'Action:' prefix."
+    }
+   ]
+  },
+  {
+   "dimension": "capacity_cleanup",
+   "verdict": "confirmed",
+   "numbers": {
+    "resource_samples_total": 45,
+    "phases": {
+     "admission": 1,
+     "post_load": 1,
+     "episode": 43
+    },
+    "admission_physical_free_pct": 62,
+    "admission_threshold_pct": 50,
+    "post_load_physical_free_pct": 44,
+    "post_load_threshold_pct": 20,
+    "episode_min_physical_free_pct": 44,
+    "episode_max_physical_free_pct": 45,
+    "episode_threshold_pct": 10,
+    "min_host_disk_free_gib_all_samples": 68.28811264038086,
+    "episode_disk_threshold_gib": 15,
+    "swap_used_gib_all_samples": 14.51,
+    "swap_free_gib_all_samples": 0.49,
+    "samples_with_problems": 0,
+    "samples_with_measurement_errors": 0,
+    "max_sample_seconds": 0.012,
+    "max_gap_between_episode_sample_starts_s": 5.0068,
+    "min_gap_s": 5.0002,
+    "gap_rule_s": 10,
+    "post_load_to_first_episode_sample_s": 0.052,
+    "last_episode_sample_to_child_final_write_s": 3.013,
+    "episode_sample_span_s": 210.133,
+    "child_span_s_est": 213.146,
+    "supervision_samples": 43,
+    "supervision_max_gap_s": 5.007,
+    "supervision_ended": "child_exited",
+    "stops": 0,
+    "status": "COMPLETED",
+    "child_returncode": 0,
+    "serving_problems": 0,
+    "served_model_path": "./work/models/converted_4fea119/qwen2.5-coder-7b-instruct-c03e6d3-q4_k_m.gguf",
+    "served_alias": "qwen2.5-coder-7b-instruct-c03e6d3-q4_k_m",
+    "served_n_ctx": 16384,
+    "served_total_slots": 1,
+    "served_build_info": "b11041-4fea119de",
+    "server_pid": 88344,
+    "server_rss_kb_post_load": 5620208,
+    "hash_seconds": 1.8,
+    "load_seconds": 2,
+    "server_started_utc": "2026-09-25T17:11:02Z",
+    "server_stopped_utc": "2026-09-25T17:14:35Z",
+    "admission_gguf_sha256": "87a3665ca3247c54dfa198010f6e1f48d41611029bbcb5ed185a5ad05fcd3b81",
+    "independent_shasum_gguf": "87a3665ca3247c54dfa198010f6e1f48d41611029bbcb5ed185a5ad05fcd3b81",
+    "gguf_bytes_on_disk": 4683074208,
+    "memory_projection_bytes": 24955319845,
+    "memory_projection_limit_bytes": 32212254720,
+    "server_log_completions": 128,
+    "receipt_requests": 128,
+    "receipt_outcomes": 128,
+    "attempt2_files": 0,
+    "http_200_outcomes": 128,
+    "response_model_alias_matches": 128,
+    "system_fingerprint_b11041_4fea119de": 128,
+    "server_log_vs_receipt_prompt_n_and_predicted_n_sequences_equal": true,
+    "server_task_id_gaps_equal_predicted_plus_1": "127 of 127",
+    "max_completion_tokens_per_call": 53,
+    "max_slot_n_tokens": 467,
+    "completion_tokens_total": 3694,
+    "prompt_tokens_total": 45832,
+    "watchdog_pid": 88301,
+    "watchdog_ready": true,
+    "watchdog_returncode": -15,
+    "watchdog_left_armed": false,
+    "watchdog_action_json_present": false,
+    "servers_record_servers_after": 0,
+    "servers_record_release_confirmed": true,
+    "browser_sweep_baseline": 0,
+    "browser_sweep_found": 0,
+    "browser_sweep_remaining": 0,
+    "live_listener_on_8291_now": 0,
+    "live_runtime_or_model_processes_now": 0,
+    "wall_seconds": 220.49,
+    "batch_wall_s_cap": 5400,
+    "raw_artifact_bytes_reported": 826109,
+    "raw_bytes_now_total": 834131,
+    "screen_summary_bytes_excluded": 8022,
+    "artifact_cap_bytes": 2147483648,
+    "published_files": 293,
+    "publication_manifest_entries": 292,
+    "publication_hash_mismatches": 0,
+    "sanitized_files": 2,
+    "username_hits_published": 0,
+    "username_hits_raw": 4,
+    "secret_pattern_hits_published": 0
+   },
+   "findings": [
+    {
+     "severity": "info",
+     "claim": "The capacity gates pass with wide margins. No sample had a problem or measurement error, and the sampling-gap rule was never close to firing.",
+     "evidence": "work/runs/req016_7b_browser_screen_20260925/resource_samples.jsonl has 45 lines: 1 admission, 1 post_load and 43 episode samples. Physical free was 62% at admission (threshold 50), 44% after load (threshold 20) and 44-45% in the episode phase (threshold 10). The lowest host disk free value was 68.288 GiB (threshold 15). The largest gap between episode sample starts was 5.0068 s and the smallest was 5.0002 s, against a rule of more than 10 s. The first episode sample came 0.052 s after the post_load sample. The last episode sample (t=1790356472.373) came about 3.01 s before the child's final writes (child_stdout.txt mtime 1790356475.386). The screen_summary resources block matches: 45/43/44/68.288/14.51/5.007/0. Supervision reports ended=child_exited, samples=43 and max_gap_s=5.007, with stops=[]. The memory projection 4683074208+18.88 GiB = 24955319845 is at or below 34359738368-2 GiB = 32212254720."
+    },
+    {
+     "severity": "info",
+     "claim": "The served model's identity and provenance are confirmed, and no other generation request reached the server.",
+     "evidence": "The serving.checks model_path ends with qwen2.5-coder-7b-instruct-c03e6d3-q4_k_m.gguf. Also: alias qwen2.5-coder-7b-instruct-c03e6d3-q4_k_m, n_ctx 16384, total_slots 1, build_info b11041-4fea119de, and problems=[]. The admission models probe records sha256 87a3665c...cd3b81, equal to its expected value. My own shasum of the 4683074208-byte file gives the same hash. The conversion record's sha256 7e165c22... equals the pinned value. The server log has exactly 128 launch/print_timing/release triples, which equals 128 request and 128 outcome receipts (all attempt01, all HTTP 200, finish_reason stop, model equal to the alias, system_fingerprint b11041-4fea119de). The per-call prompt_n and predicted_n sequences in the log equal the receipt timings in seed/call order. Server task ids advance by exactly predicted_n+1 at all 127 transitions, so no foreign completion was interleaved. The largest slot n_tokens was 467, far below 16384, and no completion exceeded 53 tokens (cap 1536)."
+    },
+    {
+     "severity": "info",
+     "claim": "Cleanup is complete. The server stopped after the child finished, the watchdog was released rather than fired, and no process or listener remains.",
+     "evidence": "server_events shows started pid 88344 at 17:11:02Z and stopped at 17:14:35Z. The server log mtime (…475.464) is later than child_stdout.txt (…475.386) and batch_summary.json (…475.3859), so the server was stopped after the child exited. The watchdog (pid 88301) has ready=true, returncode -15 (SIGTERM from release_watchdog) and left_armed=false. No watchdog_action.json exists and watchdog_stdout.txt is 0 bytes. work/code_routing_servers.json has holder REQ-016, servers=[] and release_confirmed=true. browser_process_sweep has baseline, found and remaining all empty. A read-only check now finds no TCP listener on 8291 (lsof rc=1), no process whose args contain converted_4fea119, ms-playwright-req015, browsergym_9e779f0 or req016_, and none of PIDs 88230/88301/88344/88375 alive. child.returncode is 0 and child_stdout reads {\"full_success\": 0, \"denominator\": 8, \"stop\": null}."
+    },
+    {
+     "severity": "info",
+     "claim": "The wall time and the other summary numbers reproduce from the files.",
+     "evidence": "The start epoch is 1790356255.28655 (admission t). The screen_summary.json mtime of 1790356475.780 gives 220.493 s, matching wall_seconds 220.49 against the 5400 s cap. The child and watchdog deadlines equal start+5160 and start+5400. The per-seed prompt and completion token sums recomputed from the 128 outcome receipts equal the screen_summary rows (for example seed 200: 5703/459; total completion 3694, also equal to the server log eval sum). The per-seed wall_seconds sum to 212.63 s, consistent with a child span of about 213.15 s. The launch log reports status COMPLETED with username_hits []."
+    },
+    {
+     "severity": "minor",
+     "claim": "raw_artifact_bytes understates the final raw directory by leaving out screen_summary.json, because it is computed before that file is written.",
+     "evidence": "The reported value is 826109. The current raw total over 292 files is 834131 bytes, and 834131-8022 (screen_summary.json) = 826109, as req016_screen.py:633-636 would produce. This does not matter for the 2 GiB cap."
+    },
+    {
+     "severity": "info",
+     "claim": "The host's swap was about 97% full before and throughout the run. The manifest records swap but does not gate on it, and swap did not grow during the run.",
+     "evidence": "Every one of the 45 samples shows swap_used_gib 14.51 and swap_free_gib 0.49 of 15.0 GiB. serving.load swap_before equals swap_after, with 14858.44M used. Physical free dropped from 62% to 44% at load, consistent with the server's RSS of 5.62 GB on a 32 GiB host."
+    },
+    {
+     "severity": "info",
+     "claim": "The published copy is sanitized and contains no secrets. Only two raw files contained the username, and both were redacted.",
+     "evidence": "The 292 publication_manifest entries have raw_sha256 and published_sha256 that match the files on disk, with 0 mismatches, 0 unlisted raw files and 0 unlisted published files apart from publication_manifest.json itself. The raw server log (1 hit) and watchdog_config.json (3 hits) contained '<user>'. Their published copies are 35 and 105 bytes shorter, which is one and three repository-path-to-'.' replacements, and they contain 0 hits. A scan of all 293 published files found 0 matches each for sk-, ghp_/gho_/ghs_/ghu_/github_pat_, BEGIN RSA or PRIVATE KEY, AKIA, xox, hf_, Bearer, JWT, email addresses, yale.edu and /Users/. The 'token' matches are usage fields, log text and one variable NAME (CLAUDE_CODE_MESSAGING_TOKEN in environment_variables_removed). The 3 'oauth' matches are variable names only. The long random strings are 128 llama.cpp chatcmpl ids."
+    },
+    {
+     "severity": "info",
+     "claim": "The server and the watchdog inherit the unscrubbed parent environment. Only the episode child's environment is scrubbed.",
+     "evidence": "At req016_screen.py:376 spawn_watchdog is called with dict(os.environ), and pilot_runner.Servers.serve uses Popen(cmd) with no env argument. The removed names apply to child_env only. No values appear in any artifact, so this is a hygiene note rather than a leak."
+    },
+    {
+     "severity": "info",
+     "claim": "Two things cannot be shown from the retained artifacts: that -ngl 99 GPU offload was active, and the server command line. The log also shows a permissive CORS warning.",
+     "evidence": "At verbosity 3 the server log shows n_slots=1, n_ctx_slot=16384 and n_threads=4, but no offload or Metal lines. The servers record 'cmd' was cleared at release (servers=[]). The log warns that CORS allows all origins and no API key is set. The server was bound to 127.0.0.1, and the task-id continuity check shows no extra generation requests."
+    },
+    {
+     "severity": "info",
+     "claim": "The published result directory was not yet committed when I checked.",
+     "evidence": "git status shows '?? results/v2_browser/req016_7b_browser_screen_20260925/'."
+    }
+   ]
+  },
+  {
+   "dimension": "diagnosis",
+   "verdict": "problems_found",
+   "numbers": {
+    "full_success": "0/8 (screen_summary.json score; batch_summary.json)",
+    "status": "COMPLETED",
+    "wall_seconds_parent": 220.49,
+    "sum_episode_wall_seconds": 212.633,
+    "logical_calls_total": 128,
+    "physical_attempts_total": 128,
+    "attempts_per_call": 1,
+    "executed_actions_total": 0,
+    "valid_parsed_replies_frozen_parser": 0,
+    "invalid_multiple_actions": 66,
+    "invalid_unknown_bid": 62,
+    "other_invalid_causes": 0,
+    "reparse_with_frozen_parser_mismatches": 0,
+    "replies_with_every_id_bracketed": "128/128 (100%)",
+    "action_calls_total_in_replies": 263,
+    "action_calls_with_bracketed_id": "263/263",
+    "replies_with_any_unbracketed_id": 0,
+    "replies_with_more_than_one_action_line": "66/128 (51.6%): 2 lines 31, 3 lines 1, 4 lines 34",
+    "replies_with_exactly_one_action_line": "62/128 (48.4%), all unknown_bid",
+    "replies_with_any_prose_line": "35/128 (27.3%)",
+    "replies_with_prose_after_last_action": "24/128 (18.8%)",
+    "replies_with_prose_before_first_action": "11/128 (8.6%)",
+    "replies_that_are_a_single_bare_action_line": "27/128 (21.1%), all bracketed, 0 valid",
+    "replies_prompt_layout_compliant_except_brackets": "38/128 (29.7%); >=1 in every seed (min seed205=1, max seed201=10)",
+    "single_bare_valid_action_ever": 0,
+    "first_action_equals_fill_19_exact_goal_origin": "128/128",
+    "multi_action_replies_coherent_prefix_of_form_plan": "66/66",
+    "call1_bracket_normalized_counterfactual_valid": "6/8 (seeds 200 and 205 still multiple_actions)",
+    "call1_bracket_normalized_first_line_only_valid": "8/8",
+    "all_calls_bracket_normalized_valid_retrospective_only": "62/128",
+    "transition_multi_to_multi": "45/66 (68.2%)",
+    "transition_unknownbid_to_unknownbid": "35/54 (64.8%)",
+    "remaining_2_replies_with_exactly_2_actions": "8/8",
+    "remaining_1_replies_with_exactly_1_action": "8/8",
+    "remaining_4_replies_with_4_actions": "7/8",
+    "unique_replies": 53,
+    "model_view_identical_to_reset_view": "128/128",
+    "finish_reason_stop": "128/128",
+    "server_log_slot_releases_truncated_0": "128/128",
+    "max_prompt_tokens": 446,
+    "context_n_ctx": 16384,
+    "max_completion_tokens": 53,
+    "max_tokens_cap": 1536,
+    "total_prompt_tokens": 45832,
+    "total_completion_tokens": 3694,
+    "request_messages_rebuilt_equal_to_receipts": "128/128",
+    "recorded_reply_equals_server_content": "128/128",
+    "leak_marker_hits_in_bodies": 0,
+    "published_vs_raw_steps_field_diffs": 0,
+    "fixture_cases_with_bracketed_id": 0
+   },
+   "findings": [
+    {
+     "severity": "material",
+     "claim": "The reported result reproduces from the complete files, but the 0/8 is entirely an interface-level failure: the environment never executed one action, so the screen contains no evidence at all about browser competence.",
+     "evidence": "Recomputed from all 8 x episodes/seedN/steps.jsonl (136 rows: 8 reset + 128 call): 128 logical calls, 128 physical attempts (1 each, cap 32/episode), 0 valid parses, 0 executed, invalid causes multiple_actions 66 + unknown_bid 62 (per-seed sums match batch_summary.json exactly: 8/8, 6/10, 6/10, 9/7, 9/7, 11/5, 8/8, 9/7). Re-running req016_adapter.parse_action on every saved reply reproduces every recorded (parsed_action, invalid_cause, invalid_detail): 0 mismatches. model_view equals the step-0 reset view in 128/128 calls, so every episode saw only the initial form (bids 17,19,21,25,27,30,32). Parent wall 220.49 s (sum of episode walls 212.63 s). The label 'logical_budget_exhausted x8' is correct but hides that 0 actions ran; autocomplete, datepicker, month navigation, Search and the consequential flight choice were never reached."
+    },
+    {
+     "severity": "material",
+     "claim": "Hypothesis (2), prompt ambiguity written by the worker, is strongly supported. Every id the model wrote carries brackets, and the frozen model-facing prompt supports that reading.",
+     "evidence": "263/263 action-call id arguments in 128/128 replies are bracketed (e.g. fill('[19]', 'Bettles, AK')); 0 replies contain any unbracketed id. SYSTEM_PROMPT (req016_adapter.py lines 31-39) says an element 'has an id in square brackets, for example [19]', shows only placeholders click('<id>') / fill('<id>', '<text>') with no concrete filled example, and says 'Use only ids that appear in the current accessibility tree'. The literal string '[19]' does appear in the tree text. The pinned BrowserGym action docs that the prompt did not reuse (work/venvs/browsergym_9e779f0/.../browsergym/core/action/functions.py lines 66-68, 155-157) give concrete bare-id examples such as click('a51') and fill('45', ...). The distinction exists only in the internal manifest grammar ('bid present as a line-leading [bid] of the current tree'), which the model never sees. Evidence against: the grammar template wraps <id> in quotes and the tree uses brackets as visual delimiters, so a stronger model might infer bare ids; this 7B never did, in 128 tries."
+    },
+    {
+     "severity": "material",
+     "claim": "Hypothesis (3), model format non-compliance separate from the brackets, is also supported. More than half the replies contain several actions, even though the prompt forbids a second action and the model was told the previous reply was invalid for that reason.",
+     "evidence": "66/128 (51.6%) replies have more than one action line (31 two-line, 1 three-line, 34 four-line). In 2/8 seeds (200, 205) this happened at call 1, before any feedback. After a history line 'invalid reply (multiple_actions): not executed', the next reply was again multi-action in 45/66 cases (68.2%). Mitigating: the budget display seems to steer the count. At 'Actions remaining: 2' all 8 seeds emitted exactly 2 actions, at 1 all 8 emitted exactly 1, and at 4, 7/8 emitted 4. So the model can emit a single action, and the multi-action output is partly a response to the scaffold. Exposing the remaining budget was a lead requirement; the 'Actions remaining: N' wording is the worker's. At T=0 on a page that never changed, only 53 distinct replies occurred in 128 calls."
+    },
+    {
+     "severity": "info",
+     "claim": "Hypothesis (1), a parser or harness defect, is not supported. The parser follows the declared manifest grammar and the environment's bid convention, and the transport, prompt reconstruction and context are clean. There was no truncation and no context pressure (hypothesis 4).",
+     "evidence": "The manifest grammar (configs/v2_req016_7b_browser_screen_20260925.json adapter.grammar) takes the bid to be the token inside the brackets. tree_bids() returns the inner tokens, and the REQ-015 positive control acted on bare ids (results/v2_browser/req015_bookflight_qualification_20260925/trace_primary_positive_seed0.json: fill('19', 'Corpus Christi, TX'), click('34'), ...). A pass-through '[19]' would therefore not have been a working BrowserGym bid either. Rebuilding the messages with build_messages(model_view, history_shown, remaining_shown) matches the receipt body in 128/128 calls. The recorded reply equals the server's choices[0].message.content in 128/128, with HTTP 200 and classification ok in every call. finish_reason is stop in 128/128. All 128 server-log slot releases show 'truncated = 0'. Prompt tokens peak at 446 against a 16,384-token context, completion tokens at 53 against a 1,536 cap. temperature 0 and max_tokens 1536 appear in all 128 bodies, and no body contains a leak marker. The parser is more lenient than the prompt in one respect: it accepts prose after the action (24 replies) despite 'must end with'. That never decided an outcome."
+    },
+    {
+     "severity": "minor",
+     "claim": "The pre-run fixtures and rehearsals never exercised the model-natural bracketed form, and the invalid-reply feedback gave the model no usable way to discover the fix.",
+     "evidence": "tests/test_req016_screen.py parser cases (lines 56-81) use only bare ids ('19', '99', 'Search'). The file has 0 occurrences of a bracketed-id reply, and the manifest's stub rehearsal replies were bare. history_lines() shows only 'invalid reply (unknown_bid): not executed'. The recorded invalid_detail ('[19]') is not shown, and the word 'bid' never appears in SYSTEM_PROMPT, which says 'id'. After unknown_bid feedback the model repeated a single bracketed action in 35/54 transitions (64.8%) and switched to multi-action in 19/54."
+    },
+    {
+     "severity": "info",
+     "claim": "Semantically, the model's step-1 intent is correct in every reply. The failure is in the action form, not in task understanding at step 1. Nothing beyond step 1 is observed.",
+     "evidence": "The first action in 128/128 replies is fill('[19]', <exact origin string from the goal>), e.g. 'Detroit, MI - All airports' and 'TCT'. This is the same bid and the same text as the REQ-015 scripted first action. All 66 multi-action replies are coherent prefixes of fill From, fill To, fill date (25), click Search, with the goal's values. That plan types the date and skips the autocomplete and datepicker clicks the REQ-015 scripted control needed (req015_qualify.py run_booking), so its viability was never tested. Retrospective diagnostic only: normalizing brackets makes 6/8 call-1 replies valid (seeds 200 and 205 remain multi-action), and 8/8 if only the first action line is kept. Call 1 is the only exact counterfactual, because its prompt does not depend on the parser. After call 1 the trajectories would diverge, and the lead's rule forbids parser or grammar changes after any model output, so this is not evidence of success."
+    },
+    {
+     "severity": "info",
+     "claim": "What the lead's decision rule can and cannot rest on: the literal 0/8 triggers 'stop this 7B browser path pending a new demonstrated-capable executor'. However, the data cannot tell 7B incapacity apart from the worker's scaffold ambiguity, because one prompt was tested and both failure modes occur together.",
+     "evidence": "docs/theory_feedback_20260925_req015_decision.md P0 item 3 and manifest scoring.decision both state the rule. The lead's hypothesis text says a failure separates 'model/scaffold incapacity' from task control. The data does separate the pair (7B plus this scaffold) from task control and harness integrity. It cannot separate the model from the scaffold. What the data can distinguish: the harness is clean; step-1 semantic intent is correct (128/128); this 7B does not follow this prompt's action format (0/128 valid, 100% bracketed, 51.6% multi-action). What it cannot distinguish: whether this 7B would reach full success under an unambiguous prompt; whether the multi-action tendency would persist without the bracket-driven invalid-feedback loop (it is present at call 1 in only 2/8 seeds); any browser competence (autocomplete, datepicker, flight choice). The screen is a single-prompt, T=0, 8-seed DEVELOPMENT screen, so no rate or confidence statement is possible."
+    },
+    {
+     "severity": "info",
+     "claim": "Questions the lead must decide (evidence only, no run recommended).",
+     "evidence": "(a) Does the 0/8 stop apply to this 7B generally, or only to the pair (7B, this frozen prompt)? The failure is at the id-token and one-action-format level, with 0 environment steps. (b) Should the published result say explicitly 'format/interface failure; 0 executed actions; browser competence unobserved', with the sub-causes 66 multiple_actions / 62 unknown_bid, instead of only 'logical_budget_exhausted x8'? (c) Should the missing concrete bare-id example and the undefined 'bid' feedback term be recorded as a design limitation the lead owns, since the prompt was frozen in a manifest the lead did not review? (d) Would a prospectively re-frozen, unambiguous prompt with the same 7B count as a 'new executor' under the rule? Are seeds 200-207 now spent, given the model outputs on them have been seen? Would any such executor need to show format compliance on seeds that are not screen seeds? (e) Is the multi-action persistence alone (45/66 repeats after explicit feedback, 2/8 at call 1) enough to say this 7B is not a demonstrated-capable executor, whatever is decided about the brackets? (f) Should the retrospective bracket-normalized call-1 diagnostic (6/8) be reported, labelled retrospective and non-evidential, or left out?"
+    }
+   ]
+  }
+ ],
+ "critic": {
+  "contradictions": [
+   "RESOLVED, diagnosis overclaim. The diagnosis verifier said 'All 66 multi-action replies are coherent prefixes of fill From, fill To, fill date (25), click Search'. I recomputed the patterns from all 128 replies. Only 42/66 are exact prefixes carrying the goal's values: 34 are the full 4-line plan, 1 is From/To/date and 7 are From/To. The other 24/66 are fill('[19]', From) followed by click('[27]'), which clicks Search while To and date are still empty: seed 200 x6, 203 x8, 205 x8, 206 x2. Those 24 are a subsequence of the plan, not a prefix. The claim must read 42/66 prefix plus 24/66 From-then-Search.",
+   "RESOLVED, stale finding. The integrity and capacity verifiers both said the published run directory is not committed. That is out of date. Remote main (git ls-remote) is a1f1c7b, a worker commit at 2026-09-25T17:22:31Z whose author and committer are both Yukang Zeng <ykzeng2019@gmail.com>. Its parent in the compare is ab39bbd. It adds all 293 result files, and their git blob SHAs equal git hash-object of the local published copy in 293/293 cases. Only the local checkout is stale: its origin/main ref is still ab39bbd and git status still shows the directory as untracked.",
+   "NEW, worker handoff vs run files. The a1f1c7b entry in docs/experiment_handoff.md says 'admission passed at 17:10:46Z'. admission.json has checked_utc 2026-09-25T17:10:55Z and mode launch, and no raw run file contains 17:10:46. work/runs/req016_admission_scratch is empty.",
+   "NEW, worker handoff vs run files. The same entry says the screen 'ran from 17:10:55Z to 17:14:43Z (220.5 s)'. screen_summary.json has finished_utc 17:14:35Z and wall_seconds 220.49. 17:10:55Z plus 220.49 s is 17:14:35.5Z, and no raw file contains 17:14:43.",
+   "NEW, worker handoff timestamp. The entry heading says '2026-09-25T17:29Z (host date -u)', but the commit containing it has committer date 17:22:31Z, and host date -u read 17:25:58Z during this check. The heading time is later than its own commit.",
+   "RESOLVED, diagnosis interpretation. The diagnosis verifier said 'the budget display seems to steer the count'. Its counts are correct: at remaining 2, 8/8 replies had 2 actions; at 1, 8/8 had 1; at 4, 7/8 had 4. Counter-evidence it omitted: at remaining 3, 4/8 replies emitted 4 actions (more than the displayed budget), 1 emitted 3, 1 emitted 2 and 2 emitted 1. At remaining 7, 8/8 emitted 1, and at remaining 8, 9 and 10, 5/8 emitted 4. So steering is partial at best.",
+   "RESOLVED, not a defect. The exposure verifier's minor finding says the leak guard scans only the joined message contents. That matches the manifest: leak_guard.rule says 'the message text of every request is checked'. My case-insensitive scan of the full serialized body JSON finds 0 of the 13 markers in 128/128 requests.",
+   "RESOLVED, not a contradiction. The capacity verifier gave server rss_kb 5620208 and the load event gives 5620080. Both are in screen_summary.json, as serving.checks.rss_kb and serving.load.rss_kb, and are two measurements at different moments.",
+   "RESOLVED, not a contradiction. raw_artifact_bytes is 826109 while the raw directory now holds 834131 bytes. The difference, 834131-826109 = 8022, is exactly the size of screen_summary.json, which is written after the byte count is taken. Both caps (2 GiB artifacts, 5400 s wall) are unaffected."
+  ],
+  "missed_checks_performed": [
+   "Remote state checked read-only (git ls-remote plus the public GitHub compare API; no fetch, no writes to .git). Remote main is a1f1c7b, the published files are blob-identical 293/293, and the handoff patch was read.",
+   "The worker's handoff claims were checked against the run files. Three timestamp errors turned up (17:10:46Z, 17:14:43Z and the heading 17:29Z). The other claims match: 62% admission free, 68.3 GiB disk, 44% post-load and minimum free, 5.0 s maximum gap, 128/128 calls, 66/62 causes, 45,832/3,694 tokens.",
+   "Server-log correspondence beyond counts: 128 launch_slot_ lines, 128 release lines, 128 'prompt eval time' lines, 128 'truncated = 0' and 0 'truncated = 1'. Task ids advance by exactly predicted_n+1 on 127/127 steps. Release n_tokens equals prompt_tokens+completion_tokens-1, in receipt order, for 128/128 calls, so every served completion maps to a receipt and none is extra.",
+   "Receipt ordering: every request receipt has mtime and utc no later than its outcome receipt (0 violations out of 128).",
+   "Multi-action structure broken down: 62 single fill('[19]'); 34 of [fill 19, fill 21, fill 25, click 27]; 24 of [fill 19, click 27]; 7 of [fill 19, fill 21]; 1 of [fill 19, fill 21, fill 25].",
+   "Actions per reply tabulated against the displayed remaining budget, for all 16 values of 'Actions remaining'.",
+   "BrowserGym bid semantics checked: get_elem_by_bid in the pinned venv (browsergym/core/action/utils.py) treats a non-numeric prefix as frame ids. Passing '[19]' through would therefore not have resolved element 19, and the parser's rejection agrees with the environment convention. The flattener writes f\"[{bid}] \" at obs.py line 397, and the pinned docstrings show bare ids, e.g. fill('45', ...) and click('a51').",
+   "The REQ-015 scripted positive trace (trace_primary_positive_seed0.json) uses bare ids and needs autocomplete and datepicker clicks: fill('19','Corpus Christi, TX'), click('34'), fill('21','SHG'), click('38'), click('25'), click('83'), click('27'), click('189').",
+   "Pre-launch fixtures: the tests/test_req016_screen.py parser cases have no bracketed-id reply; the only unknown_bid cases are '99' and 'Search' at lines 80-81. The rehearsal stub replies in work/runs/req016_dev_rehearsal were also bare: click('27'), click('999'), fill('19','Akuton'), noop, goto, and 'not an action'.",
+   "Governance timeline: the sources and manifest were first committed in ab39bbd at 17:10:37Z, and all 5 files hash-match HEAD. Admission followed 18 s later, at 17:10:55Z. The last lead instruction before launch (6d5f9fa, 16:35Z) says 'proceed only within REQ-016's existing gates'. No lead commit exists between the manifest commit and the run, so the lead never reviewed the frozen prompt. The lead's request required commit-before-inference, not lead review.",
+   "Scoring basis: in every seed, verifier_only appears only on the reset row, with DONE_GLOBAL false and RAW_REWARD_GLOBAL 0, and terminal is null. With 0 executed actions and episode_max_time 1,000,000 ms, full_success=false follows. Only step00.png screenshots exist, one per seed.",
+   "Independently recomputed the prompt sha256 (119a3984...9c28) and confirmed the manifest's system_prompt, user_template and leak markers equal the module constants. The sha256 of the adapter, episodes and screen sources equals the manifest bindings.",
+   "Recomputed every count, from both the raw and the published copies, with an independent script (re-parse, rebuilt messages, body hashes, settings, receipts vs steps, per-seed sums, descriptive counterfactuals). The results are identical."
+  ],
+  "verified_facts": [
+   "STATUS: COMPLETED. The child exited 0 and batch stop is null. There are 0 full successes, so k = 0/8 with all 8 seeds in the denominator. Every seed has cause logical_budget_exhausted, so the taxonomy is logical_budget_exhausted x8. screen_complete is true.",
+   "Seeds 200-207 ran once each, in ascending order, from 17:11:02Z to 17:14:35Z. The run started at 17:10:55Z (admission) and finished at 17:14:35Z. Wall time was 220.49 s against a 5400 s cap (screen_summary mtime minus admission t = 220.493 s). Episode walls sum to 212.633 s, and outcome receipt seconds sum to 206.974 s.",
+   "Invalid causes per seed, as multiple_actions/unknown_bid: 200 8/8; 201 6/10; 202 6/10; 203 9/7; 204 9/7; 205 11/5; 206 8/8; 207 9/7. These are identical in episode.json, episodes.jsonl, batch_summary.json and screen_summary rows, and a re-parse reproduces them.",
+   "Totals: 128 logical calls (16 per seed, cap 16); 128 physical attempts (16 per seed, cap 32, 1 attempt per call, no retry files); 0 executed actions; 0 action errors; 128 invalid replies (66 multiple_actions, 62 unknown_bid, 0 of any other cause).",
+   "Tokens: 45,832 prompt, of which 40,856 were cached, and 3,694 completion. Per seed, prompt/completion: 200 5703/459; 201 5719/347; 202 5751/534; 203 5751/375; 204 5735/503; 205 5751/404; 206 5703/510; 207 5719/562. Completion tokens per call ranged from 10 to 53 (cap 1536); prompt tokens peaked at 446, against n_ctx 16384. finish_reason was stop in 128/128. Every outcome was HTTP 200 with classification ok (128/128).",
+   "Frozen spec: run manifest.json is byte-identical to configs/v2_req016_7b_browser_screen_20260925.json (sha256 ec9c5f10...ffed1e8). The sha256 of the adapter, episodes and screen sources equals the manifest bindings (b75fe53d, 095d9c30, b3c94944), and prompt_sha256 is 119a3984. All sources were first committed in ab39bbd at 17:10:37Z, before admission at 17:10:55Z. admission.json has admitted true, mode launch, and all 7 probes ok.",
+   "Serving: the served identity shows alias qwen2.5-coder-7b-instruct-c03e6d3-q4_k_m, build b11041-4fea119de, n_ctx 16384, 1 slot, Q4_K_M, with problems []. The GGUF sha256 is 87a3665c...cd3b81.",
+   "Resources, from resource_samples.jsonl: 45 samples (1 admission, 1 post_load, 43 episode) and 0 problems. Physical free was 62% at admission (threshold 50), 44% after load (threshold 20), and between 44% and 45% during episodes (threshold 10), so the minimum was 44%. Episode sample gaps ranged from 5.0002 s to 5.0068 s (rule: fail above 10 s). Host disk free was at least 68.288 GiB. Swap was 14.51 of 15.0 GiB used in all 45 samples; swap is recorded, not gated, and did not grow.",
+   "Cleanup: server pid 88344 started at 17:11:02Z and stopped at 17:14:35Z. Watchdog pid 88301 was ready, exited with returncode -15, and left_armed is false. work/code_routing_servers.json has servers [] and release_confirmed true. The browser sweep baseline, found and remaining lists are all empty. The pause file is absent. As of this check there is no listener on 127.0.0.1:8291, PIDs 88230, 88301, 88344 and 88375 are gone, and no runtime process matches the model or browser runtime paths.",
+   "Publication integrity: publication_manifest.json lists 292 files. All published and raw sha256 values match, with 0 missing, 0 unmapped raw files, and no unlisted published file except the manifest itself (293 files on disk). 2 files are sanitized: the server log, published as .log.txt with 1 path line changed, and watchdog_config.json with 3 path keys changed. Both changes only replace the absolute repository path with '.', and the published copy has 0 '/Users/' strings and 0 username strings. The copy is committed on remote main at a1f1c7b, blob-identical 293/293; the local checkout is not yet synced.",
+   "Exposure/leak audit: all 128/128 request bodies have exactly the keys model, messages, temperature, max_tokens and stream, with the alias, temperature 0, max_tokens 1536 and stream false. The body_sha256 matches canonical JSON in 128/128. Messages are exactly [SYSTEM_PROMPT, user] and equal build_messages(model_view, history_shown, remaining_shown) from steps.jsonl in 128/128. remaining_shown runs 16 down to 1 and the history is correct in 128/128. A case-insensitive scan of the full body JSON finds 0 of the 13 forbidden markers. verifier_only fields appear only on the 8 reset rows. The recorded reply, finish_reason and usage equal the server response in 128/128. The model_view in every call equals the reset view, because nothing was executed.",
+   "What the model saw after an invalid reply: only a history line of the form 'N. invalid reply (<cause>): not executed', naming the cause but not the rejected id. The word 'bid' appears in neither SYSTEM_PROMPT nor USER_TEMPLATE. SYSTEM_PROMPT describes ids as 'in square brackets, for example [19]' and gives the templates click('<id>') and fill('<id>', '<text>'). [19] is the 'From:' textbox in all 8 seed trees (bids 17, 19, 21, 25, 27, 30, 32).",
+   "Descriptive diagnostics, which do not change the frozen scoring: 263 action lines appear across the 128 replies (fill 205, click 58, no other function). All 263 write the id in brackets, e.g. fill('[19]', 'Bettles, AK'), and 0 use a bare id. All 62 unknown_bid details are exactly '[19]'. Action lines per reply: 1 in 62 replies, 2 in 31, 3 in 1, 4 in 34. There are 53 distinct replies (per seed 7, 4, 8, 6, 5, 8, 9, 6).",
+   "Descriptive: in 128/128 replies the first action is fill('[19]', <the goal's exact From value>). Among the 66 multi-action replies, 42 are exact prefixes of [fill From, fill To, fill date into 25, click Search] with the goal's values, and 24 are fill From followed by click Search. Multi-action at call 1 occurred in seeds 200 and 205. Transitions: multiple_actions to multiple_actions 45/66, and unknown_bid to unknown_bid 35/54. 24 replies have prose after the last action and 11 have prose before the first, 35 in total and none with both.",
+   "RETROSPECTIVE COUNTERFACTUAL, non-evidential. Stripping the brackets makes 62/128 replies parse as a single valid action. Stripping the brackets and also keeping only the first action line makes 128/128 valid. Keeping the first line without stripping gives 0/128. At call 1, which is the only prompt that does not depend on the parser, bracket stripping gives 6/8 valid (seeds 200 and 205 stay multiple_actions) and 8/8 with first-line-only. The first stripped single-valid call per seed (200..207) would have been 3, 1, 1, 1, 1, 9, 1, 1. None of this implies task success, because later pages were never observed.",
+   "No parser or harness defect relative to the frozen manifest. The grammar requires the bid 'present as a line-leading [bid] of the current tree', tree_bids strips the brackets, and BrowserGym would not resolve '[19]' either. However, no test fixture or rehearsal stub reply used a bracketed id."
+  ],
+  "open_questions_for_lead": [
+   "Scope of the stop rule. Does '0/8 stops this 7B browser path' apply to this 7B in general, or only to the pair of this 7B and this prompt? The failure happened entirely at the id-token and one-action format level: 0 environment actions ran, and 0 of the 128 replies was valid.",
+   "Result labelling. Should the published entry say 'format/interface failure; 0 executed actions; browser competence unobserved', and show the sub-causes 66 multiple_actions and 62 unknown_bid ('[19]' in all 62), instead of only logical_budget_exhausted x8?",
+   "Design limitation ownership. The frozen prompt describes ids as bracketed with the example [19], offers only <id> placeholders, and never uses the word 'bid'. The invalid-reply feedback names only the cause, so the model had no way to find the fix. The manifest was committed 18 s before admission and was never reviewed by the lead. Should this be recorded as a lead-owned design limitation, and should bracketed-id and multi-line reply fixtures become a required pre-launch check?",
+   "New executor definition. Would a prospectively re-frozen, unambiguous prompt with the same 7B count as a 'new demonstrated-capable executor'? Are seeds 200-207 now spent? Must format compliance first be shown on seeds that are not screen seeds?",
+   "Multi-action persistence. Multi-action replies were followed by another multi-action reply in 45/66 cases, occurred at call 1 in 2/8 seeds, and 24/66 clicked Search after filling only From. Is that enough on its own to say this 7B is not a demonstrated-capable executor, however the brackets question is settled?",
+   "Cap interpretation. The lead capped '16 logical actions and 32 physical model attempts'. The manifest counts every reply, invalid ones included, as a logical call, and allows a second physical attempt only after a transport error, so the 32 cap could not bind here. Was that the intended reading?",
+   "Retrospective diagnostic. Should the bracket-normalised call-1 diagnostic (6/8, or 8/8 with first-line-only) be reported, labelled retrospective and non-evidential, or left out?",
+   "Handoff correction. The worker's a1f1c7b handoff entry has three timestamp errors: admission 17:10:46Z should be 17:10:55Z, the end time 17:14:43Z should be 17:14:35Z, and the heading 17:29Z is later than its own 17:22:31Z commit. Should these be corrected in the results entry?"
+  ],
+  "any_blocker": false
+ }
+}

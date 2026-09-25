@@ -1023,8 +1023,36 @@ One Qwen2.5-Coder-14B episode ran on the already exposed `astropy__astropy-14598
 
 **Lead addendum, 25 September 04:25 UTC:** [Independent saved-record review](theory_feedback_20260925_req015_decision.md) matches all 82 published hashes and the matched seed-0 positive/negative traces. The reported four feedback-dependent clicks satisfy a revealed-element-ID check, but two autocomplete lists contain one option, the calendar day is fixed by the initial goal, and only the flight choice is demonstrated outcome-consequential. Therefore `QUALIFIED` means the scripted task/endpoint controls work; it does not establish two scientifically informative routing decisions, model competence or adaptive-policy benefit. The lead authorizes only a precommitted eight-seed 7B DEVELOPMENT screen after a restricted model adapter passes no-leakage fixtures; routing and CONFIRM remain held. Readiness 55%, change 0 points, range 45–65%.
 
+### 2026-09-25 17:14 UTC — REQ-016: the fixed 7B scores 0/8 on MiniWoB book-flight, but only through reply format; no browser action ever ran (DEVELOPMENT)
+[screen summary](../results/v2_browser/req016_7b_browser_screen_20260925/screen_summary.json), [independent verification](../results/v2_browser/req016_independent_verification_20260925.json), manifest `configs/v2_req016_7b_browser_screen_20260925.json` (sha256 `ec9c5f10…`, code `ab39bbd`).
+- **Run:** admission at 17:10:55Z; all 7 probes passed.
+  - Pins: sources, BrowserGym runtime, GGUF `87a3665c…`, llama.cpp `4fea119`.
+  - Peer lease none; physical memory 62 % free; host disk 68.3 GiB.
+  - The 7B served at 17:11:02Z (alias checked, n_ctx 16384, 1 slot). Seeds 200–207 ran once each, in order.
+  - Wall 220.5 s of 5400 s. Memory was 44–45 % free throughout, with a maximum sample gap of 5.0 s and no capacity problem.
+  - The server started and stopped, the watchdog was released, and no browser process was left.
+- **Outcome under the frozen rules:** status COMPLETED, **0 of 8 full successes**. All 8 seeds are `logical_budget_exhausted`.
+  - Calls: 128 logical and 128 physical (1 attempt each).
+  - **0 executed actions** and 128 invalid replies (66 `multiple_actions`, 62 `unknown_bid`).
+  - Per seed (multiple_actions/unknown_bid): 200 8/8, 201 6/10, 202 6/10, 203 9/7, 204 9/7, 205 11/5, 206 8/8, 207 9/7.
+  - Tokens: 45,832 prompt (40,856 cached) and 3,694 completion. Every call was HTTP 200 with finish_reason stop.
+- **Verification:** a five-way read-only verification with a completeness critic found no blocker. Every count reproduces from the complete raw and published records.
+  - 292/292 published files are hash-verified.
+  - 128 request/outcome receipt pairs; the served completions match the receipts one to one.
+  - The frozen parser reproduces every recorded cause.
+  - Every request body contains exactly the declared model view (system prompt; user message with goal, tree, history and budget), with 0 of the 13 leak markers.
+  - The model never saw a verifier field.
+- **What failed (descriptive):**
+  - **All 263 action lines in the 128 replies wrote the element id with its brackets**, e.g. `fill('[19]', 'Bettles, AK')`. None used a bare id, so the parser (and BrowserGym) cannot resolve it.
+  - 66 replies (51.6 %) contained 2–4 action lines. In 42 of them this was the whole form plan; in 24 it was fill From then click Search.
+  - Every first action was a plausible `fill('[19]', <the goal's origin>)`.
+  - The invalid-reply history named only the cause, not the rejected id.
+- **Likely contributor:** the worker-written system prompt describes ids as "in square brackets, for example [19]" with only `<id>` placeholders. This is a prompt/interface ambiguity, not a parser defect relative to the frozen grammar. No pre-launch fixture or rehearsal reply used a bracketed id.
+- **Retrospective, non-evidential:** stripping the brackets would make 62 of 128 replies single valid actions; also keeping only the first action line would make 128 of 128 valid. No later page was ever observed, so this says nothing about task success.
+- **Scope:** browser competence is **unobserved**. The screen measured format compliance under this prompt. It is a single-backend DEVELOPMENT screen, not a rate, a routing result or CONFIRM evidence. Under the lead's rule, 0/8 returns to the lead; nothing was re-run, re-prompted or changed.
+
 ### Not claimed
-No model runs for REQ-005 to REQ-008 (no-model instrumentation, retrospective analyses and a metadata inventory). Real-model execution since the archived coding study is limited to the SWE-bench Verified pipeline smoke (Flask episodes), the two 16-episode Coder 7B/14B fixed-backend DEV cohorts (0/16 each) and the single-task DEVELOPMENT probes REQ-011 (0/2 eligible), REQ-012 (7B, eligible, unresolved) and REQ-014 (14B, operational zero), with no routing or CONFIRM run; Monte Carlo only on known synthetic kernels; no interval validation for DR/OR, learned policies or
+No model runs for REQ-005 to REQ-008 (no-model instrumentation, retrospective analyses and a metadata inventory). Real-model execution since the archived coding study is limited to the SWE-bench Verified pipeline smoke (Flask episodes), the two 16-episode Coder 7B/14B fixed-backend DEV cohorts (0/16 each) and the single-task DEVELOPMENT probes REQ-011 (0/2 eligible), REQ-012 (7B, eligible, unresolved) and REQ-014 (14B, operational zero), and the browser 7B screen REQ-016 (0/8; no action executed), with no routing or CONFIRM run; Monte Carlo only on known synthetic kernels; no interval validation for DR/OR, learned policies or
 the branch study; no power claim; no evidence of real-agent improvement. The
 archived learned router did not beat always-large. Lead's readiness estimate (rubric in [readiness.md](readiness.md),
 `76b3199`): 55%, change 0 percentage points, range 45–65%.

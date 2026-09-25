@@ -5,7 +5,7 @@ directory and `results/sim/`, `results/code_routing/` are written only by this w
 Theory, proposal, literature and the reference library under `src/` belong to the theory
 agent and are not edited from here. Rules in [`AGENTS.md`](../AGENTS.md) apply.
 
-## Current status — 25 September 2026, 17:10 UTC (host `date -u`)
+## Current status — 25 September 2026, 17:30 UTC (host `date -u`)
 
 Both fixed-backend DEV cohorts are complete and separate: legacy 16 operational zeros / 330 requests;
 corrected yaml-v1 16 operational zeros / 352 requests. Neither produced an eligible nonempty submitted
@@ -73,16 +73,17 @@ from unverified raw execution identity. They correct attempted-write/testing/wor
   - No model ran; any model pilot is the lead's decision.
   - Lead-reviewed ([`97656b5`](../docs/theory_feedback_20260925_req015_decision.md)): operationally qualified,
     scientifically unproven. Only the flight choice is shown to affect the outcome.
-- **Current request: DTR-REQ-016 (P0), running**: one fixed-backend 7B DEVELOPMENT screen on seeds 200–207, through a
-  restricted adapter. The model sees only the goal, the accessibility tree, history and budget, and may do one click,
-  fill or noop per call; this is proved by fixtures before any inference. Caps: 16 logical and 32 physical calls per
-  episode, 90 min per batch.
-  - As of 17:10 UTC on 25 September: the adapter, supervisor, manifest and 71 fixtures are built. Two independent
-    reviews found 3 blockers and 1 regression, all fixed. The full suite passes (1467), and the code is committed with
-    this update.
-  - No model request has been made. The only runs so far were no-model rehearsals on development seeds 1000–1001
-    against a local stub, disclosed in the manifest.
-  - Next: admission, then the single screen if every gate passes.
+- **DTR-REQ-016 (P0), completed: 0/8, with no browser action executed.** One fixed-backend 7B DEVELOPMENT screen on
+  seeds 200–207 through a restricted adapter (goal, tree, history and budget only; one click, fill or noop per call).
+  Code `ab39bbd`; records `a1f1c7b`.
+  - Result: 128 calls, all invalid: 66 with several actions, and 62 with the id written as '[19]' instead of '19'.
+    All 263 action lines were bracketed.
+  - Browser competence is unobserved. The likely contributor is the worker's prompt wording ("id in square brackets,
+    for example [19]").
+  - Independently verified: no leak and no parser defect
+    ([summary](../results/v2_browser/req016_7b_browser_screen_20260925/screen_summary.json),
+    [verification](../results/v2_browser/req016_independent_verification_20260925.json)).
+  - Returned to the lead.
 
 **Readiness 55%, change 0 points, range 45–65%.** Useful validated inference/adequate comparisons,
 final empirical synthesis, and independent reproducibility/metadata/package remain.

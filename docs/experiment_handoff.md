@@ -5833,9 +5833,9 @@ At the next worker publication, please reconcile `experiments/README.md`'s dated
 
 **Cadence:** job `c710b12b`, session-only, nominally :04/:34 (observed about :15/:45); gap noted above; I publish on change.
 
-## Worker status — 2026-09-25T17:29Z (host `date -u`) — DTR-REQ-016 screen RUN and records PUBLISHED: 0/8; independent verification in progress
+## Worker status — 2026-09-25T17:22Z (host `date -u`; heading corrected from 17:29Z) — DTR-REQ-016 screen RUN and records PUBLISHED: 0/8; independent verification in progress
 
-- **Run:** admission passed at 17:10:46Z. Physical memory was 62 % free, host disk 68.3 GiB, the peer lease `none`, and the pins passed. The screen ran from 17:10:55Z to 17:14:43Z (220.5 s of the 5400 s cap).
+- **Run:** admission passed at 17:10:55Z (corrected from 17:10:46Z, which was the read-only check). Physical memory was 62 % free, host disk 68.3 GiB, the peer lease `none`, and the pins passed. The screen ran from 17:10:55Z to 17:14:35Z (corrected from 17:14:43Z; 220.5 s of the 5400 s cap).
 - **Serving:** 7B identity checked (alias, n_ctx 16384, 1 slot). Post-load memory was 44 % free, and at least 44 % throughout. The maximum sampling gap was 5.0 s, with no capacity problem.
 - **Outcome:** status **COMPLETED, 0 of 8 full successes**. All 8 seeds are `logical_budget_exhausted`.
   - Calls: 128 logical and 128 physical (no retries).
@@ -5847,3 +5847,48 @@ At the next worker publication, please reconcile `experiments/README.md`'s dated
   - The frozen system prompt says elements have "an id in square brackets, for example [19]". This may be a prompt ambiguity that I authored, not only model incapacity.
   - The environment never executed an action, so there is no evidence about browser competence.
   - An independent five-way verification of the records and this diagnosis is running. The full results entry and questions follow next. Nothing is re-run or changed.
+
+## Worker checkpoint — 2026-09-25T17:29Z (host `date -u`) — DTR-REQ-016 COMPLETED: 0/8, a reply-format failure with no browser action executed; returning to the lead
+
+**Read:** lead `6d5f9fa` (16:35Z) and issue #4 up to 16:36:29Z. **Code/config:** `ab39bbd`. **Records:** `a1f1c7b`. **Verification and results:** this commit. **Authorized runs:** none remain. Under your rule the outcome returns to you; nothing was re-run, re-prompted or changed.
+
+- **Result (frozen rules):** COMPLETED, **0 of 8 full successes**; all 8 seeds `logical_budget_exhausted`.
+  - Calls: 128 logical and 128 physical. **0 executed actions** and 128 invalid replies (66 `multiple_actions`, 62 `unknown_bid`).
+  - Wall 220.5 s. Memory 44–45 % free after load, with no capacity problem. Clean shutdown.
+  - Full facts: [results entry](experiment_results.md) and [verification record](../results/v2_browser/req016_independent_verification_20260925.json).
+- **Independent verification** (five read-only verifiers and a completeness critic): no blocker.
+  - Every count reproduces, and 292/292 published files are hash-verified.
+  - All 128 request bodies carry exactly the declared model view with 0 leak markers; no verifier field reached the model.
+  - The frozen parser reproduces every cause, and the served completions match the receipts one to one.
+  - The critic also found three timestamp errors in my 17:22Z entry, now corrected above.
+- **Diagnosis (evidence; the decision is yours):**
+  - **All 263 action lines** wrote the id with brackets, e.g. `fill('[19]', …)`, and never a bare id.
+  - 51.6 % of replies had 2–4 action lines. This persisted after a `multiple_actions` history line in 45 of 66 cases, and happened at call 1 in seeds 200 and 205.
+  - Every first action was the plausible `fill('[19]', <goal origin>)`.
+  - **I own a likely contributor:** my system prompt says ids are "in square brackets, for example [19]" and gives only `<id>` placeholders. The history named the cause but not the rejected id.
+  - No pre-launch fixture or rehearsal used a bracketed-id reply, and you did not review the frozen prompt before launch (manifest committed 18 s before admission).
+  - This is not a parser defect relative to the frozen grammar; BrowserGym would not resolve '[19]' either.
+  - **Browser competence was never observed.**
+- **Retrospective, non-evidential:** stripping the brackets would have made 62 of 128 replies single valid actions. Also keeping only the first line would make 128 of 128 valid; at call 1, 6/8 or 8/8 respectively. No later page was observed.
+
+**Questions for you:**
+1. **Scope of the stop rule.** Does "0/8 stops this 7B browser path" cover this 7B in general, or only this 7B with this prompt? No environment action ran.
+2. **Labelling.** Should the result read "format/interface failure; 0 executed actions; browser competence unobserved", keeping the sub-causes, rather than only `logical_budget_exhausted` ×8?
+3. **Re-freezing.** Would a prospectively re-frozen, unambiguous prompt with the same 7B count as a new executor?
+   - Would it need bare-id examples, the rejected id in the feedback, and bracketed-id and multi-line fixtures?
+   - Are seeds 200–207 spent, and must format compliance first be shown on non-screen seeds?
+4. **Multi-action persistence.** Is the persistence of multi-action replies enough, however the bracket question is settled, to say this 7B is not a demonstrated-capable executor?
+5. **Cap reading.** Every reply counted as a logical call, and a second physical attempt was allowed only after a transport error, so the 32-attempt cap could not bind. Was that your intended reading?
+
+| Request | Status | Artifact |
+|---|---|---|
+| DTR-REQ-016 (P0) | **completed: 0/8 (format failure, 0 executed actions; browser competence unobserved)** | `ab39bbd`, `a1f1c7b`, this commit |
+| DTR-REQ-015 (P0) | completed: operationally qualified, scientifically unproven | `cdf6a04`, `bdd007a`, `97656b5` |
+| DTR-REQ-014 (P0) | completed: context-limit operational zero; local coding pair closed | `a0d2a7c`, `00295d6` |
+| DTR-REQ-013 (P0) | step 1 completed; live step blocked and superseded | `16d1d9b`, `b9ffb29` |
+| DTR-REQ-012 / 011 / 010 | completed | see `a0d2a7c` table |
+| DTR-REQ-009 … 001 | as in the table at `16d1d9b` | — |
+
+**Readiness:** 55 %, change 0 points (range 45–65 %; 75/75/50/25/25 → 55.00). No empirical gate closed. Largest remaining: your executor/interface decision; a competent fixed-target agent contrast with valid inference; final synthesis; reproducibility/metadata/package.
+
+**Cadence:** job `c710b12b`, session-only, ticks at about :15/:45 UTC. It was silent from about 05:30Z to 16:30Z (cause unverified); active now. I publish on change.

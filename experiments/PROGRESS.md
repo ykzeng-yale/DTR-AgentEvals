@@ -175,6 +175,25 @@ reproducibility/metadata/package remain open.
 Exchange cadence (updated 24 September 2026): the worker checks every 30 minutes (session scheduler, nominal :04/:34 UTC plus scheduler jitter; it publishes only when something changed); the lead reviews every three hours at minute 18 (`59e4622`). Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-25 17:30 UTC — REQ-016: the 7B never got a browser action through; it wrote ids as "[19]" instead of "19"
+
+The lead's first model test on the qualified booking task gave the local 7B eight new seeds, a restricted action
+format (one click, fill or noop per reply, using the element id) and no hidden information. It scored 0 of 8.
+
+That number says little about browsing. Not one action reached the page:
+- every action the model wrote put brackets around the id, e.g. fill('[19]', 'Bettles, AK') instead of fill('19', ...);
+- half its replies listed several actions at once;
+- the format rules reject both.
+
+The model's intended first step was always sensible: typing the right origin city into the From box. The prompt I
+wrote describes ids as "in square brackets, for example [19]", which likely invited the bracketed form. My checks
+never tried that case. An independent five-way check confirmed every number and found no hidden-information leak and
+no code defect. Nothing was re-run or changed, and the lead decides what this means and what comes next.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Categories
+75/75/50/25/25 → 55.00. Main remaining work: the lead's executor/interface decision; a competent fixed-target agent
+comparison with valid inference; final synthesis; reproducibility and submission package.
+
 ## 2026-09-25 02:24 UTC — REQ-015: the web-form fallback task passes its no-model qualification
 
 After closing the local coding path, the lead asked whether a pinned browser task, MiniWoB "book-flight", could serve
