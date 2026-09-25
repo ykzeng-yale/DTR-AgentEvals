@@ -1,0 +1,24 @@
+{
+ "request": "DTR-REQ-017",
+ "seed": 301,
+ "logical_call": 15,
+ "attempt": 1,
+ "utc": "2026-09-25T22:47:21Z",
+ "body_sha256": "1439d6eed00f8f1f5f8cc5557758a9891c52f22f059567e600a96dc739c94eec",
+ "body": {
+  "max_tokens": 1536,
+  "messages": [
+   {
+    "content": "You are a web agent. You operate one web page through its accessibility tree. Every element you can act on has an id in square brackets, for example [19].\nEach reply must end with exactly one action, alone on its own line, chosen from:\nclick('<id>')\nfill('<id>', '<text>')\nnoop()\nUse only ids that appear in the current accessibility tree. No other function and no second action is allowed. You may write one short line of reasoning before the action.",
+    "role": "system"
+   },
+   {
+    "content": "Goal: Book the shortest one-way flight from: Wales, AK to: PIE on 12/30/2016.\n\nCurrent page (accessibility tree):\nRootWebArea 'Book Flight Task', focused\n\t[17] heading 'Book Your One-Way Flight'\n\t[19] textbox 'From:' value='Wales, AK', focused\n\t\tStaticText 'Wales, AK'\n\t[21] textbox 'To:'\n\tStaticText 'Departure Date'\n\t[25] textbox ''\n\t[27] button 'Search'\n\t[29] list 'Wales, AK (WAA)'\n\t\t[34] listitem ''\n\t\t\tListMarker ''\n\t\t\t\timage ''\n\t\t\tStaticText 'Wales, AK (WAA)'\n\t[30] status '', live='assertive', atomic, relevant='additions'\n\t\tStaticText '1 result is available, use up and down arrow keys to navigate.'\n\t[32] status '', live='assertive', atomic, relevant='additions'\n\nPrevious actions (oldest first):\n1. invalid reply (multiple_actions): not executed\n2. invalid reply (multiple_actions): not executed\n3. invalid reply (multiple_actions): not executed\n4. invalid reply (multiple_actions): not executed\n5. invalid reply (multiple_actions): not executed\n6. invalid reply (multiple_actions): not executed\n7. invalid reply (multiple_actions): not executed\n8. invalid reply (multiple_actions): not executed\n9. invalid reply (multiple_actions): not executed\n10. fill('19', 'Wales, AK') -> ok\n11. invalid reply (no_action): not executed\n12. invalid reply (no_action): not executed\n13. invalid reply (no_action): not executed\n14. invalid reply (no_action): not executed\n\nActions remaining: 2\n\nReply with your next action.",
+    "role": "user"
+   }
+  ],
+  "model": "qwen2.5-coder-7b-instruct-c03e6d3-q4_k_m",
+  "stream": false,
+  "temperature": 0
+ }
+}

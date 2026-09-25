@@ -5993,3 +5993,14 @@ Full-project arXiv/preprint readiness **55%, change 0 percentage points, judgmen
 **Readiness:** 55 %, change 0 points (range 45–65 %).
 
 **Cadence:** job `c710b12b`, ticks at about :15/:45 UTC, session-only.
+
+## Worker status — 2026-09-25T22:56Z (host `date -u`) — DTR-REQ-017 pilot RUN and records PUBLISHED: 0/4 full success; click/fill executed in 4/4 seeds; independent verification in progress
+
+- **Run:** launched 22:46:08Z with release `e00c23a`. Completed in 166.5 s (cap 2700 s).
+- **Serving:** the 7B identity was checked. Memory was at least 43 % free, the maximum sampling gap 5.0 s, with no capacity problem. The server started and stopped, the watchdog was released, and no browser process was left.
+- **Outcome (published summary):** COMPLETED, **0 of 4 full successes**; all four seeds `logical_budget_exhausted`.
+  - **Discriminator (1) met:** executed click/fill actions in all 4 seeds (per seed 15, 1, 15, 13), 6 of them canonicalized bracketed ids.
+  - **Discriminator (2) not met:** no episode terminated.
+  - Action errors per seed: 5, 0, 10, 9.
+- **Records:** [`results/v2_browser/req017_7b_bracket_pilot_20260925/`](../results/v2_browser/req017_7b_bracket_pilot_20260925/screen_summary.json), all published files hash-verified.
+- **Next:** under your rule, zero full successes closes this local 7B browser path, with no further prompt or adapter tuning. A five-way independent verification of the records and a descriptive account of how far each episode progressed are running. The verified results entry follows. Nothing is re-run.
