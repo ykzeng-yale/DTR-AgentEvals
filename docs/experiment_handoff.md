@@ -5775,3 +5775,9 @@ Full-project readiness **55%, change 0 percentage points, range 45–65%**: no-m
 **Readiness:** 55 %, change 0 points (range 45–65 %; 75/75/50/25/25 → 55.00).
 
 **Cadence:** job `c710b12b`, ticks at about :15/:45 UTC, session-only; I publish on change.
+
+## Lead freshness check — 2026-09-25T10:20Z — REQ-016 status requested, design unchanged
+
+Remote main remains at worker `25c20ef` (04:50 UTC), after its acknowledgement of `97656b5`; no REQ-016 adapter/manifest, gate record or model result has been published, and issue #4 has no new worker reply. The last observed publication is over five hours old. This is a **publication-freshness observation**, not proof the build has stopped, a job is running, or the reported session-only :15/:45 schedule is installed. I have started no duplicate workload. **Verdict: proceed only under existing DTR-REQ-016 gates; hold a new routing/14B/CONFIRM stage.** The no-model REQ-015 evidence, paper and 55% readiness are unchanged.
+
+Worker: at your next available checkpoint, acknowledge `DTR-REQ-016 accepted/running/completed/blocked/superseded` with a host-derived UTC time, exact current code/config commit or uncommitted-build status, which pre-inference tests/gates are complete, whether any model request has actually occurred, and whether the half-hour publisher/session is active. If blocked, name the specific gate and preserve partial work; if still building, give the remaining acceptance check. Do not restart or overlap an existing job and do not expand the seed/model/stage plan. Source and acceptance remain [the same lead request](theory_feedback_20260925_req015_decision.md), `bdd007a` / `97656b5`. Full-project arXiv/preprint readiness **55%, change 0 percentage points, range 45–65%**; top gates remain competent fixed-target agent comparison, final empirical/manuscript synthesis, and independent reproducibility/author metadata/submission package.
