@@ -1051,8 +1051,33 @@ One Qwen2.5-Coder-14B episode ran on the already exposed `astropy__astropy-14598
 - **Retrospective, non-evidential:** stripping the brackets would make 62 of 128 replies single valid actions; also keeping only the first action line would make 128 of 128 valid. No later page was ever observed, so this says nothing about task success.
 - **Scope:** browser competence is **unobserved**. The screen measured format compliance under this prompt. It is a single-backend DEVELOPMENT screen, not a rate, a routing result or CONFIRM evidence. Under the lead's rule, 0/8 returns to the lead; nothing was re-run, re-prompted or changed.
 
+### 2026-09-25 22:49 UTC — REQ-017: bracket-id repair makes the 7B act (46 of 64 calls executed) but 0/4 full successes; no episode got past the search form (DEVELOPMENT)
+[screen summary](../results/v2_browser/req017_7b_bracket_pilot_20260925/screen_summary.json), [independent verification](../results/v2_browser/req017_independent_verification_20260925.json), manifest `configs/v2_req017_7b_bracket_pilot_20260925.json` (sha256 `72e078df…`, frozen `0127f3a`), lead release `e00c23a`.
+- **Run:** one lead-released four-seed pilot. Everything is identical to REQ-016 except the adapter, which now accepts a bracketed current-page id: the fixed Qwen2.5-Coder-7B, the same prompt bytes, T 0, and 16/32 calls per episode.
+  - Launch-mode admission at 22:46:09Z admitted every probe, including the lead release: physical memory 62 % free, host disk 68.6 GiB, peer lease none.
+  - Seeds 300–303 each ran once, in order. Wall 166.5 s of 2700 s.
+  - Memory was at least 43 % free, and the maximum sampling gap was 5.01 s.
+  - Cleanup was clean: the server started and stopped, the watchdog was released, and no browser process was left.
+- **Outcome under the frozen rules:** COMPLETED, **0 of 4 full successes**; all four seeds `logical_budget_exhausted`.
+  - **Discriminator (1) met:** 46 of 64 calls executed: 14 click, 30 fill and 2 noop. Clicks and fills executed in every seed (15, 1, 15, 13), 6 of them canonicalized bracketed ids.
+  - **Discriminator (2) not met.** Under the lead's rule, this closes the local 7B browser path with no further tuning.
+  - 18 invalid replies: 9 no_action and 9 multiple_actions, the latter all in seed 301.
+  - 24 action errors. Tokens: 37,744 prompt and 1,777 completion.
+- **Where it failed (descriptive, verified):**
+  - **Autocomplete never used:** no episode clicked an autocomplete option (From/To kept the typed text, e.g. "ISN"). Every REQ-015 scripted success does this.
+  - **Date never set:** no correct date was set (seed 300 chose 12/10 instead of 11/19). The datepicker opens on December, and its Prev link was never used.
+  - **Never reached results:** Search was clicked with invalid fields, and no results list or Book button ever appeared.
+  - **Hidden cause of errors:** 23 of the 24 errors were `fill` on the read-only date box. The model saw only the first error line, a timeout; the "not editable" cause is in the unshown call log.
+  - **History echo:** 8 of the 9 no_action replies copied the history's "-> ok" format.
+  - **Bracket habit:** all 24 click/fill lines up to each seed's first executed action used brackets; only 2 of 40 did afterwards. This is an association across 4 episodes, not a tested cause.
+- **Verification:** a four-way read-only verification with a completeness critic found no blocker.
+  - Every count reproduces; 64/64 request bodies match the frozen prompt and settings, with 0 leak markers.
+  - The parser reproduces every row, and the server completions match the receipts one to one.
+  - 199/199 published files are hash-verified, and the release chain `0127f3a` → `e00c23a` → HEAD is intact.
+- **Scope:** a single-backend four-seed DEVELOPMENT pilot. It is not a rate, a routing result or CONFIRM evidence. The REQ-016 result stays unchanged.
+
 ### Not claimed
-No model runs for REQ-005 to REQ-008 (no-model instrumentation, retrospective analyses and a metadata inventory). Real-model execution since the archived coding study is limited to the SWE-bench Verified pipeline smoke (Flask episodes), the two 16-episode Coder 7B/14B fixed-backend DEV cohorts (0/16 each) and the single-task DEVELOPMENT probes REQ-011 (0/2 eligible), REQ-012 (7B, eligible, unresolved) and REQ-014 (14B, operational zero), and the browser 7B screen REQ-016 (0/8; no action executed), with no routing or CONFIRM run; Monte Carlo only on known synthetic kernels; no interval validation for DR/OR, learned policies or
+No model runs for REQ-005 to REQ-008 (no-model instrumentation, retrospective analyses and a metadata inventory). Real-model execution since the archived coding study is limited to the SWE-bench Verified pipeline smoke (Flask episodes), the two 16-episode Coder 7B/14B fixed-backend DEV cohorts (0/16 each) and the single-task DEVELOPMENT probes REQ-011 (0/2 eligible), REQ-012 (7B, eligible, unresolved) and REQ-014 (14B, operational zero), the browser 7B screen REQ-016 (0/8; no action executed) and pilot REQ-017 (0/4; actions executed, never past the search form), with no routing or CONFIRM run; Monte Carlo only on known synthetic kernels; no interval validation for DR/OR, learned policies or
 the branch study; no power claim; no evidence of real-agent improvement. The
 archived learned router did not beat always-large. Lead's readiness estimate (rubric in [readiness.md](readiness.md),
 `76b3199`): 55%, change 0 percentage points, range 45–65%.

@@ -5,7 +5,7 @@ directory and `results/sim/`, `results/code_routing/` are written only by this w
 Theory, proposal, literature and the reference library under `src/` belong to the theory
 agent and are not edited from here. Rules in [`AGENTS.md`](../AGENTS.md) apply.
 
-## Current status — 25 September 2026, 20:26 UTC (host `date -u`)
+## Current status — 25 September 2026, 23:00 UTC (host `date -u`)
 
 Both fixed-backend DEV cohorts are complete and separate: legacy 16 operational zeros / 330 requests;
 corrected yaml-v1 16 operational zeros / 352 requests. Neither produced an eligible nonempty submitted
@@ -86,12 +86,14 @@ from unverified raw execution identity. They correct attempted-write/testing/wor
   - Returned to the lead.
   - Lead-reviewed ([`c648a84`](../docs/theory_feedback_20260925_req016_decision.md)): a format/interface operational
     zero. Seeds 200–207 are spent.
-- **Current request: DTR-REQ-017 (P0), frozen and awaiting the lead's release (no model call).**
-  - The build (`0127f3a`) changes only the adapter: a bracketed current-page id '[19]' is accepted as '19'. Everything
-    else equals REQ-016.
-  - Seeds 300–303, 45 min, 2 GiB. 58 fixtures, three adversarial reviews, admitted.
-  - The runner refuses to start without an explicit lead release commit naming the manifest sha256
-    ([review packet](../docs/req017_review_packet_20260925.md)).
+- **DTR-REQ-017 (P0), completed: 0/4 full successes.** The bracket-id adapter (frozen `0127f3a`) ran once after the lead's
+  release (`e00c23a`), on seeds 300–303.
+  - The fix made the 7B act: 46 of 64 calls executed, with clicks and fills in every seed.
+  - No episode got past the search form. It never selected an autocomplete option, never set the right date (23 of 24
+    errors were typing into the read-only date box), and no results appeared.
+  - Under the lead's rule this closes the local 7B browser path
+    ([summary](../results/v2_browser/req017_7b_bracket_pilot_20260925/screen_summary.json),
+    [verification](../results/v2_browser/req017_independent_verification_20260925.json)). Returned to the lead.
 
 **Readiness 55%, change 0 points, range 45–65%.** Useful validated inference/adequate comparisons,
 final empirical synthesis, and independent reproducibility/metadata/package remain.

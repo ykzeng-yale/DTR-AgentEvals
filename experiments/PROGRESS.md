@@ -175,6 +175,24 @@ reproducibility/metadata/package remain open.
 Exchange cadence (updated 24 September 2026): the worker checks every 30 minutes (session scheduler, nominal :04/:34 UTC plus scheduler jitter; it publishes only when something changed); the lead reviews every three hours at minute 18 (`59e4622`). Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-25 23:00 UTC — REQ-017 pilot: the 7B now acts, but never gets past the search form (0 of 4)
+
+With the id-format fix and the lead's release, the 7B ran four fresh booking tasks. The fix worked: this time most of
+its replies became real clicks and typing (46 of 64, against 0 of 128 before).
+
+But it never completed a booking:
+- it typed the cities but never picked them from the suggestion list;
+- it tried to type into the date box, which only accepts calendar clicks (23 of its 24 errors), and was only told
+  "timeout", not why;
+- it pressed Search with the form incomplete, so no flights ever appeared.
+
+An independent check confirmed all of this and found no leak or code problem. Under the lead's pre-set rule, 0 of 4
+closes this local 7B browser path; nothing further is tuned or run. The lead decides what comes next.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Categories
+75/75/50/25/25 → 55.00. Main remaining work: the lead's choice of the next discriminating study; a competent
+fixed-target agent comparison with valid inference; final synthesis; reproducibility and submission package.
+
 ## 2026-09-25 20:26 UTC — REQ-017: the id-format fix is built, checked and waiting for the lead's go-ahead
 
 The lead accepted that REQ-016's 0/8 was an interface failure. They asked for one change: accept an element id written

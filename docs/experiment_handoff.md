@@ -6004,3 +6004,44 @@ Full-project arXiv/preprint readiness **55%, change 0 percentage points, judgmen
   - Action errors per seed: 5, 0, 10, 9.
 - **Records:** [`results/v2_browser/req017_7b_bracket_pilot_20260925/`](../results/v2_browser/req017_7b_bracket_pilot_20260925/screen_summary.json), all published files hash-verified.
 - **Next:** under your rule, zero full successes closes this local 7B browser path, with no further prompt or adapter tuning. A five-way independent verification of the records and a descriptive account of how far each episode progressed are running. The verified results entry follows. Nothing is re-run.
+
+## Worker checkpoint — 2026-09-25T23:00Z (host `date -u`) — DTR-REQ-017 COMPLETED: 0/4 full successes; actions executed (46/64), but no episode got past the search form; returning to you
+
+**Read:** lead `e00c23a` and issue #4 up to 22:21:57Z. **Frozen code:** `0127f3a`. **Release:** `e00c23a`. **Records:** `8c58ec3`. **Verified results:** this commit ([results entry](experiment_results.md), [verification record](../results/v2_browser/req017_independent_verification_20260925.json)). **Authorized runs:** none remain.
+
+- **Result (frozen rules):** COMPLETED, **0 of 4 full successes**; all four seeds `logical_budget_exhausted`.
+  - **Discriminator (1) met:** clicks and fills executed in 4/4 seeds (15, 1, 15, 13; 6 canonicalized); 46 of 64 calls executed.
+  - **Discriminator (2) not met.** Under your predeclared rule this **closes the local 7B browser path** with no further prompt or adapter tuning. I will run nothing further on it.
+- **Verified descriptively:**
+  - No autocomplete option was ever clicked; From/To kept the typed text.
+  - The correct date was never set. The datepicker's Prev link was never used, and seed 300 picked 12/10 instead of 11/19.
+  - Search was clicked with invalid fields, and no results list or Book button ever appeared.
+  - 23 of the 24 action errors were `fill` on the read-only date box. Their "not editable" cause sits in the call log, which is withheld from the model (first-line excerpt only).
+  - 8 of 9 no-action replies echoed the history's "-> ok" format.
+  - Bracketed ids vanished after each seed's first executed action (24/24 before, 2/40 after). This is an association across 4 episodes, not a tested cause.
+- **Verification** (four read-only verifiers and a critic): no blocker. Every count reproduces; 64/64 request bodies match the frozen prompt, with 0 leak markers; 199/199 published files hash-verified; release chain intact.
+- **Corrections to my own earlier entries:**
+  - The pilot's first record is 22:46:09Z. My "22:46:08Z" was the shell time before launch.
+  - The 22:46:01Z admission-only check was a pre-launch read. The gating record is the launch-mode `admission.json` at 22:46:09Z.
+  - My 22:56Z entry omitted the readiness figure; it is given below.
+
+**Questions for you:**
+1. **Closure.** Do you confirm that the local 7B browser path is closed, and that nothing (14B, extra seeds, routing, CONFIRM, or further interface tuning) follows from this pilot?
+2. **Classification.** Discriminator (1) was met, so the interface repair worked for execution. Should the 0/4 be labelled a task-competence failure? The identified interface factors are the hidden read-only cause and the history-format echo.
+3. **Next.** What is the next discriminating study for the empirical policy-contrast milestone, and should the "Browser fallback" row of the evidence map be marked closed?
+4. **Process items** (non-blocking):
+   - Swap stayed at 0.5 GiB free throughout (recorded, not gated).
+   - The publisher copies non-whitelisted suffixes without sanitization. Here that was only the `.guarded` config, which has no paths or secrets.
+   - REQ-016 labels remain in some admission keys.
+
+| Request | Status | Artifact |
+|---|---|---|
+| DTR-REQ-017 (P0) | **completed: 0/4 full successes; discriminator (1) met, (2) not met; local 7B browser path closed under your rule** | `0127f3a`, `e00c23a`, `8c58ec3`, this commit |
+| DTR-REQ-016 (P0) | completed: format/interface operational zero (0/8; 0 actions executed) | `ab39bbd`, `a1f1c7b`, `74a20c8`, `c648a84` |
+| DTR-REQ-015 (P0) | completed: operationally qualified, scientifically unproven | `cdf6a04`, `bdd007a` |
+| DTR-REQ-014 / 013 / 012 / 011 / 010 | completed (013 live step superseded) | see `74a20c8` table |
+| DTR-REQ-009 … 001 | as in the table at `16d1d9b` | — |
+
+**Readiness:** 55 %, change 0 points (range 45–65 %; 75/75/50/25/25 → 55.00). No empirical gate closed. Largest remaining: your decision on the next discriminating study; a competent fixed-target agent contrast with valid inference; final synthesis; reproducibility/metadata/package.
+
+**Cadence:** job `c710b12b`, ticks at about :15/:45 UTC, session-only; I publish on change.

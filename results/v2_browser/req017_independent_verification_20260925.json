@@ -1,0 +1,687 @@
+{
+ "request": "DTR-REQ-017",
+ "kind": "independent read-only verification of the published REQ-017 pilot records (worker-run multi-agent workflow: four dimension verifiers and a completeness critic; no model, server, browser or edit)",
+ "run_record": "results/v2_browser/req017_7b_bracket_pilot_20260925",
+ "verified_before_utc": "2026-09-25T22:59Z",
+ "verifiers": [
+  {
+   "dimension": "integrity",
+   "verdict": "confirmed",
+   "numbers": {
+    "manifest_sha256_config_head_0127f3a_e00c23a_raw_published": "72e078df363b8ce35d52d29a4ebd3a8aa2b9a86151b64639b476f0ce1af87ffc (all five identical; cmp byte-identical)",
+    "release_commit": "e00c23adb758c4026997a311a1851481ac8a2248",
+    "release_subject": "lead: review and release one REQ-017 development pilot",
+    "release_token_lines_in_message": 1,
+    "release_token_sha_matches_manifest": true,
+    "freeze_commit_0127f3a_ancestor_of_release": true,
+    "release_ancestor_of_HEAD": true,
+    "revoke_or_hold_after_release": 0,
+    "files_changed_e00c23a_to_HEAD": "docs/experiment_handoff.md only",
+    "admission_admitted": true,
+    "admission_probes_ok": "manifest, sources(23/23 hashes = worktree = HEAD = e00c23a), browser, models(1 gguf + 11 llama.cpp tools = expected), conflicts, memory(62%>=50), disk(68.56>=25 GiB), lead_release: all ok",
+    "admission_checked_utc": "2026-09-25T22:46:09Z",
+    "seeds_in_order": [
+     300,
+     301,
+     302,
+     303
+    ],
+    "episodes_per_seed": 1,
+    "logical_calls_per_seed": [
+     16,
+     16,
+     16,
+     16
+    ],
+    "physical_attempts_per_seed": [
+     16,
+     16,
+     16,
+     16
+    ],
+    "receipts_per_seed_paired": "32 files = 16 request + 16 outcome each, all paired, stems == step attempts",
+    "logical_total": 64,
+    "physical_total": 64,
+    "executed_total": 46,
+    "executed_per_seed": [
+     15,
+     1,
+     15,
+     15
+    ],
+    "executed_click_fill_per_seed": [
+     15,
+     1,
+     15,
+     13
+    ],
+    "executed_noop_total": 2,
+    "canonicalized_per_seed": [
+     2,
+     1,
+     2,
+     1
+    ],
+    "canonicalized_total": 6,
+    "invalid_total": 18,
+    "invalid_causes": "300 no_action 1; 301 multiple_actions 9 + no_action 6; 302 no_action 1; 303 no_action 1",
+    "action_errors_per_seed": [
+     5,
+     0,
+     10,
+     9
+    ],
+    "action_errors_total": 24,
+    "prompt_tokens_per_seed": [
+     13103,
+     6209,
+     8634,
+     9798
+    ],
+    "prompt_tokens_total": 37744,
+    "completion_tokens_per_seed": [
+     385,
+     377,
+     515,
+     500
+    ],
+    "completion_tokens_total": 1777,
+    "usage_unknown_calls": 0,
+    "max_prompt_tokens_one_call": 1675,
+    "max_completion_tokens_one_call": 68,
+    "request_bodies_checked": 64,
+    "bodies_temp0_max1536_streamfalse_alias_ok": 64,
+    "body_keys": "exactly {max_tokens, messages, model, stream, temperature} in 64/64",
+    "body_sha256_reproduced": "64/64 (json.dumps sort_keys, the canonical_body bytes posted)",
+    "system_prompt_equal_manifest": 64,
+    "leak_markers_in_requests": 0,
+    "http_status": {
+     "200": 64
+    },
+    "finish_reason": {
+     "stop": 64
+    },
+    "outcome_classification": {
+     "ok": 64
+    },
+    "server_log_completions": 64,
+    "server_log_truncated": 0,
+    "server_log_per_task_tokens_match_receipts_in_order": "64/64 (eval tokens = completion; prompt-eval + cached = prompt)",
+    "full_success": "0/4",
+    "taxonomy": "logical_budget_exhausted x4",
+    "wall_seconds": 166.53,
+    "batch_wall_cap_s": 2700,
+    "child_deadline": "T0+2460 s (23:27:09Z), watchdog/batch deadline T0+2700 s (23:31:09Z)",
+    "raw_artifact_bytes_now": 1422721,
+    "raw_artifact_bytes_reported": 1415418,
+    "reported_vs_now_difference": "7303 = screen_summary.json size (computed before it was written)",
+    "artifact_cap_bytes": 2147483648,
+    "publication_manifest_entries": 199,
+    "raw_files": 199,
+    "published_files_excluding_manifest": 199,
+    "publication_hash_mismatches": 0,
+    "sanitized_files": "server log (.log -> .log.txt, 1 absolute model path relativized), watchdog_config.json (3 absolute paths relativized)",
+    "absolute_paths_or_secrets_in_published": 0,
+    "resource_samples": "34 (1 admission, 1 post_load 45%, 32 episode; min free 43%, min disk 68.56 GiB, max gap 5.01 s, 0 problems)",
+    "port_8291_listener_now": "none",
+    "server_record": "servers [], release_confirmed true"
+   },
+   "findings": [
+    {
+     "severity": "info",
+     "claim": "Release gate is intact. The run manifest is byte-identical to the committed config and hashes to 72e078df...87ffc. The lead release commit carries exactly one matching RELEASE line and a 'lead:' subject.",
+     "evidence": "sha256 is identical for configs/v2_req017_7b_bracket_pilot_20260925.json at HEAD, 0127f3a and e00c23a, and for the raw and published manifest.json. `git log -1 --format=%B e00c23a` shows 'RELEASE DTR-REQ-017 manifest_sha256=72e078df363b8ce35d52d29a4ebd3a8aa2b9a86151b64639b476f0ce1af87ffc' once. 0127f3a is an ancestor of e00c23a, and e00c23a is an ancestor of HEAD. No REVOKE/HOLD lines after it. The only file changed between e00c23a and HEAD is docs/experiment_handoff.md. The admission lead_release probe has commit e00c23adb758c4026997a311a1851481ac8a2248, remote_main e00c23a and freeze commit 0127f3a8."
+    },
+    {
+     "severity": "info",
+     "claim": "The counts in episode.json, episodes.jsonl, batch_summary and screen_summary rows all match counts recomputed from steps.jsonl and receipts. The parent's printed summary is correct.",
+     "evidence": "Per seed: logical 16/16/16/16 and physical 16/16/16/16 (caps 16/32). Executed 15/1/15/15, of which click/fill 15/1/15/13 and noop 0/0/0/2. Canonicalized 2/1/2/1 (6 total; all executed with invalid_cause null and the canonicalization detail). Invalid 1/15/1/1. Action errors 5/0/10/9. Prompt tokens 13103/6209/8634/9798 (37744 total); completion tokens 385/377/515/500 (1777 total). Replies, usage and finish_reason in steps match the outcome receipts for all 64 calls. remaining_shown counts down 16..1 and history length equals the call index."
+    },
+    {
+     "severity": "info",
+     "claim": "All 64 request bodies use the frozen settings and alias, and the server log reconciles one-to-one with the receipts.",
+     "evidence": "64/64 bodies have temperature 0, max_tokens 1536, stream false and model qwen2.5-coder-7b-instruct-c03e6d3-q4_k_m, with no other body keys. body_sha256 reproduces for 64/64. The system prompt equals the manifest system prompt in 64/64. No leak marker, 'Call log' or bid= appears in any request. All 64 responses are HTTP 200 with finish_reason stop. The server log has 64 launch_slot, 64 print_timing and 64 release lines, with truncated=0. Per-task eval tokens equal completion_tokens in order, and prompt-eval tokens plus cached tokens equal prompt_tokens (37744)."
+    },
+    {
+     "severity": "info",
+     "claim": "Publication manifest is complete and its hashes verify. Only two files were sanitized, both for absolute paths only.",
+     "evidence": "199 raw files, 199 published files (excluding publication_manifest.json) and 199 manifest entries, with no missing or extra files. All raw_sha256 and published_sha256 values recompute, and the sanitized flag is consistent. Diffs: the server log has one line whose absolute model path became './work/...', and watchdog_config.json had out/servers_record/root made relative. No '/Users/' paths, usernames or credential patterns remain in the published copy."
+    },
+    {
+     "severity": "info",
+     "claim": "Wall time, artifact size and capacity limits were all respected by a wide margin.",
+     "evidence": "Wall 166.53 s against the 2700 s cap; the child deadline is T0+2460 and the watchdog deadline T0+2700, from T0 = 22:46:09.52Z. Raw artifacts total 1,422,721 bytes against a 2 GiB cap; the reported 1,415,418 excludes screen_summary.json (7,303 bytes), which was written after the size was computed. There are 34 resource samples, with minimum physical free 43% (episode threshold 10%), post-load 45% (threshold 20%), disk 68.56 GiB, maximum gap 5.01 s and 0 problems. The server stopped at 22:48:55Z. The servers record is empty with release_confirmed true, and nothing is listening on port 8291 now."
+    },
+    {
+     "severity": "minor",
+     "claim": "The pre-launch admission-only check at 22:46:01Z cited in worker commit c8f3994 has no archived record in the run directory. The run's admission.json is the separate launch-mode admission at 22:46:09Z.",
+     "evidence": "admission.json has checked_utc 2026-09-25T22:46:09Z and mode 'launch'. The c8f3994 handoff reports 'Fresh admission at 22:46:01Z: admitted' with a peer status age of 1458 s; the launch admission shows 1466 s. Both passed. Only the launch-mode record gates the run and is published."
+    },
+    {
+     "severity": "minor",
+     "claim": "The published results directory has not been committed yet, and the worker pushed a docs-only commit while the run was active.",
+     "evidence": "`git status` shows '?? results/v2_browser/req017_7b_bracket_pilot_20260925/'. Commit c8f3994 (22:46:27Z) was made during the run (22:46:09 to 22:48:56Z) and touched only docs/experiment_handoff.md. No source or work/ path changed, and every source hash is still equal to HEAD."
+    },
+    {
+     "severity": "info",
+     "claim": "The host swap was almost full for the whole run. The manifest records swap but does not gate on it.",
+     "evidence": "Swap used 14.495 of 15 GiB (0.505 GiB free) at admission, post-load and in every episode sample. The server load swap_before and swap_after are equal (14842.44M used)."
+    },
+    {
+     "severity": "info",
+     "claim": "Seeds 300-303 were used once each, in ascending order and without overlap, and appear in no other run directory.",
+     "evidence": "Episode windows are sequential (300: 22:46:16-22:47:01, 301: 22:47:01-22:47:22, 302: 22:47:23-22:48:07, 303: 22:48:07-22:48:55). All receipts fall inside their episode window. The REQ-017 rehearsals used only seeds 1000-1001, and the pilot_seed.json config in rehearsal run3 was refused with no seed300 episode directory. No '\"seed\": 300-303' match exists outside this run."
+    }
+   ]
+  },
+  {
+   "dimension": "exposure",
+   "verdict": "confirmed",
+   "numbers": {
+    "seeds": [
+     300,
+     301,
+     302,
+     303
+    ],
+    "call_rows": 64,
+    "request_receipts": 64,
+    "outcome_receipts": 64,
+    "attempts_per_call_max": 1,
+    "receipt_body_equals_reconstruction": "64/64",
+    "body_sha256_matches": "64/64",
+    "system_message_equals_SYSTEM_PROMPT": "64/64",
+    "user_message_equals_USER_TEMPLATE_fill": "64/64",
+    "body_keys": "model,messages,temperature(0),max_tokens(1536),stream(false) in 64/64",
+    "prompt_sha256_matches_manifest": true,
+    "adapter_and_runner_file_sha256_match_manifest": "6/6",
+    "forbidden_marker_hits_case_sensitive": 0,
+    "case_insensitive_hits_file_data-price_data-duration_WOB__RAW_REWARD_DONE": 0,
+    "verifier_token_hits_in_bodies": 0,
+    "result_substring_hits_benign": 51,
+    "server_log_generations": 64,
+    "server_log_matches_receipts_in_order": "completion_tokens and prompt_n 64/64",
+    "history_excerpts_checked": "all nonempty excerpts single-line, no < or >, <=160 chars",
+    "raw_action_errors": 24,
+    "raw_errors_multiline_with_markup_after_line1": 24,
+    "shown_excerpt_variants": {
+     "TimeoutError: Locator.fill: Timeout 500ms exceeded.": 23,
+     "TimeoutError: Locator.click: Timeout 500ms exceeded.": 1
+    },
+    "raw_errors_containing_sensitive_markers": 0,
+    "stray_gt_outside_history_arrows": 0,
+    "parse_action_rerun_matches_recorded": "64/64",
+    "req017_differs_from_req016_only_on_canonicalized_rows": true,
+    "canonicalized_total": 6,
+    "canonicalized_per_seed": {
+     "300": 2,
+     "301": 1,
+     "302": 2,
+     "303": 1
+    },
+    "executed_canonicalized_per_seed": {
+     "300": 2,
+     "301": 1,
+     "302": 2,
+     "303": 1
+    },
+    "executed_click_per_seed": {
+     "300": 9,
+     "301": 0,
+     "302": 3,
+     "303": 2
+    },
+    "executed_fill_per_seed": {
+     "300": 6,
+     "301": 1,
+     "302": 12,
+     "303": 11
+    },
+    "executed_click_fill_per_seed": {
+     "300": 15,
+     "301": 1,
+     "302": 15,
+     "303": 13
+    },
+    "executed_noop_per_seed": {
+     "300": 0,
+     "301": 0,
+     "302": 0,
+     "303": 2
+    },
+    "executed_total_per_seed": {
+     "300": 15,
+     "301": 1,
+     "302": 15,
+     "303": 15
+    },
+    "action_errors_per_seed": {
+     "300": 5,
+     "301": 0,
+     "302": 10,
+     "303": 9
+    },
+    "invalid_per_seed": {
+     "300": {
+      "no_action": 1
+     },
+     "301": {
+      "multiple_actions": 9,
+      "no_action": 6
+     },
+     "302": {
+      "no_action": 1
+     },
+     "303": {
+      "no_action": 1
+     }
+    },
+    "executed_bid_not_line_leading_in_current_tree": 0,
+    "executed_non_canonical_or_forbidden": 0,
+    "leak_guard_rows": 0,
+    "published_copy_episode_files_byte_identical_to_raw": true,
+    "published_sanitized_files": [
+     "server_small log (.txt, path only)",
+     "watchdog_config.json (paths only)"
+    ],
+    "no_action_replies_echoing_history_arrow": "8/9 (5 end in '-> ok')",
+    "multiple_actions_replies_using_bracketed_ids": "9/9"
+   },
+   "findings": [
+    {
+     "severity": "info",
+     "claim": "Every request body is exactly [system=SYSTEM_PROMPT, user=USER_TEMPLATE filled]. Each byte-equals the reconstruction from the recorded model_view, history_shown and remaining_shown. No request reached the server without a receipt.",
+     "evidence": "For all 64 call rows, req017_adapter.build_messages plus canonical_body(alias, settings) equals the receipt body under json equality and json.dumps(sort_keys, ensure_ascii=False) text equality. body_sha256 matches in 64/64. There are exactly 2 messages, and the only body keys are model, messages, temperature=0, max_tokens=1536 and stream=false. The server log has 64 slot launches. Its completion-token and prompt_n sequences match the 64 outcome receipts in order. Each recorded reply equals choices[0].message.content, and finish_reason and usage match. remaining_shown = 16-(n-1). history_shown follows exactly from prior parsed actions and error_excerpt(action_error). For executed steps, the next row's model_view.last_action_error equals that step's action_error, and model_view is unchanged after invalid replies. The prompt sha 119a3984... and the sha256 of all 6 adapter and runner files match the frozen manifest."
+    },
+    {
+     "severity": "info",
+     "claim": "No model input contains a forbidden marker or a verifier field.",
+     "evidence": "The 13 case-sensitive FORBIDDEN_MARKERS return 0 hits in the full body JSON and message text. Case-insensitive scans for file:, data-price, data-duration, wob_, raw_reward and done return 0 hits. So do DONE_GLOBAL, RAW_REWARD_GLOBAL, REWARD_GLOBAL, REWARD_REASON, EPISODE_ID, TASK_READY, task_info, verifier, browsergym_reward, terminated, truncated, info_error, dom_object, url, http, screenshot, last_action_error, 'call log', 'data-', localhost, .html and href. The only generic hit is 'result' in 51 bodies, from the page's visible autocomplete live-region text ('1 result is available...'), which is not a verifier field. Every model_view has exactly the keys goal, axtree and last_action_error. last_action_error is never interpolated; it reaches the model only as the history excerpt. No leak_guard rows were written, and no fill value contains a marker, so the typed-exemption path was never used."
+    },
+    {
+     "severity": "info",
+     "claim": "History error excerpts are first-line only and markup-free. The markup-bearing Playwright call logs were never shown.",
+     "evidence": "All 24 raw action_errors have several lines, and in every one the lines after the first contain '<' markup. None contains data-price, data-duration, data-result, file:, WOB_, miniwob or book-flight.html. The shown excerpts are 'TimeoutError: Locator.fill: Timeout 500ms exceeded.' (23) and 'TimeoutError: Locator.click: Timeout 500ms exceeded.' (1). No history line in any user message contains '<'. Every '>' in the bodies is part of a history arrow ('-> ok' / '-> error:'): 326 arrows and 0 other '>'."
+    },
+    {
+     "severity": "info",
+     "claim": "Every executed action is a canonical click/fill/noop whose bid was a line-leading [bid] of that step's model_view tree. Re-running parse_action reproduces every recorded parse, and REQ-017 differs from REQ-016 only on the 6 canonicalized rows.",
+     "evidence": "46 executed actions: 14 click, 30 fill and 2 noop. All match repr form click('<bid>') / fill('<bid>', '<text>') / noop(). No executed bid contains a bracket, and each appears in tree_bids and as ^\\t*[bid] in that step's tree. req017_adapter.parse_action(reply, model_view.axtree) returns (parsed_action, invalid_cause, invalid_detail) identical to the recording in 64/64 rows. req016_adapter.parse_action gives the same result on every row except the 6 canonicalized ones, where it returns unknown_bid. The canonicalized replies are 300/1 fill('[19]'), 300/4 fill('[25]'), 301/10 fill('[19]') followed by an explanatory line beginning '[19] is...', 302/1 fill('[19]'), 302/9 click('[27]') and 303/1 fill('[19]'). All 6 have invalid_cause null and invalid_detail equal to the canonicalization note, and all were executed. None of the 18 invalid rows was executed, and none has action_error, verifier_only or screenshot fields."
+    },
+    {
+     "severity": "info",
+     "claim": "The parent-reported counts are reproduced from steps.jsonl: canonicalized 6, executed click/fill 15/1/15/13, action errors 5/0/10/9. episode.json, episodes.jsonl and screen_summary rows agree.",
+     "evidence": "Recomputed per seed (300/301/302/303): executed click/fill = 15/1/15/13, executed canonicalized = 2/1/2/1 (total 6), executed noop = 0/0/0/2, executed total = 15/1/15/15, action errors = 5/0/10/9. Invalid replies: 300: no_action 1; 301: multiple_actions 9 and no_action 6; 302: no_action 1; 303: no_action 1. All four episode.json files equal their episodes.jsonl rows and match these counts, and screen_summary.score.rows executed_click_fill/executed_canonicalized/executed_noop match. The published copy's episode files are byte-identical to raw per publication_manifest (all 199 hashes verified). Only the server log and watchdog_config differ, by path sanitization. The full verifier also returns 0 problems when run on the published copy."
+    },
+    {
+     "severity": "minor",
+     "claim": "Interface observation, not an exposure violation: most rejections trace back to the prompt/history format. 8 of 9 no_action replies echo the history arrow format, and all 9 multiple_actions replies (seed 301) used bracketed ids that the bracket rule does not rescue in multi-line replies.",
+     "evidence": "8 of 9 no_action replies contain '->' and 5 end in '-> ok' (e.g. 300/2 \"fill('21', 'Carlsbad, CA') -> ok\"; 301/14-16). All 9 seed-301 multiple_actions replies contain '[id]' calls, e.g. \"fill('[19]', 'Wales, AK')\\n\\nclick('[27]')\". Rejecting them is correct under the frozen grammar, so it does not affect exposure validity. It is relevant to the lead's interpretation of the 0/4 result."
+    }
+   ]
+  },
+  {
+   "dimension": "progress",
+   "verdict": "confirmed",
+   "numbers": {
+    "episodes": 4,
+    "full_success": 0,
+    "causes": {
+     "logical_budget_exhausted": 4
+    },
+    "calls_total": 64,
+    "physical_attempts_total": 64,
+    "executed_total": 46,
+    "executed_per_seed": {
+     "300": 15,
+     "301": 1,
+     "302": 15,
+     "303": 15
+    },
+    "executed_click_fill_per_seed": {
+     "300": 15,
+     "301": 1,
+     "302": 15,
+     "303": 13
+    },
+    "executed_noop": {
+     "303": 2
+    },
+    "invalid_total": 18,
+    "invalid_causes_total": {
+     "no_action": 9,
+     "multiple_actions": 9
+    },
+    "canonicalized_executions": {
+     "300": 2,
+     "301": 1,
+     "302": 2,
+     "303": 1,
+     "total": 6,
+     "of_which_errored": 1
+    },
+    "action_errors_per_seed": {
+     "300": 5,
+     "301": 0,
+     "302": 10,
+     "303": 9,
+     "total": 24
+    },
+    "action_error_types": {
+     "Locator.fill Timeout on readonly [25] datepicker (element is not editable)": 23,
+     "Locator.click Timeout on [30] status (outside viewport)": 1
+    },
+    "autocomplete_option_selected_any_seed": 0,
+    "from_filled_typed_text_seeds": 4,
+    "to_filled_typed_text_seeds": 3,
+    "datepicker_opened": {
+     "300": 3,
+     "301": 0,
+     "302": 0,
+     "303": 1
+    },
+    "date_value_set": {
+     "300": "12/10/2016 (goal 11/19/2016)",
+     "301": "none",
+     "302": "none",
+     "303": "none"
+    },
+    "search_clicks_executed": {
+     "300": 3,
+     "301": 0,
+     "302": 3,
+     "303": 1
+    },
+    "book_flight_buttons_seen_any_tree": 0,
+    "post_action_model_view_rows": 0,
+    "terminated_rows": 0,
+    "raw_reward_nonzero_rows": 0,
+    "done_global_true_rows": 0,
+    "strict_action_lines_click_fill": 64,
+    "strict_bracketed": 26,
+    "strict_bare": 38,
+    "strict_noop": 2,
+    "bracketed_up_to_first_execution": "24/24",
+    "bracketed_after_first_execution": "2/40",
+    "all_call_substrings": 78,
+    "all_call_bracketed": 26,
+    "all_call_bare": 48,
+    "all_call_placeholder_<id>": 2,
+    "multi_action_replies_strict": 9,
+    "multi_action_replies_strict_seeds": "301 only (steps 1-9)",
+    "replies_with_embedded_second_call_executed_as_single_fill": 5,
+    "invalid_replies_with_arrow_ok": 5,
+    "invalid_replies_with_arrow": 8,
+    "distinct_replies": 49,
+    "prompt_tokens": {
+     "300": 13103,
+     "301": 6209,
+     "302": 8634,
+     "303": 9798,
+     "total": 37744
+    },
+    "completion_tokens": {
+     "300": 385,
+     "301": 377,
+     "302": 515,
+     "303": 500,
+     "total": 1777
+    },
+    "prompt_tokens_in_calendar_calls": 9499,
+    "finish_reason_stop": 64,
+    "episode_wall_sum_s": 158.89,
+    "batch_wall_s": 166.53,
+    "req016_calls": 128,
+    "req016_executed": 0,
+    "req016_invalid_causes": {
+     "unknown_bid": 62,
+     "multiple_actions": 66,
+     "no_action": 0
+    },
+    "req016_strict_action_lines_bracketed": "263/263",
+    "req016_multi_action_replies": 66,
+    "req016_unknown_bid_valid_under_req017_parser_static": 62,
+    "req017_replies_valid_under_req016_parser_static": 40,
+    "req016_prompt_tokens": 45832,
+    "req016_completion_tokens": 3694,
+    "receipt_reply_usage_tree_mismatches": 0,
+    "reparse_mismatches": 0,
+    "published_steps_episode_files_identical_to_raw": true
+   },
+   "findings": [
+    {
+     "severity": "info",
+     "claim": "The parent's summary numbers are reproduced exactly from the complete files: COMPLETED; 0/4 full success; 4 cases of logical_budget_exhausted; executed click/fill 15/1/15/13 (seed 303 also had 2 executed noop); 6 canonicalized executions; action errors 5/0/10/9; batch wall 166.53 s.",
+     "evidence": "I re-parsed all 64 replies with req017_adapter.parse_action against their stored model_view trees and got 0 mismatches with the stored parsed_action, invalid_cause and invalid_detail. For all 64 calls, the receipts match steps.jsonl on reply text, usage and tree, and all are http 200/classification ok/finish_reason stop at T=0. Summed usage equals episode.json in each seed (prompt 13103/6209/8634/9798, completion 385/377/515/500). The published results/ steps.jsonl and episode.json files are byte-identical to work/runs."
+    },
+    {
+     "severity": "material",
+     "claim": "No episode got past the search form. No autocomplete option was ever selected, the correct date was never set, no results list appeared, and nothing was booked. Every verifier row has reward 0, RAW 0, DONE false and terminated false.",
+     "evidence": "From/To hold the typed strings, never the option text: 300 'Islip, NY'/'Carlsbad, CA', 301 'Wales, AK'/(To never filled), 302 'ISN'/'MPB', 303 'TKJ'/'SVA'. The option listitems (e.g. 'Islip, NY (ISP)', 'Williston, ND (ISN)', 'Tok, AK (TKJ)') were visible in the trees but never clicked. The only button in any tree across all 68 rows is [27] 'Search'; no 'Book flight' element appears anywhere. There is no post_action_model_view row because no step terminated. Screenshots after Search (300 step10/step16, 302 step09, 303 step14) show red outlines on From and To, and on the empty date box in 302/303, with no results."
+    },
+    {
+     "severity": "material",
+     "claim": "23 of the 24 action errors are fill() calls on the readonly datepicker input [25]; the other is a click on status [30]. The model was never shown why fill failed: its error excerpt is the first line only and the tree shows no readonly marker.",
+     "evidence": "All 23 fill errors read 'TimeoutError: Locator.fill: Timeout 500ms exceeded.', and their call logs show '<input readonly ... id=\"datepicker\">' and 'element is not editable'. By seed: 300 has 4, 302 has 10 (formats '10/02/2016' x6, '2016-10-02' x2, '2016/10/02' x2), 303 has 9 ('12/15/2016' x8, 'December 15, 2016' x1). Seed 300 step 12 click('30') timed out with 'element is outside of the viewport'. error_excerpt() keeps only the first line, and the model-facing tree line is \"[25] textbox ''\". No request body contains 'readonly' or 'not editable'."
+    },
+    {
+     "severity": "info",
+     "claim": "Seed 300 (cheapest, Islip, NY to Carlsbad, CA, 11/19/2016) went furthest. It typed From and To, opened the datepicker 3 times, set a wrong date, and clicked Search 3 times with no results.",
+     "evidence": "Executed actions: s01 fill [19] (canonicalized), s03 fill 21, s04/s05 fill 25 (error), s06 click 25 (calendar opens on December 2016), s07 click 71 (gridcell '1', giving 12/01/2016), s08 click 25, s09 click 188 (link '10', giving 12/10/2016), s10/s11 click 27 Search, s12 click 30 (error), s13 click 25, s14/s15 fill 25 (error), s16 click 27. It never clicked 'Prev' to reach November. The only invalid reply was s02 \"fill('21', 'Carlsbad, CA') -> ok\" (no_action)."
+    },
+    {
+     "severity": "info",
+     "claim": "Seed 301 (shortest, Wales, AK to PIE, 12/30/2016) executed only one action, fill From at step 10, and spent the other 15 calls on invalid replies. Search and the date field were never used.",
+     "evidence": "Steps 1-8 repeat the identical reply \"fill('[19]', 'Wales, AK')\\n\\nclick('[27]')\" 8 times (multiple_actions, tree unchanged). Step 9 has 4 action lines. Step 10 fill('[19]') was canonicalized and executed. Steps 11-16 are all no_action: s11 \"[21] textbox 'To:' value='PIE'\" echoes a tree line with a value not in the tree, s12/s13 are 'fill(...) -> <prose>' lines, s14 is a tree-line echo with '-> ok', and s15/s16 are the identical \"fill('21', 'PIE') -> ok\". This seed contains all 9 multi-action replies of the run."
+    },
+    {
+     "severity": "info",
+     "claim": "Seed 302 (cheapest, ISN to MPB, 10/02/2016) typed From and To, then looped on fill [25] (10 errors) and clicked Search 3 times with the date empty. The datepicker was never opened.",
+     "evidence": "The same executed action fill('25','10/02/2016') appears at s04-s08 (5 consecutive; s04-s07 are the byte-identical reply) and at s11. The model then tried reformats 2016-10-02 (s13, s15) and 2016/10/02 (s14, s16), all errors. click('27') ran at s09 (canonicalized '[27]'), s10 and s12. The only invalid reply was s03 (no_action, 'fill(...) -> Set the departure date...'). 11 of the 15 executed steps left the next tree byte-identical."
+    },
+    {
+     "severity": "info",
+     "claim": "Seed 303 (cheapest, TKJ to SVA, 12/15/2016) typed From and To and looped on fill [25] (9 errors). It opened the datepicker once, on the correct month, then clicked Search instead of day 15.",
+     "evidence": "fill('25','12/15/2016') ran 7 consecutive times (s04-s10), then noop at s11/s12, then click('25') at s13. The step-14 tree and step13.png show 'December 2016' with link '15' present, but the step-14 reply was click('27') Search. After that, fill 'December 15, 2016' (s15) and '12/15/2016' (s16) both errored. The only invalid reply was s03 \"fill('25', '12/15/2016') -> ok\"."
+    },
+    {
+     "severity": "material",
+     "claim": "The id format changed once an executed action appeared in history. Up to and including the first executed action, all 24 click/fill action lines used brackets; afterwards only 2 of 40 did. A new failure mode also appeared: 9 no_action replies, 8 of which copy the history's '-> ...' suffix. REQ-016 had no no_action replies.",
+     "evidence": "The history_lines() format is 'N. <action> -> ok' / '-> error: ...', which REQ-016 never displayed because nothing executed there. In REQ-017, 5 invalid replies end in '-> ok' (300 s02, 301 s14-s16, 303 s03) and 3 more contain '->' (301 s12, s13, 302 s03). Bracketed ids after the first execution: 300 s04 '[25]' and 302 s09 '[27]'. Overall, strict click/fill action lines were 26 bracketed and 38 bare. Across all 78 call substrings: 26 bracketed, 48 bare, 2 '<id>' placeholders, 2 noop. This is an association in 4 episodes, not a tested cause."
+    },
+    {
+     "severity": "minor",
+     "claim": "The line-based one-action rule executed 5 replies that contain a second call-like expression inside a non-action line. Only the fill was executed.",
+     "evidence": "302 s08 and 303 s07-s10 contain \"[25] textbox '' -> click('25')\" (or click('<id>')) on one line, followed by a separate fill('25', ...) line. _candidate() only counts lines that are exactly one call, so these parse as a single fill; the embedded click was not executed. This follows the inherited REQ-016 rule and is not an adapter defect, but the '9 multi-action replies' figure counts only strict lines (the any-substring count is 14)."
+    },
+    {
+     "severity": "info",
+     "claim": "Compared with REQ-016 (same model, GGUF, system prompt, T=0, max_tokens 1536; different seeds 200-207; the only change is the adapter), the model's first move is the same but the outcome differs: REQ-016 executed 0 of 128 calls, while REQ-017 executed 46 of 64.",
+     "evidence": "The REQ-016 and REQ-017 receipts share one system prompt, and every seed in both runs opens with fill('[19]', ...). In REQ-016, 263 of 263 strict action lines were bracketed; there were 62 unknown_bid and 66 multiple_actions (51.6%) replies, with multi-action in all 8 seeds. All 62 unknown_bid replies re-parse as valid under the REQ-017 parser when checked statically against their stored trees. Conversely, the REQ-016 parser would statically reject 6 of the 64 REQ-017 replies, the canonicalized ones. Because trajectories are path-dependent, this static re-parse is not a counterfactual rollout. REQ-017 has multi-action in 9/64 replies (14.1%), all in seed 301. Tokens: REQ-016 used 45,832 prompt and 3,694 completion (358 prompt/call); REQ-017 used 37,744 and 1,777 (590 prompt/call). 9,499 REQ-017 prompt tokens came from 6 calls whose tree included the calendar (~1,438-1,675 each)."
+    }
+   ]
+  },
+  {
+   "dimension": "capacity_cleanup",
+   "verdict": "confirmed",
+   "numbers": {
+    "resource_samples_total": 34,
+    "phases": {
+     "admission": 1,
+     "post_load": 1,
+     "episode": 32
+    },
+    "admission_physical_free_pct": 62,
+    "admission_threshold_pct": 50,
+    "post_load_physical_free_pct": 45,
+    "post_load_threshold_pct": 20,
+    "min_episode_physical_free_pct": 43,
+    "episode_threshold_pct": 10,
+    "min_host_disk_free_gib": 68.558,
+    "host_disk_thresholds_gib": {
+     "admission": 25,
+     "post_load": 25,
+     "episode": 15
+    },
+    "episode_gap_s_min": 5.0003,
+    "episode_gap_s_max": 5.0101,
+    "max_gap_rule_s": 10,
+    "samples_with_problems": 0,
+    "samples_with_measurement_errors": 0,
+    "swap_used_gib_all_samples": 14.495,
+    "swap_free_gib_all_samples": 0.505,
+    "projection_bytes": 24955319845,
+    "projection_limit_bytes": 32212254720,
+    "server_pid": 3594,
+    "server_rss_kb": 5620768,
+    "served_n_ctx": 16384,
+    "served_total_slots": 1,
+    "served_build": "b11041-4fea119de",
+    "served_alias": "qwen2.5-coder-7b-instruct-c03e6d3-q4_k_m",
+    "receipts_request": 64,
+    "receipts_outcome_http200": 64,
+    "server_log_tasks": 64,
+    "completion_tokens_server_log": 1777,
+    "completion_tokens_receipts": 1777,
+    "prompt_tokens_receipts": 37744,
+    "server_events": [
+     "started 22:46:15Z pid 3594",
+     "stopped 22:48:55Z pid 3594"
+    ],
+    "watchdog_pid": 3581,
+    "watchdog_returncode": -15,
+    "watchdog_left_armed": false,
+    "watchdog_action_json_present": false,
+    "sweep": {
+     "baseline": 0,
+     "found": 0,
+     "remaining": 0
+    },
+    "child_pid": 3610,
+    "child_returncode": 0,
+    "supervision_samples": 32,
+    "supervision_max_gap_s": 5.01,
+    "wall_seconds": 166.53,
+    "batch_wall_cap_s": 2700,
+    "raw_artifact_bytes_reported": 1415418,
+    "raw_artifact_bytes_actual": 1422721,
+    "published_files": 200,
+    "publication_manifest_entries": 199,
+    "publication_hash_mismatches": 0,
+    "sanitized_files": 2,
+    "username_hits_published": 0,
+    "secret_regex_hits_published": 0,
+    "host_listeners_on_8291": 0,
+    "run_pids_alive": 0,
+    "lsof_rows_scanned": 33294,
+    "lsof_rows_referencing_run_runtime": 0
+   },
+   "findings": [
+    {
+     "severity": "info",
+     "claim": "Every capacity gate held and the sample series is complete and fails-closed-clean.",
+     "evidence": "I recomputed the figures from work/runs/req017_7b_bracket_pilot_20260925/resource_samples.jsonl: 34 rows (1 admission, 1 post_load, 32 episode), timestamps strictly increasing. Physical free was 62% at admission (threshold 50) and 45% after load (threshold 20). The episode minimum was 43% at 22:47:00Z (threshold 10). Host disk minimum was 68.558 GiB (thresholds 25/15). The 31 episode gaps run from 5.0003 to 5.0101 s (max-gap rule 10 s). No row has problems or measurement errors. These match screen_summary.resources and supervision (32 samples, max_gap_s 5.01). The memory projection 4683074208 + 18.88 GiB = 24955319845 is within the limit of 34359738368 - 2 GiB = 32212254720. The 6.09 s admission-to-post_load interval falls before the child started, so the gap rule does not apply to it."
+    },
+    {
+     "severity": "info",
+     "claim": "The host ran with swap nearly exhausted for the whole pilot. This is recorded only; the manifest does not gate on swap.",
+     "evidence": "All 34 samples show swap_used_gib 14.495 of 15.0 and swap_free_gib 0.505. The server's swap_before and swap_after strings are identical ('used = 14842.44M free = 517.56M'), so swap did not move during load. The manifest says 'swap ... recorded, not gated'. REQ-016 showed the same state (peak 14.51). The drop from 62% to 45% physical free (about 5.4 GiB) matches the server RSS of 5620768 kB. No paging pressure is visible, but swap headroom was under 0.6 GiB."
+    },
+    {
+     "severity": "info",
+     "claim": "The serving record is internally consistent and identical to REQ-016's served identity.",
+     "evidence": "The checks record model_path ./work/models/converted_4fea119/qwen2.5-coder-7b-instruct-c03e6d3-q4_k_m.gguf (the raw file is sanitized), alias qwen2.5-coder-7b-instruct-c03e6d3-q4_k_m, ftype Q4_K - Medium, build b11041-4fea119de, total_slots 1, n_ctx 16384 and v1_models_ids = [alias]. Model path, alias, ftype, build, slots, n_ctx, chat_template_sha256 and model ids are field-for-field equal to results/v2_browser/req016_7b_browser_screen_20260925 serving.checks. The server log reads 'n_slots = 1, n_ctx_slot = 16384' and 'listening on http://127.0.0.1:8291', has 64 launch_slot tasks, all with truncated = 0, and ends with 'cleaning up before exit'. There are 64 request and 64 outcome receipts. All 64 outcomes are HTTP 200 'ok' with response model equal to the alias and system_fingerprint b11041-4fea119de. Completion tokens are 1777 in the server log, 1777 in the receipts and 1777 in the summary. Prompt tokens are 37744 in the receipts and in the summary. The admission probe matched the GGUF sha256 87a3665c... and all 11 llama.cpp tool hashes."
+    },
+    {
+     "severity": "info",
+     "claim": "Cleanup is complete: the server, child and watchdog are gone, the ownership record is released and nothing of the run is alive on the host.",
+     "evidence": "server_events has 'started' and then 'stopped', both pid 3594. pilot_runner.Servers.stop emits 'stopped' only after proc.poll() is not None. work/code_routing_servers.json has holder 'DTR-AgentEvals worker (DTR-REQ-017 7B bracket-id pilot)', servers [] and release_confirmed true, with 2 events. The watchdog (pid 3581, ready 22:46:12Z, before the server start at 22:46:14-15Z) ended with returncode -15 via release_watchdog after the server stopped. left_armed is false, there is no watchdog_action.json and watchdog_stdout is empty. The child (pid 3610) exited with returncode 0, supervision ended 'child_exited' and stops is []. browser_process_sweep has baseline, found and remaining all []. Current host, read-only: lsof -iTCP:8291 is empty (rc 1) and there is no LISTEN on any 82xx port. PIDs 3487, 3581, 3594 and 3610 are not running. The ps table has no argv containing ms-playwright-req015, browsergym_9e779f0, req017 or req016. A full lsof (33294 rows) has 0 rows referencing ms-playwright-req015, browsergym_9e779f0, the run directory or the converted GGUF. No REQ017/REQ016 pause file exists."
+    },
+    {
+     "severity": "info",
+     "claim": "The lead release recorded in the summary and in admission is valid against git.",
+     "evidence": "summary.lead_release equals admission.lead_release: commit e00c23adb758..., release_tokens [72e078df...], remote_main e00c23a at admission, manifest_freeze_commit 0127f3a. The e00c23a message has subject 'lead: ...' and exactly one line 'RELEASE DTR-REQ-017 manifest_sha256=72e078df...87ffc'. It is an ancestor of HEAD (c8f3994 = origin/main), 0127f3a is its ancestor, no REVOKE/HOLD line follows it, and git diff e00c23a HEAD over the manifest sources is empty. The configs manifest, raw manifest.json and published manifest.json all hash to 72e078df.... The only commit after the release, c8f3994, was made at 22:46:27Z during the run and changed only docs/experiment_handoff.md. The '22:46:01Z admission' it cites was a separate --admission-only run; the in-launch admission is checked_utc 22:46:09Z."
+    },
+    {
+     "severity": "minor",
+     "claim": "raw_artifact_bytes understates the raw run size because it is computed before screen_summary.json is written. The cap verdict is unaffected.",
+     "evidence": "In req016_screen._finish_main, art = sum(...) runs before S.write_json_x(raw/'screen_summary.json'). The summary reports 1415418 bytes. The actual current raw total is 1422721, which is the reported figure plus the 7303-byte screen_summary.json. Both are far below the 2 GiB cap, so within_artifact_cap true still holds."
+    },
+    {
+     "severity": "minor",
+     "claim": "The publisher sanitizes only .json/.jsonl/.md/.txt/.log files, so child_config.json.guarded is published byte-for-byte without sanitization. It is clean here only because its bytes were copied from an already-sanitized file.",
+     "evidence": "In req016_screen.publish, the suffix whitelist is ('.json', '.jsonl', '.md', '.txt', '.log'). req017_episodes.main writes child_config.json.guarded as a raw byte copy of child_config.json, which write_json_x had already sanitized (out_dir './work/runs/...'). The published .guarded file has sanitized=false and no username. This is a latent risk if a future non-whitelisted file carries absolute paths."
+    },
+    {
+     "severity": "minor",
+     "claim": "The REQ-017 admission conflict fields carry inherited REQ-016 names even though they check REQ-017 state.",
+     "evidence": "admission.conflicts.detail has 'other_req016_processes': [] and 'req016_pause_file_present': false. These come from req016_screen.probe_conflicts called with the REQ-017 manifest, so the pause file checked is outputs.pause_file = work/REQ017_PAUSE. own_processes runs under installed(), which rebinds OWN_SCRIPTS to include req017_screen.py and req017_episodes.py. The checks are correct; only the labels are misleading."
+    },
+    {
+     "severity": "info",
+     "claim": "The publication is complete and hash-exact, and the scan found no username or secret-like strings.",
+     "evidence": "There are 199 raw files, 199 publication_manifest entries and 200 published files (the extra one is publication_manifest.json). Every raw_sha256 and published_sha256 recomputes, and the sanitized flags are exact: only server_small_...log.txt (absolute model path replaced by '.') and watchdog_config.json. '<user>' has 0 text and 0 binary hits. There are no /Users/, /private/var or file:// strings. Regexes for sk-/sk-ant-, gh*_/github_pat_, AKIA, xox*, hf_, Bearer, JWT, PRIVATE KEY, api_key/secret/password/token/cookie assignments and session ids all give 0 hits. Environment variables appear as names only (environment_variables_removed). The 64 chatcmpl-* strings are local llama.cpp response ids. The 50 PNGs contain only IHDR/IDAT/IEND chunks with no text metadata. The only account-like string is the public peer repo 'ykzeng-yale/DTR-MultiRoundLLM' in admission.json. The published directory is still untracked in git and has not been committed yet."
+    },
+    {
+     "severity": "info",
+     "claim": "One unrelated live process was seen during the host check. It is not part of the run.",
+     "evidence": "pid 6841 is work/venvs/minisweagent_04d809c/bin/python experiments/tools/v2_cue_integration_harness.py under a pytest temp directory (pytest-5875/req011_frozen0), about 4 s old at snapshot time. It is a test harness, uses neither the REQ-017 runtime paths nor port 8291, and was not signalled."
+    }
+   ]
+  }
+ ],
+ "critic": {
+  "contradictions": [
+   "Resolved: the integrity and capacity verifiers said the published results directory was untracked. HEAD has since moved to 8c58ec3 (committed 2026-09-25T22:56:04Z, origin/main = HEAD, author and committer Yukang Zeng <ykzeng2019@gmail.com>). That commit added all 200 files under results/v2_browser/req017_7b_bracket_pilot_20260925/ plus an 11-line handoff entry. The committed tree has no diff against the worktree, and `git ls-files -o` on the directory is empty. Nothing outside results/ and docs/experiment_handoff.md changed since e00c23a.",
+   "Not a real contradiction: the integrity verifier said '64 print_timing'; a raw grep of the server log gives 256 print_timing lines. This is a counting-method difference (several timing lines per task). The log has 64 launch_slot lines and 64 release lines with 'truncated = 0'. Summed eval tokens are 1777, equal to the receipts.",
+   "Minor imprecision in the progress verifier: seed 302 '11 of the 15 executed steps left the next tree byte-identical'. The correct figure is 11 of the 14 executed steps that have a successor observation; s16 has none. The unchanged steps are s04-s08, s10-s15. For comparison: seed 300 6/14 (s04, s05, s11, s12, s14, s15), seed 303 10/14 (s04-s12 except none, i.e. s04-s12 and s15), seed 301 0/1.",
+   "The worker texts do not match the run files on the launch time. c8f3994 says 'running since 22:46:08Z' and the 8c58ec3 handoff says 'launched 22:46:08Z'. No run file records 22:46:08Z: admission.json checked_utc, screen_summary.started_utc and the resource admission sample are all 22:46:09Z. The watchdog was ready at 22:46:12Z and batch_summary.started_utc is 22:46:16Z. 22:46:08Z may be the shell launch time, but it cannot be verified from the artifacts.",
+   "Rounding only: the 8c58ec3 handoff says 'maximum sampling gap 5.0 s'. The recorded maximum is 5.0101 s, reported as 5.01 in screen_summary.",
+   "Not a contradiction: batch_summary.status is 'DEVELOPMENT' (the evidence class) and screen_summary.status is 'COMPLETED' (the run status). These are different fields."
+  ],
+  "missed_checks_performed": [
+   "None of the four verifiers reported the discriminator. I read it from the files. screen_summary.score.discriminator = {action_executes: true, at_least_one_full_success: false}. The rule, predeclared in the manifest (sha 72e078df...), is: (1) at least one executed click/fill, where noop does not count; (2) at least one full success (DONE and raw reward 1); zero full successes ends this local 7B browser path. The lead text in e00c23a and in docs/theory_feedback_20260925_req016_decision.md P0 matches: 'If zero of four fully succeeds, close this local 7B browser path with no further prompt/adapter tuning.'",
+   "HEAD advanced after the verifiers ran. I checked the new commit 8c58ec3: identity is correct and it has no AI trailer. It touches only docs/experiment_handoff.md and the results directory, the committed results equal the worktree, and the publication manifest still verifies: 199 entries, 0 hash mismatches, sanitized flags exact for only server_small_*.log.txt and watchdog_config.json, raw set = manifest set, published set = manifest set + publication_manifest.json, and no /Users/, username, /private/var or file:// strings.",
+   "docs/experiment_results.md is stale. Its status-table 'Browser fallback' row (line 10) still says REQ-017 is a 'no-model bracket-id adapter repair and fixtures pending lead review before any fresh model pilot'. No REQ-017 results entry exists yet, and AGENTS.md requires one.",
+   "The 8c58ec3 handoff entry has no full-project readiness percentage. AGENTS.md 'Progress reporting' requires one in every progress update.",
+   "Budget feasibility against the REQ-015 scripted positive controls. The published traces in results/v2_browser/req015_bookflight_qualification_20260925 (seeds 0-4) reach full success (browsergym_reward 1.0, RAW_REWARD_GLOBAL 1, DONE_GLOBAL true on seed 1) in 8-10 actions. Their pattern is fill From, click the autocomplete option, fill To, click the option, click [25], optional Prev clicks, click the day, click Search, click the flight. The 16-call budget is therefore not binding for a correct policy. The 7B never did the option-click step that every scripted control does.",
+   "I re-ran req017_adapter.parse_action on all 64 replies against their stored trees (PYTHONDONTWRITEBYTECODE, no repo writes): 64/64 identical. req016_adapter.parse_action differs on exactly the 6 canonicalized rows (all unknown_bid under REQ-016). build_messages(model_view, history_shown, remaining_shown) equals the receipt messages in 64/64. leak_problems on all 64 bodies returns nothing.",
+   "Independent receipt reconciliation. body_sha256 reproduces in 64/64. Bodies have exactly {model, messages, temperature 0, max_tokens 1536, stream false}. All are HTTP 200 'ok' with response model = alias and system_fingerprint b11041-4fea119de. Reply text, finish_reason 'stop' and usage equal steps.jsonl in 64/64. The receipt file set equals the step attempts in 4/4 seeds.",
+   "The screenshot set is exactly the reset rows plus executed rows in every seed: 16, 2, 16 and 16 PNGs, 50 total.",
+   "Bracket-use shift. Of strict single-call click/fill lines up to and including each seed's first executed action, 24/24 are bracketed; afterwards 2/40 are. The history lines shown to the model render executed actions in canonical bare form, e.g. \"1. fill('19', 'Islip, NY') -> ok\" in the seed 300 call 6 request.",
+   "Arrow-echo check: 8 of the 9 no_action replies contain '->' (300 s02; 301 s12-s16; 302 s03; 303 s03). 5 end in '-> ok' (300 s02, 301 s14-s16, 303 s03).",
+   "Embedded-call check: 5 executed replies contain a second call-like expression inside a non-action line (302 s08, 303 s07-s10, e.g. \"[25] textbox '' -> click('25')\"). Only the strict fill line was executed.",
+   "REQ-016 comparison recomputed from its published steps: 128 calls, 0 executed, multiple_actions 66, unknown_bid 62, prompt tokens 45832, completion tokens 3694, 0/8 full success, logical_budget_exhausted x8.",
+   "Seed dirs seed300-303 exist only in this run's raw and published directories.",
+   "Host now (read-only): `lsof -iTCP:8291` rc=1 (no listener). No ps rows mention req016, req017, ms-playwright-req015 or browsergym_9e779f0. work/code_routing_servers.json has servers [] and release_confirmed true."
+  ],
+  "verified_facts": [
+   "Identity: DTR-REQ-017 is one prospective four-seed fixed-backend DEVELOPMENT pilot. Model: Qwen2.5-Coder-7B-Instruct at commit c03e6d3, GGUF Q4_K_M sha256 87a3665c...3b81, 4683074208 bytes. Serving: llama.cpp build b11041-4fea119de, alias qwen2.5-coder-7b-instruct-c03e6d3-q4_k_m, port 8291, 1 slot, n_ctx 16384, chat_template sha 55b2f4a2.... Task: MiniWoB book-flight. Seeds 300, 301, 302 and 303 were each run once, in order.",
+   "Release gate: configs/v2_req017_7b_bracket_pilot_20260925.json at HEAD and at 0127f3a, the raw manifest.json and the published manifest.json all hash to 72e078df363b8ce35d52d29a4ebd3a8aa2b9a86151b64639b476f0ce1af87ffc. Release commit e00c23a has the subject 'lead: review and release one REQ-017 development pilot'. Its message contains exactly one line 'RELEASE DTR-REQ-017 manifest_sha256=72e078df...87ffc'. 0127f3a is an ancestor of e00c23a, which is an ancestor of HEAD (8c58ec3 = origin/main). No REVOKE/HOLD line follows it.",
+   "Admission (mode 'launch', 2026-09-25T22:46:09Z) was admitted, and every probe returned ok: manifest, sources, browser, models, conflicts, memory, disk and lead_release. Memory free was 62% (threshold 50) and host disk 68.56 GiB. The memory projection was 24955319845 bytes against a limit of 32212254720. The lead_release probe records commit e00c23adb758c4026997a311a1851481ac8a2248 and freeze commit 0127f3a8.",
+   "Status: COMPLETED (screen_complete true). Full success: 0/4. Taxonomy: logical_budget_exhausted x4. terminal is null and error is null in all 4 episodes. All 64 post-call verifier rows have browsergym_reward 0.0, RAW_REWARD_GLOBAL 0, DONE_GLOBAL false, terminated false and truncated false. No row has post_action_model_view.",
+   "Discriminator (1), at least one executed click/fill with noop excluded: MET. Executed click/fill counts are 15, 1, 15 and 13 (4/4 seeds). 6 executions were canonicalized bracketed ids: 300 s01 fill('[19]') and s04 fill('[25]'); 301 s10 fill('[19]'); 302 s01 fill('[19]') and s09 click('[27]'); 303 s01 fill('[19]'). Exactly one of these errored (300 s04). Discriminator (2), at least one full success: NOT MET. Under the predeclared lead rule, zero full successes closes this local 7B browser path with no further prompt/adapter tuning.",
+   "Per-seed counts (300/301/302/303): logical calls 16/16/16/16 and physical attempts 16/16/16/16 (caps 16/32; at most 1 attempt per call). Executed 15/1/15/15. Click/fill 15/1/15/13. Noop 0/0/0/2. Canonicalized 2/1/2/1. Invalid replies: 1 (no_action), 15 (multiple_actions 9 + no_action 6), 1 (no_action), 1 (no_action). Action errors 5/0/10/9. Prompt tokens 13103/6209/8634/9798; completion tokens 385/377/515/500; usage_unknown 0. Episode wall 44.734/21.708/44.38/48.068 s.",
+   "Totals: 64 logical calls, 64 physical attempts, 46 executed actions (14 click, 30 fill, 2 noop), 18 invalid replies (9 no_action, 9 multiple_actions), 24 action errors. Prompt tokens 37744, completion tokens 1777. All 64 finish_reason 'stop', all HTTP 200. The episode wall sum is 158.89 s; the batch wall is 166.53 s against a 2700 s cap. These are token counts and wall time only; no dollar or energy figure.",
+   "Seed 300 (goal: cheapest one-way Islip, NY to Carlsbad, CA on 11/19/2016). It typed From 'Islip, NY' (s01) and To 'Carlsbad, CA' (s03), but never clicked the visible autocomplete option (e.g. list 'Carlsbad, CA (CLD)'). fill [25] failed at s04, s05, s14 and s15. It opened the datepicker 3 times (s06, s08, s13). The picker opens on December 2016 with a 'Prev' link, which was never clicked. It set 12/01/2016 (s07, click 71) and then 12/10/2016 (s09, click 188 = link '10'), not the goal date. It clicked Search 3 times (s10, s11, s16). s12 click('30') on a status element failed (outside the viewport). The final screenshot shows From and To outlined red, date 12/10/2016, and no results.",
+   "Seed 301 (goal: shortest one-way Wales, AK to PIE on 12/30/2016). s01-s08 were the byte-identical reply \"fill('[19]', 'Wales, AK')\\n\\nclick('[27]')\" (multiple_actions). s09 had 4 action lines (multiple_actions). s10 fill('[19]', 'Wales, AK') was canonicalized and executed, which was the only execution. s11-s16 were all no_action: tree-line echoes and 'fill(...) -> ...' lines. To, date and Search were never used.",
+   "Seed 302 (goal: cheapest ISN to MPB on 10/02/2016). It typed From 'ISN' and To 'MPB' and never clicked an autocomplete option. s03 was no_action ('fill(...) -> Set the departure date...'). fill [25] was executed 10 times and errored each time: '10/02/2016' at s04-s08 and s11, '2016-10-02' at s13 and s15, '2016/10/02' at s14 and s16. The datepicker was never opened. Search was clicked at s09 (canonicalized), s10 and s12 with an empty date.",
+   "Seed 303 (goal: cheapest TKJ to SVA on 12/15/2016). It typed From 'TKJ' and To 'SVA' and never clicked an autocomplete option. s03 was no_action (\"fill('25', '12/15/2016') -> ok\"). fill [25] '12/15/2016' errored at s04-s10 and s16, and 'December 15, 2016' errored at s15. s11 and s12 were noop. s13 click('25') opened the calendar on December 2016, the correct month, with link '15' [102] in the step-14 tree. The s14 reply was click('27') (Search), not the day. The step-14 screenshot shows From, To and the empty date outlined red.",
+   "Across all 68 observed trees in the 4 seeds, the only button was [27] 'Search'. No results list or 'Book' element ever appeared, so no episode got past the search form. No executed click targeted an autocomplete list or listitem.",
+   "Errors: 23 of the 24 action errors are fill on [25]. Their first line is 'TimeoutError: Locator.fill: Timeout 500ms exceeded.', and the raw call log contains 'readonly' and 'element is not editable'. The remaining error is 300 s12 click('30'): 'TimeoutError: Locator.click: Timeout 500ms exceeded.' with 'outside of the viewport' in the raw log. The model saw only the first-line excerpt. The model-facing tree line is \"[25] textbox ''\", and no request body contains 'readonly', 'not editable' or 'viewport'.",
+   "Comparison with REQ-016 (same prompt bytes, model, GGUF, T=0, max_tokens 1536; seeds 200-207; adapter differs). REQ-016: 0/128 calls executed (multiple_actions 66, unknown_bid 62), 0/8 full success, prompt 45832 and completion 3694 tokens. REQ-017: 46/64 executed. Before each seed's first executed action, 24/24 strict click/fill lines used bracketed ids; after it, 2/40 did. 8 of the 9 no_action replies echo the history '->' format, and 5 end in '-> ok'. This is a 4-episode association, not a tested cause.",
+   "Exposure audit. 64/64 request bodies equal the reconstruction from build_messages(model_view, history_shown, remaining_shown) plus the frozen settings, and body_sha256 reproduces in 64/64. The system message equals SYSTEM_PROMPT in 64/64. req017 parse_action reproduces every recorded parse in 64/64. The REQ-016 parser differs only on the 6 canonicalized rows. leak_problems flags 0 bodies. There are 0 hits for 'Call log', 'data-', 'file:', 'WOB_', 'DONE_GLOBAL', 'RAW_REWARD', 'task_info', 'book-flight.html' or '<input'. 5 executed replies contained an embedded second call inside a non-action line, and only the single strict fill line was executed, per the inherited REQ-016 one-action rule.",
+   "Resources: 34 samples (1 admission, 1 post_load, 32 episode). Physical free was 62% at admission, 45% after load (threshold 20) and at least 43% during episodes (threshold 10). Minimum host disk was 68.558 GiB. Episode sampling gaps ran 5.0003-5.0101 s. No sample had a problem. Swap stayed at 14.495/15 GiB used (0.505 GiB free) in every sample; it is recorded but not gated. Server RSS was 5620768 kB.",
+   "Cleanup: the server (pid 3594) started at 22:46:15Z and stopped at 22:48:55Z. The server log has 64 task launches, all 'truncated = 0', and ends with 'cleaning up before exit'. The child (pid 3610) exited with returncode 0, and supervision ended 'child_exited' with 32 samples and no stops. The watchdog (pid 3581) ended with returncode -15 and left_armed false. The browser sweep baseline, found and remaining lists are all empty. The servers record is [] with release_confirmed true. Nothing is listening on port 8291 now.",
+   "Publication integrity: 199 raw files, 199 publication_manifest entries and 200 published files (plus publication_manifest.json). There are 0 raw or published hash mismatches. Only the server log (.log -> .log.txt) and watchdog_config.json were sanitized, both for absolute paths only, and no absolute paths or username remain. The raw artifact total is 1422721 bytes. The summary's 1415418 excludes screen_summary.json (7303 bytes), which is written after the figure is computed; both are far below the 2 GiB cap. The published directory is committed in 8c58ec3 and pushed (origin/main = HEAD)."
+  ],
+  "open_questions_for_lead": [
+   "Closure: discriminator 2 failed (0/4) under the predeclared rule. Do you confirm the local 7B browser path is closed, with no further prompt, adapter, history or error-excerpt tuning, and that no 14B, extra seeds, routing, cue, E2 live or CONFIRM follows from this pilot?",
+   "How to classify the 0/4. Discriminator 1 was met, so the bracket repair worked for action execution. But 23 of 24 errors were fill on a readonly datepicker whose 'not editable' cause was hidden by the first-line-only excerpt and absent from the tree. 8 of 9 no_action replies echoed the history '-> ok' format, and no episode clicked an autocomplete option, which every REQ-015 scripted success does in 8-10 actions. Should the results entry record this as a task-competence failure with identified interface confounds (error-excerpt truncation, history format), rather than a pure competence null?",
+   "The browser path is now closed and the fixed primary target is unchanged. What is the next discriminating study for the empirical policy-contrast milestone, and should the 'Browser fallback' row in docs/experiment_results.md be marked closed with REQ-017's result?",
+   "Readiness: the 8c58ec3 handoff omitted the required readiness percentage. Should the results entry carry 55% (change 0) or your revised figure, now that the browser fallback has closed?",
+   "Process items (non-blocking): swap sat at 0.505 GiB free throughout. Should future manifests gate on swap? The publisher suffix whitelist would copy any non-whitelisted file (e.g. *.guarded) without sanitization. The admission conflict fields keep the inherited req016 labels. Should any of these be fixed before the next worker build?"
+  ],
+  "any_blocker": false
+ }
+}
