@@ -1,0 +1,246 @@
+{
+ "request": "DTR-REQ-015",
+ "kind": "no-model, no-GPU fallback-mechanism qualification (DEVELOPMENT)",
+ "lead_commit": "00295d6",
+ "lead_decision": "docs/theory_feedback_20260925_req014_decision.md",
+ "source_commit": "a0d2a7c",
+ "harness_audit": "docs/literature_harness_design_20260921.md",
+ "task": {
+  "gym_id": "browsergym/miniwob.book-flight",
+  "browsergym_class": "browsergym.miniwob.all.BookFlightTask",
+  "subdomain": "book-flight",
+  "html": "miniwob/html/miniwob/book-flight.html",
+  "not_used": [
+   "browsergym/miniwob.book-flight-nodelay (differs only by autocomplete delay 0 and no datepicker animation; not substituted)"
+  ],
+  "reward_semantics": "book-flight.html calls core.endEpisode(r, r > 0) with r = +1.0 for the cheapest/shortest flight of the correct search and -1.0 otherwise; the results of an incorrect search are generated separately and can never score +1 (core.randi excludes its upper bound, so prices are 50..1199 < MAX_PRICE and durations < 2 days). core.js stores the raw r in WOB_RAW_REWARD_GLOBAL and in WOB_REWARD_GLOBAL a copy that is time-scaled only when r > 0 (a failure stays -1). A core timeout ends the episode with raw -1 and reason \"timed out\". BrowserGym AbstractMiniwobTask.validate returns reward = float(RAW > 0) and done = WOB_DONE_GLOBAL, or (0, done=True) without WOB fields if the page or URL changed. There is no positive partial raw reward in this task.",
+  "full_success_predicate": "DONE_GLOBAL is true AND RAW_REWARD_GLOBAL == 1.0 (neither the BrowserGym binarized reward alone nor the time-scaled WOB_REWARD_GLOBAL)",
+  "timer": "BrowserGym sets core.EPISODE_MAX_TIME = 1000000 ms (task default episode_max_time), replacing the page 30000 ms; a no-op episode does not end by itself within the step cap",
+  "seeding": "BrowserGym evaluates Math.seedrandom(task.random.randint(0, 1000000)) with the task RandomState seeded by env.reset(seed), then core.startEpisodeReal() -> genProblem(); flight times are rendered with toLocaleTimeString() and dates with toLocaleDateString(en-US), so reproducibility is per host locale/timezone (recorded, not overridden)",
+  "datepicker": "jQuery UI datepicker limited to 2016-10-01..2016-12-31; it opens at the month of today clamped to that range (December 2016 on any date after 2016)",
+  "hidden_or_dom_only": "each result carries data-price and data-duration (milliseconds) attributes in the DOM (and so in BrowserGym dom_object); the flattened accessibility tree used by the scripted policy shows the price only as \"$N\" in the button name and the duration only as \"Xh Ym\". The verifier compares millisecond durations, so two results with equal displayed durations are indistinguishable from the accessibility tree (recorded per trace as visible_tie)"
+ },
+ "sources": {
+  "miniwob-plusplus": {
+   "url": "https://github.com/Farama-Foundation/miniwob-plusplus.git",
+   "commit": "7fd85d71a4b60325c6585396ec4f48377d049838",
+   "license": "MIT",
+   "checkout": "work/third_party_req015/miniwob-plusplus",
+   "use": "task HTML/JS served from file:// (MINIWOB_URL)",
+   "files": {
+    "LICENSE": "fd6529fb8f648d4130fd969e3d7fc740c9992a0bd94a1998f52555a873311511",
+    "miniwob/html/miniwob/book-flight.html": "4f1111aa722cb39e064d4628efde66bda872cf0aace1dd7156f0622de3e1a5d6",
+    "miniwob/html/core/core.js": "db8f489ab947a3194b99e718bce5e59ea9aaf0a3c35410d8c9c79e56e6123d14",
+    "miniwob/html/core/core.css": "795f8e686125b71e89a21ffe9e03406c6498f1e135175ba63321f3051a720042",
+    "miniwob/html/common/ui_utils.js": "65301ee11f483df7e9114f3fac2e2938e8b56933fecbed36bce310e2d8d90368",
+    "miniwob/html/common/special/book-flight/domestic.js": "493982bee63ce225d2f380f6ced3d38e16abe65d0ac261b4c2286042f79c583f",
+    "miniwob/html/core/jquery-ui/jquery-ui.min.js": "28ce75d953678c4942df47a11707a15e3c756021cf89090e3e6aa7ad6b6971c3",
+    "miniwob/html/core/jquery-ui/jquery-ui.min.css": "ac1c8f94750b39b12327a5d0c56fdf946dabfb6d91e5d2a202879ff9a5d67e29",
+    "miniwob/html/core/jquery-ui/external/jquery/jquery.js": "430f36f9b5f21aae8cc9dca6a81c4d3d84da5175eaedcf2fdc2c226302cb3575"
+   }
+  },
+  "BrowserGym": {
+   "url": "https://github.com/ServiceNow/BrowserGym.git",
+   "commit": "9e779f087de9a65668b6974d11f9ce9816026e96",
+   "license": "Apache-2.0",
+   "checkout": "work/third_party_req015/BrowserGym",
+   "use": "browsergym-core and browsergym-miniwob 0.14.3, installed (non-editable) from this checkout",
+   "files": {
+    "LICENSE": "b192c58991e8ff585cc574615d40e74185404d4b96c1109d423071ab1367344b",
+    "browsergym/miniwob/src/browsergym/miniwob/base.py": "4d7b82b7b63403a9774969f4166ab858243bef381335ae1af3ced345e66552ab",
+    "browsergym/miniwob/src/browsergym/miniwob/all.py": "25c6ed2960494808e12d5a178290289e63f81eee328a0f47b384a66d53531b98",
+    "browsergym/miniwob/src/browsergym/miniwob/__init__.py": "f4656f0eaa35b350c57a0de701d7f6f65fe241cdbdb1713ea32652010bd430cb",
+    "browsergym/core/src/browsergym/core/env.py": "867cc6efdfead356839fef8a26b492502b8b5e3d165d1b3c17d24aaeec268d63",
+    "browsergym/core/src/browsergym/core/task.py": "d88602de809c3b808c8adc5ca17d6d0d13a065109673e37326a0a75c5ab78e17",
+    "browsergym/core/src/browsergym/core/action/highlevel.py": "b6b9feac00379d8a87289cc8aab25c2bf804b130984f61f436038d0903a52f8e",
+    "browsergym/core/src/browsergym/core/registration.py": "489a939640d16d481b624e6e35237c6e427c4847f3354d90d5e1746aaa310336",
+    "browsergym/core/requirements.txt": "92d414cc9b947559cb68a91c9553f6da7ff23a8394d6e11f7e17632b4aa00834",
+    "browsergym/core/src/browsergym/core/action/functions.py": "9e6073e150b3a95ceddddf329feb451b760b6706891c43f6c0c426df44ee05a4",
+    "browsergym/core/src/browsergym/core/observation.py": "c3e273ddc222cfd3eaaa2346acfa991df4d77285befee40bc17ee142203a557c",
+    "browsergym/core/src/browsergym/utils/obs.py": "eb08e2c263cf78c495ed942129bf6eab7da744e75b1213ed15bf6a13d92b79d7",
+    "browsergym/core/src/browsergym/core/javascript/frame_mark_elements.js": "6ecfbba89d756c37874bdf692e4bf24126459ab79f9120c1f053305b7ba2978a",
+    "browsergym/core/src/browsergym/core/javascript/frame_unmark_elements.js": "ee1324efd8df5c12693fba0c4814ecb829ef92860d972e5377bdd5c905b28526",
+    "browsergym/core/src/browsergym/core/chat.py": "2efecf2e7946c99ac5fb047e82460c619ef1d033657fef67a4f160705ae1b7f6"
+   }
+  },
+  "AgentLab": {
+   "url": "https://github.com/ServiceNow/AgentLab.git",
+   "commit": "cbc35a9bc0facaf731bc858c5825edbe757c719f",
+   "license": "Apache-2.0",
+   "checkout": "work/third_party_req015/AgentLab",
+   "use": "pinned and recorded only; not installed or used by this no-model check",
+   "files": {
+    "LICENSE": "b192c58991e8ff585cc574615d40e74185404d4b96c1109d423071ab1367344b"
+   }
+  }
+ },
+ "runtime": {
+  "venv": "work/venvs/browsergym_9e779f0",
+  "python_prefix": "3.12.",
+  "installer": "uv 0.x pip install of the two BrowserGym subpackages from the pinned checkout",
+  "distributions": {
+   "playwright": "1.44.0",
+   "browsergym-core": "0.14.3",
+   "browsergym-miniwob": "0.14.3",
+   "gymnasium": "1.3.0",
+   "numpy": "2.5.3",
+   "pillow": "12.3.0",
+   "beautifulsoup4": "4.15.0",
+   "lxml": "5.4.0",
+   "pyparsing": "3.3.3",
+   "mcp": "2.2.0"
+  },
+  "playwright_browsers_path": "work/ms-playwright-req015",
+  "chromium_build_dir": "chromium-1117",
+  "chromium_note": "installed by `python -m playwright install chromium` (Playwright 1.44.0) into the isolated browsers path; the host cache build chromium-1217 is not used",
+  "installed_file_check": "the installed browsergym modules (miniwob base, all and __init__; core env, task, action.highlevel, registration, action.functions and observation; utils.obs) and package files (javascript/frame_mark_elements.js, javascript/frame_unmark_elements.js, chat.py) must be byte-equal to the pinned checkout files"
+ },
+ "environment": {
+  "headless": true,
+  "pw_context_kwargs": {
+   "offline": true
+  },
+  "locale_override": null,
+  "timezone_override": null,
+  "task_defaults": {
+   "viewport": {
+    "width": 332,
+    "height": 214
+   },
+   "slow_mo_ms": 100,
+   "timeout_ms": 5000,
+   "episode_max_time_ms": 1000000,
+   "remove_human_display": true
+  },
+  "action_mapping": "BrowserGym default HighLevelActionSet(subsets=[chat, infeas, bid, nav, tab], multiaction=True, strict=False); the scripted traces use only fill, click and noop",
+  "env": {
+   "MINIWOB_URL_under_repo": "work/third_party_req015/miniwob-plusplus/miniwob/html/miniwob",
+   "PLAYWRIGHT_BROWSERS_PATH_under_repo": "work/ms-playwright-req015"
+  },
+  "isolation": "fresh Chromium browser and context per reset (BrowserEnv.reset); the task context is offline=True, which is what enforces isolation. Recorded per episode: the page location and every script/link/img URL after load, every request event after reset (Playwright may not report file:// requests), and the Resource Timing entries read before close; any scheme other than file:, data: or about: fails browser_isolation. BrowserGym also starts a separate chat-panel Chromium context without offline; it loads only inline HTML (chat.py, hash pinned) and is not logged. Credential-like environment variables are removed before any browser starts."
+ },
+ "policy": {
+  "agent_visible_inputs": "the goal string and the flattened accessibility tree only (browsergym.utils.obs.flatten_axtree_to_str)",
+  "verifier_only": "task_info WOB_* globals, BrowserGym reward/terminated/truncated: recorded per step, never read by the policy",
+  "positive": "fill the goal origin; click the first revealed autocomplete option matching it (a 3-letter code must appear as (CODE), a city must prefix the label before ( ); the same for the destination; open the datepicker; click Prev/Next until the displayed month equals the goal month; click the goal day link; click Search; book the revealed flight with the lowest displayed price (cheapest) or displayed duration (shortest), first in page order on a displayed tie",
+  "negative": "the identical prefix, then book the revealed flight with the highest displayed price or duration",
+  "noop": "noop() repeated noop_steps times after reset",
+  "feedback_measurement": "a feedback-dependent decision is a click whose target bid is absent from the reset observation, first became continuously visible in the observation returned by an earlier action of the same episode, is present in the observation it was chosen from, with no action error on the revealing or choosing actions (verify_feedback; measured from the saved steps, not asserted by the policy)"
+ },
+ "plan": [
+  {
+   "label": "reset_repeat_a",
+   "kind": "reset_only",
+   "seed": 0
+  },
+  {
+   "label": "reset_repeat_b",
+   "kind": "reset_only",
+   "seed": 0
+  },
+  {
+   "label": "reset_other_seed",
+   "kind": "reset_only",
+   "seed": 1
+  },
+  {
+   "label": "primary_positive",
+   "kind": "positive",
+   "seed": 0
+  },
+  {
+   "label": "negative",
+   "kind": "negative",
+   "seed": 0
+  },
+  {
+   "label": "noop",
+   "kind": "noop",
+   "seed": 0,
+   "noop_steps": 5
+  },
+  {
+   "label": "positive_seed1",
+   "kind": "positive",
+   "seed": 1
+  },
+  {
+   "label": "positive_seed2",
+   "kind": "positive",
+   "seed": 2
+  },
+  {
+   "label": "positive_seed3",
+   "kind": "positive",
+   "seed": 3
+  },
+  {
+   "label": "positive_seed4",
+   "kind": "positive",
+   "seed": 4
+  }
+ ],
+ "max_steps_per_episode": 30,
+ "min_feedback_dependent_decisions": 2,
+ "checks": {
+  "sources_pinned": "every checkout at its commit, clean, every listed file sha256 equal",
+  "runtime_pinned": "python 3.12.x, every listed distribution version equal, the chromium-1117 build present, and the installed browsergym files byte-equal to the pinned checkout (runtime.installed_file_check)",
+  "reset_reproducible": "two resets with seed 0 give the identical goal and identical flattened accessibility tree; the positive and negative seed-0 traces reveal identical displayed (duration, price) results after the identical prefix; seed 1 gives a different goal",
+  "feedback_dependent_decisions": "the primary positive trace has >= 2 decisions verified by policy.feedback_measurement, including the flight choice",
+  "positive_full_success": "the primary positive trace (seed 0) meets the full-success predicate with no action error; seeds 1-4 are reported as robustness and do not gate",
+  "negative_fails_predicate": "the negative trace terminates (DONE), has no action error and does not meet the full-success predicate",
+  "noop_fails_predicate": "the no-op trace completes all noop_steps without an action error and does not meet the full-success predicate",
+  "browser_isolation": "only file:, data: or about: URLs observed, and the context was offline",
+  "no_harness_error": "no exception or cap stop in the episode loop and one saved trace per plan entry",
+  "resources_within_caps": "wall <= cap, the process-tree RSS monitor sampled at least once without error and never exceeded the cap, raw artifacts <= cap"
+ },
+ "verdict_rule": "A source or runtime pin failure refuses before the namespace (nothing consumed). BLOCKED if a host gate fails (the record, verdict and one-page note are written; no browser starts). QUALIFIED only if every check passes; otherwise NOT_QUALIFIED naming each failed check. The manifest bytes are copied write-once as manifest.json into the DEVELOPMENT namespace. No task substitution, endpoint change or model episode follows.",
+ "host_gates": {
+  "min_available_memory_gib": 10,
+  "min_host_disk_free_gib": 27,
+  "peer": "req010_sentinel.peer_status: DTR-MultiRound lease none, status fresh (<= 3 h), no open window record",
+  "no_other_req015": "no other req015_qualify.py process except this process tree and --admission-only runs",
+  "note": "memory: memory_pressure free % x hw.memsize >= 10 GiB (8 GiB cap + 2 GiB margin); disk: host free >= 2 GiB artifact cap + 25 GiB reserve"
+ },
+ "caps": {
+  "wall_seconds": 1800,
+  "peak_memory_gib": 8,
+  "artifact_gib": 2
+ },
+ "outputs": {
+  "raw": "work/runs/req015_bookflight_qualification_20260925",
+  "published": "results/v2_browser/req015_bookflight_qualification_20260925"
+ },
+ "development_probes": {
+  "statement": "Four no-model development runs on seeds 1000 and 1001 (not in the plan) preceded the qualification; none is part of the qualification record.",
+  "runs": [
+   {
+    "script": "work/runs/req015_dev_probe/probe.py",
+    "utc": "2026-09-25T01:49:32Z",
+    "context": "BrowserGym default (online) context",
+    "did": "reset once; printed the goal, the flattened accessibility tree and the resource list"
+   },
+   {
+    "script": "work/runs/req015_dev_probe/probe2.py",
+    "utc": "2026-09-25T01:50:31Z",
+    "context": "offline",
+    "did": "fill/click of both autocomplete fields, opened the datepicker, clicked the goal day and Search; printed each accessibility tree (used to design the parsers)"
+   },
+   {
+    "script": "work/runs/req015_dev_probe/episode_check.py",
+    "utc": "2026-09-25T01:58:34Z",
+    "context": "offline, the runner Episode/run_booking/run_noop code as of 01:56Z",
+    "did": "positive (8 actions, DONE, raw 1, full success), negative (8 actions, DONE, raw -1) and no-op (2 steps, not done) on seed 1000; outcomes printed, not saved; screenshots under work/runs/req015_dev_probe/episode_check/screenshots"
+   },
+   {
+    "script": "main() of this runner with a development copy of the manifest (work/runs/req015_dev_probe/dev_manifest.json: the same plan labels on seeds 1000/1001, outputs under work/runs/req015_dev_probe/main_check_raw and main_check_pub)",
+    "utc": "2026-09-25T02:15:56Z",
+    "context": "offline; the repaired runner",
+    "did": "end-to-end check of the records, checks, verdict, publication and username guard after the review repairs: verdict QUALIFIED on the development seeds (seed-1000 positive 8 actions / 4 verified feedback decisions / raw 1; negative raw -1; no-op 5 steps not done; seed-1001 positive 10 actions with two month navigations / raw 1), wall 31.1 s, peak RSS 1.01 GiB, 0.8 MiB of records, no username hits"
+   }
+  ],
+  "after": "An independent review then required repairs, all before this manifest version: repr-quoted accessibility names (4 of 732 airports contain an apostrophe), measured rather than asserted feedback dependence, crash-safe verdict writing, the manifest copied into the namespace, refusal on pin failures, no_harness_error separated from resources, no-op/negative action-error conditions, results compared by displayed values, and fuller isolation records. The fourth run exercised the repaired runner; nothing was changed after it. The scripted choice rules (option, month, day and flight selection) were not changed."
+ },
+ "scope": "A scripted no-model mechanism check of one pinned task: whether book-flight offers reproducible resets, visible feedback-dependent decisions and a terminal full-success predicate that a correct trace meets and wrong/no-op traces fail. It is not a model result, not a routing result and not a repository-repair claim; the fixed primary target is unchanged.",
+ "for_lead_future_model_pilot": "facts only, no design decision: the default BrowserGym action set includes goto, new_tab, tab_focus and upload_file, which could let an agent open the file:// task source containing the scoring code; observations also carry dom_object with the data-price/data-duration attributes. A later model pilot would need the lead to decide the action subset and the observation fields passed to the model."
+}

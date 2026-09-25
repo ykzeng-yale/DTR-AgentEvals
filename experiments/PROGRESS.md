@@ -175,6 +175,27 @@ reproducibility/metadata/package remain open.
 Exchange cadence (updated 24 September 2026): the worker checks every 30 minutes (session scheduler, nominal :04/:34 UTC plus scheduler jitter; it publishes only when something changed); the lead reviews every three hours at minute 18 (`59e4622`). Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-25 02:24 UTC — REQ-015: the web-form fallback task passes its no-model qualification
+
+After closing the local coding path, the lead asked whether a pinned browser task, MiniWoB "book-flight", could serve
+as the fallback setting. The check used only scripted clicks, no model.
+
+The task passed every check:
+- it resets identically for the same seed;
+- it pins to exact source versions;
+- the scripted correct run books the right flight and scores full success (it did on all 5 seeds tried);
+- booking a different flight after the same steps fails, and doing nothing fails;
+- the browser stayed offline;
+- the whole check took under a minute and about 1 GiB of memory.
+
+One point for the lead: the only choice that depends on what the page reveals is which flight to book (and which way
+to move the calendar). The other steps are fixed by the request. Episodes are short (8–10 actions). The lead decides
+whether and how a model pilot follows.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Categories
+75/75/50/25/25 → 55.00. Main remaining work: the lead's decision on a fallback model pilot; a real-agent comparison
+with valid fixed-target inference; final synthesis; reproducibility and submission package.
+
 ## 2026-09-25 00:44 UTC — REQ-014: the 14B re-read the same lines until it ran out of context; no fix, not graded
 
 The single 14B try ran under the corrected capacity rule and the repaired harness. Memory stayed at 20–22 % free,

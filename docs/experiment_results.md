@@ -981,6 +981,32 @@ One Qwen2.5-Coder-14B episode ran on the already exposed `astropy__astropy-14598
   result or a comparison. Prior results are unchanged: 0/32 DEV, 0/2 REQ-011, and REQ-012 unresolved. Under the lead's
   REQ-013/014 rule, a non-resolved result ends this local model-pair competence path pending the lead's decision.
 
+### 2026-09-25 02:24 UTC — REQ-015: the pinned MiniWoB book-flight task qualifies as the no-model fallback mechanism setting (DEVELOPMENT, scripted, no model)
+[verdict](../results/v2_browser/req015_bookflight_qualification_20260925/verdict.json), [one-page note](../results/v2_browser/req015_bookflight_qualification_20260925/feasibility.md), manifest `configs/v2_req015_miniwob_bookflight_20260925.json` (copied into the namespace; code `cdf6a04`).
+- **Setup:**
+  - Task: `browsergym/miniwob.book-flight` (not the nodelay variant).
+  - Pins: MiniWoB++ `7fd85d7` (MIT) and BrowserGym `9e779f0` (Apache-2.0), with browsergym-core and -miniwob 0.14.3 installed from the pinned checkout. Thirteen installed files are byte-checked against it. Playwright is 1.44.0, with Chromium 125.0.6422.26 (build 1117) in an isolated browsers path. AgentLab `cbc35a9` is recorded but unused.
+  - The browser context is offline.
+  - The success check requires DONE and a raw reward of exactly 1.0. The page emits raw ±1 only, and BrowserGym binarizes it as raw > 0.
+- **Verdict QUALIFIED, 10/10 checks:**
+  - Sources and runtime match their pins.
+  - Two seed-0 resets gave the identical goal and accessibility tree. The seed-0 positive and negative traces revealed identical results (duration, price) after the same prefix, and seed 1 gave a different goal.
+  - The seed-0 positive trace had 4 feedback-dependent decisions, measured from the saved observations. Each target was absent at reset, revealed by an earlier action and chosen without an action error: two autocomplete options, one calendar day, and the flight choice among 4 revealed results.
+  - Positive trace: 8 actions, raw 1.
+  - Negative trace: same prefix, the longest flight booked; DONE with raw −1.
+  - No-op trace: 5 steps, not done, raw 0.
+  - 89 recorded URLs, all `file:`.
+  - No harness error. Wall 52.4 s (cap 1800), peak process-tree RSS 1.02 GiB (cap 8), 1.5 MiB of records (cap 2 GiB).
+- **Robustness seeds 1–4 (not gating):** all 4 reached full success, as did seed 0. Seeds 0, 1 and 4 were "shortest" goals and seeds 2 and 3 "cheapest". Three navigated the month (up to 2 Prev clicks). No displayed ties occurred. Four goals gave an airport code instead of a city.
+- **Facts for the lead's judgement:**
+  - Every autocomplete showed a single matching option. The calendar-day choice is fixed by the goal once the month is shown.
+  - Only the flight choice, and month navigation when needed, select among revealed alternatives by revealed values (displayed price or duration). The negative trace shows that this choice alone changes the outcome.
+  - Episodes are short: 8–10 actions.
+  - The DOM, though not the accessibility tree, carries the scoring `data-price`/`data-duration`.
+  - The default action set includes `goto`, `new_tab` and `upload_file`.
+- **Development runs:** four no-model runs used seeds 1000/1001, outside the plan. They are disclosed in the manifest, and the last was an end-to-end rehearsal of the repaired runner.
+- **Scope:** a scripted, no-model DEVELOPMENT mechanism check of one pinned task. It is not a model result, not a routing result and not a repository-repair claim; the fixed primary target is unchanged.
+
 ### Not claimed
 No model runs for REQ-005 to REQ-008 (no-model instrumentation, retrospective analyses and a metadata inventory). Real-model execution since the archived coding study is limited to the SWE-bench Verified pipeline smoke (Flask episodes), the two 16-episode Coder 7B/14B fixed-backend DEV cohorts (0/16 each) and the single-task DEVELOPMENT probes REQ-011 (0/2 eligible), REQ-012 (7B, eligible, unresolved) and REQ-014 (14B, operational zero), with no routing or CONFIRM run; Monte Carlo only on known synthetic kernels; no interval validation for DR/OR, learned policies or
 the branch study; no power claim; no evidence of real-agent improvement. The

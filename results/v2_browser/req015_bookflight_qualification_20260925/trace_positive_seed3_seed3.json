@@ -1,0 +1,336 @@
+{
+ "request": "DTR-REQ-015",
+ "label": "positive_seed3",
+ "seed": 3,
+ "kind": "positive",
+ "browser_version": "125.0.6422.26",
+ "initial_resources": [
+  "file://./work/third_party_req015/miniwob-plusplus/miniwob/html/miniwob/book-flight.html",
+  "file://./work/third_party_req015/miniwob-plusplus/miniwob/html/core/core.js",
+  "file://./work/third_party_req015/miniwob-plusplus/miniwob/html/core/jquery-ui/external/jquery/jquery.js",
+  "file://./work/third_party_req015/miniwob-plusplus/miniwob/html/core/jquery-ui/jquery-ui.min.js",
+  "file://./work/third_party_req015/miniwob-plusplus/miniwob/html/common/ui_utils.js",
+  "file://./work/third_party_req015/miniwob-plusplus/miniwob/html/common/special/book-flight/domestic.js",
+  "file://./work/third_party_req015/miniwob-plusplus/miniwob/html/core/core.css",
+  "file://./work/third_party_req015/miniwob-plusplus/miniwob/html/core/jquery-ui/jquery-ui.min.css"
+ ],
+ "requests_after_reset": [
+  "file://./work/third_party_req015/miniwob-plusplus/miniwob/html/core/jquery-ui/images/ui-icons_444444_256x240.png",
+  "file://./work/third_party_req015/miniwob-plusplus/miniwob/html/core/jquery-ui/images/ui-icons_555555_256x240.png"
+ ],
+ "resource_timing_entries": [],
+ "steps": [
+  {
+   "step": 0,
+   "action": "reset(seed=3)",
+   "reset_seconds": 0.532,
+   "decision": null,
+   "agent_visible": {
+    "goal": "Book the cheapest one-way flight from: CAK to: Kongiganak, AK on 10/28/2016.",
+    "url": "file://./work/third_party_req015/miniwob-plusplus/miniwob/html/miniwob/book-flight.html",
+    "axtree": "RootWebArea 'Book Flight Task', focused\n\t[17] heading 'Book Your One-Way Flight'\n\t[19] textbox 'From:'\n\t[21] textbox 'To:'\n\tStaticText 'Departure Date'\n\t[25] textbox ''\n\t[27] button 'Search'\n\t[30] status '', live='assertive', atomic, relevant='additions'\n\t[32] status '', live='assertive', atomic, relevant='additions'",
+    "last_action_error": "",
+    "focused_element_bid": "12"
+   },
+   "screenshot": "screenshots/positive_seed3_seed3_step00.png",
+   "verifier_only": {
+    "task_info": {
+     "REWARD_GLOBAL": 0,
+     "RAW_REWARD_GLOBAL": 0,
+     "REWARD_REASON": null,
+     "DONE_GLOBAL": false,
+     "EPISODE_ID": 0,
+     "TASK_READY": true
+    }
+   }
+  },
+  {
+   "step": 1,
+   "action": "fill('19', 'CAK')",
+   "decision": {
+    "kind": "type_goal_text",
+    "feedback_dependent": false,
+    "evidence": "goal text 'CAK' into 'From:'"
+   },
+   "agent_visible": {
+    "goal": "Book the cheapest one-way flight from: CAK to: Kongiganak, AK on 10/28/2016.",
+    "url": "file://./work/third_party_req015/miniwob-plusplus/miniwob/html/miniwob/book-flight.html",
+    "axtree": "RootWebArea 'Book Flight Task', focused\n\t[17] heading 'Book Your One-Way Flight'\n\t[19] textbox 'From:' value='CAK', focused\n\t\tStaticText 'CAK'\n\t[21] textbox 'To:'\n\tStaticText 'Departure Date'\n\t[25] textbox ''\n\t[27] button 'Search'\n\t[29] list 'Akron/Canton, OH (CAK) Canton/Akron, OH (CAK)'\n\t\t[34] listitem ''\n\t\t\tListMarker ''\n\t\t\t\timage ''\n\t\t\tStaticText 'Akron/Canton, OH (CAK)'\n\t\t[36] listitem ''\n\t\t\tListMarker ''\n\t\t\t\timage ''\n\t\t\tStaticText 'Canton/Akron, OH (CAK)'\n\t[30] status '', live='assertive', atomic, relevant='additions'\n\t\tStaticText '2 results are available, use up and down arrow keys to navigate.'\n\t[32] status '', live='assertive', atomic, relevant='additions'",
+    "last_action_error": "",
+    "focused_element_bid": "19"
+   },
+   "screenshot": "screenshots/positive_seed3_seed3_step01.png",
+   "verifier_only": {
+    "browsergym_reward": 0.0,
+    "terminated": false,
+    "truncated": false,
+    "RAW_REWARD_GLOBAL": 0,
+    "REWARD_GLOBAL": 0,
+    "DONE_GLOBAL": false,
+    "REWARD_REASON": null,
+    "EPISODE_ID": 0
+   }
+  },
+  {
+   "step": 2,
+   "action": "click('34')",
+   "decision": {
+    "kind": "autocomplete_option",
+    "feedback_dependent": true,
+    "decided_from_step": 1,
+    "n_visible_alternatives": 2,
+    "evidence": "option 'Akron/Canton, OH (CAK)' chosen among 2 options revealed by the previous fill (2 matching)",
+    "consequential": null
+   },
+   "agent_visible": {
+    "goal": "Book the cheapest one-way flight from: CAK to: Kongiganak, AK on 10/28/2016.",
+    "url": "file://./work/third_party_req015/miniwob-plusplus/miniwob/html/miniwob/book-flight.html",
+    "axtree": "RootWebArea 'Book Flight Task', focused\n\t[17] heading 'Book Your One-Way Flight'\n\t[19] textbox 'From:' value='Akron/Canton, OH (CAK)', focused\n\t\tStaticText 'Akron/Canton, OH (CAK)'\n\t[21] textbox 'To:'\n\tStaticText 'Departure Date'\n\t[25] textbox ''\n\t[27] button 'Search'\n\t[30] status '', live='assertive', atomic, relevant='additions'\n\t\tStaticText 'Akron/Canton, OH (CAK)'\n\t[32] status '', live='assertive', atomic, relevant='additions'",
+    "last_action_error": "",
+    "focused_element_bid": "19"
+   },
+   "screenshot": "screenshots/positive_seed3_seed3_step02.png",
+   "verifier_only": {
+    "browsergym_reward": 0.0,
+    "terminated": false,
+    "truncated": false,
+    "RAW_REWARD_GLOBAL": 0,
+    "REWARD_GLOBAL": 0,
+    "DONE_GLOBAL": false,
+    "REWARD_REASON": null,
+    "EPISODE_ID": 0
+   }
+  },
+  {
+   "step": 3,
+   "action": "fill('21', 'Kongiganak, AK')",
+   "decision": {
+    "kind": "type_goal_text",
+    "feedback_dependent": false,
+    "evidence": "goal text 'Kongiganak, AK' into 'To:'"
+   },
+   "agent_visible": {
+    "goal": "Book the cheapest one-way flight from: CAK to: Kongiganak, AK on 10/28/2016.",
+    "url": "file://./work/third_party_req015/miniwob-plusplus/miniwob/html/miniwob/book-flight.html",
+    "axtree": "RootWebArea 'Book Flight Task', focused\n\t[17] heading 'Book Your One-Way Flight'\n\t[19] textbox 'From:' value='Akron/Canton, OH (CAK)'\n\t\tStaticText 'Akron/Canton, OH (CAK)'\n\t[21] textbox 'To:' value='Kongiganak, AK', focused\n\t\tStaticText 'Kongiganak, AK'\n\tStaticText 'Departure Date'\n\t[25] textbox ''\n\t[27] button 'Search'\n\t[30] status '', live='assertive', atomic, relevant='additions'\n\t\tStaticText 'Akron/Canton, OH (CAK)'\n\t[31] list 'Kongiganak, AK (KKH)'\n\t\t[40] listitem ''\n\t\t\tListMarker ''\n\t\t\t\timage ''\n\t\t\tStaticText 'Kongiganak, AK (KKH)'\n\t[32] status '', live='assertive', atomic, relevant='additions'\n\t\tStaticText '1 result is available, use up and down arrow keys to navigate.'",
+    "last_action_error": "",
+    "focused_element_bid": "21"
+   },
+   "screenshot": "screenshots/positive_seed3_seed3_step03.png",
+   "verifier_only": {
+    "browsergym_reward": 0.0,
+    "terminated": false,
+    "truncated": false,
+    "RAW_REWARD_GLOBAL": 0,
+    "REWARD_GLOBAL": 0,
+    "DONE_GLOBAL": false,
+    "REWARD_REASON": null,
+    "EPISODE_ID": 0
+   }
+  },
+  {
+   "step": 4,
+   "action": "click('40')",
+   "decision": {
+    "kind": "autocomplete_option",
+    "feedback_dependent": true,
+    "decided_from_step": 3,
+    "n_visible_alternatives": 1,
+    "evidence": "option 'Kongiganak, AK (KKH)' chosen among 1 options revealed by the previous fill (1 matching)",
+    "consequential": null
+   },
+   "agent_visible": {
+    "goal": "Book the cheapest one-way flight from: CAK to: Kongiganak, AK on 10/28/2016.",
+    "url": "file://./work/third_party_req015/miniwob-plusplus/miniwob/html/miniwob/book-flight.html",
+    "axtree": "RootWebArea 'Book Flight Task', focused\n\t[17] heading 'Book Your One-Way Flight'\n\t[19] textbox 'From:' value='Akron/Canton, OH (CAK)'\n\t\tStaticText 'Akron/Canton, OH (CAK)'\n\t[21] textbox 'To:' value='Kongiganak, AK (KKH)', focused\n\t\tStaticText 'Kongiganak, AK (KKH)'\n\tStaticText 'Departure Date'\n\t[25] textbox ''\n\t[27] button 'Search'\n\t[30] status '', live='assertive', atomic, relevant='additions'\n\t\tStaticText 'Akron/Canton, OH (CAK)'\n\t[32] status '', live='assertive', atomic, relevant='additions'\n\t\tStaticText 'Kongiganak, AK (KKH)'",
+    "last_action_error": "",
+    "focused_element_bid": "21"
+   },
+   "screenshot": "screenshots/positive_seed3_seed3_step04.png",
+   "verifier_only": {
+    "browsergym_reward": 0.0,
+    "terminated": false,
+    "truncated": false,
+    "RAW_REWARD_GLOBAL": 0,
+    "REWARD_GLOBAL": 0,
+    "DONE_GLOBAL": false,
+    "REWARD_REASON": null,
+    "EPISODE_ID": 0
+   }
+  },
+  {
+   "step": 5,
+   "action": "click('25')",
+   "decision": {
+    "kind": "open_datepicker",
+    "feedback_dependent": false,
+    "evidence": "the empty date textbox"
+   },
+   "agent_visible": {
+    "goal": "Book the cheapest one-way flight from: CAK to: Kongiganak, AK on 10/28/2016.",
+    "url": "file://./work/third_party_req015/miniwob-plusplus/miniwob/html/miniwob/book-flight.html",
+    "axtree": "RootWebArea 'Book Flight Task', focused\n\t[17] heading 'Book Your One-Way Flight'\n\t[19] textbox 'From:' value='Akron/Canton, OH (CAK)'\n\t\tStaticText 'Akron/Canton, OH (CAK)'\n\t[21] textbox 'To:' value='Kongiganak, AK (KKH)'\n\t\tStaticText 'Kongiganak, AK (KKH)'\n\tStaticText 'Departure Date'\n\t[25] textbox '', focused\n\t[27] button 'Search'\n\t[30] status '', live='assertive', atomic, relevant='additions'\n\t\tStaticText 'Akron/Canton, OH (CAK)'\n\t[32] status '', live='assertive', atomic, relevant='additions'\n\t\tStaticText 'Kongiganak, AK (KKH)'\n\t[45] link 'Prev'\n\t\tStaticText 'Prev'\n\tStaticText 'Next'\n\tStaticText 'December'\n\tStaticText ''\n\tStaticText '2016'\n\t[52] table ''\n\t\t[53] rowgroup ''\n\t\t\t[54] row ''\n\t\t\t\t[55] columnheader 'Su'\n\t\t\t\t[57] columnheader 'Mo'\n\t\t\t\t[59] columnheader 'Tu'\n\t\t\t\t[61] columnheader 'We'\n\t\t\t\t[63] columnheader 'Th'\n\t\t\t\t[65] columnheader 'Fr'\n\t\t\t\t[67] columnheader 'Sa'\n\t\t[69] rowgroup ''\n\t\t\t[70] row ''\n\t\t\t\t[71] gridcell ''\n\t\t\t\t[72] gridcell ''\n\t\t\t\t[73] gridcell ''\n\t\t\t\t[74] gridcell ''\n\t\t\t\t[75] gridcell '1'\n\t\t\t\t\t[76] link '1'\n\t\t\t\t[77] gridcell '2'\n\t\t\t\t\t[78] link '2'\n\t\t\t\t[79] gridcell '3'\n\t\t\t\t\t[80] link '3'\n\t\t\t[81] row ''\n\t\t\t\t[82] gridcell '4'\n\t\t\t\t\t[83] link '4'\n\t\t\t\t[84] gridcell '5'\n\t\t\t\t\t[85] link '5'\n\t\t\t\t[86] gridcell '6'\n\t\t\t\t\t[87] link '6'\n\t\t\t\t[88] gridcell '7'\n\t\t\t\t\t[89] link '7'\n\t\t\t\t[90] gridcell '8'\n\t\t\t\t\t[91] link '8'\n\t\t\t\t[92] gridcell '9'\n\t\t\t\t\t[93] link '9'\n\t\t\t\t[94] gridcell '10'\n\t\t\t\t\t[95] link '10'\n\t\t\t[96] row ''\n\t\t\t\t[97] gridcell '11'\n\t\t\t\t\t[98] link '11'\n\t\t\t\t[99] gridcell '12'\n\t\t\t\t\t[100] link '12'\n\t\t\t\t[101] gridcell '13'\n\t\t\t\t\t[102] link '13'\n\t\t\t\t[103] gridcell '14'\n\t\t\t\t\t[104] link '14'\n\t\t\t\t[105] gridcell '15'\n\t\t\t\t\t[106] link '15'\n\t\t\t\t[107] gridcell '16'\n\t\t\t\t\t[108] link '16'\n\t\t\t\t[109] gridcell '17'\n\t\t\t\t\t[110] link '17'\n\t\t\t[111] row ''\n\t\t\t\t[112] gridcell '18'\n\t\t\t\t\t[113] link '18'\n\t\t\t\t[114] gridcell '19'\n\t\t\t\t\t[115] link '19'\n\t\t\t\t[116] gridcell '20'\n\t\t\t\t\t[117] link '20'\n\t\t\t\t[118] gridcell '21'\n\t\t\t\t\t[119] link '21'\n\t\t\t\t[120] gridcell '22'\n\t\t\t\t\t[121] link '22'\n\t\t\t\t[122] gridcell '23'\n\t\t\t\t\t[123] link '23'\n\t\t\t\t[124] gridcell '24'\n\t\t\t\t\t[125] link '24'\n\t\t\t[126] row ''\n\t\t\t\t[127] gridcell '25'\n\t\t\t\t\t[128] link '25'\n\t\t\t\t[129] gridcell '26'\n\t\t\t\t\t[130] link '26'\n\t\t\t\t[131] gridcell '27'\n\t\t\t\t\t[132] link '27'\n\t\t\t\t[133] gridcell '28'\n\t\t\t\t\t[134] link '28'\n\t\t\t\t[135] gridcell '29'\n\t\t\t\t\t[136] link '29'\n\t\t\t\t[137] gridcell '30'\n\t\t\t\t\t[138] link '30'\n\t\t\t\t[139] gridcell '31'\n\t\t\t\t\t[140] link '31'",
+    "last_action_error": "",
+    "focused_element_bid": "25"
+   },
+   "screenshot": "screenshots/positive_seed3_seed3_step05.png",
+   "verifier_only": {
+    "browsergym_reward": 0.0,
+    "terminated": false,
+    "truncated": false,
+    "RAW_REWARD_GLOBAL": 0,
+    "REWARD_GLOBAL": 0,
+    "DONE_GLOBAL": false,
+    "REWARD_REASON": null,
+    "EPISODE_ID": 0
+   }
+  },
+  {
+   "step": 6,
+   "action": "click('45')",
+   "decision": {
+    "kind": "month_navigation",
+    "feedback_dependent": true,
+    "decided_from_step": 5,
+    "n_visible_alternatives": 2,
+    "evidence": "displayed month 12/2016 vs goal 10/2016 -> Prev",
+    "consequential": null
+   },
+   "agent_visible": {
+    "goal": "Book the cheapest one-way flight from: CAK to: Kongiganak, AK on 10/28/2016.",
+    "url": "file://./work/third_party_req015/miniwob-plusplus/miniwob/html/miniwob/book-flight.html",
+    "axtree": "RootWebArea 'Book Flight Task', focused\n\t[17] heading 'Book Your One-Way Flight'\n\t[19] textbox 'From:' value='Akron/Canton, OH (CAK)'\n\t\tStaticText 'Akron/Canton, OH (CAK)'\n\t[21] textbox 'To:' value='Kongiganak, AK (KKH)'\n\t\tStaticText 'Kongiganak, AK (KKH)'\n\tStaticText 'Departure Date'\n\t[25] textbox '', focused\n\t[27] button 'Search'\n\t[30] status '', live='assertive', atomic, relevant='additions'\n\t\tStaticText 'Akron/Canton, OH (CAK)'\n\t[32] status '', live='assertive', atomic, relevant='additions'\n\t\tStaticText 'Kongiganak, AK (KKH)'\n\t[142] link 'Prev'\n\t\tStaticText 'Prev'\n\t[144] link 'Next'\n\t\tStaticText 'Next'\n\tStaticText 'November'\n\tStaticText ''\n\tStaticText '2016'\n\t[149] table ''\n\t\t[150] rowgroup ''\n\t\t\t[151] row ''\n\t\t\t\t[152] columnheader 'Su'\n\t\t\t\t[154] columnheader 'Mo'\n\t\t\t\t[156] columnheader 'Tu'\n\t\t\t\t[158] columnheader 'We'\n\t\t\t\t[160] columnheader 'Th'\n\t\t\t\t[162] columnheader 'Fr'\n\t\t\t\t[164] columnheader 'Sa'\n\t\t[166] rowgroup ''\n\t\t\t[167] row ''\n\t\t\t\t[168] gridcell ''\n\t\t\t\t[169] gridcell ''\n\t\t\t\t[170] gridcell '1'\n\t\t\t\t\t[171] link '1'\n\t\t\t\t[172] gridcell '2'\n\t\t\t\t\t[173] link '2'\n\t\t\t\t[174] gridcell '3'\n\t\t\t\t\t[175] link '3'\n\t\t\t\t[176] gridcell '4'\n\t\t\t\t\t[177] link '4'\n\t\t\t\t[178] gridcell '5'\n\t\t\t\t\t[179] link '5'\n\t\t\t[180] row ''\n\t\t\t\t[181] gridcell '6'\n\t\t\t\t\t[182] link '6'\n\t\t\t\t[183] gridcell '7'\n\t\t\t\t\t[184] link '7'\n\t\t\t\t[185] gridcell '8'\n\t\t\t\t\t[186] link '8'\n\t\t\t\t[187] gridcell '9'\n\t\t\t\t\t[188] link '9'\n\t\t\t\t[189] gridcell '10'\n\t\t\t\t\t[190] link '10'\n\t\t\t\t[191] gridcell '11'\n\t\t\t\t\t[192] link '11'\n\t\t\t\t[193] gridcell '12'\n\t\t\t\t\t[194] link '12'\n\t\t\t[195] row ''\n\t\t\t\t[196] gridcell '13'\n\t\t\t\t\t[197] link '13'\n\t\t\t\t[198] gridcell '14'\n\t\t\t\t\t[199] link '14'\n\t\t\t\t[200] gridcell '15'\n\t\t\t\t\t[201] link '15'\n\t\t\t\t[202] gridcell '16'\n\t\t\t\t\t[203] link '16'\n\t\t\t\t[204] gridcell '17'\n\t\t\t\t\t[205] link '17'\n\t\t\t\t[206] gridcell '18'\n\t\t\t\t\t[207] link '18'\n\t\t\t\t[208] gridcell '19'\n\t\t\t\t\t[209] link '19'\n\t\t\t[210] row ''\n\t\t\t\t[211] gridcell '20'\n\t\t\t\t\t[212] link '20'\n\t\t\t\t[213] gridcell '21'\n\t\t\t\t\t[214] link '21'\n\t\t\t\t[215] gridcell '22'\n\t\t\t\t\t[216] link '22'\n\t\t\t\t[217] gridcell '23'\n\t\t\t\t\t[218] link '23'\n\t\t\t\t[219] gridcell '24'\n\t\t\t\t\t[220] link '24'\n\t\t\t\t[221] gridcell '25'\n\t\t\t\t\t[222] link '25'\n\t\t\t\t[223] gridcell '26'\n\t\t\t\t\t[224] link '26'\n\t\t\t[225] row ''\n\t\t\t\t[226] gridcell '27'\n\t\t\t\t\t[227] link '27'\n\t\t\t\t[228] gridcell '28'\n\t\t\t\t\t[229] link '28'\n\t\t\t\t[230] gridcell '29'\n\t\t\t\t\t[231] link '29'\n\t\t\t\t[232] gridcell '30'\n\t\t\t\t\t[233] link '30'\n\t\t\t\t[234] gridcell ''\n\t\t\t\t[235] gridcell ''\n\t\t\t\t[236] gridcell ''",
+    "last_action_error": "",
+    "focused_element_bid": "25"
+   },
+   "screenshot": "screenshots/positive_seed3_seed3_step06.png",
+   "verifier_only": {
+    "browsergym_reward": 0.0,
+    "terminated": false,
+    "truncated": false,
+    "RAW_REWARD_GLOBAL": 0,
+    "REWARD_GLOBAL": 0,
+    "DONE_GLOBAL": false,
+    "REWARD_REASON": null,
+    "EPISODE_ID": 0
+   }
+  },
+  {
+   "step": 7,
+   "action": "click('142')",
+   "decision": {
+    "kind": "month_navigation",
+    "feedback_dependent": true,
+    "decided_from_step": 6,
+    "n_visible_alternatives": 3,
+    "evidence": "displayed month 11/2016 vs goal 10/2016 -> Prev",
+    "consequential": null
+   },
+   "agent_visible": {
+    "goal": "Book the cheapest one-way flight from: CAK to: Kongiganak, AK on 10/28/2016.",
+    "url": "file://./work/third_party_req015/miniwob-plusplus/miniwob/html/miniwob/book-flight.html",
+    "axtree": "RootWebArea 'Book Flight Task', focused\n\t[17] heading 'Book Your One-Way Flight'\n\t[19] textbox 'From:' value='Akron/Canton, OH (CAK)'\n\t\tStaticText 'Akron/Canton, OH (CAK)'\n\t[21] textbox 'To:' value='Kongiganak, AK (KKH)'\n\t\tStaticText 'Kongiganak, AK (KKH)'\n\tStaticText 'Departure Date'\n\t[25] textbox '', focused\n\t[27] button 'Search'\n\t[30] status '', live='assertive', atomic, relevant='additions'\n\t\tStaticText 'Akron/Canton, OH (CAK)'\n\t[32] status '', live='assertive', atomic, relevant='additions'\n\t\tStaticText 'Kongiganak, AK (KKH)'\n\tStaticText 'Prev'\n\t[240] link 'Next'\n\t\tStaticText 'Next'\n\tStaticText 'October'\n\tStaticText ''\n\tStaticText '2016'\n\t[245] table ''\n\t\t[246] rowgroup ''\n\t\t\t[247] row ''\n\t\t\t\t[248] columnheader 'Su'\n\t\t\t\t[250] columnheader 'Mo'\n\t\t\t\t[252] columnheader 'Tu'\n\t\t\t\t[254] columnheader 'We'\n\t\t\t\t[256] columnheader 'Th'\n\t\t\t\t[258] columnheader 'Fr'\n\t\t\t\t[260] columnheader 'Sa'\n\t\t[262] rowgroup ''\n\t\t\t[263] row ''\n\t\t\t\t[264] gridcell ''\n\t\t\t\t[265] gridcell ''\n\t\t\t\t[266] gridcell ''\n\t\t\t\t[267] gridcell ''\n\t\t\t\t[268] gridcell ''\n\t\t\t\t[269] gridcell ''\n\t\t\t\t[270] gridcell '1'\n\t\t\t\t\t[271] link '1'\n\t\t\t[272] row ''\n\t\t\t\t[273] gridcell '2'\n\t\t\t\t\t[274] link '2'\n\t\t\t\t[275] gridcell '3'\n\t\t\t\t\t[276] link '3'\n\t\t\t\t[277] gridcell '4'\n\t\t\t\t\t[278] link '4'\n\t\t\t\t[279] gridcell '5'\n\t\t\t\t\t[280] link '5'\n\t\t\t\t[281] gridcell '6'\n\t\t\t\t\t[282] link '6'\n\t\t\t\t[283] gridcell '7'\n\t\t\t\t\t[284] link '7'\n\t\t\t\t[285] gridcell '8'\n\t\t\t\t\t[286] link '8'\n\t\t\t[287] row ''\n\t\t\t\t[288] gridcell '9'\n\t\t\t\t\t[289] link '9'\n\t\t\t\t[290] gridcell '10'\n\t\t\t\t\t[291] link '10'\n\t\t\t\t[292] gridcell '11'\n\t\t\t\t\t[293] link '11'\n\t\t\t\t[294] gridcell '12'\n\t\t\t\t\t[295] link '12'\n\t\t\t\t[296] gridcell '13'\n\t\t\t\t\t[297] link '13'\n\t\t\t\t[298] gridcell '14'\n\t\t\t\t\t[299] link '14'\n\t\t\t\t[300] gridcell '15'\n\t\t\t\t\t[301] link '15'\n\t\t\t[302] row ''\n\t\t\t\t[303] gridcell '16'\n\t\t\t\t\t[304] link '16'\n\t\t\t\t[305] gridcell '17'\n\t\t\t\t\t[306] link '17'\n\t\t\t\t[307] gridcell '18'\n\t\t\t\t\t[308] link '18'\n\t\t\t\t[309] gridcell '19'\n\t\t\t\t\t[310] link '19'\n\t\t\t\t[311] gridcell '20'\n\t\t\t\t\t[312] link '20'\n\t\t\t\t[313] gridcell '21'\n\t\t\t\t\t[314] link '21'\n\t\t\t\t[315] gridcell '22'\n\t\t\t\t\t[316] link '22'\n\t\t\t[317] row ''\n\t\t\t\t[318] gridcell '23'\n\t\t\t\t\t[319] link '23'\n\t\t\t\t[320] gridcell '24'\n\t\t\t\t\t[321] link '24'\n\t\t\t\t[322] gridcell '25'\n\t\t\t\t\t[323] link '25'\n\t\t\t\t[324] gridcell '26'\n\t\t\t\t\t[325] link '26'\n\t\t\t\t[326] gridcell '27'\n\t\t\t\t\t[327] link '27'\n\t\t\t\t[328] gridcell '28'\n\t\t\t\t\t[329] link '28'\n\t\t\t\t[330] gridcell '29'\n\t\t\t\t\t[331] link '29'\n\t\t\t[332] row ''\n\t\t\t\t[333] gridcell '30'\n\t\t\t\t\t[334] link '30'\n\t\t\t\t[335] gridcell '31'\n\t\t\t\t\t[336] link '31'\n\t\t\t\t[337] gridcell ''\n\t\t\t\t[338] gridcell ''\n\t\t\t\t[339] gridcell ''\n\t\t\t\t[340] gridcell ''\n\t\t\t\t[341] gridcell ''",
+    "last_action_error": "",
+    "focused_element_bid": "25"
+   },
+   "screenshot": "screenshots/positive_seed3_seed3_step07.png",
+   "verifier_only": {
+    "browsergym_reward": 0.0,
+    "terminated": false,
+    "truncated": false,
+    "RAW_REWARD_GLOBAL": 0,
+    "REWARD_GLOBAL": 0,
+    "DONE_GLOBAL": false,
+    "REWARD_REASON": null,
+    "EPISODE_ID": 0
+   }
+  },
+  {
+   "step": 8,
+   "action": "click('329')",
+   "decision": {
+    "kind": "calendar_day",
+    "feedback_dependent": true,
+    "decided_from_step": 7,
+    "n_visible_alternatives": 31,
+    "evidence": "day link 28 among 31 links of the displayed month",
+    "consequential": null
+   },
+   "agent_visible": {
+    "goal": "Book the cheapest one-way flight from: CAK to: Kongiganak, AK on 10/28/2016.",
+    "url": "file://./work/third_party_req015/miniwob-plusplus/miniwob/html/miniwob/book-flight.html",
+    "axtree": "RootWebArea 'Book Flight Task', focused\n\t[17] heading 'Book Your One-Way Flight'\n\t[19] textbox 'From:' value='Akron/Canton, OH (CAK)'\n\t\tStaticText 'Akron/Canton, OH (CAK)'\n\t[21] textbox 'To:' value='Kongiganak, AK (KKH)'\n\t\tStaticText 'Kongiganak, AK (KKH)'\n\tStaticText 'Departure Date'\n\t[25] textbox '' value='10/28/2016'\n\t\tStaticText '10/28/2016'\n\t[27] button 'Search'\n\t[30] status '', live='assertive', atomic, relevant='additions'\n\t\tStaticText 'Akron/Canton, OH (CAK)'\n\t[32] status '', live='assertive', atomic, relevant='additions'\n\t\tStaticText 'Kongiganak, AK (KKH)'",
+    "last_action_error": "",
+    "focused_element_bid": "12"
+   },
+   "screenshot": "screenshots/positive_seed3_seed3_step08.png",
+   "verifier_only": {
+    "browsergym_reward": 0.0,
+    "terminated": false,
+    "truncated": false,
+    "RAW_REWARD_GLOBAL": 0,
+    "REWARD_GLOBAL": 0,
+    "DONE_GLOBAL": false,
+    "REWARD_REASON": null,
+    "EPISODE_ID": 0
+   }
+  },
+  {
+   "step": 9,
+   "action": "click('27')",
+   "decision": {
+    "kind": "search",
+    "feedback_dependent": false,
+    "evidence": "the Search button"
+   },
+   "agent_visible": {
+    "goal": "Book the cheapest one-way flight from: CAK to: Kongiganak, AK on 10/28/2016.",
+    "url": "file://./work/third_party_req015/miniwob-plusplus/miniwob/html/miniwob/book-flight.html",
+    "axtree": "RootWebArea 'Book Flight Task', focused\n\t[344] button 'Back'\n\tStaticText 'CAK to KKH'\n\tStaticText ''\n\tStaticText '|'\n\tStaticText '10/28/2016'\n\t[352] LabelText ''\n\t\tStaticText 'Depart:'\n\tStaticText '1:10 PM'\n\tStaticText 'Fri Oct 28 2016'\n\tStaticText 'Akron/Canton, OH (CAK)'\n\t[359] LabelText ''\n\t\tStaticText 'Arrives:'\n\tStaticText '1:56 PM'\n\tStaticText 'Fri Oct 28 2016'\n\tStaticText 'Kongiganak, AK'\n\t[366] LabelText ''\n\t\tStaticText 'Duration:'\n\tStaticText '0h 46m'\n\t[370] button 'Book flight for $797'\n\t[374] LabelText ''\n\t\tStaticText 'Depart:'\n\tStaticText '5:49 AM'\n\tStaticText 'Fri Oct 28 2016'\n\tStaticText 'Akron/Canton, OH (CAK)'\n\t[381] LabelText ''\n\t\tStaticText 'Arrives:'\n\tStaticText '12:08 PM'\n\tStaticText 'Fri Oct 28 2016'\n\tStaticText 'Kongiganak, AK'\n\t[388] LabelText ''\n\t\tStaticText 'Duration:'\n\tStaticText '6h 19m'\n\t[392] button 'Book flight for $535'\n\t[396] LabelText ''\n\t\tStaticText 'Depart:'\n\tStaticText '8:28 PM'\n\tStaticText 'Fri Oct 28 2016'\n\tStaticText 'Akron/Canton, OH (CAK)'\n\t[403] LabelText ''\n\t\tStaticText 'Arrives:'\n\tStaticText '10:54 PM'\n\tStaticText 'Fri Oct 28 2016'\n\tStaticText 'Kongiganak, AK'\n\t[410] LabelText ''\n\t\tStaticText 'Duration:'\n\tStaticText '2h 25m'\n\t[414] button 'Book flight for $1187'\n\t[30] status '', live='assertive', atomic, relevant='additions'\n\t\tStaticText 'Akron/Canton, OH (CAK)'\n\t[32] status '', live='assertive', atomic, relevant='additions'\n\t\tStaticText 'Kongiganak, AK (KKH)'",
+    "last_action_error": "",
+    "focused_element_bid": "12"
+   },
+   "screenshot": "screenshots/positive_seed3_seed3_step09.png",
+   "verifier_only": {
+    "browsergym_reward": 0.0,
+    "terminated": false,
+    "truncated": false,
+    "RAW_REWARD_GLOBAL": 0,
+    "REWARD_GLOBAL": 0,
+    "DONE_GLOBAL": false,
+    "REWARD_REASON": null,
+    "EPISODE_ID": 0
+   }
+  },
+  {
+   "step": 10,
+   "action": "click('392')",
+   "decision": {
+    "kind": "flight_choice",
+    "feedback_dependent": true,
+    "decided_from_step": 9,
+    "n_visible_alternatives": 3,
+    "evidence": "best cheapest flight by displayed price among 3 revealed results",
+    "consequential": true
+   },
+   "agent_visible": {
+    "goal": "Book the cheapest one-way flight from: CAK to: Kongiganak, AK on 10/28/2016.",
+    "url": "file://./work/third_party_req015/miniwob-plusplus/miniwob/html/miniwob/book-flight.html",
+    "axtree": "RootWebArea 'Book Flight Task', focused\n\t[344] button 'Back'\n\tStaticText 'CAK to KKH'\n\tStaticText ''\n\tStaticText '|'\n\tStaticText '10/28/2016'\n\t[352] LabelText ''\n\t\tStaticText 'Depart:'\n\tStaticText '1:10 PM'\n\tStaticText 'Fri Oct 28 2016'\n\tStaticText 'Akron/Canton, OH (CAK)'\n\t[359] LabelText ''\n\t\tStaticText 'Arrives:'\n\tStaticText '1:56 PM'\n\tStaticText 'Fri Oct 28 2016'\n\tStaticText 'Kongiganak, AK'\n\t[366] LabelText ''\n\t\tStaticText 'Duration:'\n\tStaticText '0h 46m'\n\t[370] button 'Book flight for $797'\n\t[374] LabelText ''\n\t\tStaticText 'Depart:'\n\tStaticText '5:49 AM'\n\tStaticText 'Fri Oct 28 2016'\n\tStaticText 'Akron/Canton, OH (CAK)'\n\t[381] LabelText ''\n\t\tStaticText 'Arrives:'\n\tStaticText '12:08 PM'\n\tStaticText 'Fri Oct 28 2016'\n\tStaticText 'Kongiganak, AK'\n\t[388] LabelText ''\n\t\tStaticText 'Duration:'\n\tStaticText '6h 19m'\n\t[392] button 'Book flight for $535', focused\n\t[396] LabelText ''\n\t\tStaticText 'Depart:'\n\tStaticText '8:28 PM'\n\tStaticText 'Fri Oct 28 2016'\n\tStaticText 'Akron/Canton, OH (CAK)'\n\t[403] LabelText ''\n\t\tStaticText 'Arrives:'\n\tStaticText '10:54 PM'\n\tStaticText 'Fri Oct 28 2016'\n\tStaticText 'Kongiganak, AK'\n\t[410] LabelText ''\n\t\tStaticText 'Duration:'\n\tStaticText '2h 25m'\n\t[414] button 'Book flight for $1187'\n\t[30] status '', live='assertive', atomic, relevant='additions'\n\t\tStaticText 'Akron/Canton, OH (CAK)'\n\t[32] status '', live='assertive', atomic, relevant='additions'\n\t\tStaticText 'Kongiganak, AK (KKH)'",
+    "last_action_error": "",
+    "focused_element_bid": "392"
+   },
+   "screenshot": "screenshots/positive_seed3_seed3_step10.png",
+   "verifier_only": {
+    "browsergym_reward": 1.0,
+    "terminated": true,
+    "truncated": false,
+    "RAW_REWARD_GLOBAL": 1,
+    "REWARD_GLOBAL": 0.993335,
+    "DONE_GLOBAL": true,
+    "REWARD_REASON": null,
+    "EPISODE_ID": 1
+   }
+  }
+ ]
+}

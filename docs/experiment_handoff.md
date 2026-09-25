@@ -5643,7 +5643,7 @@ Reviewed worker `a0d2a7c` and the published REQ-014 projection. The 62/62 publis
 
 The three prospective supervisor-review answers, only if reused: >10-second monitoring gaps fail closed; preserve a durable Submitted patch while marking grade unavailable after a terminal capacity event; identify latch overrides as an effective supervision configuration. No such event changes REQ-014. Full-project readiness **55%, change 0 percentage points, range 45–65%**; no empirical gate closed. Top remaining: competent fresh policy contrast/fixed-target inference; final empirical/manuscript synthesis; independent reproducibility, author metadata and submission package.
 
-## Worker checkpoint — 2026-09-25T01:50Z (host `date -u`; local 21:50 EDT) — lead `00295d6` acknowledged: DTR-REQ-014 completed; DTR-REQ-015 accepted and running (no model)
+## Worker checkpoint — 2026-09-25T01:47Z (host `date -u`; local 21:47 EDT) — lead `00295d6` acknowledged: DTR-REQ-014 completed; DTR-REQ-015 accepted and running (no model)
 
 **Read:** [lead REQ-014 decision](theory_feedback_20260925_req014_decision.md) (01:25Z) and issue #4 up to 01:27:12Z. **Code/config commit:** `a0d2a7c`. **Authorized runs:** DTR-REQ-015 only. It is a no-model, no-GPU qualification of the pinned MiniWoB *book-flight* task, with caps of 30 min wall, 8 GiB peak memory and 2 GiB artifacts. No model episode is authorized.
 
@@ -5680,3 +5680,58 @@ The three prospective supervisor-review answers, only if reused: >10-second moni
 **Readiness:** 55 %, change 0 points (range 45–65 %; 75/75/50/25/25 → 55.00).
 
 **Cadence:** job `c710b12b`, ticks at about :15/:45 UTC, session-only; I publish on change.
+
+## Worker checkpoint — 2026-09-25T02:25Z (host `date -u`; local 22:25 EDT) — DTR-REQ-015 COMPLETED: MiniWoB book-flight QUALIFIED (no model); returning to the lead
+
+**Read:** lead `00295d6` ([REQ-014 decision](theory_feedback_20260925_req014_decision.md)); no new lead commit or issue #4 comment since 01:27:12Z. **Code/config commit:** `cdf6a04`. **Results:** [`results/v2_browser/req015_bookflight_qualification_20260925/`](../results/v2_browser/req015_bookflight_qualification_20260925/feasibility.md) (this commit). **Authorized runs:** none remain. REQ-015 authorized no model episode, and none ran.
+
+- **Build (`cdf6a04`):**
+  - `configs/v2_req015_miniwob_bookflight_20260925.json` (sha256 `90979f0f…`, copied write-once into the namespace).
+  - `experiments/v2_browser/req015_qualify.py`.
+  - `tests/test_req015_qualify.py`: 20 fixtures; full suite 1396 passed.
+  - **Independent review** found 5 launch blockers, all fixed before launch:
+    - accessibility names with an apostrophe are printed with double quotes and would have been dropped (4 of 732 airports);
+    - one no-model development run was not disclosed;
+    - a crash path could lose the verdict;
+    - feedback dependence was asserted, not measured;
+    - the manifest was not copied into the namespace.
+  - **Development runs:** four ran on seeds 1000/1001 (not in the plan), all disclosed in the manifest. The last was an end-to-end rehearsal after the repairs.
+- **Run, 02:23:19–02:24:12Z:** admission passed.
+  - Sources: 3 checkouts at their pins, clean; 25 file hashes equal.
+  - Runtime: Python 3.12.13, 10 distribution versions, 13 installed files byte-equal to the pinned source, Chromium build 1117.
+  - Host: 63 % memory free (≥ 10 GiB available), 74.9 GiB disk, peer lease none.
+  - **Verdict QUALIFIED; all 10 checks true.**
+- **Facts:**
+  - **Reset:** reproducible. Seed 0 gave the goal "shortest, Corpus Christi, TX → SHG, 12/05/2016" twice, with an identical accessibility tree, and identical revealed results in the positive and negative traces. Seed 1 gave a different goal.
+  - **Positive, seed 0:**
+    - 8 actions and 4 measured feedback-dependent decisions (2 autocomplete options, the calendar day, and the flight choice among 4 revealed results).
+    - It booked the 2h 25m flight: raw 1, time-scaled 0.9948, BrowserGym reward 1.
+  - **Negative, seed 0:** the same prefix, then the 28h 49m flight: DONE, raw −1.
+  - **No-op:** 5 steps, not done, raw 0.
+  - **Robustness seeds 1–4:** all reached full success (goal types: shortest ×3 and cheapest ×2 overall), 3 with month navigation; no displayed ties.
+  - **Isolation:** 89 URLs recorded, all `file:`; the context was offline.
+  - **Resources:** wall 52.4 s, peak process-tree RSS 1.02 GiB, 1.5 MiB of records; 82 published files hash-verified; no username hits.
+
+**Questions and decisions for you** (facts only; I have made no design decision):
+
+1. **Feedback content.** In this task every autocomplete showed a single option, and the calendar day is fixed by the goal once the month is shown. Only the flight choice (always) and month navigation (when the goal month is not December) select among revealed alternatives by revealed values. All four measured decisions meet the manifest's definition. Does this meet your "≥ 2 feedback-dependent decisions" intent for routing, or should only value-dependent choices count?
+2. **Before any model pilot:**
+   - The DOM (`dom_object`) exposes the scoring `data-price` and `data-duration` values, which the accessibility tree does not.
+   - The default action set includes `goto`, `new_tab`, `tab_focus` and `upload_file`, which could open the `file://` task source.
+
+   A model pilot would need your choice of observation fields and action subset.
+3. **Scale.** Episodes have 8–10 actions. A routing design would have few decision points per episode.
+
+| Request | Status | Artifact |
+|---|---|---|
+| DTR-REQ-015 (P0) | **completed: QUALIFIED (10/10 checks; no model)** | `cdf6a04`, this commit |
+| DTR-REQ-014 (P0) | completed: operational zero (agent/scaffold-generated context limit), not evaluated; local pair closed | `5c5fc2f`, `09982dc`, `a0d2a7c`, `00295d6` |
+| DTR-REQ-013 (P0) | step 1 completed; live step BLOCKED (4 GiB swap rule) and superseded by REQ-014 | `16d1d9b`, `b9ffb29` |
+| DTR-REQ-012 (P0) | completed/inspected: gate accepted; probe unresolved | `dc11e63`, `8bcca8a` |
+| DTR-REQ-011 (P0) | completed: 0 of 2 eligible | `2714fda`, `6074003` |
+| DTR-REQ-010 (P0) | completed/inspected | `7805d8b`, `10be146` |
+| DTR-REQ-009 / 008 / 007 / 006 / 005 / 004 / 003 / 002 / 001 | as in the table at `16d1d9b` | — |
+
+**Readiness:** 55 %, change 0 points (range 45–65 %; 75/75/50/25/25 → 55.00). A no-model qualification closes no empirical gate. Largest remaining: your decision on a fallback model pilot; a real-agent comparison with valid fixed-target inference; final synthesis; reproducibility/metadata/package.
+
+**Cadence:** job `c710b12b`, ticks at about :15/:45 UTC, session-only; I publish on change. With no authorized run pending, ticks only check for your reply.

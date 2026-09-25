@@ -1,0 +1,978 @@
+{
+ "request": "DTR-REQ-015",
+ "status": "DEVELOPMENT",
+ "kind": "no-model, no-GPU fallback-mechanism qualification (DEVELOPMENT)",
+ "gym_id": "browsergym/miniwob.book-flight",
+ "manifest": "configs/v2_req015_miniwob_bookflight_20260925.json",
+ "manifest_sha256": "90979f0fcfade8cc948244fdc86cf347c3a888c194bb6214ab01c5121df16ceb",
+ "caps": {
+  "wall_seconds": 1800,
+  "peak_memory_gib": 8,
+  "artifact_gib": 2
+ },
+ "started_utc": "2026-09-25T02:23:19Z",
+ "host": {
+  "platform": "macOS-26.5.2-arm64-arm-64bit",
+  "machine": "arm64",
+  "timezone": "EDT",
+  "tz_env": null
+ },
+ "environment_variables_removed": [
+  "CLAUDE_CODE_CHILD_SESSION",
+  "CLAUDE_CODE_HOST_SESSION_ID",
+  "CLAUDE_CODE_MESSAGING_TOKEN",
+  "CLAUDE_CODE_OAUTH_SCOPES",
+  "CLAUDE_CODE_SDK_HAS_HOST_AUTH_REFRESH",
+  "CLAUDE_CODE_SESSION_ATTENDED",
+  "CLAUDE_CODE_SESSION_ID",
+  "SSH_AUTH_SOCK",
+  "USE_LOCAL_OAUTH",
+  "USE_STAGING_OAUTH"
+ ],
+ "finished_utc": "2026-09-25T02:24:12Z",
+ "wall_seconds": 52.39,
+ "error": null,
+ "evaluation_error": null,
+ "checks": {
+  "sources_pinned": true,
+  "runtime_pinned": true,
+  "reset_reproducible": true,
+  "feedback_dependent_decisions": true,
+  "positive_full_success": true,
+  "negative_fails_predicate": true,
+  "noop_fails_predicate": true,
+  "browser_isolation": true,
+  "no_harness_error": true,
+  "resources_within_caps": true
+ },
+ "verdict": {
+  "verdict": "QUALIFIED",
+  "failed_checks": []
+ },
+ "reset_reproducibility": {
+  "repeat_goal_equal": true,
+  "repeat_axtree_equal": true,
+  "other_seed_goal_differs": true,
+  "positive_negative_goal_equal": true,
+  "positive_negative_results_equal": true
+ },
+ "isolation": {
+  "n_urls": 89,
+  "non_local_schemes": []
+ },
+ "peak_rss_gib": 1.021392822265625,
+ "memory_samples": 100,
+ "memory_sample_errors": 0,
+ "artifact_bytes": 1544326,
+ "summaries": [
+  {
+   "label": "reset_repeat_a",
+   "seed": 0,
+   "kind": "reset_only",
+   "n_actions": 0,
+   "notes": {
+    "goal": {
+     "criterion": "shortest",
+     "origin": "Corpus Christi, TX",
+     "destination": "SHG",
+     "month": 12,
+     "day": 5,
+     "year": 2016,
+     "date": "12/05/2016"
+    }
+   },
+   "feedback_decisions_measured": [],
+   "feedback_dependent_decisions": 0,
+   "feedback_decision_kinds": [],
+   "steps_with_action_error": [],
+   "terminal": {
+    "DONE_GLOBAL": null,
+    "RAW_REWARD_GLOBAL": null,
+    "REWARD_GLOBAL": null,
+    "browsergym_reward": null,
+    "terminated": null,
+    "truncated": null
+   },
+   "full_success": false
+  },
+  {
+   "label": "reset_repeat_b",
+   "seed": 0,
+   "kind": "reset_only",
+   "n_actions": 0,
+   "notes": {
+    "goal": {
+     "criterion": "shortest",
+     "origin": "Corpus Christi, TX",
+     "destination": "SHG",
+     "month": 12,
+     "day": 5,
+     "year": 2016,
+     "date": "12/05/2016"
+    }
+   },
+   "feedback_decisions_measured": [],
+   "feedback_dependent_decisions": 0,
+   "feedback_decision_kinds": [],
+   "steps_with_action_error": [],
+   "terminal": {
+    "DONE_GLOBAL": null,
+    "RAW_REWARD_GLOBAL": null,
+    "REWARD_GLOBAL": null,
+    "browsergym_reward": null,
+    "terminated": null,
+    "truncated": null
+   },
+   "full_success": false
+  },
+  {
+   "label": "reset_other_seed",
+   "seed": 1,
+   "kind": "reset_only",
+   "n_actions": 0,
+   "notes": {
+    "goal": {
+     "criterion": "shortest",
+     "origin": "Thorne Bay, AK",
+     "destination": "Palm Springs, CA",
+     "month": 10,
+     "day": 3,
+     "year": 2016,
+     "date": "10/03/2016"
+    }
+   },
+   "feedback_decisions_measured": [],
+   "feedback_dependent_decisions": 0,
+   "feedback_decision_kinds": [],
+   "steps_with_action_error": [],
+   "terminal": {
+    "DONE_GLOBAL": null,
+    "RAW_REWARD_GLOBAL": null,
+    "REWARD_GLOBAL": null,
+    "browsergym_reward": null,
+    "terminated": null,
+    "truncated": null
+   },
+   "full_success": false
+  },
+  {
+   "label": "primary_positive",
+   "seed": 0,
+   "kind": "positive",
+   "n_actions": 8,
+   "notes": {
+    "goal": {
+     "criterion": "shortest",
+     "origin": "Corpus Christi, TX",
+     "destination": "SHG",
+     "month": 12,
+     "day": 5,
+     "year": 2016,
+     "date": "12/05/2016"
+    },
+    "from_options": [
+     "Corpus Christi, TX (CRP)"
+    ],
+    "to_options": [
+     "Shungnak, AK (SHG)"
+    ],
+    "calendar_opened_at": "12/2016",
+    "flights_revealed": [
+     {
+      "duration_minutes": 1729,
+      "duration_text": "28h 49m",
+      "price": 479,
+      "book_bid": "167"
+     },
+     {
+      "duration_minutes": 145,
+      "duration_text": "2h 25m",
+      "price": 991,
+      "book_bid": "189"
+     },
+     {
+      "duration_minutes": 1717,
+      "duration_text": "28h 37m",
+      "price": 539,
+      "book_bid": "211"
+     },
+     {
+      "duration_minutes": 922,
+      "duration_text": "15h 22m",
+      "price": 1023,
+      "book_bid": "233"
+     }
+    ],
+    "visible_tie": false,
+    "chosen_bid": "189"
+   },
+   "feedback_decisions_measured": [
+    {
+     "step": 2,
+     "kind": "autocomplete_option",
+     "target_bid": "34",
+     "decided_from_step": 1,
+     "present_when_chosen": true,
+     "target_first_visible_at_step": 1,
+     "absent_from_reset_observation": true,
+     "action_errors_absent": true,
+     "n_visible_alternatives": 1,
+     "verified": true
+    },
+    {
+     "step": 4,
+     "kind": "autocomplete_option",
+     "target_bid": "38",
+     "decided_from_step": 3,
+     "present_when_chosen": true,
+     "target_first_visible_at_step": 3,
+     "absent_from_reset_observation": true,
+     "action_errors_absent": true,
+     "n_visible_alternatives": 1,
+     "verified": true
+    },
+    {
+     "step": 6,
+     "kind": "calendar_day",
+     "target_bid": "83",
+     "decided_from_step": 5,
+     "present_when_chosen": true,
+     "target_first_visible_at_step": 5,
+     "absent_from_reset_observation": true,
+     "action_errors_absent": true,
+     "n_visible_alternatives": 31,
+     "verified": true
+    },
+    {
+     "step": 8,
+     "kind": "flight_choice",
+     "target_bid": "189",
+     "decided_from_step": 7,
+     "present_when_chosen": true,
+     "target_first_visible_at_step": 7,
+     "absent_from_reset_observation": true,
+     "action_errors_absent": true,
+     "n_visible_alternatives": 4,
+     "verified": true
+    }
+   ],
+   "feedback_dependent_decisions": 4,
+   "feedback_decision_kinds": [
+    "autocomplete_option",
+    "autocomplete_option",
+    "calendar_day",
+    "flight_choice"
+   ],
+   "steps_with_action_error": [],
+   "terminal": {
+    "DONE_GLOBAL": true,
+    "RAW_REWARD_GLOBAL": 1,
+    "REWARD_GLOBAL": 0.994797,
+    "browsergym_reward": 1.0,
+    "terminated": true,
+    "truncated": false
+   },
+   "full_success": true
+  },
+  {
+   "label": "negative",
+   "seed": 0,
+   "kind": "negative",
+   "n_actions": 8,
+   "notes": {
+    "goal": {
+     "criterion": "shortest",
+     "origin": "Corpus Christi, TX",
+     "destination": "SHG",
+     "month": 12,
+     "day": 5,
+     "year": 2016,
+     "date": "12/05/2016"
+    },
+    "from_options": [
+     "Corpus Christi, TX (CRP)"
+    ],
+    "to_options": [
+     "Shungnak, AK (SHG)"
+    ],
+    "calendar_opened_at": "12/2016",
+    "flights_revealed": [
+     {
+      "duration_minutes": 1729,
+      "duration_text": "28h 49m",
+      "price": 479,
+      "book_bid": "167"
+     },
+     {
+      "duration_minutes": 145,
+      "duration_text": "2h 25m",
+      "price": 991,
+      "book_bid": "189"
+     },
+     {
+      "duration_minutes": 1717,
+      "duration_text": "28h 37m",
+      "price": 539,
+      "book_bid": "211"
+     },
+     {
+      "duration_minutes": 922,
+      "duration_text": "15h 22m",
+      "price": 1023,
+      "book_bid": "233"
+     }
+    ],
+    "visible_tie": false,
+    "chosen_bid": "167"
+   },
+   "feedback_decisions_measured": [
+    {
+     "step": 2,
+     "kind": "autocomplete_option",
+     "target_bid": "34",
+     "decided_from_step": 1,
+     "present_when_chosen": true,
+     "target_first_visible_at_step": 1,
+     "absent_from_reset_observation": true,
+     "action_errors_absent": true,
+     "n_visible_alternatives": 1,
+     "verified": true
+    },
+    {
+     "step": 4,
+     "kind": "autocomplete_option",
+     "target_bid": "38",
+     "decided_from_step": 3,
+     "present_when_chosen": true,
+     "target_first_visible_at_step": 3,
+     "absent_from_reset_observation": true,
+     "action_errors_absent": true,
+     "n_visible_alternatives": 1,
+     "verified": true
+    },
+    {
+     "step": 6,
+     "kind": "calendar_day",
+     "target_bid": "83",
+     "decided_from_step": 5,
+     "present_when_chosen": true,
+     "target_first_visible_at_step": 5,
+     "absent_from_reset_observation": true,
+     "action_errors_absent": true,
+     "n_visible_alternatives": 31,
+     "verified": true
+    },
+    {
+     "step": 8,
+     "kind": "flight_choice",
+     "target_bid": "167",
+     "decided_from_step": 7,
+     "present_when_chosen": true,
+     "target_first_visible_at_step": 7,
+     "absent_from_reset_observation": true,
+     "action_errors_absent": true,
+     "n_visible_alternatives": 4,
+     "verified": true
+    }
+   ],
+   "feedback_dependent_decisions": 4,
+   "feedback_decision_kinds": [
+    "autocomplete_option",
+    "autocomplete_option",
+    "calendar_day",
+    "flight_choice"
+   ],
+   "steps_with_action_error": [],
+   "terminal": {
+    "DONE_GLOBAL": true,
+    "RAW_REWARD_GLOBAL": -1,
+    "REWARD_GLOBAL": -1,
+    "browsergym_reward": 0.0,
+    "terminated": true,
+    "truncated": false
+   },
+   "full_success": false
+  },
+  {
+   "label": "noop",
+   "seed": 0,
+   "kind": "noop",
+   "n_actions": 5,
+   "notes": {},
+   "feedback_decisions_measured": [],
+   "feedback_dependent_decisions": 0,
+   "feedback_decision_kinds": [],
+   "steps_with_action_error": [],
+   "terminal": {
+    "DONE_GLOBAL": false,
+    "RAW_REWARD_GLOBAL": 0,
+    "REWARD_GLOBAL": 0,
+    "browsergym_reward": 0.0,
+    "terminated": false,
+    "truncated": false
+   },
+   "full_success": false
+  },
+  {
+   "label": "positive_seed1",
+   "seed": 1,
+   "kind": "positive",
+   "n_actions": 10,
+   "notes": {
+    "goal": {
+     "criterion": "shortest",
+     "origin": "Thorne Bay, AK",
+     "destination": "Palm Springs, CA",
+     "month": 10,
+     "day": 3,
+     "year": 2016,
+     "date": "10/03/2016"
+    },
+    "from_options": [
+     "Thorne Bay, AK (KTB)"
+    ],
+    "to_options": [
+     "Palm Springs, CA (PSP)"
+    ],
+    "calendar_opened_at": "12/2016",
+    "flights_revealed": [
+     {
+      "duration_minutes": 366,
+      "duration_text": "6h 6m",
+      "price": 449,
+      "book_bid": "368"
+     },
+     {
+      "duration_minutes": 2,
+      "duration_text": "0h 2m",
+      "price": 507,
+      "book_bid": "390"
+     },
+     {
+      "duration_minutes": 908,
+      "duration_text": "15h 8m",
+      "price": 824,
+      "book_bid": "412"
+     }
+    ],
+    "visible_tie": false,
+    "chosen_bid": "390"
+   },
+   "feedback_decisions_measured": [
+    {
+     "step": 2,
+     "kind": "autocomplete_option",
+     "target_bid": "34",
+     "decided_from_step": 1,
+     "present_when_chosen": true,
+     "target_first_visible_at_step": 1,
+     "absent_from_reset_observation": true,
+     "action_errors_absent": true,
+     "n_visible_alternatives": 1,
+     "verified": true
+    },
+    {
+     "step": 4,
+     "kind": "autocomplete_option",
+     "target_bid": "38",
+     "decided_from_step": 3,
+     "present_when_chosen": true,
+     "target_first_visible_at_step": 3,
+     "absent_from_reset_observation": true,
+     "action_errors_absent": true,
+     "n_visible_alternatives": 1,
+     "verified": true
+    },
+    {
+     "step": 6,
+     "kind": "month_navigation",
+     "target_bid": "43",
+     "decided_from_step": 5,
+     "present_when_chosen": true,
+     "target_first_visible_at_step": 5,
+     "absent_from_reset_observation": true,
+     "action_errors_absent": true,
+     "n_visible_alternatives": 2,
+     "verified": true
+    },
+    {
+     "step": 7,
+     "kind": "month_navigation",
+     "target_bid": "140",
+     "decided_from_step": 6,
+     "present_when_chosen": true,
+     "target_first_visible_at_step": 6,
+     "absent_from_reset_observation": true,
+     "action_errors_absent": true,
+     "n_visible_alternatives": 3,
+     "verified": true
+    },
+    {
+     "step": 8,
+     "kind": "calendar_day",
+     "target_bid": "274",
+     "decided_from_step": 7,
+     "present_when_chosen": true,
+     "target_first_visible_at_step": 7,
+     "absent_from_reset_observation": true,
+     "action_errors_absent": true,
+     "n_visible_alternatives": 31,
+     "verified": true
+    },
+    {
+     "step": 10,
+     "kind": "flight_choice",
+     "target_bid": "390",
+     "decided_from_step": 9,
+     "present_when_chosen": true,
+     "target_first_visible_at_step": 9,
+     "absent_from_reset_observation": true,
+     "action_errors_absent": true,
+     "n_visible_alternatives": 3,
+     "verified": true
+    }
+   ],
+   "feedback_dependent_decisions": 6,
+   "feedback_decision_kinds": [
+    "autocomplete_option",
+    "autocomplete_option",
+    "month_navigation",
+    "month_navigation",
+    "calendar_day",
+    "flight_choice"
+   ],
+   "steps_with_action_error": [],
+   "terminal": {
+    "DONE_GLOBAL": true,
+    "RAW_REWARD_GLOBAL": 1,
+    "REWARD_GLOBAL": 0.993364,
+    "browsergym_reward": 1.0,
+    "terminated": true,
+    "truncated": false
+   },
+   "full_success": true
+  },
+  {
+   "label": "positive_seed2",
+   "seed": 2,
+   "kind": "positive",
+   "n_actions": 8,
+   "notes": {
+    "goal": {
+     "criterion": "cheapest",
+     "origin": "Columbus, OH",
+     "destination": "RDD",
+     "month": 12,
+     "day": 28,
+     "year": 2016,
+     "date": "12/28/2016"
+    },
+    "from_options": [
+     "Columbus, OH (CMH)"
+    ],
+    "to_options": [
+     "Redding, CA (RDD)"
+    ],
+    "calendar_opened_at": "12/2016",
+    "flights_revealed": [
+     {
+      "duration_minutes": 969,
+      "duration_text": "16h 9m",
+      "price": 594,
+      "book_bid": "167"
+     },
+     {
+      "duration_minutes": 416,
+      "duration_text": "6h 56m",
+      "price": 348,
+      "book_bid": "189"
+     },
+     {
+      "duration_minutes": 92,
+      "duration_text": "1h 32m",
+      "price": 451,
+      "book_bid": "211"
+     }
+    ],
+    "visible_tie": false,
+    "chosen_bid": "189"
+   },
+   "feedback_decisions_measured": [
+    {
+     "step": 2,
+     "kind": "autocomplete_option",
+     "target_bid": "34",
+     "decided_from_step": 1,
+     "present_when_chosen": true,
+     "target_first_visible_at_step": 1,
+     "absent_from_reset_observation": true,
+     "action_errors_absent": true,
+     "n_visible_alternatives": 1,
+     "verified": true
+    },
+    {
+     "step": 4,
+     "kind": "autocomplete_option",
+     "target_bid": "38",
+     "decided_from_step": 3,
+     "present_when_chosen": true,
+     "target_first_visible_at_step": 3,
+     "absent_from_reset_observation": true,
+     "action_errors_absent": true,
+     "n_visible_alternatives": 1,
+     "verified": true
+    },
+    {
+     "step": 6,
+     "kind": "calendar_day",
+     "target_bid": "132",
+     "decided_from_step": 5,
+     "present_when_chosen": true,
+     "target_first_visible_at_step": 5,
+     "absent_from_reset_observation": true,
+     "action_errors_absent": true,
+     "n_visible_alternatives": 31,
+     "verified": true
+    },
+    {
+     "step": 8,
+     "kind": "flight_choice",
+     "target_bid": "189",
+     "decided_from_step": 7,
+     "present_when_chosen": true,
+     "target_first_visible_at_step": 7,
+     "absent_from_reset_observation": true,
+     "action_errors_absent": true,
+     "n_visible_alternatives": 3,
+     "verified": true
+    }
+   ],
+   "feedback_dependent_decisions": 4,
+   "feedback_decision_kinds": [
+    "autocomplete_option",
+    "autocomplete_option",
+    "calendar_day",
+    "flight_choice"
+   ],
+   "steps_with_action_error": [],
+   "terminal": {
+    "DONE_GLOBAL": true,
+    "RAW_REWARD_GLOBAL": 1,
+    "REWARD_GLOBAL": 0.994808,
+    "browsergym_reward": 1.0,
+    "terminated": true,
+    "truncated": false
+   },
+   "full_success": true
+  },
+  {
+   "label": "positive_seed3",
+   "seed": 3,
+   "kind": "positive",
+   "n_actions": 10,
+   "notes": {
+    "goal": {
+     "criterion": "cheapest",
+     "origin": "CAK",
+     "destination": "Kongiganak, AK",
+     "month": 10,
+     "day": 28,
+     "year": 2016,
+     "date": "10/28/2016"
+    },
+    "from_options": [
+     "Akron/Canton, OH (CAK)",
+     "Canton/Akron, OH (CAK)"
+    ],
+    "to_options": [
+     "Kongiganak, AK (KKH)"
+    ],
+    "calendar_opened_at": "12/2016",
+    "flights_revealed": [
+     {
+      "duration_minutes": 46,
+      "duration_text": "0h 46m",
+      "price": 797,
+      "book_bid": "370"
+     },
+     {
+      "duration_minutes": 379,
+      "duration_text": "6h 19m",
+      "price": 535,
+      "book_bid": "392"
+     },
+     {
+      "duration_minutes": 145,
+      "duration_text": "2h 25m",
+      "price": 1187,
+      "book_bid": "414"
+     }
+    ],
+    "visible_tie": false,
+    "chosen_bid": "392"
+   },
+   "feedback_decisions_measured": [
+    {
+     "step": 2,
+     "kind": "autocomplete_option",
+     "target_bid": "34",
+     "decided_from_step": 1,
+     "present_when_chosen": true,
+     "target_first_visible_at_step": 1,
+     "absent_from_reset_observation": true,
+     "action_errors_absent": true,
+     "n_visible_alternatives": 2,
+     "verified": true
+    },
+    {
+     "step": 4,
+     "kind": "autocomplete_option",
+     "target_bid": "40",
+     "decided_from_step": 3,
+     "present_when_chosen": true,
+     "target_first_visible_at_step": 3,
+     "absent_from_reset_observation": true,
+     "action_errors_absent": true,
+     "n_visible_alternatives": 1,
+     "verified": true
+    },
+    {
+     "step": 6,
+     "kind": "month_navigation",
+     "target_bid": "45",
+     "decided_from_step": 5,
+     "present_when_chosen": true,
+     "target_first_visible_at_step": 5,
+     "absent_from_reset_observation": true,
+     "action_errors_absent": true,
+     "n_visible_alternatives": 2,
+     "verified": true
+    },
+    {
+     "step": 7,
+     "kind": "month_navigation",
+     "target_bid": "142",
+     "decided_from_step": 6,
+     "present_when_chosen": true,
+     "target_first_visible_at_step": 6,
+     "absent_from_reset_observation": true,
+     "action_errors_absent": true,
+     "n_visible_alternatives": 3,
+     "verified": true
+    },
+    {
+     "step": 8,
+     "kind": "calendar_day",
+     "target_bid": "329",
+     "decided_from_step": 7,
+     "present_when_chosen": true,
+     "target_first_visible_at_step": 7,
+     "absent_from_reset_observation": true,
+     "action_errors_absent": true,
+     "n_visible_alternatives": 31,
+     "verified": true
+    },
+    {
+     "step": 10,
+     "kind": "flight_choice",
+     "target_bid": "392",
+     "decided_from_step": 9,
+     "present_when_chosen": true,
+     "target_first_visible_at_step": 9,
+     "absent_from_reset_observation": true,
+     "action_errors_absent": true,
+     "n_visible_alternatives": 3,
+     "verified": true
+    }
+   ],
+   "feedback_dependent_decisions": 6,
+   "feedback_decision_kinds": [
+    "autocomplete_option",
+    "autocomplete_option",
+    "month_navigation",
+    "month_navigation",
+    "calendar_day",
+    "flight_choice"
+   ],
+   "steps_with_action_error": [],
+   "terminal": {
+    "DONE_GLOBAL": true,
+    "RAW_REWARD_GLOBAL": 1,
+    "REWARD_GLOBAL": 0.993335,
+    "browsergym_reward": 1.0,
+    "terminated": true,
+    "truncated": false
+   },
+   "full_success": true
+  },
+  {
+   "label": "positive_seed4",
+   "seed": 4,
+   "kind": "positive",
+   "n_actions": 9,
+   "notes": {
+    "goal": {
+     "criterion": "shortest",
+     "origin": "ERI",
+     "destination": "Bettles, AK",
+     "month": 11,
+     "day": 3,
+     "year": 2016,
+     "date": "11/03/2016"
+    },
+    "from_options": [
+     "Chignik, AK - Fisheries (KCG)",
+     "Deering, AK (DRG)",
+     "Erie, PA (ERI)",
+     "Imperial, CA (IPL)",
+     "Meridian, MS (MEI)",
+     "Sheridan, WY (SHR)"
+    ],
+    "to_options": [
+     "Bettles, AK (BTT)"
+    ],
+    "calendar_opened_at": "12/2016",
+    "flights_revealed": [
+     {
+      "duration_minutes": 182,
+      "duration_text": "3h 2m",
+      "price": 114,
+      "book_bid": "273"
+     },
+     {
+      "duration_minutes": 735,
+      "duration_text": "12h 15m",
+      "price": 148,
+      "book_bid": "295"
+     },
+     {
+      "duration_minutes": 382,
+      "duration_text": "6h 22m",
+      "price": 344,
+      "book_bid": "317"
+     },
+     {
+      "duration_minutes": 82,
+      "duration_text": "1h 22m",
+      "price": 501,
+      "book_bid": "339"
+     }
+    ],
+    "visible_tie": false,
+    "chosen_bid": "339"
+   },
+   "feedback_decisions_measured": [
+    {
+     "step": 2,
+     "kind": "autocomplete_option",
+     "target_bid": "38",
+     "decided_from_step": 1,
+     "present_when_chosen": true,
+     "target_first_visible_at_step": 1,
+     "absent_from_reset_observation": true,
+     "action_errors_absent": true,
+     "n_visible_alternatives": 6,
+     "verified": true
+    },
+    {
+     "step": 4,
+     "kind": "autocomplete_option",
+     "target_bid": "48",
+     "decided_from_step": 3,
+     "present_when_chosen": true,
+     "target_first_visible_at_step": 3,
+     "absent_from_reset_observation": true,
+     "action_errors_absent": true,
+     "n_visible_alternatives": 1,
+     "verified": true
+    },
+    {
+     "step": 6,
+     "kind": "month_navigation",
+     "target_bid": "53",
+     "decided_from_step": 5,
+     "present_when_chosen": true,
+     "target_first_visible_at_step": 5,
+     "absent_from_reset_observation": true,
+     "action_errors_absent": true,
+     "n_visible_alternatives": 2,
+     "verified": true
+    },
+    {
+     "step": 7,
+     "kind": "calendar_day",
+     "target_bid": "183",
+     "decided_from_step": 6,
+     "present_when_chosen": true,
+     "target_first_visible_at_step": 6,
+     "absent_from_reset_observation": true,
+     "action_errors_absent": true,
+     "n_visible_alternatives": 30,
+     "verified": true
+    },
+    {
+     "step": 9,
+     "kind": "flight_choice",
+     "target_bid": "339",
+     "decided_from_step": 8,
+     "present_when_chosen": true,
+     "target_first_visible_at_step": 8,
+     "absent_from_reset_observation": true,
+     "action_errors_absent": true,
+     "n_visible_alternatives": 4,
+     "verified": true
+    }
+   ],
+   "feedback_dependent_decisions": 5,
+   "feedback_decision_kinds": [
+    "autocomplete_option",
+    "autocomplete_option",
+    "month_navigation",
+    "calendar_day",
+    "flight_choice"
+   ],
+   "steps_with_action_error": [],
+   "terminal": {
+    "DONE_GLOBAL": true,
+    "RAW_REWARD_GLOBAL": 1,
+    "REWARD_GLOBAL": 0.994082,
+    "browsergym_reward": 1.0,
+    "terminated": true,
+    "truncated": false
+   },
+   "full_success": true
+  }
+ ],
+ "positive_robustness": {
+  "primary_positive": {
+   "full_success": true,
+   "criterion": "shortest",
+   "visible_tie": false,
+   "stopped": null
+  },
+  "positive_seed1": {
+   "full_success": true,
+   "criterion": "shortest",
+   "visible_tie": false,
+   "stopped": null
+  },
+  "positive_seed2": {
+   "full_success": true,
+   "criterion": "cheapest",
+   "visible_tie": false,
+   "stopped": null
+  },
+  "positive_seed3": {
+   "full_success": true,
+   "criterion": "cheapest",
+   "visible_tie": false,
+   "stopped": null
+  },
+  "positive_seed4": {
+   "full_success": true,
+   "criterion": "shortest",
+   "visible_tie": false,
+   "stopped": null
+  }
+ }
+}

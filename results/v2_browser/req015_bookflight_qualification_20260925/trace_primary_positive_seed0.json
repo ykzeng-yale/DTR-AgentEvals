@@ -1,0 +1,275 @@
+{
+ "request": "DTR-REQ-015",
+ "label": "primary_positive",
+ "seed": 0,
+ "kind": "positive",
+ "browser_version": "125.0.6422.26",
+ "initial_resources": [
+  "file://./work/third_party_req015/miniwob-plusplus/miniwob/html/miniwob/book-flight.html",
+  "file://./work/third_party_req015/miniwob-plusplus/miniwob/html/core/core.js",
+  "file://./work/third_party_req015/miniwob-plusplus/miniwob/html/core/jquery-ui/external/jquery/jquery.js",
+  "file://./work/third_party_req015/miniwob-plusplus/miniwob/html/core/jquery-ui/jquery-ui.min.js",
+  "file://./work/third_party_req015/miniwob-plusplus/miniwob/html/common/ui_utils.js",
+  "file://./work/third_party_req015/miniwob-plusplus/miniwob/html/common/special/book-flight/domestic.js",
+  "file://./work/third_party_req015/miniwob-plusplus/miniwob/html/core/core.css",
+  "file://./work/third_party_req015/miniwob-plusplus/miniwob/html/core/jquery-ui/jquery-ui.min.css"
+ ],
+ "requests_after_reset": [
+  "file://./work/third_party_req015/miniwob-plusplus/miniwob/html/core/jquery-ui/images/ui-icons_444444_256x240.png"
+ ],
+ "resource_timing_entries": [],
+ "steps": [
+  {
+   "step": 0,
+   "action": "reset(seed=0)",
+   "reset_seconds": 0.521,
+   "decision": null,
+   "agent_visible": {
+    "goal": "Book the shortest one-way flight from: Corpus Christi, TX to: SHG on 12/05/2016.",
+    "url": "file://./work/third_party_req015/miniwob-plusplus/miniwob/html/miniwob/book-flight.html",
+    "axtree": "RootWebArea 'Book Flight Task', focused\n\t[17] heading 'Book Your One-Way Flight'\n\t[19] textbox 'From:'\n\t[21] textbox 'To:'\n\tStaticText 'Departure Date'\n\t[25] textbox ''\n\t[27] button 'Search'\n\t[30] status '', live='assertive', atomic, relevant='additions'\n\t[32] status '', live='assertive', atomic, relevant='additions'",
+    "last_action_error": "",
+    "focused_element_bid": "12"
+   },
+   "screenshot": "screenshots/primary_positive_seed0_step00.png",
+   "verifier_only": {
+    "task_info": {
+     "REWARD_GLOBAL": 0,
+     "RAW_REWARD_GLOBAL": 0,
+     "REWARD_REASON": null,
+     "DONE_GLOBAL": false,
+     "EPISODE_ID": 0,
+     "TASK_READY": true
+    }
+   }
+  },
+  {
+   "step": 1,
+   "action": "fill('19', 'Corpus Christi, TX')",
+   "decision": {
+    "kind": "type_goal_text",
+    "feedback_dependent": false,
+    "evidence": "goal text 'Corpus Christi, TX' into 'From:'"
+   },
+   "agent_visible": {
+    "goal": "Book the shortest one-way flight from: Corpus Christi, TX to: SHG on 12/05/2016.",
+    "url": "file://./work/third_party_req015/miniwob-plusplus/miniwob/html/miniwob/book-flight.html",
+    "axtree": "RootWebArea 'Book Flight Task', focused\n\t[17] heading 'Book Your One-Way Flight'\n\t[19] textbox 'From:' value='Corpus Christi, TX', focused\n\t\tStaticText 'Corpus Christi, TX'\n\t[21] textbox 'To:'\n\tStaticText 'Departure Date'\n\t[25] textbox ''\n\t[27] button 'Search'\n\t[29] list 'Corpus Christi, TX (CRP)'\n\t\t[34] listitem ''\n\t\t\tListMarker ''\n\t\t\t\timage ''\n\t\t\tStaticText 'Corpus Christi, TX (CRP)'\n\t[30] status '', live='assertive', atomic, relevant='additions'\n\t\tStaticText '1 result is available, use up and down arrow keys to navigate.'\n\t[32] status '', live='assertive', atomic, relevant='additions'",
+    "last_action_error": "",
+    "focused_element_bid": "19"
+   },
+   "screenshot": "screenshots/primary_positive_seed0_step01.png",
+   "verifier_only": {
+    "browsergym_reward": 0.0,
+    "terminated": false,
+    "truncated": false,
+    "RAW_REWARD_GLOBAL": 0,
+    "REWARD_GLOBAL": 0,
+    "DONE_GLOBAL": false,
+    "REWARD_REASON": null,
+    "EPISODE_ID": 0
+   }
+  },
+  {
+   "step": 2,
+   "action": "click('34')",
+   "decision": {
+    "kind": "autocomplete_option",
+    "feedback_dependent": true,
+    "decided_from_step": 1,
+    "n_visible_alternatives": 1,
+    "evidence": "option 'Corpus Christi, TX (CRP)' chosen among 1 options revealed by the previous fill (1 matching)",
+    "consequential": null
+   },
+   "agent_visible": {
+    "goal": "Book the shortest one-way flight from: Corpus Christi, TX to: SHG on 12/05/2016.",
+    "url": "file://./work/third_party_req015/miniwob-plusplus/miniwob/html/miniwob/book-flight.html",
+    "axtree": "RootWebArea 'Book Flight Task', focused\n\t[17] heading 'Book Your One-Way Flight'\n\t[19] textbox 'From:' value='Corpus Christi, TX (CRP)', focused\n\t\tStaticText 'Corpus Christi, TX (CRP)'\n\t[21] textbox 'To:'\n\tStaticText 'Departure Date'\n\t[25] textbox ''\n\t[27] button 'Search'\n\t[30] status '', live='assertive', atomic, relevant='additions'\n\t\tStaticText 'Corpus Christi, TX (CRP)'\n\t[32] status '', live='assertive', atomic, relevant='additions'",
+    "last_action_error": "",
+    "focused_element_bid": "19"
+   },
+   "screenshot": "screenshots/primary_positive_seed0_step02.png",
+   "verifier_only": {
+    "browsergym_reward": 0.0,
+    "terminated": false,
+    "truncated": false,
+    "RAW_REWARD_GLOBAL": 0,
+    "REWARD_GLOBAL": 0,
+    "DONE_GLOBAL": false,
+    "REWARD_REASON": null,
+    "EPISODE_ID": 0
+   }
+  },
+  {
+   "step": 3,
+   "action": "fill('21', 'SHG')",
+   "decision": {
+    "kind": "type_goal_text",
+    "feedback_dependent": false,
+    "evidence": "goal text 'SHG' into 'To:'"
+   },
+   "agent_visible": {
+    "goal": "Book the shortest one-way flight from: Corpus Christi, TX to: SHG on 12/05/2016.",
+    "url": "file://./work/third_party_req015/miniwob-plusplus/miniwob/html/miniwob/book-flight.html",
+    "axtree": "RootWebArea 'Book Flight Task', focused\n\t[17] heading 'Book Your One-Way Flight'\n\t[19] textbox 'From:' value='Corpus Christi, TX (CRP)'\n\t\tStaticText 'Corpus Christi, TX (CRP)'\n\t[21] textbox 'To:' value='SHG', focused\n\t\tStaticText 'SHG'\n\tStaticText 'Departure Date'\n\t[25] textbox ''\n\t[27] button 'Search'\n\t[30] status '', live='assertive', atomic, relevant='additions'\n\t\tStaticText 'Corpus Christi, TX (CRP)'\n\t[31] list 'Shungnak, AK (SHG)'\n\t\t[38] listitem ''\n\t\t\tListMarker ''\n\t\t\t\timage ''\n\t\t\tStaticText 'Shungnak, AK (SHG)'\n\t[32] status '', live='assertive', atomic, relevant='additions'\n\t\tStaticText '1 result is available, use up and down arrow keys to navigate.'",
+    "last_action_error": "",
+    "focused_element_bid": "21"
+   },
+   "screenshot": "screenshots/primary_positive_seed0_step03.png",
+   "verifier_only": {
+    "browsergym_reward": 0.0,
+    "terminated": false,
+    "truncated": false,
+    "RAW_REWARD_GLOBAL": 0,
+    "REWARD_GLOBAL": 0,
+    "DONE_GLOBAL": false,
+    "REWARD_REASON": null,
+    "EPISODE_ID": 0
+   }
+  },
+  {
+   "step": 4,
+   "action": "click('38')",
+   "decision": {
+    "kind": "autocomplete_option",
+    "feedback_dependent": true,
+    "decided_from_step": 3,
+    "n_visible_alternatives": 1,
+    "evidence": "option 'Shungnak, AK (SHG)' chosen among 1 options revealed by the previous fill (1 matching)",
+    "consequential": null
+   },
+   "agent_visible": {
+    "goal": "Book the shortest one-way flight from: Corpus Christi, TX to: SHG on 12/05/2016.",
+    "url": "file://./work/third_party_req015/miniwob-plusplus/miniwob/html/miniwob/book-flight.html",
+    "axtree": "RootWebArea 'Book Flight Task', focused\n\t[17] heading 'Book Your One-Way Flight'\n\t[19] textbox 'From:' value='Corpus Christi, TX (CRP)'\n\t\tStaticText 'Corpus Christi, TX (CRP)'\n\t[21] textbox 'To:' value='Shungnak, AK (SHG)', focused\n\t\tStaticText 'Shungnak, AK (SHG)'\n\tStaticText 'Departure Date'\n\t[25] textbox ''\n\t[27] button 'Search'\n\t[30] status '', live='assertive', atomic, relevant='additions'\n\t\tStaticText 'Corpus Christi, TX (CRP)'\n\t[32] status '', live='assertive', atomic, relevant='additions'\n\t\tStaticText 'Shungnak, AK (SHG)'",
+    "last_action_error": "",
+    "focused_element_bid": "21"
+   },
+   "screenshot": "screenshots/primary_positive_seed0_step04.png",
+   "verifier_only": {
+    "browsergym_reward": 0.0,
+    "terminated": false,
+    "truncated": false,
+    "RAW_REWARD_GLOBAL": 0,
+    "REWARD_GLOBAL": 0,
+    "DONE_GLOBAL": false,
+    "REWARD_REASON": null,
+    "EPISODE_ID": 0
+   }
+  },
+  {
+   "step": 5,
+   "action": "click('25')",
+   "decision": {
+    "kind": "open_datepicker",
+    "feedback_dependent": false,
+    "evidence": "the empty date textbox"
+   },
+   "agent_visible": {
+    "goal": "Book the shortest one-way flight from: Corpus Christi, TX to: SHG on 12/05/2016.",
+    "url": "file://./work/third_party_req015/miniwob-plusplus/miniwob/html/miniwob/book-flight.html",
+    "axtree": "RootWebArea 'Book Flight Task', focused\n\t[17] heading 'Book Your One-Way Flight'\n\t[19] textbox 'From:' value='Corpus Christi, TX (CRP)'\n\t\tStaticText 'Corpus Christi, TX (CRP)'\n\t[21] textbox 'To:' value='Shungnak, AK (SHG)'\n\t\tStaticText 'Shungnak, AK (SHG)'\n\tStaticText 'Departure Date'\n\t[25] textbox '', focused\n\t[27] button 'Search'\n\t[30] status '', live='assertive', atomic, relevant='additions'\n\t\tStaticText 'Corpus Christi, TX (CRP)'\n\t[32] status '', live='assertive', atomic, relevant='additions'\n\t\tStaticText 'Shungnak, AK (SHG)'\n\t[43] link 'Prev'\n\t\tStaticText 'Prev'\n\tStaticText 'Next'\n\tStaticText 'December'\n\tStaticText ''\n\tStaticText '2016'\n\t[50] table ''\n\t\t[51] rowgroup ''\n\t\t\t[52] row ''\n\t\t\t\t[53] columnheader 'Su'\n\t\t\t\t[55] columnheader 'Mo'\n\t\t\t\t[57] columnheader 'Tu'\n\t\t\t\t[59] columnheader 'We'\n\t\t\t\t[61] columnheader 'Th'\n\t\t\t\t[63] columnheader 'Fr'\n\t\t\t\t[65] columnheader 'Sa'\n\t\t[67] rowgroup ''\n\t\t\t[68] row ''\n\t\t\t\t[69] gridcell ''\n\t\t\t\t[70] gridcell ''\n\t\t\t\t[71] gridcell ''\n\t\t\t\t[72] gridcell ''\n\t\t\t\t[73] gridcell '1'\n\t\t\t\t\t[74] link '1'\n\t\t\t\t[75] gridcell '2'\n\t\t\t\t\t[76] link '2'\n\t\t\t\t[77] gridcell '3'\n\t\t\t\t\t[78] link '3'\n\t\t\t[79] row ''\n\t\t\t\t[80] gridcell '4'\n\t\t\t\t\t[81] link '4'\n\t\t\t\t[82] gridcell '5'\n\t\t\t\t\t[83] link '5'\n\t\t\t\t[84] gridcell '6'\n\t\t\t\t\t[85] link '6'\n\t\t\t\t[86] gridcell '7'\n\t\t\t\t\t[87] link '7'\n\t\t\t\t[88] gridcell '8'\n\t\t\t\t\t[89] link '8'\n\t\t\t\t[90] gridcell '9'\n\t\t\t\t\t[91] link '9'\n\t\t\t\t[92] gridcell '10'\n\t\t\t\t\t[93] link '10'\n\t\t\t[94] row ''\n\t\t\t\t[95] gridcell '11'\n\t\t\t\t\t[96] link '11'\n\t\t\t\t[97] gridcell '12'\n\t\t\t\t\t[98] link '12'\n\t\t\t\t[99] gridcell '13'\n\t\t\t\t\t[100] link '13'\n\t\t\t\t[101] gridcell '14'\n\t\t\t\t\t[102] link '14'\n\t\t\t\t[103] gridcell '15'\n\t\t\t\t\t[104] link '15'\n\t\t\t\t[105] gridcell '16'\n\t\t\t\t\t[106] link '16'\n\t\t\t\t[107] gridcell '17'\n\t\t\t\t\t[108] link '17'\n\t\t\t[109] row ''\n\t\t\t\t[110] gridcell '18'\n\t\t\t\t\t[111] link '18'\n\t\t\t\t[112] gridcell '19'\n\t\t\t\t\t[113] link '19'\n\t\t\t\t[114] gridcell '20'\n\t\t\t\t\t[115] link '20'\n\t\t\t\t[116] gridcell '21'\n\t\t\t\t\t[117] link '21'\n\t\t\t\t[118] gridcell '22'\n\t\t\t\t\t[119] link '22'\n\t\t\t\t[120] gridcell '23'\n\t\t\t\t\t[121] link '23'\n\t\t\t\t[122] gridcell '24'\n\t\t\t\t\t[123] link '24'\n\t\t\t[124] row ''\n\t\t\t\t[125] gridcell '25'\n\t\t\t\t\t[126] link '25'\n\t\t\t\t[127] gridcell '26'\n\t\t\t\t\t[128] link '26'\n\t\t\t\t[129] gridcell '27'\n\t\t\t\t\t[130] link '27'\n\t\t\t\t[131] gridcell '28'\n\t\t\t\t\t[132] link '28'\n\t\t\t\t[133] gridcell '29'\n\t\t\t\t\t[134] link '29'\n\t\t\t\t[135] gridcell '30'\n\t\t\t\t\t[136] link '30'\n\t\t\t\t[137] gridcell '31'\n\t\t\t\t\t[138] link '31'",
+    "last_action_error": "",
+    "focused_element_bid": "25"
+   },
+   "screenshot": "screenshots/primary_positive_seed0_step05.png",
+   "verifier_only": {
+    "browsergym_reward": 0.0,
+    "terminated": false,
+    "truncated": false,
+    "RAW_REWARD_GLOBAL": 0,
+    "REWARD_GLOBAL": 0,
+    "DONE_GLOBAL": false,
+    "REWARD_REASON": null,
+    "EPISODE_ID": 0
+   }
+  },
+  {
+   "step": 6,
+   "action": "click('83')",
+   "decision": {
+    "kind": "calendar_day",
+    "feedback_dependent": true,
+    "decided_from_step": 5,
+    "n_visible_alternatives": 31,
+    "evidence": "day link 5 among 31 links of the displayed month",
+    "consequential": null
+   },
+   "agent_visible": {
+    "goal": "Book the shortest one-way flight from: Corpus Christi, TX to: SHG on 12/05/2016.",
+    "url": "file://./work/third_party_req015/miniwob-plusplus/miniwob/html/miniwob/book-flight.html",
+    "axtree": "RootWebArea 'Book Flight Task', focused\n\t[17] heading 'Book Your One-Way Flight'\n\t[19] textbox 'From:' value='Corpus Christi, TX (CRP)'\n\t\tStaticText 'Corpus Christi, TX (CRP)'\n\t[21] textbox 'To:' value='Shungnak, AK (SHG)'\n\t\tStaticText 'Shungnak, AK (SHG)'\n\tStaticText 'Departure Date'\n\t[25] textbox '' value='12/05/2016'\n\t\tStaticText '12/05/2016'\n\t[27] button 'Search'\n\t[30] status '', live='assertive', atomic, relevant='additions'\n\t\tStaticText 'Corpus Christi, TX (CRP)'\n\t[32] status '', live='assertive', atomic, relevant='additions'\n\t\tStaticText 'Shungnak, AK (SHG)'",
+    "last_action_error": "",
+    "focused_element_bid": "12"
+   },
+   "screenshot": "screenshots/primary_positive_seed0_step06.png",
+   "verifier_only": {
+    "browsergym_reward": 0.0,
+    "terminated": false,
+    "truncated": false,
+    "RAW_REWARD_GLOBAL": 0,
+    "REWARD_GLOBAL": 0,
+    "DONE_GLOBAL": false,
+    "REWARD_REASON": null,
+    "EPISODE_ID": 0
+   }
+  },
+  {
+   "step": 7,
+   "action": "click('27')",
+   "decision": {
+    "kind": "search",
+    "feedback_dependent": false,
+    "evidence": "the Search button"
+   },
+   "agent_visible": {
+    "goal": "Book the shortest one-way flight from: Corpus Christi, TX to: SHG on 12/05/2016.",
+    "url": "file://./work/third_party_req015/miniwob-plusplus/miniwob/html/miniwob/book-flight.html",
+    "axtree": "RootWebArea 'Book Flight Task', focused\n\t[141] button 'Back'\n\tStaticText 'CRP to SHG'\n\tStaticText ''\n\tStaticText '|'\n\tStaticText '12/05/2016'\n\t[149] LabelText ''\n\t\tStaticText 'Depart:'\n\tStaticText '12:53 AM'\n\tStaticText 'Mon Dec 05 2016'\n\tStaticText 'Corpus Christi, TX (CRP)'\n\t[156] LabelText ''\n\t\tStaticText 'Arrives:'\n\tStaticText '5:42 AM'\n\tStaticText 'Tue Dec 06 2016'\n\tStaticText 'SHG'\n\t[163] LabelText ''\n\t\tStaticText 'Duration:'\n\tStaticText '28h 49m'\n\t[167] button 'Book flight for $479'\n\t[171] LabelText ''\n\t\tStaticText 'Depart:'\n\tStaticText '12:45 AM'\n\tStaticText 'Mon Dec 05 2016'\n\tStaticText 'Corpus Christi, TX (CRP)'\n\t[178] LabelText ''\n\t\tStaticText 'Arrives:'\n\tStaticText '3:11 AM'\n\tStaticText 'Mon Dec 05 2016'\n\tStaticText 'SHG'\n\t[185] LabelText ''\n\t\tStaticText 'Duration:'\n\tStaticText '2h 25m'\n\t[189] button 'Book flight for $991'\n\t[193] LabelText ''\n\t\tStaticText 'Depart:'\n\tStaticText '1:03 AM'\n\tStaticText 'Mon Dec 05 2016'\n\tStaticText 'Corpus Christi, TX (CRP)'\n\t[200] LabelText ''\n\t\tStaticText 'Arrives:'\n\tStaticText '5:40 AM'\n\tStaticText 'Tue Dec 06 2016'\n\tStaticText 'SHG'\n\t[207] LabelText ''\n\t\tStaticText 'Duration:'\n\tStaticText '28h 37m'\n\t[211] button 'Book flight for $539'\n\t[215] LabelText ''\n\t\tStaticText 'Depart:'\n\tStaticText '10:48 AM'\n\tStaticText 'Mon Dec 05 2016'\n\tStaticText 'Corpus Christi, TX (CRP)'\n\t[222] LabelText ''\n\t\tStaticText 'Arrives:'\n\tStaticText '2:11 AM'\n\tStaticText 'Tue Dec 06 2016'\n\tStaticText 'SHG'\n\t[229] LabelText ''\n\t\tStaticText 'Duration:'\n\tStaticText '15h 22m'\n\t[233] button 'Book flight for $1023'\n\t[30] status '', live='assertive', atomic, relevant='additions'\n\t\tStaticText 'Corpus Christi, TX (CRP)'\n\t[32] status '', live='assertive', atomic, relevant='additions'\n\t\tStaticText 'Shungnak, AK (SHG)'",
+    "last_action_error": "",
+    "focused_element_bid": "12"
+   },
+   "screenshot": "screenshots/primary_positive_seed0_step07.png",
+   "verifier_only": {
+    "browsergym_reward": 0.0,
+    "terminated": false,
+    "truncated": false,
+    "RAW_REWARD_GLOBAL": 0,
+    "REWARD_GLOBAL": 0,
+    "DONE_GLOBAL": false,
+    "REWARD_REASON": null,
+    "EPISODE_ID": 0
+   }
+  },
+  {
+   "step": 8,
+   "action": "click('189')",
+   "decision": {
+    "kind": "flight_choice",
+    "feedback_dependent": true,
+    "decided_from_step": 7,
+    "n_visible_alternatives": 4,
+    "evidence": "best shortest flight by displayed duration among 4 revealed results",
+    "consequential": true
+   },
+   "agent_visible": {
+    "goal": "Book the shortest one-way flight from: Corpus Christi, TX to: SHG on 12/05/2016.",
+    "url": "file://./work/third_party_req015/miniwob-plusplus/miniwob/html/miniwob/book-flight.html",
+    "axtree": "RootWebArea 'Book Flight Task', focused\n\t[141] button 'Back'\n\tStaticText 'CRP to SHG'\n\tStaticText ''\n\tStaticText '|'\n\tStaticText '12/05/2016'\n\t[149] LabelText ''\n\t\tStaticText 'Depart:'\n\tStaticText '12:53 AM'\n\tStaticText 'Mon Dec 05 2016'\n\tStaticText 'Corpus Christi, TX (CRP)'\n\t[156] LabelText ''\n\t\tStaticText 'Arrives:'\n\tStaticText '5:42 AM'\n\tStaticText 'Tue Dec 06 2016'\n\tStaticText 'SHG'\n\t[163] LabelText ''\n\t\tStaticText 'Duration:'\n\tStaticText '28h 49m'\n\t[167] button 'Book flight for $479'\n\t[171] LabelText ''\n\t\tStaticText 'Depart:'\n\tStaticText '12:45 AM'\n\tStaticText 'Mon Dec 05 2016'\n\tStaticText 'Corpus Christi, TX (CRP)'\n\t[178] LabelText ''\n\t\tStaticText 'Arrives:'\n\tStaticText '3:11 AM'\n\tStaticText 'Mon Dec 05 2016'\n\tStaticText 'SHG'\n\t[185] LabelText ''\n\t\tStaticText 'Duration:'\n\tStaticText '2h 25m'\n\t[189] button 'Book flight for $991', focused\n\t[193] LabelText ''\n\t\tStaticText 'Depart:'\n\tStaticText '1:03 AM'\n\tStaticText 'Mon Dec 05 2016'\n\tStaticText 'Corpus Christi, TX (CRP)'\n\t[200] LabelText ''\n\t\tStaticText 'Arrives:'\n\tStaticText '5:40 AM'\n\tStaticText 'Tue Dec 06 2016'\n\tStaticText 'SHG'\n\t[207] LabelText ''\n\t\tStaticText 'Duration:'\n\tStaticText '28h 37m'\n\t[211] button 'Book flight for $539'\n\t[215] LabelText ''\n\t\tStaticText 'Depart:'\n\tStaticText '10:48 AM'\n\tStaticText 'Mon Dec 05 2016'\n\tStaticText 'Corpus Christi, TX (CRP)'\n\t[222] LabelText ''\n\t\tStaticText 'Arrives:'\n\tStaticText '2:11 AM'\n\tStaticText 'Tue Dec 06 2016'\n\tStaticText 'SHG'\n\t[229] LabelText ''\n\t\tStaticText 'Duration:'\n\tStaticText '15h 22m'\n\t[233] button 'Book flight for $1023'\n\t[30] status '', live='assertive', atomic, relevant='additions'\n\t\tStaticText 'Corpus Christi, TX (CRP)'\n\t[32] status '', live='assertive', atomic, relevant='additions'\n\t\tStaticText 'Shungnak, AK (SHG)'",
+    "last_action_error": "",
+    "focused_element_bid": "189"
+   },
+   "screenshot": "screenshots/primary_positive_seed0_step08.png",
+   "verifier_only": {
+    "browsergym_reward": 1.0,
+    "terminated": true,
+    "truncated": false,
+    "RAW_REWARD_GLOBAL": 1,
+    "REWARD_GLOBAL": 0.994797,
+    "DONE_GLOBAL": true,
+    "REWARD_REASON": null,
+    "EPISODE_ID": 1
+   }
+  }
+ ]
+}

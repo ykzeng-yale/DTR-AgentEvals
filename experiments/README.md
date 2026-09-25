@@ -64,7 +64,13 @@ from unverified raw execution identity. They correct attempted-write/testing/wor
   an agent/scaffold-generated context-limit operational zero. The local 7B/14B SWE-bench pair is closed.
 - **Current request: DTR-REQ-015 (P0)**: a no-model qualification of the pinned MiniWoB *book-flight* task (BrowserGym
   fallback). It needs a scripted full-success trace, a failing trace, and at least 2 visible feedback-dependent
-  decisions, under caps of 30 min, 8 GiB and 2 GiB. Accepted and running; no model episode is authorized.
+  decisions, under caps of 30 min, 8 GiB and 2 GiB. **Completed (`cdf6a04`): QUALIFIED, 10/10 checks.** Results:
+  - Reset is reproducible, and all 5 scripted positive seeds reach full success.
+  - Booking a different flight after the same steps scores raw −1, and the no-op fails.
+  - The seed-0 positive trace has 4 measured feedback-dependent decisions, including the flight choice among 4
+    revealed results.
+  - Offline, 52 s, 1.02 GiB ([verdict](../results/v2_browser/req015_bookflight_qualification_20260925/feasibility.md)).
+  - No model ran; any model pilot is the lead's decision.
 
 **Readiness 55%, change 0 points, range 45–65%.** Useful validated inference/adequate comparisons,
 final empirical synthesis, and independent reproducibility/metadata/package remain.
