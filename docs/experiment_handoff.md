@@ -5743,3 +5743,35 @@ Reviewed worker `bdd007a` and the published REQ-015 projection: **82/82 manifest
 **P0 DTR-REQ-016, source `bdd007a`:** [exact staged request and acceptance](theory_feedback_20260925_req015_decision.md). Build and test a model-facing allowlisted adapter **before inference**, then run exactly one fixed-backend **7B DEVELOPMENT competence screen** on prespecified seeds 200–207 under the same pinned `book-flight` full-success predicate. Restrict agent input to goal/accessibility tree/history/errors/budget and actions to single `click`, `fill` or `noop` on current BIDs; hide DOM, verifier rewards/source/URL and navigation/file/code actions. Freeze prompt/grammar, model hash, T=0, 16 logical/32 physical attempts per episode, 90-minute batch cap, host/resource/peer gates, immutable receipts and all eight denominators. Report BLOCKED if gates fail; report 0–8/8 and failure taxonomy if it runs. **No router, 14B, extra seeds, cue, E2 live or CONFIRM** is authorized. Acknowledge `DTR-REQ-015 completed` and `DTR-REQ-016 accepted/running/completed/blocked/superseded` in the committed handoff with exact commit/artifact; use Yukang Zeng <ykzeng2019@gmail.com> for author and committer.
 
 Full-project readiness **55%, change 0 percentage points, range 45–65%**: no-model qualification closes no empirical comparison gate. Top remaining: competent fresh policy contrast and fixed-target inference; final empirical/manuscript synthesis; independent reproducibility, author metadata and submission package.
+
+## Worker checkpoint — 2026-09-25T04:50Z (host `date -u`; local 00:50 EDT) — lead `97656b5` acknowledged: DTR-REQ-015 completed; DTR-REQ-016 accepted and running (build before any inference)
+
+**Read:** [lead REQ-015 decision](theory_feedback_20260925_req015_decision.md) (04:25Z) and issue #4 up to 04:26:13Z. **Code/config commit:** `bdd007a`. **Authorized runs:** DTR-REQ-016 only. It is one fixed-backend Qwen2.5-Coder-7B DEVELOPMENT screen on seeds 200–207, and only after the restricted adapter, manifest and fixtures are committed and every gate passes.
+
+- **DTR-REQ-015: completed** (`cdf6a04`, `bdd007a`).
+  - Your scoping is recorded: operationally qualified, scientifically unproven.
+  - The four revealed-element-ID clicks are not four informative routing opportunities; only the flight choice is shown to change the outcome.
+  - The machine QUALIFIED verdict and the disclosed development runs stay unchanged.
+- **DTR-REQ-016 (P0): accepted, now running.** The build comes first. Planned design (the committed manifest will be binding):
+  - **Architecture:** a supervising parent in the pinned mini-swe-agent venv reuses the REQ-011 serving and watchdog code and the REQ-014 capacity sampler. An episode child in the pinned REQ-015 BrowserGym venv runs seeds 200–207 in order, one episode each, calling the owned 7B server through the standard library.
+  - **Model:** GGUF `87a3665c…`, llama.cpp `4fea119`, T 0, context 16,384, output cap 1,536.
+  - **Adapter:**
+    - The model sees only the goal, the flattened accessibility tree, prior actions and errors, and the remaining budget.
+    - One `click('<bid>')`, `fill('<bid>', '<text>')` or `noop()` per call, with the bid present in the current tree. The environment's own action mapping is also restricted to those three functions, with no multiaction.
+    - Excluded, and proved excluded by fixtures: DOM, URL, rewards and DONE, task source, and navigation/tab/upload/code actions.
+  - **Caps and gates:** 16 logical and 32 physical calls per episode, a 90-minute batch cap and 2 GiB of published artifacts. Capacity follows the REQ-014 thresholds (≥ 50 % physical free at admission, ≥ 20 % after load, abort below 10 %). Samples are taken at most every 10 s, and a gap over 10 s fails closed, per your prospective rule.
+  - **Scoring:** DONE and raw reward = 1, over all 8 seeds, with failure causes kept separate.
+  - Not authorized: rescue, re-prompting, 14B, router or extra seeds.
+
+| Request | Status | Artifact |
+|---|---|---|
+| DTR-REQ-016 (P0) | **accepted; running: adapter, manifest and fixtures (no inference yet)** | next commits |
+| DTR-REQ-015 (P0) | **completed**: operationally qualified, scientifically unproven (lead) | `cdf6a04`, `bdd007a`, `97656b5` |
+| DTR-REQ-014 (P0) | completed: operational zero (agent/scaffold-generated context limit); local coding pair closed | `a0d2a7c`, `00295d6` |
+| DTR-REQ-013 (P0) | step 1 completed; live step BLOCKED and superseded by REQ-014 | `16d1d9b`, `b9ffb29` |
+| DTR-REQ-012 / 011 / 010 | completed (see `a0d2a7c` table) | — |
+| DTR-REQ-009 … 001 | as in the table at `16d1d9b` | — |
+
+**Readiness:** 55 %, change 0 points (range 45–65 %; 75/75/50/25/25 → 55.00).
+
+**Cadence:** job `c710b12b`, ticks at about :15/:45 UTC, session-only; I publish on change.

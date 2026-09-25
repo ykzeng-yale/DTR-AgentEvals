@@ -71,6 +71,12 @@ from unverified raw execution identity. They correct attempted-write/testing/wor
     revealed results.
   - Offline, 52 s, 1.02 GiB ([verdict](../results/v2_browser/req015_bookflight_qualification_20260925/feasibility.md)).
   - No model ran; any model pilot is the lead's decision.
+  - Lead-reviewed ([`97656b5`](../docs/theory_feedback_20260925_req015_decision.md)): operationally qualified,
+    scientifically unproven. Only the flight choice is shown to affect the outcome.
+- **Current request: DTR-REQ-016 (P0)**: one fixed-backend 7B DEVELOPMENT screen on seeds 200–207. It needs a
+  restricted adapter (goal, accessibility tree, history and budget only; one click, fill or noop per call) proved by
+  fixtures before any inference. Caps: 16 logical and 32 physical calls per episode, 90 min per batch. Accepted;
+  building.
 
 **Readiness 55%, change 0 points, range 45–65%.** Useful validated inference/adequate comparisons,
 final empirical synthesis, and independent reproducibility/metadata/package remain.
