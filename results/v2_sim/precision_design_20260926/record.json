@@ -1,0 +1,4192 @@
+{
+  "request": "DTR-REQ-025",
+  "version": "precision_design_audit_v1",
+  "status": "deterministic analysis setup; no empirical coverage, runtime independence, cost saving or agent result",
+  "generated_utc": "2026-09-26T21:17:11Z",
+  "command": "PYTHONPATH=src .venv/bin/python experiments/v2_sim/precision_design_audit.py --write",
+  "python": "3.12.13",
+  "implementation": "CPython",
+  "pins": {
+    "source": {
+      "path": "experiments/v2_sim/precision_design_audit.py",
+      "sha256": "571a1fdd5b1edbace457bb33a1b9b17bcbb845c0dfc69d9966c4501bc9ab2da4"
+    },
+    "tests": {
+      "path": "tests/test_precision_design_audit.py",
+      "sha256": "0b66d480db18ba218560e6103c5d9101111af048656fd514020be22c202538d3"
+    },
+    "note": {
+      "path": "docs/theory_precision_design_20260926.md",
+      "sha256": "6303403a35b4046e423cf7a5255799b495bd5ea104868d3c6bae91d5fefb2897",
+      "pinned": "6303403a35b4046e423cf7a5255799b495bd5ea104868d3c6bae91d5fefb2897",
+      "initial_request_sha256": "9b1eddd5708cbb596895d93d65e4e17a2eb06796aa7e65bf5f084b429b719731",
+      "amendment": "references and real-agent covariance wording only; no equation, number, test scope or cap changed (lead)"
+    }
+  },
+  "numbers": "exact rationals as \"p/q\" strings; Decimal values as strings at 60 significant digits",
+  "assumptions": [
+    "complete-block note contract: frozen bounded nuisance functions in [0, 1] fitted outside every scored block, valid logging marginals, terminal payoff Y in [0, 1]",
+    "deterministic target routers sharing the initial action S; at most two eligible decisions; the logger chooses each of two actions with probability 1/2 at an eligible decision; an absorbed decision is a common no-op with probability one",
+    "both target scores are evaluated on the same logged trajectory (unrelated marginal score samples do not get the contrast bound)",
+    "Sec. 2 counts: independent identically distributed complete blocks (REQ-024 contract)",
+    "Sec. 3: mutually independent group replicates, identically distributed within each group, with the same valid marginal execution laws; groups may differ in distribution and mean"
+  ],
+  "results": {
+    "score_range": {
+      "nonabsorbed": {
+        "vertices": 512,
+        "marginal": {
+          "min": "-3",
+          "max": "4",
+          "min_witnesses": [
+            {
+              "A1": 0,
+              "A2": 0,
+              "pi_H2": 0,
+              "pi_P2": 0,
+              "q1_H": 1,
+              "q1_P": 0,
+              "q2_H": 1,
+              "q2_P": 0,
+              "Y": 0,
+              "policy": "H"
+            },
+            {
+              "A1": 0,
+              "A2": 0,
+              "pi_H2": 0,
+              "pi_P2": 0,
+              "q1_H": 1,
+              "q1_P": 0,
+              "q2_H": 1,
+              "q2_P": 1,
+              "Y": 0,
+              "policy": "H"
+            },
+            {
+              "A1": 0,
+              "A2": 0,
+              "pi_H2": 0,
+              "pi_P2": 0,
+              "q1_H": 1,
+              "q1_P": 1,
+              "q2_H": 1,
+              "q2_P": 0,
+              "Y": 0,
+              "policy": "H"
+            },
+            {
+              "A1": 0,
+              "A2": 0,
+              "pi_H2": 0,
+              "pi_P2": 0,
+              "q1_H": 1,
+              "q1_P": 1,
+              "q2_H": 1,
+              "q2_P": 1,
+              "Y": 0,
+              "policy": "H"
+            },
+            {
+              "A1": 0,
+              "A2": 0,
+              "pi_H2": 0,
+              "pi_P2": 1,
+              "q1_H": 1,
+              "q1_P": 0,
+              "q2_H": 1,
+              "q2_P": 0,
+              "Y": 0,
+              "policy": "H"
+            },
+            {
+              "A1": 0,
+              "A2": 0,
+              "pi_H2": 0,
+              "pi_P2": 1,
+              "q1_H": 1,
+              "q1_P": 0,
+              "q2_H": 1,
+              "q2_P": 1,
+              "Y": 0,
+              "policy": "H"
+            },
+            {
+              "A1": 0,
+              "A2": 0,
+              "pi_H2": 0,
+              "pi_P2": 1,
+              "q1_H": 1,
+              "q1_P": 1,
+              "q2_H": 1,
+              "q2_P": 0,
+              "Y": 0,
+              "policy": "H"
+            },
+            {
+              "A1": 0,
+              "A2": 0,
+              "pi_H2": 0,
+              "pi_P2": 1,
+              "q1_H": 1,
+              "q1_P": 1,
+              "q2_H": 1,
+              "q2_P": 1,
+              "Y": 0,
+              "policy": "H"
+            },
+            {
+              "A1": 0,
+              "A2": 1,
+              "pi_H2": 1,
+              "pi_P2": 0,
+              "q1_H": 1,
+              "q1_P": 0,
+              "q2_H": 1,
+              "q2_P": 0,
+              "Y": 0,
+              "policy": "H"
+            },
+            {
+              "A1": 0,
+              "A2": 1,
+              "pi_H2": 1,
+              "pi_P2": 0,
+              "q1_H": 1,
+              "q1_P": 0,
+              "q2_H": 1,
+              "q2_P": 1,
+              "Y": 0,
+              "policy": "H"
+            },
+            {
+              "A1": 0,
+              "A2": 1,
+              "pi_H2": 1,
+              "pi_P2": 0,
+              "q1_H": 1,
+              "q1_P": 1,
+              "q2_H": 1,
+              "q2_P": 0,
+              "Y": 0,
+              "policy": "H"
+            },
+            {
+              "A1": 0,
+              "A2": 1,
+              "pi_H2": 1,
+              "pi_P2": 0,
+              "q1_H": 1,
+              "q1_P": 1,
+              "q2_H": 1,
+              "q2_P": 1,
+              "Y": 0,
+              "policy": "H"
+            },
+            {
+              "A1": 0,
+              "A2": 1,
+              "pi_H2": 1,
+              "pi_P2": 1,
+              "q1_H": 1,
+              "q1_P": 0,
+              "q2_H": 1,
+              "q2_P": 0,
+              "Y": 0,
+              "policy": "H"
+            },
+            {
+              "A1": 0,
+              "A2": 1,
+              "pi_H2": 1,
+              "pi_P2": 1,
+              "q1_H": 1,
+              "q1_P": 0,
+              "q2_H": 1,
+              "q2_P": 1,
+              "Y": 0,
+              "policy": "H"
+            },
+            {
+              "A1": 0,
+              "A2": 1,
+              "pi_H2": 1,
+              "pi_P2": 1,
+              "q1_H": 1,
+              "q1_P": 1,
+              "q2_H": 1,
+              "q2_P": 0,
+              "Y": 0,
+              "policy": "H"
+            },
+            {
+              "A1": 0,
+              "A2": 1,
+              "pi_H2": 1,
+              "pi_P2": 1,
+              "q1_H": 1,
+              "q1_P": 1,
+              "q2_H": 1,
+              "q2_P": 1,
+              "Y": 0,
+              "policy": "H"
+            },
+            {
+              "A1": 0,
+              "A2": 0,
+              "pi_H2": 0,
+              "pi_P2": 0,
+              "q1_H": 0,
+              "q1_P": 1,
+              "q2_H": 0,
+              "q2_P": 1,
+              "Y": 0,
+              "policy": "P"
+            },
+            {
+              "A1": 0,
+              "A2": 0,
+              "pi_H2": 0,
+              "pi_P2": 0,
+              "q1_H": 0,
+              "q1_P": 1,
+              "q2_H": 1,
+              "q2_P": 1,
+              "Y": 0,
+              "policy": "P"
+            },
+            {
+              "A1": 0,
+              "A2": 0,
+              "pi_H2": 0,
+              "pi_P2": 0,
+              "q1_H": 1,
+              "q1_P": 1,
+              "q2_H": 0,
+              "q2_P": 1,
+              "Y": 0,
+              "policy": "P"
+            },
+            {
+              "A1": 0,
+              "A2": 0,
+              "pi_H2": 0,
+              "pi_P2": 0,
+              "q1_H": 1,
+              "q1_P": 1,
+              "q2_H": 1,
+              "q2_P": 1,
+              "Y": 0,
+              "policy": "P"
+            },
+            {
+              "A1": 0,
+              "A2": 1,
+              "pi_H2": 0,
+              "pi_P2": 1,
+              "q1_H": 0,
+              "q1_P": 1,
+              "q2_H": 0,
+              "q2_P": 1,
+              "Y": 0,
+              "policy": "P"
+            },
+            {
+              "A1": 0,
+              "A2": 1,
+              "pi_H2": 0,
+              "pi_P2": 1,
+              "q1_H": 0,
+              "q1_P": 1,
+              "q2_H": 1,
+              "q2_P": 1,
+              "Y": 0,
+              "policy": "P"
+            },
+            {
+              "A1": 0,
+              "A2": 1,
+              "pi_H2": 0,
+              "pi_P2": 1,
+              "q1_H": 1,
+              "q1_P": 1,
+              "q2_H": 0,
+              "q2_P": 1,
+              "Y": 0,
+              "policy": "P"
+            },
+            {
+              "A1": 0,
+              "A2": 1,
+              "pi_H2": 0,
+              "pi_P2": 1,
+              "q1_H": 1,
+              "q1_P": 1,
+              "q2_H": 1,
+              "q2_P": 1,
+              "Y": 0,
+              "policy": "P"
+            },
+            {
+              "A1": 0,
+              "A2": 0,
+              "pi_H2": 1,
+              "pi_P2": 0,
+              "q1_H": 0,
+              "q1_P": 1,
+              "q2_H": 0,
+              "q2_P": 1,
+              "Y": 0,
+              "policy": "P"
+            },
+            {
+              "A1": 0,
+              "A2": 0,
+              "pi_H2": 1,
+              "pi_P2": 0,
+              "q1_H": 0,
+              "q1_P": 1,
+              "q2_H": 1,
+              "q2_P": 1,
+              "Y": 0,
+              "policy": "P"
+            },
+            {
+              "A1": 0,
+              "A2": 0,
+              "pi_H2": 1,
+              "pi_P2": 0,
+              "q1_H": 1,
+              "q1_P": 1,
+              "q2_H": 0,
+              "q2_P": 1,
+              "Y": 0,
+              "policy": "P"
+            },
+            {
+              "A1": 0,
+              "A2": 0,
+              "pi_H2": 1,
+              "pi_P2": 0,
+              "q1_H": 1,
+              "q1_P": 1,
+              "q2_H": 1,
+              "q2_P": 1,
+              "Y": 0,
+              "policy": "P"
+            },
+            {
+              "A1": 0,
+              "A2": 1,
+              "pi_H2": 1,
+              "pi_P2": 1,
+              "q1_H": 0,
+              "q1_P": 1,
+              "q2_H": 0,
+              "q2_P": 1,
+              "Y": 0,
+              "policy": "P"
+            },
+            {
+              "A1": 0,
+              "A2": 1,
+              "pi_H2": 1,
+              "pi_P2": 1,
+              "q1_H": 0,
+              "q1_P": 1,
+              "q2_H": 1,
+              "q2_P": 1,
+              "Y": 0,
+              "policy": "P"
+            },
+            {
+              "A1": 0,
+              "A2": 1,
+              "pi_H2": 1,
+              "pi_P2": 1,
+              "q1_H": 1,
+              "q1_P": 1,
+              "q2_H": 0,
+              "q2_P": 1,
+              "Y": 0,
+              "policy": "P"
+            },
+            {
+              "A1": 0,
+              "A2": 1,
+              "pi_H2": 1,
+              "pi_P2": 1,
+              "q1_H": 1,
+              "q1_P": 1,
+              "q2_H": 1,
+              "q2_P": 1,
+              "Y": 0,
+              "policy": "P"
+            }
+          ],
+          "max_witnesses": [
+            {
+              "A1": 0,
+              "A2": 0,
+              "pi_H2": 0,
+              "pi_P2": 0,
+              "q1_H": 0,
+              "q1_P": 0,
+              "q2_H": 0,
+              "q2_P": 0,
+              "Y": 1,
+              "policy": "H"
+            },
+            {
+              "A1": 0,
+              "A2": 0,
+              "pi_H2": 0,
+              "pi_P2": 0,
+              "q1_H": 0,
+              "q1_P": 0,
+              "q2_H": 0,
+              "q2_P": 1,
+              "Y": 1,
+              "policy": "H"
+            },
+            {
+              "A1": 0,
+              "A2": 0,
+              "pi_H2": 0,
+              "pi_P2": 0,
+              "q1_H": 0,
+              "q1_P": 1,
+              "q2_H": 0,
+              "q2_P": 0,
+              "Y": 1,
+              "policy": "H"
+            },
+            {
+              "A1": 0,
+              "A2": 0,
+              "pi_H2": 0,
+              "pi_P2": 0,
+              "q1_H": 0,
+              "q1_P": 1,
+              "q2_H": 0,
+              "q2_P": 1,
+              "Y": 1,
+              "policy": "H"
+            },
+            {
+              "A1": 0,
+              "A2": 0,
+              "pi_H2": 0,
+              "pi_P2": 1,
+              "q1_H": 0,
+              "q1_P": 0,
+              "q2_H": 0,
+              "q2_P": 0,
+              "Y": 1,
+              "policy": "H"
+            },
+            {
+              "A1": 0,
+              "A2": 0,
+              "pi_H2": 0,
+              "pi_P2": 1,
+              "q1_H": 0,
+              "q1_P": 0,
+              "q2_H": 0,
+              "q2_P": 1,
+              "Y": 1,
+              "policy": "H"
+            },
+            {
+              "A1": 0,
+              "A2": 0,
+              "pi_H2": 0,
+              "pi_P2": 1,
+              "q1_H": 0,
+              "q1_P": 1,
+              "q2_H": 0,
+              "q2_P": 0,
+              "Y": 1,
+              "policy": "H"
+            },
+            {
+              "A1": 0,
+              "A2": 0,
+              "pi_H2": 0,
+              "pi_P2": 1,
+              "q1_H": 0,
+              "q1_P": 1,
+              "q2_H": 0,
+              "q2_P": 1,
+              "Y": 1,
+              "policy": "H"
+            },
+            {
+              "A1": 0,
+              "A2": 1,
+              "pi_H2": 1,
+              "pi_P2": 0,
+              "q1_H": 0,
+              "q1_P": 0,
+              "q2_H": 0,
+              "q2_P": 0,
+              "Y": 1,
+              "policy": "H"
+            },
+            {
+              "A1": 0,
+              "A2": 1,
+              "pi_H2": 1,
+              "pi_P2": 0,
+              "q1_H": 0,
+              "q1_P": 0,
+              "q2_H": 0,
+              "q2_P": 1,
+              "Y": 1,
+              "policy": "H"
+            },
+            {
+              "A1": 0,
+              "A2": 1,
+              "pi_H2": 1,
+              "pi_P2": 0,
+              "q1_H": 0,
+              "q1_P": 1,
+              "q2_H": 0,
+              "q2_P": 0,
+              "Y": 1,
+              "policy": "H"
+            },
+            {
+              "A1": 0,
+              "A2": 1,
+              "pi_H2": 1,
+              "pi_P2": 0,
+              "q1_H": 0,
+              "q1_P": 1,
+              "q2_H": 0,
+              "q2_P": 1,
+              "Y": 1,
+              "policy": "H"
+            },
+            {
+              "A1": 0,
+              "A2": 1,
+              "pi_H2": 1,
+              "pi_P2": 1,
+              "q1_H": 0,
+              "q1_P": 0,
+              "q2_H": 0,
+              "q2_P": 0,
+              "Y": 1,
+              "policy": "H"
+            },
+            {
+              "A1": 0,
+              "A2": 1,
+              "pi_H2": 1,
+              "pi_P2": 1,
+              "q1_H": 0,
+              "q1_P": 0,
+              "q2_H": 0,
+              "q2_P": 1,
+              "Y": 1,
+              "policy": "H"
+            },
+            {
+              "A1": 0,
+              "A2": 1,
+              "pi_H2": 1,
+              "pi_P2": 1,
+              "q1_H": 0,
+              "q1_P": 1,
+              "q2_H": 0,
+              "q2_P": 0,
+              "Y": 1,
+              "policy": "H"
+            },
+            {
+              "A1": 0,
+              "A2": 1,
+              "pi_H2": 1,
+              "pi_P2": 1,
+              "q1_H": 0,
+              "q1_P": 1,
+              "q2_H": 0,
+              "q2_P": 1,
+              "Y": 1,
+              "policy": "H"
+            },
+            {
+              "A1": 0,
+              "A2": 0,
+              "pi_H2": 0,
+              "pi_P2": 0,
+              "q1_H": 0,
+              "q1_P": 0,
+              "q2_H": 0,
+              "q2_P": 0,
+              "Y": 1,
+              "policy": "P"
+            },
+            {
+              "A1": 0,
+              "A2": 0,
+              "pi_H2": 0,
+              "pi_P2": 0,
+              "q1_H": 0,
+              "q1_P": 0,
+              "q2_H": 1,
+              "q2_P": 0,
+              "Y": 1,
+              "policy": "P"
+            },
+            {
+              "A1": 0,
+              "A2": 0,
+              "pi_H2": 0,
+              "pi_P2": 0,
+              "q1_H": 1,
+              "q1_P": 0,
+              "q2_H": 0,
+              "q2_P": 0,
+              "Y": 1,
+              "policy": "P"
+            },
+            {
+              "A1": 0,
+              "A2": 0,
+              "pi_H2": 0,
+              "pi_P2": 0,
+              "q1_H": 1,
+              "q1_P": 0,
+              "q2_H": 1,
+              "q2_P": 0,
+              "Y": 1,
+              "policy": "P"
+            },
+            {
+              "A1": 0,
+              "A2": 1,
+              "pi_H2": 0,
+              "pi_P2": 1,
+              "q1_H": 0,
+              "q1_P": 0,
+              "q2_H": 0,
+              "q2_P": 0,
+              "Y": 1,
+              "policy": "P"
+            },
+            {
+              "A1": 0,
+              "A2": 1,
+              "pi_H2": 0,
+              "pi_P2": 1,
+              "q1_H": 0,
+              "q1_P": 0,
+              "q2_H": 1,
+              "q2_P": 0,
+              "Y": 1,
+              "policy": "P"
+            },
+            {
+              "A1": 0,
+              "A2": 1,
+              "pi_H2": 0,
+              "pi_P2": 1,
+              "q1_H": 1,
+              "q1_P": 0,
+              "q2_H": 0,
+              "q2_P": 0,
+              "Y": 1,
+              "policy": "P"
+            },
+            {
+              "A1": 0,
+              "A2": 1,
+              "pi_H2": 0,
+              "pi_P2": 1,
+              "q1_H": 1,
+              "q1_P": 0,
+              "q2_H": 1,
+              "q2_P": 0,
+              "Y": 1,
+              "policy": "P"
+            },
+            {
+              "A1": 0,
+              "A2": 0,
+              "pi_H2": 1,
+              "pi_P2": 0,
+              "q1_H": 0,
+              "q1_P": 0,
+              "q2_H": 0,
+              "q2_P": 0,
+              "Y": 1,
+              "policy": "P"
+            },
+            {
+              "A1": 0,
+              "A2": 0,
+              "pi_H2": 1,
+              "pi_P2": 0,
+              "q1_H": 0,
+              "q1_P": 0,
+              "q2_H": 1,
+              "q2_P": 0,
+              "Y": 1,
+              "policy": "P"
+            },
+            {
+              "A1": 0,
+              "A2": 0,
+              "pi_H2": 1,
+              "pi_P2": 0,
+              "q1_H": 1,
+              "q1_P": 0,
+              "q2_H": 0,
+              "q2_P": 0,
+              "Y": 1,
+              "policy": "P"
+            },
+            {
+              "A1": 0,
+              "A2": 0,
+              "pi_H2": 1,
+              "pi_P2": 0,
+              "q1_H": 1,
+              "q1_P": 0,
+              "q2_H": 1,
+              "q2_P": 0,
+              "Y": 1,
+              "policy": "P"
+            },
+            {
+              "A1": 0,
+              "A2": 1,
+              "pi_H2": 1,
+              "pi_P2": 1,
+              "q1_H": 0,
+              "q1_P": 0,
+              "q2_H": 0,
+              "q2_P": 0,
+              "Y": 1,
+              "policy": "P"
+            },
+            {
+              "A1": 0,
+              "A2": 1,
+              "pi_H2": 1,
+              "pi_P2": 1,
+              "q1_H": 0,
+              "q1_P": 0,
+              "q2_H": 1,
+              "q2_P": 0,
+              "Y": 1,
+              "policy": "P"
+            },
+            {
+              "A1": 0,
+              "A2": 1,
+              "pi_H2": 1,
+              "pi_P2": 1,
+              "q1_H": 1,
+              "q1_P": 0,
+              "q2_H": 0,
+              "q2_P": 0,
+              "Y": 1,
+              "policy": "P"
+            },
+            {
+              "A1": 0,
+              "A2": 1,
+              "pi_H2": 1,
+              "pi_P2": 1,
+              "q1_H": 1,
+              "q1_P": 0,
+              "q2_H": 1,
+              "q2_P": 0,
+              "Y": 1,
+              "policy": "P"
+            }
+          ]
+        },
+        "contrast": {
+          "min": "-5",
+          "max": "5",
+          "min_witnesses": [
+            {
+              "A1": 0,
+              "A2": 0,
+              "pi_H2": 0,
+              "pi_P2": 1,
+              "q1_H": 1,
+              "q1_P": 0,
+              "q2_H": 1,
+              "q2_P": 1,
+              "Y": 0
+            },
+            {
+              "A1": 0,
+              "A2": 1,
+              "pi_H2": 0,
+              "pi_P2": 1,
+              "q1_H": 1,
+              "q1_P": 0,
+              "q2_H": 0,
+              "q2_P": 0,
+              "Y": 1
+            },
+            {
+              "A1": 0,
+              "A2": 0,
+              "pi_H2": 1,
+              "pi_P2": 0,
+              "q1_H": 1,
+              "q1_P": 0,
+              "q2_H": 0,
+              "q2_P": 0,
+              "Y": 1
+            },
+            {
+              "A1": 0,
+              "A2": 1,
+              "pi_H2": 1,
+              "pi_P2": 0,
+              "q1_H": 1,
+              "q1_P": 0,
+              "q2_H": 1,
+              "q2_P": 1,
+              "Y": 0
+            }
+          ],
+          "max_witnesses": [
+            {
+              "A1": 0,
+              "A2": 0,
+              "pi_H2": 0,
+              "pi_P2": 1,
+              "q1_H": 0,
+              "q1_P": 1,
+              "q2_H": 0,
+              "q2_P": 0,
+              "Y": 1
+            },
+            {
+              "A1": 0,
+              "A2": 1,
+              "pi_H2": 0,
+              "pi_P2": 1,
+              "q1_H": 0,
+              "q1_P": 1,
+              "q2_H": 1,
+              "q2_P": 1,
+              "Y": 0
+            },
+            {
+              "A1": 0,
+              "A2": 0,
+              "pi_H2": 1,
+              "pi_P2": 0,
+              "q1_H": 0,
+              "q1_P": 1,
+              "q2_H": 1,
+              "q2_P": 1,
+              "Y": 0
+            },
+            {
+              "A1": 0,
+              "A2": 1,
+              "pi_H2": 1,
+              "pi_P2": 0,
+              "q1_H": 0,
+              "q1_P": 1,
+              "q2_H": 0,
+              "q2_P": 0,
+              "Y": 1
+            }
+          ]
+        },
+        "closed_form_agrees_everywhere": true,
+        "off_policy_nuisance_irrelevant": true,
+        "by_case": {
+          "I=1, targets agree, A2 observed": {
+            "vertices": 64,
+            "marginal_min": "-3",
+            "marginal_max": "4",
+            "contrast_min": "-3",
+            "contrast_max": "3"
+          },
+          "I=1, targets agree, A2 not observed": {
+            "vertices": 64,
+            "marginal_min": "-1",
+            "marginal_max": "2",
+            "contrast_min": "-3",
+            "contrast_max": "3"
+          },
+          "I=1, targets disagree, A2 matches H": {
+            "vertices": 64,
+            "marginal_min": "-3",
+            "marginal_max": "4",
+            "contrast_min": "-5",
+            "contrast_max": "5"
+          },
+          "I=1, targets disagree, A2 matches P": {
+            "vertices": 64,
+            "marginal_min": "-3",
+            "marginal_max": "4",
+            "contrast_min": "-5",
+            "contrast_max": "5"
+          },
+          "I=0": {
+            "vertices": 256,
+            "marginal_min": "0",
+            "marginal_max": "1",
+            "contrast_min": "-1",
+            "contrast_max": "1"
+          }
+        }
+      },
+      "fractional_interior_fixtures": [
+        {
+          "fixture": {
+            "q1_H": "1/3",
+            "q1_P": "3/4",
+            "q2_H": "2/5",
+            "q2_P": "1/7",
+            "Y": "5/6"
+          },
+          "off": [
+            "1/2",
+            "2/3",
+            "1/9",
+            "7/8"
+          ],
+          "A1": 0,
+          "A2": 0,
+          "pi_H2": 0,
+          "pi_P2": 0,
+          "phi_H": "11/5",
+          "phi_P": "193/84",
+          "closed_form_agrees": true,
+          "within_case_vertex_range": true
+        },
+        {
+          "fixture": {
+            "q1_H": "1/3",
+            "q1_P": "3/4",
+            "q2_H": "2/5",
+            "q2_P": "1/7",
+            "Y": "5/6"
+          },
+          "off": [
+            "1/2",
+            "2/3",
+            "1/9",
+            "7/8"
+          ],
+          "A1": 0,
+          "A2": 1,
+          "pi_H2": 0,
+          "pi_P2": 0,
+          "phi_H": "7/15",
+          "phi_P": "-13/28",
+          "closed_form_agrees": true,
+          "within_case_vertex_range": true
+        },
+        {
+          "fixture": {
+            "q1_H": "1/3",
+            "q1_P": "3/4",
+            "q2_H": "2/5",
+            "q2_P": "1/7",
+            "Y": "5/6"
+          },
+          "off": [
+            "1/2",
+            "2/3",
+            "1/9",
+            "7/8"
+          ],
+          "A1": 0,
+          "A2": 0,
+          "pi_H2": 0,
+          "pi_P2": 1,
+          "phi_H": "11/5",
+          "phi_P": "-13/28",
+          "closed_form_agrees": true,
+          "within_case_vertex_range": true
+        },
+        {
+          "fixture": {
+            "q1_H": "1/3",
+            "q1_P": "3/4",
+            "q2_H": "2/5",
+            "q2_P": "1/7",
+            "Y": "5/6"
+          },
+          "off": [
+            "1/2",
+            "2/3",
+            "1/9",
+            "7/8"
+          ],
+          "A1": 0,
+          "A2": 1,
+          "pi_H2": 0,
+          "pi_P2": 1,
+          "phi_H": "7/15",
+          "phi_P": "193/84",
+          "closed_form_agrees": true,
+          "within_case_vertex_range": true
+        },
+        {
+          "fixture": {
+            "q1_H": "1/3",
+            "q1_P": "3/4",
+            "q2_H": "2/5",
+            "q2_P": "1/7",
+            "Y": "5/6"
+          },
+          "off": [
+            "1/2",
+            "2/3",
+            "1/9",
+            "7/8"
+          ],
+          "A1": 0,
+          "A2": 0,
+          "pi_H2": 1,
+          "pi_P2": 0,
+          "phi_H": "7/15",
+          "phi_P": "193/84",
+          "closed_form_agrees": true,
+          "within_case_vertex_range": true
+        },
+        {
+          "fixture": {
+            "q1_H": "1/3",
+            "q1_P": "3/4",
+            "q2_H": "2/5",
+            "q2_P": "1/7",
+            "Y": "5/6"
+          },
+          "off": [
+            "1/2",
+            "2/3",
+            "1/9",
+            "7/8"
+          ],
+          "A1": 0,
+          "A2": 1,
+          "pi_H2": 1,
+          "pi_P2": 0,
+          "phi_H": "11/5",
+          "phi_P": "-13/28",
+          "closed_form_agrees": true,
+          "within_case_vertex_range": true
+        },
+        {
+          "fixture": {
+            "q1_H": "1/3",
+            "q1_P": "3/4",
+            "q2_H": "2/5",
+            "q2_P": "1/7",
+            "Y": "5/6"
+          },
+          "off": [
+            "1/2",
+            "2/3",
+            "1/9",
+            "7/8"
+          ],
+          "A1": 0,
+          "A2": 0,
+          "pi_H2": 1,
+          "pi_P2": 1,
+          "phi_H": "7/15",
+          "phi_P": "-13/28",
+          "closed_form_agrees": true,
+          "within_case_vertex_range": true
+        },
+        {
+          "fixture": {
+            "q1_H": "1/3",
+            "q1_P": "3/4",
+            "q2_H": "2/5",
+            "q2_P": "1/7",
+            "Y": "5/6"
+          },
+          "off": [
+            "1/2",
+            "2/3",
+            "1/9",
+            "7/8"
+          ],
+          "A1": 0,
+          "A2": 1,
+          "pi_H2": 1,
+          "pi_P2": 1,
+          "phi_H": "11/5",
+          "phi_P": "193/84",
+          "closed_form_agrees": true,
+          "within_case_vertex_range": true
+        },
+        {
+          "fixture": {
+            "q1_H": "1/3",
+            "q1_P": "3/4",
+            "q2_H": "2/5",
+            "q2_P": "1/7",
+            "Y": "5/6"
+          },
+          "off": [
+            "1/2",
+            "2/3",
+            "1/9",
+            "7/8"
+          ],
+          "A1": 1,
+          "A2": 0,
+          "pi_H2": 0,
+          "pi_P2": 0,
+          "phi_H": "1/3",
+          "phi_P": "3/4",
+          "closed_form_agrees": true,
+          "within_case_vertex_range": true
+        },
+        {
+          "fixture": {
+            "q1_H": "1/3",
+            "q1_P": "3/4",
+            "q2_H": "2/5",
+            "q2_P": "1/7",
+            "Y": "5/6"
+          },
+          "off": [
+            "1/2",
+            "2/3",
+            "1/9",
+            "7/8"
+          ],
+          "A1": 1,
+          "A2": 1,
+          "pi_H2": 0,
+          "pi_P2": 0,
+          "phi_H": "1/3",
+          "phi_P": "3/4",
+          "closed_form_agrees": true,
+          "within_case_vertex_range": true
+        },
+        {
+          "fixture": {
+            "q1_H": "1/3",
+            "q1_P": "3/4",
+            "q2_H": "2/5",
+            "q2_P": "1/7",
+            "Y": "5/6"
+          },
+          "off": [
+            "1/2",
+            "2/3",
+            "1/9",
+            "7/8"
+          ],
+          "A1": 1,
+          "A2": 0,
+          "pi_H2": 0,
+          "pi_P2": 1,
+          "phi_H": "1/3",
+          "phi_P": "3/4",
+          "closed_form_agrees": true,
+          "within_case_vertex_range": true
+        },
+        {
+          "fixture": {
+            "q1_H": "1/3",
+            "q1_P": "3/4",
+            "q2_H": "2/5",
+            "q2_P": "1/7",
+            "Y": "5/6"
+          },
+          "off": [
+            "1/2",
+            "2/3",
+            "1/9",
+            "7/8"
+          ],
+          "A1": 1,
+          "A2": 1,
+          "pi_H2": 0,
+          "pi_P2": 1,
+          "phi_H": "1/3",
+          "phi_P": "3/4",
+          "closed_form_agrees": true,
+          "within_case_vertex_range": true
+        },
+        {
+          "fixture": {
+            "q1_H": "1/3",
+            "q1_P": "3/4",
+            "q2_H": "2/5",
+            "q2_P": "1/7",
+            "Y": "5/6"
+          },
+          "off": [
+            "1/2",
+            "2/3",
+            "1/9",
+            "7/8"
+          ],
+          "A1": 1,
+          "A2": 0,
+          "pi_H2": 1,
+          "pi_P2": 0,
+          "phi_H": "1/3",
+          "phi_P": "3/4",
+          "closed_form_agrees": true,
+          "within_case_vertex_range": true
+        },
+        {
+          "fixture": {
+            "q1_H": "1/3",
+            "q1_P": "3/4",
+            "q2_H": "2/5",
+            "q2_P": "1/7",
+            "Y": "5/6"
+          },
+          "off": [
+            "1/2",
+            "2/3",
+            "1/9",
+            "7/8"
+          ],
+          "A1": 1,
+          "A2": 1,
+          "pi_H2": 1,
+          "pi_P2": 0,
+          "phi_H": "1/3",
+          "phi_P": "3/4",
+          "closed_form_agrees": true,
+          "within_case_vertex_range": true
+        },
+        {
+          "fixture": {
+            "q1_H": "1/3",
+            "q1_P": "3/4",
+            "q2_H": "2/5",
+            "q2_P": "1/7",
+            "Y": "5/6"
+          },
+          "off": [
+            "1/2",
+            "2/3",
+            "1/9",
+            "7/8"
+          ],
+          "A1": 1,
+          "A2": 0,
+          "pi_H2": 1,
+          "pi_P2": 1,
+          "phi_H": "1/3",
+          "phi_P": "3/4",
+          "closed_form_agrees": true,
+          "within_case_vertex_range": true
+        },
+        {
+          "fixture": {
+            "q1_H": "1/3",
+            "q1_P": "3/4",
+            "q2_H": "2/5",
+            "q2_P": "1/7",
+            "Y": "5/6"
+          },
+          "off": [
+            "1/2",
+            "2/3",
+            "1/9",
+            "7/8"
+          ],
+          "A1": 1,
+          "A2": 1,
+          "pi_H2": 1,
+          "pi_P2": 1,
+          "phi_H": "1/3",
+          "phi_P": "3/4",
+          "closed_form_agrees": true,
+          "within_case_vertex_range": true
+        },
+        {
+          "fixture": {
+            "q1_H": "0",
+            "q1_P": "1",
+            "q2_H": "1/2",
+            "q2_P": "1/2",
+            "Y": "1/3"
+          },
+          "off": [
+            "1",
+            "0",
+            "1",
+            "0"
+          ],
+          "A1": 0,
+          "A2": 0,
+          "pi_H2": 0,
+          "pi_P2": 0,
+          "phi_H": "1/3",
+          "phi_P": "-2/3",
+          "closed_form_agrees": true,
+          "within_case_vertex_range": true
+        },
+        {
+          "fixture": {
+            "q1_H": "0",
+            "q1_P": "1",
+            "q2_H": "1/2",
+            "q2_P": "1/2",
+            "Y": "1/3"
+          },
+          "off": [
+            "1",
+            "0",
+            "1",
+            "0"
+          ],
+          "A1": 0,
+          "A2": 1,
+          "pi_H2": 0,
+          "pi_P2": 0,
+          "phi_H": "1",
+          "phi_P": "0",
+          "closed_form_agrees": true,
+          "within_case_vertex_range": true
+        },
+        {
+          "fixture": {
+            "q1_H": "0",
+            "q1_P": "1",
+            "q2_H": "1/2",
+            "q2_P": "1/2",
+            "Y": "1/3"
+          },
+          "off": [
+            "1",
+            "0",
+            "1",
+            "0"
+          ],
+          "A1": 0,
+          "A2": 0,
+          "pi_H2": 0,
+          "pi_P2": 1,
+          "phi_H": "1/3",
+          "phi_P": "0",
+          "closed_form_agrees": true,
+          "within_case_vertex_range": true
+        },
+        {
+          "fixture": {
+            "q1_H": "0",
+            "q1_P": "1",
+            "q2_H": "1/2",
+            "q2_P": "1/2",
+            "Y": "1/3"
+          },
+          "off": [
+            "1",
+            "0",
+            "1",
+            "0"
+          ],
+          "A1": 0,
+          "A2": 1,
+          "pi_H2": 0,
+          "pi_P2": 1,
+          "phi_H": "1",
+          "phi_P": "-2/3",
+          "closed_form_agrees": true,
+          "within_case_vertex_range": true
+        },
+        {
+          "fixture": {
+            "q1_H": "0",
+            "q1_P": "1",
+            "q2_H": "1/2",
+            "q2_P": "1/2",
+            "Y": "1/3"
+          },
+          "off": [
+            "1",
+            "0",
+            "1",
+            "0"
+          ],
+          "A1": 0,
+          "A2": 0,
+          "pi_H2": 1,
+          "pi_P2": 0,
+          "phi_H": "1",
+          "phi_P": "-2/3",
+          "closed_form_agrees": true,
+          "within_case_vertex_range": true
+        },
+        {
+          "fixture": {
+            "q1_H": "0",
+            "q1_P": "1",
+            "q2_H": "1/2",
+            "q2_P": "1/2",
+            "Y": "1/3"
+          },
+          "off": [
+            "1",
+            "0",
+            "1",
+            "0"
+          ],
+          "A1": 0,
+          "A2": 1,
+          "pi_H2": 1,
+          "pi_P2": 0,
+          "phi_H": "1/3",
+          "phi_P": "0",
+          "closed_form_agrees": true,
+          "within_case_vertex_range": true
+        },
+        {
+          "fixture": {
+            "q1_H": "0",
+            "q1_P": "1",
+            "q2_H": "1/2",
+            "q2_P": "1/2",
+            "Y": "1/3"
+          },
+          "off": [
+            "1",
+            "0",
+            "1",
+            "0"
+          ],
+          "A1": 0,
+          "A2": 0,
+          "pi_H2": 1,
+          "pi_P2": 1,
+          "phi_H": "1",
+          "phi_P": "0",
+          "closed_form_agrees": true,
+          "within_case_vertex_range": true
+        },
+        {
+          "fixture": {
+            "q1_H": "0",
+            "q1_P": "1",
+            "q2_H": "1/2",
+            "q2_P": "1/2",
+            "Y": "1/3"
+          },
+          "off": [
+            "1",
+            "0",
+            "1",
+            "0"
+          ],
+          "A1": 0,
+          "A2": 1,
+          "pi_H2": 1,
+          "pi_P2": 1,
+          "phi_H": "1/3",
+          "phi_P": "-2/3",
+          "closed_form_agrees": true,
+          "within_case_vertex_range": true
+        },
+        {
+          "fixture": {
+            "q1_H": "0",
+            "q1_P": "1",
+            "q2_H": "1/2",
+            "q2_P": "1/2",
+            "Y": "1/3"
+          },
+          "off": [
+            "1",
+            "0",
+            "1",
+            "0"
+          ],
+          "A1": 1,
+          "A2": 0,
+          "pi_H2": 0,
+          "pi_P2": 0,
+          "phi_H": "0",
+          "phi_P": "1",
+          "closed_form_agrees": true,
+          "within_case_vertex_range": true
+        },
+        {
+          "fixture": {
+            "q1_H": "0",
+            "q1_P": "1",
+            "q2_H": "1/2",
+            "q2_P": "1/2",
+            "Y": "1/3"
+          },
+          "off": [
+            "1",
+            "0",
+            "1",
+            "0"
+          ],
+          "A1": 1,
+          "A2": 1,
+          "pi_H2": 0,
+          "pi_P2": 0,
+          "phi_H": "0",
+          "phi_P": "1",
+          "closed_form_agrees": true,
+          "within_case_vertex_range": true
+        },
+        {
+          "fixture": {
+            "q1_H": "0",
+            "q1_P": "1",
+            "q2_H": "1/2",
+            "q2_P": "1/2",
+            "Y": "1/3"
+          },
+          "off": [
+            "1",
+            "0",
+            "1",
+            "0"
+          ],
+          "A1": 1,
+          "A2": 0,
+          "pi_H2": 0,
+          "pi_P2": 1,
+          "phi_H": "0",
+          "phi_P": "1",
+          "closed_form_agrees": true,
+          "within_case_vertex_range": true
+        },
+        {
+          "fixture": {
+            "q1_H": "0",
+            "q1_P": "1",
+            "q2_H": "1/2",
+            "q2_P": "1/2",
+            "Y": "1/3"
+          },
+          "off": [
+            "1",
+            "0",
+            "1",
+            "0"
+          ],
+          "A1": 1,
+          "A2": 1,
+          "pi_H2": 0,
+          "pi_P2": 1,
+          "phi_H": "0",
+          "phi_P": "1",
+          "closed_form_agrees": true,
+          "within_case_vertex_range": true
+        },
+        {
+          "fixture": {
+            "q1_H": "0",
+            "q1_P": "1",
+            "q2_H": "1/2",
+            "q2_P": "1/2",
+            "Y": "1/3"
+          },
+          "off": [
+            "1",
+            "0",
+            "1",
+            "0"
+          ],
+          "A1": 1,
+          "A2": 0,
+          "pi_H2": 1,
+          "pi_P2": 0,
+          "phi_H": "0",
+          "phi_P": "1",
+          "closed_form_agrees": true,
+          "within_case_vertex_range": true
+        },
+        {
+          "fixture": {
+            "q1_H": "0",
+            "q1_P": "1",
+            "q2_H": "1/2",
+            "q2_P": "1/2",
+            "Y": "1/3"
+          },
+          "off": [
+            "1",
+            "0",
+            "1",
+            "0"
+          ],
+          "A1": 1,
+          "A2": 1,
+          "pi_H2": 1,
+          "pi_P2": 0,
+          "phi_H": "0",
+          "phi_P": "1",
+          "closed_form_agrees": true,
+          "within_case_vertex_range": true
+        },
+        {
+          "fixture": {
+            "q1_H": "0",
+            "q1_P": "1",
+            "q2_H": "1/2",
+            "q2_P": "1/2",
+            "Y": "1/3"
+          },
+          "off": [
+            "1",
+            "0",
+            "1",
+            "0"
+          ],
+          "A1": 1,
+          "A2": 0,
+          "pi_H2": 1,
+          "pi_P2": 1,
+          "phi_H": "0",
+          "phi_P": "1",
+          "closed_form_agrees": true,
+          "within_case_vertex_range": true
+        },
+        {
+          "fixture": {
+            "q1_H": "0",
+            "q1_P": "1",
+            "q2_H": "1/2",
+            "q2_P": "1/2",
+            "Y": "1/3"
+          },
+          "off": [
+            "1",
+            "0",
+            "1",
+            "0"
+          ],
+          "A1": 1,
+          "A2": 1,
+          "pi_H2": 1,
+          "pi_P2": 1,
+          "phi_H": "0",
+          "phi_P": "1",
+          "closed_form_agrees": true,
+          "within_case_vertex_range": true
+        },
+        {
+          "fixture": {
+            "q1_H": "99/100",
+            "q1_P": "1/100",
+            "q2_H": "1/100",
+            "q2_P": "99/100",
+            "Y": "1/2"
+          },
+          "off": [
+            "1/4",
+            "3/4",
+            "1/4",
+            "3/4"
+          ],
+          "A1": 0,
+          "A2": 0,
+          "pi_H2": 0,
+          "pi_P2": 0,
+          "phi_H": "99/100",
+          "phi_P": "1/100",
+          "closed_form_agrees": true,
+          "within_case_vertex_range": true
+        },
+        {
+          "fixture": {
+            "q1_H": "99/100",
+            "q1_P": "1/100",
+            "q2_H": "1/100",
+            "q2_P": "99/100",
+            "Y": "1/2"
+          },
+          "off": [
+            "1/4",
+            "3/4",
+            "1/4",
+            "3/4"
+          ],
+          "A1": 0,
+          "A2": 1,
+          "pi_H2": 0,
+          "pi_P2": 0,
+          "phi_H": "-97/100",
+          "phi_P": "197/100",
+          "closed_form_agrees": true,
+          "within_case_vertex_range": true
+        },
+        {
+          "fixture": {
+            "q1_H": "99/100",
+            "q1_P": "1/100",
+            "q2_H": "1/100",
+            "q2_P": "99/100",
+            "Y": "1/2"
+          },
+          "off": [
+            "1/4",
+            "3/4",
+            "1/4",
+            "3/4"
+          ],
+          "A1": 0,
+          "A2": 0,
+          "pi_H2": 0,
+          "pi_P2": 1,
+          "phi_H": "99/100",
+          "phi_P": "197/100",
+          "closed_form_agrees": true,
+          "within_case_vertex_range": true
+        },
+        {
+          "fixture": {
+            "q1_H": "99/100",
+            "q1_P": "1/100",
+            "q2_H": "1/100",
+            "q2_P": "99/100",
+            "Y": "1/2"
+          },
+          "off": [
+            "1/4",
+            "3/4",
+            "1/4",
+            "3/4"
+          ],
+          "A1": 0,
+          "A2": 1,
+          "pi_H2": 0,
+          "pi_P2": 1,
+          "phi_H": "-97/100",
+          "phi_P": "1/100",
+          "closed_form_agrees": true,
+          "within_case_vertex_range": true
+        },
+        {
+          "fixture": {
+            "q1_H": "99/100",
+            "q1_P": "1/100",
+            "q2_H": "1/100",
+            "q2_P": "99/100",
+            "Y": "1/2"
+          },
+          "off": [
+            "1/4",
+            "3/4",
+            "1/4",
+            "3/4"
+          ],
+          "A1": 0,
+          "A2": 0,
+          "pi_H2": 1,
+          "pi_P2": 0,
+          "phi_H": "-97/100",
+          "phi_P": "1/100",
+          "closed_form_agrees": true,
+          "within_case_vertex_range": true
+        },
+        {
+          "fixture": {
+            "q1_H": "99/100",
+            "q1_P": "1/100",
+            "q2_H": "1/100",
+            "q2_P": "99/100",
+            "Y": "1/2"
+          },
+          "off": [
+            "1/4",
+            "3/4",
+            "1/4",
+            "3/4"
+          ],
+          "A1": 0,
+          "A2": 1,
+          "pi_H2": 1,
+          "pi_P2": 0,
+          "phi_H": "99/100",
+          "phi_P": "197/100",
+          "closed_form_agrees": true,
+          "within_case_vertex_range": true
+        },
+        {
+          "fixture": {
+            "q1_H": "99/100",
+            "q1_P": "1/100",
+            "q2_H": "1/100",
+            "q2_P": "99/100",
+            "Y": "1/2"
+          },
+          "off": [
+            "1/4",
+            "3/4",
+            "1/4",
+            "3/4"
+          ],
+          "A1": 0,
+          "A2": 0,
+          "pi_H2": 1,
+          "pi_P2": 1,
+          "phi_H": "-97/100",
+          "phi_P": "197/100",
+          "closed_form_agrees": true,
+          "within_case_vertex_range": true
+        },
+        {
+          "fixture": {
+            "q1_H": "99/100",
+            "q1_P": "1/100",
+            "q2_H": "1/100",
+            "q2_P": "99/100",
+            "Y": "1/2"
+          },
+          "off": [
+            "1/4",
+            "3/4",
+            "1/4",
+            "3/4"
+          ],
+          "A1": 0,
+          "A2": 1,
+          "pi_H2": 1,
+          "pi_P2": 1,
+          "phi_H": "99/100",
+          "phi_P": "1/100",
+          "closed_form_agrees": true,
+          "within_case_vertex_range": true
+        },
+        {
+          "fixture": {
+            "q1_H": "99/100",
+            "q1_P": "1/100",
+            "q2_H": "1/100",
+            "q2_P": "99/100",
+            "Y": "1/2"
+          },
+          "off": [
+            "1/4",
+            "3/4",
+            "1/4",
+            "3/4"
+          ],
+          "A1": 1,
+          "A2": 0,
+          "pi_H2": 0,
+          "pi_P2": 0,
+          "phi_H": "99/100",
+          "phi_P": "1/100",
+          "closed_form_agrees": true,
+          "within_case_vertex_range": true
+        },
+        {
+          "fixture": {
+            "q1_H": "99/100",
+            "q1_P": "1/100",
+            "q2_H": "1/100",
+            "q2_P": "99/100",
+            "Y": "1/2"
+          },
+          "off": [
+            "1/4",
+            "3/4",
+            "1/4",
+            "3/4"
+          ],
+          "A1": 1,
+          "A2": 1,
+          "pi_H2": 0,
+          "pi_P2": 0,
+          "phi_H": "99/100",
+          "phi_P": "1/100",
+          "closed_form_agrees": true,
+          "within_case_vertex_range": true
+        },
+        {
+          "fixture": {
+            "q1_H": "99/100",
+            "q1_P": "1/100",
+            "q2_H": "1/100",
+            "q2_P": "99/100",
+            "Y": "1/2"
+          },
+          "off": [
+            "1/4",
+            "3/4",
+            "1/4",
+            "3/4"
+          ],
+          "A1": 1,
+          "A2": 0,
+          "pi_H2": 0,
+          "pi_P2": 1,
+          "phi_H": "99/100",
+          "phi_P": "1/100",
+          "closed_form_agrees": true,
+          "within_case_vertex_range": true
+        },
+        {
+          "fixture": {
+            "q1_H": "99/100",
+            "q1_P": "1/100",
+            "q2_H": "1/100",
+            "q2_P": "99/100",
+            "Y": "1/2"
+          },
+          "off": [
+            "1/4",
+            "3/4",
+            "1/4",
+            "3/4"
+          ],
+          "A1": 1,
+          "A2": 1,
+          "pi_H2": 0,
+          "pi_P2": 1,
+          "phi_H": "99/100",
+          "phi_P": "1/100",
+          "closed_form_agrees": true,
+          "within_case_vertex_range": true
+        },
+        {
+          "fixture": {
+            "q1_H": "99/100",
+            "q1_P": "1/100",
+            "q2_H": "1/100",
+            "q2_P": "99/100",
+            "Y": "1/2"
+          },
+          "off": [
+            "1/4",
+            "3/4",
+            "1/4",
+            "3/4"
+          ],
+          "A1": 1,
+          "A2": 0,
+          "pi_H2": 1,
+          "pi_P2": 0,
+          "phi_H": "99/100",
+          "phi_P": "1/100",
+          "closed_form_agrees": true,
+          "within_case_vertex_range": true
+        },
+        {
+          "fixture": {
+            "q1_H": "99/100",
+            "q1_P": "1/100",
+            "q2_H": "1/100",
+            "q2_P": "99/100",
+            "Y": "1/2"
+          },
+          "off": [
+            "1/4",
+            "3/4",
+            "1/4",
+            "3/4"
+          ],
+          "A1": 1,
+          "A2": 1,
+          "pi_H2": 1,
+          "pi_P2": 0,
+          "phi_H": "99/100",
+          "phi_P": "1/100",
+          "closed_form_agrees": true,
+          "within_case_vertex_range": true
+        },
+        {
+          "fixture": {
+            "q1_H": "99/100",
+            "q1_P": "1/100",
+            "q2_H": "1/100",
+            "q2_P": "99/100",
+            "Y": "1/2"
+          },
+          "off": [
+            "1/4",
+            "3/4",
+            "1/4",
+            "3/4"
+          ],
+          "A1": 1,
+          "A2": 0,
+          "pi_H2": 1,
+          "pi_P2": 1,
+          "phi_H": "99/100",
+          "phi_P": "1/100",
+          "closed_form_agrees": true,
+          "within_case_vertex_range": true
+        },
+        {
+          "fixture": {
+            "q1_H": "99/100",
+            "q1_P": "1/100",
+            "q2_H": "1/100",
+            "q2_P": "99/100",
+            "Y": "1/2"
+          },
+          "off": [
+            "1/4",
+            "3/4",
+            "1/4",
+            "3/4"
+          ],
+          "A1": 1,
+          "A2": 1,
+          "pi_H2": 1,
+          "pi_P2": 1,
+          "phi_H": "99/100",
+          "phi_P": "1/100",
+          "closed_form_agrees": true,
+          "within_case_vertex_range": true
+        }
+      ],
+      "absorbed_after_first_action": {
+        "vertices": 64,
+        "marginal": {
+          "min": "-1",
+          "max": "2",
+          "min_witnesses": [
+            {
+              "A1": 0,
+              "q1_H": 1,
+              "q1_P": 0,
+              "pad_H": 0,
+              "pad_P": 0,
+              "Y": 0,
+              "policy": "H"
+            },
+            {
+              "A1": 0,
+              "q1_H": 1,
+              "q1_P": 0,
+              "pad_H": 0,
+              "pad_P": 1,
+              "Y": 0,
+              "policy": "H"
+            },
+            {
+              "A1": 0,
+              "q1_H": 1,
+              "q1_P": 0,
+              "pad_H": 1,
+              "pad_P": 0,
+              "Y": 0,
+              "policy": "H"
+            },
+            {
+              "A1": 0,
+              "q1_H": 1,
+              "q1_P": 0,
+              "pad_H": 1,
+              "pad_P": 1,
+              "Y": 0,
+              "policy": "H"
+            },
+            {
+              "A1": 0,
+              "q1_H": 1,
+              "q1_P": 1,
+              "pad_H": 0,
+              "pad_P": 0,
+              "Y": 0,
+              "policy": "H"
+            },
+            {
+              "A1": 0,
+              "q1_H": 1,
+              "q1_P": 1,
+              "pad_H": 0,
+              "pad_P": 1,
+              "Y": 0,
+              "policy": "H"
+            },
+            {
+              "A1": 0,
+              "q1_H": 1,
+              "q1_P": 1,
+              "pad_H": 1,
+              "pad_P": 0,
+              "Y": 0,
+              "policy": "H"
+            },
+            {
+              "A1": 0,
+              "q1_H": 1,
+              "q1_P": 1,
+              "pad_H": 1,
+              "pad_P": 1,
+              "Y": 0,
+              "policy": "H"
+            },
+            {
+              "A1": 0,
+              "q1_H": 0,
+              "q1_P": 1,
+              "pad_H": 0,
+              "pad_P": 0,
+              "Y": 0,
+              "policy": "P"
+            },
+            {
+              "A1": 0,
+              "q1_H": 0,
+              "q1_P": 1,
+              "pad_H": 0,
+              "pad_P": 1,
+              "Y": 0,
+              "policy": "P"
+            },
+            {
+              "A1": 0,
+              "q1_H": 0,
+              "q1_P": 1,
+              "pad_H": 1,
+              "pad_P": 0,
+              "Y": 0,
+              "policy": "P"
+            },
+            {
+              "A1": 0,
+              "q1_H": 0,
+              "q1_P": 1,
+              "pad_H": 1,
+              "pad_P": 1,
+              "Y": 0,
+              "policy": "P"
+            },
+            {
+              "A1": 0,
+              "q1_H": 1,
+              "q1_P": 1,
+              "pad_H": 0,
+              "pad_P": 0,
+              "Y": 0,
+              "policy": "P"
+            },
+            {
+              "A1": 0,
+              "q1_H": 1,
+              "q1_P": 1,
+              "pad_H": 0,
+              "pad_P": 1,
+              "Y": 0,
+              "policy": "P"
+            },
+            {
+              "A1": 0,
+              "q1_H": 1,
+              "q1_P": 1,
+              "pad_H": 1,
+              "pad_P": 0,
+              "Y": 0,
+              "policy": "P"
+            },
+            {
+              "A1": 0,
+              "q1_H": 1,
+              "q1_P": 1,
+              "pad_H": 1,
+              "pad_P": 1,
+              "Y": 0,
+              "policy": "P"
+            }
+          ],
+          "max_witnesses": [
+            {
+              "A1": 0,
+              "q1_H": 0,
+              "q1_P": 0,
+              "pad_H": 0,
+              "pad_P": 0,
+              "Y": 1,
+              "policy": "H"
+            },
+            {
+              "A1": 0,
+              "q1_H": 0,
+              "q1_P": 0,
+              "pad_H": 0,
+              "pad_P": 1,
+              "Y": 1,
+              "policy": "H"
+            },
+            {
+              "A1": 0,
+              "q1_H": 0,
+              "q1_P": 0,
+              "pad_H": 1,
+              "pad_P": 0,
+              "Y": 1,
+              "policy": "H"
+            },
+            {
+              "A1": 0,
+              "q1_H": 0,
+              "q1_P": 0,
+              "pad_H": 1,
+              "pad_P": 1,
+              "Y": 1,
+              "policy": "H"
+            },
+            {
+              "A1": 0,
+              "q1_H": 0,
+              "q1_P": 1,
+              "pad_H": 0,
+              "pad_P": 0,
+              "Y": 1,
+              "policy": "H"
+            },
+            {
+              "A1": 0,
+              "q1_H": 0,
+              "q1_P": 1,
+              "pad_H": 0,
+              "pad_P": 1,
+              "Y": 1,
+              "policy": "H"
+            },
+            {
+              "A1": 0,
+              "q1_H": 0,
+              "q1_P": 1,
+              "pad_H": 1,
+              "pad_P": 0,
+              "Y": 1,
+              "policy": "H"
+            },
+            {
+              "A1": 0,
+              "q1_H": 0,
+              "q1_P": 1,
+              "pad_H": 1,
+              "pad_P": 1,
+              "Y": 1,
+              "policy": "H"
+            },
+            {
+              "A1": 0,
+              "q1_H": 0,
+              "q1_P": 0,
+              "pad_H": 0,
+              "pad_P": 0,
+              "Y": 1,
+              "policy": "P"
+            },
+            {
+              "A1": 0,
+              "q1_H": 0,
+              "q1_P": 0,
+              "pad_H": 0,
+              "pad_P": 1,
+              "Y": 1,
+              "policy": "P"
+            },
+            {
+              "A1": 0,
+              "q1_H": 0,
+              "q1_P": 0,
+              "pad_H": 1,
+              "pad_P": 0,
+              "Y": 1,
+              "policy": "P"
+            },
+            {
+              "A1": 0,
+              "q1_H": 0,
+              "q1_P": 0,
+              "pad_H": 1,
+              "pad_P": 1,
+              "Y": 1,
+              "policy": "P"
+            },
+            {
+              "A1": 0,
+              "q1_H": 1,
+              "q1_P": 0,
+              "pad_H": 0,
+              "pad_P": 0,
+              "Y": 1,
+              "policy": "P"
+            },
+            {
+              "A1": 0,
+              "q1_H": 1,
+              "q1_P": 0,
+              "pad_H": 0,
+              "pad_P": 1,
+              "Y": 1,
+              "policy": "P"
+            },
+            {
+              "A1": 0,
+              "q1_H": 1,
+              "q1_P": 0,
+              "pad_H": 1,
+              "pad_P": 0,
+              "Y": 1,
+              "policy": "P"
+            },
+            {
+              "A1": 0,
+              "q1_H": 1,
+              "q1_P": 0,
+              "pad_H": 1,
+              "pad_P": 1,
+              "Y": 1,
+              "policy": "P"
+            }
+          ]
+        },
+        "contrast": {
+          "min": "-1",
+          "max": "1",
+          "min_witnesses": [
+            {
+              "A1": 0,
+              "q1_H": 1,
+              "q1_P": 0,
+              "pad_H": 0,
+              "pad_P": 0,
+              "Y": 0
+            },
+            {
+              "A1": 0,
+              "q1_H": 1,
+              "q1_P": 0,
+              "pad_H": 0,
+              "pad_P": 0,
+              "Y": 1
+            },
+            {
+              "A1": 0,
+              "q1_H": 1,
+              "q1_P": 0,
+              "pad_H": 0,
+              "pad_P": 1,
+              "Y": 0
+            },
+            {
+              "A1": 0,
+              "q1_H": 1,
+              "q1_P": 0,
+              "pad_H": 0,
+              "pad_P": 1,
+              "Y": 1
+            },
+            {
+              "A1": 0,
+              "q1_H": 1,
+              "q1_P": 0,
+              "pad_H": 1,
+              "pad_P": 0,
+              "Y": 0
+            },
+            {
+              "A1": 0,
+              "q1_H": 1,
+              "q1_P": 0,
+              "pad_H": 1,
+              "pad_P": 0,
+              "Y": 1
+            },
+            {
+              "A1": 0,
+              "q1_H": 1,
+              "q1_P": 0,
+              "pad_H": 1,
+              "pad_P": 1,
+              "Y": 0
+            },
+            {
+              "A1": 0,
+              "q1_H": 1,
+              "q1_P": 0,
+              "pad_H": 1,
+              "pad_P": 1,
+              "Y": 1
+            },
+            {
+              "A1": 1,
+              "q1_H": 0,
+              "q1_P": 1,
+              "pad_H": 0,
+              "pad_P": 0,
+              "Y": 0
+            },
+            {
+              "A1": 1,
+              "q1_H": 0,
+              "q1_P": 1,
+              "pad_H": 0,
+              "pad_P": 0,
+              "Y": 1
+            },
+            {
+              "A1": 1,
+              "q1_H": 0,
+              "q1_P": 1,
+              "pad_H": 0,
+              "pad_P": 1,
+              "Y": 0
+            },
+            {
+              "A1": 1,
+              "q1_H": 0,
+              "q1_P": 1,
+              "pad_H": 0,
+              "pad_P": 1,
+              "Y": 1
+            },
+            {
+              "A1": 1,
+              "q1_H": 0,
+              "q1_P": 1,
+              "pad_H": 1,
+              "pad_P": 0,
+              "Y": 0
+            },
+            {
+              "A1": 1,
+              "q1_H": 0,
+              "q1_P": 1,
+              "pad_H": 1,
+              "pad_P": 0,
+              "Y": 1
+            },
+            {
+              "A1": 1,
+              "q1_H": 0,
+              "q1_P": 1,
+              "pad_H": 1,
+              "pad_P": 1,
+              "Y": 0
+            },
+            {
+              "A1": 1,
+              "q1_H": 0,
+              "q1_P": 1,
+              "pad_H": 1,
+              "pad_P": 1,
+              "Y": 1
+            }
+          ],
+          "max_witnesses": [
+            {
+              "A1": 0,
+              "q1_H": 0,
+              "q1_P": 1,
+              "pad_H": 0,
+              "pad_P": 0,
+              "Y": 0
+            },
+            {
+              "A1": 0,
+              "q1_H": 0,
+              "q1_P": 1,
+              "pad_H": 0,
+              "pad_P": 0,
+              "Y": 1
+            },
+            {
+              "A1": 0,
+              "q1_H": 0,
+              "q1_P": 1,
+              "pad_H": 0,
+              "pad_P": 1,
+              "Y": 0
+            },
+            {
+              "A1": 0,
+              "q1_H": 0,
+              "q1_P": 1,
+              "pad_H": 0,
+              "pad_P": 1,
+              "Y": 1
+            },
+            {
+              "A1": 0,
+              "q1_H": 0,
+              "q1_P": 1,
+              "pad_H": 1,
+              "pad_P": 0,
+              "Y": 0
+            },
+            {
+              "A1": 0,
+              "q1_H": 0,
+              "q1_P": 1,
+              "pad_H": 1,
+              "pad_P": 0,
+              "Y": 1
+            },
+            {
+              "A1": 0,
+              "q1_H": 0,
+              "q1_P": 1,
+              "pad_H": 1,
+              "pad_P": 1,
+              "Y": 0
+            },
+            {
+              "A1": 0,
+              "q1_H": 0,
+              "q1_P": 1,
+              "pad_H": 1,
+              "pad_P": 1,
+              "Y": 1
+            },
+            {
+              "A1": 1,
+              "q1_H": 1,
+              "q1_P": 0,
+              "pad_H": 0,
+              "pad_P": 0,
+              "Y": 0
+            },
+            {
+              "A1": 1,
+              "q1_H": 1,
+              "q1_P": 0,
+              "pad_H": 0,
+              "pad_P": 0,
+              "Y": 1
+            },
+            {
+              "A1": 1,
+              "q1_H": 1,
+              "q1_P": 0,
+              "pad_H": 0,
+              "pad_P": 1,
+              "Y": 0
+            },
+            {
+              "A1": 1,
+              "q1_H": 1,
+              "q1_P": 0,
+              "pad_H": 0,
+              "pad_P": 1,
+              "Y": 1
+            },
+            {
+              "A1": 1,
+              "q1_H": 1,
+              "q1_P": 0,
+              "pad_H": 1,
+              "pad_P": 0,
+              "Y": 0
+            },
+            {
+              "A1": 1,
+              "q1_H": 1,
+              "q1_P": 0,
+              "pad_H": 1,
+              "pad_P": 0,
+              "Y": 1
+            },
+            {
+              "A1": 1,
+              "q1_H": 1,
+              "q1_P": 0,
+              "pad_H": 1,
+              "pad_P": 1,
+              "Y": 0
+            },
+            {
+              "A1": 1,
+              "q1_H": 1,
+              "q1_P": 0,
+              "pad_H": 1,
+              "pad_P": 1,
+              "Y": 1
+            }
+          ]
+        },
+        "closed_form_agrees_everywhere": true,
+        "off_policy_nuisance_irrelevant": true
+      },
+      "absorbed_from_start": {
+        "vertices": 32,
+        "marginal": {
+          "min": "0",
+          "max": "1",
+          "min_witnesses": [
+            {
+              "pad1_H": 0,
+              "pad1_P": 0,
+              "pad2_H": 0,
+              "pad2_P": 0,
+              "Y": 0,
+              "policy": "H"
+            },
+            {
+              "pad1_H": 0,
+              "pad1_P": 0,
+              "pad2_H": 0,
+              "pad2_P": 1,
+              "Y": 0,
+              "policy": "H"
+            },
+            {
+              "pad1_H": 0,
+              "pad1_P": 0,
+              "pad2_H": 1,
+              "pad2_P": 0,
+              "Y": 0,
+              "policy": "H"
+            },
+            {
+              "pad1_H": 0,
+              "pad1_P": 0,
+              "pad2_H": 1,
+              "pad2_P": 1,
+              "Y": 0,
+              "policy": "H"
+            },
+            {
+              "pad1_H": 0,
+              "pad1_P": 1,
+              "pad2_H": 0,
+              "pad2_P": 0,
+              "Y": 0,
+              "policy": "H"
+            },
+            {
+              "pad1_H": 0,
+              "pad1_P": 1,
+              "pad2_H": 0,
+              "pad2_P": 1,
+              "Y": 0,
+              "policy": "H"
+            },
+            {
+              "pad1_H": 0,
+              "pad1_P": 1,
+              "pad2_H": 1,
+              "pad2_P": 0,
+              "Y": 0,
+              "policy": "H"
+            },
+            {
+              "pad1_H": 0,
+              "pad1_P": 1,
+              "pad2_H": 1,
+              "pad2_P": 1,
+              "Y": 0,
+              "policy": "H"
+            },
+            {
+              "pad1_H": 1,
+              "pad1_P": 0,
+              "pad2_H": 0,
+              "pad2_P": 0,
+              "Y": 0,
+              "policy": "H"
+            },
+            {
+              "pad1_H": 1,
+              "pad1_P": 0,
+              "pad2_H": 0,
+              "pad2_P": 1,
+              "Y": 0,
+              "policy": "H"
+            },
+            {
+              "pad1_H": 1,
+              "pad1_P": 0,
+              "pad2_H": 1,
+              "pad2_P": 0,
+              "Y": 0,
+              "policy": "H"
+            },
+            {
+              "pad1_H": 1,
+              "pad1_P": 0,
+              "pad2_H": 1,
+              "pad2_P": 1,
+              "Y": 0,
+              "policy": "H"
+            },
+            {
+              "pad1_H": 1,
+              "pad1_P": 1,
+              "pad2_H": 0,
+              "pad2_P": 0,
+              "Y": 0,
+              "policy": "H"
+            },
+            {
+              "pad1_H": 1,
+              "pad1_P": 1,
+              "pad2_H": 0,
+              "pad2_P": 1,
+              "Y": 0,
+              "policy": "H"
+            },
+            {
+              "pad1_H": 1,
+              "pad1_P": 1,
+              "pad2_H": 1,
+              "pad2_P": 0,
+              "Y": 0,
+              "policy": "H"
+            },
+            {
+              "pad1_H": 1,
+              "pad1_P": 1,
+              "pad2_H": 1,
+              "pad2_P": 1,
+              "Y": 0,
+              "policy": "H"
+            },
+            {
+              "pad1_H": 0,
+              "pad1_P": 0,
+              "pad2_H": 0,
+              "pad2_P": 0,
+              "Y": 0,
+              "policy": "P"
+            },
+            {
+              "pad1_H": 0,
+              "pad1_P": 0,
+              "pad2_H": 0,
+              "pad2_P": 1,
+              "Y": 0,
+              "policy": "P"
+            },
+            {
+              "pad1_H": 0,
+              "pad1_P": 0,
+              "pad2_H": 1,
+              "pad2_P": 0,
+              "Y": 0,
+              "policy": "P"
+            },
+            {
+              "pad1_H": 0,
+              "pad1_P": 0,
+              "pad2_H": 1,
+              "pad2_P": 1,
+              "Y": 0,
+              "policy": "P"
+            },
+            {
+              "pad1_H": 0,
+              "pad1_P": 1,
+              "pad2_H": 0,
+              "pad2_P": 0,
+              "Y": 0,
+              "policy": "P"
+            },
+            {
+              "pad1_H": 0,
+              "pad1_P": 1,
+              "pad2_H": 0,
+              "pad2_P": 1,
+              "Y": 0,
+              "policy": "P"
+            },
+            {
+              "pad1_H": 0,
+              "pad1_P": 1,
+              "pad2_H": 1,
+              "pad2_P": 0,
+              "Y": 0,
+              "policy": "P"
+            },
+            {
+              "pad1_H": 0,
+              "pad1_P": 1,
+              "pad2_H": 1,
+              "pad2_P": 1,
+              "Y": 0,
+              "policy": "P"
+            },
+            {
+              "pad1_H": 1,
+              "pad1_P": 0,
+              "pad2_H": 0,
+              "pad2_P": 0,
+              "Y": 0,
+              "policy": "P"
+            },
+            {
+              "pad1_H": 1,
+              "pad1_P": 0,
+              "pad2_H": 0,
+              "pad2_P": 1,
+              "Y": 0,
+              "policy": "P"
+            },
+            {
+              "pad1_H": 1,
+              "pad1_P": 0,
+              "pad2_H": 1,
+              "pad2_P": 0,
+              "Y": 0,
+              "policy": "P"
+            },
+            {
+              "pad1_H": 1,
+              "pad1_P": 0,
+              "pad2_H": 1,
+              "pad2_P": 1,
+              "Y": 0,
+              "policy": "P"
+            },
+            {
+              "pad1_H": 1,
+              "pad1_P": 1,
+              "pad2_H": 0,
+              "pad2_P": 0,
+              "Y": 0,
+              "policy": "P"
+            },
+            {
+              "pad1_H": 1,
+              "pad1_P": 1,
+              "pad2_H": 0,
+              "pad2_P": 1,
+              "Y": 0,
+              "policy": "P"
+            },
+            {
+              "pad1_H": 1,
+              "pad1_P": 1,
+              "pad2_H": 1,
+              "pad2_P": 0,
+              "Y": 0,
+              "policy": "P"
+            },
+            {
+              "pad1_H": 1,
+              "pad1_P": 1,
+              "pad2_H": 1,
+              "pad2_P": 1,
+              "Y": 0,
+              "policy": "P"
+            }
+          ],
+          "max_witnesses": [
+            {
+              "pad1_H": 0,
+              "pad1_P": 0,
+              "pad2_H": 0,
+              "pad2_P": 0,
+              "Y": 1,
+              "policy": "H"
+            },
+            {
+              "pad1_H": 0,
+              "pad1_P": 0,
+              "pad2_H": 0,
+              "pad2_P": 1,
+              "Y": 1,
+              "policy": "H"
+            },
+            {
+              "pad1_H": 0,
+              "pad1_P": 0,
+              "pad2_H": 1,
+              "pad2_P": 0,
+              "Y": 1,
+              "policy": "H"
+            },
+            {
+              "pad1_H": 0,
+              "pad1_P": 0,
+              "pad2_H": 1,
+              "pad2_P": 1,
+              "Y": 1,
+              "policy": "H"
+            },
+            {
+              "pad1_H": 0,
+              "pad1_P": 1,
+              "pad2_H": 0,
+              "pad2_P": 0,
+              "Y": 1,
+              "policy": "H"
+            },
+            {
+              "pad1_H": 0,
+              "pad1_P": 1,
+              "pad2_H": 0,
+              "pad2_P": 1,
+              "Y": 1,
+              "policy": "H"
+            },
+            {
+              "pad1_H": 0,
+              "pad1_P": 1,
+              "pad2_H": 1,
+              "pad2_P": 0,
+              "Y": 1,
+              "policy": "H"
+            },
+            {
+              "pad1_H": 0,
+              "pad1_P": 1,
+              "pad2_H": 1,
+              "pad2_P": 1,
+              "Y": 1,
+              "policy": "H"
+            },
+            {
+              "pad1_H": 1,
+              "pad1_P": 0,
+              "pad2_H": 0,
+              "pad2_P": 0,
+              "Y": 1,
+              "policy": "H"
+            },
+            {
+              "pad1_H": 1,
+              "pad1_P": 0,
+              "pad2_H": 0,
+              "pad2_P": 1,
+              "Y": 1,
+              "policy": "H"
+            },
+            {
+              "pad1_H": 1,
+              "pad1_P": 0,
+              "pad2_H": 1,
+              "pad2_P": 0,
+              "Y": 1,
+              "policy": "H"
+            },
+            {
+              "pad1_H": 1,
+              "pad1_P": 0,
+              "pad2_H": 1,
+              "pad2_P": 1,
+              "Y": 1,
+              "policy": "H"
+            },
+            {
+              "pad1_H": 1,
+              "pad1_P": 1,
+              "pad2_H": 0,
+              "pad2_P": 0,
+              "Y": 1,
+              "policy": "H"
+            },
+            {
+              "pad1_H": 1,
+              "pad1_P": 1,
+              "pad2_H": 0,
+              "pad2_P": 1,
+              "Y": 1,
+              "policy": "H"
+            },
+            {
+              "pad1_H": 1,
+              "pad1_P": 1,
+              "pad2_H": 1,
+              "pad2_P": 0,
+              "Y": 1,
+              "policy": "H"
+            },
+            {
+              "pad1_H": 1,
+              "pad1_P": 1,
+              "pad2_H": 1,
+              "pad2_P": 1,
+              "Y": 1,
+              "policy": "H"
+            },
+            {
+              "pad1_H": 0,
+              "pad1_P": 0,
+              "pad2_H": 0,
+              "pad2_P": 0,
+              "Y": 1,
+              "policy": "P"
+            },
+            {
+              "pad1_H": 0,
+              "pad1_P": 0,
+              "pad2_H": 0,
+              "pad2_P": 1,
+              "Y": 1,
+              "policy": "P"
+            },
+            {
+              "pad1_H": 0,
+              "pad1_P": 0,
+              "pad2_H": 1,
+              "pad2_P": 0,
+              "Y": 1,
+              "policy": "P"
+            },
+            {
+              "pad1_H": 0,
+              "pad1_P": 0,
+              "pad2_H": 1,
+              "pad2_P": 1,
+              "Y": 1,
+              "policy": "P"
+            },
+            {
+              "pad1_H": 0,
+              "pad1_P": 1,
+              "pad2_H": 0,
+              "pad2_P": 0,
+              "Y": 1,
+              "policy": "P"
+            },
+            {
+              "pad1_H": 0,
+              "pad1_P": 1,
+              "pad2_H": 0,
+              "pad2_P": 1,
+              "Y": 1,
+              "policy": "P"
+            },
+            {
+              "pad1_H": 0,
+              "pad1_P": 1,
+              "pad2_H": 1,
+              "pad2_P": 0,
+              "Y": 1,
+              "policy": "P"
+            },
+            {
+              "pad1_H": 0,
+              "pad1_P": 1,
+              "pad2_H": 1,
+              "pad2_P": 1,
+              "Y": 1,
+              "policy": "P"
+            },
+            {
+              "pad1_H": 1,
+              "pad1_P": 0,
+              "pad2_H": 0,
+              "pad2_P": 0,
+              "Y": 1,
+              "policy": "P"
+            },
+            {
+              "pad1_H": 1,
+              "pad1_P": 0,
+              "pad2_H": 0,
+              "pad2_P": 1,
+              "Y": 1,
+              "policy": "P"
+            },
+            {
+              "pad1_H": 1,
+              "pad1_P": 0,
+              "pad2_H": 1,
+              "pad2_P": 0,
+              "Y": 1,
+              "policy": "P"
+            },
+            {
+              "pad1_H": 1,
+              "pad1_P": 0,
+              "pad2_H": 1,
+              "pad2_P": 1,
+              "Y": 1,
+              "policy": "P"
+            },
+            {
+              "pad1_H": 1,
+              "pad1_P": 1,
+              "pad2_H": 0,
+              "pad2_P": 0,
+              "Y": 1,
+              "policy": "P"
+            },
+            {
+              "pad1_H": 1,
+              "pad1_P": 1,
+              "pad2_H": 0,
+              "pad2_P": 1,
+              "Y": 1,
+              "policy": "P"
+            },
+            {
+              "pad1_H": 1,
+              "pad1_P": 1,
+              "pad2_H": 1,
+              "pad2_P": 0,
+              "Y": 1,
+              "policy": "P"
+            },
+            {
+              "pad1_H": 1,
+              "pad1_P": 1,
+              "pad2_H": 1,
+              "pad2_P": 1,
+              "Y": 1,
+              "policy": "P"
+            }
+          ]
+        },
+        "contrast": {
+          "min": "0",
+          "max": "0",
+          "min_witnesses": [
+            {
+              "pad1_H": 0,
+              "pad1_P": 0,
+              "pad2_H": 0,
+              "pad2_P": 0,
+              "Y": 0
+            },
+            {
+              "pad1_H": 0,
+              "pad1_P": 0,
+              "pad2_H": 0,
+              "pad2_P": 0,
+              "Y": 1
+            },
+            {
+              "pad1_H": 0,
+              "pad1_P": 0,
+              "pad2_H": 0,
+              "pad2_P": 1,
+              "Y": 0
+            },
+            {
+              "pad1_H": 0,
+              "pad1_P": 0,
+              "pad2_H": 0,
+              "pad2_P": 1,
+              "Y": 1
+            },
+            {
+              "pad1_H": 0,
+              "pad1_P": 0,
+              "pad2_H": 1,
+              "pad2_P": 0,
+              "Y": 0
+            },
+            {
+              "pad1_H": 0,
+              "pad1_P": 0,
+              "pad2_H": 1,
+              "pad2_P": 0,
+              "Y": 1
+            },
+            {
+              "pad1_H": 0,
+              "pad1_P": 0,
+              "pad2_H": 1,
+              "pad2_P": 1,
+              "Y": 0
+            },
+            {
+              "pad1_H": 0,
+              "pad1_P": 0,
+              "pad2_H": 1,
+              "pad2_P": 1,
+              "Y": 1
+            },
+            {
+              "pad1_H": 0,
+              "pad1_P": 1,
+              "pad2_H": 0,
+              "pad2_P": 0,
+              "Y": 0
+            },
+            {
+              "pad1_H": 0,
+              "pad1_P": 1,
+              "pad2_H": 0,
+              "pad2_P": 0,
+              "Y": 1
+            },
+            {
+              "pad1_H": 0,
+              "pad1_P": 1,
+              "pad2_H": 0,
+              "pad2_P": 1,
+              "Y": 0
+            },
+            {
+              "pad1_H": 0,
+              "pad1_P": 1,
+              "pad2_H": 0,
+              "pad2_P": 1,
+              "Y": 1
+            },
+            {
+              "pad1_H": 0,
+              "pad1_P": 1,
+              "pad2_H": 1,
+              "pad2_P": 0,
+              "Y": 0
+            },
+            {
+              "pad1_H": 0,
+              "pad1_P": 1,
+              "pad2_H": 1,
+              "pad2_P": 0,
+              "Y": 1
+            },
+            {
+              "pad1_H": 0,
+              "pad1_P": 1,
+              "pad2_H": 1,
+              "pad2_P": 1,
+              "Y": 0
+            },
+            {
+              "pad1_H": 0,
+              "pad1_P": 1,
+              "pad2_H": 1,
+              "pad2_P": 1,
+              "Y": 1
+            },
+            {
+              "pad1_H": 1,
+              "pad1_P": 0,
+              "pad2_H": 0,
+              "pad2_P": 0,
+              "Y": 0
+            },
+            {
+              "pad1_H": 1,
+              "pad1_P": 0,
+              "pad2_H": 0,
+              "pad2_P": 0,
+              "Y": 1
+            },
+            {
+              "pad1_H": 1,
+              "pad1_P": 0,
+              "pad2_H": 0,
+              "pad2_P": 1,
+              "Y": 0
+            },
+            {
+              "pad1_H": 1,
+              "pad1_P": 0,
+              "pad2_H": 0,
+              "pad2_P": 1,
+              "Y": 1
+            },
+            {
+              "pad1_H": 1,
+              "pad1_P": 0,
+              "pad2_H": 1,
+              "pad2_P": 0,
+              "Y": 0
+            },
+            {
+              "pad1_H": 1,
+              "pad1_P": 0,
+              "pad2_H": 1,
+              "pad2_P": 0,
+              "Y": 1
+            },
+            {
+              "pad1_H": 1,
+              "pad1_P": 0,
+              "pad2_H": 1,
+              "pad2_P": 1,
+              "Y": 0
+            },
+            {
+              "pad1_H": 1,
+              "pad1_P": 0,
+              "pad2_H": 1,
+              "pad2_P": 1,
+              "Y": 1
+            },
+            {
+              "pad1_H": 1,
+              "pad1_P": 1,
+              "pad2_H": 0,
+              "pad2_P": 0,
+              "Y": 0
+            },
+            {
+              "pad1_H": 1,
+              "pad1_P": 1,
+              "pad2_H": 0,
+              "pad2_P": 0,
+              "Y": 1
+            },
+            {
+              "pad1_H": 1,
+              "pad1_P": 1,
+              "pad2_H": 0,
+              "pad2_P": 1,
+              "Y": 0
+            },
+            {
+              "pad1_H": 1,
+              "pad1_P": 1,
+              "pad2_H": 0,
+              "pad2_P": 1,
+              "Y": 1
+            },
+            {
+              "pad1_H": 1,
+              "pad1_P": 1,
+              "pad2_H": 1,
+              "pad2_P": 0,
+              "Y": 0
+            },
+            {
+              "pad1_H": 1,
+              "pad1_P": 1,
+              "pad2_H": 1,
+              "pad2_P": 0,
+              "Y": 1
+            },
+            {
+              "pad1_H": 1,
+              "pad1_P": 1,
+              "pad2_H": 1,
+              "pad2_P": 1,
+              "Y": 0
+            },
+            {
+              "pad1_H": 1,
+              "pad1_P": 1,
+              "pad2_H": 1,
+              "pad2_P": 1,
+              "Y": 1
+            }
+          ],
+          "max_witnesses": [
+            {
+              "pad1_H": 0,
+              "pad1_P": 0,
+              "pad2_H": 0,
+              "pad2_P": 0,
+              "Y": 0
+            },
+            {
+              "pad1_H": 0,
+              "pad1_P": 0,
+              "pad2_H": 0,
+              "pad2_P": 0,
+              "Y": 1
+            },
+            {
+              "pad1_H": 0,
+              "pad1_P": 0,
+              "pad2_H": 0,
+              "pad2_P": 1,
+              "Y": 0
+            },
+            {
+              "pad1_H": 0,
+              "pad1_P": 0,
+              "pad2_H": 0,
+              "pad2_P": 1,
+              "Y": 1
+            },
+            {
+              "pad1_H": 0,
+              "pad1_P": 0,
+              "pad2_H": 1,
+              "pad2_P": 0,
+              "Y": 0
+            },
+            {
+              "pad1_H": 0,
+              "pad1_P": 0,
+              "pad2_H": 1,
+              "pad2_P": 0,
+              "Y": 1
+            },
+            {
+              "pad1_H": 0,
+              "pad1_P": 0,
+              "pad2_H": 1,
+              "pad2_P": 1,
+              "Y": 0
+            },
+            {
+              "pad1_H": 0,
+              "pad1_P": 0,
+              "pad2_H": 1,
+              "pad2_P": 1,
+              "Y": 1
+            },
+            {
+              "pad1_H": 0,
+              "pad1_P": 1,
+              "pad2_H": 0,
+              "pad2_P": 0,
+              "Y": 0
+            },
+            {
+              "pad1_H": 0,
+              "pad1_P": 1,
+              "pad2_H": 0,
+              "pad2_P": 0,
+              "Y": 1
+            },
+            {
+              "pad1_H": 0,
+              "pad1_P": 1,
+              "pad2_H": 0,
+              "pad2_P": 1,
+              "Y": 0
+            },
+            {
+              "pad1_H": 0,
+              "pad1_P": 1,
+              "pad2_H": 0,
+              "pad2_P": 1,
+              "Y": 1
+            },
+            {
+              "pad1_H": 0,
+              "pad1_P": 1,
+              "pad2_H": 1,
+              "pad2_P": 0,
+              "Y": 0
+            },
+            {
+              "pad1_H": 0,
+              "pad1_P": 1,
+              "pad2_H": 1,
+              "pad2_P": 0,
+              "Y": 1
+            },
+            {
+              "pad1_H": 0,
+              "pad1_P": 1,
+              "pad2_H": 1,
+              "pad2_P": 1,
+              "Y": 0
+            },
+            {
+              "pad1_H": 0,
+              "pad1_P": 1,
+              "pad2_H": 1,
+              "pad2_P": 1,
+              "Y": 1
+            },
+            {
+              "pad1_H": 1,
+              "pad1_P": 0,
+              "pad2_H": 0,
+              "pad2_P": 0,
+              "Y": 0
+            },
+            {
+              "pad1_H": 1,
+              "pad1_P": 0,
+              "pad2_H": 0,
+              "pad2_P": 0,
+              "Y": 1
+            },
+            {
+              "pad1_H": 1,
+              "pad1_P": 0,
+              "pad2_H": 0,
+              "pad2_P": 1,
+              "Y": 0
+            },
+            {
+              "pad1_H": 1,
+              "pad1_P": 0,
+              "pad2_H": 0,
+              "pad2_P": 1,
+              "Y": 1
+            },
+            {
+              "pad1_H": 1,
+              "pad1_P": 0,
+              "pad2_H": 1,
+              "pad2_P": 0,
+              "Y": 0
+            },
+            {
+              "pad1_H": 1,
+              "pad1_P": 0,
+              "pad2_H": 1,
+              "pad2_P": 0,
+              "Y": 1
+            },
+            {
+              "pad1_H": 1,
+              "pad1_P": 0,
+              "pad2_H": 1,
+              "pad2_P": 1,
+              "Y": 0
+            },
+            {
+              "pad1_H": 1,
+              "pad1_P": 0,
+              "pad2_H": 1,
+              "pad2_P": 1,
+              "Y": 1
+            },
+            {
+              "pad1_H": 1,
+              "pad1_P": 1,
+              "pad2_H": 0,
+              "pad2_P": 0,
+              "Y": 0
+            },
+            {
+              "pad1_H": 1,
+              "pad1_P": 1,
+              "pad2_H": 0,
+              "pad2_P": 0,
+              "Y": 1
+            },
+            {
+              "pad1_H": 1,
+              "pad1_P": 1,
+              "pad2_H": 0,
+              "pad2_P": 1,
+              "Y": 0
+            },
+            {
+              "pad1_H": 1,
+              "pad1_P": 1,
+              "pad2_H": 0,
+              "pad2_P": 1,
+              "Y": 1
+            },
+            {
+              "pad1_H": 1,
+              "pad1_P": 1,
+              "pad2_H": 1,
+              "pad2_P": 0,
+              "Y": 0
+            },
+            {
+              "pad1_H": 1,
+              "pad1_P": 1,
+              "pad2_H": 1,
+              "pad2_P": 0,
+              "Y": 1
+            },
+            {
+              "pad1_H": 1,
+              "pad1_P": 1,
+              "pad2_H": 1,
+              "pad2_P": 1,
+              "Y": 0
+            },
+            {
+              "pad1_H": 1,
+              "pad1_P": 1,
+              "pad2_H": 1,
+              "pad2_P": 1,
+              "Y": 1
+            }
+          ]
+        },
+        "score_equals_Y_everywhere": true
+      }
+    },
+    "score_coordinate_range": [
+      "-3",
+      "4"
+    ],
+    "contrast_ranges": {
+      "fresh_gain": [
+        "-1",
+        "1"
+      ],
+      "offline_gain": [
+        "-5",
+        "5"
+      ],
+      "gain_calibration_discrepancy": [
+        "-6",
+        "6"
+      ]
+    },
+    "methods": {
+      "direct_contrast": {
+        "label": "Hoeffding on each complete-block contrast, alpha/3 each, union bound",
+        "split": 3,
+        "widths": {
+          "fresh_gain": 2,
+          "offline_gain": 10,
+          "gain_calibration_discrepancy": 12
+        }
+      },
+      "rectangle_original": {
+        "label": "four-coordinate rectangle, alpha/4 each, widths (13, 13, 1, 1), propagated by coefficient signs",
+        "split": 4,
+        "coordinate_widths": [
+          13,
+          13,
+          1,
+          1
+        ],
+        "widths": {
+          "fresh_gain": 2,
+          "offline_gain": 26,
+          "gain_calibration_discrepancy": 28
+        }
+      },
+      "rectangle_tightened": {
+        "label": "four-coordinate rectangle, alpha/4 each, tightened widths (7, 7, 1, 1)",
+        "split": 4,
+        "coordinate_widths": [
+          7,
+          7,
+          1,
+          1
+        ],
+        "widths": {
+          "fresh_gain": 2,
+          "offline_gain": 14,
+          "gain_calibration_discrepancy": 16
+        }
+      }
+    },
+    "sufficient_counts": {
+      "direct_contrast": {
+        "label": "Hoeffding on each complete-block contrast, alpha/3 each, union bound",
+        "log_term": "ln(6 / alpha)",
+        "log_term_value": "4.78749174278204599424770093452324304839959231517203293600938",
+        "rows": {
+          "0.10": {
+            "fresh_gain": {
+              "width": 2,
+              "B": 958,
+              "quotient": "957.498348556409198849540186904648609679918463034406587201875",
+              "half_width_at_B": "0.0999738143459004569606401675178839354867057121372514115472866",
+              "half_width_at_B_minus_1": "0.100026033630916408884233756844273458972386731117985561473314",
+              "straddles": true,
+              "float_B": 958,
+              "float_agrees": true
+            },
+            "offline_gain": {
+              "width": 10,
+              "B": 23938,
+              "quotient": "23937.4587139102299712385046726162152419979615758601646800469",
+              "half_width_at_B": "0.0999988693935381086959101974919764190709087788224990716841932",
+              "half_width_at_B_minus_1": "0.100000958164583329962540632850033309958889032332885319296971",
+              "straddles": true,
+              "float_B": 23938,
+              "float_agrees": true
+            },
+            "gain_calibration_discrepancy": {
+              "width": 12,
+              "B": 34470,
+              "quotient": "34469.9405480307311585834467285673499484770646692386371392676",
+              "half_width_at_B": "0.0999999137626995884259653918263285223197174291903402717331503",
+              "half_width_at_B_minus_1": "0.100001364329708849722866701429890236335296233936899079126297",
+              "straddles": true,
+              "float_B": 34470,
+              "float_agrees": true
+            },
+            "all_three_B": 34470
+          },
+          "0.05": {
+            "fresh_gain": {
+              "width": 2,
+              "B": 3830,
+              "quotient": "3829.9933942256367953981607476185944387196738521376263488075",
+              "half_width_at_B": "0.0499999568813497942129826959131642611598587145951701358665752",
+              "half_width_at_B_minus_1": "0.0500064855693558600092122840453579790664148116371314962244548",
+              "straddles": true,
+              "float_B": 3830,
+              "float_agrees": true
+            },
+            "offline_gain": {
+              "width": 10,
+              "B": 95750,
+              "quotient": "95749.8348556409198849540186904648609679918463034406587201876",
+              "half_width_at_B": "0.0499999568813497942129826959131642611598587145951701358665751",
+              "half_width_at_B_minus_1": "0.0500002179797755348357842143055918917169245796115297581880938",
+              "straddles": true,
+              "float_B": 95750,
+              "float_agrees": true
+            },
+            "gain_calibration_discrepancy": {
+              "width": 12,
+              "B": 137880,
+              "quotient": "137879.762192122924634333786914269399793908258676954548557070",
+              "half_width_at_B": "0.0499999568813497942129826959131642611598587145951701358665752",
+              "half_width_at_B_minus_1": "0.0500001381992670352560511498378329524237515323592431873865553",
+              "straddles": true,
+              "float_B": 137880,
+              "float_agrees": true
+            },
+            "all_three_B": 137880
+          },
+          "0.02": {
+            "fresh_gain": {
+              "width": 2,
+              "B": 23938,
+              "quotient": "23937.4587139102299712385046726162152419979615758601646800469",
+              "half_width_at_B": "0.0199997738787076217391820394983952838141817557644998143368386",
+              "half_width_at_B_minus_1": "0.0200001916329166659925081265700066619917778064665770638593942",
+              "straddles": true,
+              "float_B": 23938,
+              "float_agrees": true
+            },
+            "offline_gain": {
+              "width": 10,
+              "B": 598437,
+              "quotient": "598436.467847755749280962616815405381049949039396504117001172",
+              "half_width_at_B": "0.0199999911076293318574798828279318492763159470880418125171008",
+              "half_width_at_B_minus_1": "0.0200000078178395736608651612537558236609907417198001696149984",
+              "straddles": true,
+              "float_B": 598437,
+              "float_agrees": true
+            },
+            "gain_calibration_discrepancy": {
+              "width": 12,
+              "B": 861749,
+              "quotient": "861748.513700768278964586168214183748711926616730965928481689",
+              "half_width_at_B": "0.0199999943568335985567464516662818654391072296547987938817079",
+              "half_width_at_B_minus_1": "0.0200000059611474784139331694756007077578507135609789081591854",
+              "straddles": true,
+              "float_B": 861749,
+              "float_agrees": true
+            },
+            "all_three_B": 861749
+          }
+        }
+      },
+      "rectangle_original": {
+        "label": "four-coordinate rectangle, alpha/4 each, widths (13, 13, 1, 1), propagated by coefficient signs",
+        "log_term": "ln(8 / alpha)",
+        "log_term_value": "5.07517381523382692168691994051707047990310202606979399251605",
+        "rows": {
+          "0.10": {
+            "fresh_gain": {
+              "width": 2,
+              "B": 1016,
+              "quotient": "1015.03476304676538433738398810341409598062040521395879850321",
+              "half_width_at_B": "0.0999524868939590760669004828224239725185785076136914577111646",
+              "half_width_at_B_minus_1": "0.100001712450695463784303080658105785737811756451159516332558",
+              "straddles": true,
+              "float_B": 1016,
+              "float_agrees": true
+            },
+            "offline_gain": {
+              "width": 26,
+              "B": 171541,
+              "quotient": "171540.874954903349953017893989476982220724848481159036947042",
+              "half_width_at_B": "0.0999999635524103747754263775258435268221764460536205235992431",
+              "half_width_at_B_minus_1": "0.100000255029085827395937231768638190606970745612411350666350",
+              "straddles": true,
+              "float_B": 171541,
+              "float_agrees": true
+            },
+            "gain_calibration_discrepancy": {
+              "width": 28,
+              "B": 198947,
+              "quotient": "198946.813557166015330127261668269162812201599421935924506629",
+              "half_width_at_B": "0.0999999531425762474843815512381282717765613611119443616255866",
+              "half_width_at_B_minus_1": "0.100000204466622673929104185422364819767567299136899251666304",
+              "straddles": true,
+              "float_B": 198947,
+              "float_agrees": true
+            },
+            "all_three_B": 198947
+          },
+          "0.05": {
+            "fresh_gain": {
+              "width": 2,
+              "B": 4061,
+              "quotient": "4060.13905218706153734953595241365638392248162085583519401284",
+              "half_width_at_B": "0.0499946996217135664059341246573105024394891173219373834782686",
+              "half_width_at_B_minus_1": "0.0500008562253477318921515403290528928689058782255797581662790",
+              "straddles": true,
+              "float_B": 4061,
+              "float_agrees": true
+            },
+            "offline_gain": {
+              "width": 26,
+              "B": 686164,
+              "quotient": "686163.49981961339981207157595790792888289939392463614778817",
+              "half_width_at_B": "0.0499999817762051873877131887629217634110882230268102617996216",
+              "half_width_at_B_minus_1": "0.0500000182106701461361048717175329403736754807368492152024146",
+              "straddles": true,
+              "float_B": 686164,
+              "float_agrees": true
+            },
+            "gain_calibration_discrepancy": {
+              "width": 28,
+              "B": 795788,
+              "quotient": "795787.254228664061320509046673076651248806397687743698026516",
+              "half_width_at_B": "0.0499999765712881237421907756190641358882806805559721808127933",
+              "half_width_at_B_minus_1": "0.0500000079867051031503544431525248321202968984544374662138115",
+              "straddles": true,
+              "float_B": 795788,
+              "float_agrees": true
+            },
+            "all_three_B": 795788
+          },
+          "0.02": {
+            "fresh_gain": {
+              "width": 2,
+              "B": 25376,
+              "quotient": "25375.8690761691346084345997025853523995155101303489699625802",
+              "half_width_at_B": "0.0199999484063683257774832778718079689900984269311200094660189",
+              "half_width_at_B_minus_1": "0.0200003424901390927568606161316211571475623512902319032665116",
+              "straddles": true,
+              "float_B": 25376,
+              "float_agrees": true
+            },
+            "offline_gain": {
+              "width": 26,
+              "B": 4288522,
+              "quotient": "4288521.87387258374882544734973692455551812121202897592367606",
+              "half_width_at_B": "0.0199999997058953709960191796535242014301061429894475891794340",
+              "half_width_at_B_minus_1": "0.0200000020377014342043382433063126991088018612376108436285150",
+              "straddles": true,
+              "float_B": 4288522,
+              "float_agrees": true
+            },
+            "gain_calibration_discrepancy": {
+              "width": 28,
+              "B": 4973671,
+              "quotient": "4973670.33892915038325318154170672907030503998554839811266572",
+              "half_width_at_B": "0.0199999986708592675648381655162908447436470791702062267688648",
+              "half_width_at_B_minus_1": "0.0200000006814467880040267200466399919172087900259581948485060",
+              "straddles": true,
+              "float_B": 4973671,
+              "float_agrees": true
+            },
+            "all_three_B": 4973671
+          }
+        }
+      },
+      "rectangle_tightened": {
+        "label": "four-coordinate rectangle, alpha/4 each, tightened widths (7, 7, 1, 1)",
+        "log_term": "ln(8 / alpha)",
+        "log_term_value": "5.07517381523382692168691994051707047990310202606979399251605",
+        "rows": {
+          "0.10": {
+            "fresh_gain": {
+              "width": 2,
+              "B": 1016,
+              "quotient": "1015.03476304676538433738398810341409598062040521395879850321",
+              "half_width_at_B": "0.0999524868939590760669004828224239725185785076136914577111646",
+              "half_width_at_B_minus_1": "0.100001712450695463784303080658105785737811756451159516332558",
+              "straddles": true,
+              "float_B": 1016,
+              "float_agrees": true
+            },
+            "offline_gain": {
+              "width": 14,
+              "B": 49737,
+              "quotient": "49736.7033892915038325318154170672907030503998554839811266573",
+              "half_width_at_B": "0.0999997018204247209299097956622242641338577279341393545133496",
+              "half_width_at_B_minus_1": "0.100000707120400321737025995511492047832334776099279869408908",
+              "straddles": true,
+              "float_B": 49737,
+              "float_agrees": true
+            },
+            "gain_calibration_discrepancy": {
+              "width": 16,
+              "B": 64963,
+              "quotient": "64962.2248349929845975925752386185021427597059336933631042055",
+              "half_width_at_B": "0.0999994033778308995581605449691167076183979855205726442885960",
+              "half_width_at_B_minus_1": "0.100000173051013242471889008341033666879325745472077785840539",
+              "straddles": true,
+              "float_B": 64963,
+              "float_agrees": true
+            },
+            "all_three_B": 64963
+          },
+          "0.05": {
+            "fresh_gain": {
+              "width": 2,
+              "B": 4061,
+              "quotient": "4060.13905218706153734953595241365638392248162085583519401284",
+              "half_width_at_B": "0.0499946996217135664059341246573105024394891173219373834782686",
+              "half_width_at_B_minus_1": "0.0500008562253477318921515403290528928689058782255797581662790",
+              "straddles": true,
+              "float_B": 4061,
+              "float_agrees": true
+            },
+            "offline_gain": {
+              "width": 14,
+              "B": 198947,
+              "quotient": "198946.813557166015330127261668269162812201599421935924506629",
+              "half_width_at_B": "0.0499999765712881237421907756190641358882806805559721808127933",
+              "half_width_at_B_minus_1": "0.0500001022333113369645520927111824098837836495684496258331520",
+              "straddles": true,
+              "float_B": 198947,
+              "float_agrees": true
+            },
+            "gain_calibration_discrepancy": {
+              "width": 16,
+              "B": 259849,
+              "quotient": "259848.899339971938390370300954474008571038823734773452416822",
+              "half_width_at_B": "0.0499999903155257659251088690904686149905380359912820792323430",
+              "half_width_at_B_minus_1": "0.0500000865255066212359445041705168334396628727360388929202694",
+              "straddles": true,
+              "float_B": 259849,
+              "float_agrees": true
+            },
+            "all_three_B": 259849
+          },
+          "0.02": {
+            "fresh_gain": {
+              "width": 2,
+              "B": 25376,
+              "quotient": "25375.8690761691346084345997025853523995155101303489699625802",
+              "half_width_at_B": "0.0199999484063683257774832778718079689900984269311200094660189",
+              "half_width_at_B_minus_1": "0.0200003424901390927568606161316211571475623512902319032665116",
+              "straddles": true,
+              "float_B": 25376,
+              "float_agrees": true
+            },
+            "offline_gain": {
+              "width": 14,
+              "B": 1243418,
+              "quotient": "1243417.58473228759581329538542668226757625999638709952816643",
+              "half_width_at_B": "0.0199999966602723534948336366095730440145695976829627224196064",
+              "half_width_at_B_minus_1": "0.0200000047026236479911750648330396284410899941829198638484746",
+              "straddles": true,
+              "float_B": 1243418,
+              "float_agrees": true
+            },
+            "gain_calibration_discrepancy": {
+              "width": 16,
+              "B": 1624056,
+              "quotient": "1624055.62087482461493981438096546255356899264834233407760514",
+              "half_width_at_B": "0.0199999976655657347337069472053548946550004714496140055292008",
+              "half_width_at_B_minus_1": "0.0200000038229910026136662827216280433494292455046347709985805",
+              "straddles": true,
+              "float_B": 1624056,
+              "float_agrees": true
+            },
+            "all_three_B": 1624056
+          }
+        }
+      }
+    },
+    "note_comparison": {
+      "direct_table": {
+        "0.10": [
+          958,
+          23938,
+          34470
+        ],
+        "0.05": [
+          3830,
+          95750,
+          137880
+        ],
+        "0.02": [
+          23938,
+          598437,
+          861749
+        ]
+      },
+      "direct_table_matches_note": true,
+      "rectangle_at_05": {
+        "rectangle_original": [
+          4061,
+          686164,
+          795788
+        ],
+        "rectangle_tightened": [
+          4061,
+          198947,
+          259849
+        ]
+      },
+      "rectangle_at_05_matches_note": true,
+      "j20": {
+        "J": 20,
+        "n_log": 1,
+        "n_H": 1,
+        "n_P": 1,
+        "fresh_gain_at_05": 229800,
+        "simultaneous_at_05": 8272800,
+        "trajectories_per_block": 60,
+        "fresh_gain_at_05_computed": 229800,
+        "simultaneous_at_05_computed": 8272800,
+        "matches_note": true
+      }
+    },
+    "j20_trajectory_costs": {
+      "J": 20,
+      "n_log": 1,
+      "n_H": 1,
+      "n_P": 1,
+      "trajectories_per_block": 60,
+      "unit": "trajectories (not tokens, seconds, prices, dollars or energy)",
+      "costs": {
+        "direct_contrast": {
+          "0.10": {
+            "fresh_gain": 57480,
+            "offline_gain": 1436280,
+            "gain_calibration_discrepancy": 2068200,
+            "all_three": 2068200
+          },
+          "0.05": {
+            "fresh_gain": 229800,
+            "offline_gain": 5745000,
+            "gain_calibration_discrepancy": 8272800,
+            "all_three": 8272800
+          },
+          "0.02": {
+            "fresh_gain": 1436280,
+            "offline_gain": 35906220,
+            "gain_calibration_discrepancy": 51704940,
+            "all_three": 51704940
+          }
+        },
+        "rectangle_original": {
+          "0.10": {
+            "fresh_gain": 60960,
+            "offline_gain": 10292460,
+            "gain_calibration_discrepancy": 11936820,
+            "all_three": 11936820
+          },
+          "0.05": {
+            "fresh_gain": 243660,
+            "offline_gain": 41169840,
+            "gain_calibration_discrepancy": 47747280,
+            "all_three": 47747280
+          },
+          "0.02": {
+            "fresh_gain": 1522560,
+            "offline_gain": 257311320,
+            "gain_calibration_discrepancy": 298420260,
+            "all_three": 298420260
+          }
+        },
+        "rectangle_tightened": {
+          "0.10": {
+            "fresh_gain": 60960,
+            "offline_gain": 2984220,
+            "gain_calibration_discrepancy": 3897780,
+            "all_three": 3897780
+          },
+          "0.05": {
+            "fresh_gain": 243660,
+            "offline_gain": 11936820,
+            "gain_calibration_discrepancy": 15590940,
+            "all_three": 15590940
+          },
+          "0.02": {
+            "fresh_gain": 1522560,
+            "offline_gain": 74605080,
+            "gain_calibration_discrepancy": 97443360,
+            "all_three": 97443360
+          }
+        }
+      }
+    },
+    "independent_groups": {
+      "label": "weighted Hoeffding over independent fixed groups (note Sec. 3); needs the stronger independence contract; no count, cost or feasibility comparison is made here",
+      "unequal_example": {
+        "weights": [
+          "1/2",
+          "1/3",
+          "1/6"
+        ],
+        "counts": [
+          2,
+          3,
+          1
+        ],
+        "factor": "41/216"
+      },
+      "equal_weight_identity": [
+        {
+          "J": 1,
+          "R": 1,
+          "factor": "1",
+          "equals_one_over_JR": true
+        },
+        {
+          "J": 3,
+          "R": 2,
+          "factor": "1/6",
+          "equals_one_over_JR": true
+        },
+        {
+          "J": 20,
+          "R": 7,
+          "factor": "1/140",
+          "equals_one_over_JR": true
+        }
+      ],
+      "one_replicate_per_group": {
+        "weights": [
+          "1/2",
+          "1/2"
+        ],
+        "counts": [
+          1,
+          1
+        ],
+        "width": 2,
+        "factor": "1/2",
+        "half_width": "2.18803376180123098077866675338829444962385738926868372839004",
+        "within_group_variance_estimate": "refused: every group needs R_g >= 2 replicates for a within-group variance estimate"
+      },
+      "finite_distribution": {
+        "weights": [
+          "1/4",
+          "3/4"
+        ],
+        "counts": [
+          2,
+          3
+        ],
+        "group_means": [
+          "1/2",
+          "0"
+        ],
+        "group_variances": [
+          "1/4",
+          "2"
+        ],
+        "enumerated_mean": "1/8",
+        "formula_mean": "1/8",
+        "enumerated_variance": "49/128",
+        "formula_variance": "49/128",
+        "expected_within_group_variance_estimate": "49/128",
+        "agree": true
+      },
+      "common_shock": {
+        "J": 3,
+        "R": 2,
+        "shock_values": [
+          -1,
+          1
+        ],
+        "true_variance": "1/2",
+        "independent_task_variance": "1/6",
+        "understatement_factor": "3"
+      }
+    }
+  },
+  "limitations": [
+    "deterministic analysis only: no empirical coverage, runtime independence, cost saving, practical precision or new agent result",
+    "the vertex enumeration with the affine argument is a mathematical support calculation for this contract; stochastic targets, other propensities or horizons need their own bounds",
+    "counts are worst-case sufficient bounds for untruncated half-widths, not necessary sample sizes, power calculations or limits on variance-adaptive methods",
+    "the 60-digit Decimal values evaluate an exact analytic expression numerically; they are not outward-rounded interval certificates",
+    "illustrative half-widths are not adopted effect, equivalence or noninferiority margins; J = 20 is arithmetic, not a frozen task list; trajectory counts are not tokens, time, prices, dollars or energy",
+    "the independent-group identities need a stronger independence contract that task IDs, RNG labels or passing tests cannot establish",
+    "R_g = 1 cannot estimate the empirical within-group variance or justify Wald inference (the variance estimate is refused), but the known-bound concentration factor and half-width DO permit R_g = 1",
+    "the direct construction covers the three named contrasts only"
+  ]
+}

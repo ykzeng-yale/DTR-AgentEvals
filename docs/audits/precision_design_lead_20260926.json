@@ -1,0 +1,117 @@
+{
+  "audit_id": "precision-design-lead-20260926",
+  "kind": "Deterministic lead algebra/planning check; no model or Monte Carlo",
+  "reviewed_base": "79308c6df4dc684f5a7a77be789dfd47aaee1915",
+  "recorded_utc": "2026-09-26T21:08:17.865553+00:00",
+  "note_sha256": "6303403a35b4046e423cf7a5255799b495bd5ea104868d3c6bae91d5fefb2897",
+  "independent_of_worker_implementation": true,
+  "mathematical_review_scope": "Lead derivation and separately coded finite arithmetic checks; not independent mathematical peer review.",
+  "nonabsorbed_corner_check": {
+    "binary_vertices": 512,
+    "score_ranges": [
+      [
+        -3,
+        4
+      ],
+      [
+        -3,
+        4
+      ]
+    ],
+    "contrast_range": [
+      -5,
+      5
+    ],
+    "method": "Enumerate two initial-match states, two target actions per policy, two observed second actions, four nuisance endpoints and one outcome endpoint; affine dependence covers intermediate nuisance values."
+  },
+  "independent_group_fixture": {
+    "weights": [
+      "1/3",
+      "2/3"
+    ],
+    "replicates": [
+      2,
+      3
+    ],
+    "group_supports": [
+      [
+        "0",
+        "1/2"
+      ],
+      [
+        "1/2",
+        "1"
+      ]
+    ],
+    "equiprobable_joint_outcomes": 32,
+    "mean": "7/12",
+    "variance": "11/864",
+    "expected_within_group_variance_estimate": "11/864"
+  },
+  "common_period_fixture": {
+    "groups": 3,
+    "replicates": 2,
+    "group_baselines": [
+      "1/4",
+      "1/2",
+      "3/4"
+    ],
+    "period_shock_support": [
+      "-1/4",
+      "1/4"
+    ],
+    "equiprobable_period_patterns": 4,
+    "true_variance": "1/32",
+    "incorrect_independent_group_variance": "1/96",
+    "understatement_factor": 3
+  },
+  "limits": [
+    "No physical independence established.",
+    "No adopted scientific precision/effect/equivalence margin.",
+    "Sufficient concentration counts are not necessary counts or power requirements.",
+    "No archival interval repaired or manuscript theorem changed."
+  ],
+  "initial_note_sha256": "9b1eddd5708cbb596895d93d65e4e17a2eb06796aa7e65bf5f084b429b719731",
+  "note_amendment": "Added existing synthetic study references and limited missing covariance evidence to competent real-agent harness; equations and numerical tables unchanged.",
+  "completed_utc": "2026-09-26T21:19:22.831842+00:00",
+  "implementation_status": "REQ-025 accepted as deterministic analysis setup; no new experiment release",
+  "reviewed_files": {
+    "experiments/v2_sim/precision_design_audit.py": "571a1fdd5b1edbace457bb33a1b9b17bcbb845c0dfc69d9966c4501bc9ab2da4",
+    "tests/test_precision_design_audit.py": "0b66d480db18ba218560e6103c5d9101111af048656fd514020be22c202538d3",
+    "results/v2_sim/precision_design_20260926/record.json": "45732422e97e81572cce94628267b0f9084b71d2f7562de06f1158ee6b0bb618"
+  },
+  "independent_saved_record_check": {
+    "pinned_source_test_note_hashes_match": true,
+    "sample_count_cells_recomputed": 27,
+    "all_B_and_B_minus_1_thresholds_straddle": true,
+    "false_check_flags": []
+  },
+  "independent_tests": {
+    "command": "PYTHONPATH=src .venv/bin/python -m pytest -q -p no:cacheprovider tests/test_replicated_block_inference.py tests/test_precision_design_audit.py",
+    "timeout_seconds": 60,
+    "passed": 107,
+    "skipped": 0,
+    "pytest_duration_seconds": 2.8,
+    "guarded_wall_seconds": 2.906,
+    "exit_code": 0,
+    "new_req025_tests": 40,
+    "prior_baseline_receipt": "The 709-test default-suite pass is recorded in scientific_resumption_20260926.json; unchanged baseline only, not a new full-suite run."
+  },
+  "worker_reported_final_tests": {
+    "passed": 40,
+    "duration_seconds": 2.83,
+    "record_written_utc": "2026-09-26T21:17:11Z",
+    "overwrite_attempt": "refused; same record SHA-256"
+  },
+  "worker_reported_development_corrections": [
+    "Initial audit could not pass Fraction range widths directly to Decimal; exact integral conversion was added.",
+    "Initial test described only one positive-extremum witness family; corrected to include both observed-action cases, four witnesses total.",
+    "Mutation diagnostic exposed missing note-pin-refusal coverage; a focused test was added.",
+    "Lead corrected overly broad R_g=1 inference wording; known-bound concentration remains valid, empirical within-group variance is unavailable."
+  ],
+  "review_limits": [
+    "No remaining actionable source/fixture issue in lead review.",
+    "Independent arithmetic/implementation review is not independent mathematical peer review.",
+    "No old model output, frozen source launcher, production estimator or manuscript file changed."
+  ]
+}

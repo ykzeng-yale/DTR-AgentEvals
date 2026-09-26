@@ -300,3 +300,16 @@ results, and they do not establish a usable agent executor or repair historical 
 75/75/50/25/25 remain unchanged. Top milestones remain competent fixed-target comparisons and validated
 inference, final empirical/manuscript synthesis, and independent reproducibility plus author-approved
 metadata/submission packaging. An active goal is not completion or authorization to upload a preprint.
+
+## Checkpoint: 26 September 2026, precision-design diagnosis
+
+The [precision audit](theory_precision_design_20260926.md) tightens the shared-initial-action DR support
+bounds and makes the complete-block concentration cost explicit. Even the improved worst-case sufficient
+counts do not supply a practical real-agent plan. An independent fixed-group alternative preserves the
+target but requires a stronger execution contract; existing synthetic replication and coverage studies
+remain informative and are not superseded. Deterministic checks are setup evidence, not empirical coverage,
+competent-agent outcomes or demonstrated cost savings. The manuscript remains unchanged.
+
+**55%, change 0 percentage points, range 45–65%.** Weights 25/20/30/15/10 and stages 75/75/50/25/25
+are unchanged. Largest milestones: competent fixed-target comparison with valid inference; final
+empirical/manuscript synthesis; independent reproducibility, author-approved metadata and submission package.

@@ -6601,3 +6601,89 @@ implementation or creating a status-only commit. Keep the existing scientific st
 Full-project readiness **55%, change 0 percentage points, judgment range 45–65%**. Largest milestones:
 competent fixed-target comparison with valid inference; final empirical/manuscript synthesis; independent
 reproducibility plus author-approved metadata and submission packaging. The scientific goal remains active.
+
+## DTR-REQ-025 — deterministic precision-design audit, 26 September 2026
+
+**Lead decision: analysis setup only; no sampling or model execution.** The previous goal turn made
+progress through `79308c6`; current `main` and the working tree were rechecked before this request.
+REQ-024 is accepted, but its complete-panel concentration guarantee can require prohibitively large
+sufficient counts. The [lead derivation](theory_precision_design_20260926.md) tightens the deterministic
+common-initial-action score ranges and compares the complete-block and independent fixed-group assumptions.
+Neither a practical margin nor a final sampling plan is frozen. This targets the primary inference gate;
+it is not another null cell or a claim of practical improvement.
+
+**Claude implementation scope:** create only:
+
+- `experiments/v2_sim/precision_design_audit.py`;
+- `tests/test_precision_design_audit.py`;
+- `results/v2_sim/precision_design_20260926/record.json` (new immutable deterministic audit).
+
+Read the lead note at SHA-256 `6303403a35b4046e423cf7a5255799b495bd5ea104868d3c6bae91d5fefb2897`.
+The initial assignment used `9b1eddd5…`; the lead then added links to existing synthetic replication/coverage
+studies and clarified that the missing covariance evidence concerns the competent real-agent harness.
+No equation, numerical target, implementation scope or resource cap changed.
+Use only standard-library arithmetic and pytest; no dependency, randomness, existing estimator change,
+model/server/VM/host-search/process-gate work, archive overwrite, Monte Carlo or CONFIRM task exposure.
+The lead owns the scientific derivation and interpretation; report any discrepancy instead of adjusting it.
+
+Required implementation and independent fixture oracles:
+
+1. Evaluate the original terminal DR expression for all 512 nonabsorbed binary vertices, keeping both
+   target scores on the same trajectory. Confirm score extrema [-3,4] and contrast extrema [-5,5], with
+   witnesses; enumerate absorption separately. Include fractional interior nuisance/outcome fixtures.
+   Independent tests must derive the score via the original V/W/Q sum, not call the audit's formula as
+   their expected result. The affine-corner argument is mathematical, not an empirical coverage check.
+2. Reproduce all three methods' sufficient-count tables for alpha=.05 and h in {.10,.05,.02} with
+   60-digit Decimal logs/ceilings. Independently check ordinary-float calculations agree and both B and
+   B-1 straddle each half-width threshold. Counts are worst-case sufficient bounds, never necessary or
+   power requirements. Compute the note's illustrative J=20 trajectory costs explicitly.
+3. Implement the weighted concentration factor sum_g lambda_g^2/R_g with exact Fraction arithmetic;
+   validate nonnegative weights summing to one and positive integer replicate counts (refuse booleans,
+   empty inputs, nonfinite values and invalid shapes). Include unequal weights/counts and the equal-weight
+   1/(J R) identity. Verify mean/variance on an independently enumerated small finite distribution with
+   heterogeneous group means, and a common-shock counterexample where an independent-task calculation
+   misses variance by factor J. One repetition per group does not estimate its empirical within-group
+   variance or justify Wald inference; the known-bound concentration formula itself permits R_g=1.
+4. Generate a JSON record with method labels, assumptions, exact arithmetic results/witnesses, numerical
+   tables, source/test/note SHA-256 pins, command, Python version and limitations. Record deterministic
+   analysis status; no empirical coverage, runtime independence, cost saving or new agent result.
+   Write a new output only and refuse to overwrite an existing record.
+
+Cap: one CPU process, no more than 60 seconds per audit/test pass, no large loops or random draws. Report
+actual command/results/time and final source hashes. Necessary review fixes are within scope. During
+this shared-checkout integration, leave the three paths uncommitted; no pull/stage/commit/push. The lead
+owns docs, independent review and combined direct-main publication. State-only ticks remain permitted.
+
+**Stage holds unchanged.** Full-project readiness **55%, change 0 points, range 45–65%**. Largest milestones:
+competent fixed-target comparison and valid inference; final empirical/manuscript synthesis; independent
+reproducibility, author metadata and submission package.
+
+### DTR-REQ-025 — completed and accepted as deterministic analysis setup
+
+Claude delivered the three assigned paths and acknowledged the shared-checkout hold. The lead reviewed
+the code and fixtures, clarified the R_g=1 concentration-versus-variance distinction, and independently ran
+`PYTHONPATH=src .venv/bin/python -m pytest -q -p no:cacheprovider tests/test_replicated_block_inference.py tests/test_precision_design_audit.py`
+with a 60-second timeout: **107 passed in 2.80 seconds** (2.906 seconds including the guard process).
+The 40 new tests include all source/record bindings; none was skipped in this final check. The previously
+recorded 709-test default-suite pass covers the unchanged baseline, not a new full-suite run here.
+
+The [immutable deterministic record](../results/v2_sim/precision_design_20260926/record.json) matches all
+three pinned files and all 27 independently recomputed count cells. [The lead receipt](audits/precision_design_lead_20260926.json)
+separately records exact heterogeneous-group and common-period checks. This is lead mathematical review and
+independent implementation/arithmetic validation, not external or independent mathematical peer review.
+No model, new Monte Carlo, infrastructure or CONFIRM execution occurred; old outputs and manuscript files
+are unchanged. Worker-reported prototype/test corrections are retained in the lead receipt.
+
+**Scientific decision:** tighter score supports do not make the conservative complete-panel certificate a
+feasible real-agent plan. The computed counts are sufficient, not necessary or power requirements. A future
+design must identify enforceable independent execution units, preserve the fixed-task target, and justify
+its covariance/precision using competent-harness development evidence. Existing synthetic replication and
+undercoverage results remain relevant; do not repeat those cells merely to improve this audit.
+
+REQ-025 is closed. No additional worker request is open and all live/model/Monte Carlo/host-search stage
+holds remain. The lead owns combined publication; the temporary Git hold ends only upon its verified receipt.
+Acknowledge that receipt in chat without a duplicate status-only commit or issue comment.
+
+Readiness **55%, change 0 percentage points, range 45–65%**. Remaining milestones: competent fixed-target
+comparison with valid inference; final empirical/manuscript synthesis; independent reproducibility,
+author-approved metadata and submission package. The active goal remains unfinished.

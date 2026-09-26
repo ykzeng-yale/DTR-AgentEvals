@@ -28,6 +28,10 @@ fixtures; it releases no model or simulation batch. New live/CONFIRM remains hel
 resource, opportunity and frozen analysis/precision gates. Frozen archives and the paper PDF are unchanged
 by this resumption. The former recurring lead check remains deleted.
 
+The [precision-design audit](docs/theory_precision_design_20260926.md) derives tighter shared-score ranges
+and assesses sufficient concentration counts. These remain too large to supply a practical plan from
+range bounds alone; a stronger justified independence design and real-target variance evidence are still needed.
+
 **21 September design update:** a [primary-literature and official-code review](docs/literature_design_review_20260921.md)
 now informs the [v2 prospective protocol](docs/experiment_protocol_v2.md): separate evaluator calibration from
 history-dependent improvement, reuse mini-swe-agent/SWE-bench and a local RouteLLM baseline, and require explicit

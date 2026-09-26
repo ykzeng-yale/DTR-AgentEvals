@@ -82,13 +82,17 @@ will freeze those choices; Claude implements the approved setup. If unavailable,
 block while progressing theory and reproducibility. A narrowed final paper requires an explicit claim/scope
 decision, not a silent replacement of the target or readiness rubric.
 
-**P0 — Target-preserving inference design.** The lead adopts a prospective complete-fixed-benchmark-block
-observation unit. Its [theory note](theory_replicated_block_inference.md) treats the joint four-vector of
+**P0 — Target-preserving inference design.** The lead retains a prospective complete-fixed-benchmark-block
+observation unit as a sufficient reference contract. Its [theory note](theory_replicated_block_inference.md) treats the joint four-vector of
 offline/fresh history/prompt values, retaining their covariance. Policies and nuisances are independently
 trained and frozen. Independent complete blocks may contain dependent tasks, but the scored trajectories
 must still have valid marginals. A secondary six-total construction preserves the archived branch ratio
 target, including zero-prefix blocks. This is a prospective sufficient design, not a repair of the single
-archived study. It may be expensive; useful precision and block independence remain execution gates.
+archived study. The subsequent [precision audit](theory_precision_design_20260926.md) tightens the shared-score
+ranges but still gives very large worst-case sufficient counts. Do not adopt complete-panel replication as
+the practical default from the existence of its CLT. Independent fixed task/family groups preserve the target
+under a stronger execution contract; existing synthetic within-task studies do not establish that contract
+on a competent real-agent harness. Useful precision and justified independence remain execution gates.
 
 **P1 — DTR-REQ-024 analysis setup.** [The exact request](req024_replicated_inference_setup.md) assigns Claude
 Code two new source/test files: complete-block means/covariance, explicit asymptotic scales, conservative

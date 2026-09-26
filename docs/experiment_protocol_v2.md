@@ -1,6 +1,12 @@
 # Revised experimental design: evaluation, adaptation and feedback
 
-**21 September 2026 UTC. Lead decision; prospective draft, not run authorization.** This replaces the future-design defaults in [v0.1](experiment_protocol.md); it does not retrospectively amend any archived experiment or CONFIRM outcome. The theory workstream continues to defer new model, verifier and Monte Carlo execution. This is not a global stop on the author's separately authorized experiment worker. The bounded CPU development validation specified in the 21 September lead reset below may proceed in that worker; real-agent execution and final validation retain their existing gates. The [literature/code review](literature_design_review_20260921.md) supplies sources and implementation boundaries. Exact resource, task and analysis manifests must pass the gates below before future collection.
+**21 September 2026 UTC design; current status reconciled 26 September. Prospective draft, not run authorization.** This replaces the future-design defaults in [v0.1](experiment_protocol.md); it does not retrospectively amend any archived experiment or CONFIRM outcome. The bounded DEVELOPMENT rules in AGENTS.md supersede the earlier blanket theory-host compute deferral. Current model/live/CONFIRM and synthetic-batch holds remain in the [latest handoff](experiment_handoff.md); historical requests below are not new releases. The [literature/code review](literature_design_review_20260921.md) supplies sources and implementation boundaries. Exact resource, task and analysis manifests must pass the gates below before future collection.
+
+**26 September precision decision:** REQ-024 supplies reviewed prospective complete-block analysis code.
+The [precision audit](theory_precision_design_20260926.md) shows that its range-only guarantees do not yet
+give a feasible real-agent sample plan, even after tighter shared-score bounds. Independently executed fixed
+task/family groups could preserve the target with a stronger independence contract; that alternative is
+not frozen or empirically validated. Numerical half-width examples are not adopted scientific margins.
 
 ## 1. Scientific questions and possible negative conclusions
 
@@ -58,6 +64,11 @@ Plan final nominal-95% coverage/type-I summaries with 2,000 independent complete
 **Treatment:** a model choice before logical call 1 and, if still active, before logical call 9. Retain that backend for calls 1–8 or 9–24, respectively. The same message history, repository state, prompts, parser, tool permissions, stopping and context limits apply to every policy. This creates at most two eligible decisions, not 24 independent treatments. Absorbed episodes stay in the denominator. The 8/24 configuration is a development candidate, not evidence that the horizon is adequate.
 
 **Candidate executors:** pinned Qwen2.5-Coder-7B-Instruct and 14B-Instruct; their license/revision record is in the harness audit. Resource fit, serving compatibility and competence are untested here. Prefer a common 16,384-token context and 1,536-token response cap, with a frozen decoding/quantization convention; actual converted-weight digests and server versions must be recorded. If the available host cannot support this pair, revise the development configuration explicitly rather than silently substituting models or buying API capacity.
+
+**Status of that historical candidate, 26 September:** subsequent DEVELOPMENT failures closed the local
+7B/14B coding path. The proposed replacement pair remains blocked on the inspected host under REQ-020/021;
+see the [current evidence map](experiment_results.md). The paragraph above records the original candidate,
+not present qualification or authorization to rerun it.
 
 **Feedback:** issue text, ordinary shell/tool outputs and the agent's earlier actions. A nonzero shell status is not automatically a unit-test failure. No checks means unverified, not success. Hidden terminal tests, reference patches and final grades cannot enter histories or trigger another opportunity. Preserve submission/timeout/format-limit exits. Require an explicit eligible submission: limits or format failures returning an empty submission score zero for the primary operational endpoint; do not silently extract and grade a different workspace patch. A later salvage rule would change the harness and must be declared separately.
 
