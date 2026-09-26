@@ -6386,3 +6386,34 @@ I reviewed worker `69473c8` and its saved host check, independently checked the 
 - the reproducibility, metadata and submission package.
 
 **Cadence:** job `c710b12b`, ticks at about :15/:45 UTC, session-only; I publish on change.
+
+## Worker checkpoint — 2026-09-26T13:49Z (host `date -u`) — lead `cd90c56` acknowledged: DTR-REQ-021 completed (BLOCKED); DTR-REQ-022 accepted, manifest FROZEN before sampling
+
+**Read:** [lead REQ-021 decision](theory_feedback_20260926_req021_decision.md) (13:23Z) and issue #4 up to 13:24:02Z. **Processed lead SHA:** `cd90c56cf3c777cea5ddd6e558a00597afee6acb`.
+
+- **DTR-REQ-021: completed, BLOCKED** (`69473c8`, accepted in `cd90c56`).
+  - The block holds only for host access configured on this machine; unseen institutional or cloud capacity remains unknown.
+  - The Google Cloud account will not be queried and no paid compute will be started. The local host search is stopped.
+- **DTR-REQ-022 (P1): accepted; manifest frozen and committed here, before any sampling.**
+  - **Cell:** K=2, no-crossing, informative feedback, with the feedback-dependent-floor-0.2 logger. Best fixed (`fixed_LL`), best prompt-only and best history are all 2891/4000, so the optimal history advantage is exactly 0.
+  - **Manifest:** `results/v2_sim/null_control_20260926/manifest.json`, sha256 `d8ec4c72287c8f6a…`. New root seed 2026092622 (≠ 2026092101).
+  - **Design:** all 7 catalog policies; frozen 250-task list; 4 logged and 4 fresh episodes per task and policy; 200 repetitions; 4 workers; 15-minute cap.
+  - **Pinned inputs:** source and truth hashes of 9 files, and exact truths and exact IPW/fresh SDs for every policy. The latter reproduce the accepted `fixed_task_blocks_v1.json`/`fresh_reference_v1.json` values for the 3 overlapping policies exactly.
+  - **Prespecified checks C1–C4:**
+    - C1: per policy and estimator, |bias| ≤ 3 MCSE.
+    - C2: history-policy contrasts against `fixed_LL`.
+    - C3: the selected plug-in advantage, descriptive only.
+    - C4: overlap, as empirical/exact SD, IPW-to-fresh SD ratio and maximum weight.
+  - **Code and tests:** `experiments/v2_sim/null_control_batch.py` (adapted; `dev_batch.py` and its archive are unchanged), with 5 focused tests for cell binding, truths and exact SDs, deterministic replay, manifest-hash refusal and the blocked-gate path.
+  - **Next:** the fresh host gates (disk, memory, peers, non-overlap), then the run, which returns BLOCKED without sampling if any gate fails.
+
+| Request | Status | Artifact |
+|---|---|---|
+| DTR-REQ-022 (P1) | **accepted; manifest frozen; run next** | this commit |
+| DTR-REQ-021 (P0) | **completed: BLOCKED** (configured host access only) | `69473c8`, `cd90c56` |
+| DTR-REQ-020 (P0) | completed: BLOCKED accepted | `0c37517`, `9fae0e4` |
+| DTR-REQ-019 … 001 | as in the table at `69473c8` | — |
+
+**Readiness:** 55 %, change 0 points (range 45–65 %; 75/75/50/25/25 → 55.00).
+
+**Cadence:** job `c710b12b`, ticks at about :15/:45 UTC, session-only; I publish on change.

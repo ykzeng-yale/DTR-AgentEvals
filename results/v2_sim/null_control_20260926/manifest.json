@@ -1,0 +1,155 @@
+{
+ "request": "DTR-REQ-022 P1 null-control DEVELOPMENT cell (lead cd90c56)",
+ "config": "K2-no_crossing-informative-feedback_dependent_floor_0.2",
+ "cell": {
+  "K": 2,
+  "action_effect": "no_crossing",
+  "feedback": "informative",
+  "logger": "feedback_dependent_floor_0.2"
+ },
+ "root_seed": 2026092622,
+ "previous_root_seeds": [
+  2026092101
+ ],
+ "repetitions": 200,
+ "logged_per_task": 4,
+ "fresh_per_task_policy": 4,
+ "task_list": {
+  "n": 250,
+  "sha256": "cc3a03d099fc7fe34835dd52eaa9653aa04defc7510969c1e08d3dbc23561b8e",
+  "rule": "task g = 't%04d' % g, stratum = g mod 2"
+ },
+ "policies": [
+  "fixed_LL",
+  "fixed_LS",
+  "fixed_SL",
+  "fixed_SS",
+  "history_S_or_exception",
+  "history_large_after_exception",
+  "prompt_only_large_if_hard"
+ ],
+ "policy_classes": {
+  "fixed_SS": "fixed",
+  "fixed_SL": "fixed",
+  "fixed_LS": "fixed",
+  "fixed_LL": "fixed",
+  "prompt_only_large_if_hard": "prompt_only",
+  "history_large_after_exception": "history",
+  "history_S_or_exception": "history"
+ },
+ "analytic_null": {
+  "best_fixed": {
+   "policy": "fixed_LL",
+   "utility": {
+    "exact": "2891/4000",
+    "decimal": 0.72275
+   }
+  },
+  "best_prompt_only_utility": {
+   "exact": "2891/4000",
+   "decimal": 0.72275
+  },
+  "best_observed_history_utility": {
+   "exact": "2891/4000",
+   "decimal": 0.72275
+  },
+  "history_advantage_over_best_fixed": {
+   "exact": "0",
+   "decimal": 0.0
+  },
+  "history_advantage_over_best_prompt_only": {
+   "exact": "0",
+   "decimal": 0.0
+  }
+ },
+ "exact": {
+  "fixed_SS": {
+   "truth_exact": "1473609/2500000",
+   "truth": 0.5894436,
+   "exact_sd_ipw": 0.029325589557615037,
+   "exact_sd_fresh": 0.01435308736611047
+  },
+  "fixed_SL": {
+   "truth_exact": "817701/1250000",
+   "truth": 0.6541608,
+   "exact_sd_ipw": 0.036101230141925914,
+   "exact_sd_fresh": 0.014034833614004835
+  },
+  "fixed_LS": {
+   "truth_exact": "343903/500000",
+   "truth": 0.687806,
+   "exact_sd_ipw": 0.03168194893543483,
+   "exact_sd_fresh": 0.013724276125173233
+  },
+  "fixed_LL": {
+   "truth_exact": "2891/4000",
+   "truth": 0.72275,
+   "exact_sd_ipw": 0.04074915549232278,
+   "exact_sd_fresh": 0.013201374678418911
+  },
+  "prompt_only_large_if_hard": {
+   "truth_exact": "1721033/2500000",
+   "truth": 0.6884132,
+   "exact_sd_ipw": 0.033399244466874096,
+   "exact_sd_fresh": 0.014127271449063334
+  },
+  "history_large_after_exception": {
+   "truth_exact": "870416349/1250000000",
+   "truth": 0.6963330792,
+   "exact_sd_ipw": 0.017112068538279908,
+   "exact_sd_fresh": 0.013722451505754688
+  },
+  "history_S_or_exception": {
+   "truth_exact": "890352733/1250000000",
+   "truth": 0.7122821864,
+   "exact_sd_ipw": 0.03084797029123309,
+   "exact_sd_fresh": 0.013546155617805346
+  }
+ },
+ "cpu_wall_cap_seconds": 900,
+ "workers": 4,
+ "host_gates": {
+  "host_disk_min_gib": 5.0,
+  "memory_free_min_pct": 50,
+  "no_model_server": true,
+  "no_other_sim_or_stage_job": true
+ },
+ "stream_namespace": "cfg=<config>|rep=<b>|<log|fresh>|<logger name or policy>|<task>|<replicate>",
+ "draw_source": "sampler.SeededDraws: numpy SeedSequence(root_seed, spawn_key=sha256(stream)[:16] as 4 uint32)",
+ "estimators": [
+  "ipw_estimate (trajectory IPW of utility from one shared log per repetition)",
+  "fresh_estimate"
+ ],
+ "prespecified_checks": {
+  "C1": "for every catalog policy and estimator: |mean estimate - exact truth| <= 3 Monte Carlo SE (14 checks; about 0.04 flags expected by chance)",
+  "C2": "for each history policy h: contrast V(h) - V(fixed_LL) (exact, negative in this cell) estimated by IPW and by fresh; |mean - exact| <= 3 MCSE",
+  "C3": "descriptive only: per repetition, max over history policies minus max over non-history policies of the estimates (a selected plug-in; biased upward under the null; reported as mean, MCSE and share > 0)",
+  "C4": "overlap: IPW empirical SD versus exact SD per policy, IPW-to-fresh SD ratio, largest trajectory weight; a material estimator problem is |IPW bias| > 3 MCSE or empirical SD > 1.5 x exact SD"
+ },
+ "outputs": [
+  "gates.json",
+  "reps.jsonl",
+  "run_status.json",
+  "summary.json",
+  "summary.md"
+ ],
+ "not_claimed": [
+  "interval coverage",
+  "adaptation benefit",
+  "optimal-policy learning",
+  "resource efficiency",
+  "real-agent evidence",
+  "CONFIRM evidence"
+ ],
+ "source_sha256": {
+  "experiments/v2_sim/null_control_batch.py": "41febb7c123e9bbba1e1f1e906066d4910a95960bf9e14111fbebadd95f01c65",
+  "experiments/v2_sim/sampler.py": "6826551ef65a821eebfabd4f74c9ede4e38da50e8bc6b40e72e23f0bd2926c13",
+  "experiments/v2_sim/repair_generator.py": "ffd6878afdf208f8c32ef75feda5fa324ab01b3387adcfeea96fe08d14017ecd",
+  "experiments/v2_sim/repair_logger.py": "d0305470c9e02b3c6cd5afe274a6e081a6d32cacb970887a4a332dae41276344",
+  "experiments/v2_sim/fixed_task_blocks.py": "fafa3bc90da3114c8ff858a979476617dd4e47aabac6ca9d8fe7343d9b42dfa1",
+  "experiments/v2_sim/fresh_reference.py": "cfde162c0070783efafd4f12a7ccb5149f281d215a464c909144442d0827cddf",
+  "experiments/v2_sim/repair_generator_v1.json": "22e9f31057fabb9b65d80502d263827dbdbc1e6a90c41b758972f0f5c0d969f4",
+  "experiments/v2_sim/fixed_task_blocks_v1.json": "f57a2fc8d291d3af48095727c9188976b782a96144a9b7c46e135b4c2f83fc10",
+  "experiments/v2_sim/fresh_reference_v1.json": "9f48f0dfa41903294242a64362f3afe10d424964037fbaca650bcf2821e0c637"
+ }
+}
