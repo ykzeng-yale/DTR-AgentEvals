@@ -1,5 +1,7 @@
 # DTR-AgentEvals
 
+**Moving to another laptop?** Start with the [portable project handoff](docs/PORTABLE_HANDOFF_2026-09-26.md). It links the research plan, paper, experiment archives, current scientific verdicts, roadmap, and a sanitized record of decisions from the coordinating chat. The recurring theory-lead check was removed at the author's request on 26 September 2026.
+
 **Dynamic Agent Regimes: causal evaluation and improvement of model-switching agents.**
 
 When an agent changes models during a task, the choice changes future outputs, tool states, errors and routing decisions. This project asks what would happen if tasks followed a specified switching policy, and whether an offline estimate agrees with fresh executions.

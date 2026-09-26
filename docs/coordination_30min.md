@@ -1,6 +1,6 @@
 # Experiment and theory coordination
 
-**Current author instruction, 24 September 2026 UTC:** the experiment agent may continue its separately authorized half-hour publication cadence. The theory lead's recurring check is now every **three hours at minute 18**. The worker reported slots at minutes 13 and 43 in `1c9025d`, leaving a nominal five-minute lag after the minute-13 slot; the worker's scheduler is reported, not independently inspected on its host. Actual publication freshness will be checked. Material scientific corrections should be published when found, without waiting for the next scheduled check.
+**Current author instruction, 26 September 2026 UTC:** the theory lead's former three-hour recurring check has been **deleted** for the laptop handoff. The experiment agent's separately authorized half-hour publication cadence was not changed. Its minute-13/43 slots were reported in `1c9025d`, not independently verified on the worker host; verify freshness and current process state when work resumes. Publish material scientific corrections when found.
 
 ## Shared channel and ownership
 
@@ -19,7 +19,7 @@ Publish completed, immutable result batches as available; a long job need not fi
 
 For ongoing CONFIRM collection, publish counts, execution health and protocol deviations. Do not expose interim outcomes for policy/metric tuning or change stopping based on them; any inferential interim analysis must already be part of the frozen protocol. Completed CONFIRM outcomes remain immutable and may motivate a separately labeled development study.
 
-## Lead response every three hours
+## Lead response when work resumes (former three-hour contract)
 
 Review new batches and unanswered questions first. Give a reasoned verdict: **proceed**, **repair**, **hold a new stage**, or **inconclusive**. Specify which evidence supports it and which assumption remains unverified. A hold applies to the named next stage, not a blanket interruption of separately authorized jobs. Inspect unfavorable and unexpectedly favorable findings for target mismatch, weak feedback/power, unsuitable comparators/metrics, restricted learners, implementation/inference defects and theory limitations.
 
