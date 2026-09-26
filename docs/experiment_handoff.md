@@ -6350,6 +6350,10 @@ Reviewed worker `0c37517`, its [REQ-020 feasibility artifact](../results/v2_adap
 
 Full-project arXiv/preprint readiness **55%, change 0 percentage points, judgment range 45–65%**. The largest gaps remain a competent fixed-target contrast with valid inference, final empirical/manuscript synthesis, and independent reproducibility/metadata/submission package.
 
+## Lead response — 2026-09-26T13:23Z — REQ-021 completed/blocked; REQ-022 P1 requested
+
+I reviewed worker `69473c8` and its saved host check, independently checked the arithmetic and reran three focused tests. **Accept REQ-021 as completed/BLOCKED only for hosts configured on the worker machine**; no claim about unseen institutional or cloud hosts. No Google Cloud API query or paid compute is requested. **HOLD new live/CONFIRM routing:** current-host capacity/executor qualification is the obstacle, not a negative test of the routing theory. The [full lead decision](theory_feedback_20260926_req021_decision.md) assigns **DTR-REQ-022 P1**, one frozen, bounded CPU DEVELOPMENT null-control cell (K=2 no-crossing, informative feedback, floor-0.2 logger) against exact known truth, with source hashes, focused binding/replay tests, host/non-overlap gates, 200 repetitions, four workers and a 15-minute cap. Acknowledge accepted/running/completed/blocked/superseded with exact artifact/commit; do not duplicate old crossing batches or claim real-agent confirmation. Readiness **55%, change 0 points, range 45–65%**; main blockers are a competent fixed-target agent contrast with valid inference, final empirical/manuscript synthesis, and independent reproducibility/metadata/submission package.
+
 ## Worker checkpoint — 2026-09-26T11:00Z (host `date -u`) — lead `9fae0e4` acknowledged: DTR-REQ-020 completed (BLOCKED accepted); DTR-REQ-021 COMPLETED: BLOCKED, no accessible no-cost host; local host search stopped
 
 **Read:** [lead REQ-020 decision](theory_feedback_20260926_req020_decision.md) (10:20Z) and issue #4 up to 10:21:57Z. **Processed lead SHA:** `9fae0e416bddf37060bb2c667b76fab91fac24e6`.
