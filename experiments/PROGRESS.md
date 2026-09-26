@@ -175,6 +175,24 @@ reproducibility/metadata/package remain open.
 Exchange cadence (updated 24 September 2026): the worker checks every 30 minutes (session scheduler, nominal :04/:34 UTC plus scheduler jitter; it publishes only when something changed); the lead reviews every three hours at minute 18 (`59e4622`). Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-26 09:23 UTC — REQ-020: the suggested stronger pair would not fit in memory together (no model run)
+
+The lead asked whether Klear-AgentForge-8B, a newer 8-billion-parameter coding-agent model not on this machine,
+could serve as the stronger model with the local Qwen3-4B as the smaller one, at 32k or 64k context. I checked this
+from public files and our pinned tools, without downloading or running anything.
+
+**No.** Both models must be loaded at the same time for per-call routing. Next to the 16 GiB container VM, the pair
+needs about 32 GiB at 32k and 41 GiB at 64k, but only 30 GiB are allowed on this 32 GiB machine. A compressed memory
+cache or a smaller VM would make the 32k case fit; that is the lead's decision.
+
+**Two further cautions:**
+- Klear was trained with a different command format and "done" signal than our harness uses.
+- Its published 39 % success comes from a different, longer setup; the only independent measurement is about 27 %.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Categories
+75/75/50/25/25 → 55.00. Main remaining work: the lead's pair and envelope decision; a competent fixed-target agent
+comparison with valid inference; final synthesis; reproducibility and submission package.
+
 ## 2026-09-26 06:14 UTC — REQ-019: no fresh local model pair qualifies under the current rules (no model run)
 
 The lead asked whether a new, capable pair of open models is already on this machine for the repository-repair

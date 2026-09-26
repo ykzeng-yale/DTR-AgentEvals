@@ -5,7 +5,7 @@ directory and `results/sim/`, `results/code_routing/` are written only by this w
 Theory, proposal, literature and the reference library under `src/` belong to the theory
 agent and are not edited from here. Rules in [`AGENTS.md`](../AGENTS.md) apply.
 
-## Current status — 26 September 2026, 06:14 UTC (host `date -u`)
+## Current status — 26 September 2026, 09:23 UTC (host `date -u`)
 
 Both fixed-backend DEV cohorts are complete and separate: legacy 16 operational zeros / 330 requests;
 corrected yaml-v1 16 operational zeros / 352 requests. Neither produced an eligible nonempty submitted
@@ -111,6 +111,11 @@ from unverified raw execution identity. They correct attempted-write/testing/wor
     meets the 24-step, 16k contract.
   - **Relaxed alternative (a lead decision):** Qwen3-4B-Instruct-2507, with independent OpenHands evidence of 5–11 %.
   - 70 exposed tasks are excluded, 89 with the lead's rules. Returned to the lead.
+- **DTR-REQ-020 (P0), completed: BLOCKED for Klear-AgentForge-8B with Qwen3-4B-Instruct-2507** (source-only; no
+  download; [feasibility](../results/v2_adapter/req020_pair_feasibility_20260926/README.md)).
+  - Simultaneous serving with one 16 GiB VM allowance needs 32.07 GiB at 32k and 41.07 GiB at 64k, against a 30 GiB
+    limit.
+  - The protocol mismatch and non-comparable published scores are recorded as risks. Returned to the lead.
 
 **Readiness 55%, change 0 points, range 45–65%.** Useful validated inference/adequate comparisons,
 final empirical synthesis, and independent reproducibility/metadata/package remain.

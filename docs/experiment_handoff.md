@@ -6282,3 +6282,62 @@ Full-project arXiv/preprint readiness **55%, change 0 percentage points, judgmen
 **Readiness:** 55 %, change 0 points (range 45–65 %; 75/75/50/25/25 → 55.00).
 
 **Cadence:** job `c710b12b`, ticks at about :15/:45 UTC, session-only; I publish on change.
+
+## Worker checkpoint — 2026-09-26T09:23Z (host `date -u`) — DTR-REQ-020 COMPLETED: BLOCKED (NO for 32k/48 and 64k/100); simultaneous memory fails; returning to the lead
+
+**Read:** lead `d0b905a` and its [REQ-019 decision](theory_feedback_20260926_req019_decision.md), and issue #4 up to 07:23:25Z. **Processed lead SHA:** `d0b905ace65c6d34c9f04a96f7170ba03d9d674c`.
+
+**DTR-REQ-020 (P0): completed.** Source-only: no download, inference, server/container start, task exposure or source-pin change.
+- **Deliverable:** [README](../results/v2_adapter/req020_pair_feasibility_20260926/README.md), with `feasibility.json`, `klear_evidence.json` and `source/` under `results/v2_adapter/req020_pair_feasibility_20260926/`.
+- **Builder:** `experiments/v2_adapter/req020_pair_feasibility.py`, with 3 tests.
+
+**Verdict: BLOCKED; NO for both envelopes.**
+- **Failing gate G4:** simultaneous weights + f16 KV + one 16 GiB VM allowance must stay within hw.memsize − 2 GiB (the REQ-019 joint extension of the REQ-014 static rule), and at least 20 % memory must be free after loading on the current host reading. Both models have 36 layers × 8 KV heads × head dim 128.
+  - 32k/48: 4.739 (Klear Q4 estimate) + 2.326 (local Qwen3-4B Q4) + 4.5 + 4.5 + 16 = **32.065 GiB** > 30 GiB.
+  - 64k/100: 4.739 + 2.326 + 9 + 9 + 16 = **41.065 GiB** > 30 GiB.
+  - The community Q4_K_M size gives 32.008 / 41.008 GiB.
+  - Post-load reserve: 9.8 % / −18.3 % free after loading, against the 20 % required.
+- **Sensitivities (for your decision, not the verdict):**
+  - q8_0 KV: 27.846 GiB and 23 % free after load at 32k, passing narrowly before two compute buffers and the pinned default prompt cache of up to 8 GiB per server; 32.627 GiB and 8 % at 64k, failing.
+  - 32k with f16 KV fits the static rule only if the VM allowance is 13.93 GiB or less.
+  - Sequential serving is not used as evidence for call-level routing.
+- **Other gates pass:**
+  - **G1 source pin** (source-inspected): revision `fa3d41e9`, Apache-2.0, 4 shards of 16,381,516,824 B with LFS sha256, index-complete; empty card.
+  - **G2 llama.cpp** (code-inspected): `4fea119` has qwen3 and its converter registers `Qwen3ForCausalLM`.
+  - **G3 context:** Klear's maximum is 65,536 tokens, so the 64k envelope is exactly at the limit.
+  - **G5 disk** (host-measured): about 30.1 GiB left after a 37.9 GB download-and-convert peak, at least the 25 GiB minimum; VM disk 81 GiB.
+  - **G6 admission now** (host-measured at 09:22:27Z): 60 % memory free, no model server or stage running. Swap is 14.4/15.0 GiB used; recorded, not gated.
+
+**Risks recorded, not gates (so as not to overclaim):**
+1. **Protocol mismatch** (code- and source-inspected). The frozen yaml-v1-repair1 (built on `default.yaml` sha `112aa583`) uses a ```mswea_bash_command fence and the `COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT` submit, which is hard-coded in the pinned DockerEnvironment, and has no edit tool. Klear was trained on ```bash, `MINI_SWE_AGENT_FINAL_OUTPUT` and a str-replace helper. Its behaviour under our prompt is unobserved.
+2. **Published competence is not comparable.**
+   - The 39.4 % is author-reported with 200 steps, 64k context and the authors' scaffold; temperature and run count are not stated.
+   - The only independent figure found, 26.6 % (ContextRL), is most likely for the SFT checkpoint, under another setup.
+   - The pinned llama-server renders the Klear template via jinja and an autoparser; this is unverified without a run.
+3. **Exposure.**
+   - The SWE SFT data comes only from SWE-smith, and the released 66k set has 0 rows from the 12 SWE-bench Verified repositories.
+   - The SWE RL data is unreleased, decontamination is repository-level, and base-model pretraining exposure is not addressed.
+   - Near-duplicate repositories and selection on Verified cannot be excluded.
+   - The 70/89 exclusion lists are unchanged.
+
+**Questions for you:**
+1. Accept BLOCKED for this pair under the 16 GiB VM rule? Or should I cost a versioned envelope, such as q8_0 KV at 32k or a smaller VM allocation? Any such change needs your freeze.
+2. If a qualification is ever considered, should the harness keep yaml-v1 exactly, which tests Klear's protocol transfer, or would you version an adapter?
+3. Should the high swap use (14.4 of 15.0 GiB) be investigated before any model work, which you already flagged as needing fresh admission checks?
+
+| Request | Status | Artifact |
+|---|---|---|
+| DTR-REQ-020 (P0) | **completed: BLOCKED** (NO at 32k/48 and 64k/100; G4 simultaneous memory) | this commit |
+| DTR-REQ-019 (P0) | completed: inventory accepted; C8 gate corrected by the lead | `0fe370b`, `d0b905a`, `2cbc850` |
+| DTR-REQ-018 (P0) | completed: design ledger accepted; inference inconclusive | `a13fe20`, `e6a1670` |
+| DTR-REQ-017 … 001 | as in the table at `0fe370b` | — |
+
+**Verification:** a two-lens adversarial review with a completeness critic confirmed the verdict with no blocker. Its minor fixes are included. All 3 REQ-020 tests and the full suite pass.
+
+**Readiness:** 55 %, change 0 points (range 45–65 %; 75/75/50/25/25 → 55.00). The largest remaining milestones:
+- your pair and envelope decision;
+- a competent fixed-target agent contrast with valid inference;
+- the final synthesis;
+- the reproducibility, metadata and submission package.
+
+**Cadence:** job `c710b12b`, ticks at about :15/:45 UTC, session-only; I publish on change.

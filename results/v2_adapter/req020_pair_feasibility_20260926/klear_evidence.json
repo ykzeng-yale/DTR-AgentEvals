@@ -1,0 +1,449 @@
+{
+ "request": "DTR-REQ-020",
+ "kind": "cited evidence on Klear-AgentForge-8B (read-only web research)",
+ "method": "Read-only web research on 2026-09-26 by three research agents (scaffold and budget; training data and exposure; format, serving and GGUF availability) and a citation verifier that opened every source (pinned GitHub/HF revisions, arXiv HTML/PDF, HF API and dataset-viewer). No weights were downloaded, no model was run, no form was submitted; web content was treated as data. Personal names and internal paths are replaced by role labels.",
+ "summary": {
+  "published_39_4": "author-reported single figure (arXiv 2511.05951v1 Table 3) under the authors' mini-swe-agent-plus scaffold: 200-step cap, 64k context, a str-replace edit tool, a matching prompt and a MINI_SWE_AGENT_FINAL_OUTPUT submit; temperature, run count and harness not stated",
+  "independent": "one independent figure: 26.6% Verified in ContextRL (arXiv 2606.17053v1), most likely for the Klear-AgentForge-8B-SFT checkpoint rather than the merged fa3d41e9 model, under a different mini-SWE-agent setup (training caps 35 turns / 28,672 input tokens; public eval config 125 steps)",
+  "training_exposure": "SWE SFT data only from SWE-smith (12k problems, ~66k trajectories, released); SWE RL data unreleased and uncounted; repository-level decontamination only, without names; the released 66k set and public SWE-smith hold 0 rows for the 12 SWE-bench Verified repositories (positive control oauthlib); base-model pretraining exposure not addressed",
+  "format": "non-thinking (inferred); plain ChatML without tools; SFT turns are THOUGHT plus one ```bash block; trained submit sentinel MINI_SWE_AGENT_FINAL_OUTPUT and an edit helper",
+  "gguf": "community GGUFs exist (not used, not authorized): mradermacher/Klear-AgentForge-8B-GGUF Q4_K_M 5,027,783,808 bytes (revision 0626423882f5); dark-pen IQ4_XS 4,561,839,680 bytes in 5 shards"
+ },
+ "facts": [
+  {
+   "topic": "39.4 provenance",
+   "claim": "Klear-AgentForge-8B is reported at 39.4 SWE-bench Verified and 33.8 Aider-Polyglot (paper Table 3; README coding table). The README note says Verified was evaluated with mini-swe-agent-plus.",
+   "value": "39.4",
+   "source_type": "author_reported",
+   "url": "https://arxiv.org/html/2511.05951v1 (Table 3); https://github.com/Kwai-Klear/Klear-AgentForge/blob/d37d53ee65dae326b2ec3f61d58a3e0a7e19db21/README.md"
+  },
+  {
+   "topic": "eval protocol",
+   "claim": "Sec. 3.1: Verified is the 500-issue human-validated subset, run with the mini-swe-agent-plus scaffold with each run capped at 200 steps and 64k context.",
+   "value": "500 instances; 200 steps; 64k context",
+   "source_type": "author_reported",
+   "url": "https://arxiv.org/html/2511.05951v1 (Sec. 3.1)"
+  },
+  {
+   "topic": "eval protocol gaps",
+   "claim": "For SWE the paper states no temperature, top_p, per-turn max tokens, thinking mode, number of runs or seeds, serving engine or scoring harness. The text never mentions 'seed', 'pass@1', vLLM or SGLang. Other benchmarks do get settings: BFCL T=0.7/top_p 0.95/16k; tau-bench T=0.8 reported as avg@4; Aider T=0.7/top_p 0.8/24K. Researcher 3's '39.4 (pass@1, single run)' label is not supported by the paper: single-run is plausible but unstated.",
+   "value": "not stated",
+   "source_type": "uncertain",
+   "url": "https://arxiv.org/html/2511.05951v1 (Sec. 3.1)"
+  },
+  {
+   "topic": "paper versions",
+   "claim": "The arXiv listing shows only v1, submitted Sat 8 Nov 2025 (764 KB), 20 pages, 7 figures.",
+   "value": "v1 only",
+   "source_type": "code_inspected",
+   "url": "https://arxiv.org/abs/2511.05951"
+  },
+  {
+   "topic": "RL expert vs merge (authors)",
+   "claim": "Merging lowered coding scores: Verified 40.4 -> 39.4 and Aider 35.1 -> 33.8 (Sec. 3.4.3). Joint multi-task RL (tool use + SWE, 3:1 step schedule) gave BFCL v3 70.8 and Verified 39.6.",
+   "value": "40.4 / 39.4 / 39.6",
+   "source_type": "author_reported",
+   "url": "https://arxiv.org/html/2511.05951v1 (Sec. 3.4.3)"
+  },
+  {
+   "topic": "SFT score inconsistency",
+   "claim": "Paper Table 4 gives Klear-AgentForge-8B-SFT 38.2 on Verified (tau Retail 54.8, Airline 32.0) and 32B-SFT 55.2. The mini-swe-agent-plus README instead lists Klear-Agent-8B-SFT 39.0, 8B-RL 40.4, 32B-SFT 55.2 and 32B-RL 61.4. The dataset card also shows 39.0, next to a badge linking Klear-AgentForge-8B-SFT, and the HF 'mini-swe-agent-plus' collection pairs the dataset with that model. Whether 38.2 and 39.0 describe the same checkpoint is unresolved.",
+   "value": "38.2 (paper) vs 39.0 (README/card)",
+   "source_type": "author_reported",
+   "url": "https://arxiv.org/html/2511.05951v1 (Table 4); https://github.com/Kwai-Klear/mini-swe-agent-plus/blob/3dfa5e26831306978ff3cfa2da15b49113ded0e6/README.md; https://huggingface.co/datasets/Kwai-Klear/SWE-smith-mini_swe_agent_plus-trajectories-66k/blob/750b2c11239fd5e32f97e6cfb9bf80fb9a9a2983/README.md"
+  },
+  {
+   "topic": "test-time scaling (authors)",
+   "claim": "With 1-8 sampled candidates on Verified, Agent Confidence Select reaches 0.452 at N=8. The single-sample value appears only in Fig. 7b.",
+   "value": "45.2% at N=8 (selection, not pass@1)",
+   "source_type": "author_reported",
+   "url": "https://arxiv.org/html/2511.05951v1 (Sec. 3.4.4, Fig. 7)"
+  },
+  {
+   "topic": "other scaffolds",
+   "claim": "No OpenHands, SWE-agent or other-scaffold SWE number exists for the 8B model. Table 1 covers Claude only: Sonnet 4 gets 70.4 on OpenHands, 66.6 on SWE-agent, 64.9 on mini-swe-agent (79.1 turns) and 67.0 on the plus fork (67.3 turns); Sonnet 4.5 gets 70.6 vs 71.8. For Claude 3.7 on SWE-agent the paper says 62.4 but the scaffold README says 58.2.",
+   "value": "none for 8B",
+   "source_type": "none_found",
+   "url": "https://arxiv.org/html/2511.05951v1 (Table 1); https://github.com/Kwai-Klear/mini-swe-agent-plus/blob/3dfa5e26831306978ff3cfa2da15b49113ded0e6/README.md"
+  },
+  {
+   "topic": "baseline comparators",
+   "claim": "Table 3: Qwen3-8B Thinking 9.8* and Non-Thinking 8.0*, and Qwen3-30A3B-2507-Instruct 17.6*; the asterisk means the authors' own eval script. Qwen3-Coder-30A3B-Instruct 51.6 has no asterisk, so it comes from an official report; the paper does not say which scaffold.",
+   "value": "8.0*/9.8*; 51.6",
+   "source_type": "author_reported",
+   "url": "https://arxiv.org/html/2511.05951v1 (Table 3)"
+  },
+  {
+   "topic": "mini-swe-agent-plus identity",
+   "claim": "MIT-licensed GitHub fork of SWE-agent/mini-swe-agent with __version__ 1.14.4. The first fork commit, 0a6ef3e0 (2025-10-22, message 'start'), has parent upstream eeaf79b4 (2025-10-21); the fork is 10 commits ahead and 0 behind that base. Latest commit 3dfa5e26 (2026-01-20) is README-only.",
+   "value": "v1.14.4 fork @ 3dfa5e26",
+   "source_type": "code_inspected",
+   "url": "https://github.com/Kwai-Klear/mini-swe-agent-plus/blob/3dfa5e26831306978ff3cfa2da15b49113ded0e6/src/minisweagent/__init__.py"
+  },
+  {
+   "topic": "action format",
+   "claim": "Actions are plain text, not function calling. agents/default.py extracts actions with regex ```bash\\s*\\n(.*?)\\n``` and raises FormatError unless there is exactly one match. The config has no tools key, and litellm.completion receives only messages plus config model_kwargs. The paper says the scaffold does not rely on model-side tool-calling interfaces.",
+   "value": "one fenced ```bash block per reply",
+   "source_type": "code_inspected",
+   "url": "https://github.com/Kwai-Klear/mini-swe-agent-plus/blob/3dfa5e26831306978ff3cfa2da15b49113ded0e6/src/minisweagent/agents/default.py"
+  },
+  {
+   "topic": "edit tool",
+   "claim": "At environment init, `docker cp` copies environments/str_replace.py (169 lines, stdlib only) into the container as /testbed/edit_via_str_replace. It replaces only a unique match; exit 2 = not found, 3 = multiple matches, 1 = other error. A del_edit_tool() method exists, but no call to it was found in agents/default.py or run/extra/swebench_pool_way.py. So `git add -A` at submit may include the helper file in the patch (inference).",
+   "value": "/testbed/edit_via_str_replace",
+   "source_type": "code_inspected",
+   "url": "https://github.com/Kwai-Klear/mini-swe-agent-plus/blob/3dfa5e26831306978ff3cfa2da15b49113ded0e6/src/minisweagent/environments/docker.py"
+  },
+  {
+   "topic": "public SWE config",
+   "claim": "swebench_add_edit_tool.yaml sets step_limit 200, cost_limit 3, cwd /testbed and a 60 s command timeout. Its model is claude-sonnet-4-20250514 at temperature 1.0 with drop_params, with no max_tokens and no tools. The prompt has a 5-step recommended workflow, forbids modifying tests and config files, and uses <returncode>/<output> observations. This is a Claude config, not a documented 8B setting.",
+   "value": "200 steps; T=1.0 (Claude)",
+   "source_type": "code_inspected",
+   "url": "https://github.com/Kwai-Klear/mini-swe-agent-plus/blob/3dfa5e26831306978ff3cfa2da15b49113ded0e6/src/minisweagent/config/extra/swebench_add_edit_tool.yaml"
+  },
+  {
+   "topic": "submission protocol",
+   "claim": "The prompt instructs `echo MINI_SWE_AGENT_FINAL_OUTPUT && git add -A && git diff --cached`. The agent accepts either MINI_SWE_AGENT_FINAL_OUTPUT or COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT as the first output line, with no returncode check.",
+   "value": "MINI_SWE_AGENT_FINAL_OUTPUT",
+   "source_type": "code_inspected",
+   "url": "https://github.com/Kwai-Klear/mini-swe-agent-plus/blob/3dfa5e26831306978ff3cfa2da15b49113ded0e6/src/minisweagent/agents/default.py"
+  },
+  {
+   "topic": "runner/harness",
+   "claim": "swebench_pool_way.py maps 'verified' to princeton-nlp/SWE-Bench_Verified and uses swebench/sweb.eval.x86_64.* images. It writes only preds.json and trajectories and has no retry or multi-attempt logic; scoring is undocumented. It also accepts undocumented local-JSON subsets 'verified100', 'verified236' and 'mysmith', which suggests internal Verified subsets (purpose unknown).",
+   "value": "preds.json only",
+   "source_type": "code_inspected",
+   "url": "https://github.com/Kwai-Klear/mini-swe-agent-plus/blob/3dfa5e26831306978ff3cfa2da15b49113ded0e6/src/minisweagent/run/extra/swebench_pool_way.py"
+  },
+  {
+   "topic": "public code defect",
+   "claim": "When the local_vllm_server_ips_filename env var is set, models/litellm_model.py calls os.path.exists(fnm), but `fnm` is never defined, so the documented multi-vLLM serving path would raise NameError at init. By inference, the authors' actual 8B runs used code that differs from the public commit.",
+   "value": "undefined `fnm`",
+   "source_type": "code_inspected",
+   "url": "https://github.com/Kwai-Klear/mini-swe-agent-plus/blob/3dfa5e26831306978ff3cfa2da15b49113ded0e6/src/minisweagent/models/litellm_model.py"
+  },
+  {
+   "topic": "SFT trajectory format",
+   "claim": "datasets-server first-rows returned 10 rows, 4 of them untruncated (rows 0-3, all oauthlib). Across those 4 rows:\n- 80 assistant turns, all starting with 'THOUGHT' and all with exactly one ```bash block\n- 0 <think>, 0 <tool_call>, 0 tool-role messages\n- the edit helper is used in all 4 (row 0 in 3 turns), and each ends with the MINI_SWE_AGENT_FINAL_OUTPUT submit\n- the user prompt carries the add_edit_tool.yaml workflow, test-modification ban, edit-tool example and submit text\nThis is a small sample.",
+   "value": "THOUGHT + one ```bash; 0 <think> in 80 turns",
+   "source_type": "code_inspected",
+   "url": "https://datasets-server.huggingface.co/first-rows?dataset=Kwai-Klear/SWE-smith-mini_swe_agent_plus-trajectories-66k&config=default&split=train"
+  },
+  {
+   "topic": "SFT trajectory validation",
+   "claim": "The paper removed only trajectories without a submit-ready patch. It considered excluding test-failing ones, reported a negligible effect, and did not apply that filter. In HF dataset discussion #2, Kwai-Klear org member a Kwai-Klear organisation member and paper author said the trajectories were not validated by unit tests in this version. Requests for success labels (GitHub mini-swe-agent-plus #2; HF discussion #4) are unanswered. The 66k set may therefore include unresolved trajectories.",
+   "value": "not unit-test validated",
+   "source_type": "author_reported",
+   "url": "https://arxiv.org/html/2511.05951v1 (Sec. 2.2.1); https://huggingface.co/datasets/Kwai-Klear/SWE-smith-mini_swe_agent_plus-trajectories-66k/discussions/2"
+  },
+  {
+   "topic": "teacher model",
+   "claim": "This corrects the earlier 'unnamed' finding. In HF discussion #2, a Kwai-Klear organisation member and paper author (Kwai-Klear org member, paper author) first said the trajectories came from several top-tier models. Asked for the base LLM, he answered Sonnet 4 (2026-01-23). The paper, dataset card and scaffold README do not name a teacher, and GitHub mini-swe-agent-plus issue #1 asking this is open with 0 comments. The 'strong teacher' used to filter SWE RL data is still unnamed.",
+   "value": "Sonnet 4 (informal forum reply)",
+   "source_type": "author_reported",
+   "url": "https://huggingface.co/datasets/Kwai-Klear/SWE-smith-mini_swe_agent_plus-trajectories-66k/discussions/2"
+  },
+  {
+   "topic": "our harness mismatch",
+   "claim": "Our pin 04d809ce (2026-09-03) is upstream v2.4.6. Its swebench_backticks.yaml:\n- requires a ```mswea_bash_command fence\n- has step_limit 250, cost_limit 3 and a 60 s timeout\n- submits via `git diff > patch.txt` followed by `echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT && cat patch.txt`\n- has no edit tool\nThe default swebench.yaml is tool-calling (parallel_tool_calls: true). So fence, submit protocol, edit tool and step cap all differ from Klear's training and evaluation.",
+   "value": "v2.4.6; 250 steps; mswea_bash_command; different sentinel",
+   "source_type": "code_inspected",
+   "url": "https://github.com/SWE-agent/mini-swe-agent/blob/04d809ceab9df28f9adaed044884180159172930/src/minisweagent/config/benchmarks/swebench_backticks.yaml"
+  },
+  {
+   "topic": "harness configurability",
+   "claim": "In v2.4.6, action_regex is a LitellmTextbasedModelConfig field (default ```mswea_bash_command), so the fence can be changed in YAML. The submit check in DockerEnvironment._check_finished is hard-coded: first line must be COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT with returncode 0. So the trained MINI_SWE_AGENT_FINAL_OUTPUT submit would not register without a code change, or a prompt asking for the upstream sentinel. That ```bash replies would hit FormatError under the default regex is inferred, not observed. The text model parses only message.content.",
+   "value": "regex configurable; sentinel hard-coded",
+   "source_type": "code_inspected",
+   "url": "https://github.com/SWE-agent/mini-swe-agent/blob/04d809ceab9df28f9adaed044884180159172930/src/minisweagent/models/litellm_textbased_model.py; https://github.com/SWE-agent/mini-swe-agent/blob/04d809ceab9df28f9adaed044884180159172930/src/minisweagent/environments/docker.py"
+  },
+  {
+   "topic": "public Klear adapter precedent (ContextRL)",
+   "claim": "ContextRL's repo vendors mini-swe-agent 2.2.8 with a config/benchmarks/swebench_klear.yaml:\n- Klear-style THOUGHT + ```bash prompt, but with sed examples and no edit_via_str_replace (0 mentions)\n- action_regex overridden to ```bash; submit via MINI_SWE_AGENT_FINAL_OUTPUT && git add -A && git diff --cached\n- step_limit 125, temperature 0.6, top_p 0.95, no max_tokens\nIts docker.py and singularity.py _check_finished are patched to accept both sentinels. scripts/inference_swe_verified.slurm serves vLLM bf16 with --max-model-len 65536 on 500 test instances in singularity sandboxes.",
+   "value": "125 steps; T=0.6; no edit tool",
+   "source_type": "code_inspected",
+   "url": "https://github.com/xupy2003/ContextAwareRL/blob/0683df934b7c2698fb97df5a478664e1b310db2f/Evaluation/Agentic/SWE-Bench/mini-swe-agent/src/minisweagent/config/benchmarks/swebench_klear.yaml"
+  },
+  {
+   "topic": "independent evaluation",
+   "claim": "ContextRL (Xu et al., arXiv 2606.17053v1, 15 Jun 2026; six Princeton authors, one UC Davis) Table 1, rows 'Trained from Klear-AgentForge-8B':\n- base model: 26.6 Verified / 21.0 Lite\n- RL baseline: 28.0 / 21.7\n- ContextRL: 30.2 / 24.0\nReference rows: Qwen3-Coder-30B 28.8/22.0, Qwen3-32B 8.40/6.00, Qwen3-14B 8.40/6.00, Qwen3-8B base 5.00/2.70. Scaffold: mini-SWE-agent in SkyRL for both training rollouts and evaluation.",
+   "value": "26.6",
+   "source_type": "independent",
+   "url": "https://arxiv.org/html/2606.17053v1 (Table 1; App. D.1)"
+  },
+  {
+   "topic": "which checkpoint ContextRL measured",
+   "claim": "The paper text says Klear-AgentForge-8B, but three sources point to the SFT checkpoint:\n- Table 9 lists the agentic base as Klear-AgentForge-8B-SFT.\n- The training script run_mini_swe_agentforge8B.sh sets trainer.policy.model.path=/path/to/Klear-AgentForge-8B-SFT.\n- The eval config's default model_name is openai/Klear-AgentForge-8B-SFT (overridden at runtime by the served name).\nThe 26.6 therefore most likely measures Klear-AgentForge-8B-SFT, not the merged fa3d41e9 model; this conclusion is an inference.",
+   "value": "likely 8B-SFT",
+   "source_type": "uncertain",
+   "url": "https://github.com/xupy2003/ContextAwareRL/blob/0683df934b7c2698fb97df5a478664e1b310db2f/Training/SkyRL/examples/train/mini_swe_agent/run_mini_swe_agentforge8B.sh; https://arxiv.org/html/2606.17053v1 (Table 9)"
+  },
+  {
+   "topic": "ContextRL eval settings",
+   "claim": "Table 7's caps (35 turns, 28,672 max input, 4,096 prompt/response tokens per turn) are training settings. The public eval config differs (125 steps, 64k vLLM context, T=0.6). The paper states no eval temperature, run count or scaffold version, and does not say the public config produced Table 1. The config was committed 2026-06-05, before v1 on 2026-06-15. Comparing 26.6 with 39.4 is confounded by checkpoint, edit tool, step cap and sampling.",
+   "value": "training caps != eval config",
+   "source_type": "uncertain",
+   "url": "https://arxiv.org/html/2606.17053v1 (Table 7); https://github.com/xupy2003/ContextAwareRL/blob/0683df934b7c2698fb97df5a478664e1b310db2f/Evaluation/Agentic/SWE-Bench/scripts/inference_swe_verified.slurm"
+  },
+  {
+   "topic": "third-party citations of 39.4",
+   "claim": "These are restatements, not independent runs:\n- SWE-MeM Table 1 lists Klear-Agent-8B (Qwen3-8B base, Mini-SWE-agent-plus, 64k) at 39.4, citing the Klear paper.\n- SWE-Fuse Table 3 lists Klear-Agent-8B-SFT (Mini-SWE-agent-plus, SFT) at 39.4 and says its baselines come from the original publications or the leaderboard. The SFT label conflicts with the paper's 38.2.",
+   "value": "39.4 restated",
+   "source_type": "author_reported",
+   "url": "https://arxiv.org/html/2606.28434v1; https://arxiv.org/html/2603.07927v1"
+  },
+  {
+   "topic": "leaderboards/discussions",
+   "claim": "swebench.com leaderboards.json (swe-bench.github.io @193160a4, 2026-09-01) contains no 'klear', 'agentforge' or 'kwai' string. The 8B and 8B-SFT model repos have 0 HF discussions. GitHub Klear-AgentForge #1 (SFT settings, including a THOUGHT vs <think> question; 2025-12-27) and mini-swe-agent-plus #1 (teacher; 2026-03-29) and #2 (success labels; 2026-07-16) are open with 0 comments.",
+   "value": "none found",
+   "source_type": "none_found",
+   "url": "https://github.com/SWE-bench/swe-bench.github.io/blob/193160a463a435d05cf44a1fa9dc5eac832113c3/data/leaderboards.json; https://github.com/Kwai-Klear/Klear-AgentForge/issues/1"
+  },
+  {
+   "topic": "model card",
+   "claim": "The HF README at fa3d41e9 is only YAML front matter with license: apache-2.0; checked on the raw file, so the earlier uncertainty is resolved. No LICENSE file among siblings. gated=false, private=false. Created 2025-11-12T16:05:49Z, last modified 17:07:15Z. 8,190,735,360 BF16 parameters. 0 discussions.",
+   "value": "empty card; apache-2.0 tag only",
+   "source_type": "code_inspected",
+   "url": "https://huggingface.co/Kwai-Klear/Klear-AgentForge-8B/blob/fa3d41e92e9ce7a5b4a52a3e7439aa00521f40c9/README.md"
+  },
+  {
+   "topic": "generation_config",
+   "claim": "do_sample true, temperature 0.6, top_k 20, top_p 0.95, eos_token_id [151645, 151643], transformers 4.51.1. These are Qwen3 defaults, probably inherited; they are not the paper's SWE settings, which are unstated.",
+   "value": "T=0.6/top_k 20/top_p 0.95",
+   "source_type": "code_inspected",
+   "url": "https://huggingface.co/Kwai-Klear/Klear-AgentForge-8B/blob/fa3d41e92e9ce7a5b4a52a3e7439aa00521f40c9/generation_config.json"
+  },
+  {
+   "topic": "model config",
+   "claim": "Qwen3ForCausalLM with 36 layers (all full attention), 32 attention heads, 8 KV heads, head_dim 128, hidden 4096, max_position_embeddings 65536, rope_theta 1e6, no rope_scaling, vocab 151936, bfloat16. This matches the task context.",
+   "value": "36L/8KV/128/65536",
+   "source_type": "code_inspected",
+   "url": "https://huggingface.co/Kwai-Klear/Klear-AgentForge-8B/blob/fa3d41e92e9ce7a5b4a52a3e7439aa00521f40c9/config.json"
+  },
+  {
+   "topic": "chat template (no tools)",
+   "claim": "Without tools the template is plain ChatML: a system block only if messages[0] is a system message, and a generation prompt of exactly '<|im_start|>assistant\\n'. There is no enable_thinking variable and no <think> prefill. The <tools>/<tool_call> instructions render only when tools are passed.",
+   "value": "plain ChatML",
+   "source_type": "code_inspected",
+   "url": "https://huggingface.co/Kwai-Klear/Klear-AgentForge-8B/blob/fa3d41e92e9ce7a5b4a52a3e7439aa00521f40c9/tokenizer_config.json"
+  },
+  {
+   "topic": "chat template (think history)",
+   "claim": "The history-reasoning branch reads `{%- if (loop.index0 > ns.last_query_index) and 0 %}`, so it never fires. Past assistant turns are rendered with any text up to </think> removed. The stock Qwen3-8B template (revision b968826d) uses `if loop.index0 > ns.last_query_index` and prefills an empty think block when enable_thinking is false.",
+   "value": "'and 0' disables think re-insertion",
+   "source_type": "code_inspected",
+   "url": "https://huggingface.co/Kwai-Klear/Klear-AgentForge-8B/blob/fa3d41e92e9ce7a5b4a52a3e7439aa00521f40c9/tokenizer_config.json; https://huggingface.co/Qwen/Qwen3-8B/blob/b968826d9c46dd6066d109eabc6255188de91218/tokenizer_config.json"
+  },
+  {
+   "topic": "tokenizer/special tokens",
+   "claim": "eos_token <|im_end|> (151645), pad_token <|endoftext|>, bos_token null, Qwen2Tokenizer, model_max_length 131072 (vs config 65536). <think>/</think> are 151667/151668 and <tool_call>/</tool_call> are 151657/151658.",
+   "value": "eos <|im_end|>",
+   "source_type": "code_inspected",
+   "url": "https://huggingface.co/Kwai-Klear/Klear-AgentForge-8B/blob/fa3d41e92e9ce7a5b4a52a3e7439aa00521f40c9/tokenizer_config.json"
+  },
+  {
+   "topic": "merge_config (raw)",
+   "claim": "Base: .../agentic_sft/v1018_qwen3_8b_base_bfcl_22w_system_tau_10k_system_swe_6w_aider_42k_nopacking/.../checkpoint-9025. Expert weights [0.3, 0.3, 0.2, 0.2]:\n- BFCL RL (Qwen3-8B-RL-V1/v1020/global_step_100)\n- SWE RL (swe_rl_release/<SWE RL checkpoint name>)\n- aider RL (qwen3-8b-rl-v3_step50)\n- tau (sft_ckpts/Klear-AgentForgeSFT_continue-training_40k_.../checkpoint-2488)\nOther settings: dropout_rate 0.9, sign_threshold 0.5, normalize true.",
+   "value": "weights [0.3,0.3,0.2,0.2]",
+   "source_type": "code_inspected",
+   "url": "https://huggingface.co/Kwai-Klear/Klear-AgentForge-8B/blob/fa3d41e92e9ce7a5b4a52a3e7439aa00521f40c9/merge_config.json"
+  },
+  {
+   "topic": "merge_config (interpretation)",
+   "claim": "These readings come from path names only:\n- 'swe_6w' suggests about 60k SWE SFT samples, vs 65,994 released rows.\n- '4kdat' suggests about 4k RL instances; 'tmpr09' suggests rollout temperature 0.9.\n- The tau expert sits under sft_ckpts (continue-training), which suggests an SFT continuation rather than RL. This corrects the task context's 'RL experts for ... tau'.\nThe README says the 8B was RL-trained from 8B-SFT and then merged.",
+   "value": "tau expert likely SFT",
+   "source_type": "uncertain",
+   "url": "https://huggingface.co/Kwai-Klear/Klear-AgentForge-8B/blob/fa3d41e92e9ce7a5b4a52a3e7439aa00521f40c9/merge_config.json"
+  },
+  {
+   "topic": "trained action format (paper)",
+   "claim": "The paper describes mini-swe-agent-plus as mini-swe-agent plus a string-replacement editing tool. Replacement-style edits make up over 95% of code-modifying tool calls. Rollouts follow ReAct, and the model is derived from Qwen3-8B base.",
+   "value": "text bash + str-replace tool",
+   "source_type": "author_reported",
+   "url": "https://arxiv.org/html/2511.05951v1 (Sec. 2.2.1, 3.2)"
+  },
+  {
+   "topic": "thinking mode",
+   "claim": "Sec. 3.3.3: SFT on Deepseek-distill-qwen3-8B (48k-context SFT) collapsed to near zero, with thinking exhausting the 64k limit. The paper never states outright that the released model is non-thinking. Together with think-free SWE data, the template and the sample above, non-thinking is the likely reading, but it is an inference.",
+   "value": "likely non-thinking (inferred)",
+   "source_type": "uncertain",
+   "url": "https://arxiv.org/html/2511.05951v1 (Sec. 3.3.3)"
+  },
+  {
+   "topic": "SWE SFT data source",
+   "claim": "SWE SFT data comes only from SWE-smith, filtered to problems with synthesized descriptions: 12,000 problems, distilled with mini-swe-agent-plus into about 66,000 examples. The whole SFT corpus is about 2.4B tokens.",
+   "value": "SWE-smith only; 12k problems; ~66k",
+   "source_type": "author_reported",
+   "url": "https://arxiv.org/html/2511.05951v1 (Sec. 2.2.1)"
+  },
+  {
+   "topic": "decontamination statement",
+   "claim": "The only SWE decontamination is repository-level: training repositories overlapping the test set were dropped, with no names and no instance, issue or patch check. The one use of 'contamination' concerns code-contest test cases, not SWE.",
+   "value": "repo-level filter only",
+   "source_type": "author_reported",
+   "url": "https://arxiv.org/html/2511.05951v1 (Sec. 2.2.1)"
+  },
+  {
+   "topic": "other SWE data sources",
+   "claim": "The paper text contains no SWE-Gym, R2E, rebench, Nebius or SWE-bench-extra. The README names only the 66k dataset.",
+   "value": "none found",
+   "source_type": "none_found",
+   "url": "https://arxiv.org/html/2511.05951v1; https://github.com/Kwai-Klear/Klear-AgentForge/blob/d37d53ee65dae326b2ec3f61d58a3e0a7e19db21/README.md"
+  },
+  {
+   "topic": "SWE RL data",
+   "claim": "SWE RL data is described only as SFT samples filtered by an unnamed strong teacher, keeping those solved at least once; no count is given. Reward jumps after about 40 steps, when validation performance starts to decline; the validation set is unnamed. SWE RL ran on 64 H800 GPUs. No SWE RL dataset appears among Kwai-Klear's HF datasets or collections.",
+   "value": "unreleased; count unreported",
+   "source_type": "author_reported",
+   "url": "https://arxiv.org/html/2511.05951v1 (Sec. 3.4.1-3.4.2); https://huggingface.co/api/datasets?author=Kwai-Klear"
+  },
+  {
+   "topic": "released SFT dataset",
+   "claim": "sha 750b2c11 (last modified 2025-11-06), MIT license, 65,994 train rows with columns instance_id and messages (role/content); dataset-viewer reports a full count. Instance IDs use the SWE-smith format.",
+   "value": "65,994 rows",
+   "source_type": "code_inspected",
+   "url": "https://huggingface.co/datasets/Kwai-Klear/SWE-smith-mini_swe_agent_plus-trajectories-66k/blob/750b2c11239fd5e32f97e6cfb9bf80fb9a9a2983/README.md"
+  },
+  {
+   "topic": "12 SWE-bench repos in released SFT data",
+   "claim": "My dataset-viewer filter re-run (2026-09-26) returned 0 rows, partial=False, for instance_id prefixes pallets__flask, sympy__, django__, astropy__, matplotlib__, scikit-learn__, sphinx-doc__, pytest-dev__pytest., pydata__xarray, pylint-dev__pylint., psf__requests, mwaskom__ and pylint-dev__astroid. The positive control oauthlib__oauthlib returned 1317 (reproduced). The reported pandas-dev__ control (1357) could not be reproduced because the server returned errors.",
+   "value": "0 of 65,994 from the 12 repos",
+   "source_type": "code_inspected",
+   "url": "https://datasets-server.huggingface.co/filter?dataset=Kwai-Klear/SWE-smith-mini_swe_agent_plus-trajectories-66k&config=default&split=train&length=1&where=%22instance_id%22%20LIKE%20%27sympy__%25%27"
+  },
+  {
+   "topic": "SWE-smith repository selection",
+   "claim": "SWE-smith (arXiv 2504.21798v2, 21 May 2025) removed all 12 SWE-bench test repositories when choosing its 128 repositories (50k instances). Even so, its license table (Table 6) lists pallets/flask, and C.2 is a flask case study at bc09840 with 267 instances. The list includes neighbours of SWE-bench repositories: pylint-dev/astroid, pytest-dev/iniconfig, django/channels, django/daphne and pydata/patsy.",
+   "value": "12 SWE-bench repos excluded (flask case-study exception)",
+   "source_type": "author_reported",
+   "url": "https://arxiv.org/html/2504.21798v2 (Sec. 2.1; Table 6; App. C.2)"
+  },
+  {
+   "topic": "SWE-smith toolkit eval_sets",
+   "claim": "SWE-smith commit c135509 (2025-08-03, adds the eval_sets field) defines FlaskBc098406 and Sympy2ab64612 profiles with eval_sets {SWE-bench, SWE-bench_Lite, SWE-bench_Verified}. These are the only two eval_sets entries in python.py.",
+   "value": "flask/sympy profiles flagged",
+   "source_type": "code_inspected",
+   "url": "https://github.com/SWE-bench/SWE-smith/blob/c135509dd0415112d178036ef49b079e54aa4181/swesmith/profiles/python.py"
+  },
+  {
+   "topic": "public SWE-smith dataset contents",
+   "claim": "SWE-bench/SWE-smith sha ea6d717 has 59,136 train rows (not partial). That commit (2025-12-14) is a README update; the last data upload was ae8206fd on 2025-08-25, before Klear's Oct 2025 data build. My re-run returned 0 rows each for flask and sympy, and 0 for a LIKE-OR over the other 10 SWE-bench repositories. The oauthlib control returned 940, and an OR-syntax control (django OR oauthlib) also returned 940.",
+   "value": "0 rows from 12 repos",
+   "source_type": "code_inspected",
+   "url": "https://datasets-server.huggingface.co/filter?dataset=SWE-bench/SWE-smith&config=default&split=train&length=1&where=%22repo%22%20LIKE%20%27%25oauthlib__oauthlib%25%27"
+  },
+  {
+   "topic": "SWE-bench Verified repositories",
+   "claim": "princeton-nlp/SWE-bench_Verified test has 500 rows from 12 repositories: django 231, sympy 75, sphinx 44, matplotlib 34, scikit-learn 32, astropy 22, xarray 22, pytest 19, pylint 10, requests 8, seaborn 2, flask 1.",
+   "value": "12 repos",
+   "source_type": "code_inspected",
+   "url": "https://datasets-server.huggingface.co/statistics?dataset=princeton-nlp/SWE-bench_Verified&config=default&split=test"
+  },
+  {
+   "topic": "possible test-set model selection",
+   "claim": "The paper reports SWE RL 'validation' decline without naming the validation set. The released SWE expert is global_step_15, and the data-scaling, merge and test-time-scaling analyses all use Verified. The public runner's undocumented 'verified100' and 'verified236' subsets hint at internal Verified subsets. Whether Verified guided checkpoint or merge selection is unknown; if it did, that would add selection optimism to 39.4.",
+   "value": "validation set unspecified",
+   "source_type": "uncertain",
+   "url": "https://arxiv.org/html/2511.05951v1 (Sec. 3.4.1); https://github.com/Kwai-Klear/mini-swe-agent-plus/blob/3dfa5e26831306978ff3cfa2da15b49113ded0e6/src/minisweagent/run/extra/swebench_pool_way.py"
+  },
+  {
+   "topic": "base-model pretraining exposure",
+   "claim": "Neither the Klear paper nor its README addresses whether Qwen3-8B-Base pretraining saw the SWE-bench repositories or their fix commits. Not investigated here.",
+   "value": "not addressed",
+   "source_type": "none_found",
+   "url": "https://arxiv.org/html/2511.05951v1"
+  },
+  {
+   "topic": "SFT checkpoint access",
+   "claim": "Kwai-Klear/Klear-AgentForge-8B-SFT (sha 0da97e45, created 2025-10-23, MIT tag) is gated ('auto'), and its card cannot be read without sign-in; I did not attempt. It ships its own chat_template.jinja. No 32B checkpoint is published under Kwai-Klear.",
+   "value": "gated",
+   "source_type": "code_inspected",
+   "url": "https://huggingface.co/api/models/Kwai-Klear/Klear-AgentForge-8B-SFT"
+  },
+  {
+   "topic": "GGUF (mradermacher)",
+   "claim": "mradermacher/Klear-AgentForge-8B-GGUF @0626423882f5 (created 2025-11-13, apache-2.0) has 12 static quants. Sizes in bytes: Q2_K 3,281,732,736; Q3_K_S 3,769,611,392; Q3_K_M 4,124,161,152; Q3_K_L 4,431,393,920; IQ4_XS 4,593,296,512; Q4_K_S 4,802,012,288; Q4_K_M 5,027,783,808 (sha256 9c0909b8...142ae); Q5_K_S 5,720,761,472; Q5_K_M 5,851,112,576; Q6_K 6,725,899,392; Q8_0 8,709,518,464 (sha256 ba6503c4...b62c0); f16 16,388,043,904. The README says no imatrix quants and gives no llama.cpp version or test.",
+   "value": "Q4_K_M 5,027,783,808 B",
+   "source_type": "independent",
+   "url": "https://huggingface.co/api/models/mradermacher/Klear-AgentForge-8B-GGUF/tree/0626423882f502d6fe113bd0ddc61970b19d942b"
+  },
+  {
+   "topic": "GGUF (dark-pen)",
+   "claim": "dark-pen/Klear-AgentForge-8B-IQ4_XS-GGUF @964768a6 (created 2026-03-07, made with GGUF-my-repo, imatrix) holds IQ4_XS in 5 shards totalling 4,561,839,680 B, plus imatrix.dat of 5,347,200 B. Its README usage names klear-agentforge-8b-iq4_xs-imat.gguf, a file that is not in the repo. No version or test statement.",
+   "value": "IQ4_XS 5 shards",
+   "source_type": "independent",
+   "url": "https://huggingface.co/api/models/dark-pen/Klear-AgentForge-8B-IQ4_XS-GGUF/tree/964768a63e2c7b35fdcf59395662589a1725c964"
+  },
+  {
+   "topic": "GGUF metadata",
+   "claim": "The HF gguf metadata for both repos reports architecture qwen3, context_length 65536, bos <|endoftext|>, eos <|im_end|>. The chat_template keeps 'last_query_index) and 0' and has no enable_thinking. The API summarizes one file per repo, so individual quant files were not each checked.",
+   "value": "qwen3; ctx 65536; template preserved",
+   "source_type": "code_inspected",
+   "url": "https://huggingface.co/api/models/mradermacher/Klear-AgentForge-8B-GGUF?expand[]=gguf; https://huggingface.co/api/models/dark-pen/Klear-AgentForge-8B-IQ4_XS-GGUF?expand[]=gguf"
+  },
+  {
+   "topic": "llama.cpp compatibility reports",
+   "claim": "No public report found of running this model in llama.cpp, success or failure, from a web search, 0 HF discussions and the GitHub issues. The existing GGUF conversions, including an imatrix run, are only indirect evidence that it loads.",
+   "value": "none found",
+   "source_type": "none_found",
+   "url": "https://huggingface.co/api/models/Kwai-Klear/Klear-AgentForge-8B/discussions"
+  },
+  {
+   "topic": "llama.cpp pin: architecture",
+   "claim": "llama.cpp 4fea119de30f (2026-09-18, 'ggml-cpu: add F16 input to the FWHT (#27779)') maps LLM_ARCH_QWEN3 to 'qwen3'.",
+   "value": "qwen3 supported",
+   "source_type": "code_inspected",
+   "url": "https://github.com/ggml-org/llama.cpp/blob/4fea119de30f6a923992780f6fd5ccb0bee5d47d/src/llama-arch.cpp"
+  },
+  {
+   "topic": "llama.cpp pin: server defaults",
+   "claim": "--jinja is enabled by default, and the template comes from GGUF metadata. --reasoning-format defaults to auto: 'none' leaves thoughts in content, 'deepseek' moves them to reasoning_content.",
+   "value": "jinja on; reasoning-format auto",
+   "source_type": "code_inspected",
+   "url": "https://github.com/ggml-org/llama.cpp/blob/4fea119de30f6a923992780f6fd5ccb0bee5d47d/tools/server/README.md"
+  },
+  {
+   "topic": "llama.cpp pin: template dispatch",
+   "claim": "In common/chat.cpp at the pin, the Klear template matches none of the specialized handlers. For example, the Qwen3-Coder handler needs <tool_call> together with <function= and <parameter=, which Klear's template lacks. It therefore goes to the differential autoparser (analyze_template). How that classifies reasoning for this template can only be settled by running it.",
+   "value": "falls to differential autoparser",
+   "source_type": "code_inspected",
+   "url": "https://github.com/ggml-org/llama.cpp/blob/4fea119de30f6a923992780f6fd5ccb0bee5d47d/common/chat.cpp"
+  },
+  {
+   "topic": "serving instructions",
+   "claim": "None of the model card, Klear-AgentForge README or scaffold README document serving flags. The scaffold serves local models through litellm 'hosted_vllm/...' with api_base read from the file named by local_vllm_server_ips_filename, and that path is broken in the public code (see public code defect).",
+   "value": "none documented",
+   "source_type": "code_inspected",
+   "url": "https://github.com/Kwai-Klear/mini-swe-agent-plus/blob/3dfa5e26831306978ff3cfa2da15b49113ded0e6/src/minisweagent/models/litellm_model.py"
+  },
+  {
+   "topic": "licenses",
+   "claim": "The model carries an apache-2.0 metadata tag only, with no LICENSE file. The Klear-AgentForge GitHub repo has no license. mini-swe-agent-plus is MIT. The 66k dataset is MIT. The 8B-SFT repo is tagged MIT. Both GGUF repos declare apache-2.0. The ContextRL repo has no license. No extra use restrictions were found.",
+   "value": "apache-2.0 tag; code MIT",
+   "source_type": "code_inspected",
+   "url": "https://api.github.com/repos/Kwai-Klear/Klear-AgentForge; https://api.github.com/repos/Kwai-Klear/mini-swe-agent-plus; https://api.github.com/repos/xupy2003/ContextAwareRL"
+  }
+ ],
+ "searched": [
+  "https://huggingface.co/Kwai-Klear/Klear-AgentForge-8B raw README/generation_config/merge_config/config/tokenizer_config @fa3d41e9; HF model API revision + discussions",
+  "https://huggingface.co/Qwen/Qwen3-8B tokenizer_config @b968826d",
+  "https://github.com/Kwai-Klear/Klear-AgentForge README @d37d53ee, repo API, commits, issue #1",
+  "https://github.com/Kwai-Klear/mini-swe-agent-plus @3dfa5e26: README, __init__.py, agents/default.py, environments/docker.py, environments/str_replace.py, config/extra/swebench_add_edit_tool.yaml, run/extra/swebench_pool_way.py, models/litellm_model.py, git tree; issues #1/#2; compare vs upstream eeaf79b4; commit 0a6ef3e0",
+  "https://github.com/SWE-agent/mini-swe-agent @04d809ce: __init__.py, config/benchmarks/swebench_backticks.yaml, swebench.yaml, models/litellm_textbased_model.py, environments/docker.py",
+  "https://arxiv.org/abs/2511.05951 and https://arxiv.org/html/2511.05951v1 (Sec. 2.2.1, 3.1-3.4, Tables 1-4, keyword scan)",
+  "HF dataset Kwai-Klear/SWE-smith-mini_swe_agent_plus-trajectories-66k: API, README @750b2c11, datasets-server size/first-rows/filter (15 prefixes), discussions #2/#4",
+  "HF Kwai-Klear models/datasets/collections listings; Klear-AgentForge-8B-SFT API (gated) and discussions",
+  "https://arxiv.org/abs/2606.17053 and html v1 (Tables 1,3,7,9; App. D.1); HF papers API; https://github.com/xupy2003/ContextAwareRL @0683df93: swebench_klear.yaml, docker.py/singularity.py, inference_swe_verified.slurm, run_mini_swe_agentforge8B.sh, training swebench.yaml",
+  "https://arxiv.org/html/2606.28434v1 (SWE-MeM Table 1); https://arxiv.org/html/2603.07927v1 (SWE-Fuse Table 3)",
+  "https://arxiv.org/abs/2504.21798v2 and html v2 (Sec 2.1, Table 6, App C.2)",
+  "https://github.com/SWE-bench/SWE-smith/blob/c135509d/swesmith/profiles/python.py",
+  "HF SWE-bench/SWE-smith API, commits, datasets-server size/filter (flask, sympy, oauthlib, 10-repo OR, OR-control)",
+  "datasets-server statistics princeton-nlp/SWE-bench_Verified",
+  "swe-bench.github.io data/leaderboards.json @193160a4",
+  "mradermacher/Klear-AgentForge-8B-GGUF tree/README/gguf metadata; dark-pen/Klear-AgentForge-8B-IQ4_XS-GGUF tree/README/gguf metadata; HF quantized-derivative listing",
+  "llama.cpp 4fea119: commit API, src/llama-arch.cpp, tools/server/README.md, common/chat.cpp",
+  "WebSearch: Klear-AgentForge-8B SWE-bench evaluation; Klear-AgentForge llama.cpp/GGUF; Klear-AgentForge-8B baseline arXiv 2026; ContextRL github",
+  "Local grep of the repository checkout for mswea_bash_command fixtures and docs/adapter_contract_20260921.md sentinel"
+ ],
+ "verifier_summary": "I checked every fact by opening its source (raw files at pinned commits, the HF API and dataset-viewer, and arXiv HTML at v1/v2), and re-ran the dataset-viewer counts myself on 2026-09-26. Most claims hold. The corrections and new findings that matter for DTR-REQ-020:\n\n(1) **The one independent score (ContextRL, 26.6) probably measures a different checkpoint.** The paper text names Klear-AgentForge-8B. But its compute table, its public training script (policy path /path/to/Klear-AgentForge-8B-SFT) and the default model name in its eval config all point to Klear-AgentForge-8B-SFT. So 26.6 most likely measures the SFT checkpoint, not the merged fa3d41e9 model we pin.\n\n(2) **ContextRL's public eval setup differs from both Klear's and ours.** Repo xupy2003/ContextAwareRL @0683df93 vendors mini-swe-agent 2.2.8 with a swebench_klear.yaml:\n- Klear prompt format, but sed examples instead of the edit tool\n- ```bash action_regex and the MINI_SWE_AGENT_FINAL_OUTPUT submit command, with the docker and singularity finish checks patched to accept it\n- step_limit 125, T=0.6, top_p 0.95, vLLM max-model-len 65536\n\nThe paper never says this exact config produced Table 1, so the '13 points lower' comparison is confounded by checkpoint and scaffold.\n\n(3) **Teacher model named informally.** In HF dataset discussion #2, Kwai-Klear org member and paper author a Kwai-Klear organisation member and paper author said the trajectories came from several top models and, when asked, named Sonnet 4. He also said the data was not unit-test validated in this version. The paper agrees: test-failing trajectories were not excluded. So the 66k SFT set may contain unresolved trajectories.\n\n(4) **Third-party 39.4 citations are not independent.** SWE-MeM and SWE-Fuse only restate the author figure; SWE-Fuse says outright that its baselines come from the original publications.\n\n(5) **Items now verified that earlier researchers left uncertain:**\n- The 38.2 SFT score (Table 4).\n- An empty model card: the HF card at fa3d41e9 holds only a `license: apache-2.0` line.\n- Four fully visible SFT rows, not three: 80 assistant turns, every one THOUGHT + exactly one ```bash block, 0 <think>, 0 <tool_call>, 0 tool-role messages.\n- The '39.4 pass@1 single run' label is not supported by the paper.\n\n(6) **Things the earlier reports missed:**\n- The public mini-swe-agent-plus vLLM path references an undefined variable (`fnm`), so it would crash as published.\n- Its runner supports undocumented local subsets named verified100, verified236 and mysmith.\n- The tau merge expert lives under sft_ckpts, so the task context's 'RL experts for tau' is probably wrong.\n- In our pin v2.4.6 the fence regex is configurable in YAML, but the submit sentinel is hard-coded in DockerEnvironment.\n- At llama.cpp 4fea119 the Klear template matches no specialized chat handler, so the server falls back to its differential autoparser. Behaviour there is unverified without running it.\n\n(7) **Decontamination counts reproduced:**\n- 0 rows in the released 66k set for all 12 SWE-bench Verified repositories (plus astroid); positive control oauthlib = 1317.\n- 0 rows in public SWE-smith for flask, sympy and the other 10; positive control oauthlib = 940; the OR-syntax control returned 940.\n- The reported pandas control (1357) could not be reproduced because the server returned errors.\n- SWE-smith's last data upload was 2025-08-25, before Klear's data was built.\n\nBottom line: 39.4 is a single author-reported figure under the authors' scaffold (200 steps, 64k context, edit tool, matching prompt) with no stated temperature or run count. It must not be carried over to our pinned harness. Comparable evidence for the pinned merged checkpoint under our harness does not exist yet.\n\nNote: the scratchpad files I used (klear_v1_html.txt, ctxrl_html.txt, swesmith_v2_html.txt, klear_firstrows.json, ctxrl_tree.json) are working copies only, under <local scratch directory>"
+}
