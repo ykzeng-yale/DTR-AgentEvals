@@ -7,6 +7,19 @@ pages and metadata); no model was called, no server or container was started,
 no paid service was used, and no archive was changed. Built by `experiments/v2_adapter/req019_executor_inventory.py`,
 with tests in `tests/test_req019_executor_inventory.py`.
 
+> **Erratum (lead `d0b905a`, [decision](../../../docs/theory_feedback_20260926_req019_decision.md)).** The inventory
+> is accepted, and so is the hold on the current local pair. But C8's demand for published success under identical
+> 16k/24-call conditions was the worker's operationalization, not a v2 gate: v2 section 3 calls that setup a
+> development candidate and allows a versioned revision.
+> - The leaderboard mean of 27.6 calls is not a bound on any model's chance of success within 24 calls.
+> - The "cannot currently be met" and "BLOCKED follows from the contract itself" statements below overstate the case,
+>   and the lead rejects them.
+> - The hold rests instead on three things: missing same-harness capability, no defensible local
+>   resource-differentiated pair, and the frozen endpoint and opportunity gates.
+> - C8 is external-validity information, not an eligibility rule.
+>
+> `inventory.json` is left as published.
+
 ## Verdict: BLOCKED under the frozen v2 contract
 
 The frozen contract comes from `configs/v2_req014_14b_capacity_probe_20260924.json`: mini-swe-agent `04d809c` with

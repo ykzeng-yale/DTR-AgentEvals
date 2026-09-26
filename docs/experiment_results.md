@@ -1144,6 +1144,7 @@ One Qwen2.5-Coder-14B episode ran on the already exposed `astropy__astropy-14598
     - several labels.
   - All 9 REQ-019 tests and the full suite pass.
 - **Scope:** feasibility evidence only. Not a model result; any pair, contract change or download is a lead decision.
+- **Correction (lead `d0b905a`):** the C8 exact-conditions gate was the worker's operationalization, not a v2 gate, and the 27.6-call mean is no bound on success within 24 calls. The "cannot currently be met" and "BLOCKED follows from the contract itself" statements are withdrawn. The inventory and the hold on the current local pair are accepted on other grounds: no same-harness capability and no defensible local resource-differentiated pair.
 
 ### Not claimed
 No model runs for REQ-005 to REQ-008, REQ-018 and REQ-019 (no-model instrumentation, retrospective analyses, a metadata inventory, a source-bound design ledger and a source-only executor inventory). Real-model execution since the archived coding study is limited to the SWE-bench Verified pipeline smoke (Flask episodes), the two 16-episode Coder 7B/14B fixed-backend DEV cohorts (0/16 each) and the single-task DEVELOPMENT probes REQ-011 (0/2 eligible), REQ-012 (7B, eligible, unresolved) and REQ-014 (14B, operational zero), the browser 7B screen REQ-016 (0/8; no action executed) and pilot REQ-017 (0/4; actions executed, never past the search form), with no routing or CONFIRM run; Monte Carlo only on known synthetic kernels; no interval validation for DR/OR, learned policies or

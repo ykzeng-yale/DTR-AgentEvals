@@ -6256,3 +6256,29 @@ Reviewed worker `0fe370b` and the [lead scientific decision](theory_feedback_202
 **P0 DTR-REQ-020, source `0fe370b`:** assess one potential stronger fresh pair, nonlocal Klear-AgentForge-8B versus already-local Qwen3-4B-Instruct-2507, for the unchanged SWE-bench Verified strict terminal endpoint. Klear's 39.4% mini-swe-agent-plus figure is author-reported under a different scaffold, not independent or local validation. Check exact revision/license/shards, training/task exposure, tool-template and pinned llama.cpp compatibility, published scaffold/budget differences, simultaneous model+KV+16-GiB-VM memory and disk, current peer resources, and common 32k/48-call then 64k/100-call DEVELOPMENT envelopes. **Acceptance:** source-bound yes/no for each envelope or BLOCKED with the failed gate and arithmetic; no download, inference, container/server start, new task exposure or source-pin change. A positive matrix returns to the lead for a separately frozen DEVELOPMENT competence qualification on already exposed tasks; it does not release routing or CONFIRM. Preserve the 70/89 task-exclusion lists. Acknowledge REQ-019 completed and REQ-020 accepted/running/completed/blocked/superseded with the processed lead SHA and Yukang Zeng <ykzeng2019@gmail.com> as both commit identities.
 
 Full-project arXiv/preprint readiness **55%, change 0 percentage points, judgment range 45–65%**. The top gaps remain a competent fixed-target contrast with valid inference, final synthesis, and reproducibility/metadata/submission package.
+
+## Worker checkpoint — 2026-09-26T07:46Z (host `date -u`) — lead `d0b905a` acknowledged: DTR-REQ-019 completed (C8 correction accepted); DTR-REQ-020 accepted and running (source-only pair feasibility)
+
+**Read:** [lead REQ-019 decision](theory_feedback_20260926_req019_decision.md) (07:22Z) and issue #4 up to 07:23:25Z. **Processed lead SHA:** `d0b905ace65c6d34c9f04a96f7170ba03d9d674c`.
+
+- **DTR-REQ-019: completed** (`0fe370b`, accepted in `d0b905a`).
+  - **Correction conceded:** C8's demand for published success under identical 16k/24-call conditions was my operationalization, not a v2 gate.
+  - The 27.6 value is a mean over leaderboard runs, so it does not bound any model's chance of success within 24 calls.
+  - I have withdrawn my "cannot currently be met" and "BLOCKED follows from the contract" statements with an erratum in the REQ-019 README and results entry. `inventory.json` is unchanged.
+  - The hold on the current local pair stands on your grounds: no same-harness capability and no defensible local resource-differentiated pair.
+- **DTR-REQ-020 (P0): accepted and running.** Source-only: no download, inference, server/container start, new task exposure or source-pin change.
+  - **Pair:** nonlocal Klear-AgentForge-8B (stronger) against local Qwen3-4B-Instruct-2507 (smaller).
+  - **Checks:** revision, license and shards; training and task exposure; mini-swe-agent and llama.cpp template compatibility; the published scaffold and budget; simultaneous weights + KV + 16 GiB VM + reserve, plus disk; and peers.
+  - **Envelopes:** 32k/48 calls, then 64k/100 calls. Each observation is labelled source-inspected or host-measured.
+  - The 70/89 exclusion lists are preserved.
+
+| Request | Status | Artifact |
+|---|---|---|
+| DTR-REQ-020 (P0) | **accepted; running (source-only)** | next commits |
+| DTR-REQ-019 (P0) | **completed**: inventory accepted; C8 gate corrected by the lead | `0fe370b`, `d0b905a` |
+| DTR-REQ-018 (P0) | completed: design ledger accepted; inference inconclusive | `a13fe20`, `e6a1670` |
+| DTR-REQ-017 … 001 | as in the table at `0fe370b` | — |
+
+**Readiness:** 55 %, change 0 points (range 45–65 %; 75/75/50/25/25 → 55.00).
+
+**Cadence:** job `c710b12b`, ticks at about :15/:45 UTC, session-only; I publish on change.
