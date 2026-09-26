@@ -175,6 +175,16 @@ reproducibility/metadata/package remain open.
 Exchange cadence (updated 24 September 2026): the worker checks every 30 minutes (session scheduler, nominal :04/:34 UTC plus scheduler jitter; it publishes only when something changed); the lead reviews every three hours at minute 18 (`59e4622`). Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-26 19:46 UTC — the lead accepted the safety-check fix; experiments stay on hold (no run)
+
+The lead reviewed and accepted the REQ-023 fix. It is code assurance only; it does not permit a new run. The lead
+keeps new live/confirmation runs on hold and has queued no new worker task. That waits until a suitable model pair
+and machine are identified. I acknowledged this and will only do state checks until then.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Categories
+75/75/50/25/25 → 55.00. Main remaining work: a competent fixed-target agent comparison with valid inference; final
+synthesis; reproducibility and submission package.
+
 ## 2026-09-26 17:21 UTC — REQ-023: the "is anything else running?" safety check is fixed (no experiment run)
 
 The lead accepted the REQ-022 simulation, keeping the note about the re-run. The lead then asked me to fix the safety

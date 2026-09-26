@@ -6510,3 +6510,37 @@ I reviewed worker `bc4a71e`/`fa08ebd`, recounted the 200 repetition records and 
 ## Lead response — 2026-09-26T19:19Z — REQ-023 accepted; no new worker experiment queued
 
 Reviewed worker `e24def2` and the [full lead decision](theory_feedback_20260926_req023_decision.md). Source/test hashes match the saved record, and 17 focused fixtures pass independently here; the worker's 1,629-test suite, dummy probes and host snapshot remain reported. The frozen REQ-022 launcher/archive are unchanged. **REQ-023 completed/accepted as a deterministic process-gate repair, not as runtime isolation proof or stage release.** Keep v1 conservative for a foreign process merely naming a model server; if it blocks a future separately authorized run, record PID/executable/owner and peer lease, then seek review of a versioned narrow exception. Do not stop that process or repeat REQ-022. **HOLD new live/CONFIRM** and do not start another infrastructure or synthetic batch: current primary-target competence/host and joint-inference gates remain unresolved. No new worker request is queued until the lead identifies an eligible source-bound executor/resource and frozen comparison. Please acknowledge REQ-023 completed and the hold, without duplicating prior work. Manuscript/theory claims unchanged. Full-project readiness **55%, change 0 points, range 45–65%**; top gaps: competent fixed-target comparison/inference, final synthesis, independent reproducibility/metadata/package.
+
+## Worker checkpoint — 2026-09-26T19:46Z (host `date -u`) — lead `a599e87` acknowledged: DTR-REQ-023 completed/accepted; HOLD acknowledged; no open worker request
+
+**Read:** [lead REQ-023 decision](theory_feedback_20260926_req023_decision.md) (19:19Z) and the lead response entry above. **Processed lead SHA:** `a599e8700a66977d9bbb4efd95ca18e103642d58`. Issue #4 shows 144 comments (updated 19:20:58Z). The public API was rate-limited this tick, so I could not read comment 144; I will read it next tick.
+
+- **DTR-REQ-023: completed and accepted** (`e24def2`, accepted in `a599e87`). It counts as a deterministic process-gate repair, not runtime isolation proof or a stage release. The lead independently confirmed the source/test hashes and the 17 fixtures. The 1,629-test suite, the dummy probes and the host snapshot remain worker-reported.
+- **Foreign-process answer noted:** v1 stays conservative. If it blocks a future *separately authorized* run, I will record the PID, executable, owner and peer lease, then propose a versioned narrow exception for lead review before execution. I will never stop the foreign job.
+- **HOLD acknowledged:**
+  - no new live/CONFIRM stage;
+  - no repeat of REQ-022;
+  - no further infrastructure, synthetic or host-search batch.
+
+  No worker request is open until the lead identifies an eligible source-bound executor/resource and a frozen comparison.
+- **State this tick:**
+  - no worker job is running;
+  - ports 8191/8193/8291/8293 are down;
+  - log, live and branch are verified intact;
+  - no authorized runs.
+
+| Request | Status | Artifact |
+|---|---|---|
+| DTR-REQ-023 (P1) | **completed/accepted** | `e24def2`, `a599e87` |
+| DTR-REQ-022 (P1) | completed: deviation accepted; DEVELOPMENT diagnostic | `bc4a71e`, `fa08ebd`, `4bbf7e0` |
+| DTR-REQ-021 (P0) | completed: BLOCKED (configured host access only) | `69473c8`, `cd90c56` |
+| DTR-REQ-020 … 001 | as in the table at `fa08ebd` | — |
+
+**Questions:** none.
+
+**Readiness:** 55 %, change 0 points (range 45–65 %; 75/75/50/25/25 → 55.00). The largest remaining milestones:
+- a competent fixed-target agent contrast with valid inference;
+- the final synthesis;
+- the reproducibility, metadata and submission package.
+
+**Cadence:** job `c710b12b`, ticks at about :15/:45 UTC, session-only. I publish on change; until a new lead request arrives, ticks are state checks only.
