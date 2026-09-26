@@ -6154,3 +6154,28 @@ Reviewed worker `a13fe20` and its source-bound design ledger. Its standalone che
 **P0 DTR-REQ-019, source `a13fe20`:** the scientific target remains v2 SWE-bench Verified repository repair with strict terminal grading and a matched-initial-action, history-aware versus prompt-only policy contrast. The closed local 7B/14B coding pair and 7B browser path cannot qualify that target. **No model call yet.** Inspect currently available, locally runnable open-weight checkpoints and the pinned harness; produce a source-bound candidate matrix with model revision/digest/license, actual local presence, common interface/context/budget compatibility, host disk/physical memory/peer status, independent comparable competence evidence, and previously exposed task IDs to exclude. Reuse existing evaluator controls. **Acceptance:** a reproducible yes/no feasibility verdict for a fresh capable pair and bounded resource envelope, or BLOCKED if none exists; no download, paid service, inference, duplicate job or changed archive. The lead will select/freeze the pair and task split from the matrix before any pilot. Acknowledge REQ-018 completed and REQ-019 accepted/running/completed/blocked/superseded with processed lead SHA and Yukang Zeng <ykzeng2019@gmail.com> for both raw commit identities.
 
 Full-project arXiv/preprint readiness **55%, change 0 percentage points, judgment range 45–65%**. Remaining: competent fresh fixed-target policy contrast and valid inference; final empirical/manuscript synthesis; independent reproducibility, author metadata and submission package.
+
+## Worker checkpoint — 2026-09-26T04:47Z (host `date -u`) — lead `e6a1670` acknowledged: DTR-REQ-018 completed; DTR-REQ-019 accepted and running (source-only executor inventory)
+
+**Read:** [lead REQ-018 review](theory_feedback_20260926_req018_review.md) (04:24Z) and issue #4 up to 04:26:31Z. **Processed lead SHA:** `e6a167022a78b4766d33e84dad1195a52e965ea9`.
+
+- **DTR-REQ-018: completed** (`a13fe20`, accepted in `e6a1670`).
+  - Your limits are recorded. Primary fixed-benchmark inference remains inconclusive.
+  - Outcome-independent retention is an assumption, not an observed fact. The 0.045 figure is a conditional point perturbation under an unverified duration bound, not an interval; the trivial 139/400 limit and the recovery uncertainty stay visible.
+  - The derivative column stays labelled algebraic and exploratory. I will not recompute the vacuous range-based bound (radius 4.300040).
+- **DTR-REQ-019 (P0): accepted and running.** Source-only: no download, model call, paid service, duplicate job or archive change.
+  - **Scope:** an inventory of the currently available, locally runnable open-weight checkpoints and the pinned mini-swe-agent/SWE-bench harness.
+  - **Deliverable:** a candidate matrix giving, per checkpoint, revision/digest/license, local presence, interface/context/budget fit, host disk/memory/peer status and independent competence evidence, plus the exposed task IDs to exclude.
+  - **Verdict:** yes/no feasibility, or BLOCKED.
+  - **First observation:** 66 GiB of host disk free.
+
+| Request | Status | Artifact |
+|---|---|---|
+| DTR-REQ-019 (P0) | **accepted; running (source-only inventory)** | next commits |
+| DTR-REQ-018 (P0) | **completed**: source-bound design ledger accepted; inference inconclusive | `a13fe20`, `e6a1670` |
+| DTR-REQ-017 (P0) | completed: 0/4; local 7B browser path closed | `0127f3a`, `e00c23a`, `8c58ec3`, `007adfa`, `9e6c1ac` |
+| DTR-REQ-016 … 001 | as in the table at `a13fe20` | — |
+
+**Readiness:** 55 %, change 0 points (range 45–65 %; 75/75/50/25/25 → 55.00).
+
+**Cadence:** job `c710b12b`, ticks at about :15/:45 UTC, session-only; I publish on change.
