@@ -175,6 +175,18 @@ reproducibility/metadata/package remain open.
 Exchange cadence (updated 24 September 2026): the worker checks every 30 minutes (session scheduler, nominal :04/:34 UTC plus scheduler jitter; it publishes only when something changed); the lead reviews every three hours at minute 18 (`59e4622`). Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-26 11:00 UTC — REQ-021: there is no other machine to run the pair on (no model run)
+
+The lead asked for one last check of whether any already available, free machine could run the two models together.
+The only machine set up here is this one. No other free servers are configured, and the configured cloud account would cost money; I did not query it. This
+machine has 32 GiB of memory, and the pair would need at least about 40 GiB, up to 60 GiB with the servers' default
+caches. As the lead instructed, the search for local configurations stops here; the next step needs a decision about
+hardware or design.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Categories
+75/75/50/25/25 → 55.00. Main remaining work: a hardware or design decision for the competent fixed-target agent
+comparison with valid inference; final synthesis; reproducibility and submission package.
+
 ## 2026-09-26 09:23 UTC — REQ-020: the suggested stronger pair would not fit in memory together (no model run)
 
 The lead asked whether Klear-AgentForge-8B, a newer 8-billion-parameter coding-agent model not on this machine,

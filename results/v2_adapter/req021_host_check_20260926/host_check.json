@@ -1,0 +1,114 @@
+{
+ "request": "DTR-REQ-021",
+ "kind": "one-time existing-host capacity check (read-only, local; nothing contacted)",
+ "lead_commit": "9fae0e4",
+ "lead_decision": "docs/theory_feedback_20260926_req020_decision.md",
+ "source_commit": "9fae0e416bddf37060bb2c667b76fab91fac24e6",
+ "builder_sha256": "63395b487793abb3d220b4acab0f1f5ba215d5642cf47cd8a31d5da902187228",
+ "req020_feasibility_sha256": "42144cf1bff09dab09a0351ef9f04cd2fe7d1675aeef5b4a5d465b813f6362f8",
+ "host_measured_utc": "2026-09-26T10:52:59Z",
+ "access": {
+  "ssh_host_entries": 1,
+  "ssh_remote_host_entries": 0,
+  "ssh_known_hosts": 1,
+  "ssh_known_hosts_non_code_hosting": 0,
+  "cloud_or_cluster_clis_installed": [
+   "gcloud"
+  ],
+  "gcloud": {
+   "installed": true,
+   "loads_with_default_python": false,
+   "account_configured": true,
+   "project_configured": true,
+   "existing_instances_queried": false
+  },
+  "docker_contexts": 2,
+  "docker_remote_contexts": 0,
+  "colima_profiles": 1,
+  "paid_cloud_note": "a Google Cloud account and project are configured locally, but cloud compute is a paid service and provisioning is not authorized; whether the project already holds an instance is unknown, because no cloud API was called",
+  "remote_access_clients_installed": [
+   "VPN client",
+   "remote-desktop client"
+  ],
+  "scope": "access configured on this machine only; institutional resources reachable through the installed remote-access clients (VPN, remote desktop) are not visible from local configuration",
+  "observation": "worker-host measured (local configuration only; nothing was contacted; names not published)"
+ },
+ "host": {
+  "hw_model": "Mac17,2",
+  "cpu": "Apple M5",
+  "hw_memsize_bytes": 34359738368,
+  "memory_free_pct": 60,
+  "swap": "total = 15360.00M  used = 14762.44M  free = 597.56M  (encrypted)",
+  "host_disk_free_gib": 64.65,
+  "colima": [
+   {
+    "profile": "dtr",
+    "status": "Running",
+    "arch": "aarch64",
+    "cpus": "6",
+    "memory": "16GiB",
+    "disk": "120GiB"
+   }
+  ],
+  "vm_disk_free_gib": 81.19,
+  "load_average": [
+   2.8916015625,
+   2.9697265625,
+   2.62744140625
+  ]
+ },
+ "peers": {
+  "model_server_processes": [],
+  "listening_ports_8000_8999": [
+   {
+    "port": 8770,
+    "command": "sharingd"
+   }
+  ],
+  "code_routing_stage_processes": 0,
+  "rule": "names/ports only; no sibling process is touched"
+ },
+ "evaluator": {
+  "colima_profile_dtr_running": true,
+  "vm_disk_free_gib": 81.19,
+  "pinned_harness": "mini-swe-agent 04d809c, SWE-bench evaluator f7bbbb2 (REQ-019 harness_sources)",
+  "template_compatibility": "source-inspected in REQ-020: Klear ChatML without tools; the jinja/autoparser path and the trained action protocol (```bash fence, MINI_SWE_AGENT_FINAL_OUTPUT, edit tool) differ from the frozen harness and remain unverified without a run"
+ },
+ "admission_32k_f16": {
+  "envelope": "32k_48 (f16 KV; the 64k/100 envelope is held by the lead)",
+  "hw_memsize_bytes": 34359738368,
+  "model_side_bytes": 17249451878,
+  "vm_allowance_bytes": 17179869184,
+  "static_total_bytes": 34429321062,
+  "static_limit_bytes": 32212254720,
+  "static_fits": false,
+  "compute_buffers": "not measurable without starting a server; positive, so they only tighten the gate",
+  "prompt_cache_max_bytes": 17179869184,
+  "prompt_cache_note": "pinned llama-server default cache_ram_mib 8192 per server (common/common.h); may stay below its maximum in a short episode",
+  "post_load_free_pct_projection": 9.8,
+  "post_load_min_free_pct": 20,
+  "post_load_passes": false,
+  "ram_needed_gib_without_buffers_or_cache": 40.08,
+  "ram_needed_gib_with_both_default_caches_full": 60.08,
+  "reading": "host RAM for this pair at 32k with f16 KV, one 16 GiB VM allowance and >= 20 % free after load: at least 40.1 GiB before buffers and caches, and at least 60.1 GiB if both default prompt caches fill (both lower bounds: compute buffers and OS use are excluded); this host has 32.0 GiB"
+ },
+ "gates": {
+  "H1_other_accessible_no_cost_host": false,
+  "H2_this_host_static_memory": false,
+  "H3_this_host_post_load_reserve": false
+ },
+ "verdict": {
+  "status": "BLOCKED",
+  "failing_gates": [
+   "H1_other_accessible_no_cost_host",
+   "H2_this_host_static_memory",
+   "H3_this_host_post_load_reserve"
+  ],
+  "statement": "no already accessible, no-cost host can keep both models resident at 32k/48 with f16 KV under the pinned evaluator: no other no-cost host is configured for access on this machine (a Google Cloud account is paid and out of scope; its existing instances were not queried), and this 32 GiB host fails the combined memory gate (static 32.065 GiB > 30.000 GiB before buffers and caches; projected 9.8 % free after load < 20 %). Per the lead, the local configuration search stops here."
+ },
+ "not_done": [
+  "no connection to another machine",
+  "no cloud API call",
+  "no download, server, VM change, inference, reservation or task exposure"
+ ]
+}

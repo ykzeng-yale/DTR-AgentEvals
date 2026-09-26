@@ -6349,3 +6349,36 @@ Reviewed worker `0c37517`, its [REQ-020 feasibility artifact](../results/v2_adap
 **P0 DTR-REQ-021, source `0c37517`:** inspect *once* whether any already accessible, no-cost host can run both Klear-8B and Qwen3-4B resident under the same pinned evaluator and common 32k/48-call DEVELOPMENT envelope. Record host RAM/free memory, disk, existing evaluator/container availability, peer ownership/isolation, source/template compatibility, and a conservative combined admission calculation including weights, f16 KV, 16-GiB VM, compute buffers, prompt caches and >=20% post-load free memory. **Acceptance:** one source-bound feasible host with a capped qualification proposal on already exposed tasks for separate lead review, or BLOCKED with the exact unavailable/failed gate. If no host is accessible, report once and stop searching local configuration variants. No download, model call, VM change, paid service, reservation, new task exposure or CONFIRM release. Acknowledge REQ-020 completed and REQ-021 accepted/running/completed/blocked/superseded with processed SHA; raw author and committer Yukang Zeng <ykzeng2019@gmail.com>.
 
 Full-project arXiv/preprint readiness **55%, change 0 percentage points, judgment range 45–65%**. The largest gaps remain a competent fixed-target contrast with valid inference, final empirical/manuscript synthesis, and independent reproducibility/metadata/submission package.
+
+## Worker checkpoint — 2026-09-26T11:00Z (host `date -u`) — lead `9fae0e4` acknowledged: DTR-REQ-020 completed (BLOCKED accepted); DTR-REQ-021 COMPLETED: BLOCKED, no accessible no-cost host; local host search stopped
+
+**Read:** [lead REQ-020 decision](theory_feedback_20260926_req020_decision.md) (10:20Z) and issue #4 up to 10:21:57Z. **Processed lead SHA:** `9fae0e416bddf37060bb2c667b76fab91fac24e6`.
+
+- **DTR-REQ-020: completed** (`0c37517`, accepted in `9fae0e4`).
+  - Your verdict is recorded: BLOCKED on this 32 GiB host for both f16 envelopes, with the hold on qualification, routing and CONFIRM here.
+  - The q8_0-KV and smaller-VM sensitivities are not approved workarounds. This is an infrastructure and executor-qualification block, not a test of the routing theory. The 70/89 exclusions and archives are preserved.
+- **DTR-REQ-021 (P0): accepted and completed. BLOCKED.**
+  - **Deliverable:** read-only and local, with nothing contacted and no cloud API call. [README](../results/v2_adapter/req021_host_check_20260926/README.md) and `host_check.json`; builder `experiments/v2_adapter/req021_host_check.py` with 2 tests.
+  - **H1 fails, no other accessible no-cost host configured on this machine:** the SSH config and its `Include` hold only the local Colima VM; the only known SSH host is code hosting; no remote Docker contexts; one Colima profile. A Google Cloud account and project are configured, but compute is paid and not authorized, and existing instances were not queried because that needs a cloud API call. VPN and remote-desktop clients are installed; institutional resources reachable through them are not visible locally. No names are published.
+  - **H2 fails, this host's static memory:** at 32k/48 with f16 KV, 32.065 GiB > 30 GiB before compute buffers and prompt caches.
+  - **H3 fails, this host's post-load reserve:** about 9.8 % free projected, against 20 %.
+  - **What a host would need:** at least 40.1 GiB of physical RAM before buffers and caches, and at least 60.1 GiB if both default 8 GiB prompt caches fill. Both are lower bounds. This host has 32 GiB.
+  - Per your instruction, the local configuration search stops here.
+- **Verification:** an independent read-only check reproduced the arithmetic. It corrected my first write-up, which said "no Google Cloud account"; the account exists, but the CLI does not load under the default Python. The fix is included, with 3 tests passing.
+- **Questions:**
+  1. The next step needs either a host with at least about 48–64 GiB of RAM (owner/lead decision; no no-cost host is available here) or a change of design. How should the empirical track proceed?
+  2. May I read-only query the configured Google Cloud project for existing instances? It is a cloud API call on the owner's account, and any compute would be paid. Or is cloud out of scope?
+
+| Request | Status | Artifact |
+|---|---|---|
+| DTR-REQ-021 (P0) | **completed: BLOCKED** (no accessible no-cost host; this host fails H2 and H3) | this commit |
+| DTR-REQ-020 (P0) | **completed**: BLOCKED accepted | `0c37517`, `9fae0e4` |
+| DTR-REQ-019 (P0) | completed: inventory accepted; C8 gate corrected by the lead | `0fe370b`, `d0b905a`, `2cbc850` |
+| DTR-REQ-018 … 001 | as in the table at `0c37517` | — |
+
+**Readiness:** 55 %, change 0 points (range 45–65 %; 75/75/50/25/25 → 55.00). The largest remaining milestones:
+- a host or design decision for the competent fixed-target agent contrast with valid inference;
+- the final synthesis;
+- the reproducibility, metadata and submission package.
+
+**Cadence:** job `c710b12b`, ticks at about :15/:45 UTC, session-only; I publish on change.

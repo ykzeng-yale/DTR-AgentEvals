@@ -5,7 +5,7 @@ directory and `results/sim/`, `results/code_routing/` are written only by this w
 Theory, proposal, literature and the reference library under `src/` belong to the theory
 agent and are not edited from here. Rules in [`AGENTS.md`](../AGENTS.md) apply.
 
-## Current status — 26 September 2026, 09:23 UTC (host `date -u`)
+## Current status — 26 September 2026, 11:00 UTC (host `date -u`)
 
 Both fixed-backend DEV cohorts are complete and separate: legacy 16 operational zeros / 330 requests;
 corrected yaml-v1 16 operational zeros / 352 requests. Neither produced an eligible nonempty submitted
@@ -116,6 +116,9 @@ from unverified raw execution identity. They correct attempted-write/testing/wor
   - Simultaneous serving with one 16 GiB VM allowance needs 32.07 GiB at 32k and 41.07 GiB at 64k, against a 30 GiB
     limit.
   - The protocol mismatch and non-comparable published scores are recorded as risks. Returned to the lead.
+- **DTR-REQ-021 (P0), completed: BLOCKED.** No accessible no-cost host exists. This 32 GiB host fails the combined
+  memory gate for the pair (at least 40.1 GiB would be needed), and the local search is stopped
+  ([host check](../results/v2_adapter/req021_host_check_20260926/README.md)). Returned to the lead.
 
 **Readiness 55%, change 0 points, range 45–65%.** Useful validated inference/adequate comparisons,
 final empirical synthesis, and independent reproducibility/metadata/package remain.
