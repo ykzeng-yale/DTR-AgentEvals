@@ -1113,8 +1113,40 @@ One Qwen2.5-Coder-14B episode ran on the already exposed `astropy__astropy-14598
   - The checker now fails closed. It passes on the published outputs; 67 REQ-018 tests and the full suite pass.
 - **Scope:** a retrospective design ledger. It changes no estimate, validates no interval and is not new evidence about routing benefit.
 
+### 2026-09-26 06:14 UTC — REQ-019: source-only executor inventory; BLOCKED under the frozen v2 contract (no model, no download)
+[inventory README](../results/v2_adapter/req019_executor_inventory_20260926/README.md), [inventory](../results/v2_adapter/req019_executor_inventory_20260926/inventory.json), [competence evidence](../results/v2_adapter/req019_executor_inventory_20260926/competence_evidence.json), builder `experiments/v2_adapter/req019_executor_inventory.py`, lead request `e6a1670`.
+- **What it is:** a read-only inventory of every locally present model checkpoint and the pinned harness. It covers 36 checkpoints: 15 in the HF cache, 7 in this repository and 14 elsewhere, which are published anonymously.
+  - Each has sha256 of every weight shard, license, architecture, context, KV size at the frozen 16384-token slot, servability by the pinned llama.cpp `4fea119` and a REQ-014 memory projection.
+  - Also recorded: the host envelope and peers, and the task exclusion list.
+  - No download, model call, server or container start, or archive change.
+- **Verdict: BLOCKED under the frozen contract** (mini-swe-agent bash actions, 16384 tokens, 24 steps).
+  - **Pass C1–C7:** five fresh local checkpoints are present, servable, licensed, have at least 16k context and fit memory: Qwen2.5-3B/7B-Instruct GGUF, Qwen3-4B-Instruct-2507 (safetensors and GGUF) and granite-3.3-8b-instruct GGUF.
+  - **Fail C8:** none has independent SWE-bench Verified evidence under a comparable contract.
+  - **Disclosure:** no published open-weight result meets that contract anywhere; the fewest mean mini-SWE-agent calls among 15 open-weight Verified entries is 27.6. BLOCKED therefore follows from the contract itself.
+- **Competence evidence:** read-only web research by three agents plus a citation verifier (52 cited entries).
+  - Qwen3-4B-Instruct-2507 is the only fresh local model with independent SWE-bench Verified evidence: OpenHands 11.2 % on 466 tasks at 64K context, and 5.2 %/7.0 % at 32k/128k.
+  - Qwen2.5-7B-Instruct has SWE-bench Lite only (0.67 %/2.67 %). Qwen2.5-3B and granite-3.3-8b have none.
+- **Relaxed alternative (a lead decision, not a verdict):** accepting that evidence would make Qwen3-4B-Instruct-2507 the stronger executor.
+  - Every candidate fits the per-model REQ-014 rule. Co-serving two different candidates, a joint extension of that rule with the VM counted once, fits at 16384 tokens (23.1–28.3 GiB ≤ 30 GiB).
+  - At 32768 tokens it fits for 7 of 9 pairs.
+- **Not local, context only:** Devstral-Small-2-24B (independent 56.4 % mini-SWE-agent) and Qwen3-Coder-30B-A3B would not fit beside the 16 GiB VM (about 32.4 and 35.2 GiB). gpt-oss-20b would fit (about 28.9 GiB) but has no independent mini-SWE-agent result.
+- **Excluded tasks:** 70 SWE-bench Verified IDs (REQ-008's 64 + 5 + `astropy__astropy-14598`). With the lead's REQ-009 rules the total is 89; a config scan found no other pinned ID.
+- **Host at build time:** 32 GiB M5, 59 % memory free, swap 14.4 of 15.0 GiB used, 67 GiB disk, Colima `dtr` VM with 16 GiB memory and 81 GiB disk free, no model server running.
+- **Verification:**
+  - A four-lens adversarial review with a critic, then a targeted re-check, found no error in the verdict.
+  - It found and I fixed:
+    - a dropped 99.6 MB shard of Qwen3-4B;
+    - a wrong co-serving sentence;
+    - model-vs-key pairing;
+    - the exclusion provenance;
+    - the q4 basis;
+    - T5 servability;
+    - several labels.
+  - All 9 REQ-019 tests and the full suite pass.
+- **Scope:** feasibility evidence only. Not a model result; any pair, contract change or download is a lead decision.
+
 ### Not claimed
-No model runs for REQ-005 to REQ-008 and REQ-018 (no-model instrumentation, retrospective analyses, a metadata inventory and a source-bound design ledger). Real-model execution since the archived coding study is limited to the SWE-bench Verified pipeline smoke (Flask episodes), the two 16-episode Coder 7B/14B fixed-backend DEV cohorts (0/16 each) and the single-task DEVELOPMENT probes REQ-011 (0/2 eligible), REQ-012 (7B, eligible, unresolved) and REQ-014 (14B, operational zero), the browser 7B screen REQ-016 (0/8; no action executed) and pilot REQ-017 (0/4; actions executed, never past the search form), with no routing or CONFIRM run; Monte Carlo only on known synthetic kernels; no interval validation for DR/OR, learned policies or
+No model runs for REQ-005 to REQ-008, REQ-018 and REQ-019 (no-model instrumentation, retrospective analyses, a metadata inventory, a source-bound design ledger and a source-only executor inventory). Real-model execution since the archived coding study is limited to the SWE-bench Verified pipeline smoke (Flask episodes), the two 16-episode Coder 7B/14B fixed-backend DEV cohorts (0/16 each) and the single-task DEVELOPMENT probes REQ-011 (0/2 eligible), REQ-012 (7B, eligible, unresolved) and REQ-014 (14B, operational zero), the browser 7B screen REQ-016 (0/8; no action executed) and pilot REQ-017 (0/4; actions executed, never past the search form), with no routing or CONFIRM run; Monte Carlo only on known synthetic kernels; no interval validation for DR/OR, learned policies or
 the branch study; no power claim; no evidence of real-agent improvement. The
 archived learned router did not beat always-large. Lead's readiness estimate (rubric in [readiness.md](readiness.md),
 `76b3199`): 55%, change 0 percentage points, range 45–65%.

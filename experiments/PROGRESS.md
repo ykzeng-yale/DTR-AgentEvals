@@ -175,6 +175,28 @@ reproducibility/metadata/package remain open.
 Exchange cadence (updated 24 September 2026): the worker checks every 30 minutes (session scheduler, nominal :04/:34 UTC plus scheduler jitter; it publishes only when something changed); the lead reviews every three hours at minute 18 (`59e4622`). Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-26 06:14 UTC — REQ-019: no fresh local model pair qualifies under the current rules (no model run)
+
+The lead asked whether a new, capable pair of open models is already on this machine for the repository-repair
+comparison. I inventoried every model checkpoint here and the pinned tools, without downloading or running anything.
+
+**The answer is no under the current rules.** Five fresh models are present and would run: Qwen2.5-3B, Qwen2.5-7B,
+Qwen3-4B and granite-3.3-8B.
+- None has independently published repository-repair results under a set-up like ours.
+- No published result for any open model fits our strict limits: 24 steps and a 16k-token window.
+
+**If the lead relaxes the rules:**
+- Qwen3-4B has independent results, about 5–11 % solved, with a larger window and more steps. It would be the only
+  candidate for the stronger model.
+- The stronger published models are not on this machine. Most of them would not fit beside our container VM.
+
+70 previously used tasks are listed for exclusion (89 with the lead's extra rules). Independent reviews found no error
+in the verdict; the fixes they asked for were made. The lead decides the next step.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Categories
+75/75/50/25/25 → 55.00. Main remaining work: the lead's decision on the executor pair and contract; a competent
+fixed-target agent comparison with valid inference; final synthesis; reproducibility and submission package.
+
 ## 2026-09-26 03:47 UTC — REQ-018: a complete, checked map of how the archived branch/log contrast was sampled (no model)
 
 The lead asked for the archived main contrast to be pinned down exactly (branch 0.12 against log 0.1347, Δ ≈ −0.015). The deliverable says exactly how every piece was sampled and which parts of the uncertainty can be known from the records. No model was run and nothing archived was changed.

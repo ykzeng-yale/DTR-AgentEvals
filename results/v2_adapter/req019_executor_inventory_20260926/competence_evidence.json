@@ -1,0 +1,623 @@
+{
+ "request": "DTR-REQ-019",
+ "kind": "cited competence evidence (read-only web research)",
+ "method": "Read-only web research on 2026-09-26 by three independent research agents plus a citation verifier that opened every cited source (arXiv HTML/PDF tables, model cards, the swebench.com leaderboard JSON, SWE-bench/experiments submissions). No weights were downloaded, no model was run, no form was submitted. Web content was treated as data. Quotations are omitted; numbers are as stated by each source, with the verifier's corrections.",
+ "comparable_contract": {
+  "interface": "mini-swe-agent 04d809c text bash actions (yaml-v1 family)",
+  "context_tokens": 16384,
+  "step_limit": 24,
+  "max_tokens": 1536,
+  "source": "configs/v2_req014_14b_capacity_probe_20260924.json settings"
+ },
+ "models": [
+  {
+   "model_key": "Qwen/Qwen3-4B-Instruct-2507",
+   "aliases": [
+    "unsloth/Qwen3-4B-Instruct-2507-GGUF"
+   ],
+   "entries": [
+    {
+     "model": "Qwen3-4B-Instruct-2507 (untrained student baseline)",
+     "benchmark": "SWE-bench Verified, 466 of 500 tasks (34 Matplotlib instances excluded)",
+     "resolve_rate": "11.2% on 466 tasks (about 10.4% if the 34 excluded tasks count as failures; my derivation, not the paper's)",
+     "scaffold": "OpenHands; greedy decoding at evaluation, 64K max context, at most 100 environment interactions",
+     "source_type": "independent",
+     "url": "https://arxiv.org/html/2605.12913",
+     "note": "VERIFIED against 'Revisiting DAgger in the Era of LLM-Agents' (arXiv 2605.12913v1; first author Changhao Li), Table 3 row 'Qwen3-4B | OpenHands | - | 5.0% | 11.2%'. The text names the student as Qwen3-4B-Instruct-2507. The paper says the 34 Matplotlib instances failed to build in its Docker setup and that spot checks put the effect of excluding them below 1%. Single greedy run; no confidence interval reported."
+    },
+    {
+     "model": "Qwen3-4B-Instruct (paper states the base is Qwen3-4B-Instruct-2507), ReAct baseline without training",
+     "benchmark": "SWE-bench Verified",
+     "resolve_rate": "7.0% at 128k context; 5.2% at 32k context",
+     "scaffold": "OpenHands (ReAct agent)",
+     "source_type": "independent",
+     "url": "https://arxiv.org/html/2606.28434",
+     "note": "VERIFIED against SWE-MeM (arXiv 2606.28434v1; first author Shuzheng Gao), Table 1, '<10B Models' block. Sections 3 and B.2 name Qwen3-4B-Instruct-2507 as the base. The paper does not say who ran the baselines. In the same table, the Qwen3-Coder-30B-A3B baseline (OpenHands 256k, 51.6) equals Qwen's own leaderboard submission, which suggests some baselines were copied from published sources. Temperature and number of runs are not given. The gap with the DAgger paper's 11.2% under OpenHands shows how sensitive small-model results are to configuration."
+    },
+    {
+     "model": "Qwen3-4B-Instruct (base per paper: Qwen3-4B-Instruct-2507)",
+     "benchmark": "SWE-bench Multilingual; SWE-bench Pro",
+     "resolve_rate": "Multilingual 7.3%; Pro 2.6% (256k context)",
+     "scaffold": "OpenHands",
+     "source_type": "independent",
+     "url": "https://arxiv.org/html/2606.28434",
+     "note": "VERIFIED against SWE-MeM Table 3. After SWE-MeM SFT+RL (32k context) the model scores 19.0% and 15.2%."
+    },
+    {
+     "model": "Qwen3-4B-Instruct-2507 (vendor model card and Qwen3 Technical Report)",
+     "benchmark": "SWE-bench (any split)",
+     "resolve_rate": "not reported by vendor",
+     "scaffold": "n/a",
+     "source_type": "vendor_self_reported",
+     "url": "https://huggingface.co/Qwen/Qwen3-4B-Instruct-2507",
+     "note": "VERIFIED. The card's coding and agent rows for Qwen3-4B-Instruct-2507 are LiveCodeBench v6 35.1, MultiPL-E 76.8, Aider-Polyglot 12.9, BFCL-v3 61.9, TAU1-Retail 48.7, TAU1-Airline 32.0, TAU2-Retail 40.4, TAU2-Airline 24.0 and TAU2-Telecom 13.2. The card has no SWE-bench row. The Qwen3 Technical Report (arXiv 2505.09388v1) HTML contains zero SWE-bench mentions."
+    }
+   ],
+   "independent_swebv_any": true,
+   "independent_swebv_comparable_contract": false,
+   "rationale": "independent SWE-bench Verified results exist only under OpenHands with >= 32k context and up to 100 interactions (11.2% on 466 tasks at 64K; 5.2% at 32k and 7.0% at 128k); none under a mini-swe-agent-style bash interface at 16384 tokens and 24 steps; the vendor reports none"
+  },
+  {
+   "model_key": "Qwen/Qwen2.5-7B-Instruct-GGUF",
+   "aliases": [
+    "Qwen/Qwen2.5-7B-Instruct"
+   ],
+   "entries": [
+    {
+     "model": "Qwen2.5-7B-Instruct (general, not Coder)",
+     "benchmark": "SWE-bench Verified",
+     "resolve_rate": "no published result found",
+     "scaffold": "n/a",
+     "source_type": "none_found",
+     "url": "https://arxiv.org/html/2506.12728",
+     "note": "VERIFIED, with an added detail. There is no Verified number for the untuned general 7B model, and the Qwen2.5 blog reports none. The mislabel is confirmed: the MCTS-Refined CoT table row reads 'Fine-tuned Qwen2.5-7B-Instruct' (Agentless, Verified 22.6%, Lite 16.3%), but the method text says the base was Qwen2.5-Coder-7B-Instruct. The paper's conclusion paragraph also swaps the two splits (it lists Verified 16.3 and Lite 22.6). The official leaderboard lists MCTS-Refine-7B at 23.2 (Verified) and 16.33 (Lite), checked=false. This is a fine-tuned model and must not be used as the base 7B."
+    },
+    {
+     "model": "Qwen2.5-7B-Instruct (general, not Coder), 'Raw' configuration",
+     "benchmark": "SWE-bench Lite (300 instances)",
+     "resolve_rate": "0.67% (2/300)",
+     "scaffold": "'Raw' baseline in EffGen. Its loop is not defined in Appendix W.3; the official SWE-bench harness is not stated (uncertain).",
+     "source_type": "independent",
+     "url": "https://arxiv.org/html/2602.00887",
+     "note": "VERIFIED against arXiv 2602.00887v2 (Srivastava et al.), Appendix W.3, Table 65. The caption says the Coder variants were not used. The same table gives 14B Raw 1.67% (5/300) and 32B Raw 2.33% (7/300). The section was added in response to reviewers. Low-confidence evidence, Lite only."
+    },
+    {
+     "model": "Qwen2.5-7B-Instruct (general, not Coder), with the EffGen framework",
+     "benchmark": "SWE-bench Lite (300 instances)",
+     "resolve_rate": "2.67% (8/300)",
+     "scaffold": "EffGen's own bash tool, code execution and ReAct loop (not a standard SWE scaffold)",
+     "source_type": "independent",
+     "url": "https://arxiv.org/html/2602.00887",
+     "note": "VERIFIED (Table 65). With EffGen, 14B scores 4.33% (13/300) and 32B 5.67% (17/300); the ratios over Raw are 4.0x, 2.6x and 2.4x. The authors call the absolute numbers low. Lite only."
+    },
+    {
+     "model": "Qwen2.5-3B-Instruct / Qwen2.5-7B-Instruct / Qwen3-4B (any variant); also granite-3.3-8b-instruct, DeepSeek-Prover-V2-7B, Kimina-Prover, gpt-oss-20b",
+     "benchmark": "Official SWE-bench leaderboards (Verified, Lite, Test, Multilingual, Multimodal), including the bash-only (mini-SWE-agent) view",
+     "resolve_rate": "no entry found",
+     "scaffold": "n/a",
+     "source_type": "none_found",
+     "url": "https://raw.githubusercontent.com/SWE-bench/swe-bench.github.io/master/data/leaderboards.json",
+     "note": "VERIFIED by parsing all five boards (Verified has 180 entries, Lite 84). The site's JavaScript (leaderboardFilters.js and mainResults.js) defines 'Bash Only' as a preset, the Agent filter set to mini-SWE-agent, on the Verified and Multilingual boards. Commit 193160a is titled 'Drop bash-only board'. The only Qwen-based entries under 10B are fine-tuned systems (MCTS-Refine-7B; Lingma SWE-GPT 7b at 18.2 and 10.2) and the SWE-Fixer pipeline, which uses a 7B retriever with a 72B editor."
+    }
+   ],
+   "independent_swebv_any": false,
+   "independent_swebv_comparable_contract": false,
+   "license_public": "apache-2.0",
+   "license_url": "https://huggingface.co/Qwen/Qwen2.5-7B-Instruct-GGUF/blob/bb5d59e06d9551d752d08b292a50eb208b07ab1f/LICENSE",
+   "rationale": "no SWE-bench Verified result; only SWE-bench Lite 0.67% (raw) and 2.67% (EffGen framework)"
+  },
+  {
+   "model_key": "Qwen/Qwen2.5-3B-Instruct-GGUF",
+   "aliases": [
+    "Qwen/Qwen2.5-3B-Instruct"
+   ],
+   "entries": [
+    {
+     "model": "Qwen2.5-3B-Instruct",
+     "benchmark": "SWE-bench Verified / Lite / any repository-repair split",
+     "resolve_rate": "no published result found",
+     "scaffold": "n/a",
+     "source_type": "none_found",
+     "url": "https://raw.githubusercontent.com/SWE-bench/swe-bench.github.io/master/data/leaderboards.json",
+     "note": "VERIFIED. I re-downloaded the leaderboard JSON; it is byte-identical to the earlier snapshot and was last changed in commit 193160a on 2026-09-01. Its latest Verified entry is dated 2026-02-26 and its latest Lite entry 2025-09-11. No Qwen 3B/4B/7B general-instruct entry appears on any board. The Qwen2.5 blog (qwenlm.github.io/blog/qwen2.5-llm/) has no SWE-bench numbers anywhere; for 3B-Instruct it reports HumanEval 74.4, MBPP 72.7 and LiveCodeBench 19.9 (confirmed). EffGen Table 65 covers only 7B, 14B and 32B (confirmed). SWE-rebench's smallest Qwen model with results is Qwen3.6-27B."
+    },
+    {
+     "model": "Qwen2.5-3B-Instruct / Qwen2.5-7B-Instruct / Qwen3-4B (any variant); also granite-3.3-8b-instruct, DeepSeek-Prover-V2-7B, Kimina-Prover, gpt-oss-20b",
+     "benchmark": "Official SWE-bench leaderboards (Verified, Lite, Test, Multilingual, Multimodal), including the bash-only (mini-SWE-agent) view",
+     "resolve_rate": "no entry found",
+     "scaffold": "n/a",
+     "source_type": "none_found",
+     "url": "https://raw.githubusercontent.com/SWE-bench/swe-bench.github.io/master/data/leaderboards.json",
+     "note": "VERIFIED by parsing all five boards (Verified has 180 entries, Lite 84). The site's JavaScript (leaderboardFilters.js and mainResults.js) defines 'Bash Only' as a preset, the Agent filter set to mini-SWE-agent, on the Verified and Multilingual boards. Commit 193160a is titled 'Drop bash-only board'. The only Qwen-based entries under 10B are fine-tuned systems (MCTS-Refine-7B; Lingma SWE-GPT 7b at 18.2 and 10.2) and the SWE-Fixer pipeline, which uses a 7B retriever with a 72B editor."
+    }
+   ],
+   "independent_swebv_any": false,
+   "independent_swebv_comparable_contract": false,
+   "license_public": "other (qwen-research)",
+   "license_url": "https://huggingface.co/Qwen/Qwen2.5-3B-Instruct-GGUF/blob/7dabda4d13d513e3e842b20f0d435c732f172cbe/LICENSE",
+   "rationale": "no published repository-repair result found"
+  },
+  {
+   "model_key": "ibm-granite/granite-3.3-8b-instruct-GGUF",
+   "aliases": [
+    "ibm-granite/granite-3.3-8b-instruct"
+   ],
+   "entries": [
+    {
+     "model": "Qwen2.5-3B-Instruct / Qwen2.5-7B-Instruct / Qwen3-4B (any variant); also granite-3.3-8b-instruct, DeepSeek-Prover-V2-7B, Kimina-Prover, gpt-oss-20b",
+     "benchmark": "Official SWE-bench leaderboards (Verified, Lite, Test, Multilingual, Multimodal), including the bash-only (mini-SWE-agent) view",
+     "resolve_rate": "no entry found",
+     "scaffold": "n/a",
+     "source_type": "none_found",
+     "url": "https://raw.githubusercontent.com/SWE-bench/swe-bench.github.io/master/data/leaderboards.json",
+     "note": "VERIFIED by parsing all five boards (Verified has 180 entries, Lite 84). The site's JavaScript (leaderboardFilters.js and mainResults.js) defines 'Bash Only' as a preset, the Agent filter set to mini-SWE-agent, on the Verified and Multilingual boards. Commit 193160a is titled 'Drop bash-only board'. The only Qwen-based entries under 10B are fine-tuned systems (MCTS-Refine-7B; Lingma SWE-GPT 7b at 18.2 and 10.2) and the SWE-Fixer pipeline, which uses a 7B retriever with a 72B editor."
+    },
+    {
+     "model": "ibm-granite/granite-3.3-8b-instruct (8B, released 2025-04-16, Apache-2.0)",
+     "benchmark": "SWE-bench Verified / Lite / Multi-SWE-bench",
+     "resolve_rate": "none found",
+     "scaffold": "n/a",
+     "source_type": "none_found",
+     "url": "https://huggingface.co/ibm-granite/granite-3.3-8b-instruct",
+     "note": "VERIFIED. The card table row for Granite-3.3-8B-Instruct gives HumanEval 89.73 and HumanEval+ 86.09 and has no SWE-bench row. The release date (April 16, 2025) and Apache-2.0 license are confirmed. The leaderboard JSON has no granite entry. I did not re-check the Artificial Analysis page or IBM's SWE-1.0 Lite claim."
+    },
+    {
+     "model": "ibm-granite/granite-4.2-8b (context only: a different, later model, not granite-3.3-8b-instruct)",
+     "benchmark": "SWE-bench Verified; SWE-bench Pro; SWE-bench Multilingual",
+     "resolve_rate": "Verified 47.67; Pro 19.11; Multilingual 30.78",
+     "scaffold": "The blog names the OpenHands harness for agentic RL training; the evaluation harness is not stated",
+     "source_type": "vendor_self_reported",
+     "url": "https://huggingface.co/blog/ibm-granite/granite-4-2",
+     "note": "VERIFIED. The blog was published 2026-08-25. The 30B model scores 57.00 / 33.29 / 41.89 and the 3B is NA. The blog gives no Granite 3.3 SWE-bench number."
+    }
+   ],
+   "independent_swebv_any": false,
+   "independent_swebv_comparable_contract": false,
+   "rationale": "no published repository-repair result found (granite-4.2-8b is a different, later model)"
+  },
+  {
+   "model_key": "deepseek-ai/DeepSeek-Prover-V2-7B",
+   "aliases": [
+    "mlx-community/DeepSeek-Prover-V2-7B-4bit"
+   ],
+   "entries": [
+    {
+     "model": "Qwen2.5-3B-Instruct / Qwen2.5-7B-Instruct / Qwen3-4B (any variant); also granite-3.3-8b-instruct, DeepSeek-Prover-V2-7B, Kimina-Prover, gpt-oss-20b",
+     "benchmark": "Official SWE-bench leaderboards (Verified, Lite, Test, Multilingual, Multimodal), including the bash-only (mini-SWE-agent) view",
+     "resolve_rate": "no entry found",
+     "scaffold": "n/a",
+     "source_type": "none_found",
+     "url": "https://raw.githubusercontent.com/SWE-bench/swe-bench.github.io/master/data/leaderboards.json",
+     "note": "VERIFIED by parsing all five boards (Verified has 180 entries, Lite 84). The site's JavaScript (leaderboardFilters.js and mainResults.js) defines 'Bash Only' as a preset, the Agent filter set to mini-SWE-agent, on the Verified and Multilingual boards. Commit 193160a is titled 'Drop bash-only board'. The only Qwen-based entries under 10B are fine-tuned systems (MCTS-Refine-7B; Lingma SWE-GPT 7b at 18.2 and 10.2) and the SWE-Fixer pipeline, which uses a 7B retriever with a 72B editor."
+    },
+    {
+     "model": "deepseek-ai/DeepSeek-Prover-V2-7B (7B, built on DeepSeek-Prover-V1.5-Base, 32K context)",
+     "benchmark": "SWE-bench Verified / Lite / Multi-SWE",
+     "resolve_rate": "none found",
+     "scaffold": "n/a",
+     "source_type": "none_found",
+     "url": "https://huggingface.co/deepseek-ai/DeepSeek-Prover-V2-7B",
+     "note": "CORRECTED. The card's MiniF2F-test 88.9% pass ratio and PutnamBench 49/658 belong to DeepSeek-Prover-V2-671B, not the 7B. The card text gives no 7B-specific benchmark numbers. The base model (Prover-V1.5-Base) and 32K context are confirmed. It is a Lean 4 prover with no SWE-bench evaluation found and no leaderboard entry."
+    }
+   ],
+   "independent_swebv_any": false,
+   "independent_swebv_comparable_contract": false,
+   "rationale": "theorem prover; no repository-repair result"
+  },
+  {
+   "model_key": "AI-MO/Kimina-Prover-RL-1.7B",
+   "aliases": [],
+   "entries": [
+    {
+     "model": "Qwen2.5-3B-Instruct / Qwen2.5-7B-Instruct / Qwen3-4B (any variant); also granite-3.3-8b-instruct, DeepSeek-Prover-V2-7B, Kimina-Prover, gpt-oss-20b",
+     "benchmark": "Official SWE-bench leaderboards (Verified, Lite, Test, Multilingual, Multimodal), including the bash-only (mini-SWE-agent) view",
+     "resolve_rate": "no entry found",
+     "scaffold": "n/a",
+     "source_type": "none_found",
+     "url": "https://raw.githubusercontent.com/SWE-bench/swe-bench.github.io/master/data/leaderboards.json",
+     "note": "VERIFIED by parsing all five boards (Verified has 180 entries, Lite 84). The site's JavaScript (leaderboardFilters.js and mainResults.js) defines 'Bash Only' as a preset, the Agent filter set to mini-SWE-agent, on the Verified and Multilingual boards. Commit 193160a is titled 'Drop bash-only board'. The only Qwen-based entries under 10B are fine-tuned systems (MCTS-Refine-7B; Lingma SWE-GPT 7b at 18.2 and 10.2) and the SWE-Fixer pipeline, which uses a 7B retriever with a 72B editor."
+    },
+    {
+     "model": "AI-MO/Kimina-Prover-RL-1.7B (1.7B, Apache-2.0)",
+     "benchmark": "SWE-bench Verified / Lite / Multi-SWE",
+     "resolve_rate": "none found",
+     "scaffold": "n/a",
+     "source_type": "none_found",
+     "url": "https://huggingface.co/AI-MO/Kimina-Prover-RL-1.7B",
+     "note": "VERIFIED: the card reports only MiniF2F-test 76.63% Pass@32 (+3.68 over its base). CORRECTION: the card lists its base model only as AI-MO/Kimina-Prover-Distill-1.7B. The Qwen3-1.7B ancestry claimed earlier is not stated on this card and I did not verify it. No leaderboard entry."
+    }
+   ],
+   "independent_swebv_any": false,
+   "independent_swebv_comparable_contract": false,
+   "rationale": "theorem prover; no repository-repair result"
+  },
+  {
+   "model_key": "Qwen/Qwen2.5-Coder-14B-Instruct",
+   "aliases": [
+    "qwen2.5-coder-14b-instruct-aedcc2d-q4_k_m.gguf",
+    "qwen2.5-coder-14b-instruct-aedcc2d-bf16.gguf",
+    "qwen2.5-coder-14b-instruct-q4_k_m.gguf"
+   ],
+   "entries": [
+    {
+     "model": "Qwen2.5-Coder-14B-Instruct, zero-shot (neighbouring model)",
+     "benchmark": "SWE-bench Verified; SWE-bench Lite",
+     "resolve_rate": "Verified 4.0% (\u00b11.6); Lite 2.7% (\u00b11.9)",
+     "scaffold": "OpenHands, temperature 0, at most 100 turns or 32k context",
+     "source_type": "independent",
+     "url": "https://arxiv.org/html/2412.21139",
+     "note": "VERIFIED against SWE-Gym Table 3. After fine-tuning the model scores 16.4% (Verified) and 12.7% (Lite)."
+    },
+    {
+     "model": "Qwen2.5-Coder-14B-Instruct (neighbouring model)",
+     "benchmark": "SWE-bench Verified; Multi-SWE-bench mini",
+     "resolve_rate": "Verified: Agentless 19.4%, OpenHands 1.4%; Multi-SWE-bench mini (Agentless) 3.8%",
+     "scaffold": "Agentless and OpenHands",
+     "source_type": "independent",
+     "url": "https://arxiv.org/pdf/2506.03524",
+     "note": "VERIFIED against Seed-Coder Table 15. The same checkpoint scores about 18 points higher under Agentless than under OpenHands."
+    },
+    {
+     "model": "Qwen2.5-Coder-14B-Instruct (neighbouring model)",
+     "benchmark": "SWE-MERA (not SWE-bench)",
+     "resolve_rate": "2025 table: pass@1 7.8%, pass@6 16.9%; 2024 table: pass@1 9.0%, pass@6 23.0%",
+     "scaffold": "Aider, 6 attempts",
+     "source_type": "independent",
+     "url": "https://arxiv.org/html/2507.11059",
+     "note": "VERIFIED values. Internal inconsistency in the paper: its text says 14B reaches 23% pass@6 on 2025 data, but 23.0% is the 2024 table value; the 2025 table gives 16.9%."
+    }
+   ],
+   "independent_swebv_any": true,
+   "independent_swebv_comparable_contract": false,
+   "rationale": "CLOSED by the lead; independent OpenHands 4.0% and Agentless 19.4%; no mini-swe-agent bash-only result; this project's own DEVELOPMENT runs produced no eligible patch"
+  },
+  {
+   "model_key": "Qwen/Qwen2.5-Coder-7B-Instruct",
+   "aliases": [
+    "qwen2.5-coder-7b-instruct-c03e6d3-q4_k_m.gguf",
+    "qwen2.5-coder-7b-instruct-c03e6d3-bf16.gguf",
+    "Qwen/Qwen2.5-Coder-7B-Instruct-GGUF",
+    "mlx-community/Qwen2.5-Coder-7B-Instruct-4bit"
+   ],
+   "entries": [
+    {
+     "model": "Qwen2.5-Coder-7B-Instruct, zero-shot (neighbouring model)",
+     "benchmark": "SWE-bench Verified (500); SWE-bench Lite (300)",
+     "resolve_rate": "Verified 1.8% (\u00b11.1); Lite 1.0% (\u00b11.0)",
+     "scaffold": "OpenHands CodeActAgent 2.1; temperature 0; each run capped at 100 interaction turns or the 32k context window",
+     "source_type": "independent",
+     "url": "https://arxiv.org/html/2412.21139",
+     "note": "VERIFIED against SWE-Gym, Table 3. CORRECTION to the second researcher: the 40.3% empty-patch and 47.0% stuck-in-loop rates are for Lite. On Verified the zero-shot 7B rates are 45.8% empty patch and 39.6% stuck in loop. After fine-tuning on 491 trajectories the model reaches 10.6% (Verified) and 10.0% (Lite). R2E-Gym (arXiv 2504.07164) reprints the Verified baseline as 1.8 (\u00b11.3). Coder variant; not a substitute for Qwen2.5-7B-Instruct."
+    },
+    {
+     "model": "Qwen2.5-Coder-7B-Instruct, zero-shot (neighbouring model)",
+     "benchmark": "SWE-bench Lite (300)",
+     "resolve_rate": "7.0% (empty-patch rate 56.3%)",
+     "scaffold": "MoatlessTools (fixed workflow), temperature 0",
+     "source_type": "independent",
+     "url": "https://arxiv.org/html/2412.21139",
+     "note": "VERIFIED against SWE-Gym Table 4, zero-shot row. The 32B zero-shot score with MoatlessTools is 19.0%. The same 7B model scores 1.0% on Lite with OpenHands, which shows the scaffold effect."
+    },
+    {
+     "model": "Qwen2.5-Coder-7B-Instruct (neighbouring model)",
+     "benchmark": "SWE-bench Verified; Multi-SWE-bench mini (400)",
+     "resolve_rate": "Verified: Agentless 4.2%, OpenHands 1.0%; Multi-SWE-bench mini (Agentless) 0.5%",
+     "scaffold": "Agentless and OpenHands",
+     "source_type": "independent",
+     "url": "https://arxiv.org/pdf/2506.03524",
+     "note": "VERIFIED against the PDF text I extracted from Seed-Coder (ByteDance, arXiv 2506.03524v2), Table 15 on page 30. The authors report that Agentless beats OpenHands in most cases for small models. In the same table, Seed-Coder-8B-Instruct scores 19.2 (Agentless) and 11.2 (OpenHands)."
+    },
+    {
+     "model": "Qwen2.5-Coder-7B-Instruct (labelled 'Qwen2.5-coder' in Table 2 and 'Qwen2.5-coder-instruct' in Table 3)",
+     "benchmark": "SWE-bench Verified; SWE-bench Lite",
+     "resolve_rate": "Verified 5.80%; Lite 4.33%",
+     "scaffold": "SWESynInfer (Lingma pipeline), with model-specific manual prompt engineering (asterisk)",
+     "source_type": "uncertain",
+     "url": "https://arxiv.org/html/2411.00622",
+     "note": "VERIFIED against Lingma SWE-GPT, Table 2. The variant question is RESOLVED: the paper's Table 3 names the same 5.80% row 'Qwen2.5-coder-instruct 7B'. The authors warn that the asterisked rows may overestimate performance. CORRECTION: the JSON-format failure example in the text concerns Qwen2.5-instruct 72B, not the 7B Coder. The authors are Alibaba's Lingma team, the same parent company as Qwen, so independence is uncertain. Lingma SWE-GPT 7B (fine-tuned) scores 18.20% (Verified) and 12.00% (Lite)."
+    },
+    {
+     "model": "Qwen2.5-Coder-7B-Instruct (neighbouring model)",
+     "benchmark": "SWE-MERA (not SWE-bench): fresh GitHub issues collected September 2024 to June 2025",
+     "resolve_rate": "2025 table: pass@1 2.7%, pass@6 5.5%; 2024 table: pass@1 2.0%, pass@6 4.5%",
+     "scaffold": "Aider, 6 independent attempts, each allowed up to 4 lint/test reflections",
+     "source_type": "independent",
+     "url": "https://arxiv.org/html/2507.11059",
+     "note": "VERIFIED values (Table 2 for 2025, Table 4 for 2024). CORRECTION: 728 is the paper's total number of samples currently available, not the size of the 2025 subset. The 2025 subset size is uncertain."
+    },
+    {
+     "model": "Fine-tuned derivatives of Qwen2.5-Coder-7B/14B-Instruct (context only)",
+     "benchmark": "SWE-bench Verified",
+     "resolve_rate": "SWE-Gym FT: 7B 10.6%, 14B 16.4%; R2E-Gym: 7B 19.0%, 14B 26.8%; SWE-agent-LM-7B 15.2% (Lite 11.7%); SWE-Dev-7B 23.4%",
+     "scaffold": "OpenHands (SWE-Gym, SWE-Dev); R2E-Gym's OpenHands-based agent; SWE-agent (SWE-smith)",
+     "source_type": "independent",
+     "url": "https://arxiv.org/html/2504.07164",
+     "note": "VERIFIED against R2E-Gym (19.0 \u00b11.0; 26.8 \u00b11.4), SWE-Gym Table 3, SWE-smith Table 3 and SWE-Dev (23.4%, a 21.6-point gain, i.e. a 1.8 baseline). These are trained agents, not the base checkpoints."
+    }
+   ],
+   "independent_swebv_any": true,
+   "independent_swebv_comparable_contract": false,
+   "rationale": "CLOSED by the lead; independent OpenHands 1.0-1.8%, Agentless 4.2%; no mini-swe-agent bash-only result"
+  }
+ ],
+ "reference_not_local": {
+  "note": "NOT LOCAL: context for the lead only. Using any of these needs a download that REQ-019 does not authorize. Configs and parameter counts were read from public Hugging Face metadata (no weights). Memory projections apply the REQ-014 static rule (q4 estimate 4.97 bits/parameter, the average of the local Q4_K_M files + f16 KV at 16384 tokens + 16 GiB VM <= 32 GiB - 2 GiB) and are estimates; the pinned llama.cpp 4fea119 lists all three architectures",
+  "models": [
+   {
+    "repo": "mistralai/Devstral-Small-2-24B-Instruct-2512",
+    "revision": "55c5b41e98c2dbd21b0c8afffc540dcfc9eb5128",
+    "license": "apache-2.0",
+    "params": 24011361840,
+    "architecture": "mistral3/ministral3",
+    "entries": [
+     {
+      "model": "Devstral Small 2 (Devstral-Small-2-24B-Instruct-2512, 24B)",
+      "benchmark": "SWE-bench Verified",
+      "resolve_rate": "68.0%",
+      "scaffold": "not stated for SWE-bench; the Cline mention on the Mistral page refers to a human evaluation",
+      "source_type": "vendor_self_reported",
+      "url": "https://huggingface.co/mistralai/Devstral-Small-2-24B-Instruct-2512",
+      "note": "VERIFIED on the card (68.0%, Multilingual 55.7%) and on mistral.ai/news/devstral-2-vibe-cli (68.0%; Devstral 2 123B scores 72.2%). The news page says Devstral Small can run CPU-only. The number of attempts is not stated."
+     },
+     {
+      "model": "Devstral Small (2512) (24B)",
+      "benchmark": "SWE-bench Verified (500), mini-SWE-agent bash-only",
+      "resolve_rate": "56.4% (282/500)",
+      "scaffold": "mini-SWE-agent v1.17.2 bash-only, about 86.9 model calls per instance",
+      "source_type": "independent",
+      "url": "https://raw.githubusercontent.com/SWE-bench/swe-bench.github.io/master/data/leaderboards.json",
+      "note": "VERIFIED: folder 20251209_mini-v1.17.2_devstral-small-2512, checked true. Devstral (2512) 123B scores 53.8 on the same view. With Qwen2.5-Coder-32B-Instruct, this is one of only two open-weight models at or under 32B with a bash-only entry."
+     }
+    ],
+    "memory": {
+     "q4_bytes_estimate": 14917058543,
+     "kv_bytes_at_16384": 2684354560,
+     "projection_bytes": 34781282287,
+     "limit_bytes": 32212254720,
+     "fits": false
+    }
+   },
+   {
+    "repo": "Qwen/Qwen3-Coder-30B-A3B-Instruct",
+    "revision": "b2cff646eb4bb1d68355c01b18ae02e7cf42d120",
+    "license": "apache-2.0",
+    "params": 30532122624,
+    "architecture": "qwen3moe",
+    "entries": [
+     {
+      "model": "Qwen3-Coder-30B-A3B-Instruct (30.5B total / 3.3B active MoE)",
+      "benchmark": "SWE-bench Verified (500)",
+      "resolve_rate": "51.6% (258/500), pass@1",
+      "scaffold": "OpenHands (turn limit not stated)",
+      "source_type": "vendor_self_reported",
+      "url": "https://github.com/SWE-bench/experiments/tree/main/evaluation/verified/20250805_openhands-Qwen3-Coder-30B-A3B-Instruct",
+      "note": "VERIFIED: metadata authors Qwen-Team, checked false, attempts 1. The HF card has no SWE-bench mention. Unsloth's docs say its dynamic 4-bit quant needs at least 18GB of unified memory or system RAM (third party)."
+     },
+     {
+      "model": "Qwen3-Coder-30B-A3B-Instruct",
+      "benchmark": "SWE-bench Verified, mini-SWE-agent bash-only",
+      "resolve_rate": "no published result found",
+      "scaffold": "mini-SWE-agent (bash-only)",
+      "source_type": "none_found",
+      "url": "https://raw.githubusercontent.com/SWE-bench/swe-bench.github.io/master/data/leaderboards.json",
+      "note": "VERIFIED absent. SambaNova's blog (2025-11-14) reports 7% on 100 Verified samples in a single-shot 128k long-context, non-agentic setting. SWE-rebench lists the model as N/A for 15/05/2026 to 01/07/2026. SWE-TRACE Table 2 cites a separate 'SWE-RM-enhanced' Qwen3-Coder-30BA3B RL model at 62.0 under mini-SWE-Agent; that is a trained derivative."
+     }
+    ],
+    "memory": {
+     "q4_bytes_estimate": 18968081180,
+     "kv_bytes_at_16384": 1610612736,
+     "projection_bytes": 37758563100,
+     "limit_bytes": 32212254720,
+     "fits": false
+    }
+   },
+   {
+    "repo": "openai/gpt-oss-20b",
+    "revision": "6cee5e81ee83917806bbde320786a8fb61efebee",
+    "license": "apache-2.0",
+    "params": 20914757184,
+    "architecture": "gpt-oss",
+    "entries": [
+     {
+      "model": "Qwen2.5-3B-Instruct / Qwen2.5-7B-Instruct / Qwen3-4B (any variant); also granite-3.3-8b-instruct, DeepSeek-Prover-V2-7B, Kimina-Prover, gpt-oss-20b",
+      "benchmark": "Official SWE-bench leaderboards (Verified, Lite, Test, Multilingual, Multimodal), including the bash-only (mini-SWE-agent) view",
+      "resolve_rate": "no entry found",
+      "scaffold": "n/a",
+      "source_type": "none_found",
+      "url": "https://raw.githubusercontent.com/SWE-bench/swe-bench.github.io/master/data/leaderboards.json",
+      "note": "VERIFIED by parsing all five boards (Verified has 180 entries, Lite 84). The site's JavaScript (leaderboardFilters.js and mainResults.js) defines 'Bash Only' as a preset, the Agent filter set to mini-SWE-agent, on the Verified and Multilingual boards. Commit 193160a is titled 'Drop bash-only board'. The only Qwen-based entries under 10B are fine-tuned systems (MCTS-Refine-7B; Lingma SWE-GPT 7b at 18.2 and 10.2) and the SWE-Fixer pipeline, which uses a 7B retriever with a 72B editor."
+     },
+     {
+      "model": "gpt-oss-20b (20.9B total / 3.61B active MoE; MXFP4 MoE weights)",
+      "benchmark": "SWE-bench Verified, fixed 477-task subset",
+      "resolve_rate": "high reasoning 60.7%; medium 53.2%; low 37.4% (pass@1)",
+      "scaffold": "OpenAI internal. Coding evals were run with and without a terminal tool similar to the Codex CLI (an exec tool). The internal file-edit scaffold averaged over 4 tries is described for o3 and o4-mini, not for gpt-oss.",
+      "source_type": "vendor_self_reported",
+      "url": "https://cdn.openai.com/pdf/419b6906-9da6-406c-a19d-1bb078ac7637/oai_gpt-oss_model_card.pdf",
+      "note": "VERIFIED from the PDF text, Table 3 ('SWE-Bench Verified 47.9 52.6 62.4 37.4 53.2 60.7' for 120b low/med/high then 20b low/med/high). Quote: \"All SWE-bench evaluation runs use a fixed subset of n=477 verified tasks\". Memory: MXFP4 at 4.25 bits per parameter, runs within 16GB, 12.8GiB checkpoint. Not comparable to bash-only numbers."
+     },
+     {
+      "model": "gpt-oss-20b",
+      "benchmark": "SWE-bench Verified, mini-SWE-agent bash-only",
+      "resolve_rate": "no published result found",
+      "scaffold": "mini-SWE-agent (bash-only)",
+      "source_type": "none_found",
+      "url": "https://raw.githubusercontent.com/SWE-bench/swe-bench.github.io/master/data/leaderboards.json",
+      "note": "VERIFIED absent from the leaderboard and from Epoch's CSV. For context, gpt-oss-120b's bash-only entry is 26.0 (mini v1.7.0, checked=true, about 27.6 calls per instance) against the vendor's 62.4. In mini-swe-agent issue #798 a user reproducing gpt-oss:120b via Ollama reported 1 of 10 tasks resolved; I could not confirm the earlier '2/10'. The issue does not mention gpt-oss-20b."
+     },
+     {
+      "model": "gpt-oss-20b",
+      "benchmark": "'SWE-Bench (OpenHands)'; split not stated",
+      "resolve_rate": "34.0 (uncertain)",
+      "scaffold": "OpenHands, as labelled by the citing table",
+      "source_type": "uncertain",
+      "url": "https://arxiv.org/html/2512.20848",
+      "note": "VERIFIED as a comparison value: 34.00* in the Nemotron 3 Nano paper's Table 3, 34.0 on the Nemotron card, and 34.0 on the GLM-4.7-Flash card. CORRECTED sourcing: the paper says comparison numbers are official where available, otherwise from ArtificialAnalysis, otherwise computed by NVIDIA. The asterisk is not defined in the extracted text, so the origin of this value is uncertain."
+     }
+    ],
+    "memory": {
+     "q4_bytes_estimate": 12993292900,
+     "kv_bytes_at_16384": 805306368,
+     "projection_bytes": 30978468452,
+     "limit_bytes": 32212254720,
+     "fits": true
+    }
+   }
+  ],
+  "other_entries": [
+   {
+    "model": "Qwen3-8B, untrained (neighbouring model)",
+    "benchmark": "SWE-bench Verified: 466 of 500 tasks",
+    "resolve_rate": "7.7%",
+    "scaffold": "OpenHands; greedy decoding, 64K context, at most 100 interactions",
+    "source_type": "independent",
+    "url": "https://arxiv.org/html/2605.12913"
+   },
+   {
+    "model": "Qwen2.5-Coder-32B-Instruct (base, no SWE fine-tuning; neighbouring model)",
+    "benchmark": "SWE-bench Verified (500), mini-SWE-agent bash-only",
+    "resolve_rate": "9.0% (45/500)",
+    "scaffold": "mini-SWE-agent v1.0.0 bash-only, 1 attempt, about 48.2 model calls per instance",
+    "source_type": "independent",
+    "url": "https://raw.githubusercontent.com/SWE-bench/experiments/main/evaluation/verified/20250803_mini-v1.0.0_qwen2-5-coder-32b-instruct/metadata.yaml"
+   },
+   {
+    "model": "Devstral-Small-2505 (24B, Mistral)",
+    "benchmark": "SWE-bench Verified (500)",
+    "resolve_rate": "46.8% (234/500), 1 attempt, pass@1",
+    "scaffold": "OpenHands",
+    "source_type": "vendor_self_reported",
+    "url": "https://github.com/SWE-bench/experiments/tree/main/evaluation/verified/20250520_openhands_devstral_small"
+   },
+   {
+    "model": "Devstral-Small-2507 (Devstral Small 1.1, 24B)",
+    "benchmark": "SWE-bench Verified",
+    "resolve_rate": "53.6%",
+    "scaffold": "OpenHands",
+    "source_type": "vendor_self_reported",
+    "url": "https://huggingface.co/mistralai/Devstral-Small-2507"
+   },
+   {
+    "model": "Devstral-Small-2507 (24B)",
+    "benchmark": "SWE-bench Verified (500)",
+    "resolve_rate": "38.0% (190/500), 1 attempt",
+    "scaffold": "SWE-agent",
+    "source_type": "independent",
+    "url": "https://github.com/SWE-bench/experiments/tree/main/evaluation/verified/20250725_sweagent_devstral_small_2507"
+   },
+   {
+    "model": "SWE-agent-LM-32B (Qwen2.5-Coder-32B-Instruct fine-tuned on 5k SWE-smith trajectories)",
+    "benchmark": "SWE-bench Verified; SWE-bench Lite",
+    "resolve_rate": "Verified 40.2%; Lite 30.7% (pass@1)",
+    "scaffold": "SWE-agent, max 75 steps plus a $2 cost limit, temperature 0.0",
+    "source_type": "vendor_self_reported",
+    "url": "https://arxiv.org/abs/2504.21798"
+   },
+   {
+    "model": "Skywork-SWE-32B (Qwen2.5-Coder-32B-Instruct fine-tune)",
+    "benchmark": "SWE-bench Verified (500)",
+    "resolve_rate": "38.0% (190/500) pass@1; 47.0% (235/500) with test-time scaling (best-of-8)",
+    "scaffold": "OpenHands v0.32.0; the card's example command uses max_iter 100",
+    "source_type": "vendor_self_reported",
+    "url": "https://huggingface.co/Skywork/Skywork-SWE-32B"
+   },
+   {
+    "model": "Qwen2.5-Coder-32B/14B/7B-Instruct, zero-shot (neighbouring models)",
+    "benchmark": "SWE-bench Verified (500); SWE-bench Lite (300)",
+    "resolve_rate": "32B: Verified 7.0%, Lite 3.0%; 14B: 4.0% / 2.7%; 7B: 1.8% / 1.0%",
+    "scaffold": "OpenHands CodeActAgent 2.1, temperature 0, at most 100 interaction turns or 32k context",
+    "source_type": "independent",
+    "url": "https://arxiv.org/abs/2412.21139"
+   },
+   {
+    "model": "OpenHands LM 32B v0.1 (Qwen2.5-Coder-32B-Instruct fine-tune)",
+    "benchmark": "SWE-bench Verified",
+    "resolve_rate": "37.2%",
+    "scaffold": "OpenHands",
+    "source_type": "vendor_self_reported",
+    "url": "https://www.openhands.dev/blog/introducing-openhands-lm-32b----a-strong-open-coding-agent-model"
+   },
+   {
+    "model": "DeepSWE-Preview (Qwen3-32B trained with RL only)",
+    "benchmark": "SWE-bench Verified (500)",
+    "resolve_rate": "42.2% (211/500) pass@1; 58.8% with best-of-16 TTS on the leaderboard (submission README says 59.2%)",
+    "scaffold": "R2E-Gym agent",
+    "source_type": "vendor_self_reported",
+    "url": "https://github.com/SWE-bench/experiments/tree/main/evaluation/verified/20250629_deepswerl_r2eagent"
+   },
+   {
+    "model": "Qwen3-32B (base)",
+    "benchmark": "SWE-bench Verified, 100-task sample",
+    "resolve_rate": "15.2%",
+    "scaffold": "mini-SWE-agent",
+    "source_type": "independent",
+    "url": "https://sambanova.ai/blog/are-llms-truly-solving-software-problems"
+   },
+   {
+    "model": "GLM-4.7-Flash (30B-A3B MoE, Z.ai)",
+    "benchmark": "SWE-bench Verified",
+    "resolve_rate": "59.2",
+    "scaffold": "not stated (SWE-bench settings: temperature 0.7, top-p 1.0, 16384 max new tokens)",
+    "source_type": "vendor_self_reported",
+    "url": "https://huggingface.co/zai-org/GLM-4.7-Flash"
+   },
+   {
+    "model": "NVIDIA Nemotron 3 Nano 30B-A3B (3.5B active)",
+    "benchmark": "'SWE-Bench (OpenHands)'; split not stated",
+    "resolve_rate": "38.76 (paper); 38.8 (card)",
+    "scaffold": "OpenHands; the paper says the official open-source SWE-Bench implementation was used (version and limits not stated)",
+    "source_type": "vendor_self_reported",
+    "url": "https://arxiv.org/html/2512.20848"
+   },
+   {
+    "model": "Qwen3.6-27B (dense 27B)",
+    "benchmark": "SWE-bench Verified (also Multilingual and Pro)",
+    "resolve_rate": "Verified 77.2; Multilingual 71.3; Pro 53.5",
+    "scaffold": "Qwen internal agent scaffold (bash and file-edit tools), temperature 1.0, top_p 0.95, 200K context window",
+    "source_type": "vendor_self_reported",
+    "url": "https://huggingface.co/Qwen/Qwen3.6-27B"
+   },
+   {
+    "model": "Qwen3.6-27B",
+    "benchmark": "SWE-rebench (different benchmark: 111 problems from 65 repos, window 15/05/2026 to 01/07/2026)",
+    "resolve_rate": "31.2% \u00b1 1.68%",
+    "scaffold": "SWE-rebench's fixed agent (details not re-verified)",
+    "source_type": "independent",
+    "url": "https://swe-rebench.com/"
+   },
+   {
+    "model": "Qwen3.6-27B-FP8 (community claim)",
+    "benchmark": "SWE-bench Verified",
+    "resolve_rate": "90.0% claimed (450/500); 88.0% claimed with zero retries (440/500), unverified",
+    "scaffold": "Anthropic claude-code behind a custom protocol-translation proxy; crash retries and re-evaluation of 4 psf__requests instances",
+    "source_type": "uncertain",
+    "url": "https://huggingface.co/Qwen/Qwen3.6-27B/discussions/33"
+   },
+   {
+    "model": "FrogMini-14B-2510 / FrogBoss-32B-2510 (Microsoft debug-gym)",
+    "benchmark": "SWE-bench Verified (500)",
+    "resolve_rate": "Leaderboard (median run): FrogMini 45.0% (225/500), FrogBoss 53.6%. Developer blog (mean over 3 seeds): FrogMini 45.27%, FrogBoss 54.6%.",
+    "scaffold": "Developer's own agent. The blog does not state the evaluation scaffold; SWE-Master Table 3 lists FrogBoss-32B as Qwen3-32B with SWE-Agent (secondary source).",
+    "source_type": "vendor_self_reported",
+    "url": "https://microsoft.github.io/debug-gym/blog/2025/10/bug-pilot/"
+   },
+   {
+    "model": "Gemma4-31B",
+    "benchmark": "SWE-bench Verified",
+    "resolve_rate": "52.0 (as reported by Qwen)",
+    "scaffold": "Qwen internal agent scaffold, per the Qwen3.6-27B card footnote",
+    "source_type": "uncertain",
+    "url": "https://huggingface.co/Qwen/Qwen3.6-27B"
+   },
+   {
+    "model": "All open-weight models at or under 32B",
+    "benchmark": "SWE-bench Verified (Epoch AI Benchmarking Hub, 484 samples)",
+    "resolve_rate": "no published result found",
+    "scaffold": "Epoch's simple tool loop (bash, Inspect text_editor, apply_patch)",
+    "source_type": "none_found",
+    "url": "https://epoch.ai/benchmarks/swe-bench-verified"
+   }
+  ]
+ },
+ "verifier_summary": "I opened every cited source and checked each number against the primary text. For arXiv papers I extracted the HTML tables; for the two PDFs I extracted the text; for leaderboard data I parsed the JSON. Most numbers are confirmed, and none of the headline conclusions change.\n\n**What holds for the requested models**\n- **Qwen3-4B-Instruct-2507** is the only requested model with an untrained SWE-bench Verified result, and all of it uses OpenHands:\n  - 11.2% in the DAgger paper: 466 of 500 tasks, greedy decoding, 64K context, at most 100 interactions.\n  - 7.0% at 128k and 5.2% at 32k in SWE-MeM.\n- **Qwen2.5-7B-Instruct (general, not Coder)** has only EffGen's SWE-bench Lite numbers: 0.67% raw and 2.67% with EffGen.\n- **Qwen2.5-3B-Instruct, granite-3.3-8b-instruct, DeepSeek-Prover-V2-7B and Kimina-Prover-RL-1.7B** have no published SWE-bench result. None of the requested models appears on any official leaderboard, the bash-only view included. The bash-only view is a filter on the Verified board set to agent = mini-SWE-agent.\n\n**Corrections**\n1. **DeepSeek-Prover-V2:** the MiniF2F 88.9% and PutnamBench 49/658 figures belong to the 671B model. The 7B card gives no 7B-specific numbers.\n2. **SWE-Gym run limits:** evaluation was capped at 100 turns or 32k context. The 30-turn cap applied only to collecting training trajectories.\n3. **SWE-Gym failure rates:** the 7B empty-patch (40.3%) and stuck-in-loop (47.0%) rates are for Lite. On Verified they are 45.8% and 39.6%.\n4. **Lingma variant:** its Table 3 names the 5.80% model as Qwen2.5-coder-instruct 7B. The JSON-format failure example concerns the Qwen2.5-instruct 72B, not the 7B Coder.\n5. **SWE-TRACE-4B scaffold:** confirmed as mini-SWE-Agent (38.9%). The earlier note said it was not confirmed.\n6. **EntroPO:** the leaderboard shows 52.2 / 60.4 on Verified and 45.0 / 49.67 on Lite. The submission READMEs and the developer repo say 51.6 (258/500) / 59.8 on Verified and 44.67 / 49.33 on Lite. The submission's results.json lists 261 resolved, which matches 52.2.\n7. **FrogMini / FrogBoss:** the blog reports 3-seed means of 45.27% and 54.6%; the leaderboard's 45.0 and 53.6 are median runs. The blog links Hugging Face weights, even though the leaderboard flags the models as not open.\n8. **SWE-MERA:** 728 is the total number of samples, not the size of the 2025 subset. The paper's text also mislabels the 14B pass@6 figure of 23% as 2025 data; that value is in the 2024 table.\n9. **Nemotron comparison value for gpt-oss-20b (34.0):** the paper says comparison numbers are official where available, else from ArtificialAnalysis, else computed by NVIDIA. The asterisk is not defined in the extracted text, so the value's origin stays uncertain.\n10. **SWE-smith:** there is no zero-shot table row, but its '+33.4' gain implies a 6.8% base for Qwen2.5-Coder-32B under SWE-agent.\n11. **Kimina-Prover:** the card lists only Kimina-Prover-Distill-1.7B as the base. The Qwen3-1.7B ancestry claimed earlier is not on the card.\n12. **mini-swe-agent issue #798:** I could confirm only the 1/10 report, not 2/10.\n\n**Added during verification**\n- The EntroPO repo's 'origin' row gives 37.4% on Verified and 28.00% on Lite, apparently for the unmodified Qwen3-Coder-30B-A3B-Instruct under an R2E-Gym-based agent. Reading 'origin' that way is my interpretation, so it is marked uncertain. The vendor's OpenHands score for the same model is 51.6.\n- Seed-Coder reports Qwen3-8B on Verified at 14.6 with Agentless and 3.4 with OpenHands.\n\n**Not re-verified:** the Artificial Analysis page for granite, IBM's SWE-1.0 claim, and SWE-rebench's run protocol (5 runs, 128K context).\n\nScaffold sensitivity is confirmed repeatedly. Qwen2.5-Coder-14B scores 19.4 with Agentless and 1.4 with OpenHands on Verified. Qwen3-4B-2507 scores 11.2 in one OpenHands setup and 7.0 in another.\n\nThis was read-only work. I fetched only public pages, JSON, CSV and PDFs into the scratchpad, at <local scratch directory>. No model weights were downloaded, no model was run, and nothing was signed into or submitted."
+}

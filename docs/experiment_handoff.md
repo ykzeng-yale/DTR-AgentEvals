@@ -6179,3 +6179,72 @@ Full-project arXiv/preprint readiness **55%, change 0 percentage points, judgmen
 **Readiness:** 55 %, change 0 points (range 45–65 %; 75/75/50/25/25 → 55.00).
 
 **Cadence:** job `c710b12b`, ticks at about :15/:45 UTC, session-only; I publish on change.
+
+## Worker checkpoint — 2026-09-26T06:14Z (host `date -u`) — DTR-REQ-019 COMPLETED: BLOCKED under the frozen v2 contract (source-only executor inventory); returning to the lead
+
+**Read:** lead `e6a1670` and its [REQ-018 review](theory_feedback_20260926_req018_review.md), lead `ab51733` (evidence-map refresh), and issue #4 up to 04:26:31Z. **Processed lead SHA:** `ab517336df7859793b2115bb2e125f1445bdafcb`.
+
+**DTR-REQ-019 (P0): completed.** Source-only: no download, no model call, no server or container start, no paid service, no duplicate job and no archive change.
+- **Deliverable:** [inventory README](../results/v2_adapter/req019_executor_inventory_20260926/README.md), with `inventory.json`, `candidate_matrix.csv` and `competence_evidence.json` under `results/v2_adapter/req019_executor_inventory_20260926/`.
+- **Builder:** `experiments/v2_adapter/req019_executor_inventory.py`, with 9 tests.
+
+**Verdict: BLOCKED under the frozen contract.** The contract is `configs/v2_req014_14b_capacity_probe_20260924.json`: mini-swe-agent bash actions, 16384 tokens, 24 steps, the REQ-014 memory rule and llama.cpp `4fea119`.
+- **What passes:** five fresh local checkpoints pass C1–C7 (present with all shards, servable, licensed, context of at least 16k, memory fit): Qwen2.5-3B-Instruct GGUF (qwen-research license), Qwen2.5-7B-Instruct GGUF, Qwen3-4B-Instruct-2507 (safetensors and GGUF) and granite-3.3-8b-instruct GGUF.
+- **What fails:** none meets C8, independent published SWE-bench Verified evidence under a comparable contract.
+- **Disclosure:** C8 as operationalized cannot currently be met by any published evidence, local or not. The fewest mean mini-SWE-agent calls among the 15 open-weight Verified leaderboard entries is 27.6, above the 24-step cap, and REQ-014 ended in a context-limit operational zero. BLOCKED therefore follows from the contract, and the criteria are my operationalization for your review.
+- **Evidence:** from read-only web research (three agents plus a citation verifier, 52 cited entries).
+  - Qwen3-4B-Instruct-2507: OpenHands 11.2 % on 466 tasks at 64K context; 5.2 % at 32k and 7.0 % at 128k.
+  - Qwen2.5-7B-Instruct: SWE-bench Lite only, 0.67 %/2.67 %.
+  - Qwen2.5-3B and granite-3.3-8b: none.
+
+**Relaxed alternative (your decision, not a verdict).** If evidence from another scaffold at a larger budget were accepted, Qwen3-4B-Instruct-2507 would be the only candidate for the stronger executor.
+- The admitted "small" models have no Verified evidence, and some are larger than 4B.
+- Every candidate fits the per-model REQ-014 rule. Co-serving two different candidates, a joint extension of that rule with one 16 GiB VM allowance, fits at 16384 tokens (23.1–28.3 GiB ≤ 30 GiB); at 32768 tokens 7 of 9 pairs fit.
+
+**Not local (context; each needs a download):**
+- Devstral-Small-2-24B has independent 56.4 % mini-SWE-agent evidence, but at about 32.4 GiB it does not fit beside the 16 GiB VM.
+- Qwen3-Coder-30B-A3B does not fit either, at about 35.2 GiB.
+- gpt-oss-20b fits at about 28.9 GiB, but its evidence is vendor-only.
+
+**Excluded tasks:** 70 SWE-bench Verified IDs.
+- REQ-008's 64 exposed + 5 qualification-only, plus `astropy__astropy-14598` (REQ-010 sentinel; model episodes in REQ-011, REQ-012 and REQ-014).
+- With your REQ-009 rules the total is 89 (11 component-mates + 8 empty PASS_TO_PASS), with ID-list hashes. A configs scan found no other pinned ID.
+
+**Host envelope:**
+- Apple M5 with 32 GiB; 59 % memory free at build time; swap 14.4 of 15.0 GiB used; 67 GiB host disk.
+- The Colima VM `dtr` is running with 16 GiB memory and 81 GiB disk free.
+- No model server is running; port 8770 is macOS `sharingd`.
+- Checkpoints outside the HF cache and this repository are published anonymously; external volumes are only counted.
+
+**Verification:**
+- A four-lens adversarial review with a completeness critic, then a targeted re-check, found no error in the verdict.
+- I fixed everything they raised:
+  - a dropped 99.6 MB shard of Qwen3-4B, now index-checked;
+  - a wrong co-serving sentence;
+  - pairing by distinct model;
+  - REQ-013 labelling and the lead-rule exclusions;
+  - provenance hashes and harness licenses;
+  - the q4 basis;
+  - T5 servability;
+  - pinned license URLs.
+- All 9 REQ-019 tests and the full suite pass.
+
+**Questions for you:**
+1. **Contract.** Keep the frozen contract (then BLOCKED stands), or relax it? For example: a 32k context and a larger step budget, or OpenHands-comparable evidence. Qwen3-4B-Instruct-2507 would then be the only fresh local candidate.
+2. **Download.** If neither applies, should I prepare a download-and-qualification plan for a not-local model? Any download needs your authorization, and Devstral-Small-2 or Qwen3-Coder would also need a smaller VM memory allocation.
+3. **Criteria.** Do you accept C1–C8 as operationalized, including treating checkpoints of unverified local provenance as ineligible?
+
+| Request | Status | Artifact |
+|---|---|---|
+| DTR-REQ-019 (P0) | **completed: BLOCKED under the frozen contract** (source-only inventory; relaxed alternative for your decision) | this commit |
+| DTR-REQ-018 (P0) | completed: design ledger accepted; inference inconclusive | `a13fe20`, `e6a1670` |
+| DTR-REQ-017 (P0) | completed: 0/4; local 7B browser path closed | `0127f3a`, `e00c23a`, `8c58ec3`, `007adfa`, `9e6c1ac` |
+| DTR-REQ-016 … 001 | as in the table at `a13fe20` | — |
+
+**Readiness:** 55 %, change 0 points (range 45–65 %; 75/75/50/25/25 → 55.00). A feasibility inventory closes no empirical gate. The largest remaining milestones:
+- your executor-pair and contract decision;
+- a competent fixed-target agent contrast with valid inference;
+- the final synthesis;
+- the reproducibility, metadata and submission package.
+
+**Cadence:** job `c710b12b`, ticks at about :15/:45 UTC, session-only; I publish on change.

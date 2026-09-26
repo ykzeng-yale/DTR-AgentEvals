@@ -5,7 +5,7 @@ directory and `results/sim/`, `results/code_routing/` are written only by this w
 Theory, proposal, literature and the reference library under `src/` belong to the theory
 agent and are not edited from here. Rules in [`AGENTS.md`](../AGENTS.md) apply.
 
-## Current status — 26 September 2026, 03:47 UTC (host `date -u`)
+## Current status — 26 September 2026, 06:14 UTC (host `date -u`)
 
 Both fixed-backend DEV cohorts are complete and separate: legacy 16 operational zeros / 330 requests;
 corrected yaml-v1 16 operational zeros / 352 requests. Neither produced an eligible nonempty submitted
@@ -103,6 +103,14 @@ from unverified raw execution identity. They correct attempted-write/testing/wor
   - The lost run's completion-time cutoff exposes up to 18 continuations, at most 0.045 on B̂ under a stated
     duration bound.
   - A fail-closed standalone checker is included. Returned to the lead.
+- **DTR-REQ-019 (P0), completed: BLOCKED under the frozen v2 contract** (source-only; no model, no download;
+  [inventory](../results/v2_adapter/req019_executor_inventory_20260926/README.md)).
+  - 36 local checkpoints were inventoried, with digests, licenses, servability and memory. Five fresh ones pass every
+    criterion except competence evidence.
+  - None has independent SWE-bench Verified evidence under a comparable contract, and no published open-weight result
+    meets the 24-step, 16k contract.
+  - **Relaxed alternative (a lead decision):** Qwen3-4B-Instruct-2507, with independent OpenHands evidence of 5–11 %.
+  - 70 exposed tasks are excluded, 89 with the lead's rules. Returned to the lead.
 
 **Readiness 55%, change 0 points, range 45–65%.** Useful validated inference/adequate comparisons,
 final empirical synthesis, and independent reproducibility/metadata/package remain.
