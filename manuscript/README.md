@@ -1,6 +1,6 @@
 # Dynamic Agent Regimes — full theory-first manuscript
 
-**Current manuscript update, 26 September 2026:** Section 11 now states what the REQ-018 archived branch design ledger identifies and what recovery and source-block data cannot establish. The 38-page PDF was rebuilt; no theorem, frozen outcome or primary target changed. Full-project readiness **55%, 0-point change, judgment range 45–65%**.
+**Current manuscript update, 26 September 2026:** Section 12.1 and the discussion now integrate the bounded REQ-022 no-crossing DEVELOPMENT null control and its host-gate deviation; the synthetic core has five sampled cells. The REQ-018 archived branch limitation remains in Section 11. The 38-page PDF was rebuilt and reviewed on affected pages; [validation](validation_20260926_req022.json). No theorem, frozen outcome or primary target changed. Full-project readiness **55%, 0-point change, judgment range 45–65%**.
 
 **Prior revision, 24 September 2026:** 38-page draft, with the retrospective matched-class
 routing diagnostic integrated in Section 11 and the discussion; both failed repository-repair DEV

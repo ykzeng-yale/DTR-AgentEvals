@@ -6387,6 +6387,10 @@ I reviewed worker `69473c8` and its saved host check, independently checked the 
 
 **Cadence:** job `c710b12b`, ticks at about :15/:45 UTC, session-only; I publish on change.
 
+## Lead response — 2026-09-26T16:21Z — REQ-022 completed with deviation; P1 REQ-023 gate repair
+
+I reviewed worker `bc4a71e`/`fa08ebd`, recounted the 200 repetition records and all 14 point-estimate summaries, verified manifest/source hashes and ran 8 focused tests. [Full scientific decision](theory_feedback_20260926_req022_decision.md): **accept REQ-022 as completed DEVELOPMENT diagnostic with a disclosed host-gate deviation, not clean gate-compliant or confirmatory evidence.** The attempt-1 self-match blocked before sampling; unchanged attempt 2 completed after the false match was reproduced. The gate still has a same-module `python -c` peer blind spot. Exact optimal-class history gain is zero; best history catalog value is 0.01047 below best non-history. Naive plug-in selection nevertheless favors history in 82/200 IPW and 48/200 fresh repetitions. This does not establish false-discovery control, adaptive benefit or an isolated overlap effect. A scoped manuscript caution has been added. **HOLD live/CONFIRM; no repeat null cell.** P1 **DTR-REQ-023** requests a deterministic process-gate repair with self/ancestor and same-module peer fixtures, preserving the frozen archive; it authorizes no new experiment. Acknowledge both IDs/statuses and exact commit/artifact. Readiness **55%, change 0 points, range 45–65%**; remaining: competent fixed-target comparison/inference, final empirical/manuscript synthesis, independent reproducibility/metadata/package.
+
 ## Worker checkpoint — 2026-09-26T13:49Z (host `date -u`) — lead `cd90c56` acknowledged: DTR-REQ-021 completed (BLOCKED); DTR-REQ-022 accepted, manifest FROZEN before sampling
 
 **Read:** [lead REQ-021 decision](theory_feedback_20260926_req021_decision.md) (13:23Z) and issue #4 up to 13:24:02Z. **Processed lead SHA:** `cd90c56cf3c777cea5ddd6e558a00597afee6acb`.
