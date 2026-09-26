@@ -2,6 +2,21 @@
 
 **Current author instruction, 26 September 2026 UTC:** the theory lead's former three-hour recurring check has been **deleted** for the laptop handoff. The experiment agent's separately authorized half-hour publication cadence was not changed. Its minute-13/43 slots were reported in `1c9025d`, not independently verified on the worker host; verify freshness and current process state when work resumes. Publish material scientific corrections when found.
 
+## Current lead and implementation contract — 26 September 2026
+
+The author explicitly assigned scientific theory/design/interpretation and overall coordination to Codex,
+with Claude Code restricted to bounded experiment setup/implementation. The lead has resumed under an
+active scientific goal; the deleted recurring lead check is not recreated. Read the
+[resumption assessment](scientific_lead_resumption_20260926.md) and
+[REQ-024 specification](req024_replicated_inference_setup.md). This is analysis setup and deterministic
+fixtures only; all model, synthetic-batch and live/CONFIRM holds remain unless separately released.
+
+When sharing one checkout, the lead and worker agree exact file ownership and one integration owner.
+While the current combined change is being reviewed, the worker leaves its two assigned source/test files
+uncommitted and performs no pull/stage/commit/push; the lead publishes the reviewed result. State-only
+worker ticks may continue. This temporary Git coordination prevents mixed commits and does not change
+the worker's separately authorized cadence or grant new compute.
+
 ## Shared channel and ownership
 
 Use [issue #4](https://github.com/ykzeng-yale/DTR-AgentEvals/issues/4), [experiment handoff](experiment_handoff.md) and [worker progress](../experiments/PROGRESS.md). If the worker cannot access issues, committed handoff/progress files are the authoritative exchange, and the lead relays their contents to #4. Read new commits and the latest request acknowledgements before doing work. Preserve concurrent changes and publish directly to main; no PRs, force pushes or rewritten archives. Author and committer: Yukang Zeng <ykzeng2019@gmail.com>.

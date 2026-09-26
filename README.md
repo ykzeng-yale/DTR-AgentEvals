@@ -12,21 +12,21 @@ The proposed contribution is a sequentially randomized evaluation design with ve
 
 ## Current priority: theory and paper
 
-**24 September 2026:** the [38-page manuscript](manuscript/README.md) combines scoped theory and
-proofs, synthetic development evidence, a critical coding-agent case study and both failed SWE-bench
-DEV cohorts. [Read the paper PDF](manuscript/DTR_Agent_Regimes_Theory_Draft.pdf) or
-[edit the LaTeX source](manuscript/main.tex). One fresh Astropy issue passed
-strict evaluator controls, but the subsequent fixed-backend DEVELOPMENT
-competence pair produced 0/2 eligible submissions; both models repeated failed
-commands to their 24-call cap. A repaired 7B DEVELOPMENT probe then submitted
-only a reproducer and left the issue unresolved. The first 14B repair1 check
-was blocked before execution by a poorly calibrated swap-free rule; the
-[current lead decision](docs/theory_feedback_20260924_req013_capacity_decision.md)
-preserves that refusal and versions one bounded capacity-corrected check. The
-historical recovery-cue live comparison remains deferred. Neither the evaluator
-qualification nor this negative pair is routing/CONFIRM evidence.
-Bounded local DEVELOPMENT work is allowed under verified host, source,
-resource and non-overlap gates. No paid service or new CONFIRM stage is released.
+**26 September 2026:** Codex has resumed scientific leadership and an active goal toward an
+independently reviewed, evidence-backed preprint package. The existing Claude Code worker implements
+bounded experiment specifications under lead review. Read the
+[current scientific assessment and roadmap](docs/scientific_lead_resumption_20260926.md).
+The 38-page manuscript contains scoped theory, synthetic development evidence and a critical coding-agent
+case study. The learned archived router is a fixed schedule; adaptive benefit and useful primary joint
+inference remain unestablished. The local coding/browser competence paths are closed, and REQ-020/021
+record the configured-worker-host capacity block for the proposed replacement pair.
+
+The [prospective replicated-block inference note](docs/theory_replicated_block_inference.md) addresses
+fixed-benchmark policy contrasts and offline/fresh covariance without relabeling tasks as iid population draws.
+[REQ-024](docs/req024_replicated_inference_setup.md) supplies reviewed analysis functions and deterministic
+fixtures; it releases no model or simulation batch. New live/CONFIRM remains held pending competence,
+resource, opportunity and frozen analysis/precision gates. Frozen archives and the paper PDF are unchanged
+by this resumption. The former recurring lead check remains deleted.
 
 **21 September design update:** a [primary-literature and official-code review](docs/literature_design_review_20260921.md)
 now informs the [v2 prospective protocol](docs/experiment_protocol_v2.md): separate evaluator calibration from

@@ -6,6 +6,22 @@ This repository studies causal evaluation of dynamic model routing. Read README.
 
 The author explicitly requested direct integration into `main`, without pull requests. All project agents and the recurring monitor must validate their changes, synchronize with the latest remote `main`, preserve concurrent work, and commit/push directly to `main`. Do not create a PR, draft PR, or PR-based handoff unless the author later changes this instruction. If an isolated branch is needed for local work, integrate its reviewed changes locally and publish to `main` directly. Never force-push or overwrite another agent's work. Continue mathematical/code review and appropriate checks before publishing; direct publication does not remove validation requirements. Use issues and committed handoff files for coordination.
 
+## Scientific leadership and experiment implementation
+
+**Author instruction reaffirmed 26 September 2026:** Codex leads theory, scientific design, inference,
+interpretation and overall coordination. Claude Code supplies coding capacity for explicitly scoped
+experiment setup/implementation. Codex must understand, design, review and iterate those experiments;
+do not delegate target, metric, comparator or scientific acceptance decisions to the implementer.
+Use stable request IDs with exact sources, acceptance checks and execution scope. An implementation
+request is not a model/Monte Carlo/CONFIRM release. See
+`docs/scientific_lead_resumption_20260926.md` and the current request in `docs/experiment_handoff.md`.
+
+For a shared checkout, agree file ownership before edits and use a single integration owner while
+uncommitted work exists. Never pull over another agent's edits or stage their unfinished files. The
+lead integrates reviewed changes directly to `main` with the identity below. The active scientific goal
+is unfinished until the complete evidence-backed package meets the rubric; it is not the deleted
+recurring lead automation and does not itself promise scheduled reviews.
+
 ## Git commit identity
 
 The owner explicitly requires **Yukang Zeng <ykzeng2019@gmail.com>** as both author and committer for all new

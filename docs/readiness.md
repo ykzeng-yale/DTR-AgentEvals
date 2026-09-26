@@ -282,3 +282,21 @@ transport/deadline integration remains pending. No new outcome, theorem or manus
 **55%, change 0 percentage points, range 45–65%**; weights and stages unchanged. Remaining:
 validated inference/adequate real-agent comparisons; final empirical synthesis; independent
 reproducibility, author-approved metadata and submission package.
+
+
+## Checkpoint: 26 September 2026, scientific lead resumption
+
+Codex resumes scientific leadership with an active goal and the existing Claude Code worker assigned only
+bounded experiment setup/implementation. The [review](scientific_lead_resumption_20260926.md) reconciles
+remote `main` through `65ac44f`, issue #4 through comment 145, the fixed targets and current holds.
+Independent arithmetic reconstructs the REQ-018 ledger and REQ-022 summaries; a current narrative attribution
+error is corrected while preserving the archive. A prospective complete-block covariance/inference design
+received independent internal mathematical review and exact finite checks; Claude completed REQ-024's
+bounded implementation and deterministic fixtures, with independent code review and test receipts recorded
+in the linked audit. These are design/validation advances, not new efficacy or operating-characteristic
+results, and they do not establish a usable agent executor or repair historical recovery assumptions.
+
+**55%, change 0 percentage points, range 45–65%.** The rubric weights 25/20/30/15/10 and category stages
+75/75/50/25/25 remain unchanged. Top milestones remain competent fixed-target comparisons and validated
+inference, final empirical/manuscript synthesis, and independent reproducibility plus author-approved
+metadata/submission packaging. An active goal is not completion or authorization to upload a preprint.

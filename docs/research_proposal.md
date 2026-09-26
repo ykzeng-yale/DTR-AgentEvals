@@ -107,7 +107,7 @@ Start with a locally runnable tool-use microbenchmark for end-to-end logging and
 
 ## 8. Manuscript status
 
-The current priority is the [complete theory-first working manuscript](../manuscript/README.md), including proofs, references, and a prospective empirical section. New GPU/model experiments and manuscript empirical results are deferred at the author's request. The source and compiled draft are available in `manuscript/`. The original shorter concept below is retained as development history; the assembled manuscript is authoritative for current paper wording.
+The current manuscript is the [theory-first working paper](../manuscript/README.md), with scoped proofs and integrated synthetic development and critical agent evidence. The earlier blanket compute deferral is superseded by the bounded DEVELOPMENT rules in AGENTS.md; current competence/resource and live/CONFIRM holds still apply. See the [26 September lead assessment](scientific_lead_resumption_20260926.md) for the actual evidence and next setup request. The source and compiled draft are available in `manuscript/`. The original shorter concept below is retained as development history; the assembled manuscript is authoritative for current paper wording.
 
 ### Original manuscript concept
 

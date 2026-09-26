@@ -1,0 +1,530 @@
+{
+  "audit_id": "scientific-resumption-20260926",
+  "recorded_utc": "2026-09-26T20:36:07.356465Z",
+  "reviewed_git_sha": "65ac44f57de7b261d3e10a4c22e0f66a80e939be",
+  "kind": "Independent deterministic saved-record recount and internal mathematical/code review, with separate lead test receipts; retrospective archive audit; no new model or Monte Carlo experiment",
+  "method": "Saved-record component: Python standard-library CSV/JSON parsing, SHA-256 hashing, independent task-row sums, and mean/stdev/RMSE recomputation from all saved repetition values, without importing or executing experiment modules. Mathematical/code review and lead test execution have separate records below.",
+  "artifacts": {
+    "results/code_routing/analysis/req018/task_ledger.csv": {
+      "sha256": "1b5d2eeec7e200bcee56f3aafc60e94e425eba6f3f539aed622e915dbc1ad935",
+      "bytes": 19261
+    },
+    "results/code_routing/analysis/req018/prefix_ledger.csv": {
+      "sha256": "5ea308f7396729734ebdd75c676c52c9d4ad4cb78c277366b5cd40a95a4fa4d5",
+      "bytes": 102624
+    },
+    "results/code_routing/analysis/req018/continuation_ledger.csv": {
+      "sha256": "ef666e46e5678cc377deec5332224a5b0163ddbc7e3e68f44a259a8c99c91aff",
+      "bytes": 117329
+    },
+    "results/code_routing/analysis/req018/design_ledger.json": {
+      "sha256": "32374e63f62c5aa41e29593bcf7e241f17d04919bdd8b5b819df0fdc31431ef9",
+      "bytes": 36761
+    },
+    "results/code_routing/branch/branch_plan.json": {
+      "sha256": "59a384ac66c2b8d2e5e42c9828d7cc48757f802be9f4fa050eb22dac34367b35",
+      "bytes": 186221
+    },
+    "results/code_routing/branch/episodes.jsonl": {
+      "sha256": "83bf00634fbeeb8af05cdfb546480fb3e72aa440a3b9d6b71f3d22dbc2c98413",
+      "bytes": 3992325
+    },
+    "results/code_routing/log/episodes.jsonl": {
+      "sha256": "e643ee44c7ef658fff65efb5e17763ee78c990d21184d060f5823025a100414e",
+      "bytes": 15615680
+    },
+    "results/v2_sim/null_control_20260926/manifest.json": {
+      "sha256": "d8ec4c72287c8f6a8bfa7cfdad23598ae45f165103b9a2cb059d46dab68856f6",
+      "bytes": 5271
+    },
+    "results/v2_sim/null_control_20260926/reps.jsonl": {
+      "sha256": "33377d2ed57de5527c29a176d8584b34d2d2a93dfa70c45e9b2ecdc6535e7546",
+      "bytes": 250126
+    },
+    "results/v2_sim/null_control_20260926/summary.json": {
+      "sha256": "d5dc9d18fb6752e44724b8e0d5315fdf14093c65f5c68dce6045237a3dcb45ed",
+      "bytes": 9199
+    },
+    "results/v2_sim/process_gate_v1/record.json": {
+      "sha256": "32c3ebebf886b24dbbf2984832c43fc7b9346068b7880836c74683c103a652e8",
+      "bytes": 4216
+    },
+    "docs/theory_feedback_20260926_req018_review.md": {
+      "sha256": "95183db9965dadbdb0d82410406c590f5d91d6f1949b3bd7b78ea8a022124bc4",
+      "bytes": 5467
+    },
+    "docs/theory_feedback_20260926_req022_decision.md": {
+      "sha256": "50f448fae3bb9bb53765ed206c2b7523cffbc46b4d80b547459dacdd21e29f7b",
+      "bytes": 4971
+    },
+    "docs/theory_feedback_20260926_req023_decision.md": {
+      "sha256": "3301c1b60b1903f2abfd9e7b8e41598c8258d91ac6044f0eecac1501729b06ed",
+      "bytes": 3022
+    },
+    "docs/readiness.md": {
+      "sha256": "b2f10f664b93699d27a89900332e5affb50e55e980d259e6dc90e3a9cca2ab48",
+      "bytes": 29285
+    }
+  },
+  "req018": {
+    "task_rows": 330,
+    "unique_tasks": 330,
+    "prefix_rows": 564,
+    "continuation_rows": 800,
+    "task_totals": {
+      "M_g": 564.0,
+      "m_g": 200.0,
+      "A_g": 24.0,
+      "U_g1": 184.0,
+      "D_g1": 570.0,
+      "U_g0": 108.0,
+      "D_g0": 574.0
+    },
+    "zero_prefix_tasks": 178,
+    "sampled_tasks": 103,
+    "recomputed_points": {
+      "branch_B": 0.12,
+      "pooled_log_arm_1": 0.32280701754385965,
+      "pooled_log_arm_0": 0.18815331010452963,
+      "pooled_log_contrast": 0.13465370743933003,
+      "delta_B_minus_nu1_plus_nu0": -0.014653707439330033
+    },
+    "limits": [
+      "This independently recounts the published ledger, not all raw log-to-ledger derivations. Raw source artifacts are hashed for exact identity only.",
+      "The source-block law, joint branch/log covariance, recovery effect and outcome-independent retention are not identified by this audit.",
+      "No standard error, confidence interval, coverage argument, physical restoration or runtime independence is validated.",
+      "The 0.045 timing sensitivity is a conditional point perturbation, not inferential uncertainty; no new calculation or acceptance of its empirical timing assumption is made."
+    ]
+  },
+  "req022": {
+    "manifest_hash_matches_saved_summary": true,
+    "repetitions_hash_matches_saved_summary": true,
+    "source_bindings": {
+      "experiments/v2_sim/null_control_batch.py": {
+        "expected_sha256": "41febb7c123e9bbba1e1f1e906066d4910a95960bf9e14111fbebadd95f01c65",
+        "actual_sha256": "41febb7c123e9bbba1e1f1e906066d4910a95960bf9e14111fbebadd95f01c65",
+        "matches": true
+      },
+      "experiments/v2_sim/sampler.py": {
+        "expected_sha256": "6826551ef65a821eebfabd4f74c9ede4e38da50e8bc6b40e72e23f0bd2926c13",
+        "actual_sha256": "6826551ef65a821eebfabd4f74c9ede4e38da50e8bc6b40e72e23f0bd2926c13",
+        "matches": true
+      },
+      "experiments/v2_sim/repair_generator.py": {
+        "expected_sha256": "ffd6878afdf208f8c32ef75feda5fa324ab01b3387adcfeea96fe08d14017ecd",
+        "actual_sha256": "ffd6878afdf208f8c32ef75feda5fa324ab01b3387adcfeea96fe08d14017ecd",
+        "matches": true
+      },
+      "experiments/v2_sim/repair_logger.py": {
+        "expected_sha256": "d0305470c9e02b3c6cd5afe274a6e081a6d32cacb970887a4a332dae41276344",
+        "actual_sha256": "d0305470c9e02b3c6cd5afe274a6e081a6d32cacb970887a4a332dae41276344",
+        "matches": true
+      },
+      "experiments/v2_sim/fixed_task_blocks.py": {
+        "expected_sha256": "fafa3bc90da3114c8ff858a979476617dd4e47aabac6ca9d8fe7343d9b42dfa1",
+        "actual_sha256": "fafa3bc90da3114c8ff858a979476617dd4e47aabac6ca9d8fe7343d9b42dfa1",
+        "matches": true
+      },
+      "experiments/v2_sim/fresh_reference.py": {
+        "expected_sha256": "cfde162c0070783efafd4f12a7ccb5149f281d215a464c909144442d0827cddf",
+        "actual_sha256": "cfde162c0070783efafd4f12a7ccb5149f281d215a464c909144442d0827cddf",
+        "matches": true
+      },
+      "experiments/v2_sim/repair_generator_v1.json": {
+        "expected_sha256": "22e9f31057fabb9b65d80502d263827dbdbc1e6a90c41b758972f0f5c0d969f4",
+        "actual_sha256": "22e9f31057fabb9b65d80502d263827dbdbc1e6a90c41b758972f0f5c0d969f4",
+        "matches": true
+      },
+      "experiments/v2_sim/fixed_task_blocks_v1.json": {
+        "expected_sha256": "f57a2fc8d291d3af48095727c9188976b782a96144a9b7c46e135b4c2f83fc10",
+        "actual_sha256": "f57a2fc8d291d3af48095727c9188976b782a96144a9b7c46e135b4c2f83fc10",
+        "matches": true
+      },
+      "experiments/v2_sim/fresh_reference_v1.json": {
+        "expected_sha256": "9f48f0dfa41903294242a64362f3afe10d424964037fbaca650bcf2821e0c637",
+        "actual_sha256": "9f48f0dfa41903294242a64362f3afe10d424964037fbaca650bcf2821e0c637",
+        "matches": true
+      }
+    },
+    "repetition_count": 200,
+    "unique_repetition_count": 200,
+    "repetition_indices": {
+      "min": 0,
+      "max": 199
+    },
+    "logged_episode_denominators": [
+      1000
+    ],
+    "fresh_episode_denominators": [
+      1000
+    ],
+    "recomputed_summary_rows": [
+      {
+        "policy": "fixed_LL",
+        "truth_from_frozen_manifest": 0.72275,
+        "ipw": {
+          "mean": 0.7183023125,
+          "bias": -0.004447687500000019,
+          "bias_mcse": 0.002641126030137621,
+          "empirical_sd": 0.03735116251757235,
+          "rmse": 0.03752220301107982
+        },
+        "fresh": {
+          "mean": 0.72350795,
+          "bias": 0.0007579500000000072,
+          "bias_mcse": 0.0008698165297721263,
+          "empirical_sd": 0.01230106333180042,
+          "rmse": 0.012293659605666654
+        }
+      },
+      {
+        "policy": "fixed_LS",
+        "truth_from_frozen_manifest": 0.687806,
+        "ipw": {
+          "mean": 0.685811765625,
+          "bias": -0.0019942343750000147,
+          "bias_mcse": 0.002160502944691181,
+          "empirical_sd": 0.030554125659292775,
+          "rmse": 0.03054281900172716
+        },
+        "fresh": {
+          "mean": 0.689138,
+          "bias": 0.0013319999999999999,
+          "bias_mcse": 0.000977351286738009,
+          "empirical_sd": 0.013821834449076881,
+          "rmse": 0.013851430106671293
+        }
+      },
+      {
+        "policy": "fixed_SL",
+        "truth_from_frozen_manifest": 0.6541608,
+        "ipw": {
+          "mean": 0.657968046875,
+          "bias": 0.0038072468750000033,
+          "bias_mcse": 0.0025957958658707845,
+          "empirical_sd": 0.03671009718666475,
+          "rmse": 0.036815597347378416
+        },
+        "fresh": {
+          "mean": 0.65424665,
+          "bias": 8.585000000005394e-05,
+          "bias_mcse": 0.0010045234783119306,
+          "empirical_sd": 0.01420610726750928,
+          "rmse": 0.014170807545796395
+        }
+      },
+      {
+        "policy": "fixed_SS",
+        "truth_from_frozen_manifest": 0.5894436,
+        "ipw": {
+          "mean": 0.591251953125,
+          "bias": 0.0018083531250000506,
+          "bias_mcse": 0.0020252983774216365,
+          "empirical_sd": 0.02864204433201902,
+          "rmse": 0.028627521915535293
+        },
+        "fresh": {
+          "mean": 0.58949315,
+          "bias": 4.955000000006482e-05,
+          "bias_mcse": 0.0010426973803662368,
+          "empirical_sd": 0.0147459677676483,
+          "rmse": 0.014709140110149198
+        }
+      },
+      {
+        "policy": "history_S_or_exception",
+        "truth_from_frozen_manifest": 0.7122821864,
+        "ipw": {
+          "mean": 0.7105775,
+          "bias": -0.0017046863999999884,
+          "bias_mcse": 0.0021342404109731946,
+          "empirical_sd": 0.0301827173456302,
+          "rmse": 0.030155387577624
+        },
+        "fresh": {
+          "mean": 0.71255685,
+          "bias": 0.00027466360000005796,
+          "bias_mcse": 0.0008903886017905286,
+          "empirical_sd": 0.012591996364345827,
+          "rmse": 0.012563479640237612
+        }
+      },
+      {
+        "policy": "history_large_after_exception",
+        "truth_from_frozen_manifest": 0.6963330792,
+        "ipw": {
+          "mean": 0.698425265625,
+          "bias": 0.0020921864249999755,
+          "bias_mcse": 0.0011954190091430902,
+          "empirical_sd": 0.016905777754487653,
+          "rmse": 0.016992749598392348
+        },
+        "fresh": {
+          "mean": 0.69556625,
+          "bias": -0.0007668291999999299,
+          "bias_mcse": 0.0009535338437324688,
+          "empirical_sd": 0.013485004939882049,
+          "rmse": 0.013473090159999401
+        }
+      },
+      {
+        "policy": "prompt_only_large_if_hard",
+        "truth_from_frozen_manifest": 0.6884132,
+        "ipw": {
+          "mean": 0.6870756875,
+          "bias": -0.0013375124999999155,
+          "bias_mcse": 0.002314301140288633,
+          "empirical_sd": 0.03272916060011704,
+          "rmse": 0.03267462170412947
+        },
+        "fresh": {
+          "mean": 0.687915,
+          "bias": -0.0004981999999998932,
+          "bias_mcse": 0.0010393606751582084,
+          "empirical_sd": 0.014698779630059952,
+          "rmse": 0.01467044836533635
+        }
+      }
+    ],
+    "summary_numeric_fields_checked": 70,
+    "max_absolute_difference_from_saved_summary": 1.1102230246251565e-16,
+    "recomputed_selection_counts": {
+      "ipw": {
+        "history_selected_positive_count": 82,
+        "fixed_LL_selected_best_count": 87,
+        "denominator": 200
+      },
+      "fresh": {
+        "history_selected_positive_count": 48,
+        "fixed_LL_selected_best_count": 146,
+        "denominator": 200
+      }
+    },
+    "catalog_best_history_minus_best_nonhistory_from_frozen_truths": -0.010467813600000042,
+    "optimal_class_history_gain_manifest_value": 0.0,
+    "limits": [
+      "This independently recomputes summaries from saved repetitions; it does not replay sampling or newly validate analytic truth/variance formulas.",
+      "The 82/200 versus 48/200 selected-positive rates are descriptive, not false-discovery rates or an isolated causal effect of overlap.",
+      "The disclosed process-gate deviation remains accepted only as DEVELOPMENT diagnostic evidence.",
+      "Host telemetry, physical execution isolation and absence of concurrent jobs at execution time remain worker-reported.",
+      "No agent outcome, interval coverage, adaptive benefit or confirmatory claim follows."
+    ]
+  },
+  "req023": {
+    "source_bindings": {
+      "source": {
+        "path": "experiments/v2_sim/process_gate_v1.py",
+        "recorded_sha256": "288fe0cffa4b6a37fbd405fcf80be60a70057ede09763a990907073438270386",
+        "actual_sha256": "288fe0cffa4b6a37fbd405fcf80be60a70057ede09763a990907073438270386",
+        "matches": true
+      },
+      "tests": {
+        "path": "tests/test_req023_process_gate.py",
+        "recorded_sha256": "eeefdad173c9a33999ade6b7001e883c5a57e2bf4f64376bd1284d7946eae57d",
+        "actual_sha256": "eeefdad173c9a33999ade6b7001e883c5a57e2bf4f64376bd1284d7946eae57d",
+        "matches": true
+      }
+    },
+    "req022_launcher_matches_recorded_freeze": true,
+    "req022_launcher_actual_sha256": "41febb7c123e9bbba1e1f1e906066d4910a95960bf9e14111fbebadd95f01c65",
+    "limits": [
+      "Focused fixtures and full suite were not rerun in this recount. Prior lead independently reported 17 focused passes; worker full-suite result, dummy probes and host snapshot remain reported.",
+      "Source/hash agreement is not a proof of runtime non-overlap or execution admission."
+    ]
+  },
+  "publication_readiness": {
+    "percent": 55,
+    "change_percentage_points": 0,
+    "judgment_range_percent": [
+      45,
+      65
+    ],
+    "weights_percent": [
+      25,
+      20,
+      30,
+      15,
+      10
+    ],
+    "stages_percent": [
+      75,
+      75,
+      50,
+      25,
+      25
+    ],
+    "weighted_percent": 55.0,
+    "largest_remaining_milestones": [
+      "Competent fresh fixed-target agent comparison with valid inference",
+      "Final empirical/manuscript synthesis",
+      "Independent reproducibility, author metadata and submission packaging"
+    ],
+    "kind": "Planning judgment under unchanged rubric, not statistical confidence or acceptance probability"
+  },
+  "archive_integrity": {
+    "checked_source_paths_unchanged_during_audit": true,
+    "writes": "Only this new audit JSON; source archives unchanged"
+  },
+  "independent_mathematical_review": {
+    "reviewed_utc": "2026-09-26T20:40:51.820048Z",
+    "path": "docs/theory_replicated_block_inference.md",
+    "sha256": "d5444b94498d926c265b69bb788ad762c87e86104779895be426326d0a458e48",
+    "verdict": "Accepted as a scoped prospective mathematical design under its explicit assumptions; no blocking mathematical defect found after the conditioning clarification.",
+    "analytic_review": [
+      "The iid complete-block law supplies unbiased full sample covariance for linear contrasts; asymptotic studentization additionally requires positive population contrast variance and does not supply a finite block-count gate.",
+      "The terminal-payoff frozen known-propensity score is valid under its declared marginal/conditional laws and has the sufficient K=2 bound [-6,7]. It is not ordinary refitted cross-fitting.",
+      "Four-vector coefficients for fresh, offline and calibration differences retain all cross-coordinate covariance. Multiplicity and prespecified equivalence tolerance remain separate requirements.",
+      "N times the sampled branch mean has conditional expectation equal to the latent total under uniform prefix sampling and the conditional continuation-mean restriction, including an empty frame.",
+      "The six-total ratio gradient and signs are correct. Pooling totals targets ratios of expected totals; averaging frame ratios generally does not.",
+      "Hoeffding coordinate error allocation, parameter-range intersections, positive-denominator corner inversion and full-range fallbacks give the stated conservative coverage under the full observation law.",
+      "Nothing repairs the one-block archive, completion-time retention, cross-block dependence or unverified restoration law."
+    ],
+    "clarification_requested": "At the calibration identity ET=EU1-EU0, state that restored d_bi agrees with the source target-continuation mean at the corresponding eligible prefix/history (or a precise common conditioning set). The conditional branch mean restriction alone does not imply this equality.",
+    "exact_finite_support_checks": {
+      "method": "Direct rational enumeration using Python fractions, no RNG, experiment imports, model call, Monte Carlo or test-suite execution.",
+      "four_vector_distribution": {
+        "probabilities": [
+          "1/4",
+          "1/4",
+          "1/2"
+        ],
+        "values": [
+          [
+            "-1",
+            "1",
+            "0",
+            "1"
+          ],
+          [
+            "2",
+            "0",
+            "1",
+            "0"
+          ],
+          [
+            "0",
+            "1",
+            "1",
+            "1"
+          ]
+        ],
+        "mean": [
+          "1/4",
+          "3/4",
+          "3/4",
+          "3/4"
+        ]
+      },
+      "B2_sample_covariance_identity": {
+        "ordered_block_pairs": 9,
+        "matrix_entries_checked": 16,
+        "E_sample_covariance_equals_population_covariance": true,
+        "maximum_absolute_difference": "0"
+      },
+      "calibration_contrast_variance": {
+        "full_covariance": "3/4",
+        "incorrect_diagonal_only": "7/4",
+        "difference_demonstrates_covariance_is_material": true
+      },
+      "branch_SRS_expansion": {
+        "N": 3,
+        "m": 2,
+        "prefix_mean_contrasts": [
+          "-1",
+          "1/2",
+          "1"
+        ],
+        "all_expanded_sample_totals": [
+          "-3/4",
+          "0",
+          "9/4"
+        ],
+        "mean_expanded_total": "1/2",
+        "latent_total": "1/2"
+      },
+      "zero_frame_and_target_preservation": {
+        "equiprobable_frame_sizes": [
+          0,
+          1,
+          3
+        ],
+        "ET": "1/2",
+        "EN": "4/3",
+        "ratio_of_expected_totals": "3/8",
+        "incorrect_unweighted_frame_mean_with_zero_on_empty": "7/18",
+        "targets_differ": true
+      },
+      "rational_ratio_corner_checks": {
+        "positive_denominator_cases": 3,
+        "including_negative_and_mixed_numerators": true,
+        "rational_grid_values_checked": 243,
+        "all_inside_four_corner_interval": true
+      }
+    },
+    "limits": [
+      "Exact fixtures check algebra on finite examples, not proof-assistant verification or empirical coverage.",
+      "No numerical block-count, precision or execution-feasibility gate is supplied by this review.",
+      "External primary sources were not re-retrieved during this algebra review."
+    ],
+    "clarification_resolution": "Section 4.2 now explicitly requires restored d_bi to equal q1(H_bi)-q0(H_bi) for the source target-continuation means at the same eligible pre-repair history, and states that (11) alone does not establish this. Independently inspected and accepted.",
+    "publication_sha256": "473be9a9a7bebeb3a7c6d2df31bf07a6230b5160d34f10979b7f1a64a7695255",
+    "publication_changes_after_review": "Only status/acceptance pointer and a primary publisher delta-method citation were added after the recorded mathematical-review hash; equations and assumptions unchanged."
+  },
+  "lead_validation": {
+    "recorded_utc": "2026-09-26T20:42:46.166910+00:00",
+    "focused_suite": {
+      "command": ".venv/bin/python -m pytest -q tests/test_theory_identities.py tests/test_paper_theory.py tests/test_req018_design_ledger.py tests/test_req022_null_control.py tests/test_req023_process_gate.py",
+      "passed": 102,
+      "duration_seconds": 95.38
+    },
+    "scope": "Independent deterministic theorem and saved-record/setup regressions, not model execution, new Monte Carlo or empirical coverage.",
+    "final_recorded_utc": "2026-09-26T20:58:36.492131+00:00",
+    "default_full_suite": {
+      "command": "PYTHONPATH=src .venv/bin/python -m pytest -q",
+      "passed": 709,
+      "duration_seconds": 221.34,
+      "exit_code": 0,
+      "included_req024_fixtures": 67,
+      "scope": "README default test command with the existing virtual environment and testpaths=tests in pyproject.toml; not the separate worker-reported 1629-test/probe scope.",
+      "source_sha256": "0d4e24c1f222f15dbdc494e9119b800f884e182b9af271d5627bd6dc7716ff22",
+      "test_sha256": "645d5bdf84c620e90da402e6876f7b6af22bf54715a926632eb98147e5a2a17e"
+    },
+    "publication_checks": {
+      "frozen_results_changed": false,
+      "frozen_req022_launcher_changed": false,
+      "manuscript_files_changed": false,
+      "staged_secret_pattern_scan": "no matches",
+      "handoff_local_link_repairs": 7
+    }
+  },
+  "req024_implementation_review": {
+    "status": "accepted; no remaining actionable static-review findings",
+    "scope": "Independent review of the requested formulas, source, and deterministic fixture oracles; no empirical coverage or physical independence claim.",
+    "source_hashes": {
+      "experiments/v2_sim/replicated_block_inference.py": "0d4e24c1f222f15dbdc494e9119b800f884e182b9af271d5627bd6dc7716ff22",
+      "tests/test_replicated_block_inference.py": "645d5bdf84c620e90da402e6876f7b6af22bf54715a926632eb98147e5a2a17e"
+    },
+    "corrections_before_acceptance": [
+      "Allow constant observation supports and singleton mean/parameter ranges.",
+      "Compute the normal quantile from the lower tail to avoid one-minus-alpha cancellation; explicitly refuse unrepresentable numeric inputs/results."
+    ],
+    "verified_design_features": [
+      "Full within-block covariance and covariance-of-the-mean scaling.",
+      "Pooled six totals before ratios, with the specified gradient.",
+      "Zero-prefix blocks retained and denominator/whole-parameter-range fallbacks.",
+      "Independent exact finite fixtures, including dependent continuation pairs/prefixes."
+    ],
+    "worker_reported_test": {
+      "command": "PYTHONPATH=src .venv/bin/python -m pytest -q -p no:cacheprovider tests/test_replicated_block_inference.py",
+      "passed": 67,
+      "duration_seconds": 0.08
+    },
+    "limits": [
+      "Only an externally enforced execution contract can establish complete-block independence and valid marginal scores.",
+      "No new empirical operating-characteristic or precision result.",
+      "Floating confidence endpoints are not outward-rounded and are not numerical certificates.",
+      "The default repository test suite does not by itself repeat every worker-host probe or every separately located experiment-tool test."
+    ]
+  },
+  "artifact_pin_scope": "Artifacts pin the reviewed inputs at reviewed_git_sha. Mutable reporting documents may be updated by this resumption; frozen results and recorded source/test inputs are preserved."
+}

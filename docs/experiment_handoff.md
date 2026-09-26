@@ -5116,7 +5116,7 @@ The author also permits a bounded local DEVELOPMENT experiment on the lead host 
 
 **Read:** lead `20246b8`; no lead activity since. **Code commit executed:** `7805d8b` (driver `experiments/v2_adapter/req010_sentinel.py`, 44 tests). The executed evaluator tree was verified against the pinned `f7bbbb2` tarball (660 of 660 files). **Authorized runs:** this one only, now finished; nothing is running.
 
-**Admission, recorded at launch (11:35:35Z), 7 of 7 passed** ([`admission.json`](results/v2_adapter/req010_sentinel_20260924/admission.json)):
+**Admission, recorded at launch (11:35:35Z), 7 of 7 passed** ([`admission.json`](../results/v2_adapter/req010_sentinel_20260924/admission.json)):
 - REQ-009 binding: queue sha256 `d19efbc4…`, with rank 1 = the target.
 - Exact source and lock hashes: dataset `a45b1fe4…`, M01 `cee2e876…`, lock `3997c202…` equal to the venv freeze, evaluator tarball `b36fe073…`, and all control sources tracked and unchanged.
 - Colima vz, with Rosetta binfmt enabled and qemu-x86_64 disabled. Base and env images present and amd64.
@@ -5125,7 +5125,7 @@ The author also permits a bounded local DEVELOPMENT experiment on the lead host 
 - Isolation: the adapter's container creation has no mounts, environment variables or privileges. The child environment was scrubbed of credential-like variables (names recorded, no values). The containers used the default bridge network.
 - Disk: 81.4 GiB free in the VM and 86.2 GiB on the host.
 
-**Result ([summary](results/v2_adapter/req010_sentinel_20260924/sentinel_summary.json); [attempt record](results/v2_adapter/req010_sentinel_20260924/astropy__astropy-14598/attempt-1-20260924T113537Z/summary.json)).** **QUALIFIED on attempt 1, with no retry.** All five `bae161f` acceptance keys are true:
+**Result ([summary](../results/v2_adapter/req010_sentinel_20260924/sentinel_summary.json); [attempt record](../results/v2_adapter/req010_sentinel_20260924/astropy__astropy-14598/attempt-1-20260924T113537Z/summary.json)).** **QUALIFIED on attempt 1, with no retry.** All five `bae161f` acceptance keys are true:
 
 | Key | Evidence (from the committed receipts) |
 |---|---|
@@ -5241,7 +5241,7 @@ The author also permits a bounded local DEVELOPMENT experiment on the lead host 
 - both GGUFs and the llama.cpp tool hashes;
 - memory (47 % free).
 
-Records: [`pair_summary.json`](results/v2_agent/req011_competence_20260924/pair_summary.json), [`admission.json`](results/v2_agent/req011_competence_20260924/admission.json), `ledger.jsonl`, and both run directories with trajectories, attempts, public receipts, the exit diagnostic and the terminal phase. There are 143 sanitized files, with 0 username or path hits; private raw request bodies stay under `work/`.
+Records: [`pair_summary.json`](../results/v2_agent/req011_competence_20260924/pair_summary.json), [`admission.json`](../results/v2_agent/req011_competence_20260924/admission.json), `ledger.jsonl`, and both run directories with trajectories, attempts, public receipts, the exit diagnostic and the terminal phase. There are 143 sanitized files, with 0 username or path hits; private raw request bodies stay under `work/`.
 
 | | 14B (`large`, 8293) | 7B (`small`, 8291) |
 |---|---|---|
@@ -5353,7 +5353,7 @@ Records: [`pair_summary.json`](results/v2_agent/req011_competence_20260924/pair_
 
 **Code executed:** `dc11e63` (manifest `configs/v2_req012_repair_probe_20260924.json`, sha256 `45afa069…`; configuration `yaml-v1-repair1`). **Authorized runs:** the gate and this single probe, both now finished; nothing is running.
 
-**1. No-model repair gate: PASSED** ([`gate.json`](results/v2_agent/req012_repair_probe_20260924/gate.json); 18:42:44–18:43:26Z; one agent-style container on the pinned image with `--network none`; removal confirmed):
+**1. No-model repair gate: PASSED** ([`gate.json`](../results/v2_agent/req012_repair_probe_20260924/gate.json); 18:42:44–18:43:26Z; one agent-style container on the pinned image with `--network none`; removal confirmed):
 
 | Check | Observed |
 |---|---|
@@ -5370,7 +5370,7 @@ Records: [`pair_summary.json`](results/v2_agent/req011_competence_20260924/pair_
 - The gate's fixture run passed (69 of 69), and the sources were stable during the gate.
 - A first launch attempt of mine failed at the shell (\`timeout\` is not installed on macOS, rc 127) before the gate started; no namespace or container was created.
 
-**2. Single 7B probe: COMPLETED** ([`probe/pair_summary.json`](results/v2_agent/req012_repair_probe_20260924/probe/pair_summary.json)). Admission at launch: 10 of 10 passed, including the gate check (18:44:12Z). It ran **130.7 s in total, within the 3,600 s cap**.
+**2. Single 7B probe: COMPLETED** ([`probe/pair_summary.json`](../results/v2_agent/req012_repair_probe_20260924/probe/pair_summary.json)). Admission at launch: 10 of 10 passed, including the gate check (18:44:12Z). It ran **130.7 s in total, within the 3,600 s cap**.
 
 | | 7B (`small`, 8291), repair1 |
 |---|---|
@@ -6544,3 +6544,60 @@ Reviewed worker `e24def2` and the [full lead decision](theory_feedback_20260926_
 - the reproducibility, metadata and submission package.
 
 **Cadence:** job `c710b12b`, ticks at about :15/:45 UTC, session-only. I publish on change; until a new lead request arrives, ticks are state checks only.
+
+
+## Lead resumption — 26 September 2026 — scientific ownership and DTR-REQ-024
+
+The author explicitly asked Codex to own theory and overall scientific coordination and direct Claude Code
+only for experiment setup/implementation. Reviewed fetched `main` through `65ac44f`, issue #4 through comment
+145, the core theory/design/manuscript and current evidence. The [lead assessment](scientific_lead_resumption_20260926.md)
+and [independent recount](audits/scientific_resumption_20260926.json) record the findings. REQ-018 points and
+REQ-022 summaries/hashes reconcile; the current results narrative's causal attribution of 41% versus 24%
+to overlap is corrected without changing the frozen archive. The former lead automation remains deleted;
+an active scientific goal now tracks completion, without a scheduled-review promise.
+
+**Verdict: HOLD new live/CONFIRM and model/synthetic batches; proceed with bounded analysis setup.** The
+prospective [complete-block inference note](theory_replicated_block_inference.md) passed independent internal
+algebra review and exact finite checks. Its main application is the fixed-task history/prompt whole-policy
+contrast and offline/fresh calibration; its secondary ratio corollary preserves the original archived target.
+It requires genuinely independent complete studies, valid episode marginals and frozen external training.
+It does not validate the one-block archive, establish useful precision or create a competent executor.
+The lead independently reran 102 focused existing tests, all passing in 95.38 seconds.
+
+**DTR-REQ-024 (P1), accepted by the existing Claude Code worker via computer use:** implement the
+[exact source/test specification](req024_replicated_inference_setup.md). Two assigned new files only;
+pure covariance/contrast/ratio/confidence-set functions and tiny exhaustive fixtures. No new observations,
+Monte Carlo, model server, host search, infrastructure work or archive mutation. The lead reviews mathematics,
+source and tests and owns the combined direct-main integration. During shared-checkout edits the worker
+performs no pull/stage/commit/push, and its separate cadence is state-only. The worker acknowledged that
+coordination and reported no competing experiment or uncommitted implementation before starting.
+
+Readiness **55%, change 0 percentage points, judgment range 45–65%**. Remaining milestones: competent
+fixed-target comparison with validated inference; final empirical/manuscript synthesis; independent
+reproducibility, author-approved metadata and submission packaging. The scientific goal remains active.
+
+### DTR-REQ-024 — final lead acceptance, 26 September 2026
+
+**Completed/accepted as prospective analysis setup.** Claude delivered the two assigned files. Independent
+mathematical and implementation reviews found no remaining actionable issue after fixes for constant
+supports/singleton ranges and tiny-alpha numerical handling. The lead independently ran
+`PYTHONPATH=src .venv/bin/python -m pytest -q`: **709 passed in 221.34 seconds**, including the 67 new fixtures.
+This is the default suite configured in `pyproject.toml`; it does not re-create the worker's earlier separately
+reported 1,629-test/probe scope. Exact source hashes, the independent recount and review limits are in
+[the audit](audits/scientific_resumption_20260926.json).
+
+The implementation retains complete-block covariance and pools the six totals before ratios. Exact finite
+fixtures include zero-prefix blocks and dependent pairs. It cannot establish physical block independence,
+valid marginals, useful precision or empirical Wald coverage. Floating confidence endpoints are not
+outward-rounded certificates. No new model, Monte Carlo, host-search, infrastructure or CONFIRM job is
+authorized; no archived output, frozen launcher or manuscript file changed. Seven pre-existing handoff
+links were corrected to resolve from this document's directory.
+
+The lead publishes the reviewed combined change directly to `main` with the required author/committer.
+The temporary shared-checkout Git hold ends only on the lead's verified publication receipt to the worker.
+No further worker experiment request is open; acknowledge this acceptance without duplicating the
+implementation or creating a status-only commit. Keep the existing scientific stage holds.
+
+Full-project readiness **55%, change 0 percentage points, judgment range 45–65%**. Largest milestones:
+competent fixed-target comparison with valid inference; final empirical/manuscript synthesis; independent
+reproducibility plus author-approved metadata and submission packaging. The scientific goal remains active.
