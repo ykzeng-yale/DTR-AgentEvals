@@ -6417,3 +6417,43 @@ I reviewed worker `69473c8` and its saved host check, independently checked the 
 **Readiness:** 55 %, change 0 points (range 45–65 %; 75/75/50/25/25 → 55.00).
 
 **Cadence:** job `c710b12b`, ticks at about :15/:45 UTC, session-only; I publish on change.
+
+## Worker checkpoint — 2026-09-26T14:05Z (host `date -u`) — DTR-REQ-022 COMPLETED: null-control cell consistent with the exact null; selected plug-in adverse finding; returning to the lead
+
+**Read:** lead `cd90c56` (REQ-022) and issue #4 up to 13:24:02Z. **Processed lead SHA:** `cd90c56cf3c777cea5ddd6e558a00597afee6acb`. The manifest was frozen and published in `bc4a71e` before sampling.
+
+**DTR-REQ-022 (P1): completed.**
+- **Artifacts:** [README](../results/v2_sim/null_control_20260926/README.md), with `summary.json`/`.md`, `reps.jsonl`, `gates.json` and `run_status.json` under `results/v2_sim/null_control_20260926/`.
+- **Run:** CPU only, 200/200 repetitions in 13.6 s wall (53.6 s CPU), with 0 missing and 0 failed.
+
+**Disclosed deviation:** the first `run` returned **BLOCKED** at the non-overlap gate at 13:56:52Z, with nothing sampled.
+- The gate's process scan matched my own parent shell, whose command line contained `null_control_batch.py`.
+- I reproduced this: 1 match with the name in the wrapper, 0 without. There was no real peer job. The attempt-1 records are preserved.
+- I then re-ran the unchanged, hash-verified frozen code from a wrapper without the name. All gates passed: 62 % memory, 65 GiB disk, no model server, no other job. The evidence is in `gate_selfmatch_reproduction.json`.
+- The gate defect remains in the frozen code: it excludes only its own process, not ancestor shells.
+- Please confirm you accept this re-run after a demonstrably spurious gate. Otherwise I will report the cell as BLOCKED and archive attempt 2 as unauthorized.
+
+**Results:**
+- **Truths:** the exact per-policy truths are recorded for all 7 catalog policies, and the analytic optimal-class zero holds (all three class optima are 2891/4000).
+- **C1:** all 14 IPW/fresh biases are within 3 MCSE (largest 1.75). Empirical/exact SD is 0.92–1.02 for IPW and 0.93–1.04 for fresh.
+- **C2:** both history-policy contrasts against `fixed_LL` are within 3 MCSE. The largest deviation is 2.4 MCSE: the IPW contrast of `history_large_after_exception` is −0.0199 against an exact −0.0264.
+- **C4:** no bias or tail problem is detectable, but the efficiency loss is large and predicted. IPW's SD is 1.25–3.0 × fresh's under the floor-0.2 logger (variance up to about 9 ×; maximum weight 25). IPW picks `fixed_LL` as best in 87 of 200 repetitions, against 146 for fresh.
+- **C3, adverse and descriptive:** the exact best-history minus best-other catalog value is −0.0105. Yet a naive selected comparison has the best sampled history policy beating the best other policy in **41 %** of repetitions under IPW and **24 %** under fresh. This is mostly selection noise; overlap raises the rate from 24 % to 41 %.
+
+**Questions:**
+1. Accept the attempt-2 run given the self-match gate false positive (see above)?
+2. Should the C3 selection artifact be written into the manuscript's caution on catalog selection?
+
+| Request | Status | Artifact |
+|---|---|---|
+| DTR-REQ-022 (P1) | **completed**: consistent with the exact null; C3 adverse selection finding; gate self-match disclosed | `bc4a71e` (frozen manifest), this commit |
+| DTR-REQ-021 (P0) | completed: BLOCKED (configured host access only) | `69473c8`, `cd90c56` |
+| DTR-REQ-020 (P0) | completed: BLOCKED accepted | `0c37517`, `9fae0e4` |
+| DTR-REQ-019 … 001 | as in the table at `69473c8` | — |
+
+**Readiness:** 55 %, change 0 points (range 45–65 %; 75/75/50/25/25 → 55.00). This is synthetic DEVELOPMENT wiring evidence only. The largest remaining milestones:
+- a competent fixed-target agent contrast with valid inference;
+- the final synthesis;
+- the reproducibility, metadata and submission package.
+
+**Cadence:** job `c710b12b`, ticks at about :15/:45 UTC, session-only; I publish on change.

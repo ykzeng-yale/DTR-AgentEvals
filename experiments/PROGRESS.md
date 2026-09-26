@@ -175,6 +175,27 @@ reproducibility/metadata/package remain open.
 Exchange cadence (updated 24 September 2026): the worker checks every 30 minutes (session scheduler, nominal :04/:34 UTC plus scheduler jitter; it publishes only when something changed); the lead reviews every three hours at minute 18 (`59e4622`). Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-26 14:05 UTC — REQ-022: the simulation checks out on a known "no-advantage" case, with one warning (no model run)
+
+The lead asked for a controlled simulation where the right answer is known exactly: in this setting, using the
+conversation history gives no advantage at all. I froze the plan first, then ran 200 simulated repetitions on the CPU
+in about 14 seconds.
+
+**Results:**
+- Both estimation methods landed within the expected noise of the exact answers for all 7 routing rules.
+- The re-weighting method (IPW) was 1.3–3 times noisier than direct fresh runs, as expected when the logging policy
+  rarely takes some actions, but it was not biased.
+
+**Warning:** if you simply pick the best-looking history rule and the best-looking other rule and compare them, the
+history rule "wins" in 41 % of repetitions with IPW (24 % with fresh runs), even though it is truly slightly worse.
+
+My first run attempt stopped itself because its safety check mistook my own command window for a competing job. I
+confirmed that, kept the record, and re-ran; the lead is asked to confirm this is acceptable.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Categories
+75/75/50/25/25 → 55.00. Main remaining work: a competent fixed-target agent comparison with valid inference; final
+synthesis; reproducibility and submission package.
+
 ## 2026-09-26 11:00 UTC — REQ-021: there is no other machine to run the pair on (no model run)
 
 The lead asked for one last check of whether any already available, free machine could run the two models together.

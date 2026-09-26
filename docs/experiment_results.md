@@ -1174,8 +1174,24 @@ One Qwen2.5-Coder-14B episode ran on the already exposed `astropy__astropy-14598
 - **Requirement:** this pair needs at least 40.1 GiB of physical RAM, or at least 60.1 GiB with both default prompt caches full; both are lower bounds. This host has 32 GiB.
 - **Scope:** a capacity finding, not a model result. Per the lead, the local configuration search stops.
 
+### 2026-09-26 14:05 UTC — REQ-022: null-control DEVELOPMENT cell completed; estimates match the exact null, but noisy selection often "finds" a history advantage (CPU only)
+[README](../results/v2_sim/null_control_20260926/README.md), [summary](../results/v2_sim/null_control_20260926/summary.md), manifest `results/v2_sim/null_control_20260926/manifest.json` (frozen and committed in `bc4a71e` before sampling), code `experiments/v2_sim/null_control_batch.py`, lead request `cd90c56`.
+- **Design:**
+  - **Cell:** K=2, no crossing, informative feedback, with the feedback-dependent-floor-0.2 logger (weak overlap). Best fixed, best prompt-only and best history utility are all exactly 0.72275, so the optimal history advantage is 0.
+  - **Sampling:** all 7 catalog policies; 250 tasks; 4 logged and 4 fresh episodes per task and policy; root seed 2026092622; 200 repetitions.
+- **Run:**
+  - **Attempt 1: BLOCKED** at the non-overlap gate with nothing sampled. The gate matched the worker's own parent shell; the self-match was reproduced and the records are preserved.
+  - **Attempt 2: completed** 200/200 with the unchanged, hash-verified code, in 13.6 s. This re-run is a disclosed deviation from the lead's rule "if any gate fails, return BLOCKED without execution", pending the lead's acceptance. The reproduction evidence is in `gate_selfmatch_reproduction.json`.
+- **Results:**
+  - **C1, per-policy bias:** all 14 policy × estimator biases are within 3 MCSE; the largest is 1.75. Empirical/exact SD is 0.92–1.02 for IPW and 0.93–1.04 for fresh.
+  - **C2, contrasts against `fixed_LL`:** both history-policy contrasts are within 3 MCSE. The largest deviation is 2.4 MCSE, for the IPW contrast of `history_large_after_exception` (−0.0199 against an exact −0.0264).
+  - **C4, overlap:** no bias or tail problem is detectable. The efficiency loss is large and predicted: IPW's SD is 1.25–3.0 × fresh's (variance up to about 9 ×), and the maximum weight is 25. IPW picks `fixed_LL` as best in 87 of 200 repetitions, against 146 for fresh.
+  - **C3, adverse and descriptive:** the exact best-history minus best-other value is −0.0105, yet the best sampled history policy beats the best other policy in 41 % of repetitions under IPW and 24 % under fresh. That is mostly selection noise; overlap raises the rate from 24 % to 41 %. It is not a false-discovery rate.
+- **Reading:** the sampled estimates are consistent with the exact null within Monte Carlo uncertainty. Weak overlap costs IPW precision, with no detectable bias. Selecting on noisy estimates would often suggest a non-existent history advantage.
+- **Scope:** synthetic DEVELOPMENT evidence only. No coverage, optimality, adaptation-benefit or real-agent claim.
+
 ### Not claimed
-No model runs for REQ-005 to REQ-008 and REQ-018 to REQ-021 (no-model instrumentation, retrospective analyses, a metadata inventory, a source-bound design ledger, a source-only executor inventory, a source-only pair feasibility check and a local host capacity check). Real-model execution since the archived coding study is limited to the SWE-bench Verified pipeline smoke (Flask episodes), the two 16-episode Coder 7B/14B fixed-backend DEV cohorts (0/16 each) and the single-task DEVELOPMENT probes REQ-011 (0/2 eligible), REQ-012 (7B, eligible, unresolved) and REQ-014 (14B, operational zero), the browser 7B screen REQ-016 (0/8; no action executed) and pilot REQ-017 (0/4; actions executed, never past the search form), with no routing or CONFIRM run; Monte Carlo only on known synthetic kernels; no interval validation for DR/OR, learned policies or
+No model runs for REQ-005 to REQ-008 and REQ-018 to REQ-022 (no-model instrumentation, retrospective analyses, a metadata inventory, a source-bound design ledger, a source-only executor inventory, a source-only pair feasibility check, a local host capacity check and a CPU null-control simulation cell). Real-model execution since the archived coding study is limited to the SWE-bench Verified pipeline smoke (Flask episodes), the two 16-episode Coder 7B/14B fixed-backend DEV cohorts (0/16 each) and the single-task DEVELOPMENT probes REQ-011 (0/2 eligible), REQ-012 (7B, eligible, unresolved) and REQ-014 (14B, operational zero), the browser 7B screen REQ-016 (0/8; no action executed) and pilot REQ-017 (0/4; actions executed, never past the search form), with no routing or CONFIRM run; Monte Carlo only on known synthetic kernels; no interval validation for DR/OR, learned policies or
 the branch study; no power claim; no evidence of real-agent improvement. The
 archived learned router did not beat always-large. Lead's readiness estimate (rubric in [readiness.md](readiness.md),
 `76b3199`): 55%, change 0 percentage points, range 45–65%.

@@ -1,0 +1,22 @@
+{
+ "request": "DTR-REQ-022",
+ "kind": "reproduction of the attempt-1 non-overlap gate false positive (recorded after the fact)",
+ "attempt1": {
+  "record": "gates_attempt1_blocked_selfmatch.json",
+  "other_sim_or_stage_processes": 1,
+  "sampled": false
+ },
+ "reproduction": {
+  "with_script_name_in_parent_shell_command": {
+   "other_sim_or_stage_processes": 1,
+   "matched": "the direct parent /bin/zsh -c ... command line, whose text contained null_control_batch.py"
+  },
+  "without_script_name_in_parent_shell_command": {
+   "other_sim_or_stage_processes": 0,
+   "all_gates_passed": true
+  },
+  "method": "host_gates() called from '.venv/bin/python -c \"import null_control_batch as N; N.host_gates()\"' inside wrappers with and without the string in their command line; ps showed no dev_batch, coverage_batch, run.py --stage or other null_control_batch process"
+ },
+ "gate_defect": "host_gates() excludes only its own PID, not ancestor shells, so a wrapper whose command line names the script trips the gate; the frozen code is unchanged. Launching attempt 2 via python -c (without the file name) also means a concurrent same-module python -c launch would not have been matched; no such process existed (the recorded ps scan found no simulation or stage job)",
+ "run_overwrite_note": "run() writes gates.json and run_status.json without an overwrite guard; the attempt-1 records were preserved by renaming them before attempt 2"
+}
