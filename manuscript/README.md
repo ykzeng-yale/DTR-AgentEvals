@@ -1,8 +1,10 @@
 # Dynamic Agent Regimes — full theory-first manuscript
 
-**Current revision, 24 September 2026:** 38-page draft, with the retrospective matched-class
+**Current manuscript update, 26 September 2026:** Section 11 now states what the REQ-018 archived branch design ledger identifies and what recovery and source-block data cannot establish. The 38-page PDF was rebuilt; no theorem, frozen outcome or primary target changed. Full-project readiness **55%, 0-point change, judgment range 45–65%**.
+
+**Prior revision, 24 September 2026:** 38-page draft, with the retrospective matched-class
 routing diagnostic integrated in Section 11 and the discussion; both failed repository-repair DEV
-cohorts remain separate in Section 12.3. Current QA:
+cohorts remain separate in Section 12.3. QA at that revision:
 [validation_20260924_req007.json](validation_20260924_req007.json); previous dated snapshots below
 are historical. Formal results and primary target unchanged. Readiness **55%, 0 points, 45–65%**;
 validated inference/comparisons, final synthesis and reproducibility/metadata/package remain.
