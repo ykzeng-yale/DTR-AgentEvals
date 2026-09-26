@@ -6055,3 +6055,29 @@ Reviewed worker `007adfa` and independently checked **199/199 published hashes**
 **P0 DTR-REQ-018, source `007adfa`:** return to the archived fixed-benchmark primary contrast `Δ = θ − ν₁ + ν₀` using `results/code_routing/branch/branch_plan.json`, `branch/episodes.jsonl`, `log/episodes.jsonl`, `analysis/branch_evidence_table.json` and `analysis/a6_report.json`. This is a deterministic, no-model design ledger, building on existing records and checks. Under `results/code_routing/analysis/req018/`, give the exact source hashes, task/prefix inclusion ledger, sample probabilities, task/shared-record structure, continuation replication and invocation/recovery provenance; explicitly mark what is unobserved. Reconcile 330 source tasks, 564 eligible prefixes on 152 tasks, 200 sampled on 103 tasks and 800 retained continuations; retain the original pooled point values 0.120000 and 0.134654 (Δ approximately −0.014654), with zero-within-task-arm contributions. Do not substitute the 42-task exploratory frame or publish an interval from an unjustified bootstrap. **Acceptance:** a source-bound ledger sufficient for the lead to derive and independently audit the *same-target* two-stage uncertainty, or a precise statement that a required component is not identified. No new model inference, Monte Carlo sweep or archive change. Please acknowledge REQ-017 completed and REQ-018 accepted/running/completed/blocked/superseded with processed lead SHA and Yukang Zeng <ykzeng2019@gmail.com> as author/committer.
 
 Full-project arXiv/preprint readiness **55%, change 0 percentage points, judgment range 45–65%**. Top remaining: competent fresh fixed-target agent policy contrast with valid inference; final empirical/manuscript synthesis; independent reproducibility, author metadata and submission package.
+
+## Worker checkpoint — 2026-09-26T01:46Z (host `date -u`) — lead `9e6c1ac` acknowledged: DTR-REQ-017 completed; DTR-REQ-018 accepted and running (no-model design ledger)
+
+**Read:** [lead REQ-017 decision](theory_feedback_20260926_req017_decision.md) (01:22Z) and issue #4 up to 01:24:25Z. **Processed lead SHA:** `9e6c1ac919d5cfd9074f1fc7fd63dea9346a066e`.
+
+- **DTR-REQ-017: completed** (`0127f3a`, `e00c23a`, `8c58ec3`, `007adfa`).
+  - Your label is recorded: restricted 7B browser-task execution failure under the frozen interface, with hidden read-only-date feedback and multi-action rejection as additional limitations.
+  - It is not a general capacity null, a policy effect or a theory test.
+  - The local 7B browser path is closed and seeds 300–303 are spent. REQ-016 stays separate and unchanged.
+- **DTR-REQ-018 (P0): accepted and running. Deterministic, no model, no Monte Carlo, no archive change.**
+  - **What it is:** a source-bound design ledger for the archived fixed-benchmark primary contrast Δ = θ − ν₁ + ν₀, under `results/code_routing/analysis/req018/`.
+  - **Sources:** `branch/branch_plan.json`, `branch/episodes.jsonl`, `log/episodes.jsonl`, `analysis/branch_evidence_table.json` and `analysis/a6_report.json`. It builds on your completed-branch audit.
+  - **Reconciliation targets:** 330 tasks, 564 eligible prefixes on 152 tasks, 200 sampled on 103 tasks, and 800 continuations. The pooled points 0.120000 and 0.134654 are kept.
+  - **Records to include:** inclusion probabilities, task and shared-record structure, replication and provenance.
+  - **Rules:** every unobserved component is marked. No bootstrap interval, and no 42-task substitution.
+
+| Request | Status | Artifact |
+|---|---|---|
+| DTR-REQ-018 (P0) | **accepted; running (no-model ledger)** | next commits |
+| DTR-REQ-017 (P0) | **completed**: 0/4; restricted 7B browser-task execution failure; local browser path closed | `0127f3a`, `e00c23a`, `8c58ec3`, `007adfa`, `9e6c1ac` |
+| DTR-REQ-016 (P0) | completed: format/interface operational zero (0/8) | `ab39bbd`, `a1f1c7b`, `74a20c8`, `c648a84` |
+| DTR-REQ-015 … 001 | as in the table at `007adfa` | — |
+
+**Readiness:** 55 %, change 0 points (range 45–65 %; 75/75/50/25/25 → 55.00).
+
+**Cadence:** job `c710b12b`, ticks at about :15/:45 UTC, session-only; I publish on change.
