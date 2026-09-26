@@ -1,0 +1,965 @@
+{
+ "request": "DTR-REQ-018",
+ "kind": "source-bound design ledger (no model, no Monte Carlo, no archive change)",
+ "lead_commit": "9e6c1ac",
+ "lead_decision": "docs/theory_feedback_20260926_req017_decision.md",
+ "builds_on": [
+  "docs/theory_branch_fixed_benchmark_bound.md (eq. 2 target, sec. 2 assumptions, eq. 3 estimators)",
+  "docs/theory_feedback_20260921_weighting.md (pooled eligible-prefix target; all 330 tasks kept)",
+  "docs/theory_feedback_20260920_branch.md (reweighting derivative)",
+  "results/code_routing/analysis/a6_report.json (theorem_assumption_map, branch_plan_reproduction)",
+  "docs/audits/check_branch_linkage_d4997c6.py",
+  "docs/audits/theory_branch_linkage_audit_20260920.json",
+  "results/code_routing/analysis/restoration_recheck.json",
+  "results/code_routing/analysis/branch_evidence_table.json (reconciled in evidence_table_crosscheck)"
+ ],
+ "target": {
+  "primary": "eq. (2) of docs/theory_branch_fixed_benchmark_bound.md, adopted by the lead: theta = sum_g E T_g / sum_g E M_g, nu_a = sum_g E U_ga / sum_g E D_ga, Delta = theta - nu_1 + nu_0, with expectations over repeated designs of the 330 fixed CONFIRM task blocks (8 episodes each, 4-small/4-large first allocation, p_large = 0.5 later) under a fixed restored-execution continuation law; the tasks are fixed, not sampled from a superpopulation",
+  "components": {
+   "M_g": "number of first-failure (eligible) prefixes of task g, 0..8",
+   "T_g": "sum over those prefixes of d_i, the stay-large minus stay-small fresh-continuation success mean",
+   "U_ga": "sum_i W_ia Y_i (called N_ga in the 20 Sep note and in earlier ledgers)",
+   "D_ga": "sum_i W_ia",
+   "W_ia": "1{A_i1=a}/0.5 x (1 if absorbed after the first repair, else 1{A_i2=a}/0.5)"
+  },
+  "estimators": {
+   "B_hat": "(1/(m r)) sum_{i in S, j<=r} Z_ij, Z_ij = Y_i1j - Y_i0j, m = 200 sampled prefixes, r = 2 replicate pairs (the pair index j pairs the arms by label only)",
+   "nu_hat": "U_a / D_a pooled over all eligible prefixes of all 330 tasks (Hajek)",
+   "delta_hat": "B_hat - nu_hat_1 + nu_hat_0 (eq. 3; the archived pooled point estimator)"
+  },
+  "secondary": {
+   "mu_F": "realized-frame mean sum_{i in F} d_i / N over the N = 564 recorded eligible prefixes (task weights M_g/N within this frame)",
+   "relation": "under assumptions 2-3 of the target note, E(B_hat | F) = mu_F; uniform sampling does not make B_hat unbiased for theta over random source blocks (in general E(T/N) differs from sum_g E T_g / sum_g E M_g); the sampled mean is not relabelled as theta"
+  },
+  "weighting": "pooled eligible-prefix weights; no equalization of the 103 sampled tasks and no inverse per-task sample-size weights (weighting decision)",
+  "not_substituted": "the 42-task equal-weighted frame is exploratory and not used"
+ },
+ "sources": {
+  "design": {
+   "path": "results/code_routing/design.json",
+   "sha256": "230638a757c581138d1a3611a9c5788ed79b80a655313d316cac63cbba4ff43d",
+   "bytes": 2008735,
+   "git_blob_head": "1913c8730d670cc6df6d49ae49b2fb90cf57f860",
+   "working_tree_equals_head": true
+  },
+  "log_episodes": {
+   "path": "results/code_routing/log/episodes.jsonl",
+   "sha256": "e643ee44c7ef658fff65efb5e17763ee78c990d21184d060f5823025a100414e",
+   "bytes": 15615680,
+   "git_blob_head": "b9f205d4733bd005942a474dd3db3b0bcaaf7533",
+   "working_tree_equals_head": true
+  },
+  "branch_plan": {
+   "path": "results/code_routing/branch/branch_plan.json",
+   "sha256": "59a384ac66c2b8d2e5e42c9828d7cc48757f802be9f4fa050eb22dac34367b35",
+   "bytes": 186221,
+   "git_blob_head": "893bbae40480dc04024ef5cf1f8bc5fe78ddbfd7",
+   "working_tree_equals_head": true
+  },
+  "branch_episodes": {
+   "path": "results/code_routing/branch/episodes.jsonl",
+   "sha256": "83bf00634fbeeb8af05cdfb546480fb3e72aa440a3b9d6b71f3d22dbc2c98413",
+   "bytes": 3992325,
+   "git_blob_head": "9e5cffe4949ba0ab21d4866bb83c11386c4d8fdc",
+   "working_tree_equals_head": true
+  },
+  "log_decisions": {
+   "path": "results/code_routing/log/decisions.jsonl",
+   "sha256": "7ef183d9c75794e9803f5849af7cbd9c860d1fee9eb344bcf8de7ac4a54d4cfd",
+   "bytes": 2946100,
+   "git_blob_head": "a67568285e8af7071e73a2042698ae6a4c73e86a",
+   "working_tree_equals_head": true
+  },
+  "branch_decisions": {
+   "path": "results/code_routing/branch/decisions.jsonl",
+   "sha256": "959a11c40a6bbaccd770895fc04f92ae72382e0f38d4f07e7d5de02a4ff71855",
+   "bytes": 731987,
+   "git_blob_head": "79e11bc02795fa01d63a2c9cf4556d359d9ca81f",
+   "working_tree_equals_head": true
+  },
+  "branch_run_manifest": {
+   "path": "results/code_routing/branch/run_manifest.jsonl",
+   "sha256": "6809db5554fda641ab8440d7e9f66f6925120b838c8360ac1249026cc206e705",
+   "bytes": 3160,
+   "git_blob_head": "4d0cb1dc123b7efda3042f9a0bebd585e547d820",
+   "working_tree_equals_head": true
+  },
+  "recovery_ledger": {
+   "path": "results/code_routing/recovery_ledger.json",
+   "sha256": "75075ffffc462658e041c132f5800f187985d8dfbc2a818daa072dcc257e879b",
+   "bytes": 1345,
+   "git_blob_head": "bcf949ac9388ae973ce6ac3aac189090737b792b",
+   "working_tree_equals_head": true
+  },
+  "restoration_recheck": {
+   "path": "results/code_routing/analysis/restoration_recheck.json",
+   "sha256": "0993ec4268cbccac77cba994fb4d9388dbe6a56a7023c7c14743776460a434da",
+   "bytes": 1528,
+   "git_blob_head": "28a6497eb7f3cd2f43552b1b88abd7d7a7f6c345",
+   "working_tree_equals_head": true
+  },
+  "branch_evidence_table": {
+   "path": "results/code_routing/analysis/branch_evidence_table.json",
+   "sha256": "791dc1337148b8af45ecd85c31a82c53b081c1a448a0b817a7ae881ca9ce357c",
+   "bytes": 4379,
+   "git_blob_head": "72f752636fb5f578c52732a4db1f0de60103645a",
+   "working_tree_equals_head": true
+  },
+  "a6_report": {
+   "path": "results/code_routing/analysis/a6_report.json",
+   "sha256": "ca75e7c9cdc149a9e3fb99f663a1557dee978f915f089d15e3922838409774e8",
+   "bytes": 55089,
+   "git_blob_head": "448d48b338bd256a5f8d1bb1d1db730a8598641f",
+   "working_tree_equals_head": true
+  },
+  "lead_linkage_audit": {
+   "path": "docs/audits/theory_branch_linkage_audit_20260920.json",
+   "sha256": "6bb899e649d4b98380f85f47eea23be32de4b01ba38e774e90c820dfea267aef",
+   "bytes": 1985,
+   "git_blob_head": "8fed583f4d9337445a88556f280e656ab4fd4954",
+   "working_tree_equals_head": true
+  },
+  "target_note": {
+   "path": "docs/theory_branch_fixed_benchmark_bound.md",
+   "sha256": "0f349e6162e3c52124e773d756b1e9231052b8c87eb2b6fe7481ed43f1a91c7b",
+   "bytes": 14632,
+   "git_blob_head": "6f7f8a946d3e5f6d51a2a061f30fe20722ad65d3",
+   "working_tree_equals_head": true
+  },
+  "weighting_decision": {
+   "path": "docs/theory_feedback_20260921_weighting.md",
+   "sha256": "40b1a3a2331121f78bc2f55f3ecb1fef79af3ae0fb9a099b9ea869400f41d712",
+   "bytes": 6604,
+   "git_blob_head": "acc0d8ce60e197b6fa73635587110934863f5bf3",
+   "working_tree_equals_head": true
+  },
+  "design_code": {
+   "path": "experiments/code_routing/design.py",
+   "sha256": "6510103b430ef3960f154fe142b640287d3dc891de61ddc1f975e9e560b28127",
+   "bytes": 4187,
+   "git_blob_head": "c1511b468e6ff65123db2f5a3808ad1f53826677",
+   "working_tree_equals_head": true
+  },
+  "episode_code": {
+   "path": "experiments/code_routing/agent.py",
+   "sha256": "9f064073827b297cf550cab1555946f89aac7205530b5e22a131a0a18caa165a",
+   "bytes": 24875,
+   "git_blob_head": "3ba345380028428bbe5e598651081498e0762a72",
+   "working_tree_equals_head": true
+  },
+  "plan_code": {
+   "path": "experiments/code_routing/run.py",
+   "sha256": "b88be431181b7cc7255df904c14b6551f991285035aa396108f8c2d271c04f75",
+   "bytes": 24576,
+   "git_blob_head": "9c226402a62a97002b68141c9d73f980bd4fca3e",
+   "working_tree_equals_head": true
+  },
+  "config": {
+   "path": "experiments/code_routing/config.json",
+   "sha256": "3dfa7d53990e6d7832c2b22b6ae2f0bf60a9beac052c1ef7dfe10ec9a96d6177",
+   "bytes": 1914,
+   "git_blob_head": "4814be5b40bf6db418306560bd4688e26c1f612d",
+   "working_tree_equals_head": true
+  }
+ },
+ "evidence_table_crosscheck": {
+  "source_frame_counts_equal": true,
+  "prefixes_per_task_distribution_equal": true,
+  "fresh_pair_discordance_equal": true,
+  "recovery_counts_equal": true
+ },
+ "reconciliation": {
+  "confirm_tasks": 330,
+  "confirm_log_episodes": 2640,
+  "episodes_per_task": [
+   [
+    8,
+    330
+   ]
+  ],
+  "eligible_prefixes": 564,
+  "eligible_tasks": 152,
+  "sampled_prefixes": 200,
+  "sampled_tasks": 103,
+  "branch_continuations": 800,
+  "continuations_per_prefix": [
+   [
+    4,
+    200
+   ]
+  ],
+  "tasks_without_eligible_prefix": 178,
+  "tasks_with_eligible_but_no_sampled_prefix": 49,
+  "sampled_prefixes_per_task": [
+   [
+    1,
+    48
+   ],
+   [
+    2,
+    27
+   ],
+   [
+    3,
+    19
+   ],
+   [
+    4,
+    5
+   ],
+   [
+    5,
+    3
+   ],
+   [
+    6,
+    1
+   ]
+  ],
+  "eligible_prefixes_per_task": [
+   [
+    1,
+    38
+   ],
+   [
+    2,
+    24
+   ],
+   [
+    3,
+    22
+   ],
+   [
+    4,
+    18
+   ],
+   [
+    5,
+    11
+   ],
+   [
+    6,
+    8
+   ],
+   [
+    7,
+    11
+   ],
+   [
+    8,
+    20
+   ]
+  ],
+  "zero_arm_counts": {
+   "eligible_tasks_D_g1_zero": 64,
+   "eligible_tasks_D_g0_zero": 56,
+   "eligible_tasks_both_zero": 20,
+   "eligible_tasks_both_positive": 52,
+   "sampled_tasks_both_positive": 42,
+   "sampled_tasks_at_least_one_zero": 61,
+   "tasks_lead_derivative_exactly_zero": 186
+  }
+ },
+ "point_estimates": {
+  "B": 0.12,
+  "v1": 0.32280701754385965,
+  "v0": 0.18815331010452963,
+  "log_contrast": 0.13465370743933003,
+  "delta": -0.014653707439330033,
+  "U_1": 184.0,
+  "D_1": 570.0,
+  "U_0": 108.0,
+  "D_0": 574.0,
+  "sum_lead_derivative": 6.5052130349130266e-18,
+  "lead_audit": {
+   "B": 0.12,
+   "log_contrast": 0.13465370743933003,
+   "delta": -0.014653707439330033
+  }
+ },
+ "design": {
+  "stage1_source_blocks": {
+   "description": "per CONFIRM task, 8 randomized-log episodes. Decision 0: design.py draws, per task in sorted uid order from one default_rng(design_seed) stream, block = [0,1]*4 permuted by rng.shuffle and sets u_0 = 0.25 if block[r] = 1 else 0.75, so a_0 = 1{u_0 < 0.5} = block[r]. Decisions t >= 1: a_t = 1{u_t < p_large} with the frozen design uniforms u_t and p_large = 0.5",
+   "a0_law": "within a task, a uniform random arrangement of four 0s and four 1s (70 equally likely arrangements), independent across tasks under the idealized generator: P(a_0 = 1) = 1/2; for two episodes of one task, P(same a_0) = 3/7 and P(both large) = P(both small) = 3/14",
+   "a0_same_probability": 0.42857142857142855,
+   "a0_both_large_probability": 0.21428571428571427,
+   "a0_block_patterns": [
+    [
+     [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1
+     ],
+     330
+    ]
+   ],
+   "a0_realized_equals_block": 2640,
+   "u0_by_block": [
+    [
+     [
+      0,
+      0.75
+     ],
+     1320
+    ],
+    [
+     [
+      1,
+      0.25
+     ],
+     1320
+    ]
+   ],
+   "decisions_checked_all_t": 3662,
+   "decisions_checked_t_ge_1": 1022,
+   "decisions_mismatching_design_uniform": 0,
+   "p_large_values": [
+    [
+     0.5,
+     3662
+    ]
+   ],
+   "decision_sources": [
+    [
+     [
+      0,
+      "design_u"
+     ],
+     2640
+    ],
+    [
+     [
+      1,
+      "design_u"
+     ],
+     564
+    ],
+    [
+     [
+      2,
+      "design_u"
+     ],
+     458
+    ]
+   ],
+   "design_seed": 20260918,
+   "horizon": 3,
+   "p_large": 0.5,
+   "design_created_utc": "2026-09-19T19:03:52Z",
+   "design_code_sha256": "b697d39065697358ff9a33b59f9aa51b4cbfcb3eed3347f05443a79658d24c26",
+   "eligibility": {
+    "rule": "a prefix is eligible iff its first candidate failed the frozen visible validation (the episode then makes >= 2 decisions); hidden-test correctness of the first candidate is irrelevant to eligibility",
+    "eligible_vs_first_visible_pass": [
+     [
+      [
+       false,
+       true
+      ],
+      2076
+     ],
+     [
+      [
+       true,
+       false
+      ],
+      564
+     ]
+    ],
+    "eligible_with_hidden_correct_first_candidate": 69,
+    "n_decisions_by_stop_reason": [
+     [
+      [
+       1,
+       "validated"
+      ],
+      2076
+     ],
+     [
+      [
+       2,
+       "validated"
+      ],
+      106
+     ],
+     [
+      [
+       3,
+       "horizon"
+      ],
+      393
+     ],
+     [
+      [
+       3,
+       "validated"
+      ],
+      65
+     ]
+    ],
+    "frame_by_a0": {
+     "small": 332,
+     "large": 232
+    },
+    "sample_by_a0": {
+     "small": 111,
+     "large": 89
+    },
+    "decomposition": "M_g = M_g(a_0 = small) + M_g(a_0 = large), each between 0 and 4 (task ledger columns); eligibility depends on a_0, so the frame is outcome- and design-dependent and N is random under stage 1",
+    "max_M_g_by_a0": 4
+   },
+   "schedule": {
+    "log_invocations": [
+     [
+      [
+       "8d491c364a78",
+       "confirm",
+       "c1de983f5152e70688db0b0c8ac198f085ce431e",
+       "b697d39065697358ff9a33b59f9aa51b4cbfcb3eed3347f05443a79658d24c26"
+      ],
+      2640
+     ],
+     [
+      [
+       "8d491c364a78",
+       "train",
+       "c1de983f5152e70688db0b0c8ac198f085ce431e",
+       "b697d39065697358ff9a33b59f9aa51b4cbfcb3eed3347f05443a79658d24c26"
+      ],
+      1848
+     ]
+    ],
+    "start_utc": {
+     "confirm": [
+      "2026-09-19T19:04:44Z",
+      "2026-09-19T21:54:54Z"
+     ],
+     "train": [
+      "2026-09-19T19:04:44Z",
+      "2026-09-19T21:54:58Z"
+     ]
+    },
+    "order": "one invocation ran the TRAIN and CONFIRM episodes interleaved in the design run_order (a random permutation of all log episodes), with 4 concurrent workers on shared servers",
+    "run_order_is_permutation": true,
+    "confirm_by_run_order_decile": [
+     272,
+     270,
+     257,
+     266,
+     258,
+     245,
+     268,
+     278,
+     269,
+     257
+    ],
+    "train_by_run_order_decile": [
+     177,
+     179,
+     192,
+     183,
+     190,
+     204,
+     181,
+     171,
+     180,
+     191
+    ],
+    "errors": 0,
+    "attempts": [
+     [
+      1,
+      4488
+     ]
+    ]
+   }
+  },
+  "stage2_prefix_sample": {
+   "mechanism": "given the complete realized frame F (N eligible prefixes sorted by episode id), a simple random sample without replacement of fixed size n = min(200, N) (run.py: numpy default_rng(branch_audit.seed).choice(N, n, replace=False)); pi and pi_pair are conditional on F",
+   "N": 564,
+   "n": 200,
+   "n_rule_min_200_N": 200,
+   "pi": 0.3546099290780142,
+   "pi_pair": 0.12534169784462668,
+   "seed": 1008219474,
+   "precommitment_checks": {
+    "design_json_blob_at_freeze_equals_head": true,
+    "design_created_before_freeze_commit": true,
+    "freeze_commit_before_first_log_episode": true,
+    "log_invocation_commit_descends_from_freeze": true,
+    "plan_created_at_first_branch_invocation_start": true
+   },
+   "seed_precommitment": "branch_audit.seed is drawn by design.py and stored in design.json (created 2026-09-19T19:03:52Z), committed in the design freeze cb9481d before the first log episode started (2026-09-19T19:04:44Z)",
+   "plan_sampling_probability": 0.3546099290780142,
+   "plan_n_eligible": 564,
+   "plan_log_sha256_equals_log": true,
+   "plan_created_utc": "2026-09-20T01:11:55Z",
+   "plan_invocation": {
+    "invocation": "0445024c72d2",
+    "started_utc": "2026-09-20T01:11:55Z",
+    "git_head": "f3aa436abf5101f0170b2030acce7bed70dcf344",
+    "code_sha256": "b697d39065697358ff9a33b59f9aa51b4cbfcb3eed3347f05443a79658d24c26",
+    "n_todo": 800
+   },
+   "reproduction": {
+    "numpy": "2.5.3",
+    "equal_to_frozen_plan": true,
+    "fields_compared": [
+     "episode_id",
+     "parent_episode_id",
+     "task_uid",
+     "run",
+     "forced_arm",
+     "seed",
+     "run_order"
+    ],
+    "n_episodes": 800
+   },
+   "a6_branch_plan_reproduction": {
+    "redrawn_equals_frozen_plan": true,
+    "plan_log_sha256_matches_current_log": true,
+    "plan_created_not_after_first_start": true,
+    "design_freeze_commit": "cb9481d77567b7b14e3ceb6c1f0a6b534c67edcb"
+   },
+   "a6_git_order_note": "branch_plan.json and branch/episodes.jsonl were first committed together (ac3ca83), and the plan time equals the first continuation start at one-second resolution, so neither commit order nor timestamps strictly order the draw before execution.",
+   "task_stratification": "none (the frame is the pooled list of eligible prefixes); per-task sample sizes are random"
+  },
+  "stage3_continuations": {
+   "description": "per sampled prefix and arm (small, large), 2 fresh continuations from the restored first-failure state at fork_t = 1, each staying on the forced arm, each with its own frozen seed drawn from the plan generator after the prefix sample",
+   "continuations_per_arm": 2,
+   "fork_t": [
+    [
+     1,
+     800
+    ]
+   ],
+   "decisions_per_continuation": [
+    [
+     1,
+     166
+    ],
+    [
+     2,
+     634
+    ]
+   ],
+   "decoding": {
+    "temperature": 0.7,
+    "top_p": 0.95,
+    "max_tokens": 1024
+   },
+   "model_call_seed": "continuation seed + 101 * t (agent.py run_episode: m.chat(convo, ep[seed] + 101 * t))",
+   "branch_seeds_distinct": 800,
+   "branch_seeds_shared_with_log_or_live_design_seeds": 0,
+   "branch_model_call_seeds_shared_with_log_or_live": 0,
+   "replicate_pairing": "the replicate index j pairs small#j with large#j by label only; the two arms have distinct seeds, which does not by itself make their executions independent (the pair version of the bound permits within-pair dependence)",
+   "prefixes_with_adjacent_plan_run_orders": 200,
+   "start_spread_seconds_within_prefix": {
+    "n": 198,
+    "median": 9,
+    "max": 56
+   },
+   "concurrency_reading": "the 4 continuations of every prefix occupy adjacent plan run orders; for the 198 prefixes run in one invocation they started nearly together on the 4 workers, so a time-local execution shock would reach all replicates of such a prefix",
+   "replicate_pairs_with_a_shared_seed": 0,
+   "replicate_agreement": {
+    "agree": 368,
+    "disagree": 32
+   },
+   "replicate_disagreement_by_arm": {
+    "small": 16,
+    "large": 16
+   },
+   "replicate_agreement_reading": "the two replicates of an arm use distinct seeds, so their disagreement reflects sampling variation (and possibly shared execution shocks), not evidence about seed determinism",
+   "restoration": {
+    "recorded_flags_all_true": true,
+    "recheck_recomputed_transcript_hash_matches": 800,
+    "recheck_branch_episodes_checked": 800,
+    "recheck_disagreements": 0,
+    "recheck_stored_tool_result_reproduced": 800,
+    "recheck_source_binding_matches": true,
+    "reading": "the transcript hash of the restored state was recomputed from the frozen task file, certified visible tests and the parent record (800/800); tool_result_reproduced is a stored flag, not independently recomputed"
+   }
+  },
+  "clustering": {
+   "unit": "source task (330 CONFIRM tasks); each task block carries its 8 episodes, their eligible prefixes, the sampled continuations and the log weights",
+   "note": "prefixes of one task share the task and the stage-1 first-decision arrangement; the stage-2 sample is global (not stratified by task)"
+  },
+  "shared_records": {
+   "description": "every sampled prefix is also an eligible log episode, so the same prefix state enters B_hat (through its fresh continuations) and nu_hat (through the logger's own continuation with its recorded weight): the branch and log estimators share records within prefixes and tasks, so the branch-log cross terms must be kept",
+   "sampled_prefixes_also_in_log_estimator": 200,
+   "sampled_prefixes_by_log_arm_and_nonzero_weight": [
+    [
+     [
+      0,
+      false
+     ],
+     47
+    ],
+    [
+     [
+      0,
+      true
+     ],
+     44
+    ],
+    [
+     [
+      1,
+      false
+     ],
+     52
+    ],
+    [
+     [
+      1,
+      true
+     ],
+     57
+    ]
+   ]
+  },
+  "provenance": {
+   "invocations": {
+    "0445024c72d2": {
+     "n": 135,
+     "run_order_min": 0,
+     "run_order_max": 136,
+     "start_utc_min": "2026-09-20T01:11:55Z",
+     "start_utc_max": "2026-09-20T01:26:55Z"
+    },
+    "8c343c83afdc": {
+     "n": 665,
+     "run_order_min": 134,
+     "run_order_max": 799,
+     "start_utc_min": "2026-09-20T02:13:49Z",
+     "start_utc_max": "2026-09-20T02:55:49Z"
+    }
+   },
+   "lost_invocation": "0445024c72d2",
+   "recovery_invocation": "8c343c83afdc",
+   "retained_from_lost_invocation": 135,
+   "retained_from_recovery": 665,
+   "lost_invocation_run_orders_missing_inside_its_range": [
+    134,
+    135
+   ],
+   "retention_reading": "the lost invocation dispatched the plan in run_order with 4 workers; the retained records are those whose episode records had been written when the snapshot was captured, a completion-time cutoff (not a designed split); see retention_window",
+   "benchmark_by_invocation": [
+    [
+     [
+      "humaneval",
+      "0445024c72d2"
+     ],
+     135
+    ],
+    [
+     [
+      "humaneval",
+      "8c343c83afdc"
+     ],
+     73
+    ],
+    [
+     [
+      "mbpp",
+      "8c343c83afdc"
+     ],
+     592
+    ]
+   ],
+   "prefixes_spanning_invocations": {
+    "log:humaneval/4#3": {
+     "small": [
+      "0445024c72d2"
+     ],
+     "large": [
+      "8c343c83afdc"
+     ]
+    },
+    "log:humaneval/46#3": {
+     "small": [
+      "0445024c72d2",
+      "8c343c83afdc"
+     ],
+     "large": [
+      "8c343c83afdc"
+     ]
+    }
+   },
+   "prefixes_by_invocation_class": {
+    "lost_only": 33,
+    "recovery_only": 165,
+    "spanning": 2
+   },
+   "plan_order_sorted_by_parent": true,
+   "plan_order_task_contiguous": true,
+   "attempt_values": [
+    [
+     1,
+     800
+    ]
+   ],
+   "attempt_number_reused": true,
+   "durable_decision_rows": 1439,
+   "durable_rows_by_invocation": {
+    "0445024c72d2": 243,
+    "8c343c83afdc": 1196
+   },
+   "durable_rows_matching_the_retained_invocation": 1434,
+   "durable_rows_not_matching": [
+    {
+     "episode_id": "branch:log:humaneval/4#3:large#0",
+     "durable_invocation": "0445024c72d2",
+     "t": 1,
+     "retained_invocation": "8c343c83afdc",
+     "a": 1,
+     "transcript_sha256": "c291d283ad86ae40e2ce56f3009531d99b9a231c92c664aef3d43a9aa45e12c4",
+     "retained_transcript_sha256_equal": true
+    },
+    {
+     "episode_id": "branch:log:humaneval/4#3:large#1",
+     "durable_invocation": "0445024c72d2",
+     "t": 1,
+     "retained_invocation": "8c343c83afdc",
+     "a": 1,
+     "transcript_sha256": "c291d283ad86ae40e2ce56f3009531d99b9a231c92c664aef3d43a9aa45e12c4",
+     "retained_transcript_sha256_equal": true
+    },
+    {
+     "episode_id": "branch:log:humaneval/46#3:small#1",
+     "durable_invocation": "0445024c72d2",
+     "t": 1,
+     "retained_invocation": "8c343c83afdc",
+     "a": 0,
+     "transcript_sha256": "d1e69e760fad85f4c3022e7d15991dc042d670a1911221b6e4fca68cd0ceeec4",
+     "retained_transcript_sha256_equal": true
+    },
+    {
+     "episode_id": "branch:log:humaneval/46#3:small#1",
+     "durable_invocation": "0445024c72d2",
+     "t": 2,
+     "retained_invocation": "8c343c83afdc",
+     "a": 0,
+     "transcript_sha256": "38d0fabefcdec3080c81dc67ee3f979a6da05a0f3aea185d051df1c1b0cbf39b",
+     "retained_transcript_sha256_equal": true
+    },
+    {
+     "episode_id": "branch:log:humaneval/46#3:large#0",
+     "durable_invocation": "0445024c72d2",
+     "t": 1,
+     "retained_invocation": "8c343c83afdc",
+     "a": 1,
+     "transcript_sha256": "d1e69e760fad85f4c3022e7d15991dc042d670a1911221b6e4fca68cd0ceeec4",
+     "retained_transcript_sha256_equal": true
+    }
+   ],
+   "continuations_with_lost_invocation_durable_rows": [
+    "branch:log:humaneval/4#3:large#0",
+    "branch:log:humaneval/4#3:large#1",
+    "branch:log:humaneval/46#3:large#0",
+    "branch:log:humaneval/46#3:small#1"
+   ],
+   "recovery_ledger_episode_ids": [
+    "branch:log:humaneval/4#3:large#0",
+    "branch:log:humaneval/4#3:large#1",
+    "branch:log:humaneval/46#3:large#0",
+    "branch:log:humaneval/46#3:small#1"
+   ],
+   "durable_row_reading": "these 4 continuations had started but not finished when the snapshot was captured, so only their pre-call decision rows survived (5 rows, t = 1 or 2); the recovery invocation re-executed them with the same seeds; the rows are partial path information about lost executions, not outcomes",
+   "recovery_ledger_total_durable_rows": 5,
+   "execution_flags_foreign_gpu_contention": [
+    [
+     [
+      false,
+      false
+     ],
+     5288
+    ]
+   ],
+   "execution_flags_reading": "the runner flags only another llama-server on a non-study port reporting a busy slot, sampled once at each episode start (all invocations ran with --allow-contention); other GPU workloads and mid-episode load are not observed",
+   "same_seed_repeat_reading": "the durable pre-call rows of 46#3:small#1 at t = 2 hash the same-seed t = 1 reply of the lost execution and equal the recovery hash, so one same-seed call repeated identically; it is non-discriminating (that prefix gives the same t = 1 reply under distinct seeds and both models), and t = 1 pre-call hashes only confirm the restored prefix",
+   "retention_window": {
+    "records_written": "episode records only on completion (run.py: as_completed, one fsynced append per finished episode); decision rows before each model call",
+    "snapshot_commit": "ac3ca8368e0b1b05990f1ef108fe1cc4bfb1251a",
+    "snapshot_commit_time": "2026-09-19T21:27:06-04:00",
+    "snapshot_equals_retained_lost_set": true,
+    "snapshot_decision_rows": 243,
+    "capture_not_before_utc": "2026-09-20T01:27:04Z",
+    "started_before_capture": 139,
+    "started_before_capture_not_retained": [
+     134,
+     135,
+     137,
+     138
+    ],
+    "max_observed_agent_loop_seconds": 92.79320895764977,
+    "hidden_verification_wall_limit_seconds": 20.0,
+    "kill_wait_seconds": 5,
+    "kill_wait_found_in_sandbox_code": true,
+    "start_to_record_bound_seconds": 117.79320895764977,
+    "at_risk_run_orders": [
+     121,
+     122,
+     123,
+     124,
+     125,
+     126,
+     127,
+     128,
+     129,
+     130,
+     131,
+     132,
+     133,
+     134,
+     135,
+     136,
+     137,
+     138
+    ],
+    "max_effect_on_B_hat_if_start_to_record_within_bound": 0.045,
+    "max_effect_on_B_hat_trivial": 0.3475,
+    "reading": "the lost invocation reportedly executed all 800 continuations (operator report, protocol section 11), but only those whose episode records had been written when the snapshot was captured (not before the last snapshot decision row, not after the commit) were retained; a continuation started before the capture was retained iff it had finished. If duration is associated with outcome, retained outcomes near the cutoff follow a selected law even when the lost and recovery laws agree. The at-risk set holds the continuations whose first durable row is within the start-to-record bound (+1 s truncation) of the earliest possible capture. The bound is empirical, not guaranteed by the code; the bound on B_hat needs every potential start-to-record time (under either outcome) within it and start times that do not depend on the continuation's own potential outcomes. Each continuation moves B_hat by at most 1/(m r) = 1/400"
+   },
+   "lost_outcomes": "the original outcomes of the 665 re-run continuations are not in the committed records (protocol section 11)",
+   "recovery_assumption": "the recovery re-execution follows the same continuation law as the lost one; its effect, if any, is aliased with benchmark (all 592 MBPP continuations are from the recovery invocation) and with task order"
+  },
+  "code_binding": {
+   "commits": {
+    "design_freeze": "cb9481d77567b7b14e3ceb6c1f0a6b534c67edcb",
+    "log_invocation": "c1de983f5152e70688db0b0c8ac198f085ce431e",
+    "plan_invocation": "f3aa436abf5101f0170b2030acce7bed70dcf344",
+    "plan_commit": "ac3ca8368e0b1b05990f1ef108fe1cc4bfb1251a"
+   },
+   "code_sha256_recomputed_from_git": {
+    "design_freeze": "b697d39065697358ff9a33b59f9aa51b4cbfcb3eed3347f05443a79658d24c26",
+    "log_invocation": "b697d39065697358ff9a33b59f9aa51b4cbfcb3eed3347f05443a79658d24c26",
+    "plan_invocation": "b697d39065697358ff9a33b59f9aa51b4cbfcb3eed3347f05443a79658d24c26",
+    "plan_commit": "b697d39065697358ff9a33b59f9aa51b4cbfcb3eed3347f05443a79658d24c26"
+   },
+   "plan_sampling_block_sha256": {
+    "design_freeze": "e4ac9abae81f05ffacf277ca2f14f47499bc6f57fa283d4a4707b773f2fc8cec",
+    "log_invocation": "e4ac9abae81f05ffacf277ca2f14f47499bc6f57fa283d4a4707b773f2fc8cec",
+    "plan_invocation": "e4ac9abae81f05ffacf277ca2f14f47499bc6f57fa283d4a4707b773f2fc8cec",
+    "plan_commit": "e4ac9abae81f05ffacf277ca2f14f47499bc6f57fa283d4a4707b773f2fc8cec",
+    "head": "e4ac9abae81f05ffacf277ca2f14f47499bc6f57fa283d4a4707b773f2fc8cec"
+   },
+   "plan_sampling_block_identical": true,
+   "design_block_sha256": {
+    "design_freeze": "767751f33b21187087ee7574ff60bdc0afa37c81c37d85e6ed59f654eab5cae1",
+    "log_invocation": "767751f33b21187087ee7574ff60bdc0afa37c81c37d85e6ed59f654eab5cae1",
+    "plan_invocation": "767751f33b21187087ee7574ff60bdc0afa37c81c37d85e6ed59f654eab5cae1",
+    "plan_commit": "767751f33b21187087ee7574ff60bdc0afa37c81c37d85e6ed59f654eab5cae1",
+    "head": "767751f33b21187087ee7574ff60bdc0afa37c81c37d85e6ed59f654eab5cae1"
+   },
+   "design_block_identical": true,
+   "commit_times": {
+    "design_freeze": "2026-09-19T15:04:34-04:00",
+    "log_invocation": "2026-09-19T15:04:35-04:00",
+    "plan_invocation": "2026-09-19T18:00:55-04:00",
+    "plan_commit": "2026-09-19T21:27:06-04:00"
+   },
+   "frozen_record_bindings": {
+    "config_sha256_in_records": [
+     "3dfa7d53990e6d7832c2b22b6ae2f0bf60a9beac052c1ef7dfe10ec9a96d6177"
+    ],
+    "code_sha256_in_records": [
+     "b697d39065697358ff9a33b59f9aa51b4cbfcb3eed3347f05443a79658d24c26"
+    ],
+    "config_file_equals_records": true,
+    "working_tree_code_sha256_equals_records": true
+   }
+  }
+ },
+ "identification": {
+  "components": [
+   {
+    "component": "stage 1: first-decision arrangement and later-decision assignment",
+    "status": "IDENTIFIED (design mechanism)",
+    "evidence": "design.py block bound to git at the freeze, log, plan and HEAD commits; 330/330 tasks with a 4/4 arrangement; realized a_0 equals the block in 2640/2640 episodes; a_t = 1{u_t < 0.5} with the design uniform in 3662/3662 decisions (1022 with t >= 1)"
+   },
+   {
+    "component": "stage 1: per-task law of the complete source block (outcomes, M_g, T_g, U_ga, D_ga)",
+    "status": "NOT IDENTIFIED (one realization per task, even under assumptions 1-3)",
+    "evidence": "assumption 1 of the target note allows independent blocks with non-identical laws; with one block per task the variance of sum_g (T_g - theta M_g), and the branch-log covariance, are not identified; between-task spread estimates that variance plus the spread of the centred task means, so it is conservative only; the range-based bounds of the target note (sec. 3) need only the recorded ranges"
+   },
+   {
+    "component": "stage 1: independence of complete source-task blocks across the 330 tasks",
+    "status": "ASSUMED (a6: UNKNOWN)",
+    "evidence": "one log invocation at one commit and code hash, TRAIN and CONFIRM interleaved in a random order; the runner's foreign-server check (narrow; see provenance) was negative in all 5288 log and branch records; shared execution-period or server effects are not observable"
+   },
+   {
+    "component": "stage 2: SRSWOR prefix selection given F",
+    "status": "IDENTIFIED (mechanism, reproduced); selection independent of fresh continuation noise ASSUMED",
+    "evidence": "exact redraw from the pre-committed seed and git-bound plan code; pi = n/N and pi_pair conditional on F"
+   },
+   {
+    "component": "stage 3: replicate pairs (2 per arm, distinct seeds, fork_t = 1)",
+    "status": "OBSERVED (design); conditional independence across prefixes and replicate indices and a selection-invariant continuation law ASSUMED (a6: UNKNOWN); within-pair arm dependence PERMITTED by the pair version",
+    "evidence": "plan seeds, disjoint from all log/live seeds; the 4 continuations of every prefix occupy adjacent plan run orders, and for the 198 prefixes run in one invocation they started nearly together (median 9 s, max 56 s apart), so a time-local shock would reach all replicates of such a prefix"
+   },
+   {
+    "component": "stage 3: no execution shocks shared across prefixes",
+    "status": "ASSUMED (a6: UNKNOWN)",
+    "evidence": "the plan order is deterministic and task-contiguous, so time or server drift is aliased with task order"
+   },
+   {
+    "component": "restored prefix state",
+    "status": "OBSERVED for the transcript hash; tool-result reproduction ASSUMED (stored flag)",
+    "evidence": "restoration_recheck.json: 800/800 recomputed transcript hashes, its source binding matching the current records"
+   },
+   {
+    "component": "branch-log cross terms (shared records)",
+    "status": "OBSERVED (record map); the covariance itself is part of the per-task block law",
+    "evidence": "prefix and task ledgers carry both sides for every task"
+   },
+   {
+    "component": "retention of lost-invocation records at the completion-time cutoff",
+    "status": "ASSUMED: retention independent of the potential outcomes (lost and recovered) of every continuation started before the snapshot capture",
+    "evidence": "episode records were written only on completion; the retained set equals the ac3ca83 snapshot; 18 continuations (run orders 121-138) started within the start-to-record bound (117.8 s: longest observed agent loop plus the hidden-test wall limit and kill wait) of the capture: at most 0.045 on B_hat if no potential start-to-record time exceeded this empirical bound and start times do not depend on a continuation's own outcome, otherwise only the trivial 139/400"
+   },
+   {
+    "component": "recovery / invocation effect on the 665 re-executed continuations",
+    "status": "NOT IDENTIFIED (a6: UNAVAILABLE from committed records)",
+    "evidence": "lost outcomes unavailable; aliased with benchmark and task order; 4 continuations carry lost-invocation pre-call rows only"
+   },
+   {
+    "component": "seed-conditional determinism of the serving stack",
+    "status": "NOT INFORMATIVELY OBSERVED (matters only for the same-seed recovery re-execution)",
+    "evidence": "one hash-level same-seed repeat (46#3:small#1, the t = 1 call) agrees but is non-discriminating; determinism is not established"
+   },
+   {
+    "component": "positive population denominators of eq. (2)",
+    "status": "IMPLIED (observed N = 564, D_1 = 570.0, D_0 = 574.0 with nonnegative summands)",
+    "evidence": "the only standing assumption of eq. (2)"
+   }
+  ],
+  "acceptance": "(a) Complete under declared assumptions: for the eq. (2) target the ledger records every input of the eq. (3) estimators and of the task-block sums used by the target note's bounds (M_g, also by a_0; m_g; A_g; U_ga; D_ga) for all 330 tasks, the exact stage-2 inclusion probabilities given F, the replicate and concurrency structure, and the shared-record map. The declared assumptions are: assumptions 1-3 of the target note; selection independent of fresh continuation noise; recovery-law invariance; retention independent of the potential outcomes of the continuations started before the snapshot capture; tool-result reproduction as stored. Under them the lead can derive a same-target, design-aware bound or conservative variance. (b) Not identified: the per-task block laws, hence the exact variance of the task totals and the branch-log covariance (between-task spread is conservative only); the recovery/invocation effect; seed-conditional determinism. The ASSUMED rows are assumptions, not checks. No standard error or interval is asserted here."
+ },
+ "lead_derivative": {
+  "name": "lead_derivative_U_g (docs/theory_feedback_20260920_branch.md)",
+  "formula": "(A_g - B m_g)/m - (U_g1 - v_1 D_g1)/D_1 + (U_g0 - v_0 D_g0)/D_0",
+  "label": "the derivative of the pooled contrast under common task weights 1 + eps h_g, an algebraic identity; a6 labels sqrt(sum_g U_g^2) an exploratory algebraic scale, not a consistent SE. It is not an eq. (2) influence function: it treats the realized frame, the 200 sampled prefixes and their replicates as fixed, so it ignores the randomness of the source frame, the SRSWOR dependence among sampled prefixes and the replicate structure (given F, m_g/m is the Horvitz-Thompson estimate of M_g/N)",
+  "sqrt_sum_sq": 0.04838557358567036,
+  "equals_a6_uncertainty_value": true
+ },
+ "outputs": {
+  "prefix_ledger": "results/code_routing/analysis/req018/prefix_ledger.csv",
+  "task_ledger": "results/code_routing/analysis/req018/task_ledger.csv",
+  "continuation_ledger": "results/code_routing/analysis/req018/continuation_ledger.csv",
+  "prefix_ledger_sha256": "5ea308f7396729734ebdd75c676c52c9d4ad4cb78c277366b5cd40a95a4fa4d5",
+  "task_ledger_sha256": "1b5d2eeec7e200bcee56f3aafc60e94e425eba6f3f539aed622e915dbc1ad935",
+  "continuation_ledger_sha256": "ef666e46e5678cc377deec5332224a5b0163ddbc7e3e68f44a259a8c99c91aff"
+ },
+ "not_done": [
+  "no standard error, interval or bootstrap",
+  "no 42-task substitution",
+  "no model/browser inference",
+  "no Monte Carlo",
+  "no archive change"
+ ]
+}

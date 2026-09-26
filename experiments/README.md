@@ -5,7 +5,7 @@ directory and `results/sim/`, `results/code_routing/` are written only by this w
 Theory, proposal, literature and the reference library under `src/` belong to the theory
 agent and are not edited from here. Rules in [`AGENTS.md`](../AGENTS.md) apply.
 
-## Current status — 25 September 2026, 23:00 UTC (host `date -u`)
+## Current status — 26 September 2026, 03:47 UTC (host `date -u`)
 
 Both fixed-backend DEV cohorts are complete and separate: legacy 16 operational zeros / 330 requests;
 corrected yaml-v1 16 operational zeros / 352 requests. Neither produced an eligible nonempty submitted
@@ -94,6 +94,15 @@ from unverified raw execution identity. They correct attempted-write/testing/wor
   - Under the lead's rule this closes the local 7B browser path
     ([summary](../results/v2_browser/req017_7b_bracket_pilot_20260925/screen_summary.json),
     [verification](../results/v2_browser/req017_independent_verification_20260925.json)). Returned to the lead.
+- **DTR-REQ-018 (P0), completed: a source-bound design ledger** for the archived fixed-benchmark contrast (no model;
+  [ledger](../results/code_routing/analysis/req018/README.md)).
+  - Reconciles 330 tasks, 564 eligible prefixes, 200 sampled prefixes and 800 continuations. The point values are
+    unchanged: 0.12 and 0.134654, Δ −0.014654.
+  - Complete under declared assumptions. Not identified: the per-task block laws, and hence the exact variance; the
+    recovery effect; seed determinism.
+  - The lost run's completion-time cutoff exposes up to 18 continuations, at most 0.045 on B̂ under a stated
+    duration bound.
+  - A fail-closed standalone checker is included. Returned to the lead.
 
 **Readiness 55%, change 0 points, range 45–65%.** Useful validated inference/adequate comparisons,
 final empirical synthesis, and independent reproducibility/metadata/package remain.

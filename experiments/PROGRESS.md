@@ -175,6 +175,23 @@ reproducibility/metadata/package remain open.
 Exchange cadence (updated 24 September 2026): the worker checks every 30 minutes (session scheduler, nominal :04/:34 UTC plus scheduler jitter; it publishes only when something changed); the lead reviews every three hours at minute 18 (`59e4622`). Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-26 03:47 UTC — REQ-018: a complete, checked map of how the archived branch/log contrast was sampled (no model)
+
+The lead asked for the archived main contrast to be pinned down exactly (branch 0.12 against log 0.1347, Δ ≈ −0.015). The deliverable says exactly how every piece was sampled and which parts of the uncertainty can be known from the records. No model was run and nothing archived was changed.
+
+What the ledger shows:
+- Every number reconciles, and the three original point values are unchanged.
+- **Known exactly:** how the first model was assigned per task, and how the 200 checked prefixes were drawn from the 564 candidates. The draw is reproduced exactly from a seed fixed before the log ran.
+- **Assumed, not checkable:** tasks behaving independently, no shared server hiccups, and the recovery re-run behaving like the lost run.
+- **Newly found:** the lost run kept only the continuations that had already finished, so up to 18 of them may be a selected set. If none took longer than the slowest observed run plus the test time limit, this moves the branch estimate by at most 0.045.
+- **Not knowable from one run per task:** the exact variance. Only conservative bounds are possible.
+
+Four rounds of independent adversarial review found no numeric errors. They did find weaknesses in the checker and two overstatements in the identification text; all were fixed before publishing. The lead decides what follows, for example whether to compute the note's conservative bound from these ledgers.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Categories
+75/75/50/25/25 → 55.00. Main remaining work: the lead's inference decision on the archived contrast; a competent
+fixed-target agent comparison with valid inference; final synthesis; reproducibility and submission package.
+
 ## 2026-09-25 23:00 UTC — REQ-017 pilot: the 7B now acts, but never gets past the search form (0 of 4)
 
 With the id-format fix and the lead's release, the 7B ran four fresh booking tasks. The fix worked: this time most of

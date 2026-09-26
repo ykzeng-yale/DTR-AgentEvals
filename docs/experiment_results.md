@@ -1076,8 +1076,44 @@ One Qwen2.5-Coder-14B episode ran on the already exposed `astropy__astropy-14598
   - 199/199 published files are hash-verified, and the release chain `0127f3a` → `e00c23a` → HEAD is intact.
 - **Scope:** a single-backend four-seed DEVELOPMENT pilot. It is not a rate, a routing result or CONFIRM evidence. The REQ-016 result stays unchanged.
 
+### 2026-09-26 03:47 UTC — REQ-018: source-bound design ledger for the archived fixed-benchmark contrast; complete under declared assumptions, with explicit non-identified components (no model)
+[ledger README](../results/code_routing/analysis/req018/README.md), [design ledger](../results/code_routing/analysis/req018/design_ledger.json), builder `experiments/tools/req018_design_ledger.py`, standalone checker `results/code_routing/analysis/req018/check_req018_ledger.py`, lead request `9e6c1ac`.
+- **What it is:** a deterministic retrospective diagnostic. No model, no Monte Carlo, no archive change. It binds the archived primary contrast to the lead-adopted eq. (2) target of the [fixed-benchmark bound note](theory_branch_fixed_benchmark_bound.md): θ = Σ E T_g / Σ E M_g over repeated designs of the 330 fixed task blocks.
+  - μ_F is labelled secondary. U_g is labelled as the 20 Sep reweighting derivative, not an eq. (2) influence function.
+- **Ledgers:**
+  - 564 eligible prefixes: a₀ block, first-candidate visible/hidden outcome, decisions 1–2 with design uniforms, eq. (1) weights, sampled flag and π, replicates in run order, invocation per arm.
+  - All 330 tasks with zeros kept: M_g, also split by a₀; m_g; A_g; U_ga; D_ga.
+  - All 800 continuations: seed, invocation, start time, success, restoration flags, durable-row counts per invocation.
+- **Reconciled:**
+  - 330 tasks × 8 episodes; 564 eligible prefixes on 152 tasks; 200 sampled on 103 tasks; 800 continuations. 178 tasks have no eligible prefix and 49 are eligible but unsampled.
+  - Point values unchanged: B = 0.12, ν̂₁ − ν̂₀ = 0.134654, Δ̂ = −0.014654.
+  - Among the 152 eligible tasks: 64 have D_g1 = 0, 56 have D_g0 = 0, 20 both, 52 both positive.
+  - All four `branch_evidence_table.json` cross-checks agree, and √ΣU_g² = 0.048386 equals a6.
+- **Design facts (checker-recomputed):**
+  - **a₀:** a uniform 4/4 arrangement per task, with P(same a₀) = 3/7. It is realized in 2640/2640 episodes, and a_t = 1{u_t < 0.5} holds in 3662/3662 decisions (1022 with t ≥ 1).
+  - **Eligibility:** the first candidate failed the frozen *visible* check; 69 eligible prefixes had a hidden-correct first candidate. By a₀: frame 332/232, sample 111/89.
+  - **SRSWOR draw:** n = min(200, N), π = 200/564 given F. The draw is reproduced exactly from a seed that was in `design.json` at the freeze `cb9481d`, before the first log episode.
+  - **Code binding:** `code_sha256` recomputed from git is `b697d39` at the freeze, log, plan-invocation and plan commits, and the config hash matches every frozen record.
+  - **Continuations:** 800 distinct branch seeds, disjoint from all log/live seeds. The replicate index pairs the arms by label only. The 4 continuations of a prefix ran near-concurrently: median 9 s, max 56 s apart.
+  - **Restoration:** transcript hashes recomputed 800/800; `tool_result_reproduced` is a stored flag only.
+- **Provenance:**
+  - 135 continuations were retained from the lost invocation and 665 re-executed by the recovery, including all 592 MBPP continuations.
+  - The lost invocation reportedly ran all 800 continuations, but only the episode records already written when the `ac3ca83` snapshot was captured survived. That is a completion-time cutoff.
+  - 18 of the 139 continuations started before the capture (run orders 121–138) were within the start-to-record bound of 117.8 s: the longest agent loop plus the hidden-test wall limit and kill wait.
+  - So retention selection moves B̂ by at most 0.045 if that empirical bound held for every potential outcome and start times do not depend on a continuation's own outcome. Otherwise only the trivial 139/400 applies.
+- **Acceptance answer, from the 12-row identification map:**
+  - **(a) Complete under declared assumptions:** assumptions 1–3 of the note; selection independent of fresh noise; recovery-law invariance; retention independent of the potential outcomes of the continuations started before the capture; stored tool-result reproduction.
+  - **(b) Not identified:** the per-task block laws, even under 1–3. The exact variance of the task totals and the branch–log covariance are therefore not identified, and between-task spread is conservative only. Also not identified: the recovery/invocation effect and seed-conditional determinism.
+  - No standard error, interval or bootstrap is asserted.
+- **Verification:**
+  - Four adversarial read-only rounds found no numeric error: 4 reviewers + critic, 2 + critic, 2, and a targeted check of the last fixes. An independent rebuild matched all 35,846 CSV cells.
+  - They found checker gaps, fixed before publication: ragged rows, archive anchoring, duplicate keys, text pinning, integer typing, must-be-true facts.
+  - They also found identification overstatements, fixed: between-task variance, and the retention scope and duration bound.
+  - The checker now fails closed. It passes on the published outputs; 67 REQ-018 tests and the full suite pass.
+- **Scope:** a retrospective design ledger. It changes no estimate, validates no interval and is not new evidence about routing benefit.
+
 ### Not claimed
-No model runs for REQ-005 to REQ-008 (no-model instrumentation, retrospective analyses and a metadata inventory). Real-model execution since the archived coding study is limited to the SWE-bench Verified pipeline smoke (Flask episodes), the two 16-episode Coder 7B/14B fixed-backend DEV cohorts (0/16 each) and the single-task DEVELOPMENT probes REQ-011 (0/2 eligible), REQ-012 (7B, eligible, unresolved) and REQ-014 (14B, operational zero), the browser 7B screen REQ-016 (0/8; no action executed) and pilot REQ-017 (0/4; actions executed, never past the search form), with no routing or CONFIRM run; Monte Carlo only on known synthetic kernels; no interval validation for DR/OR, learned policies or
+No model runs for REQ-005 to REQ-008 and REQ-018 (no-model instrumentation, retrospective analyses, a metadata inventory and a source-bound design ledger). Real-model execution since the archived coding study is limited to the SWE-bench Verified pipeline smoke (Flask episodes), the two 16-episode Coder 7B/14B fixed-backend DEV cohorts (0/16 each) and the single-task DEVELOPMENT probes REQ-011 (0/2 eligible), REQ-012 (7B, eligible, unresolved) and REQ-014 (14B, operational zero), the browser 7B screen REQ-016 (0/8; no action executed) and pilot REQ-017 (0/4; actions executed, never past the search form), with no routing or CONFIRM run; Monte Carlo only on known synthetic kernels; no interval validation for DR/OR, learned policies or
 the branch study; no power claim; no evidence of real-agent improvement. The
 archived learned router did not beat always-large. Lead's readiness estimate (rubric in [readiness.md](readiness.md),
 `76b3199`): 55%, change 0 percentage points, range 45–65%.

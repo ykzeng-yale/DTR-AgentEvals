@@ -6081,3 +6081,68 @@ Full-project arXiv/preprint readiness **55%, change 0 percentage points, judgmen
 **Readiness:** 55 %, change 0 points (range 45–65 %; 75/75/50/25/25 → 55.00).
 
 **Cadence:** job `c710b12b`, ticks at about :15/:45 UTC, session-only; I publish on change.
+
+## Worker checkpoint — 2026-09-26T03:47Z (host `date -u`) — DTR-REQ-018 COMPLETED: source-bound design ledger for the archived fixed-benchmark contrast; returning to the lead
+
+**Read:** lead `9e6c1ac` and its [decision](theory_feedback_20260926_req017_decision.md). No newer lead commit, and issue #4 has nothing newer than 01:24:25Z. **Processed lead SHA:** `9e6c1ac919d5cfd9074f1fc7fd63dea9346a066e`.
+
+**DTR-REQ-018 (P0): completed.** Deterministic, with no model, no Monte Carlo, no archive change, no interval and no 42-task substitution.
+
+**Where it is:** everything is under `results/code_routing/analysis/req018/` (see its [README](../results/code_routing/analysis/req018/README.md)):
+- `design_ledger.json`;
+- the 564-row prefix, 330-row task and 800-row continuation ledgers;
+- the standalone checker `check_req018_ledger.py`.
+
+The builder is `experiments/tools/req018_design_ledger.py`, with 67 tests in `tests/test_req018_design_ledger.py`.
+
+**Target:** eq. (2) of the fixed-benchmark bound note. It is built from your decisions and the [weighting decision](theory_feedback_20260921_weighting.md), and the pooled point values are unchanged: 0.12, 0.134654 and −0.014654.
+
+**Acceptance answer:**
+- **(a) Complete under declared assumptions.** The ledger records every eq. (3) input and every task-block sum the bound uses, for all 330 tasks. It also records the exact stage-2 π given F, the replicate and concurrency structure, and the shared-record map. The declared assumptions are:
+  - assumptions 1–3 of the note;
+  - prefix selection independent of fresh noise;
+  - recovery-law invariance;
+  - retention independent of the potential outcomes (lost and recovered) of the 139 continuations started before the snapshot capture;
+  - tool-result reproduction as stored.
+- **(b) Not identified:**
+  - the per-task block laws, even under 1–3, so the exact task-total variance and the branch–log covariance are not identified, and between-task spread is only conservative;
+  - the recovery/invocation effect;
+  - seed-conditional determinism. One hash-level same-seed repeat exists, but it cannot discriminate.
+
+**New findings you may want to use:**
+- **The retention cutoff is outcome-exposed.** The lost invocation reportedly ran all 800 continuations, but only the episode records written before the `ac3ca83` snapshot capture survived. Eighteen of the 139 continuations started before the capture (run orders 121–138) fall within the 117.8 s start-to-record bound: the longest agent loop plus the hidden-test wall limit and kill wait.
+  - If that empirical bound held for every potential outcome and start times do not depend on a continuation's own outcome, selection moves B̂ by at most 0.045.
+  - Otherwise only the trivial 139/400 bound applies.
+- **Eligibility depends on a₀:** 332 small / 232 large in the frame. It is also purely visible-check based: 69 eligible prefixes were hidden-correct.
+- **Replicates run together:** the 4 continuations of a prefix started near-concurrently (median 9 s apart). Shared time-local shocks would therefore reach all replicates of a prefix. This matters for the pair constant versus the prefix-only constant.
+
+**Verification:**
+- Four adversarial read-only rounds (4 reviewers + critic, 2 + critic, 2, then a targeted re-check of the last fixes) found no numeric error. An independent rebuild matched all 35,846 cells.
+- Every checker gap and identification overstatement they found was fixed before this push.
+- The checker now fails closed on each of the following:
+  - archive or HEAD drift;
+  - config or code hashes that differ from the frozen records;
+  - duplicate or non-canonical JSON;
+  - unchecked numbers;
+  - status or text changes;
+  - ragged CSV rows.
+
+**Questions for you:**
+1. **Retention.** Do you accept declaring outcome-independent retention for the 139 continuations started before the capture, with the 0.045 conditional sensitivity? Or do you want a different treatment, such as a separate sensitivity row?
+2. **Next step.** The per-task law is not identified, so only a range-based or conservative bound is available. Do you want me to compute the target note's sec. 3 range-based bound from these ledgers as a deterministic REQ-019, with no bootstrap? Or will you derive it yourself?
+3. **Lead derivative column.** Keep `lead_derivative_U_g` in the task ledger, now labelled as not an eq. (2) influence function, or drop it?
+
+| Request | Status | Artifact |
+|---|---|---|
+| DTR-REQ-018 (P0) | **completed**: source-bound design ledger; (a) complete under declared assumptions, (b) non-identified components listed | this commit |
+| DTR-REQ-017 (P0) | completed: 0/4; restricted 7B browser-task execution failure; local browser path closed | `0127f3a`, `e00c23a`, `8c58ec3`, `007adfa`, `9e6c1ac` |
+| DTR-REQ-016 (P0) | completed: format/interface operational zero (0/8) | `ab39bbd`, `a1f1c7b`, `74a20c8`, `c648a84` |
+| DTR-REQ-015 … 001 | as in the table at `007adfa` | — |
+
+**Readiness:** 55 %, change 0 points (range 45–65 %; 75/75/50/25/25 → 55.00). REQ-018 is a retrospective ledger: it validates no interval and closes no empirical gate. The largest remaining milestones:
+- your inference decision on the archived contrast;
+- a competent fixed-target agent contrast with valid inference;
+- the final synthesis;
+- the reproducibility, metadata and submission package.
+
+**Cadence:** job `c710b12b`, ticks at about :15/:45 UTC, session-only; I publish on change.
