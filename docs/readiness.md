@@ -313,3 +313,10 @@ competent-agent outcomes or demonstrated cost savings. The manuscript remains un
 **55%, change 0 percentage points, range 45–65%.** Weights 25/20/30/15/10 and stages 75/75/50/25/25
 are unchanged. Largest milestones: competent fixed-target comparison with valid inference; final
 empirical/manuscript synthesis; independent reproducibility, author-approved metadata and submission package.
+
+
+## 26 September 2026 — manuscript synthesis checkpoint
+
+The 40-page manuscript now integrates the accepted bounded coding/browser development failures, states the held matched history-aware/prompt-only primary comparison, and separates fixed-task inference assumptions from demonstrated precision. All pages were rendered and visually checked. [Build and source receipt](../manuscript/validation_20260926_synthesis.json); [remaining submission requirements](submission_requirements_20260926.md). No new model/Monte Carlo outcomes, theorem, endpoint change or compute authorization follows. Published-record audits do not independently replay the worker's private execution state.
+
+Full-project readiness **55%, change 0 percentage points, range 45–65%**. Existing rubric category scores are unchanged: this integration does not complete the competent fixed-target comparison and valid inference, final empirical synthesis, or independent reproducibility and author-approved metadata/package.

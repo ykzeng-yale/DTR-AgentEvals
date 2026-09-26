@@ -1534,3 +1534,10 @@ vindicated. The observed fixed learned schedule and limited repair opportunities
 The original diagnostic code/output are preserved as historical artifacts with their interpretation explicitly
 superseded. A future deployable stopping rule cannot consult hidden-test success. Reporting/generator corrections
 are queued in the handoff; the scientific lead owns inference and design decisions.
+
+
+## 26 September 2026 — manuscript synthesis checkpoint
+
+The 40-page manuscript now integrates the accepted bounded coding/browser development failures, states the held matched history-aware/prompt-only primary comparison, and separates fixed-task inference assumptions from demonstrated precision. All pages were rendered and visually checked. [Build and source receipt](../manuscript/validation_20260926_synthesis.json); [remaining submission requirements](submission_requirements_20260926.md). No new model/Monte Carlo outcomes, theorem, endpoint change or compute authorization follows. Published-record audits do not independently replay the worker's private execution state.
+
+Full-project readiness **55%, change 0 percentage points, range 45–65%**. Existing rubric category scores are unchanged: this integration does not complete the competent fixed-target comparison and valid inference, final empirical synthesis, or independent reproducibility and author-approved metadata/package.

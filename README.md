@@ -16,7 +16,7 @@ The proposed contribution is a sequentially randomized evaluation design with ve
 independently reviewed, evidence-backed preprint package. The existing Claude Code worker implements
 bounded experiment specifications under lead review. Read the
 [current scientific assessment and roadmap](docs/scientific_lead_resumption_20260926.md).
-The 38-page manuscript contains scoped theory, synthetic development evidence and a critical coding-agent
+The 40-page manuscript contains scoped theory, synthetic development evidence and a critical coding-agent
 case study. The learned archived router is a fixed schedule; adaptive benefit and useful primary joint
 inference remain unestablished. The local coding/browser competence paths are closed, and REQ-020/021
 record the configured-worker-host capacity block for the proposed replacement pair.
@@ -25,8 +25,7 @@ The [prospective replicated-block inference note](docs/theory_replicated_block_i
 fixed-benchmark policy contrasts and offline/fresh covariance without relabeling tasks as iid population draws.
 [REQ-024](docs/req024_replicated_inference_setup.md) supplies reviewed analysis functions and deterministic
 fixtures; it releases no model or simulation batch. New live/CONFIRM remains held pending competence,
-resource, opportunity and frozen analysis/precision gates. Frozen archives and the paper PDF are unchanged
-by this resumption. The former recurring lead check remains deleted.
+resource, opportunity and frozen analysis/precision gates. Frozen archives remain unchanged. The subsequent manuscript synthesis integrates the accepted development probes and current inference limitations; see [validation](manuscript/validation_20260926_synthesis.json). The former recurring lead check remains deleted.
 
 The [precision-design audit](docs/theory_precision_design_20260926.md) derives tighter shared-score ranges
 and assesses sufficient concentration counts. These remain too large to supply a practical plan from
