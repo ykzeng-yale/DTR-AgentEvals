@@ -1190,8 +1190,31 @@ One Qwen2.5-Coder-14B episode ran on the already exposed `astropy__astropy-14598
 - **Reading:** the sampled estimates are consistent with the exact null within Monte Carlo uncertainty. Weak overlap costs IPW precision, with no detectable bias. Selecting on noisy estimates would often suggest a non-existent history advantage.
 - **Scope:** synthetic DEVELOPMENT evidence only. No coverage, optimality, adaptation-benefit or real-agent claim.
 
+### 2026-09-26 17:20 UTC — REQ-023: reusable non-overlap process gate v1 (code hygiene; no experiment, model or simulation)
+[README](../results/v2_sim/process_gate_v1/README.md), record `results/v2_sim/process_gate_v1/record.json`, code `experiments/v2_sim/process_gate_v1.py` (sha256 `288fe0cf…`), tests `tests/test_req023_process_gate.py`, lead request `4bbf7e0`.
+- **Purpose:** repair the two defects of the frozen REQ-022 gate for future authorized CPU jobs:
+  - the self-match on its own launch shell;
+  - the blind spot for a same-module peer started with `python -c`.
+
+  The frozen launcher (sha `41febb7c…`, equal to `bc4a71e`) and the REQ-022 archive are unchanged.
+- **Design:**
+  - **Owned processes:** only the current process's ancestor chain and its own descendants.
+  - **Same-module peers:** any other interpreter whose command line names the module (file, import, `-m`, bare word), and any stdin/heredoc/REPL python whose launcher names it.
+  - **Other peers:** stage-runner, dev/coverage-batch and model-server patterns.
+  - **Refusal on unknown identity:** an unreadable table, a missing self, a broken chain, or a hidden command line on a python, runner or server.
+- **Verification:**
+  - 17 deterministic fixtures pass: no self-match, no missed same-module peer across the listed forms, conservative refusal (including real macOS ps text), and a version and source-hash record.
+  - Three independent review rounds. Round 1 found a blocker: the refusal never fired on real macOS ps text. It was fixed. Later rounds found only minor misses, which were fixed or documented.
+  - Real 2-second dummy probes confirmed detection of the space-path, `python3.13t` and heredoc peers.
+  - The live read-only snapshot passed with no peer and no refusal.
+  - The full documented suite passes: 1629 tests, with 8 subtests.
+- **Limits:**
+  - A command-line scan cannot see a run-time-built module name, a copied or symlinked script, an indirect import, interactively typed code, a `zsh -c` heredoc or a renamed argv[0]. These need an ownership lease.
+  - It blocks conservatively on foreign processes that name a model server.
+- **Scope:** infrastructure only. No scientific result; readiness unchanged.
+
 ### Not claimed
-No model runs for REQ-005 to REQ-008 and REQ-018 to REQ-022 (no-model instrumentation, retrospective analyses, a metadata inventory, a source-bound design ledger, a source-only executor inventory, a source-only pair feasibility check, a local host capacity check and a CPU null-control simulation cell). Real-model execution since the archived coding study is limited to the SWE-bench Verified pipeline smoke (Flask episodes), the two 16-episode Coder 7B/14B fixed-backend DEV cohorts (0/16 each) and the single-task DEVELOPMENT probes REQ-011 (0/2 eligible), REQ-012 (7B, eligible, unresolved) and REQ-014 (14B, operational zero), the browser 7B screen REQ-016 (0/8; no action executed) and pilot REQ-017 (0/4; actions executed, never past the search form), with no routing or CONFIRM run; Monte Carlo only on known synthetic kernels; no interval validation for DR/OR, learned policies or
+No model runs for REQ-005 to REQ-008 and REQ-018 to REQ-023 (no-model instrumentation, retrospective analyses, a metadata inventory, a source-bound design ledger, a source-only executor inventory, a source-only pair feasibility check, a local host capacity check a CPU null-control simulation cell and a process-gate repair). Real-model execution since the archived coding study is limited to the SWE-bench Verified pipeline smoke (Flask episodes), the two 16-episode Coder 7B/14B fixed-backend DEV cohorts (0/16 each) and the single-task DEVELOPMENT probes REQ-011 (0/2 eligible), REQ-012 (7B, eligible, unresolved) and REQ-014 (14B, operational zero), the browser 7B screen REQ-016 (0/8; no action executed) and pilot REQ-017 (0/4; actions executed, never past the search form), with no routing or CONFIRM run; Monte Carlo only on known synthetic kernels; no interval validation for DR/OR, learned policies or
 the branch study; no power claim; no evidence of real-agent improvement. The
 archived learned router did not beat always-large. Lead's readiness estimate (rubric in [readiness.md](readiness.md),
 `76b3199`): 55%, change 0 percentage points, range 45–65%.

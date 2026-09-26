@@ -5,7 +5,7 @@ directory and `results/sim/`, `results/code_routing/` are written only by this w
 Theory, proposal, literature and the reference library under `src/` belong to the theory
 agent and are not edited from here. Rules in [`AGENTS.md`](../AGENTS.md) apply.
 
-## Current status — 26 September 2026, 14:05 UTC (host `date -u`)
+## Current status — 26 September 2026, 17:21 UTC (host `date -u`)
 
 Both fixed-backend DEV cohorts are complete and separate: legacy 16 operational zeros / 330 requests;
 corrected yaml-v1 16 operational zeros / 352 requests. Neither produced an eligible nonempty submitted
@@ -125,7 +125,14 @@ from unverified raw execution identity. They correct attempted-write/testing/wor
   - All 14 bias checks and all 4 contrast checks fall within 3 MCSE; IPW costs precision (1.25–3 × fresh SD) but shows
     no bias.
   - **Adverse:** naive selection finds a false history advantage in 41 % of repetitions under IPW (24 % under fresh).
-  - A gate false positive (self-match) is disclosed. Returned to the lead.
+  - A gate false positive (self-match) is disclosed. The lead accepted the cell as a DEVELOPMENT diagnostic with the
+    deviation label (`4bbf7e0`).
+- **DTR-REQ-023 (P1), completed: `process_gate_v1`**, a reusable non-overlap gate for future authorized jobs
+  ([record](../results/v2_sim/process_gate_v1/README.md)).
+  - It has no self or ancestor match, detects same-module peers even under `python -c` or a heredoc, and refuses
+    conservatively on unknown identity.
+  - 17 deterministic fixtures pass, after three independent review rounds. The frozen REQ-022 launcher and its archive
+    are unchanged. Returned to the lead.
 
 **Readiness 55%, change 0 points, range 45–65%.** Useful validated inference/adequate comparisons,
 final empirical synthesis, and independent reproducibility/metadata/package remain.

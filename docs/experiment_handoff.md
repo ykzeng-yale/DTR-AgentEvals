@@ -6461,3 +6461,48 @@ I reviewed worker `bc4a71e`/`fa08ebd`, recounted the 200 repetition records and 
 - the reproducibility, metadata and submission package.
 
 **Cadence:** job `c710b12b`, ticks at about :15/:45 UTC, session-only; I publish on change.
+
+## Worker checkpoint — 2026-09-26T17:20Z (host `date -u`) — lead `4bbf7e0` acknowledged: DTR-REQ-022 completed (deviation accepted); DTR-REQ-023 COMPLETED: process gate v1 with deterministic fixtures
+
+**Read:** [lead REQ-022 decision](theory_feedback_20260926_req022_decision.md) (16:21Z), the lead response entry above, and issue #4 up to 16:27:32Z (no newer comments). **Processed lead SHA:** `4bbf7e086e4e1b2f576990fd25ce9ad535694f4d`.
+
+- **DTR-REQ-022: completed, with the protocol deviation accepted** (`bc4a71e`, `fa08ebd`, accepted in `4bbf7e0`).
+  - It counts as a DEVELOPMENT diagnostic, not a clean gate-compliant prospective validation. It stays inconclusive for adaptive benefit.
+  - The archive stays frozen, the deviation label stays, and the frozen launcher is not reused unchanged.
+- **DTR-REQ-023 (P1): accepted and completed.** Code hygiene only: no re-run, model call, peer job, simulation or new stage.
+  - **Code:** `experiments/v2_sim/process_gate_v1.py` (sha256 `288fe0cf…`), a new versioned gate. The frozen `null_control_batch.py` (sha `41febb7c…`, equal to `bc4a71e`) and all REQ-022 files are unchanged.
+  - **What it does:**
+    - It identifies the current process and its ancestor chain to pid 1 and excludes only that owned chain and the process's own descendants, such as its worker pool.
+    - It flags any other interpreter process referencing the module in any of these forms: `<module>.py`, `import`/`from`/`-m <module>`, a bare word (so `python -c` launches are caught), or a stdin/heredoc/REPL python whose launcher names the module.
+    - It also flags stage, batch and model-server patterns.
+    - It refuses on unknown identity: an unreadable table, a missing self process, a broken or cyclic ancestor chain, or a hidden command line on a python, runner or server executable.
+  - **Record:** [README](../results/v2_sim/process_gate_v1/README.md) and `record.json`. They hold the source and test sha256, the focused test outcome (17 passed), a live read-only snapshot (passed, no peer, no refusal) and the frozen REQ-022 check (unchanged: true).
+  - **Fixtures:** 17 deterministic tests in `tests/test_req023_process_gate.py`, all passing.
+    - **No self-match:** the REQ-022 attempt-1 wrapper, a grandparent wrapper, the process's own worker pool and its own heredoc.
+    - **No missed same-module peer:** `python -c`, the file name, `-m`/`-m<module>`, a case-variant path, `uv run`, an interpreter path with spaces, `python3.13t`-style builds, stdin/heredoc/REPL forms, and a second copy under a shared wrapper.
+    - **Conservative refusal on unknown identity:** including real macOS ps text, where hidden `(python3.12)` refuses but `(mlhostd)` and `(UVFSService)` do not.
+    - **Version and source-hash record.**
+  - **Verification:** three independent review rounds.
+    - Round 1 found a **blocker**: the unknown-identity refusal did not fire on real macOS ps output, because hidden command lines appear as `(name)` and comm is truncated. It is fixed.
+    - Rounds 2 and 3 found only minor misses and undocumented false positives. All are fixed with fixtures or documented.
+    - Real 2-second dummy probes (scratch scripts that only sleep) confirmed detection of the space-path, `python3.13t` and heredoc peers on real ps text.
+    - The full documented suite passes on the committed code: 1629 tests, with 8 subtests.
+  - **Limits (documented):**
+    - A command-line scan cannot see a run-time-built module name, a copied or symlinked script, an indirect import, interactively typed code, a `zsh -c` heredoc (zsh execs its last command) or a renamed argv[0]. These need an ownership lease.
+    - It blocks conservatively on a foreign process whose arguments name a model server. During review, a sibling project's test process carrying a `llama-server` path was reported as a peer.
+
+**Question (non-blocking):** should foreign-project processes that merely name a model server in their arguments count as peers (current, conservative), or only running servers and same-project jobs? It changes when a future CPU job can start while the sibling project is active.
+
+| Request | Status | Artifact |
+|---|---|---|
+| DTR-REQ-023 (P1) | **completed**: process gate v1, 17 deterministic fixtures, source-hash and test record | this commit |
+| DTR-REQ-022 (P1) | **completed**: deviation accepted; DEVELOPMENT diagnostic | `bc4a71e`, `fa08ebd`, `4bbf7e0` |
+| DTR-REQ-021 (P0) | completed: BLOCKED (configured host access only) | `69473c8`, `cd90c56` |
+| DTR-REQ-020 … 001 | as in the table at `fa08ebd` | — |
+
+**Readiness:** 55 %, change 0 points (range 45–65 %; 75/75/50/25/25 → 55.00). Code hygiene does not move the score. The largest remaining milestones:
+- a competent fixed-target agent contrast with valid inference;
+- the final synthesis;
+- the reproducibility, metadata and submission package.
+
+**Cadence:** job `c710b12b`, ticks at about :15/:45 UTC, session-only; I publish on change.

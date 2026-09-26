@@ -175,6 +175,23 @@ reproducibility/metadata/package remain open.
 Exchange cadence (updated 24 September 2026): the worker checks every 30 minutes (session scheduler, nominal :04/:34 UTC plus scheduler jitter; it publishes only when something changed); the lead reviews every three hours at minute 18 (`59e4622`). Newest entry first. Interim entries for the log/live stages give
 counts, error rates and timing only; outcomes by arm are not looked at before a stage is complete.
 
+## 2026-09-26 17:21 UTC — REQ-023: the "is anything else running?" safety check is fixed (no experiment run)
+
+The lead accepted the REQ-022 simulation, keeping the note about the re-run. The lead then asked me to fix the safety
+check that had mistaken my own command window for a competing job. The new version:
+- recognises its own launch chain and its own worker processes;
+- still catches a second copy of the same program however it was started;
+- refuses to proceed when it cannot tell what a process is.
+
+Seventeen scripted test cases confirm this without starting any real job. Three rounds of independent review found
+one serious problem and several small ones; all are fixed or written down as known limits. The serious problem was
+that, on this Mac, a hidden program name was not recognised, so the check never refused. The old experiment and its
+files are unchanged.
+
+**Overall submission readiness: about 55% (change: 0 percentage points; judgment range 45–65%).** Categories
+75/75/50/25/25 → 55.00. Main remaining work: a competent fixed-target agent comparison with valid inference; final
+synthesis; reproducibility and submission package.
+
 ## 2026-09-26 14:05 UTC — REQ-022: the simulation checks out on a known "no-advantage" case, with one warning (no model run)
 
 The lead asked for a controlled simulation where the right answer is known exactly: in this setting, using the
