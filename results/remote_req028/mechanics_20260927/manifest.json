@@ -1,0 +1,193 @@
+{
+  "request": "DTR-REQ-028A",
+  "frozen_at": 1790477549.9988348,
+  "ownership_token": "req028-6f807615549244eaae6d694a7af11880",
+  "port": 58898,
+  "command": [
+    "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/assets/llama.cpp-4fea119de30f6a923992780f6fd5ccb0bee5d47d/build/bin/llama-server",
+    "-m",
+    "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/assets/Qwen3-4B-Instruct-2507-Q4_K_M.gguf",
+    "--alias",
+    "req028-6f807615549244eaae6d694a7af11880",
+    "--host",
+    "127.0.0.1",
+    "--port",
+    "58898",
+    "--ctx-size",
+    "32768",
+    "--parallel",
+    "1",
+    "--cache-type-k",
+    "f16",
+    "--cache-type-v",
+    "f16",
+    "--cache-ram",
+    "0",
+    "--no-cache-prompt",
+    "--no-cache-idle-slots",
+    "--no-context-shift",
+    "--jinja",
+    "--seed",
+    "20260927028",
+    "--temp",
+    "0",
+    "--n-predict",
+    "128",
+    "--threads",
+    "2",
+    "--threads-batch",
+    "2",
+    "--threads-http",
+    "2",
+    "--n-gpu-layers",
+    "99",
+    "--flash-attn",
+    "on",
+    "--no-warmup"
+  ],
+  "requests": [
+    {
+      "model": "req028-6f807615549244eaae6d694a7af11880",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Follow the user's formatting instructions exactly."
+        },
+        {
+          "role": "user",
+          "content": "Reply with exactly the text DTR_READY and nothing else."
+        }
+      ],
+      "temperature": 0,
+      "seed": 20260927028,
+      "max_tokens": 128,
+      "stream": false,
+      "cache_prompt": false,
+      "timings_per_token": true
+    },
+    {
+      "model": "req028-6f807615549244eaae6d694a7af11880",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Follow the user's formatting instructions exactly."
+        },
+        {
+          "role": "user",
+          "content": "Return exactly one fenced code block labelled mswea_bash_command containing the command printf DTR_READY. Do not add any other text."
+        }
+      ],
+      "temperature": 0,
+      "seed": 20260927028,
+      "max_tokens": 128,
+      "stream": false,
+      "cache_prompt": false,
+      "timings_per_token": true
+    },
+    {
+      "model": "req028-6f807615549244eaae6d694a7af11880",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Follow the user's formatting instructions exactly."
+        },
+        {
+          "role": "user",
+          "content": "Reply with exactly the text DTR_READY and nothing else."
+        }
+      ],
+      "temperature": 0,
+      "seed": 20260927028,
+      "max_tokens": 128,
+      "stream": false,
+      "cache_prompt": false,
+      "timings_per_token": true
+    },
+    {
+      "model": "req028-6f807615549244eaae6d694a7af11880",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Follow the user's formatting instructions exactly."
+        },
+        {
+          "role": "user",
+          "content": "Return exactly one fenced code block labelled mswea_bash_command containing the command printf DTR_READY. Do not add any other text."
+        }
+      ],
+      "temperature": 0,
+      "seed": 20260927028,
+      "max_tokens": 128,
+      "stream": false,
+      "cache_prompt": false,
+      "timings_per_token": true
+    }
+  ],
+  "response_schema": {
+    "choices": "list; choices[0].message.content literal text",
+    "usage": "prompt_tokens/completion_tokens/total_tokens",
+    "timings": "runner-reported prompt/prediction timings when provided"
+  },
+  "source_commit": "4fea119de30f6a923992780f6fd5ccb0bee5d47d",
+  "repo_baseline": "ddcccd86b93e1dbc5bc79ac753e36e7b06e6ba9b",
+  "model_sha256": "3605803b982cb64aead44f6c1b2ae36e3acdb41d8e46c8a94c6533bc4c67e597",
+  "model_revision": "a06e946bb6b655725eafa393f4a9745d460374c9",
+  "model_bytes": 2497281120,
+  "server_sha256": "fd4de7db51a60ad4710725b5e2d2da9060a0b56bf7759767ba81ac719abc4222",
+  "template_sha256": "c979e0e71a3e21b8f208e6ab120d5cb29327885f29d2a8b18fda67a723798e18",
+  "source_hashes": {
+    "test_guard.py": "273b62e89a573567215620a386376f7144d594630f2835657e3e8e34b4950588",
+    "mechanics.py": "e78fd8df8887da09b79d4e316db02de628b5c4a5c1f54979cc48f7e3a9bd3309",
+    "github_milestone.py": "6f59a2f9f90c8777becb07bf8bd453f4be3e1d980475889045351528ecdad0a5",
+    "setup.py": "5189cc6bbb6b19a89e1d3fcdfa2a8cc3174f0d9705f942b01805c86411603a24",
+    "gguf_meta.py": "f8ed5a4cfc293001e59addfdbe3bac25cc6345ded1f024f1e8749c82ce9a792c",
+    "test_watchdog_integration.py": "641fc7a0fdf33b3947c2a91d1946f7292732e3c626180965e12da8be109b63c6",
+    "guard.py": "6718994728974ae7325c33c3be6e61ccb076260928ba394b9a655eda8fc5c15e"
+  },
+  "runner_source_files": {
+    "common/arg.cpp": "6e71ad4f63c79fee81fe218ab6755ed97813ba84d179e38ae02924be1556d46e",
+    "tools/server/server-schema.cpp": "0bab859883207554fb724774892e8756ec0c956252b7653424756a0ee582efa8",
+    "tools/server/server-context.cpp": "2f5d65ce6ef0504b5c8cf55a74c68d3959c49784ba380ef836566b7a7d5fa12b"
+  },
+  "limits": {
+    "phase_seconds": 900,
+    "load_seconds": 180,
+    "request_seconds": 180,
+    "rss_bytes": 11811160064,
+    "swap_growth_mib": 512,
+    "minimum_free_metric": 20,
+    "admission_free_metric": 75
+  },
+  "format_scoring": "literal equality DTR_READY; fenced block exact label, command body equals printf DTR_READY after trimming body whitespace; strict literal fence match also recorded",
+  "runner_binary_hashes": {
+    "libggml-metal.0.24.0.dylib": "6a46c708600bd2cb2d59548c0905274ed87de05b1e4b68b57b4e09eb9c00e242",
+    "libggml-cpu.0.24.0.dylib": "562002ed20e828466051a8ec26b061b2335573a4f02174f5d2848bf237510198",
+    "libggml.0.24.0.dylib": "5735c29159363f036a05d0f2cc4ceb8103e4d04eed3e24cedebac71264c26a1c",
+    "libmtmd.0.4.1.dylib": "653f5c39deac4236e50d04c9e8cef551db28f8e75958a60d8b7fb5077e59e88c",
+    "libllama.0.4.1.dylib": "e0a4847b2345fdfe00970cd8d5b80955eb877652a091f7fa25287122c8827a53",
+    "libllama-common.0.4.1.dylib": "633676c9e68a1625ec41c47a68ff6a37c3b0e85367b893288382a65e3abd04e2",
+    "libllama.0.dylib": "e0a4847b2345fdfe00970cd8d5b80955eb877652a091f7fa25287122c8827a53",
+    "libggml-blas.0.24.0.dylib": "421386b020114dec5fc24c38be0ebee11720e80e3673a57509e7d9659d2b388c",
+    "libmtmd.0.dylib": "653f5c39deac4236e50d04c9e8cef551db28f8e75958a60d8b7fb5077e59e88c",
+    "libggml.dylib": "5735c29159363f036a05d0f2cc4ceb8103e4d04eed3e24cedebac71264c26a1c",
+    "libggml.0.dylib": "5735c29159363f036a05d0f2cc4ceb8103e4d04eed3e24cedebac71264c26a1c",
+    "libmtmd.dylib": "653f5c39deac4236e50d04c9e8cef551db28f8e75958a60d8b7fb5077e59e88c",
+    "libllama-server-impl.dylib": "67b6350c065b04c82abe0678afac05d977b06578e8d51a05f90044aaa0c551e7",
+    "libggml-base.dylib": "ab88365d9c2c719530f35b1d8690ac00d4c766a522e0d0c32fb67cb89f4e34c0",
+    "libggml-blas.dylib": "421386b020114dec5fc24c38be0ebee11720e80e3673a57509e7d9659d2b388c",
+    "libggml-metal.0.dylib": "6a46c708600bd2cb2d59548c0905274ed87de05b1e4b68b57b4e09eb9c00e242",
+    "libllama-common.0.dylib": "633676c9e68a1625ec41c47a68ff6a37c3b0e85367b893288382a65e3abd04e2",
+    "libllama.dylib": "e0a4847b2345fdfe00970cd8d5b80955eb877652a091f7fa25287122c8827a53",
+    "libggml-cpu.dylib": "562002ed20e828466051a8ec26b061b2335573a4f02174f5d2848bf237510198",
+    "libggml-metal.dylib": "6a46c708600bd2cb2d59548c0905274ed87de05b1e4b68b57b4e09eb9c00e242",
+    "llama-server": "fd4de7db51a60ad4710725b5e2d2da9060a0b56bf7759767ba81ac719abc4222",
+    "libggml-base.0.24.0.dylib": "ab88365d9c2c719530f35b1d8690ac00d4c766a522e0d0c32fb67cb89f4e34c0",
+    "libllama-common.dylib": "633676c9e68a1625ec41c47a68ff6a37c3b0e85367b893288382a65e3abd04e2",
+    "libggml-base.0.dylib": "ab88365d9c2c719530f35b1d8690ac00d4c766a522e0d0c32fb67cb89f4e34c0",
+    "libggml-blas.0.dylib": "421386b020114dec5fc24c38be0ebee11720e80e3673a57509e7d9659d2b388c",
+    "libggml-cpu.0.dylib": "562002ed20e828466051a8ec26b061b2335573a4f02174f5d2848bf237510198"
+  },
+  "runner_archive_sha256": "3321bc787b971a97f6e7f51dfbb3b72119d9194cd7e6088da3810a89d32c1456",
+  "cmake_distribution_sha256": "d1449f969c54d5c00886d5b643340d493dfb3c81cb39ee29b35453395c11ebf7",
+  "model_metadata_sha256": "6f2a1e6a0916fe581a92ba8a855e70f2ec8dfccfce9a0d8da2f8d139168e2b38"
+}
