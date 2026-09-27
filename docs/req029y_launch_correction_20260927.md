@@ -7,3 +7,7 @@ Exact fresh run `cmp029o-matplotlib20826-qwen-b` is approved under docs/req029o_
 The fresh mailbox was created exclusively with mode0700 and checked empty/non-symlink. Before launch, the actual pinned helper was exercised over strict verified SSH: a read of absent preflight returned absent. No model or task dispatch occurred during that check. Both roles use this exact hash-bound configuration. This corrects the lead's operational omission without changing the qualified execution kernel. Do not introduce automatic directory repair into an already dispatched run.
 
 Readiness55%, change0points, range45–65%; remaining competent fixed-target comparison and valid inference, synthesis, independent reproducibility and author-approved package.
+
+## Actual launch receipt
+
+Fresh b dispatched22:36:06UTC local controller96253 and22:36:07UTC mini worker70809. One actual OS check around22:37:33UTC found both alive after86–87seconds; local independent guardian96668 armed before container create. Mini admission window started1790548586.472064, fixed deadline1790549486.472063,31reads maximum. Latest inspected telemetry1790548646.776453: free75%,pressure1,swap225.31MiB,no foreign inference,owned model RSS0,disk15839064064bytes. This establishes live admission/setup, not model inference or competence. Leave independent controllers alone; next two-hour active work cycle reviews terminal evidence. No further polling this turn.
