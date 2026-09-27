@@ -1,0 +1,889 @@
+{
+  "run_id": "c6-dev-20260927-b",
+  "source_commit": "1a1aa09dbdaf537af6aa4ad499987a80dda027a6",
+  "release_sha256": "3a2ba1e00b6cf59a1dbf1cf080dd510c47768fd1a0b59c108009ab2f2d886669",
+  "source_pins_verified": 130,
+  "controller_status": "submitted",
+  "controller_error": null,
+  "worker_status": "terminal_or_failure",
+  "worker_error_verbatim": "RuntimeError('peer terminal: submitted')",
+  "interpretation": "Controller submitted; worker observes terminal peer via generic RuntimeError. Submission is not measured success.",
+  "counts": {
+    "model_loads": 1,
+    "model_claims": 4,
+    "physical_generation_dispatches": 4,
+    "completed_raw_calls": 4,
+    "published_requests": 4,
+    "published_responses": 4,
+    "controller_action_claims": 4,
+    "published_observations": 3,
+    "evaluations": 0
+  },
+  "http_operations_unordered_inventory": [
+    "bind",
+    "generate",
+    "bind",
+    "generate",
+    "generate",
+    "bind",
+    "bind",
+    "generate"
+  ],
+  "calls": [
+    {
+      "sequence": 1,
+      "request_object": {
+        "blob": "da7db49c238e6035141f3c6f217938f165f7e261",
+        "commit": "094aeddd6c9763e11fe479e2c7995b080f84f3c4",
+        "path": "results/remote_req028/c6_runs/c6-dev-20260927-b/request/01.json",
+        "sha256": "4f359c7a6fbb5e73b4d16977c7f99df8b8de045938ff882297e5764ddadf795a"
+      },
+      "usage": {
+        "completion_tokens": 199,
+        "prompt_tokens": 1530,
+        "total_tokens": 1729,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "finish_reason": "stop",
+      "native_sha256": "5bf685b1e07ab01348f31bea4b2bd909a03614887ab8eed6026cdce350203e27",
+      "raw_sha256": "17e055b91a38d37f82ed6c1a36f0f7711511323b81a376673cda7eec9cc99807",
+      "interface_gate": {
+        "parser_accepted": true,
+        "complete_fence_count": 1,
+        "extracted_actions": [
+          "find astropy/io/fits/ -type f -name \"*.py\" | xargs grep -l \"fromstring\\|Card\\|value\""
+        ],
+        "independent_regex_agrees": true,
+        "fences": [
+          {
+            "start": 747,
+            "end": 857,
+            "body": "find astropy/io/fits/ -type f -name \"*.py\" | xargs grep -l \"fromstring\\|Card\\|value\"",
+            "location": "outside",
+            "reasoning_boundary": "outside_thinking"
+          }
+        ],
+        "thinking_spans": [],
+        "unclosed_thinking_spans": 0,
+        "nonempty_command": true,
+        "outside_thinking": true,
+        "interface_gate": true,
+        "command_correctness_assessed": false
+      },
+      "request_seconds": 10.523611307144165,
+      "server_timings": {
+        "cache_n": 0,
+        "prompt_n": 1530,
+        "prompt_ms": 4550.808,
+        "prompt_per_token_ms": 2.97438431372549,
+        "prompt_per_second": 336.2040323388726,
+        "predicted_n": 199,
+        "predicted_ms": 5907.321,
+        "predicted_per_token_ms": 29.834954545454544,
+        "predicted_per_second": 33.51773164180514
+      },
+      "request_seed": 20260927028,
+      "effective_seed": 3081057844
+    },
+    {
+      "sequence": 2,
+      "request_object": {
+        "blob": "bd6c138219e371b5bd955b8422fcf552a803ef5c",
+        "commit": "4b7e4a374593f2b020a8c39f350549889ca2dfd4",
+        "path": "results/remote_req028/c6_runs/c6-dev-20260927-b/request/02.json",
+        "sha256": "45845b18304c1dfb4f47c7fa3f49345e6e6c58c758206dfe33756fe7f8371d1c"
+      },
+      "usage": {
+        "completion_tokens": 133,
+        "prompt_tokens": 2287,
+        "total_tokens": 2420,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "finish_reason": "stop",
+      "native_sha256": "77ab3478dbc7bf1131f607b83c096e970f3e4d8541edb27b821f57418d869b08",
+      "raw_sha256": "96b14b9605899fd8477459bf6d6657ea7f0d004027b6b02a7849ce5666ad2675",
+      "interface_gate": {
+        "parser_accepted": true,
+        "complete_fence_count": 1,
+        "extracted_actions": [
+          "cat astropy/io/fits/card.py | grep -A 5 -B 5 \"fromstring\\|value\""
+        ],
+        "independent_regex_agrees": true,
+        "fences": [
+          {
+            "start": 478,
+            "end": 568,
+            "body": "cat astropy/io/fits/card.py | grep -A 5 -B 5 \"fromstring\\|value\"",
+            "location": "outside",
+            "reasoning_boundary": "outside_thinking"
+          }
+        ],
+        "thinking_spans": [],
+        "unclosed_thinking_spans": 0,
+        "nonempty_command": true,
+        "outside_thinking": true,
+        "interface_gate": true,
+        "command_correctness_assessed": false
+      },
+      "request_seconds": 11.270761251449585,
+      "server_timings": {
+        "cache_n": 0,
+        "prompt_n": 2287,
+        "prompt_ms": 7105.61,
+        "prompt_per_token_ms": 3.1069567118495844,
+        "prompt_per_second": 321.8583626177063,
+        "predicted_n": 133,
+        "predicted_ms": 4106.633,
+        "predicted_per_token_ms": 31.11085606060606,
+        "predicted_per_second": 32.14312065383004
+      },
+      "request_seed": 20260927028,
+      "effective_seed": 3081057844
+    },
+    {
+      "sequence": 3,
+      "request_object": {
+        "blob": "2168a1beb49378683de06904b436e32343e44900",
+        "commit": "ce1b257d458e1ccd4a8ab0d6fb315da73d2a8885",
+        "path": "results/remote_req028/c6_runs/c6-dev-20260927-b/request/03.json",
+        "sha256": "bd3f8c6f2291460accc41daddb0998d7a6afde494fb2e846d41fd7eee45fbc70"
+      },
+      "usage": {
+        "completion_tokens": 393,
+        "prompt_tokens": 4928,
+        "total_tokens": 5321,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "finish_reason": "stop",
+      "native_sha256": "fe324cfd4a538a98b8d93927a0ef2b74cf9113eb9f117646d6692becedc150ca",
+      "raw_sha256": "b9b2e1e053bf707676982a356866a537e70dc0a05024a519b42aa3a5fb1f2372",
+      "interface_gate": {
+        "parser_accepted": true,
+        "complete_fence_count": 1,
+        "extracted_actions": [
+          "sed -i 's|if isinstance(value, str):|if isinstance(value, str) and value != \"\":|g' astropy/io/fits/card.py\nsed -i 's|exp_val_str = value.replace(\"'\", \"''\")|exp_val_str = value.replace(\"'\", \"''\") if value != \"\" else \"\"|g' astropy/io/fits/card.py\nsed -i 's|val_str = f\"'{exp_val_str:8}'\"|val_str = f\"'{exp_val_str:8}'\" if exp_val_str != \"\" else \"''\"|g' astropy/io/fits/card.py"
+        ],
+        "independent_regex_agrees": true,
+        "fences": [
+          {
+            "start": 1192,
+            "end": 1592,
+            "body": "sed -i 's|if isinstance(value, str):|if isinstance(value, str) and value != \"\":|g' astropy/io/fits/card.py\nsed -i 's|exp_val_str = value.replace(\"'\", \"''\")|exp_val_str = value.replace(\"'\", \"''\") if value != \"\" else \"\"|g' astropy/io/fits/card.py\nsed -i 's|val_str = f\"'{exp_val_str:8}'\"|val_str = f\"'{exp_val_str:8}'\" if exp_val_str != \"\" else \"''\"|g' astropy/io/fits/card.py",
+            "location": "outside",
+            "reasoning_boundary": "outside_thinking"
+          }
+        ],
+        "thinking_spans": [],
+        "unclosed_thinking_spans": 0,
+        "nonempty_command": true,
+        "outside_thinking": true,
+        "interface_gate": true,
+        "command_correctness_assessed": false
+      },
+      "request_seconds": 30.403441190719604,
+      "server_timings": {
+        "cache_n": 0,
+        "prompt_n": 4928,
+        "prompt_ms": 17007.865,
+        "prompt_per_token_ms": 3.451271306818182,
+        "prompt_per_second": 289.7483017415766,
+        "predicted_n": 393,
+        "predicted_ms": 13340.066,
+        "predicted_per_token_ms": 34.0307806122449,
+        "predicted_per_second": 29.385161962467052
+      },
+      "request_seed": 20260927028,
+      "effective_seed": 3081057844
+    },
+    {
+      "sequence": 4,
+      "request_object": {
+        "blob": "63f71dede94b10a1f2b8f2b455c231cc5f900eed",
+        "commit": "c3ab020e063fd052e245c29bb0edc649c9533bd6",
+        "path": "results/remote_req028/c6_runs/c6-dev-20260927-b/request/04.json",
+        "sha256": "a7dfd58ac5aea45470c951875fe3002b46867199c0684da4a834f9f70c88e599"
+      },
+      "usage": {
+        "completion_tokens": 170,
+        "prompt_tokens": 5345,
+        "total_tokens": 5515,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "finish_reason": "stop",
+      "native_sha256": "38cf5efead6a0aa2170f4dd95b480aa23ea238da8e12e249639bf5618bdaddef",
+      "raw_sha256": "5ab9bc22ab2ad0499b4822e7f84ccd8adab311c36ad5e2c1bfb7c19af1e247a8",
+      "interface_gate": {
+        "parser_accepted": true,
+        "complete_fence_count": 1,
+        "extracted_actions": [
+          "echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT"
+        ],
+        "independent_regex_agrees": true,
+        "fences": [
+          {
+            "start": 769,
+            "end": 837,
+            "body": "echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT",
+            "location": "outside",
+            "reasoning_boundary": "outside_thinking"
+          }
+        ],
+        "thinking_spans": [],
+        "unclosed_thinking_spans": 0,
+        "nonempty_command": true,
+        "outside_thinking": true,
+        "interface_gate": true,
+        "command_correctness_assessed": false
+      },
+      "request_seconds": 24.661778926849365,
+      "server_timings": {
+        "cache_n": 0,
+        "prompt_n": 5345,
+        "prompt_ms": 18800.79,
+        "prompt_per_token_ms": 3.5174536950420956,
+        "prompt_per_second": 284.2965641337412,
+        "predicted_n": 170,
+        "predicted_ms": 5796.255,
+        "predicted_per_token_ms": 34.297366863905324,
+        "predicted_per_second": 29.156757251018114
+      },
+      "request_seed": 20260927028,
+      "effective_seed": 3081057844
+    }
+  ],
+  "tokens": {
+    "prompt_tokens": 14090,
+    "completion_tokens": 895,
+    "total_tokens": 14985
+  },
+  "cumulative_a_and_b": {
+    "attempts": 2,
+    "model_loads": 2,
+    "physical_model_calls": 6,
+    "controller_action_claims": 6,
+    "tokens": {
+      "prompt_tokens": 17907,
+      "completion_tokens": 1227,
+      "total_tokens": 19134
+    },
+    "http_request_seconds": 98.85033202171326
+  },
+  "guard": {
+    "samples": 262,
+    "violations": [],
+    "minimum_free_percent": 40,
+    "maximum_owned_rss_bytes": 2699542528,
+    "minimum_disk_free_bytes": 15484657664,
+    "swap_min_mib": 233.31,
+    "swap_max_mib": 233.31,
+    "pressure_levels": [
+      1
+    ],
+    "foreign_inference_observed": false
+  },
+  "admission": [
+    {
+      "count": 1,
+      "kind": "scheduled",
+      "reason": null,
+      "sample": {
+        "disk_free_bytes": 15672446976,
+        "foreign_inference": [],
+        "free_percent": 75,
+        "owned_rss_bytes": 0,
+        "pressure_level": 1,
+        "swap_used_mib": 233.31,
+        "time": 1790504364.377975
+      }
+    },
+    {
+      "count": 2,
+      "kind": "scheduled",
+      "reason": null,
+      "sample": {
+        "disk_free_bytes": 15640453120,
+        "foreign_inference": [],
+        "free_percent": 76,
+        "owned_rss_bytes": 0,
+        "pressure_level": 1,
+        "swap_used_mib": 233.31,
+        "time": 1790504424.4965692
+      }
+    },
+    {
+      "count": 3,
+      "kind": "final_pre_popen",
+      "reason": null,
+      "sample": {
+        "disk_free_bytes": 15640440832,
+        "foreign_inference": [],
+        "free_percent": 76,
+        "owned_rss_bytes": 0,
+        "pressure_level": 1,
+        "swap_used_mib": 233.31,
+        "time": 1790504424.563128
+      }
+    }
+  ],
+  "timing": {
+    "dispatched_utc": "2026-09-27T10:19:14.788024+00:00",
+    "phase_started_utc": "2026-09-27T10:20:24.582206+00:00",
+    "phase_deadline_utc": "2026-09-27T10:50:24.582206+00:00",
+    "worker_terminal_utc": "2026-09-27T10:24:53.408818+00:00",
+    "controller_terminal_utc": "2026-09-27T10:24:40.610234+00:00",
+    "model_phase_through_terminal_seconds": 268.826611995697,
+    "http_request_seconds": 76.85959267616272,
+    "nested_server_timings_not_additive": true,
+    "worker_fetches": 41,
+    "queue_spans": [
+      {
+        "finished": 1790504362.1638231,
+        "kind": "preflight",
+        "object": {
+          "blob": "411f4a83741b4fd09ffa53726a799a2b1eb68281",
+          "commit": "97e2f8a84210436fa5cdbd20dc5f30604de8fba3",
+          "path": "results/remote_req028/c6_runs/c6-dev-20260927-b/preflight.json",
+          "sha256": "1745fe6bdf60640f08068b0d4365d261240b0b1845c96760ae8eeef058f565fe"
+        },
+        "started": 1790504355.948905
+      },
+      {
+        "finished": 1790504449.2168949,
+        "kind": "request",
+        "object": {
+          "blob": "da7db49c238e6035141f3c6f217938f165f7e261",
+          "commit": "094aeddd6c9763e11fe479e2c7995b080f84f3c4",
+          "path": "results/remote_req028/c6_runs/c6-dev-20260927-b/request/01.json",
+          "sha256": "4f359c7a6fbb5e73b4d16977c7f99df8b8de045938ff882297e5764ddadf795a"
+        },
+        "started": 1790504430.383748
+      },
+      {
+        "finished": 1790504492.5287979,
+        "kind": "observation",
+        "object": {
+          "blob": "a9354e36414c17c370179bdef7bd4ae5c71de772",
+          "commit": "ab9da0fe0c0bee171e41e022bbe1d6bdc37f2003",
+          "path": "results/remote_req028/c6_runs/c6-dev-20260927-b/observation/01.json",
+          "sha256": "864b6897515d14445e3a79da301335deeb6484909ee4a370a87deb6613480796"
+        },
+        "started": 1790504464.262254
+      },
+      {
+        "finished": 1790504502.938198,
+        "kind": "request",
+        "object": {
+          "blob": "bd6c138219e371b5bd955b8422fcf552a803ef5c",
+          "commit": "4b7e4a374593f2b020a8c39f350549889ca2dfd4",
+          "path": "results/remote_req028/c6_runs/c6-dev-20260927-b/request/02.json",
+          "sha256": "45845b18304c1dfb4f47c7fa3f49345e6e6c58c758206dfe33756fe7f8371d1c"
+        },
+        "started": 1790504492.531181
+      },
+      {
+        "finished": 1790504548.031509,
+        "kind": "observation",
+        "object": {
+          "blob": "3c6ddf7948cd3b71c9d005380197da0ac36c8684",
+          "commit": "a128a75907bf5d0efd7b8e240dcf0183a349b116",
+          "path": "results/remote_req028/c6_runs/c6-dev-20260927-b/observation/02.json",
+          "sha256": "e1c15bca7f1afa9da42346b0a4ff765cbee6f434b6606a6a520d69dd1d484acc"
+        },
+        "started": 1790504519.449724
+      },
+      {
+        "finished": 1790504558.551231,
+        "kind": "request",
+        "object": {
+          "blob": "2168a1beb49378683de06904b436e32343e44900",
+          "commit": "ce1b257d458e1ccd4a8ab0d6fb315da73d2a8885",
+          "path": "results/remote_req028/c6_runs/c6-dev-20260927-b/request/03.json",
+          "sha256": "bd3f8c6f2291460accc41daddb0998d7a6afde494fb2e846d41fd7eee45fbc70"
+        },
+        "started": 1790504548.0334332
+      },
+      {
+        "finished": 1790504624.227016,
+        "kind": "observation",
+        "object": {
+          "blob": "fc266a29df0b4b9d33e0187f17fab7e63f667fd1",
+          "commit": "874175c95ef5007a5f2c2a005331edf42954632a",
+          "path": "results/remote_req028/c6_runs/c6-dev-20260927-b/observation/03.json",
+          "sha256": "2699fa4efdbb448cf32aa3c04cbb4df2104b5564623e06f8abc8a5996e09c6f0"
+        },
+        "started": 1790504594.926751
+      },
+      {
+        "finished": 1790504635.160095,
+        "kind": "request",
+        "object": {
+          "blob": "63f71dede94b10a1f2b8f2b455c231cc5f900eed",
+          "commit": "c3ab020e063fd052e245c29bb0edc649c9533bd6",
+          "path": "results/remote_req028/c6_runs/c6-dev-20260927-b/request/04.json",
+          "sha256": "a7dfd58ac5aea45470c951875fe3002b46867199c0684da4a834f9f70c88e599"
+        },
+        "started": 1790504624.2296
+      }
+    ],
+    "network_events": [
+      {
+        "commit": "97e2f8a84210436fa5cdbd20dc5f30604de8fba3",
+        "finished": 1790504356.766007,
+        "phase": "fetch",
+        "started": 1790504355.9489112,
+        "transfer_bytes": null,
+        "transfer_bytes_reason": "Git does not report exact wire bytes"
+      },
+      {
+        "commit": "97e2f8a84210436fa5cdbd20dc5f30604de8fba3",
+        "finished": 1790504361.496223,
+        "phase": "fetch",
+        "started": 1790504360.950774,
+        "transfer_bytes": null,
+        "transfer_bytes_reason": "Git does not report exact wire bytes"
+      },
+      {
+        "commit": "97e2f8a84210436fa5cdbd20dc5f30604de8fba3",
+        "finished": 1790504427.736036,
+        "phase": "fetch",
+        "started": 1790504426.947188,
+        "transfer_bytes": null,
+        "transfer_bytes_reason": "Git does not report exact wire bytes"
+      },
+      {
+        "commit": "273f13bdce9df2474b065a15cf94340420448c19",
+        "finished": 1790504430.3834271,
+        "payload_bytes": 520,
+        "phase": "publication",
+        "started": 1790504427.907242
+      },
+      {
+        "commit": "273f13bdce9df2474b065a15cf94340420448c19",
+        "finished": 1790504433.098537,
+        "phase": "fetch",
+        "started": 1790504431.948982,
+        "transfer_bytes": null,
+        "transfer_bytes_reason": "Git does not report exact wire bytes"
+      },
+      {
+        "commit": "273f13bdce9df2474b065a15cf94340420448c19",
+        "finished": 1790504438.077945,
+        "phase": "fetch",
+        "started": 1790504436.957087,
+        "transfer_bytes": null,
+        "transfer_bytes_reason": "Git does not report exact wire bytes"
+      },
+      {
+        "commit": "273f13bdce9df2474b065a15cf94340420448c19",
+        "finished": 1790504443.113069,
+        "phase": "fetch",
+        "started": 1790504441.967307,
+        "transfer_bytes": null,
+        "transfer_bytes_reason": "Git does not report exact wire bytes"
+      },
+      {
+        "commit": "094aeddd6c9763e11fe479e2c7995b080f84f3c4",
+        "finished": 1790504448.60025,
+        "phase": "fetch",
+        "started": 1790504446.9695392,
+        "transfer_bytes": null,
+        "transfer_bytes_reason": "Git does not report exact wire bytes"
+      },
+      {
+        "commit": "094aeddd6c9763e11fe479e2c7995b080f84f3c4",
+        "finished": 1790504461.576044,
+        "phase": "fetch",
+        "started": 1790504459.856197,
+        "transfer_bytes": null,
+        "transfer_bytes_reason": "Git does not report exact wire bytes"
+      },
+      {
+        "commit": "037a51a3c318e31779cbd560262e2fc7ed112ded",
+        "finished": 1790504464.262041,
+        "payload_bytes": 24333,
+        "phase": "publication",
+        "started": 1790504461.7233322
+      },
+      {
+        "commit": "037a51a3c318e31779cbd560262e2fc7ed112ded",
+        "finished": 1790504466.709648,
+        "phase": "fetch",
+        "started": 1790504464.859745,
+        "transfer_bytes": null,
+        "transfer_bytes_reason": "Git does not report exact wire bytes"
+      },
+      {
+        "commit": "037a51a3c318e31779cbd560262e2fc7ed112ded",
+        "finished": 1790504471.6547918,
+        "phase": "fetch",
+        "started": 1790504469.869937,
+        "transfer_bytes": null,
+        "transfer_bytes_reason": "Git does not report exact wire bytes"
+      },
+      {
+        "commit": "037a51a3c318e31779cbd560262e2fc7ed112ded",
+        "finished": 1790504476.614932,
+        "phase": "fetch",
+        "started": 1790504474.8771598,
+        "transfer_bytes": null,
+        "transfer_bytes_reason": "Git does not report exact wire bytes"
+      },
+      {
+        "commit": "037a51a3c318e31779cbd560262e2fc7ed112ded",
+        "finished": 1790504481.6575859,
+        "phase": "fetch",
+        "started": 1790504479.882588,
+        "transfer_bytes": null,
+        "transfer_bytes_reason": "Git does not report exact wire bytes"
+      },
+      {
+        "commit": "ab9da0fe0c0bee171e41e022bbe1d6bdc37f2003",
+        "finished": 1790504486.829211,
+        "phase": "fetch",
+        "started": 1790504484.892726,
+        "transfer_bytes": null,
+        "transfer_bytes_reason": "Git does not report exact wire bytes"
+      },
+      {
+        "commit": "ab9da0fe0c0bee171e41e022bbe1d6bdc37f2003",
+        "finished": 1790504491.900681,
+        "phase": "fetch",
+        "started": 1790504489.902865,
+        "transfer_bytes": null,
+        "transfer_bytes_reason": "Git does not report exact wire bytes"
+      },
+      {
+        "commit": "4b7e4a374593f2b020a8c39f350549889ca2dfd4",
+        "finished": 1790504497.5444689,
+        "phase": "fetch",
+        "started": 1790504494.906928,
+        "transfer_bytes": null,
+        "transfer_bytes_reason": "Git does not report exact wire bytes"
+      },
+      {
+        "commit": "4b7e4a374593f2b020a8c39f350549889ca2dfd4",
+        "finished": 1790504502.31169,
+        "phase": "fetch",
+        "started": 1790504499.912649,
+        "transfer_bytes": null,
+        "transfer_bytes_reason": "Git does not report exact wire bytes"
+      },
+      {
+        "commit": "4b7e4a374593f2b020a8c39f350549889ca2dfd4",
+        "finished": 1790504517.092982,
+        "phase": "fetch",
+        "started": 1790504514.3048131,
+        "transfer_bytes": null,
+        "transfer_bytes_reason": "Git does not report exact wire bytes"
+      },
+      {
+        "commit": "844390cd919a66c5b720a3e45a30582e1cd38730",
+        "finished": 1790504519.4493592,
+        "payload_bytes": 33134,
+        "phase": "publication",
+        "started": 1790504517.262625
+      },
+      {
+        "commit": "844390cd919a66c5b720a3e45a30582e1cd38730",
+        "finished": 1790504522.249977,
+        "phase": "fetch",
+        "started": 1790504519.449894,
+        "transfer_bytes": null,
+        "transfer_bytes_reason": "Git does not report exact wire bytes"
+      },
+      {
+        "commit": "844390cd919a66c5b720a3e45a30582e1cd38730",
+        "finished": 1790504527.446958,
+        "phase": "fetch",
+        "started": 1790504524.4597912,
+        "transfer_bytes": null,
+        "transfer_bytes_reason": "Git does not report exact wire bytes"
+      },
+      {
+        "commit": "844390cd919a66c5b720a3e45a30582e1cd38730",
+        "finished": 1790504532.5299368,
+        "phase": "fetch",
+        "started": 1790504529.460105,
+        "transfer_bytes": null,
+        "transfer_bytes_reason": "Git does not report exact wire bytes"
+      },
+      {
+        "commit": "844390cd919a66c5b720a3e45a30582e1cd38730",
+        "finished": 1790504537.360449,
+        "phase": "fetch",
+        "started": 1790504534.4703841,
+        "transfer_bytes": null,
+        "transfer_bytes_reason": "Git does not report exact wire bytes"
+      },
+      {
+        "commit": "a128a75907bf5d0efd7b8e240dcf0183a349b116",
+        "finished": 1790504542.2657259,
+        "phase": "fetch",
+        "started": 1790504539.480688,
+        "transfer_bytes": null,
+        "transfer_bytes_reason": "Git does not report exact wire bytes"
+      },
+      {
+        "commit": "a128a75907bf5d0efd7b8e240dcf0183a349b116",
+        "finished": 1790504547.441311,
+        "phase": "fetch",
+        "started": 1790504544.48149,
+        "transfer_bytes": null,
+        "transfer_bytes_reason": "Git does not report exact wire bytes"
+      },
+      {
+        "commit": "ce1b257d458e1ccd4a8ab0d6fb315da73d2a8885",
+        "finished": 1790504552.639738,
+        "phase": "fetch",
+        "started": 1790504549.491732,
+        "transfer_bytes": null,
+        "transfer_bytes_reason": "Git does not report exact wire bytes"
+      },
+      {
+        "commit": "ce1b257d458e1ccd4a8ab0d6fb315da73d2a8885",
+        "finished": 1790504557.923689,
+        "phase": "fetch",
+        "started": 1790504554.501211,
+        "transfer_bytes": null,
+        "transfer_bytes_reason": "Git does not report exact wire bytes"
+      },
+      {
+        "commit": "ce1b257d458e1ccd4a8ab0d6fb315da73d2a8885",
+        "finished": 1790504592.4117918,
+        "phase": "fetch",
+        "started": 1790504589.042915,
+        "transfer_bytes": null,
+        "transfer_bytes_reason": "Git does not report exact wire bytes"
+      },
+      {
+        "commit": "9eda6883176b0ea2ce17a9de1d575f366b75ab4f",
+        "finished": 1790504594.926498,
+        "payload_bytes": 71222,
+        "phase": "publication",
+        "started": 1790504592.584857
+      },
+      {
+        "commit": "9eda6883176b0ea2ce17a9de1d575f366b75ab4f",
+        "finished": 1790504598.698167,
+        "phase": "fetch",
+        "started": 1790504594.926938,
+        "transfer_bytes": null,
+        "transfer_bytes_reason": "Git does not report exact wire bytes"
+      },
+      {
+        "commit": "9eda6883176b0ea2ce17a9de1d575f366b75ab4f",
+        "finished": 1790504603.5900538,
+        "phase": "fetch",
+        "started": 1790504599.933908,
+        "transfer_bytes": null,
+        "transfer_bytes_reason": "Git does not report exact wire bytes"
+      },
+      {
+        "commit": "9eda6883176b0ea2ce17a9de1d575f366b75ab4f",
+        "finished": 1790504608.7477849,
+        "phase": "fetch",
+        "started": 1790504604.944195,
+        "transfer_bytes": null,
+        "transfer_bytes_reason": "Git does not report exact wire bytes"
+      },
+      {
+        "commit": "9eda6883176b0ea2ce17a9de1d575f366b75ab4f",
+        "finished": 1790504613.662428,
+        "phase": "fetch",
+        "started": 1790504609.953268,
+        "transfer_bytes": null,
+        "transfer_bytes_reason": "Git does not report exact wire bytes"
+      },
+      {
+        "commit": "874175c95ef5007a5f2c2a005331edf42954632a",
+        "finished": 1790504619.333759,
+        "phase": "fetch",
+        "started": 1790504614.963521,
+        "transfer_bytes": null,
+        "transfer_bytes_reason": "Git does not report exact wire bytes"
+      },
+      {
+        "commit": "874175c95ef5007a5f2c2a005331edf42954632a",
+        "finished": 1790504623.593215,
+        "phase": "fetch",
+        "started": 1790504619.973778,
+        "transfer_bytes": null,
+        "transfer_bytes_reason": "Git does not report exact wire bytes"
+      },
+      {
+        "commit": "874175c95ef5007a5f2c2a005331edf42954632a",
+        "finished": 1790504629.432142,
+        "phase": "fetch",
+        "started": 1790504624.9840178,
+        "transfer_bytes": null,
+        "transfer_bytes_reason": "Git does not report exact wire bytes"
+      },
+      {
+        "commit": "c3ab020e063fd052e245c29bb0edc649c9533bd6",
+        "finished": 1790504634.540433,
+        "phase": "fetch",
+        "started": 1790504629.994299,
+        "transfer_bytes": null,
+        "transfer_bytes_reason": "Git does not report exact wire bytes"
+      },
+      {
+        "commit": "c3ab020e063fd052e245c29bb0edc649c9533bd6",
+        "finished": 1790504664.568992,
+        "phase": "fetch",
+        "started": 1790504659.9277592,
+        "transfer_bytes": null,
+        "transfer_bytes_reason": "Git does not report exact wire bytes"
+      },
+      {
+        "commit": "dc60921fbce463570057ad9defe5a221ad7ebd61",
+        "finished": 1790504667.134069,
+        "payload_bytes": 75009,
+        "phase": "publication",
+        "started": 1790504664.719261
+      },
+      {
+        "commit": "dc60921fbce463570057ad9defe5a221ad7ebd61",
+        "finished": 1790504671.745719,
+        "phase": "fetch",
+        "started": 1790504667.134617,
+        "transfer_bytes": null,
+        "transfer_bytes_reason": "Git does not report exact wire bytes"
+      },
+      {
+        "commit": "dc60921fbce463570057ad9defe5a221ad7ebd61",
+        "finished": 1790504676.846546,
+        "phase": "fetch",
+        "started": 1790504672.1437042,
+        "transfer_bytes": null,
+        "transfer_bytes_reason": "Git does not report exact wire bytes"
+      },
+      {
+        "commit": "dc60921fbce463570057ad9defe5a221ad7ebd61",
+        "finished": 1790504681.7768488,
+        "phase": "fetch",
+        "started": 1790504677.153889,
+        "transfer_bytes": null,
+        "transfer_bytes_reason": "Git does not report exact wire bytes"
+      },
+      {
+        "commit": "dc60921fbce463570057ad9defe5a221ad7ebd61",
+        "finished": 1790504687.070646,
+        "phase": "fetch",
+        "started": 1790504682.155309,
+        "transfer_bytes": null,
+        "transfer_bytes_reason": "Git does not report exact wire bytes"
+      },
+      {
+        "commit": "82537cf80cad1ad0ae3b5656e53f2b8287c9a3aa",
+        "finished": 1790504692.237891,
+        "phase": "fetch",
+        "started": 1790504687.2141209,
+        "transfer_bytes": null,
+        "transfer_bytes_reason": "Git does not report exact wire bytes"
+      },
+      {
+        "commit": "82537cf80cad1ad0ae3b5656e53f2b8287c9a3aa",
+        "finished": 1790504698.565929,
+        "phase": "fetch",
+        "started": 1790504693.410027,
+        "transfer_bytes": null,
+        "transfer_bytes_reason": "Git does not report exact wire bytes"
+      },
+      {
+        "commit": "117b60fdecbded82913541043883dcbcf354470d",
+        "finished": 1790504701.2426748,
+        "payload_bytes": 23005,
+        "phase": "publication",
+        "started": 1790504698.737437
+      }
+    ]
+  },
+  "worker_cleanup": {
+    "audit_errors": [],
+    "cleanup": {
+      "audit_error": null,
+      "confirmed_at": 1790504693.342122,
+      "direct_child_reaped": true,
+      "identity_key": "ecf372c2eb8cb150f5688a656f10cbd96edcee6827422fcc830f5ff18501a750",
+      "owned_absent": true,
+      "pid": 65662,
+      "requests": [
+        {
+          "actor": "c3r",
+          "pid": 65525,
+          "reason": "Rejected('owner_parent_exited')",
+          "time": 1790504693.281213
+        }
+      ],
+      "signals": [
+        {
+          "actor": "c3r",
+          "signal": "TERM",
+          "time": 1790504693.284725
+        }
+      ],
+      "term_claim": {
+        "actor": "c3r",
+        "owner_pid": 65525,
+        "reason": "Rejected('owner_parent_exited')",
+        "time": 1790504693.2826838
+      }
+    },
+    "failure": "Rejected('owner_parent_exited')"
+  },
+  "controller_terminal": {
+    "claims": 4,
+    "cleanup": {
+      "create_ambiguous": false,
+      "owned_absent": true
+    },
+    "deadline": 1790506224.582206,
+    "error": null,
+    "finished": 1790504680.610234,
+    "no_retry": true,
+    "protocol": 6,
+    "release_sha256": "3a2ba1e00b6cf59a1dbf1cf080dd510c47768fd1a0b59c108009ab2f2d886669",
+    "run_id": "c6-dev-20260927-b",
+    "scientific_success_assessed": false,
+    "status": "submitted"
+  },
+  "os_inspection": {
+    "scope": "ONE OS inspection of recorded worker/supervisor/model; no signals",
+    "observed_at": 1790505069.315974,
+    "roles": {
+      "worker": 65249,
+      "supervisor": 65525,
+      "model": 65662
+    },
+    "returncode": 1,
+    "stdout": "",
+    "stderr": "",
+    "all_recorded_pids_absent": true
+  },
+  "submitted": true,
+  "task_success_assessed": false,
+  "no_retry": true,
+  "no_source_changes": true,
+  "archive": {
+    "sha256": "50d937b11c0d3fe3b6905e2f510e41d3efa9087f66e9f931fc6182bf19476f49",
+    "bytes": 2695008,
+    "member_count": 4506,
+    "mapping_sha256": "8a7c11f743541c7a045324209929bd7f7a12a99f4ca761a37edddbb949fcf77f"
+  },
+  "readiness": {
+    "percent": 55,
+    "delta": 0,
+    "range": [
+      45,
+      65
+    ]
+  }
+}
