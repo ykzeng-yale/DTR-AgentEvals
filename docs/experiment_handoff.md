@@ -6984,3 +6984,10 @@ C3 design2f8538b docs/req028_c3_adapter_setup_20260927.md dispatched: remote imp
 Lead local probe results/local_req028/c3_sandbox_20260927 passed on pinned Astropy image:1CPU,1GiB/no swap,128PIDs,networknone,no host mounts,capdropALL,no-new-privileges,read-only root and16MiB tmpfs. Fixed authored script read GitHEAD a4ae7a3808de3c53b0788875b6c97b20d5a12ee0/Python3.11.5/loopback-only interfaces and wrote a tmpfs sentinel. Exit0; owned container removed and absence verified. No generated command or benchmark test executed. Read-only setup does NOT qualify future writable benchmark execution; distinct specification remains required.
 
 Readiness55%,change0points,range45–65%; competent fixed-target comparison with valid inference, final empirical/manuscript synthesis, independent reproducibility and author-approved package remain.
+
+
+## 2026-09-27 07:30 UTC — C3 review / correction
+
+Lead verified483 C3 hashes and25 tests. Additional executed inert-process regression: failure.json write OSError bypasses cleanup in Adapter.fail, leaving child alive until fixture teardown. Setup remains provisional; no real model release. New docs/req028_c3r_integration_20260927.md requires audit-I/O-independent cleanup and concrete external watchdog/HTTP/Git/envelope integration with inert and loopback fixtures only. Preserve C3 evidence and all prior holds.
+
+Readiness55%,change0points,range45–65%; competent fixed-target comparison/valid inference, final synthesis, independent reproducibility and approved package remain.
