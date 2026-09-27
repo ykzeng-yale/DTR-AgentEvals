@@ -7107,3 +7107,7 @@ Referencecontrol-a stopped before tests at prepared-diff metadata check; not a p
 ## 2026-09-27 — REQ-029C complete / scientific comparator remains
 
 Read docs/req029c_decision_20260927.md. Corrected reference-b176PASSED/exit0,94runtime member hashes/raw parser/reference bindings independently checked; driver24115/guardian24280absent,Dockerempty. Preserve reference-a failed setup and prelaunch filename rejection. No model invocation or same-task retry remains. Remote has no pending assignment. Next lead freezes an untouched DEVELOPMENT comparison from existing exposure/component ledger, integrates029Afeedback+029Dcommonparser and exact task/image validation; no automatic model release. Readiness55%,change0points,range45–65%; comparison/inference,synthesis,reproducibility/package remain.
+
+## 2026-09-27 — REQ-029E executable comparator integration
+
+Read docs/req029e_comparator_integration_20260927.md. Remote implements actual task/arm-bound worker/controller plus corrected guardian feedback/common parser, existing exact Qwen/Klear artifacts and unchanged limits. Source/inert integration only; no model/Docker/task acquisition/real evaluator. Lead owns exposure/task/image qualification and subsequent exact release. No more exposedAstropy attempts. Task outcomes,call9reachability and costs remain distinct; deterministic-arm screen is not a DTR study. Readiness55%,change0points,range45–65%;comparison/inference,synthesis,reproducibility/package remain.
