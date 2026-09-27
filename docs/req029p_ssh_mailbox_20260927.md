@@ -9,3 +9,11 @@ This is a primitive, NOT production protocol qualification. It exposes explicit 
 Next: bounded production caller with source/root/role pinning, a finite deadline-aware inspection schedule, poisoned-state handling, process-surviving cleanup and integrated actual two-role tests. Keep model and sandbox authorization separate. No new task/model release follows from this test.
 
 Preprint readiness55%,Δ0,range45–65%; competent fixed-target comparisons/valid inference, manuscript synthesis, independent reproducibility and author-approved package remain.
+
+## Bounded caller and integrated filesystem checkpoint
+
+`recovery_transport.py` now pins helper bytes, absolute paths, fixed role and verified SSH alias; uses the existing independent process runner with12-second operation timeout/2MiB output cap, finite512operations/360reads, and poisoned state after any uncertain operation. Model/action data travels on stdin. Remote helper has its own12-second alarm. Production interval is at least5seconds; local fixtures explicitly use zero interval. No activation CLI exists.
+
+Integration revealed and corrected a byte encoding mismatch: mailbox now uses protocol canonical UTF-8 JSON with no trailing newline and rejects NaN. The earlier43-byte SSH fixture remains evidence for its earlier source only; changed helper bytes require a fresh source-bound SSH integration check. Thirteen combined tests pass in6.996seconds, including actual helper processes, Unicode hashes, wrong-helper rejection, conflict poisoning and both recovery engines through filesystem exchange. OS process-runner receipts report owned groups absent. No model or Docker ran.
+
+The combined suite initially caught a normal final-observation/terminal ordering race: worker could terminate before consuming the last observation, leaving histories unequal. Recovery engine now drains an already-published observation only for final cap/third-format-error cases before terminating, without another claim. A forced-order24-call test passes; initial failure is preserved. Evidence `results/local_req029/recovery_transport_20260927/`. Real SSH controller-death/timeout and production sandbox/model wrapper integration remain unqualified; don't infer these from local helper cleanup.

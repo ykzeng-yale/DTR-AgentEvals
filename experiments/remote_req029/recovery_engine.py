@@ -40,7 +40,15 @@ class Base:
             if peer:
                 terminal=self.t.read(peer+'_terminal')
                 if terminal:
-                    raise RuntimeError('peer terminal: '+str(terminal[0].get('status')))
+                    # A completed final observation can precede a normal terminal
+                    # publication. Drain it for identical audit history only; the
+                    # cap/error counter then ends the loop without a new claim.
+                    status=terminal[0].get('status')
+                    if kind=='observation' and ((status=='action_cap' and seq==24) or
+                            (status=='repeated_format_error' and self.chain.format_errors==2)):
+                        final=self.t.read(kind,seq)
+                        if final:return final
+                    raise RuntimeError('peer terminal: '+str(status))
             value=self.t.read(kind,seq)
             if value:
                 self.event('queue',dict(kind=kind,started=started,finished=time.time(),object=value[1]))

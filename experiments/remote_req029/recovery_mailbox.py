@@ -1,9 +1,9 @@
 """Bounded immutable REQ029O mailbox helper. Data only; no command execution."""
-import hashlib,json,os,re,sys,tempfile
+import hashlib,json,os,re,signal,sys,tempfile
 from pathlib import Path
 LIMIT=1048576
 KINDS={'request':'controller','observation':'controller','response':'worker','preflight':'controller','ready':'worker','controller_terminal':'controller','worker_terminal':'worker'}
-def encode(v):return (json.dumps(v,sort_keys=True,separators=(',',':'))+'\n').encode()
+def encode(v):return json.dumps(v,ensure_ascii=False,sort_keys=True,separators=(',',':'),allow_nan=False).encode('utf-8')
 def require(ok,msg):
     if not ok:raise ValueError(msg)
 def exchange(root,role,q):
@@ -38,6 +38,7 @@ def exchange(root,role,q):
     raw=path.read_bytes()
     return dict(present=True,payload=json.loads(raw),sha256=hashlib.sha256(raw).hexdigest(),bytes=len(raw),name=name)
 def main():
+    signal.alarm(12)  # Independent helper bound even if an SSH client disappears.
     raw=sys.stdin.buffer.read(LIMIT+4097);require(len(raw)<=LIMIT+4096,'request cap')
     print(json.dumps(exchange(sys.argv[1],sys.argv[2],json.loads(raw)),sort_keys=True))
 if __name__=='__main__':main()

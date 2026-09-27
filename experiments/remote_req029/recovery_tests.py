@@ -30,7 +30,9 @@ class Tests(unittest.TestCase):
     def pair(self,seq,configure=None):
         r,_=release(seconds=30);r.update(protocol=PROTOCOL,run_id='cmp029o-fixture',root='results/remote_req029/comparator_runs/cmp029o-fixture',source_hashes=inventory());pin=sha(encode(r))
         with tempfile.TemporaryDirectory() as tmp:
-            store={};w=Worker(Path(tmp)/'w',r,pin,Wire(store,r['root']));c=Controller(Path(tmp)/'c',r,pin,Wire(store,r['root']))
+            store={}
+            factory=getattr(self,'wire_factory',lambda role:Wire(store,r['root']))
+            w=Worker(Path(tmp)/'w',r,pin,factory('worker'));c=Controller(Path(tmp)/'c',r,pin,factory('controller'))
             m=Model(seq,r);s=Sandbox()
             if configure:configure(w,c,m,s,store)
             failures=[]
@@ -55,6 +57,20 @@ class Tests(unittest.TestCase):
         self.assertEqual(c.terminal['status'],'action_cap')
         self.assertEqual(c.chain.format_errors,0)
         self.assertEqual(w.chain.messages,c.chain.messages)
+    def test_terminal_arrives_before_final_observation(self):
+        def configure(w,c,m,s,store):
+            original=w.wait
+            def wait(kind,seq=None,peer=None):
+                if kind=='observation' and seq==24:
+                    until=time.monotonic()+3
+                    while ('controller_terminal',None) not in store:
+                        self.assertLess(time.monotonic(),until);time.sleep(.001)
+                return original(kind,seq,peer)
+            w.wait=wait
+        w,c,m,s,store=self.pair([GOOD]*24,configure)
+        self.assertEqual(len(m.sent),24);self.assertEqual(len(s.actions),24)
+        self.assertEqual(w.chain.messages,c.chain.messages)
+        self.assertEqual(w.terminal['status'],'call_cap')
     def test_feedback_mutations_no_second_dispatch(self):
         for field in ('content','sequence','response_sha256','response_object','release_sha256','feedback_semantics'):
             with self.subTest(field=field):
