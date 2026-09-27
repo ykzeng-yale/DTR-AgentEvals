@@ -1990,3 +1990,9 @@ Readiness55%,change0points,range45–65%;competent fixed-target comparison/valid
 REQ029L docs/req029l_django_comparison_20260927.md freezes Django16560,Qwen-first/Klear-second,identical3855byte messages,unchanged24call/1800second/resource contracts,one residency percell,serial cleanup,strict later task evaluation and actualcall9 occupancy. Lead rechecked all166comparator pins against source7aded9d and sharedpromptSHA. One paired development task is not74tasks,a competent-pair estimate or routing-effect experiment. Existingcontrols need no repeat. RemoteREQ029K input reconciliation remains pending; source/task/expiry-specific model approval has not been issued. No additional generic implementation stage is requested.
 
 Readiness55%,change0points,range45–65%;competent fixed-target comparison/valid inference,synthesis,independent reproducibility/author-approved package remain.
+
+## 2026-09-27 — REQ029L Django Qwen first-cell format failure
+
+cmp029e-django16560-qwen-a completed3realmodel calls and2read-onlysandbox actions. Thirdterminalstop response contains2commandfences; exactunchangedparser rejects it. No submission/call9/taskresolution. Lead2126memberhashes,166sourcepins,full3message/native/usagebindings andparserreplay verified;HTTP25.997191seconds,phase138.757264seconds,3145prompt551completiontokens. Cleanupverified;worker OSabsence is worker-observed. This is operational interfacefailure,not memoryfailure,estimatorfailure or a benchmarktest score. Rawarchive results/remote_req029/qwen_terminal_archive_20260927; audits docs/audits/req029_qwen_terminal_lead_20260927.json. Frozensecond Kleararm release is separate; no Qwenretry.
+
+Readiness55%,change0points,range45–65%; competent comparison/inference,synthesis,reproducibility/package remain.

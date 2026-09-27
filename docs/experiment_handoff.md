@@ -7194,3 +7194,9 @@ Readiness55%,change0points,range45–65%;competent fixed-target comparison/valid
 REQ029L docs/req029l_django_comparison_20260927.md freezes Django16560,Qwen-first/Klear-second,identical3855byte messages,unchanged24call/1800second/resource contracts,one residency percell,serial cleanup,strict later task evaluation and actualcall9 occupancy. Lead rechecked all166comparator pins against source7aded9d and sharedpromptSHA. One paired development task is not74tasks,a competent-pair estimate or routing-effect experiment. Existingcontrols need no repeat. RemoteREQ029K input reconciliation remains pending; source/task/expiry-specific model approval has not been issued. No additional generic implementation stage is requested.
 
 Readiness55%,change0points,range45–65%;competent fixed-target comparison/valid inference,synthesis,independent reproducibility/author-approved package remain.
+
+## 2026-09-27 — SSH terminal audit and frozen Klear second arm
+
+QwenDjango terminal independentlyaudited:2126hashes/166pins/3nativehistories; twofences atcall3 correctlyrejected,no submission. Read docs/req029l_klear_execution_20260927.md for exactsecondarmrelease,unchangedsource/sandbox/caps,22UTCexpiry. No Qwenretry/evaluator. SSHworks tobothownedMacs; auxiliary32GiBhost not inserted into frozenpair. Two-hourreview cadence unchanged. Exactlaunchreceipts follow onlyafterpublishedapproval/authorize.
+
+Readiness55%,change0points,range45–65%; competent fixed-target comparison/valid inference,synthesis,independent reproducibility/author-approved package remain.
