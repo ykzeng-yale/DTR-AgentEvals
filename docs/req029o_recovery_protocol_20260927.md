@@ -13,3 +13,9 @@ Scope: implement and test a distinct protocol; no inference, new task release, D
 Scientific release remains separate. Use fresh development tasks from a prospectively frozen rule, retain prior Qwen/Django and Astropy outcomes unchanged, and do not choose tasks or change budgets to secure positive results. Resource feasibility for both comparator arms is a separate gate. Success of protocol tests is not evidence of coding competence or routing benefit.
 
 Readiness55%,Δ0,range45–65%; competent fixed-target comparisons/valid inference, manuscript synthesis, independent reproducibility and author-approved package remain.
+
+## Initial implementation checkpoint
+
+Distinct `recovery_contract.py`, `recovery_chain.py`, `recovery_engine.py` use REQ-029O namespace and include recovery sources in inventory. The frozen comparator is unchanged. No activation CLI, concrete release or production transport/backend adoption exists. Two actual threaded worker/controller engine tests pass with an in-memory transport and inert model/sandbox: three errors with zero actions, and eight two-error/clean cycles exhausting24 calls with8 actions and identical final histories. Evidence `results/local_req029/recovery_initial_20260927/tests.txt`. The first fixture attempt used10-second absolute expiry, correctly failed the15-second preflight reserve, and was corrected to30 seconds; no production cap changed.
+
+This is partial implementation, not qualification: tamper/deadline/crash cases and real inert process/transport/guardian integration remain required. No model, Docker or network poller was launched. The new protocol must not reuse old approvals or be represented as deployed.
