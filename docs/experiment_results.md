@@ -1,9 +1,9 @@
-## Current execution status — 27 September 2026, 09:00 UTC
+## Current execution status — 27 September 2026, 09:15 UTC
 
 | Stream | Verified status | Next boundary |
 |---|---|---|
 | REQ-028C5 Mac mini Qwen relay | One real request completed; 129 runtime hashes, 102 source pins and exact consumer/native/parser replay independently checked; owned cleanup recorded. | Transport qualification only; no executed action or competence claim. No C5 job remains. |
-| REQ-028C6 development trajectory | Exact one-task, at-most-24-call design frozen; implementation and inert tests released. | Real trajectory held for exact-source approval and writable local sandbox qualification. |
+| REQ-028C6 development trajectory | C6 source reviewed; lead32/33 tests pass and two additional guard/process regressions reproduced. C6R corrections and concrete sandbox integration released. | Real trajectory held for exact-source approval and writable local sandbox qualification. |
 | C6 local writable sandbox | W2R original-path imports and bounded tmpfs settings pass; W1/R1/W2 failures retained. | Exact controller/output/timeout/death-cleanup integration remains unqualified; no generated action. |
 | Prior model/synthetic studies | Archived failures and accepted REQ-027 simulation remain unchanged. | Competent fixed-target comparison and valid inference remain open. |
 
@@ -1843,5 +1843,14 @@ Readiness55%,change0points,range45–65%; remaining competent fixed-target compa
 Remote C6 worker/controller implementation remains active; no new model job. Lead tested distinct bounded writable sandbox candidates and retained W1(base-Python import),R1(editable-path mismatch),W2(extension-load) failures. W2R passes original /testbed import, compiled extension loading, writable Git-visible sentinel, root rejection and loopback-only checks with512MiB exec tmpfs at/testbed,64MiB/tmp,read-only root,1CPU/1GiB/no swap/128PIDs/nohostmount/capdropALL/no-new-privileges. All W2R owned containers were removed and absence verified. W1 cleanup receipt had a case-sensitive diagnostic bug; separate retained OS check confirms absence. No generated command/model/benchmark test ran. Full design/failure boundaries: docs/req028_c6_writable_sandbox_20260927.md; results/local_req028/c6_writable_w2r_20260927.
 
 Strict evaluator candidate file/dataset/test-manifest hashes frozen separately (1FAIL_TO_PASS,175PASS_TO_PASS); no test contents forwarded to model. ImageHEAD is an existing SWE-bench setup commit immediately after taskbase with one pyproject.toml-line change. Exact production controller/sandbox timeout/output/death-cleanup tests and evaluator runtime qualification remain open. Remote must consume W2R candidate details; no writable-overlay substitution. No trajectory release yet.
+
+Readiness55%,change0points,range45–65%; competent fixed-target comparison/valid inference, final empirical/manuscript synthesis, independent reproducibility and author-approved package remain.
+
+
+## 2026-09-27 09:15 UTC — C6 core reviewed, concrete C6R correction
+
+C6 b50843a/source3173e87: lead matched archiveSHA/filecount14560,117sources,eight receipt/log hashes. Individual member inventory mapping is missing; do not claim14560 independently matched member hashes. Local33tests:32pass/oneguardshutdownrace,32.711seconds. Additional deterministic lifecycle regression accepts terminal supervisor receipt while processpoll isNone; executed parent-exits-first subprocess fixture left inert descendant alive until lead fixture cleanup. See docs/audits/req028_c6_lead_20260927.json and regressions. No launch approval.
+
+New docs/req028_c6r_integration_20260927.md releases exact corrections plus concrete sandbox adapter/guardian, deadline binding and submission checker with inert/fakeDocker tests only. Exact upstream docker.py/license snapshot independently matched GitHub pinned source; no source is unavailable now. W2R filesystem remains qualified; production output/timeout/deathcleanup still held for actual lead tests. No model/Docker/benchmark run on mini, no real trajectory yet.
 
 Readiness55%,change0points,range45–65%; competent fixed-target comparison/valid inference, final empirical/manuscript synthesis, independent reproducibility and author-approved package remain.

@@ -1,0 +1,21 @@
+import tempfile,time,json,os,signal,subprocess,sys
+from pathlib import Path
+from types import SimpleNamespace
+from c6_model import Lifecycle
+from c6_process import Runner
+out={}
+with tempfile.TemporaryDirectory() as td:
+ p=Path(td);life=Lifecycle(p/'life',{'port':1,'phase_deadline':time.time()+30});life.proc=SimpleNamespace(poll=lambda:None)
+ (life.root/'supervisor_exit.json').write_text(json.dumps({'failure':'guard trip','cleanup':{'owned_absent':True}}))
+ try:life.check();out['terminal_receipt_while_process_exiting']='INCORRECTLY_ACCEPTED'
+ except Exception as e:out['terminal_receipt_while_process_exiting']=repr(e)
+ pidfile=p/'pid';script=p/'orphan.py';script.write_text("import subprocess,sys\nfrom pathlib import Path\np=subprocess.Popen([sys.executable,'-c','import time;time.sleep(30)'])\nPath(sys.argv[1]).write_text(str(p.pid))\n")
+ try:Runner(p/'runner').run([sys.executable,str(script),str(pidfile)],time.time()+1)
+ except Exception as e:out['runner_result']=repr(e)
+ pid=int(pidfile.read_text());status=subprocess.run(['ps','-p',str(pid),'-o','pid=,command='],capture_output=True,text=True)
+ out['descendant_alive_before_fixture_cleanup']=status.returncode==0;out['descendant_identity']=status.stdout.strip()
+ if status.returncode==0:
+  assert 'import time;time.sleep(30)' in status.stdout
+  os.kill(pid,signal.SIGKILL)
+ out['fixture_cleanup']='SIGKILL only recorded inert sleeping descendant'
+Path('docs/audits/req028_c6_regressions_20260927.json').write_text(json.dumps(out,indent=2)+'\n');print(json.dumps(out))
