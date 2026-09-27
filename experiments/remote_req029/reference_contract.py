@@ -31,10 +31,16 @@ def inputs(bundle=BUNDLE,patch=PATCH,reference=REFERENCE):
     return data,raw
 
 def normalized(raw):
-    # Ignore ONLY Git-added index metadata. Paths, hunk positions/context and
-    # every modified byte remain exact. Other normalization fails closed.
-    return b''.join(line for line in raw.splitlines(keepends=True)
-                    if not re.fullmatch(rb'index [0-9a-f]+\.\.[0-9a-f]+(?: 100644)?\n',line))
+    # Ignore Git index metadata and annotations on syntactically valid hunk
+    # headers only. Preserve coordinates/counts, line endings and every payload
+    # byte. Malformed headers and mode changes remain exact (fail closed).
+    lines=[]
+    for line in raw.splitlines(keepends=True):
+        if re.fullmatch(rb'index [0-9a-f]+\.\.[0-9a-f]+(?: 100644)?\n',line):
+            continue
+        header=re.fullmatch(rb'(@@ -[0-9]+(?:,[0-9]+)? \+[0-9]+(?:,[0-9]+)? @@)(?: [^\r\n]*)?(\n?)',line)
+        lines.append(header[1]+header[2] if header else line)
+    return b''.join(lines)
 
 def bind_prepared(facts,patch,data):
     diff=facts['candidate_diff'].encode()

@@ -240,4 +240,77 @@ class Tests(unittest.TestCase):
         for old,new in ((b'card.py',b'other.py'),(b'66,7',b'67,7'),(b'value.rstrip()',b'value.strip()')):
             self.assertNotEqual(normalized(self.patch),normalized(self.patch.replace(old,new)))
 
+    def observed_prepared(self):
+        from reference_contract import ROOT
+        raw=(ROOT/'results/local_req029/reference_control_20260927/reference.prepared.observed.diff').read_bytes()
+        self.assertEqual(sha(raw),'c15fa8fbe16ba95236c30449fdbe8d9aafe0a29dde97fd326413c848d8502819')
+        self.assertEqual(sha(self.patch),PATCH_SHA)
+        return raw
+
+    def prepared_facts(self,raw):
+        return dict(candidate_diff=raw.decode(),candidate_sha256=PATCH_SHA,
+                    test_patch_sha256=sha(self.data['test_patch'].encode()),untouched_stock_harness=False)
+
+    def test_c1_exact_archived_diff_binding(self):
+        from reference_contract import bind_prepared
+        raw=self.observed_prepared()
+        bound=bind_prepared(self.prepared_facts(raw),self.patch,self.data)
+        self.assertEqual(bound,raw)
+        self.assertNotEqual(sha(bound),sha(self.patch))
+
+    def test_c1_valid_heading_annotations_only(self):
+        from reference_contract import normalized
+        # Cover explicit and omitted counts and annotation-free valid headers.
+        for header in (b'@@ -66,7 +66,7 @@',b'@@ -1 +2 @@',b'@@ -0,0 +1,2 @@'):
+            for suffix in (b'',b' class Card(_Verify):',b' def _split(self):',b' text @@ text'):
+                with self.subTest(header=header,suffix=suffix):
+                    self.assertEqual(normalized(header+suffix+b'\n'),header+b'\n')
+                    self.assertEqual(normalized(header+suffix),header)
+
+    def test_c1_archived_content_mutations_rejected(self):
+        from reference_contract import bind_prepared
+        raw=self.observed_prepared()
+        changes=((b'a/astropy/io/fits/card.py',b'a/astropy/io/fits/other.py'),
+                 (b'b/astropy/io/fits/card.py',b'b/astropy/io/fits/other.py'),
+                 (b'-859,7',b'-860,7'),(b'+859,7',b'+860,7'),
+                 (b'-859,7',b'-859,8'),(b'+859,7',b'+859,8'),
+                 (b'-859,7',b'-859'),(b'+859,7',b'+859'),
+                 (b'                     return kw, vc',b'                    return kw, vc'),
+                 (b'+                value = value.rstrip()',b'+                value = value.strip()'),
+                 (b'-                value = value.rstrip().replace',b'-                value = value.strip().replace'),
+                 (b'100644',b'100755'),
+                 (b'\n \n',b'\n  \n'))
+        for old,new in changes:
+            with self.subTest(old=old,new=new):
+                self.assertIn(old,raw)
+                mutated=raw.replace(old,new)
+                with self.assertRaisesRegex(Rejected,'prepared source differs'):
+                    bind_prepared(self.prepared_facts(mutated),self.patch,self.data)
+        for extra in (b'old mode 100644\nnew mode 100755\n',b'+extra\n',b'-extra\n'):
+            with self.subTest(extra=extra),self.assertRaises(Rejected):
+                bind_prepared(self.prepared_facts(raw+extra),self.patch,self.data)
+
+    def test_c1_malformed_headers_and_content_preserved(self):
+        from reference_contract import normalized
+        lines=(b'@@ -1,x +2,7 @@ annotation\n',b'@@ -1,7 +x,7 @@ annotation\n',
+               b'@@ -1,7  +2,7 @@ annotation\n',b'@@ -1,7 +2,7 @ annotation\n',
+               b'@@ -1,7 +2,7 @@@ annotation\n',b'@@ -1,7 +2,7 @@annotation\n',
+               b'@@ -1,7 +2,7 @@ annotation\r\n',
+               b' @@ -1,7 +2,7 @@ context\n',b'+@@ -1,7 +2,7 @@ added\n',
+               b'-@@ -1,7 +2,7 @@ deleted\n',b'index NOTHEX..abc 100644\n',
+               b'index abc..def 100755\n',b' index abc..def 100644\n')
+        for line in lines:
+            with self.subTest(line=line):self.assertEqual(normalized(line),line)
+
+    def test_c1_old_actual_approval_rejects_changed_inventory(self):
+        import reference_contract as c
+        raw=(c.ROOT/'docs/req029c_source_approval_20260927.json').read_bytes()
+        old=json.loads(raw)
+        self.assertEqual(old['source_commit'],'143e94fe69ce56e34a174750c6fac45dcae0b88e')
+        # Move only the mocked clock inside its former validity period to prove
+        # rejection is source binding, not merely the old approval's expiry.
+        with patch('reference_contract.time.time',return_value=old['expires_at']-100),patch('reference_contract.git',return_value=raw):
+            with self.assertRaisesRegex(Rejected,'complete exact source inventory'):
+                c.authorize('a'*40,'docs/req029c_source_approval_20260927.json',sha(raw))
+
 if __name__=='__main__':unittest.main()
