@@ -1625,3 +1625,21 @@ Remote worker owns implementation/results; lead retains acceptance and subsequen
 transport/competence decisions. No benchmark/Klear/CONFIRM release.
 Readiness55%, change0points, range45–65%; competent fixed-target comparison/valid
 inference, final synthesis, independent reproducibility/approved package remain.
+
+
+## 27 September 2026, 04:30 UTC: A6 admission-only; A6R release
+
+Lead verified45 artifact hashes from5ff207b and passed30 focused tests. A6's
+last supervisor admission75% fell to74% at immediate model prelaunch; zero model
+loads/calls, two unattempted. Both owned PIDs reported absent. Preserve the disclosed
+source-publication-after-supervisor-start deviation; publication preceded driver
+dispatch and no model launched. No q8 feasibility conclusion follows.
+
+[A6R](req028_a6r_prelaunch_window_20260927.md) moves one fixed15-minute admission
+window after static setup, immediately around launch. A final-check dip can reset
+the passing streak only within that same deadline/31-read cap before any Popen.
+No weaker threshold, renewed window or model retry. Same unattempted q8 two-call
+design; bounded300-second static setup and600-second model phase recorded separately.
+Source must publish successfully before supervisor launch. No benchmark/CONFIRM.
+Readiness55%, change0points, range45–65%; remaining competent fixed-target comparison
+and valid inference, final synthesis, independent reproducibility/approved package.
