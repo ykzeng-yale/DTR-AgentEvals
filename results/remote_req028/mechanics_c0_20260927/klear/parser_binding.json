@@ -1,0 +1,11 @@
+{
+  "revision": "04d809ceab9df28f9adaed044884180159172930",
+  "source_hashes": {
+    "models/utils/actions_text.py": "e5997bba3ae3d541ff418317cc8dd9e9e17657de806679ef38ab1ad74e294047",
+    "models/litellm_textbased_model.py": "395bc9bc4a06c18577e73b21c5465f9d22a6d0cc45b006f3d7c9fdaae399e732",
+    "config/default.yaml": "112aa58328f478a41cc2630702a4b89ef459e912870e05065157ed221f56701f"
+  },
+  "regex": "```mswea_bash_command\\s*\\n(.*?)\\n```",
+  "extraction_ast": "ListComp(elt=Call(func=Attribute(value=Name(id='a', ctx=Load()), attr='strip', ctx=Load()), args=[], keywords=[]), generators=[comprehension(target=Name(id='a', ctx=Store()), iter=Call(func=Attribute(value=Name(id='re', ctx=Load()), attr='findall', ctx=Load()), args=[Name(id='action_regex', ctx=Load()), Name(id='content', ctx=Load()), Attribute(value=Name(id='re', ctx=Load()), attr='DOTALL', ctx=Load())], keywords=[]), ifs=[], is_async=0)])",
+  "semantics": "exact upstream extraction expression; reject unless exactly one; no command execution; YAML default omits action_regex and inherits model default"
+}

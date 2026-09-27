@@ -1,0 +1,97 @@
+{
+  "common/jinja/lexer.cpp": {
+    "sha256": "3d6774bc2dac477e10ddbee69eff403df36f5925c8512ccf8a249bde5c26dbd7",
+    "line_ranges": [
+      [
+        53,
+        58
+      ],
+      [
+        338,
+        338
+      ]
+    ],
+    "snippets": [
+      "    // In the default configuration:\n    //  - a single trailing newline is stripped if present\n    //  - other whitespace (spaces, tabs, newlines etc.) is returned unchanged\n    if (source.back() == '\\n') {\n        src.pop_back();\n    }",
+      "    return {std::move(tokens), src};"
+    ]
+  },
+  "common/chat.h": {
+    "sha256": "12b3f8a287698b1b5f3f4e020e52162f5026b06596b55946fa865a4a0b3c4abc",
+    "line_ranges": [
+      [
+        58,
+        71
+      ]
+    ],
+    "snippets": [
+      "    common_chat_template(const std::string & src, const std::string & bos_token, const std::string & eos_token) {\n        jinja::lexer lexer;\n        auto lexer_res = lexer.tokenize(src);\n        this->prog = jinja::parse_from_tokens(lexer_res);\n\n        this->src = lexer_res.source;\n        this->bos_tok = bos_token;\n        this->eos_tok = eos_token;\n\n        this->caps = jinja::caps_get(prog);\n        // LOG_INF(\"%s: caps:\\n%s\\n\", __func__, this->caps.to_string().c_str());\n    }\n\n    const std::string & source() const { return src; }"
+    ]
+  },
+  "common/chat.cpp": {
+    "sha256": "a226aa0cbf844490cd480bb805c458df16af8771b1ecb53a8fe608e3b2e60d3c",
+    "line_ranges": [
+      [
+        744,
+        754
+      ],
+      [
+        765,
+        770
+      ],
+      [
+        839,
+        840
+      ],
+      [
+        1215,
+        1221
+      ],
+      [
+        1424,
+        1428
+      ]
+    ],
+    "snippets": [
+      "std::string common_chat_templates_source(const struct common_chat_templates * tmpls, const std::string & variant) {\n    if (!variant.empty()) {\n        if (variant == \"tool_use\") {\n            if (tmpls->template_tool_use) {\n                return tmpls->template_tool_use->source();\n            }\n            return \"\";\n        }\n        LOG_DBG(\"%s: unknown template variant: %s\\n\", __func__, variant.c_str());\n    }\n    return tmpls->template_default->source();",
+      "    if (chat_template_override.empty()) {\n        GGML_ASSERT(model != nullptr);\n        const auto * str = llama_model_chat_template(model, /* name */ nullptr);\n        if (str) {\n            default_template_src  = str;\n            has_explicit_template = true;",
+      "    try {\n        tmpls->template_default = std::make_unique<common_chat_template>(default_template_src, token_bos, token_eos);",
+      "static common_chat_params common_chat_templates_apply_jinja(const struct common_chat_templates *        tmpls,\n                                                            const struct common_chat_templates_inputs & inputs) {\n    autoparser::generation_params params;\n    params.tools = common_chat_tools_to_json_oaicompat(inputs.tools);\n    const auto & tmpl =\n        params.tools.is_array() && tmpls->template_tool_use ? *tmpls->template_tool_use : *tmpls->template_default;\n    const auto & src             = tmpl.source();",
+      "common_chat_params common_chat_templates_apply(const struct common_chat_templates *        tmpls,\n                                               const struct common_chat_templates_inputs & inputs) {\n    GGML_ASSERT(tmpls != nullptr);\n    return inputs.use_jinja ? common_chat_templates_apply_jinja(tmpls, inputs) :\n                              common_chat_templates_apply_legacy(tmpls, inputs);"
+    ]
+  },
+  "tools/server/server-context.cpp": {
+    "sha256": "2f5d65ce6ef0504b5c8cf55a74c68d3959c49784ba380ef836566b7a7d5fa12b",
+    "line_ranges": [
+      [
+        4609,
+        4629
+      ],
+      [
+        4930,
+        4943
+      ],
+      [
+        5060,
+        5069
+      ]
+    ],
+    "snippets": [
+      "    std::string tmpl_default = common_chat_templates_source(meta.chat_params.tmpls.get(), \"\");\n    std::string tmpl_tools   = common_chat_templates_source(meta.chat_params.tmpls.get(), \"tool_use\");\n\n    json props = {\n        { \"default_generation_settings\", default_generation_settings_for_props },\n        { \"total_slots\",                 params.n_parallel },\n        { \"model_alias\",                 meta.model_name },\n        { \"model_ftype\",                 meta.model_ftype },\n        { \"model_path\",                  meta.model_path },\n        { \"modalities\",                  json {\n            {\"vision\", meta.has_inp_image},\n            {\"video\",  meta.has_inp_video},\n            {\"audio\",  meta.has_inp_audio},\n        } },\n        { \"media_marker\",                get_media_marker() },\n        { \"endpoint_slots\",              params.endpoint_slots },\n        { \"endpoint_props\",              params.endpoint_props },\n        { \"endpoint_metrics\",            params.endpoint_metrics },\n        { \"ui\",                          params.ui },\n        { \"ui_settings\",                 meta.json_ui_settings },\n        { \"chat_template\",               tmpl_default },",
+      "    this->post_chat_completions = [this](const server_http_req & req) {\n        auto res = create_response();\n        std::vector<raw_buffer> files;\n        json body = json::parse(req.body);\n        json body_parsed = oaicompat_chat_params_parse(\n            body,\n            meta->chat_params,\n            files);\n        return handle_completions_impl(\n            req,\n            SERVER_TASK_TYPE_COMPLETION,\n            body_parsed,\n            files,\n            TASK_RESPONSE_TYPE_OAI_CHAT);",
+      "    this->post_apply_template = [this](const server_http_req & req) {\n        auto res = create_response();\n        std::vector<raw_buffer> files; // dummy, unused\n        json body = json::parse(req.body);\n        json data = oaicompat_chat_params_parse(\n            body,\n            meta->chat_params,\n            files);\n        res->ok({{ \"prompt\", std::move(data.at(\"prompt\")) }});\n        return res;"
+    ]
+  },
+  "tools/server/server-common.cpp": {
+    "sha256": "de3a89422f67b97eb385041fae17e553dc677aac6b67f2e98e9f0beff672b4e0",
+    "line_ranges": [
+      [
+        1359,
+        1363
+      ]
+    ],
+    "snippets": [
+      "    // Apply chat template to the list of messages\n    auto chat_params = common_chat_templates_apply(opt.tmpls.get(), inputs);\n\n    llama_params[\"chat_format\"] = static_cast<int>(chat_params.format);\n    llama_params[\"prompt\"]      = chat_params.prompt;"
+    ]
+  }
+}
