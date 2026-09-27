@@ -7018,3 +7018,16 @@ Exact permission docs/req028_c5_source_approval_20260927.json releases ONE load/
 Expected main is the exact approval commit: lead and remote must NOT publish another main commit until C5 response publication or terminal failure. Launch receipt can be local and issue4 while running; after terminal collect/publish complete evidence. Do not duplicate or poll live job repeatedly. Preserve sealed raw response on any publication conflict; never regenerate.
 
 Readiness55%,change0points,range45–65%; competent fixed-target comparison/valid inference, final synthesis, independent reproducibility and approved package remain.
+
+
+## 2026-09-27 08:45 UTC — C5 real relay accepted; C6 task-trajectory preparation
+
+C5 terminal0187d60/response1cee7db: lead independently verified129 published runtime member hashes and102 current source pins, replayed the data-only consumer against exact Git object/provenance/attestation/native pins, and reproduced the unchanged C0 interface PASS. One real Qwen request,1530input/199output tokens,stop; request wall10.564601seconds, model execution including cleanup15.794469seconds, launch-to-exit141.541793seconds. Server prefill/generation timings are nested, not additive. Actualq8KV2448MiB. Fifteen watchdog samples all satisfy guards (free37–75%,swap233.31MiB unchanged); these are sampled extrema. Four admission observations include two75% readings60.113seconds apart and final75%. No retry/renewal.
+
+Raw cleanup records oneTERM/noKILL and reaped owned child. Remote's separate OS snapshot found68869/68870/69551/69660 absent. Lead verified the snapshot artifact, not a separate remote OS observation. Normal liveness-pipe closure is labeled owner_parent_exited in the supervisor; retain that label and distinguish it from a driver crash (driverexit0,no primary/audit error). Eight reconstructible Git-cache files were omitted from the129-file compact archive; hashes/full137-file archive retained on mini. All raw/native/telemetry/cleanup records are published. Audit: docs/audits/req028_c5_lead_20260927.json.
+
+This accepts one activation/transport replay only. No command executed, no coding competence, primary comparison, latency improvement or production exactly-once claim. C5 is finished; do not rerun. Main publication hold is over.
+
+Next exact design docs/req028_c6_development_trajectory_20260927.md specifies ONE future exposed DEVELOPMENT Astropy trajectory on Qwen,<=24calls/actions,one resident model,1800second phase including relay/tool delay,unchanged model guards/no retries. NOW releases executable mini-worker/lead-controller implementation and inert/localGit tests only; exact source approval and qualified writable local sandbox remain necessary before actual trajectory. This replaces further synthetic probes with a concrete path to task execution. No live poller/model/container/benchmark/CONFIRM release now. Lead must qualify the distinct writable sandbox and pin strict evaluation before interpreting task success.
+
+Readiness55%,change0points,range45–65%; remaining competent fixed-target comparison with valid inference, final empirical/manuscript synthesis, independent reproducibility and author-approved package.
