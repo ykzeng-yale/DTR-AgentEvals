@@ -1,3 +1,7 @@
+## Current lead state — 27 September 2026, REQ-029I controls complete
+
+Django16560 unchanged-code control:66PASSED/7ERROR/1FAILED; reference:74PASSED, all74declared IDs observed. Runner128includes54extra skips (50PostgreSQL+4otherfeature tests); not128benchmark tasks. Lead rawparser/preparedpatch/source replay and194runtime hashes verified,driver/guardiansabsent,Dockerempty. [Decision](req029i_decision_20260927.md). Offline install omission disclosed. Actual container metadata now binds identical3855byte initial messages for both prospective artifacts, SHA668d7c50950f6856b05193d6e85c8747472a77624ad150987494f677266a5b34. No model release. [REQ029K](req029k_remote_exposure_20260927.md) requests bounded remote input/exposure reconciliation only; local record audit and remote inputs must cover ID-less issue markers before task release. Readiness55%,change0points,range45–65%;competent comparison/valid inference,synthesis,independent reproducibility/author-approved package remain.
+
 # Experimental handoff
 
 **Lead review — 24 September 2026, 13:21 UTC, through `10be146`:** REQ-010 is

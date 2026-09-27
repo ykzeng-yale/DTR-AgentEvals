@@ -9,3 +9,7 @@ No final messages hash is claimed yet. Both arms must receive the same finalized
 Four local tests passed in0.002seconds: identical arm-independent output and unchanged upstream system text; explicit hidden/evaluator-field and different-task rejection; environment schema/platform bounds; template mutation rejection. Tests used labeled fixture environment strings and generated no model requests. Sources experiments/lead_req029/prompt_boundary.py and test_prompt_boundary.py. No prompt tuning, forced continuation or change to routing opportunities.
 
 Readiness55%,change0points,range45–65%;competent fixed-target comparison/valid inference,empirical/manuscript synthesis,independent reproducibility/author-approved package remain.
+
+## Measured message freeze
+
+REQ029I controls subsequently completed; both actual preflight uname records agree. messages.json is3855bytes SHA668d7c50950f6856b05193d6e85c8747472a77624ad150987494f677266a5b34. measured_binding.json binds exact measurement paths/hashes,builder and platform values. Four existing boundary tests passed0.003seconds after the freeze. This supersedes the pending-message status above; no model call or source approval follows automatically.
