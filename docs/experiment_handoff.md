@@ -7250,3 +7250,7 @@ Manuscript now42pages with validatedDjango controls/incompletepairedscreen and u
 Pinned Matplotlib20826 public projection and local118-record exact-marker audit are complete; remote reconciliation remains before any model release. Preserve prior receipts. Do not repeat or duplicate REQ029R layer acquisition; inspect its bounded terminal receipt at the next scheduled check. Qualification/controls and exact execution approval remain required. See `docs/req029s_public_input_audit_20260927.md` for scope and next gates. Readiness55%, Δ0, range45–65%; full scientific package remains unfinished.
 
 REQ029S SSH addendum: mini107 loose input records/5,394,606bytes, zero exact selected-task markers, no missing declared roots. Local118-record receipt remains separate. Both are scoped input evidence, not general untouchedness. See mini_result.json and the addendum; no model release. Readiness55%,Δ0,range45–65%; remaining scientific gates unchanged.
+
+### REQ029T — offline Matplotlib image import
+
+REQ029R terminal independently verified; no acquisition remains. Exact one offline import release/source and command in docs/req029t_matplotlib_import_20260927.md. Inspect its launch/terminal receipt before any further imageoperation; never duplicate or retry. No container/model/evaluator released. Publicinput audits complete within declared scope; environment/control/resource/source gates remain. Readiness55%,Δ0,range45–65%; scientificobjectiveunfinished.
