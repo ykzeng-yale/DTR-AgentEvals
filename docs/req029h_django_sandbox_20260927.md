@@ -1,0 +1,13 @@
+# REQ-029H — exact Django source/import sandbox qualification
+
+REQ029G loaded the image successfully(exit0) but its final check incorrectly equated Docker manifest ID and configuration SHA. Preserve that failed receipt/source. Read-only daemon content attestation proves the original exact configuration bytes and all10rootfs.diff_ids. The imported manifest uses uncompressed layer descriptors, explaining its different digest. No second import occurred. Runtime image ID is sha256:935eeb9d7c960a90c1275d3d5a143c72173eecdf8098dacb164af1061f0c0a8f; configSHA86afcd19b6c56e5e271a1dfc62177cf03157fe9c9643be560db11480b317cb27. Peer tag inventory retained,zero containers,loadPID40136absent. Evidence results/local_req029/image_import_20260927.
+
+Release exactly one fixed authored Django16560 source/import qualification, using existing W2R resource boundary. Execute `.venv/bin/python experiments/lead_req029/django_writable_host.py` only after publication. One stopped source container exports /testbed as data to work/local_req029/django_writable_20260927/testbed.tar,512MiB/20second cap; remove source. One target container has readonlyroot,512MiB rw/exec/nosuid/nodev/testbed tmpfs,64MiB/tmp,1CPU1GiB/no swap128PIDs,networknone,capdropALL,no-new-privileges,nohostmount. PID1 lifetime60seconds,total120seconds,operations20seconds. Freshnormalpressure/free>=40%/12GiBreserve/nopeercontainers; noVMchanges. Exact-owned finally removal and absence check. Host output check64KiB; fixed script prints bounded metadata, not arbitrary model output.
+
+Only lead-authored sentinel/import/mount/Git metadata operations. Use pinned task dataset base51c9bb7cd16081133af4f0ab6d06572660309730; require imageHEADsamebase or its immediate setup child and clean tracked source. Record actual HEAD/setup diffstat, testbed interpreter, django importfrom/testbed, fixed workspacecapacity, sentinelvisibility,rootwrite rejection,loopbackonly. Do not read/execute official tests/referencepatch or any generated command. Failure stops; no automatic cap increase/retry/tasksubstitution. PriorAstropy source/probes remain immutable and are not rerun. This proves task-specific filesystem/import readiness only; evaluator controls and exact future modelcell approval remain separate.
+
+Source pins:
+- `experiments/lead_req029/django_writable_host.py`: `b281598329f7e09ccc2d98fcf330886d5dfe1d1c57420cddc0a44fa13da4db94`
+- `experiments/lead_req029/django_writable_probe.py`: `508ae7159a0790b6e1e493b45807bb869abd18a6918d75656c74c39d4de9044e`
+
+Readiness55%,change0points,range45–65%;competent comparison/valid inference,synthesis,reproducibility/approved package remain.
