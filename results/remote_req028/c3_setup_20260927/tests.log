@@ -1,0 +1,269 @@
+test_admission_expiry_once_no_load (c3_tests.AdapterTests) ... ERROR
+test_allowlist_pin_path_commit_and_protocol (c3_tests.AdapterTests) ... ok
+test_context_overflow_no_generation (c3_tests.AdapterTests) ... ERROR
+test_crash_claim_never_redispatch_or_reload (c3_tests.AdapterTests) ... ERROR
+test_dirty_conflict_fetch_and_timeout (c3_tests.AdapterTests) ... ok
+test_expiry_before_load (c3_tests.AdapterTests) ... ok
+test_explicit_next_release_resident_reuse_no_renewal (c3_tests.AdapterTests) ... ERROR
+test_failed_setup_no_next_or_reload (c3_tests.AdapterTests) ... ok
+test_git_wait_bound (c3_tests.AdapterTests) ... ok
+test_idle_deadline_no_renewal (c3_tests.AdapterTests) ... ERROR
+test_idle_peer_and_parent_death (c3_tests.AdapterTests) ... ERROR
+test_idle_pressure_independent_watchdog (c3_tests.AdapterTests) ... ERROR
+test_inflight_timeout_cancels_blocked_worker_and_child (c3_tests.AdapterTests) ... ERROR
+test_latest_main_cannot_substitute (c3_tests.AdapterTests) ... ERROR
+test_load_timeout_no_generation (c3_tests.AdapterTests) ... ERROR
+test_native_binding_mismatch (c3_tests.AdapterTests) ... ERROR
+test_oversized_invalid_messages_extra_fields (c3_tests.AdapterTests) ... ok
+test_parent_death_cleanup (c3_tests.AdapterTests) ... ERROR
+test_publication_failure_sealed_read_no_regeneration (c3_tests.AdapterTests) ... ERROR
+test_success_seal_duplicate_no_next_unapproved (c3_tests.AdapterTests) ... ERROR
+test_wrong_envelope_hash_no_claim (c3_tests.AdapterTests) ... ok
+test_wrong_fetched_identity_no_claim (c3_tests.AdapterTests) ... ok
+test_wrong_first_config_before_claim (c3_tests.AdapterTests) ... ok
+test_wrong_usage_raw_preserved_unsealed (c3_tests.AdapterTests) ... ERROR
+
+======================================================================
+ERROR: test_admission_expiry_once_no_load (c3_tests.AdapterTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3_tests.py", line 162, in test_admission_expiry_once_no_load
+    with self.assertRaises(TimeoutError):a.process(1)
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3_adapter.py", line 160, in process
+    if not self.resident:self.initialize(q)
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3_adapter.py", line 142, in initialize
+    admit(self.life.sample,self.clock.now,self.clock.sleep,lambda sample,reason,count,kind:self.event('admission',sample=sample,reason=reason,count=count,kind=kind),launch,admission_deadline)
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/a6r_gate.py", line 9, in admit
+    s=sample();count+=1;failure=reason(s);observe(s,failure,count,'scheduled')
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3_adapter.py", line 142, in <lambda>
+    admit(self.life.sample,self.clock.now,self.clock.sleep,lambda sample,reason,count,kind:self.event('admission',sample=sample,reason=reason,count=count,kind=kind),launch,admission_deadline)
+TypeError: event() got multiple values for argument 'kind'
+
+======================================================================
+ERROR: test_context_overflow_no_generation (c3_tests.AdapterTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3_tests.py", line 78, in test_context_overflow_no_generation
+    with self.assertRaises(Rejected):a.process(1)
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3_adapter.py", line 160, in process
+    if not self.resident:self.initialize(q)
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3_adapter.py", line 142, in initialize
+    admit(self.life.sample,self.clock.now,self.clock.sleep,lambda sample,reason,count,kind:self.event('admission',sample=sample,reason=reason,count=count,kind=kind),launch,admission_deadline)
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/a6r_gate.py", line 9, in admit
+    s=sample();count+=1;failure=reason(s);observe(s,failure,count,'scheduled')
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3_adapter.py", line 142, in <lambda>
+    admit(self.life.sample,self.clock.now,self.clock.sleep,lambda sample,reason,count,kind:self.event('admission',sample=sample,reason=reason,count=count,kind=kind),launch,admission_deadline)
+TypeError: event() got multiple values for argument 'kind'
+
+======================================================================
+ERROR: test_crash_claim_never_redispatch_or_reload (c3_tests.AdapterTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3_tests.py", line 120, in test_crash_claim_never_redispatch_or_reload
+    with self.assertRaises(RuntimeError):a.process(1)
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3_adapter.py", line 160, in process
+    if not self.resident:self.initialize(q)
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3_adapter.py", line 142, in initialize
+    admit(self.life.sample,self.clock.now,self.clock.sleep,lambda sample,reason,count,kind:self.event('admission',sample=sample,reason=reason,count=count,kind=kind),launch,admission_deadline)
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/a6r_gate.py", line 9, in admit
+    s=sample();count+=1;failure=reason(s);observe(s,failure,count,'scheduled')
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3_adapter.py", line 142, in <lambda>
+    admit(self.life.sample,self.clock.now,self.clock.sleep,lambda sample,reason,count,kind:self.event('admission',sample=sample,reason=reason,count=count,kind=kind),launch,admission_deadline)
+TypeError: event() got multiple values for argument 'kind'
+
+======================================================================
+ERROR: test_explicit_next_release_resident_reuse_no_renewal (c3_tests.AdapterTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3_tests.py", line 145, in test_explicit_next_release_resident_reuse_no_renewal
+    a=self.make();r=a.process(1);deadline=a.model_deadline
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3_adapter.py", line 160, in process
+    if not self.resident:self.initialize(q)
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3_adapter.py", line 142, in initialize
+    admit(self.life.sample,self.clock.now,self.clock.sleep,lambda sample,reason,count,kind:self.event('admission',sample=sample,reason=reason,count=count,kind=kind),launch,admission_deadline)
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/a6r_gate.py", line 9, in admit
+    s=sample();count+=1;failure=reason(s);observe(s,failure,count,'scheduled')
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3_adapter.py", line 142, in <lambda>
+    admit(self.life.sample,self.clock.now,self.clock.sleep,lambda sample,reason,count,kind:self.event('admission',sample=sample,reason=reason,count=count,kind=kind),launch,admission_deadline)
+TypeError: event() got multiple values for argument 'kind'
+
+======================================================================
+ERROR: test_idle_deadline_no_renewal (c3_tests.AdapterTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3_tests.py", line 115, in test_idle_deadline_no_renewal
+    a=self.make();a.process(1);deadline=a.model_deadline;self.clock.advance(1801)
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3_adapter.py", line 160, in process
+    if not self.resident:self.initialize(q)
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3_adapter.py", line 142, in initialize
+    admit(self.life.sample,self.clock.now,self.clock.sleep,lambda sample,reason,count,kind:self.event('admission',sample=sample,reason=reason,count=count,kind=kind),launch,admission_deadline)
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/a6r_gate.py", line 9, in admit
+    s=sample();count+=1;failure=reason(s);observe(s,failure,count,'scheduled')
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3_adapter.py", line 142, in <lambda>
+    admit(self.life.sample,self.clock.now,self.clock.sleep,lambda sample,reason,count,kind:self.event('admission',sample=sample,reason=reason,count=count,kind=kind),launch,admission_deadline)
+TypeError: event() got multiple values for argument 'kind'
+
+======================================================================
+ERROR: test_idle_peer_and_parent_death (c3_tests.AdapterTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3_tests.py", line 107, in test_idle_peer_and_parent_death
+    a=self.make();a.process(1);self.life.peer=True
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3_adapter.py", line 160, in process
+    if not self.resident:self.initialize(q)
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3_adapter.py", line 142, in initialize
+    admit(self.life.sample,self.clock.now,self.clock.sleep,lambda sample,reason,count,kind:self.event('admission',sample=sample,reason=reason,count=count,kind=kind),launch,admission_deadline)
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/a6r_gate.py", line 9, in admit
+    s=sample();count+=1;failure=reason(s);observe(s,failure,count,'scheduled')
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3_adapter.py", line 142, in <lambda>
+    admit(self.life.sample,self.clock.now,self.clock.sleep,lambda sample,reason,count,kind:self.event('admission',sample=sample,reason=reason,count=count,kind=kind),launch,admission_deadline)
+TypeError: event() got multiple values for argument 'kind'
+
+======================================================================
+ERROR: test_idle_pressure_independent_watchdog (c3_tests.AdapterTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3_tests.py", line 103, in test_idle_pressure_independent_watchdog
+    a=self.make();a.process(1);self.life.pressure=2
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3_adapter.py", line 160, in process
+    if not self.resident:self.initialize(q)
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3_adapter.py", line 142, in initialize
+    admit(self.life.sample,self.clock.now,self.clock.sleep,lambda sample,reason,count,kind:self.event('admission',sample=sample,reason=reason,count=count,kind=kind),launch,admission_deadline)
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/a6r_gate.py", line 9, in admit
+    s=sample();count+=1;failure=reason(s);observe(s,failure,count,'scheduled')
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3_adapter.py", line 142, in <lambda>
+    admit(self.life.sample,self.clock.now,self.clock.sleep,lambda sample,reason,count,kind:self.event('admission',sample=sample,reason=reason,count=count,kind=kind),launch,admission_deadline)
+TypeError: event() got multiple values for argument 'kind'
+
+======================================================================
+ERROR: test_inflight_timeout_cancels_blocked_worker_and_child (c3_tests.AdapterTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3_tests.py", line 94, in test_inflight_timeout_cancels_blocked_worker_and_child
+    with self.assertRaises(Rejected):a.process(1)
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3_adapter.py", line 160, in process
+    if not self.resident:self.initialize(q)
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3_adapter.py", line 142, in initialize
+    admit(self.life.sample,self.clock.now,self.clock.sleep,lambda sample,reason,count,kind:self.event('admission',sample=sample,reason=reason,count=count,kind=kind),launch,admission_deadline)
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/a6r_gate.py", line 9, in admit
+    s=sample();count+=1;failure=reason(s);observe(s,failure,count,'scheduled')
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3_adapter.py", line 142, in <lambda>
+    admit(self.life.sample,self.clock.now,self.clock.sleep,lambda sample,reason,count,kind:self.event('admission',sample=sample,reason=reason,count=count,kind=kind),launch,admission_deadline)
+TypeError: event() got multiple values for argument 'kind'
+
+======================================================================
+ERROR: test_latest_main_cannot_substitute (c3_tests.AdapterTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3_tests.py", line 141, in test_latest_main_cannot_substitute
+    self.git.latest='b'*40;a=self.make();a.process(1)
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3_adapter.py", line 160, in process
+    if not self.resident:self.initialize(q)
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3_adapter.py", line 142, in initialize
+    admit(self.life.sample,self.clock.now,self.clock.sleep,lambda sample,reason,count,kind:self.event('admission',sample=sample,reason=reason,count=count,kind=kind),launch,admission_deadline)
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/a6r_gate.py", line 9, in admit
+    s=sample();count+=1;failure=reason(s);observe(s,failure,count,'scheduled')
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3_adapter.py", line 142, in <lambda>
+    admit(self.life.sample,self.clock.now,self.clock.sleep,lambda sample,reason,count,kind:self.event('admission',sample=sample,reason=reason,count=count,kind=kind),launch,admission_deadline)
+TypeError: event() got multiple values for argument 'kind'
+
+======================================================================
+ERROR: test_load_timeout_no_generation (c3_tests.AdapterTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3_tests.py", line 100, in test_load_timeout_no_generation
+    with self.assertRaises(Rejected):a.process(1)
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3_adapter.py", line 160, in process
+    if not self.resident:self.initialize(q)
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3_adapter.py", line 142, in initialize
+    admit(self.life.sample,self.clock.now,self.clock.sleep,lambda sample,reason,count,kind:self.event('admission',sample=sample,reason=reason,count=count,kind=kind),launch,admission_deadline)
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/a6r_gate.py", line 9, in admit
+    s=sample();count+=1;failure=reason(s);observe(s,failure,count,'scheduled')
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3_adapter.py", line 142, in <lambda>
+    admit(self.life.sample,self.clock.now,self.clock.sleep,lambda sample,reason,count,kind:self.event('admission',sample=sample,reason=reason,count=count,kind=kind),launch,admission_deadline)
+TypeError: event() got multiple values for argument 'kind'
+
+======================================================================
+ERROR: test_native_binding_mismatch (c3_tests.AdapterTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3_tests.py", line 84, in test_native_binding_mismatch
+    with self.assertRaises(Rejected):a.process(1)
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3_adapter.py", line 160, in process
+    if not self.resident:self.initialize(q)
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3_adapter.py", line 142, in initialize
+    admit(self.life.sample,self.clock.now,self.clock.sleep,lambda sample,reason,count,kind:self.event('admission',sample=sample,reason=reason,count=count,kind=kind),launch,admission_deadline)
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/a6r_gate.py", line 9, in admit
+    s=sample();count+=1;failure=reason(s);observe(s,failure,count,'scheduled')
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3_adapter.py", line 142, in <lambda>
+    admit(self.life.sample,self.clock.now,self.clock.sleep,lambda sample,reason,count,kind:self.event('admission',sample=sample,reason=reason,count=count,kind=kind),launch,admission_deadline)
+TypeError: event() got multiple values for argument 'kind'
+
+======================================================================
+ERROR: test_parent_death_cleanup (c3_tests.AdapterTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3_tests.py", line 111, in test_parent_death_cleanup
+    a=self.make();a.process(1);self.life.parent=False
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3_adapter.py", line 160, in process
+    if not self.resident:self.initialize(q)
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3_adapter.py", line 142, in initialize
+    admit(self.life.sample,self.clock.now,self.clock.sleep,lambda sample,reason,count,kind:self.event('admission',sample=sample,reason=reason,count=count,kind=kind),launch,admission_deadline)
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/a6r_gate.py", line 9, in admit
+    s=sample();count+=1;failure=reason(s);observe(s,failure,count,'scheduled')
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3_adapter.py", line 142, in <lambda>
+    admit(self.life.sample,self.clock.now,self.clock.sleep,lambda sample,reason,count,kind:self.event('admission',sample=sample,reason=reason,count=count,kind=kind),launch,admission_deadline)
+TypeError: event() got multiple values for argument 'kind'
+
+======================================================================
+ERROR: test_publication_failure_sealed_read_no_regeneration (c3_tests.AdapterTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3_tests.py", line 128, in test_publication_failure_sealed_read_no_regeneration
+    with self.assertRaises(RuntimeError):a.process(1)
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3_adapter.py", line 160, in process
+    if not self.resident:self.initialize(q)
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3_adapter.py", line 142, in initialize
+    admit(self.life.sample,self.clock.now,self.clock.sleep,lambda sample,reason,count,kind:self.event('admission',sample=sample,reason=reason,count=count,kind=kind),launch,admission_deadline)
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/a6r_gate.py", line 9, in admit
+    s=sample();count+=1;failure=reason(s);observe(s,failure,count,'scheduled')
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3_adapter.py", line 142, in <lambda>
+    admit(self.life.sample,self.clock.now,self.clock.sleep,lambda sample,reason,count,kind:self.event('admission',sample=sample,reason=reason,count=count,kind=kind),launch,admission_deadline)
+TypeError: event() got multiple values for argument 'kind'
+
+======================================================================
+ERROR: test_success_seal_duplicate_no_next_unapproved (c3_tests.AdapterTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3_tests.py", line 71, in test_success_seal_duplicate_no_next_unapproved
+    a=self.make();r=a.process(1);self.assertEqual(a.read_sealed(1),r)
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3_adapter.py", line 160, in process
+    if not self.resident:self.initialize(q)
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3_adapter.py", line 142, in initialize
+    admit(self.life.sample,self.clock.now,self.clock.sleep,lambda sample,reason,count,kind:self.event('admission',sample=sample,reason=reason,count=count,kind=kind),launch,admission_deadline)
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/a6r_gate.py", line 9, in admit
+    s=sample();count+=1;failure=reason(s);observe(s,failure,count,'scheduled')
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3_adapter.py", line 142, in <lambda>
+    admit(self.life.sample,self.clock.now,self.clock.sleep,lambda sample,reason,count,kind:self.event('admission',sample=sample,reason=reason,count=count,kind=kind),launch,admission_deadline)
+TypeError: event() got multiple values for argument 'kind'
+
+======================================================================
+ERROR: test_wrong_usage_raw_preserved_unsealed (c3_tests.AdapterTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3_tests.py", line 88, in test_wrong_usage_raw_preserved_unsealed
+    with self.assertRaises(Rejected):a.process(1)
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3_adapter.py", line 160, in process
+    if not self.resident:self.initialize(q)
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3_adapter.py", line 142, in initialize
+    admit(self.life.sample,self.clock.now,self.clock.sleep,lambda sample,reason,count,kind:self.event('admission',sample=sample,reason=reason,count=count,kind=kind),launch,admission_deadline)
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/a6r_gate.py", line 9, in admit
+    s=sample();count+=1;failure=reason(s);observe(s,failure,count,'scheduled')
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3_adapter.py", line 142, in <lambda>
+    admit(self.life.sample,self.clock.now,self.clock.sleep,lambda sample,reason,count,kind:self.event('admission',sample=sample,reason=reason,count=count,kind=kind),launch,admission_deadline)
+TypeError: event() got multiple values for argument 'kind'
+
+----------------------------------------------------------------------
+Ran 24 tests in 0.982s
+
+FAILED (errors=15)
