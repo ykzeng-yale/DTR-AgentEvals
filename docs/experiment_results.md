@@ -1,9 +1,13 @@
+## Scientific scope correction — 27 September 2026
+
+See [lead audit](scientific_audit_20260927.md). C6B is one exposed single-model task attempt, not a DTR comparison. C7 test counts are within-task evaluator counts, not model baselines. The known-good reference-patch control remains missing. Ordinary nonzero feedback and second-stage opportunity gaps must be resolved prospectively. REQ-029A is source-only; no new model run is released.
+
 ## Current execution status — 27 September 2026, 10:45 review / 10:47 evaluation UTC
 
 | Stream | Verified status | Next boundary |
 |---|---|---|
 | REQ-028C5 Mac mini Qwen relay | One real request completed; 129 runtime hashes, 102 source pins and exact consumer/native/parser replay independently checked; owned cleanup recorded. | Transport qualification only; no executed action or competence claim. No C5 job remains. |
-| REQ-028C6 development trajectory | Run-a: infrastructure termination after two calls/actions. Run-b: four calls/actions, submitted patch; C7 baseline175pass/1fail, candidate174pass/2fail, target failure plus one regression. | C7 complete; exposed task probe closed, no further run released. |
+| REQ-028C6 development trajectory | Run-a: infrastructure termination after two calls/actions. Run-b: four calls/actions, submitted patch; C7 unmodified-repository control: 175 pass/1 fail; candidate: 174 pass/2 fail, target failure plus one regression. | C7 complete; exposed task probe closed, no further run released. |
 | C6 local writable sandbox | Four actual qualification cases passed; generated source reads, edits and submission confined to sandbox. | All task/evaluation sandboxes removed and local process absence verified. Earlier failures retained. |
 | Prior model/synthetic studies | Archived failures and accepted REQ-027 simulation remain unchanged. | Competent fixed-target comparison and valid inference remain open. |
 

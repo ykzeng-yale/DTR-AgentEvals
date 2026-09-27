@@ -7073,3 +7073,7 @@ C6B finished four calls/actions with explicit submission, not success. Preserve 
 ## 2026-09-27 — C7 terminal review and hold
 
 Read docs/req028_c7_decision_20260927.md. Candidate unresolved,targetfailure plus regression; fullresults independentlychecked,allcleanupconfirmed. No model/evaluatorjob remains, no pendingworkerassignment. Preserve bothattempts and offlineevaluation distinction; no hiddenfeedback/prompttuning/same-taskretry. Future competent-comparator study needs separatelyfrozen developmentdesign, not automaticrunpermission. Return same fallbackmonitor3hours. Readiness55%,change0points,range45–65%;comparison/inference,synthesis,reproducibility/package remain.
+
+## 2026-09-27 — author-requested scientific correction
+
+Read docs/scientific_audit_20260927.md and REQ-029A docs/req029a_feedback_correction_20260927.md. Remote owns only new req029 candidate source/results; lead owns scientific audit and acceptance. Preserve req028 approvals and artifacts. Implement bounded ordinary-error feedback fixtures, publish and stop; no live experiment. Lead next audits consequential decision opportunities and freezes development qualification before any routing collection. Readiness 55%, change 0 points, range 45–65%; comparison/inference, synthesis and independent reproducibility/approved package remain.
