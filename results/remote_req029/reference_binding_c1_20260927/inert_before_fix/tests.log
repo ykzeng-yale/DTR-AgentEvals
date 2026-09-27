@@ -1,0 +1,126 @@
+test_actual_driver_death_independent_cleanup (reference_tests.Tests) ... ok
+test_actual_fake_test_failure_classified (reference_tests.Tests) ... ok
+test_actual_streamed_overflow_cleanup (reference_tests.Tests) ... ok
+test_actual_timeout_cleanup (reference_tests.Tests) ... ok
+test_all_pass_176_statuses (reference_tests.Tests) ... ok
+test_approval_exact_inventory_and_source (reference_tests.Tests) ... ok
+test_c1_archived_content_mutations_rejected (reference_tests.Tests) ... ok
+test_c1_exact_archived_diff_binding (reference_tests.Tests) ... ERROR
+test_c1_malformed_headers_and_content_preserved (reference_tests.Tests) ... ok
+test_c1_valid_heading_annotations_only (reference_tests.Tests) ... test_capture_parent_exit_descendant_cleanup (reference_tests.Tests) ... ok
+test_capture_preserves_non_utf8_raw_bytes (reference_tests.Tests) ... ok
+test_collection_import_and_bad_marker_unknown (reference_tests.Tests) ... ok
+test_container_lifetime_cannot_exceed_fixed_lease (reference_tests.Tests) ... ok
+test_container_source_fixed_no_pip_execution (reference_tests.Tests) ... ok
+test_driver_guardian_timeout_no_retry (reference_tests.Tests) ... ok
+test_empty_map_unknown (reference_tests.Tests) ... ok
+test_failed_exit_one_is_valid_test_result (reference_tests.Tests) ... ok
+test_journal_failure_after_create_cleanup (reference_tests.Tests) ... ok
+test_manifest_substitution_before_create (reference_tests.Tests) ... ok
+test_markers_missing_duplicate_reversed_unknown (reference_tests.Tests) ... ok
+test_missing_never_pass (reference_tests.Tests) ... ok
+test_no_acceptance_other_patch (reference_tests.Tests) ... ok
+test_no_second_when_cleanup_unconfirmed (reference_tests.Tests) ... ok
+test_nonzero_apply_stops_no_test (reference_tests.Tests) ... ok
+test_old_approval_cannot_activate_reference (reference_tests.Tests) ... ok
+test_one_reference_arm_no_resume (reference_tests.Tests) ... ok
+test_patch_mismatch_before_create (reference_tests.Tests) ... ok
+test_reference_test_payload_binding (reference_tests.Tests) ... ok
+test_release_hold_and_inventory (reference_tests.Tests) ... ok
+test_skipped_never_pass (reference_tests.Tests) ... ok
+test_source_paths_and_hunks_not_normalized_away (reference_tests.Tests) ... ok
+test_terminal_write_failure_still_cleans (reference_tests.Tests) ... ok
+test_test_source_substitution_before_create (reference_tests.Tests) ... ok
+test_timeout_setup_cleanup_unknown (reference_tests.Tests) ... ok
+test_upstream_alias_and_rule_executed (reference_tests.Tests) ... ok
+test_wrong_prepared_diff_no_test (reference_tests.Tests) ... ok
+test_xfail_never_pass (reference_tests.Tests) ... ok
+
+======================================================================
+ERROR: test_c1_exact_archived_diff_binding (reference_tests.Tests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req029/reference_tests.py", line 257, in test_c1_exact_archived_diff_binding
+    bound=bind_prepared(self.prepared_facts(raw),self.patch,self.data)
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req029/reference_contract.py", line 41, in bind_prepared
+    require(len(diff)<=PATCH_CAP and normalized(diff)==normalized(patch),'prepared source differs from reference')
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c2_relay.py", line 10, in require
+    if not ok:raise Rejected(why)
+c2_relay.Rejected: prepared source differs from reference
+
+======================================================================
+FAIL: test_c1_valid_heading_annotations_only (reference_tests.Tests) (header=b'@@ -66,7 +66,7 @@', suffix=b' class Card(_Verify):')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req029/reference_tests.py", line 267, in test_c1_valid_heading_annotations_only
+    self.assertEqual(normalized(header+suffix+b'\n'),header+b'\n')
+AssertionError: b'@@ -66,7 +66,7 @@ class Card(_Verify):\n' != b'@@ -66,7 +66,7 @@\n'
+
+======================================================================
+FAIL: test_c1_valid_heading_annotations_only (reference_tests.Tests) (header=b'@@ -66,7 +66,7 @@', suffix=b' def _split(self):')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req029/reference_tests.py", line 267, in test_c1_valid_heading_annotations_only
+    self.assertEqual(normalized(header+suffix+b'\n'),header+b'\n')
+AssertionError: b'@@ -66,7 +66,7 @@ def _split(self):\n' != b'@@ -66,7 +66,7 @@\n'
+
+======================================================================
+FAIL: test_c1_valid_heading_annotations_only (reference_tests.Tests) (header=b'@@ -66,7 +66,7 @@', suffix=b' text @@ text')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req029/reference_tests.py", line 267, in test_c1_valid_heading_annotations_only
+    self.assertEqual(normalized(header+suffix+b'\n'),header+b'\n')
+AssertionError: b'@@ -66,7 +66,7 @@ text @@ text\n' != b'@@ -66,7 +66,7 @@\n'
+
+======================================================================
+FAIL: test_c1_valid_heading_annotations_only (reference_tests.Tests) (header=b'@@ -1 +2 @@', suffix=b' class Card(_Verify):')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req029/reference_tests.py", line 267, in test_c1_valid_heading_annotations_only
+    self.assertEqual(normalized(header+suffix+b'\n'),header+b'\n')
+AssertionError: b'@@ -1 +2 @@ class Card(_Verify):\n' != b'@@ -1 +2 @@\n'
+
+======================================================================
+FAIL: test_c1_valid_heading_annotations_only (reference_tests.Tests) (header=b'@@ -1 +2 @@', suffix=b' def _split(self):')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req029/reference_tests.py", line 267, in test_c1_valid_heading_annotations_only
+    self.assertEqual(normalized(header+suffix+b'\n'),header+b'\n')
+AssertionError: b'@@ -1 +2 @@ def _split(self):\n' != b'@@ -1 +2 @@\n'
+
+======================================================================
+FAIL: test_c1_valid_heading_annotations_only (reference_tests.Tests) (header=b'@@ -1 +2 @@', suffix=b' text @@ text')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req029/reference_tests.py", line 267, in test_c1_valid_heading_annotations_only
+    self.assertEqual(normalized(header+suffix+b'\n'),header+b'\n')
+AssertionError: b'@@ -1 +2 @@ text @@ text\n' != b'@@ -1 +2 @@\n'
+
+======================================================================
+FAIL: test_c1_valid_heading_annotations_only (reference_tests.Tests) (header=b'@@ -0,0 +1,2 @@', suffix=b' class Card(_Verify):')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req029/reference_tests.py", line 267, in test_c1_valid_heading_annotations_only
+    self.assertEqual(normalized(header+suffix+b'\n'),header+b'\n')
+AssertionError: b'@@ -0,0 +1,2 @@ class Card(_Verify):\n' != b'@@ -0,0 +1,2 @@\n'
+
+======================================================================
+FAIL: test_c1_valid_heading_annotations_only (reference_tests.Tests) (header=b'@@ -0,0 +1,2 @@', suffix=b' def _split(self):')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req029/reference_tests.py", line 267, in test_c1_valid_heading_annotations_only
+    self.assertEqual(normalized(header+suffix+b'\n'),header+b'\n')
+AssertionError: b'@@ -0,0 +1,2 @@ def _split(self):\n' != b'@@ -0,0 +1,2 @@\n'
+
+======================================================================
+FAIL: test_c1_valid_heading_annotations_only (reference_tests.Tests) (header=b'@@ -0,0 +1,2 @@', suffix=b' text @@ text')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req029/reference_tests.py", line 267, in test_c1_valid_heading_annotations_only
+    self.assertEqual(normalized(header+suffix+b'\n'),header+b'\n')
+AssertionError: b'@@ -0,0 +1,2 @@ text @@ text\n' != b'@@ -0,0 +1,2 @@\n'
+
+----------------------------------------------------------------------
+Ran 38 tests in 28.074s
+
+FAILED (failures=9, errors=1)
