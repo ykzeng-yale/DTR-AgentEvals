@@ -6947,3 +6947,13 @@ scaffold interface compatibility,not taskcompetence or a causal model comparison
 Exact messages frozen in req028_c0_prompt_20260927.json;no prompttuning/CONFIRM.
 Readiness55%,change0points,range45–65%; competent comparison/valid inference,final
 synthesis,independent reproducibility/approved package remain.
+
+
+## 2026-09-27 06:30 UTC — C0 lead review / C1 release
+
+C0 terminal be3c39c: lead independently verified all 189 archive hashes, both raw responses, JSON-normalized parser/boundary receipts, exact message/rendered/token bindings, and 34 focused C0/parser/admission/cleanup/guard tests. Source and launch snapshot match across 55 hashes. Two real requests completed: Klear 1530/54 tokens in 10.669 seconds and Qwen 1530/199 in 10.619 seconds, both HTTP200/stop. Both parsers accept one nonempty command; Klear fails the frozen boundary gate because its opening think tag never closes, while Qwen passes. No commands were executed. Worker OS inspection records all five owned PIDs absent; cleanup journals record one TERM and exit0 each.
+
+Decision: close the current Klear configuration's qualification path under the frozen C0 gate. No new Klear generation, prompt/cache/budget search or benchmark release. This is not evidence that Klear is generally incapable: its command is parsable, and the output boundary may reflect the native model/template contract. Qwen is eligible for later sandbox qualification, not declared competent from one request. Preserve C0 failure exactly; any future alternative interface would require a separately justified prospective contract, never retrospective relabeling.
+
+
+Next: docs/req028_c1_boundary_diagnosis_20260927.md releases deterministic archived-output/source diagnosis only; no new inference or benchmark. Readiness55%, change0points, range45–65%; competent fixed-target comparison/valid inference, final synthesis, independent reproducibility and author-approved package remain.
