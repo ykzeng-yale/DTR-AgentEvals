@@ -7031,3 +7031,12 @@ This accepts one activation/transport replay only. No command executed, no codin
 Next exact design docs/req028_c6_development_trajectory_20260927.md specifies ONE future exposed DEVELOPMENT Astropy trajectory on Qwen,<=24calls/actions,one resident model,1800second phase including relay/tool delay,unchanged model guards/no retries. NOW releases executable mini-worker/lead-controller implementation and inert/localGit tests only; exact source approval and qualified writable local sandbox remain necessary before actual trajectory. This replaces further synthetic probes with a concrete path to task execution. No live poller/model/container/benchmark/CONFIRM release now. Lead must qualify the distinct writable sandbox and pin strict evaluation before interpreting task success.
 
 Readiness55%,change0points,range45–65%; remaining competent fixed-target comparison with valid inference, final empirical/manuscript synthesis, independent reproducibility and author-approved package.
+
+
+## 2026-09-27 09:00 UTC — C6 sandbox filesystem qualification
+
+Remote C6 worker/controller implementation remains active; no new model job. Lead tested distinct bounded writable sandbox candidates and retained W1(base-Python import),R1(editable-path mismatch),W2(extension-load) failures. W2R passes original /testbed import, compiled extension loading, writable Git-visible sentinel, root rejection and loopback-only checks with512MiB exec tmpfs at/testbed,64MiB/tmp,read-only root,1CPU/1GiB/no swap/128PIDs/nohostmount/capdropALL/no-new-privileges. All W2R owned containers were removed and absence verified. W1 cleanup receipt had a case-sensitive diagnostic bug; separate retained OS check confirms absence. No generated command/model/benchmark test ran. Full design/failure boundaries: docs/req028_c6_writable_sandbox_20260927.md; results/local_req028/c6_writable_w2r_20260927.
+
+Strict evaluator candidate file/dataset/test-manifest hashes frozen separately (1FAIL_TO_PASS,175PASS_TO_PASS); no test contents forwarded to model. ImageHEAD is an existing SWE-bench setup commit immediately after taskbase with one pyproject.toml-line change. Exact production controller/sandbox timeout/output/death-cleanup tests and evaluator runtime qualification remain open. Remote must consume W2R candidate details; no writable-overlay substitution. No trajectory release yet.
+
+Readiness55%,change0points,range45–65%; competent fixed-target comparison/valid inference, final empirical/manuscript synthesis, independent reproducibility and author-approved package remain.
