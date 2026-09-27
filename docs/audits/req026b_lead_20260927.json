@@ -1,0 +1,38 @@
+{
+  "kind": "deterministic fake-host lifecycle simulation; no model/OS server",
+  "source_sha256": "2691c651d91ba327fcc8c7260cb844beadf1e649829c89e11d250a899956d4d4",
+  "tests_sha256": "d142b664d66b7b9d162aeb80e57388ebe77164357a6670fdb7eb11129731c478",
+  "statuses": [
+    "generated",
+    "generated",
+    "generated"
+  ],
+  "starts": 3,
+  "signals": [
+    [
+      5000,
+      15
+    ],
+    [
+      5001,
+      15
+    ],
+    [
+      5002,
+      15
+    ]
+  ],
+  "all_fake_processes_released": true,
+  "scope": "pure setup only; concrete hooks and watchdog not implemented here",
+  "focused_tests": {
+    "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src .venv/bin/python -m pytest -q -p no:cacheprovider tests/test_on_demand_residency.py",
+    "passed": 63,
+    "seconds": 0.07
+  },
+  "worker_acknowledgment": "Verified dedicated Claude UI report: completed 02:19UTC; no real hooks/model/VM/probe/Git.",
+  "full_suite": {
+    "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src .venv/bin/python -m pytest -q -p no:cacheprovider",
+    "passed": 812,
+    "seconds": 188.8
+  }
+}
