@@ -7091,3 +7091,7 @@ Remote confirmed REQ-029B stopped before any source, split, test or fit artifact
 ## 2026-09-27 — REQ-029C evaluator positive control preparation
 
 Read docs/req029c_reference_control_20260927.md. Lead extracted exact963byte reference patch from pinned existing dataset, matching C7 test patch. Remote prepares minimal single-arm evaluator using unchanged W2R/C7 machinery and inert tests only; no actual evaluation until source review and new local approval. No repeated negative/candidate controls or model attempt. All176required tests must pass; retain failure if not. Lead fresh inventory normal/free63%,59GiBdisk,no containers, but recheck before actual execution. Readiness55%,change0points,range45–65%; comparison/inference,synthesis,reproducibility/package remain.
+
+## 2026-09-27 — REQ-029D prospective interface decision, no execution
+
+Lead selected a common pinned upstream text-action extraction candidate for a future untouched DEVELOPMENT comparator screen; see docs/req029d_interface_design_20260927.md. Five deterministic source-only tests passed, no generated command executed. C0 remains failed under its frozen closed-thinking gate; new candidate changes that interface explicitly, equally for both models. No model/task screen, primary routing or CONFIRM release. REQ-029C remains the only remote assignment, source-only evaluator positive-control preparation. Readiness55%,change0points,range45–65%;comparison/inference,synthesis,reproducibility/package remain.

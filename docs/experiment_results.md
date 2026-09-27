@@ -1,3 +1,7 @@
+## Prospective interface candidate — 27 September 2026
+
+[REQ-029D](req029d_interface_design_20260927.md) defines the same pinned upstream text-action extraction for both model artifacts, retaining terminal/nonempty requirements and sandbox restrictions. Five source-only tests passed. C0 thinking-boundary failures remain unchanged; this new interface is not yet production-integrated or a competence result. Future tasks must be unexposed DEVELOPMENT, evaluator-qualified, with exact source/task release. No model run is authorized. REQ-029C positive-control source preparation remains active. Readiness55%,change0points,range45–65%; comparison/inference,synthesis,reproducibility/package remain.
+
 ## Correction — REQ-007 was already complete
 
 The latest REQ-029B release was based on stale REQ-006 status and is withdrawn. [REQ-007 lead review](theory_feedback_20260924_req007_integration.md) already records identical selected S–L–L policies, zero supported-history disagreement, and the prohibition on rechoosing depth/split/endpoint. No repeat fit is needed. The 27 September feedback repair and raw TRAIN recount remain valid. The next work is to reconcile recent single-model/evaluator evidence into the manuscript and design a genuinely new adequate comparison, not rerun this diagnostic. Readiness55%,change0points,range45–65%; comparison/inference,synthesis,reproducibility/package remain.
