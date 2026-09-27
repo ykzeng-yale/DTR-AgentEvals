@@ -1,0 +1,62 @@
+{
+  "protocol": "REQ-029I",
+  "execution_authorized": false,
+  "run_id": null,
+  "expires_at": 0,
+  "task": "django__django-16560",
+  "modes": [
+    "baseline",
+    "reference"
+  ],
+  "model_free": true,
+  "dataset_sha256": "a45b1fe4e2f0c8390b2b2938ac83e92ed5979000856808f3679c07812e9e6dcd",
+  "upstream_source_path": "f7bbbb2ccdf479001d6467c9e34af59e44a840f9",
+  "manifest_sha256": "41207b50e9fbec3ac59e2642a2cecee79ce367c9558635b48cb752ee9d32da17",
+  "inputs_sha256": "d724d01ea8f3aac9bbd161b6f2e7e489f82bbc7fa11dc51fe9652aad44e51e5d",
+  "reference_patch_sha256": "3cfb9f5484180d2312eef8d498f60d6370c8670476cfc19c34110504e0070b39",
+  "test_patch_sha256": "130139e65a5facb3f09d6d16d4a814d9a835965a3ed91833da13880959678d04",
+  "strict_rule_sha256": "6738e12c8a8b8144cafd2898fdfc61c659d3b5129e2f7f4a6b28d95ad6b5e2e1",
+  "command": "./tests/runtests.py --verbosity 2 --settings=test_sqlite --parallel 1 constraints.tests postgres_tests.test_constraints",
+  "omitted_install": "python -m pip install -e .",
+  "sandbox_seconds": 600,
+  "total_seconds": 1200,
+  "cleanup_seconds": 15,
+  "output_cap": 4194304,
+  "patch_cap": 1048576,
+  "source_commit": null,
+  "source_hashes": {},
+  "sandbox": {
+    "docker_executable": "/Users/yukangzengcmac/.local/dtr-runtime/bin/docker",
+    "context": "colima-dtr",
+    "image": "sha256:935eeb9d7c960a90c1275d3d5a143c72173eecdf8098dacb164af1061f0c0a8f",
+    "original_config_sha256": "86afcd19b6c56e5e271a1dfc62177cf03157fe9c9643be560db11480b317cb27",
+    "registry_manifest": "sha256:0bafff953ce186aa261162d4091549fb4ad49df938900474b5f070d511bb1604",
+    "archive_path": "work/local_req029/django_writable_20260927/testbed.tar",
+    "archive_sha256": "36fdef54ff3e0ad4479fdf80e4ec44344e479cd166797bf637456c3bd6023252",
+    "archive_bytes": 147826688,
+    "head": "becf6f8b613d4206f95411821ed66e5e0f428edc",
+    "base": "51c9bb7cd16081133af4f0ab6d06572660309730",
+    "import_module": "django",
+    "python": "/opt/miniconda3/envs/testbed/bin/python",
+    "limits": {
+      "ReadonlyRootfs": true,
+      "Memory": 1073741824,
+      "MemorySwap": 1073741824,
+      "NanoCpus": 1000000000,
+      "PidsLimit": 128,
+      "NetworkMode": "none",
+      "CapDrop": [
+        "ALL"
+      ],
+      "SecurityOpt": [
+        "no-new-privileges"
+      ],
+      "Tmpfs": {
+        "/testbed": "rw,exec,nosuid,nodev,size=512m",
+        "/tmp": "rw,nosuid,nodev,size=64m"
+      },
+      "Binds": null
+    },
+    "docker_sha256": null
+  }
+}
