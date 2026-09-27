@@ -6964,3 +6964,12 @@ Next: docs/req028_c1_boundary_diagnosis_20260927.md releases deterministic archi
 C1 c844cc0: lead verified eight hashes and three deterministic fixtures plus source/log excerpts. Generated unclosed thinking and template-detected NONE explain Klear raw-content behavior; unchanged C0 gate fails. No general incapacity claim. Local read-only Docker inspection finds no running containers and pinned Astropy image available; no container launched. C2 docs/req028_c2_artifact_relay_20260927.md releases synthetic filesystem/Git-envelope setup and tests only, not model/benchmark execution. This provides a concrete split-host route using existing authenticated GitHub access. Remote publishes a frozen nonce request then stops for lead review.
 
 Readiness55%,change0points,range45–65%; competent fixed-target comparison/valid inference, final synthesis, independent reproducibility and approved package remain.
+
+
+## 2026-09-27 07:00 UTC — C2 reviewed and return exchange released
+
+Lead reviewed 2cebde3, independently passed17 tests and verified8 hashes/four finalsource snapshots. The earlier setup snapshot remains archived; authoritative request is c2_setup_verified_20260927/request.json. Exactly one fixed-string callback was dispatched through the reviewed Relay/durable journal, then published with GitTransport as ac1cb928c807df768454df3e190d7f6ff25eb67f. ResponseSHA8b230faa3813dc65928ae31dcecf75c0c7ea3aa6af88474fb2954f61cb0e1117 binds exact requestcommit2cebde34d1b498ea90ba9442c171c07604cdd43b. No model/command execution. Full lead fetch-through-publication took3.030seconds; separate phase receipt docs/audits/req028_c2_lead_20260927.json. This excludes worker setup/review delay and is not end-to-end model latency.
+
+Remote now has an explicit release for ONE bounded accept_response return-leg read with these exact pins, persistent journal and unchanged08:30UTCexpiry, followed by immutable acceptance publication. No callback/generation, polling loop or renewal. Acceptance remains pending at this entry. No benchmark/transport service/CONFIRM release. Helper validation is not caller authorization: future callers must allowlist exact request/config/commit/path and enforce real dispatch timeout/cancellation; first-request configuration is explicitly pinned by this lead.
+
+Readiness55%,change0points,range45–65%; competent fixed-target comparison with valid inference, final synthesis, independent reproducibility and author-approved package remain.
