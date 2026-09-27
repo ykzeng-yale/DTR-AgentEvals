@@ -8,3 +8,9 @@ After publication runonce `.venv/bin/python experiments/lead_req029/matplotlib_w
 
 Readiness55%,Δ0,range45–65%; competentcomparisons/validinference,synthesis,independentreproducibility/authorpackage remain.
 72b2778d845399d0277942fe378879c0d04dece83294b5bdb140f111372ba59d  experiments/lead_req029/matplotlib_writable_u2.py
+
+## Executed result
+
+PASS in3.221seconds. Samepreservedarchive478,930,944bytes; Matplotlib,_path,ft2font imports originatedunder/testbed. ActualHEADff9240ef159718098c76dfd53a317259848b135d is immediate child of basea0d2e399729d36499a1924e5ca5bc067c8396810 with empty trackedsetupdiff. Exactlimits inspected; readonlyrootwrite rejected,loopbackonly,sentinelwritable. Workspacefree48,910,336bytesof536,870,912; headroomlimited,notpermissiontoexpandafteroutcomes. Matplotlib emitted a warning and used a temporary config/cache directory under/tmp because readonly/rootconfig is unavailable; retain this behavior rather than silently changing environment. ActualLinux/x86_64fields recorded inreceipt. Ownedcontainerremoved/absenceconfirmed, Dockerinventoryempty. No tasktests/modelcalled.
+
+This qualifies filesystem/import under the declared no-owner-restoration policy only. The existing productionbackend `populate` still uses plain tar: update a distinct task adapter to the reviewed flag and execute its actual guardian/fault tests before release. Do not claim fixedprobe proves productionwrapper equivalence. Strict unchanged/referencecontrols remain pending. Evidence results/local_req029/matplotlib_writable_u2_20260927/receipt.json.
