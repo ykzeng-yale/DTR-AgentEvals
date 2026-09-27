@@ -2036,3 +2036,7 @@ Ufailed beforeimports because capdropALL blocked tar restoring mixedarchivedowne
 ### REQ029V/V2 actual recovery sandbox hooks
 
 Vfailedpreflight because retainedMatplotlibwarning polluted mergedJSON;cleanupconfirmed. Recovery-only helper now stores bounded importdiagnostics insideJSON. V2all4actualcontainerfixtures expected: fixedaction/diff,deadline,streamedoverflow,controllerSIGKILL/independentcleanup.355archivehashes/190sourcepinsverified,Dockerempty. Ownershippolicyexplicitlybound; oldprotocolsunchanged. No inference/tasktest/competence evidence. Readiness55%,Δ0,range45–65%; competentcomparisons/inference,synthesis,independentreproducibility/authorpackage remain.
+
+### REQ029W evaluator preparation only
+
+Frozen Matplotlib20826 evaluatorbundle/actualupstreamcommand/parser pinned separatelyfrommodelinputs. ONEtask1F2P+673P2P; exactpytestfilecommand. Two data-onlytests pass,3370statusmutations reject falsepasses; no actualcontrol/modeloutcomes. Strictunchanged/referencecriteria and offlinepipinstallomission declaredbeforeexecution. See docs/req029w_matplotlib_evaluator_20260927.md. Readiness55%,Δ0,range45–65%; competentcomparison/inference,synthesis,independentreproducibility/authorpackage remain.
