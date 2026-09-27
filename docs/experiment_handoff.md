@@ -6719,3 +6719,49 @@ A separate agent mathematical review and locally replayed exact checks support t
 REQ-026B's initial local residency controller failed four lead adversarial checks. The worker is correcting pressure/deadline enforcement, immutable retry histories and persistent logical routing state in its two owned files. No mechanics/model probe is released by this update. The lead remains the sole integration owner; worker files stay uncommitted until review. No Lean jobs or infrastructure were touched.
 
 Readiness **55%, change 0 percentage points, range 45–65%**. Remaining milestones: competent fixed-target comparison with valid inference; final empirical/manuscript synthesis; independent reproducibility and author-approved metadata/package.
+
+### REQ-026B — second lead correction request, 27 September 2026
+
+This entry supersedes the initial four-defect review for current implementation
+work. Lead-reviewed source SHA-256:
+`99fdbae063270083a793475ee7be7d053a0625e920890312eddba416c57511f3`;
+test SHA-256:
+`d58d8b98821c859c3c75e7a705a0ffae6a03b05ee7d29153a8e8bbc675e320d7`.
+Lead independently ran the focused test command: **56 passed in 0.02 seconds**.
+The four original cases are addressed, but implementation remains unaccepted
+for execution because additional deterministic reproductions expose:
+
+1. After `start_server` returns a live PID, a raising `pid_identity` hook leaves
+   `owned=None`, `blocked=None`, and a live untracked process. Retain provisional
+   PID/port ownership immediately after start; if identity raises or is absent,
+   block further loads and retain recovery information. Never signal a process
+   whose identity cannot be established safely.
+2. A generator that mutates messages and **returns** a reply raises
+   `CallIdentityError` before recording terminal state. Restoring the original
+   messages allows the same call to generate again. Record the returned reply
+   and make the call terminal before fallible post-generation validation;
+   history, pressure or clock failures must not permit regeneration.
+3. Newly appearing foreign model work is ignored on same-backend reuse. Recheck
+   foreign presence before reuse and invocation, refusing further work without
+   signalling or reconfiguring peers.
+
+Also document bounded/nonblocking lifecycle-hook contracts and the generation
+hook's timeout responsibility: post-return deadline checks cannot preempt a
+hung synchronous hook. Pressure checks during residency may compare free memory
+to the reserve; admission still requires the full declared growth budget.
+Conservative refusal on identity uncertainty is the correct decision.
+
+**Worker scope:** correct only `experiments/v2_agent/on_demand_residency.py` and
+`tests/test_on_demand_residency.py`; add adversarial regressions for these cases,
+including absent identity and post-return clock/resource failure. One CPU,
+15-minute development cap, no real hooks, model, VM, mechanics probe, download,
+commit or push. Report exact source/test hashes and observed test results. Lead
+owns integration and all other paths. No further Monte Carlo is requested.
+
+The visible Claude background job is the existing half-hourly checkpoint loop
+(`4,34 * * * *`), not an experiment. Preserve that separately authorized loop;
+its old lead-schedule description is historical. The remote REQ-027 assignment
+is closed after publication `02979a5`; no remote model job is running in that
+assignment. Live/CONFIRM remains held. Readiness **55%, change 0 points,
+range 45–65%**; fixed-target competence/inference, final synthesis, and
+independent reproducibility/approved package remain the largest milestones.
