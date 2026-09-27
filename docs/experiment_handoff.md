@@ -7244,3 +7244,7 @@ REQ029Q freezes nextcandidate matplotlib20826 from pre-outcomequeue; no executio
 REQ029R source/releaseb34f0523 one-shotMatplotlibOCI DATA acquisition dispatched. LocalPID57211 OSstart2026-09-27 17:21:37local, launch epoch1790544097.252772, observedalive immediately afterward. Receipt work/local_req029/matplotlib_acquire_launch_20260927/launch.json; terminal work/local_req029/matplotlib_layers_20260927/terminal.json. Nextscheduledcheck exactPIDidentity+terminal thenindependentlayerhashes; no duplicate/retry/extract/import/model. Same2hourmonitor updated. Read full req029r design.
 
 Manuscript now42pages with validatedDjango controls/incompletepairedscreen and upstreamrecovery limitation integrated. Build/visualQA pages35–42pass;first34text-identical;manuscript/validation_20260927_scaffold.json. No empiricalsuccess/primarytarget/theorem changes. AcquisitionPID57211 left to scheduledmonitor; no extra polling this source-only turn.
+
+### REQ029S — public input preparation
+
+Pinned Matplotlib20826 public projection and local118-record exact-marker audit are complete; remote reconciliation remains before any model release. Preserve prior receipts. Do not repeat or duplicate REQ029R layer acquisition; inspect its bounded terminal receipt at the next scheduled check. Qualification/controls and exact execution approval remain required. See `docs/req029s_public_input_audit_20260927.md` for scope and next gates. Readiness55%, Δ0, range45–65%; full scientific package remains unfinished.

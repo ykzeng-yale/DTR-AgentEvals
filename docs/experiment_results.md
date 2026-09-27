@@ -2016,3 +2016,7 @@ REQ029P actual SSH integration: two lead-hosted engine roles exchanged through m
 REQ029O exact wrapper checks:4tests11.673s pass, including actual inertdriverSIGKILL for model/sandbox supervision and real temporaryGit approval/source-mutation rejection. Normalizedsourceaudit shows6namespace-only wrappers and2transport/provenance adaptations. No realmodel/task result. Readiness55%,Δ0,45–65%; competentcomparisons/validinference, synthesis, independentreproducibility/authorpackage remain.
 
 REQ029Q resource/selection decision: next pre-outcomequeue candidate matplotlib20826, stillunattempted. Mini snapshot74%free fails75%gate;aux32GiB has47%free/~9.2GiBswap and remainsunqualified. No model/assettransfer. Corrected scaffold plusnewtask cannot isolate recoveryeffect. Readiness55%,Δ0,45–65%; competentcomparisons/inference,synthesis,reproducibility/authorpackage remain.
+
+### REQ029S — next-task public-input audit (2026-09-27)
+
+For frozen matplotlib__matplotlib-20826, the three-column public projection is pinned and a local byte-only reconciliation found zero exact task-ID/issue-marker matches in 118 development records (7,342,521 bytes). This includes intervening REQ029 requests, but not remote/unlisted/paraphrased inputs; no universal untouchedness claim. No inference or environment run. See `docs/req029s_public_input_audit_20260927.md`. Readiness 55%, Δ0, range45–65%; competent comparisons/inference, synthesis and independent reproducibility/author package remain.
