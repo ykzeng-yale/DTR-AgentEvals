@@ -2032,3 +2032,7 @@ REQ029T terminal correction: Dockerload exit0,39.736s importer, finalassertionFA
 ### REQ029U/U2 — Matplotlib source/import qualification
 
 Ufailed beforeimports because capdropALL blocked tar restoring mixedarchivedowners. U2 explicitly changed preparation to --no-same-owner with unchangedimage/archive/privileges/caps; fixedprobePASS3.221s,Matplotlib+compiledextensions from/testbed,emptybase-to-setupdiff,48,910,336bytesworkspacefree,ownedcleanupconfirmed. Bothattemptspreserved; no tasktests/modeloutcome. Productionadapter stillneeds exactflag/guardianqualification,then strictcontrols. Readiness55%,Δ0,range45–65%; competentcomparison/inference,synthesis,independentreproducibility/authorpackage remain.
+
+### REQ029V/V2 actual recovery sandbox hooks
+
+Vfailedpreflight because retainedMatplotlibwarning polluted mergedJSON;cleanupconfirmed. Recovery-only helper now stores bounded importdiagnostics insideJSON. V2all4actualcontainerfixtures expected: fixedaction/diff,deadline,streamedoverflow,controllerSIGKILL/independentcleanup.355archivehashes/190sourcepinsverified,Dockerempty. Ownershippolicyexplicitlybound; oldprotocolsunchanged. No inference/tasktest/competence evidence. Readiness55%,Δ0,range45–65%; competentcomparisons/inference,synthesis,independentreproducibility/authorpackage remain.
