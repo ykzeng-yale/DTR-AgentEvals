@@ -1962,3 +1962,12 @@ Pinned public Django issue projection and unchanged mini-swe default system/inst
 Lead audited115local development trajectory/request records, including untracked C6 requests:7,325,541bytes, only already-excluded Astropy14598 mentioned, none of23remainingqueue IDs. Four scanner/selection tests passed0.005seconds. See docs/audits/req029_local_run_exposure_20260927.json and docs/req029_exposure_delta_20260927.md for exact hashes and exclusions. This is scoped record reconciliation, not model competence, pretraining-cleanliness or a universal untouched-task claim. Remote reconciliation remains open; no experiment run.
 
 Readiness55%,change0points,range45–65%; competent fixed-target comparison/valid inference,synthesis,independent reproducibility/author-approved package remain.
+
+
+## 2026-09-27 — REQ-029I reviewed and exact local controls launched
+
+Lead reviewed source9de9aeac873da95f6e7c5e23a43323c08cf26280/publication35df100:22local inert tests passed28.933seconds,5796archive memberhashes and163sourcepins verified. Initial lead invocation lacked fixture-output setting and failed before tests; corrected invocation passed. Exact releasee6c5954ac7e33156dad3a90579e06b40d1a02121 and approvalSHA796724cceb43e178ff726b172deda90f9ca4996f35192fe22f068a21b4963bda authorize only one unchanged-code/reference control pair dje029i-20260927-a. Full contract docs/req029i_execution_20260927.md; expiry19:15UTC,600seconds each/1200total/no retry.
+
+Local driver46232 launched18:39:40UTC and verified alive6seconds later,baseline guardian armed and preflight receipt present. Runtime results/local_req029/django_eval_runtime/dje029i-20260927-a; launch/stdout work/local_req029/django_eval_launch_20260927. No outcome claimed at launch. Next inspect actual terminal/raw statuses/cleanup, not chat status; no duplicate or source edit. Baseline expectation66P2Ppasses8F2Pfailures/errors gates reference74declaredpasses; extra selected PostgreSQL outcomes remain separately reported and require interpretation. No model/DTR/competence release. Goal remains active.
+
+Readiness55%,change0points,range45–65%; competent fixed-target comparison/valid inference,empirical/manuscript synthesis,independent reproducibility/author-approved package remain.
