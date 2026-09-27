@@ -1,0 +1,1453 @@
+{
+  "runs": [
+    {
+      "run": "c4_setup_20260927",
+      "verified_hashes": 1622,
+      "archive_sha256": "11a9a37ba648dd5284d92c93f90e10e17105b7ba6357695afaa2f89d5547b1e3",
+      "archive_bytes": 438344,
+      "execution": {
+        "returncode": 1,
+        "elapsed_seconds": 21.406918667000003,
+        "peak_sampled_rss_bytes": 114130944,
+        "samples": 327,
+        "rss_cap_bytes": 2147483648,
+        "wall_cap_seconds": 140.0,
+        "one_compute_worker": true,
+        "cpu_affinity_enforced": false
+      }
+    },
+    {
+      "run": "c4_setup_second_20260927",
+      "verified_hashes": 1879,
+      "archive_sha256": "f808d5a6286ef79db531383ea05b2b4ba744e49a95c8fda0fc7184eddbf84a90",
+      "archive_bytes": 470297,
+      "execution": {
+        "returncode": 0,
+        "elapsed_seconds": 23.918784167,
+        "peak_sampled_rss_bytes": 117702656,
+        "samples": 361,
+        "rss_cap_bytes": 2147483648,
+        "wall_cap_seconds": 100.0,
+        "one_compute_worker": true,
+        "cpu_affinity_enforced": false
+      }
+    },
+    {
+      "run": "c4_setup_final_20260927",
+      "verified_hashes": 1936,
+      "archive_sha256": "9b2af4d2b4df625b4d457756e3b371fd5c653f44363ffcc1fd669d9b6965d49d",
+      "archive_bytes": 496650,
+      "execution": {
+        "returncode": 0,
+        "elapsed_seconds": 24.21996675,
+        "peak_sampled_rss_bytes": 109985792,
+        "samples": 368,
+        "rss_cap_bytes": 2147483648,
+        "wall_cap_seconds": 100.0,
+        "one_compute_worker": true,
+        "cpu_affinity_enforced": false
+      }
+    }
+  ],
+  "cumulative_test_wall_seconds": 69.545669584,
+  "attestation_elapsed_seconds": 2.368240583,
+  "attestation_sha256": "d8183525c107c93ff8fc50ec0a0f7c0844e562a258ad6047b7767fae524e9e6d",
+  "artifact_bytes_before_summary_report": 7089981,
+  "final_observers": [
+    {
+      "path": "c3r_fixtures/test_concrete_git_concurrent_advancement/external_observer.json",
+      "observation": {
+        "race_rejected": true,
+        "publication_attempts": 1
+      }
+    },
+    {
+      "path": "c3r_fixtures/test_b3_journal_failure_safety_fallback/external_observer.json",
+      "observation": {
+        "owned_absent": true,
+        "audit_error": "OSError('arbiter audit failure')"
+      }
+    },
+    {
+      "path": "c3r_fixtures/test_protocol3_envelope_exact_bindings/external_observer.json",
+      "observation": {
+        "valid_accepted": true,
+        "mismatch_cases": 8
+      }
+    },
+    {
+      "path": "c3r_fixtures/test_real_socket_and_native_binding/external_observer.json",
+      "observation": {
+        "absent_before_teardown": true
+      }
+    },
+    {
+      "path": "c3r_fixtures/test_external_parent_death_idle/external_observer.json",
+      "observation": {
+        "driver_killed_without_finally": true,
+        "child_absent_before_teardown": true,
+        "peer_untouched": true,
+        "external_watchdog": {
+          "reason": "owner_parent_exited",
+          "cleanup": {
+            "identity_key": "1358a4858687e395479462ba1062cef2416a84446a7fd6c950e4909e282cc744",
+            "pid": 26329,
+            "requests": [
+              {
+                "actor": "c3r",
+                "reason": "owner_parent_exited",
+                "pid": 26332,
+                "time": 1790495830.3252668
+              }
+            ],
+            "signals": [
+              {
+                "signal": "TERM",
+                "actor": "c3r",
+                "time": 1790495830.328875
+              }
+            ],
+            "term_claim": {
+              "actor": "c3r",
+              "reason": "owner_parent_exited",
+              "owner_pid": 26332,
+              "time": 1790495830.326903
+            },
+            "owned_absent": true,
+            "confirmed_at": 1790495830.3334022,
+            "audit_error": null
+          },
+          "pid": 26332
+        },
+        "handles": {
+          "model": {
+            "pid": 26329,
+            "identity": "Sun Sep 27 03:57:10 2026     /Applications/Xcode.app/Contents/Developer/usr/bin/python3 /Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3r_fixture.py server /var/folders/mp/vwyknmv57mdcg8v5grwv6d7m0000gn/T/c3r-fixture-nfk7pm0y/driver/server/ready.json fixed c3r-owned-26327-1790495830216108000",
+            "ownership_token": "c3r-owned-26327-1790495830216108000",
+            "parent": 26327,
+            "parent_identity": "Sun Sep 27 03:57:10 2026     /Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/Resources/Python.app/Contents/MacOS/Python /Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3r_driver_fixture.py /var/folders/mp/vwyknmv57mdcg8v5grwv6d7m0000gn/T/c3r-fixture-nfk7pm0y/driver idle c3r-owned-driver",
+            "deadline": 1790495860.22051,
+            "fixture_only": true,
+            "sample_path": "/var/folders/mp/vwyknmv57mdcg8v5grwv6d7m0000gn/T/c3r-fixture-nfk7pm0y/driver/server/sample.json"
+          },
+          "watchdog_pid": 26332
+        }
+      }
+    },
+    {
+      "path": "c3r_fixtures/test_external_parent_death_idle/driver/observer.json",
+      "observation": {
+        "model": {
+          "pid": 26329,
+          "identity": "Sun Sep 27 03:57:10 2026     /Applications/Xcode.app/Contents/Developer/usr/bin/python3 /Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3r_fixture.py server /var/folders/mp/vwyknmv57mdcg8v5grwv6d7m0000gn/T/c3r-fixture-nfk7pm0y/driver/server/ready.json fixed c3r-owned-26327-1790495830216108000",
+          "ownership_token": "c3r-owned-26327-1790495830216108000",
+          "parent": 26327,
+          "parent_identity": "Sun Sep 27 03:57:10 2026     /Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/Resources/Python.app/Contents/MacOS/Python /Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3r_driver_fixture.py /var/folders/mp/vwyknmv57mdcg8v5grwv6d7m0000gn/T/c3r-fixture-nfk7pm0y/driver idle c3r-owned-driver",
+          "deadline": 1790495860.22051,
+          "fixture_only": true,
+          "sample_path": "/var/folders/mp/vwyknmv57mdcg8v5grwv6d7m0000gn/T/c3r-fixture-nfk7pm0y/driver/server/sample.json"
+        },
+        "watchdog_pid": 26332
+      }
+    },
+    {
+      "path": "c3r_fixtures/test_adapter_with_concrete_http_and_git/external_observer.json",
+      "observation": {
+        "physical_calls": 1,
+        "absent_before_teardown": true,
+        "response_envelope": {
+          "config_sha256": "218cf178c46e96a88bf1757f565ad64f57be0efea05adfd2ba5f13fb9353b898",
+          "messages_sha256": "dda9632abe46ba5e004f5fcdbed44f7fd135f8690bf5473290a123159e0da142",
+          "native_binding": {
+            "native_exact": true,
+            "rendered": "FIXED_JSON_FIXTURE",
+            "template_sha256": "c979e0e71a3e21b8f208e6ab120d5cb29327885f29d2a8b18fda67a723798e18",
+            "token_ids": [
+              1,
+              2,
+              3
+            ]
+          },
+          "native_binding_sha256": "d30efa2c2572937c8418f1c0bc739d8e771c6d30437a0a2efc1689b8d614c21d",
+          "protocol": 3,
+          "raw_response": "{\"choices\": [{\"finish_reason\": \"stop\", \"message\": {\"content\": \"fixture text only\"}}], \"timings\": {\"predicted_ms\": 0, \"prompt_ms\": 0}, \"usage\": {\"completion_tokens\": 3, \"prompt_tokens\": 3}}",
+          "raw_response_sha256": "fbbb97ecbc638fec6a8e049de36baa69c9181972fb2c4e89a8b64bcf7bbe4ce8",
+          "request_commit": "fb76ce980fbfff1aed537e01f242ebdd04626e38",
+          "request_id": "c3r-e2e-1",
+          "request_path": "results/remote_req028/c3_fixture/request.json",
+          "request_sha256": "d5f6bbdbe0ee2c90d809d85f54e2a0644ad53e6bd1e01744be18aba6a766fd0b",
+          "run_id": "c3r-e2e",
+          "sequence": 1,
+          "status": "terminal",
+          "timings": {
+            "generation_ms": 0,
+            "prefill_ms": 0,
+            "request_wall_seconds": 1.0599989891052246
+          }
+        }
+      }
+    },
+    {
+      "path": "c3r_fixtures/test_locked_production_and_argv/external_observer.json",
+      "observation": {
+        "real_start_locked": true,
+        "argv": [
+          "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/assets/llama.cpp-4fea119de30f6a923992780f6fd5ccb0bee5d47d/build/bin/llama-server",
+          "-m",
+          "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/assets/Qwen3-4B-Instruct-2507-Q4_K_M.gguf",
+          "--alias",
+          "fixture",
+          "--host",
+          "127.0.0.1",
+          "--port",
+          "12345",
+          "--ctx-size",
+          "32768",
+          "--parallel",
+          "1",
+          "--cache-type-k",
+          "q8_0",
+          "--cache-type-v",
+          "q8_0",
+          "--cache-ram",
+          "0",
+          "--no-cache-prompt",
+          "--no-cache-idle-slots",
+          "--no-context-shift",
+          "--jinja",
+          "--seed",
+          "20260927028",
+          "--temp",
+          "0",
+          "--n-predict",
+          "128",
+          "--threads",
+          "2",
+          "--threads-batch",
+          "2",
+          "--threads-http",
+          "2",
+          "--n-gpu-layers",
+          "99",
+          "--flash-attn",
+          "on",
+          "--no-warmup",
+          "--batch-size",
+          "128",
+          "--ubatch-size",
+          "32",
+          "--verbose"
+        ]
+      }
+    },
+    {
+      "path": "c3r_fixtures/test_external_parent_death_inflight/external_observer.json",
+      "observation": {
+        "driver_killed_without_finally": true,
+        "child_absent_before_teardown": true,
+        "peer_untouched": true,
+        "external_watchdog": {
+          "reason": "owner_parent_exited",
+          "cleanup": {
+            "identity_key": "aca0c1f2990259a75de6f26f640dcab82354613042dfeb4a754e8b60e6e60003",
+            "pid": 26377,
+            "requests": [
+              {
+                "actor": "c3r",
+                "reason": "owner_parent_exited",
+                "pid": 26380,
+                "time": 1790495830.509311
+              }
+            ],
+            "signals": [
+              {
+                "signal": "TERM",
+                "actor": "c3r",
+                "time": 1790495830.5126772
+              }
+            ],
+            "term_claim": {
+              "actor": "c3r",
+              "reason": "owner_parent_exited",
+              "owner_pid": 26380,
+              "time": 1790495830.510836
+            },
+            "owned_absent": true,
+            "confirmed_at": 1790495830.516895,
+            "audit_error": null
+          },
+          "pid": 26380
+        },
+        "handles": {
+          "model": {
+            "pid": 26377,
+            "identity": "Sun Sep 27 03:57:10 2026     /Applications/Xcode.app/Contents/Developer/usr/bin/python3 /Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3r_fixture.py server /var/folders/mp/vwyknmv57mdcg8v5grwv6d7m0000gn/T/c3r-fixture-6xpgmp3g/driver/server/ready.json hang c3r-owned-26374-1790495830399767000",
+            "ownership_token": "c3r-owned-26374-1790495830399767000",
+            "parent": 26374,
+            "parent_identity": "Sun Sep 27 03:57:10 2026     /Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/Resources/Python.app/Contents/MacOS/Python /Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3r_driver_fixture.py /var/folders/mp/vwyknmv57mdcg8v5grwv6d7m0000gn/T/c3r-fixture-6xpgmp3g/driver inflight c3r-owned-driver",
+            "deadline": 1790495860.404429,
+            "fixture_only": true,
+            "sample_path": "/var/folders/mp/vwyknmv57mdcg8v5grwv6d7m0000gn/T/c3r-fixture-6xpgmp3g/driver/server/sample.json"
+          },
+          "watchdog_pid": 26380,
+          "http_worker": {
+            "pid": 26391,
+            "identity": "Sun Sep 27 03:57:10 2026     /Applications/Xcode.app/Contents/Developer/usr/bin/python3 /Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3r_worker.py /var/folders/mp/vwyknmv57mdcg8v5grwv6d7m0000gn/T/c3r-fixture-6xpgmp3g/driver/http/1.input.json /var/folders/mp/vwyknmv57mdcg8v5grwv6d7m0000gn/T/c3r-fixture-6xpgmp3g/driver/http/1.output.json",
+            "command": [
+              "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
+              "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3r_worker.py",
+              "/var/folders/mp/vwyknmv57mdcg8v5grwv6d7m0000gn/T/c3r-fixture-6xpgmp3g/driver/http/1.input.json",
+              "/var/folders/mp/vwyknmv57mdcg8v5grwv6d7m0000gn/T/c3r-fixture-6xpgmp3g/driver/http/1.output.json"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "path": "c3r_fixtures/test_external_parent_death_inflight/driver/observer.json",
+      "observation": {
+        "model": {
+          "pid": 26377,
+          "identity": "Sun Sep 27 03:57:10 2026     /Applications/Xcode.app/Contents/Developer/usr/bin/python3 /Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3r_fixture.py server /var/folders/mp/vwyknmv57mdcg8v5grwv6d7m0000gn/T/c3r-fixture-6xpgmp3g/driver/server/ready.json hang c3r-owned-26374-1790495830399767000",
+          "ownership_token": "c3r-owned-26374-1790495830399767000",
+          "parent": 26374,
+          "parent_identity": "Sun Sep 27 03:57:10 2026     /Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/Resources/Python.app/Contents/MacOS/Python /Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3r_driver_fixture.py /var/folders/mp/vwyknmv57mdcg8v5grwv6d7m0000gn/T/c3r-fixture-6xpgmp3g/driver inflight c3r-owned-driver",
+          "deadline": 1790495860.404429,
+          "fixture_only": true,
+          "sample_path": "/var/folders/mp/vwyknmv57mdcg8v5grwv6d7m0000gn/T/c3r-fixture-6xpgmp3g/driver/server/sample.json"
+        },
+        "watchdog_pid": 26380,
+        "http_worker": {
+          "pid": 26391,
+          "identity": "Sun Sep 27 03:57:10 2026     /Applications/Xcode.app/Contents/Developer/usr/bin/python3 /Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3r_worker.py /var/folders/mp/vwyknmv57mdcg8v5grwv6d7m0000gn/T/c3r-fixture-6xpgmp3g/driver/http/1.input.json /var/folders/mp/vwyknmv57mdcg8v5grwv6d7m0000gn/T/c3r-fixture-6xpgmp3g/driver/http/1.output.json",
+          "command": [
+            "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
+            "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3r_worker.py",
+            "/var/folders/mp/vwyknmv57mdcg8v5grwv6d7m0000gn/T/c3r-fixture-6xpgmp3g/driver/http/1.input.json",
+            "/var/folders/mp/vwyknmv57mdcg8v5grwv6d7m0000gn/T/c3r-fixture-6xpgmp3g/driver/http/1.output.json"
+          ]
+        }
+      }
+    },
+    {
+      "path": "c3r_fixtures/test_hanging_subprocess_cancel/external_observer.json",
+      "observation": {
+        "absent_before_teardown": true
+      }
+    },
+    {
+      "path": "c3r_fixtures/test_provisional_identity_probe_failure/external_observer.json",
+      "observation": {
+        "direct_child_absent_before_teardown": true
+      }
+    },
+    {
+      "path": "c3r_fixtures/test_hanging_socket_cancel/external_observer.json",
+      "observation": {
+        "socket_worker_absent_before_teardown": true
+      }
+    },
+    {
+      "path": "c3r_fixtures/test_concrete_git_read_publish_and_dirty_no_retry/external_observer.json",
+      "observation": {
+        "publication": {
+          "commit": "39b59997527a592f53eb09bab6ede424ddde8fb4",
+          "events": [
+            {
+              "phase": "network_fetch",
+              "started": 1790495829.9730859,
+              "finished": 1790495829.99063,
+              "status": "complete"
+            },
+            {
+              "phase": "network_check_main",
+              "started": 1790495830.0443368,
+              "finished": 1790495830.055249,
+              "status": "complete"
+            },
+            {
+              "phase": "network_publication",
+              "started": 1790495830.055258,
+              "finished": 1790495830.085429,
+              "status": "complete"
+            }
+          ]
+        },
+        "physical_publications": 1,
+        "dirty_rejected": true
+      }
+    },
+    {
+      "path": "c4_fixtures/test_death_exec_released/external_observer.json",
+      "observation": {
+        "stage": "exec_released",
+        "owned_absent_before_teardown": true,
+        "peer_untouched": true,
+        "driver_finally_not_run": true,
+        "child_alarm_used": false,
+        "receipt": {
+          "reason": "Rejected('owner_parent_exited')",
+          "cleanup": {
+            "identity_key": "d73f610386dddee607a3c3a686ed4fb4432a85eaffbab67f5ad4976752a0b3aa",
+            "pid": 26687,
+            "requests": [
+              {
+                "actor": "c3r",
+                "reason": "Rejected('owner_parent_exited')",
+                "pid": 26682,
+                "time": 1790495832.078463
+              }
+            ],
+            "signals": [
+              {
+                "signal": "TERM",
+                "actor": "c3r",
+                "time": 1790495832.0830011
+              }
+            ],
+            "term_claim": {
+              "actor": "c3r",
+              "reason": "Rejected('owner_parent_exited')",
+              "owner_pid": 26682,
+              "time": 1790495832.080766
+            },
+            "owned_absent": true,
+            "confirmed_at": 1790495832.087989,
+            "audit_error": null,
+            "direct_child_reaped": true
+          },
+          "audit_errors": [],
+          "driver_cleanup_used": false
+        }
+      }
+    },
+    {
+      "path": "c4_fixtures/test_death_exec_released/driver/driver_observer.json",
+      "observation": {
+        "supervisor": {
+          "pid": 26682,
+          "identity": "Sun Sep 27 03:57:12 2026     /Applications/Xcode.app/Contents/Developer/usr/bin/python3 /Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c4_supervisor.py /var/folders/mp/vwyknmv57mdcg8v5grwv6d7m0000gn/T/c4-fixture-r8om1o5p/driver/supervisor_spec.json",
+          "command": [
+            "/var/folders/mp/vwyknmv57mdcg8v5grwv6d7m0000gn/T/c4-fixture-r8om1o5p/driver/supervisor_spec.json"
+          ]
+        }
+      }
+    },
+    {
+      "path": "c4_fixtures/test_death_running/external_observer.json",
+      "observation": {
+        "stage": "running",
+        "owned_absent_before_teardown": true,
+        "peer_untouched": true,
+        "driver_finally_not_run": true,
+        "child_alarm_used": false,
+        "receipt": {
+          "reason": "Rejected('owner_parent_exited')",
+          "cleanup": {
+            "identity_key": "9f31c1880c52c821d834ba46f677b1fa203013148952c2c3f29d5d4b31cc62ea",
+            "pid": 26755,
+            "requests": [
+              {
+                "actor": "c3r",
+                "reason": "Rejected('owner_parent_exited')",
+                "pid": 26750,
+                "time": 1790495832.420489
+              }
+            ],
+            "signals": [
+              {
+                "signal": "TERM",
+                "actor": "c3r",
+                "time": 1790495832.424456
+              }
+            ],
+            "term_claim": {
+              "actor": "c3r",
+              "reason": "Rejected('owner_parent_exited')",
+              "owner_pid": 26750,
+              "time": 1790495832.422454
+            },
+            "owned_absent": true,
+            "confirmed_at": 1790495832.4291341,
+            "audit_error": null,
+            "direct_child_reaped": true
+          },
+          "audit_errors": [],
+          "driver_cleanup_used": false
+        }
+      }
+    },
+    {
+      "path": "c4_fixtures/test_death_running/driver/driver_observer.json",
+      "observation": {
+        "supervisor": {
+          "pid": 26750,
+          "identity": "Sun Sep 27 03:57:12 2026     /Applications/Xcode.app/Contents/Developer/usr/bin/python3 /Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c4_supervisor.py /var/folders/mp/vwyknmv57mdcg8v5grwv6d7m0000gn/T/c4-fixture-_dlxs5tb/driver/supervisor_spec.json",
+          "command": [
+            "/var/folders/mp/vwyknmv57mdcg8v5grwv6d7m0000gn/T/c4-fixture-_dlxs5tb/driver/supervisor_spec.json"
+          ]
+        }
+      }
+    },
+    {
+      "path": "c4_fixtures/test_http_raw_error_and_hang_cancellation/external_observer.json",
+      "observation": {
+        "owned_absent_before_teardown": true,
+        "raw_503_preserved": true,
+        "hanging_request_received": true
+      }
+    },
+    {
+      "path": "c4_fixtures/test_consumer_independent_provenance_expiry_and_replay/external_observer.json",
+      "observation": {
+        "independent_approval_required": true,
+        "expired_and_replay_rejected": true,
+        "negative_cases": 7,
+        "no_tool_execution": true
+      }
+    },
+    {
+      "path": "c4_fixtures/test_death_child_spawned/external_observer.json",
+      "observation": {
+        "stage": "child_spawned",
+        "owned_absent_before_teardown": true,
+        "peer_untouched": true,
+        "driver_finally_not_run": true,
+        "child_alarm_used": false,
+        "receipt": {
+          "reason": "Rejected('owner_parent_exited')",
+          "cleanup": {
+            "owned_absent": true,
+            "direct_unreaped_child": true
+          },
+          "audit_errors": [],
+          "driver_cleanup_used": false
+        }
+      }
+    },
+    {
+      "path": "c4_fixtures/test_death_child_spawned/driver/driver_observer.json",
+      "observation": {
+        "supervisor": {
+          "pid": 26660,
+          "identity": "Sun Sep 27 03:57:11 2026     /Applications/Xcode.app/Contents/Developer/usr/bin/python3 /Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c4_supervisor.py /var/folders/mp/vwyknmv57mdcg8v5grwv6d7m0000gn/T/c4-fixture-7ssahlxw/driver/supervisor_spec.json",
+          "command": [
+            "/var/folders/mp/vwyknmv57mdcg8v5grwv6d7m0000gn/T/c4-fixture-7ssahlxw/driver/supervisor_spec.json"
+          ]
+        }
+      }
+    },
+    {
+      "path": "c4_fixtures/test_prior_post_props_rejected_by_strict_fixture/external_observer.json",
+      "observation": {
+        "old_POST_props_rejected": true,
+        "owned_absent_before_teardown": true
+      }
+    },
+    {
+      "path": "c4_fixtures/test_git_concurrent_advancement_no_retry/external_observer.json",
+      "observation": {
+        "one_publication_attempt": true,
+        "race_rejected": true
+      }
+    },
+    {
+      "path": "c4_fixtures/test_death_before_exec_release/external_observer.json",
+      "observation": {
+        "stage": "before_exec_release",
+        "owned_absent_before_teardown": true,
+        "peer_untouched": true,
+        "driver_finally_not_run": true,
+        "child_alarm_used": false,
+        "receipt": {
+          "reason": "Rejected('owner_parent_exited')",
+          "cleanup": {
+            "identity_key": "2a9e5940402ac8f162074e36d0a386ef01f216c820c2468a5828770f33da6693",
+            "pid": 26614,
+            "requests": [
+              {
+                "actor": "c3r",
+                "reason": "Rejected('owner_parent_exited')",
+                "pid": 26610,
+                "time": 1790495831.6976378
+              }
+            ],
+            "signals": [
+              {
+                "signal": "TERM",
+                "actor": "c3r",
+                "time": 1790495831.701646
+              }
+            ],
+            "term_claim": {
+              "actor": "c3r",
+              "reason": "Rejected('owner_parent_exited')",
+              "owner_pid": 26610,
+              "time": 1790495831.699585
+            },
+            "owned_absent": true,
+            "confirmed_at": 1790495831.706822,
+            "audit_error": null,
+            "direct_child_reaped": true
+          },
+          "audit_errors": [],
+          "driver_cleanup_used": false
+        }
+      }
+    },
+    {
+      "path": "c4_fixtures/test_death_before_exec_release/driver/driver_observer.json",
+      "observation": {
+        "supervisor": {
+          "pid": 26610,
+          "identity": "Sun Sep 27 03:57:11 2026     /Applications/Xcode.app/Contents/Developer/usr/bin/python3 /Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c4_supervisor.py /var/folders/mp/vwyknmv57mdcg8v5grwv6d7m0000gn/T/c4-fixture-sk8zhokr/driver/supervisor_spec.json",
+          "command": [
+            "/var/folders/mp/vwyknmv57mdcg8v5grwv6d7m0000gn/T/c4-fixture-sk8zhokr/driver/supervisor_spec.json"
+          ]
+        }
+      }
+    },
+    {
+      "path": "c4_fixtures/test_real_attestation_plan_and_original_admission_wiring/external_observer.json",
+      "observation": {
+        "real_attestation_pinned_plan": {
+          "startup_locked": true,
+          "release_sha256": "c93b7173dce6f277d4ddd77a4f0735cb4a9e6c7893a81107a1b9747df4eea129",
+          "request": {
+            "sequence": 1,
+            "commit": "de0e7e0c7d2c87e2bb34fda9e586ca1ae6122742",
+            "path": "results/remote_req028/c3_c4/request1.json",
+            "sha256": "6bf092f87cb2fd70a352109e65c6b6ca8cdae01af1cd56138d74a68b766475b7"
+          },
+          "asset_attestation_sha256": "d8183525c107c93ff8fc50ec0a0f7c0844e562a258ad6047b7767fae524e9e6d",
+          "argv": [
+            "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/assets/llama.cpp-4fea119de30f6a923992780f6fd5ccb0bee5d47d/build/bin/llama-server",
+            "-m",
+            "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/assets/Qwen3-4B-Instruct-2507-Q4_K_M.gguf",
+            "--alias",
+            "c4-locked-plan",
+            "--host",
+            "127.0.0.1",
+            "--port",
+            "12345",
+            "--ctx-size",
+            "32768",
+            "--parallel",
+            "1",
+            "--cache-type-k",
+            "q8_0",
+            "--cache-type-v",
+            "q8_0",
+            "--cache-ram",
+            "0",
+            "--no-cache-prompt",
+            "--no-cache-idle-slots",
+            "--no-context-shift",
+            "--jinja",
+            "--seed",
+            "20260927028",
+            "--temp",
+            "0",
+            "--n-predict",
+            "1536",
+            "--threads",
+            "2",
+            "--threads-batch",
+            "2",
+            "--threads-http",
+            "2",
+            "--n-gpu-layers",
+            "99",
+            "--flash-attn",
+            "on",
+            "--no-warmup",
+            "--batch-size",
+            "128",
+            "--ubatch-size",
+            "32",
+            "--verbose"
+          ],
+          "telemetry": "guard.sample",
+          "driver_pid": 21533,
+          "driver_identity": "Sun Sep 27 03:56:54 2026     /Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/Resources/Python.app/Contents/MacOS/Python /Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c4_setup.py --tests",
+          "model_deadline": 1790495956.482611,
+          "load_deadline": 1790495956.482611,
+          "admission": {
+            "function": "a6r_gate.admit",
+            "minimum_free_percent": 75,
+            "normal_pressure": 1,
+            "no_foreign_inference": true,
+            "minimum_disk_bytes": 12884901888,
+            "window_seconds": 900,
+            "maximum_reads": 31,
+            "two_passing_reads_spacing_seconds": 60,
+            "final_pre_launch_recheck": true
+          },
+          "supervision": "supervisor owns pipe-gated child before exec; production command execution remains denied"
+        },
+        "admission_fake_clock_reads": 3,
+        "no_renewal": true,
+        "model_not_started": true
+      }
+    },
+    {
+      "path": "c4_fixtures/test_git_race_dirty_origin_and_conflict_fail_closed/external_observer.json",
+      "observation": {
+        "dirty_rejected_no_retry": true,
+        "arbitrary_origin_rejected": true
+      }
+    },
+    {
+      "path": "c4_fixtures/test_death_ownership_persisted/external_observer.json",
+      "observation": {
+        "stage": "ownership_persisted",
+        "owned_absent_before_teardown": true,
+        "peer_untouched": true,
+        "driver_finally_not_run": true,
+        "child_alarm_used": false,
+        "receipt": {
+          "reason": "Rejected('owner_parent_exited')",
+          "cleanup": {
+            "identity_key": "a7e37008cf56a7ff0dc878ec5765176cf0a08e2578b780bcdec9a3f9b22a81f3",
+            "pid": 26724,
+            "requests": [
+              {
+                "actor": "c3r",
+                "reason": "Rejected('owner_parent_exited')",
+                "pid": 26719,
+                "time": 1790495832.212142
+              }
+            ],
+            "signals": [
+              {
+                "signal": "TERM",
+                "actor": "c3r",
+                "time": 1790495832.21623
+              }
+            ],
+            "term_claim": {
+              "actor": "c3r",
+              "reason": "Rejected('owner_parent_exited')",
+              "owner_pid": 26719,
+              "time": 1790495832.2143471
+            },
+            "owned_absent": true,
+            "confirmed_at": 1790495832.220844,
+            "audit_error": null,
+            "direct_child_reaped": true
+          },
+          "audit_errors": [],
+          "driver_cleanup_used": false
+        }
+      }
+    },
+    {
+      "path": "c4_fixtures/test_death_ownership_persisted/driver/driver_observer.json",
+      "observation": {
+        "supervisor": {
+          "pid": 26719,
+          "identity": "Sun Sep 27 03:57:12 2026     /Applications/Xcode.app/Contents/Developer/usr/bin/python3 /Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c4_supervisor.py /var/folders/mp/vwyknmv57mdcg8v5grwv6d7m0000gn/T/c4-fixture-n3zjz3a8/driver/supervisor_spec.json",
+          "command": [
+            "/var/folders/mp/vwyknmv57mdcg8v5grwv6d7m0000gn/T/c4-fixture-n3zjz3a8/driver/supervisor_spec.json"
+          ]
+        }
+      }
+    },
+    {
+      "path": "c4_fixtures/test_exec_transition_independent_lifecycles/external_observer.json",
+      "observation": {
+        "distinct_lifecycles": 10,
+        "no_retry_within_lifecycle": true,
+        "owned_absent_before_teardown": true
+      }
+    },
+    {
+      "path": "c4_fixtures/test_production_lock_real_telemetry_and_argv/external_observer.json",
+      "observation": {
+        "real_read_only_sample": {
+          "time": 1790495836.4255402,
+          "free_percent": 73,
+          "pressure_level": 1,
+          "swap_used_mib": 233.31,
+          "owned_rss_bytes": 0,
+          "foreign_inference": [],
+          "disk_free_bytes": 17054724096
+        },
+        "model_start_locked": true,
+        "argv_not_executed": [
+          "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/assets/llama.cpp-4fea119de30f6a923992780f6fd5ccb0bee5d47d/build/bin/llama-server",
+          "-m",
+          "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/assets/Qwen3-4B-Instruct-2507-Q4_K_M.gguf",
+          "--alias",
+          "c4-locked-test",
+          "--host",
+          "127.0.0.1",
+          "--port",
+          "12345",
+          "--ctx-size",
+          "32768",
+          "--parallel",
+          "1",
+          "--cache-type-k",
+          "q8_0",
+          "--cache-type-v",
+          "q8_0",
+          "--cache-ram",
+          "0",
+          "--no-cache-prompt",
+          "--no-cache-idle-slots",
+          "--no-context-shift",
+          "--jinja",
+          "--seed",
+          "20260927028",
+          "--temp",
+          "0",
+          "--n-predict",
+          "1536",
+          "--threads",
+          "2",
+          "--threads-batch",
+          "2",
+          "--threads-http",
+          "2",
+          "--n-gpu-layers",
+          "99",
+          "--flash-attn",
+          "on",
+          "--no-warmup",
+          "--batch-size",
+          "128",
+          "--ubatch-size",
+          "32",
+          "--verbose"
+        ]
+      }
+    },
+    {
+      "path": "c4_fixtures/test_git_existing_response_conflict/external_observer.json",
+      "observation": {
+        "immutable_conflict_rejected": true,
+        "fault_injection_exact_base": true
+      }
+    },
+    {
+      "path": "c4_fixtures/test_strict_http_and_full_chat_body/external_observer.json",
+      "observation": {
+        "owned_absent_before_teardown": true,
+        "strict_rejections": 5,
+        "binding": {
+          "template_sha256": "c979e0e71a3e21b8f208e6ab120d5cb29327885f29d2a8b18fda67a723798e18",
+          "native_exact": true,
+          "rendered": "C4_STRICT_FIXED_NATIVE",
+          "token_ids": [
+            1,
+            2,
+            3
+          ]
+        }
+      }
+    },
+    {
+      "path": "c4_fixtures/test_death_before_spawn/external_observer.json",
+      "observation": {
+        "stage": "before_spawn",
+        "owned_absent_before_teardown": true,
+        "peer_untouched": true,
+        "driver_finally_not_run": true,
+        "child_alarm_used": false,
+        "receipt": {
+          "reason": "Rejected('owner_parent_exited')",
+          "cleanup": {
+            "owned_absent": true,
+            "no_child_created": true
+          },
+          "audit_errors": [],
+          "driver_cleanup_used": false
+        }
+      }
+    },
+    {
+      "path": "c4_fixtures/test_death_before_spawn/driver/driver_observer.json",
+      "observation": {
+        "supervisor": {
+          "pid": 26643,
+          "identity": "Sun Sep 27 03:57:11 2026     /Applications/Xcode.app/Contents/Developer/usr/bin/python3 /Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c4_supervisor.py /var/folders/mp/vwyknmv57mdcg8v5grwv6d7m0000gn/T/c4-fixture-igqs_o4t/driver/supervisor_spec.json",
+          "command": [
+            "/var/folders/mp/vwyknmv57mdcg8v5grwv6d7m0000gn/T/c4-fixture-igqs_o4t/driver/supervisor_spec.json"
+          ]
+        }
+      }
+    },
+    {
+      "path": "c4_fixtures/test_birth_mismatch_never_signals_peer/external_observer.json",
+      "observation": {
+        "mismatched_identity_not_signaled": true
+      }
+    },
+    {
+      "path": "c4_fixtures/test_supervisor_guard_failures/external_observer.json",
+      "observation": {
+        "owned_absent_before_teardown": true,
+        "six_guard_outcomes": [
+          {
+            "field": "pressure_level",
+            "receipt": {
+              "reason": "Rejected('adverse_pressure')",
+              "cleanup": {
+                "identity_key": "cdb6b43b3c58cb8ccc6f294181948d5c59b91edd1c9299e2ba868875f0f10af3",
+                "pid": 27691,
+                "requests": [
+                  {
+                    "actor": "c3r",
+                    "reason": "Rejected('adverse_pressure')",
+                    "pid": 27687,
+                    "time": 1790495837.048959
+                  }
+                ],
+                "signals": [
+                  {
+                    "signal": "TERM",
+                    "actor": "c3r",
+                    "time": 1790495837.052518
+                  }
+                ],
+                "term_claim": {
+                  "actor": "c3r",
+                  "reason": "Rejected('adverse_pressure')",
+                  "owner_pid": 27687,
+                  "time": 1790495837.050585
+                },
+                "owned_absent": true,
+                "confirmed_at": 1790495837.057377,
+                "audit_error": null,
+                "direct_child_reaped": true
+              },
+              "audit_errors": [],
+              "driver_cleanup_used": false
+            }
+          },
+          {
+            "field": "free_percent",
+            "receipt": {
+              "reason": "Rejected('free_metric_below_20')",
+              "cleanup": {
+                "identity_key": "824c93d17d2a0726a62fdc462b653bb612e0bd5f873ec6157800fd99ca3093b5",
+                "pid": 27727,
+                "requests": [
+                  {
+                    "actor": "c3r",
+                    "reason": "Rejected('free_metric_below_20')",
+                    "pid": 27722,
+                    "time": 1790495837.3089879
+                  }
+                ],
+                "signals": [
+                  {
+                    "signal": "TERM",
+                    "actor": "c3r",
+                    "time": 1790495837.312777
+                  }
+                ],
+                "term_claim": {
+                  "actor": "c3r",
+                  "reason": "Rejected('free_metric_below_20')",
+                  "owner_pid": 27722,
+                  "time": 1790495837.3107772
+                },
+                "owned_absent": true,
+                "confirmed_at": 1790495837.3178,
+                "audit_error": null,
+                "direct_child_reaped": true
+              },
+              "audit_errors": [],
+              "driver_cleanup_used": false
+            }
+          },
+          {
+            "field": "swap_used_mib",
+            "receipt": {
+              "reason": "Rejected('swap_growth')",
+              "cleanup": {
+                "identity_key": "eb1404c8e4a25d0b9e5dbda50310ddc6bfa5de148391d5e4723b6cc84c1177a2",
+                "pid": 27783,
+                "requests": [
+                  {
+                    "actor": "c3r",
+                    "reason": "Rejected('swap_growth')",
+                    "pid": 27778,
+                    "time": 1790495837.474056
+                  }
+                ],
+                "signals": [
+                  {
+                    "signal": "TERM",
+                    "actor": "c3r",
+                    "time": 1790495837.477168
+                  }
+                ],
+                "term_claim": {
+                  "actor": "c3r",
+                  "reason": "Rejected('swap_growth')",
+                  "owner_pid": 27778,
+                  "time": 1790495837.475487
+                },
+                "owned_absent": true,
+                "confirmed_at": 1790495837.481866,
+                "audit_error": null,
+                "direct_child_reaped": true
+              },
+              "audit_errors": [],
+              "driver_cleanup_used": false
+            }
+          },
+          {
+            "field": "owned_rss_bytes",
+            "receipt": {
+              "reason": "Rejected('owned_rss')",
+              "cleanup": {
+                "identity_key": "49f797ef1703ebc6a334d798d49e156fea494aa70ba68fd14fa42a0d5c9f34aa",
+                "pid": 27818,
+                "requests": [
+                  {
+                    "actor": "c3r",
+                    "reason": "Rejected('owned_rss')",
+                    "pid": 27814,
+                    "time": 1790495837.6305768
+                  }
+                ],
+                "signals": [
+                  {
+                    "signal": "TERM",
+                    "actor": "c3r",
+                    "time": 1790495837.633734
+                  }
+                ],
+                "term_claim": {
+                  "actor": "c3r",
+                  "reason": "Rejected('owned_rss')",
+                  "owner_pid": 27814,
+                  "time": 1790495837.632044
+                },
+                "owned_absent": true,
+                "confirmed_at": 1790495837.638897,
+                "audit_error": null,
+                "direct_child_reaped": true
+              },
+              "audit_errors": [],
+              "driver_cleanup_used": false
+            }
+          },
+          {
+            "field": "foreign_inference",
+            "receipt": {
+              "reason": "Rejected('foreign_inference')",
+              "cleanup": {
+                "identity_key": "c92d4d7fdfafd88751b84cb185ba59eeba7bfad33e115b48253f7dce7d06a58c",
+                "pid": 27853,
+                "requests": [
+                  {
+                    "actor": "c3r",
+                    "reason": "Rejected('foreign_inference')",
+                    "pid": 27849,
+                    "time": 1790495837.7773812
+                  }
+                ],
+                "signals": [
+                  {
+                    "signal": "TERM",
+                    "actor": "c3r",
+                    "time": 1790495837.781153
+                  }
+                ],
+                "term_claim": {
+                  "actor": "c3r",
+                  "reason": "Rejected('foreign_inference')",
+                  "owner_pid": 27849,
+                  "time": 1790495837.779125
+                },
+                "owned_absent": true,
+                "confirmed_at": 1790495837.7860842,
+                "audit_error": null,
+                "direct_child_reaped": true
+              },
+              "audit_errors": [],
+              "driver_cleanup_used": false
+            }
+          },
+          {
+            "field": "disk_free_bytes",
+            "receipt": {
+              "reason": "Rejected('disk_reserve')",
+              "cleanup": {
+                "identity_key": "79cdcfa9f237a5f773c106a29d1b2f3d34871ca2245bd8ff3b3082c5cc6cfb0b",
+                "pid": 27888,
+                "requests": [
+                  {
+                    "actor": "c3r",
+                    "reason": "Rejected('disk_reserve')",
+                    "pid": 27884,
+                    "time": 1790495837.928544
+                  }
+                ],
+                "signals": [
+                  {
+                    "signal": "TERM",
+                    "actor": "c3r",
+                    "time": 1790495837.931682
+                  }
+                ],
+                "term_claim": {
+                  "actor": "c3r",
+                  "reason": "Rejected('disk_reserve')",
+                  "owner_pid": 27884,
+                  "time": 1790495837.930061
+                },
+                "owned_absent": true,
+                "confirmed_at": 1790495837.93589,
+                "audit_error": null,
+                "direct_child_reaped": true
+              },
+              "audit_errors": [],
+              "driver_cleanup_used": false
+            }
+          }
+        ]
+      }
+    },
+    {
+      "path": "c4_fixtures/test_two_successive_publications_with_legitimate_advancement/external_observer.json",
+      "observation": {
+        "two_distinct_approved_publications": [
+          {
+            "commit": "dd8cf6a0870293ef9d556a406bb8303a444dfc81",
+            "path": "results/remote_req028/c3_c4/response1.json",
+            "sha256": "a5d7ccf9246a725ae58a5b4772cefd46163d9a7d89eecd0603d4f4c0e235e311"
+          },
+          {
+            "commit": "72971910ae968e29a74573cf4df44330a665f6bd",
+            "path": "results/remote_req028/c3_c4/response2.json",
+            "sha256": "f5b546498a9962cd84cb43577d119450bb596c077edb74818b6fa69376e6ab82"
+          }
+        ],
+        "intervening_legitimate_request_commit": "c10d873a38ea650e1c201e73e9ef8d87f89a8d0d",
+        "source_HEAD_index_worktree_unchanged": true
+      }
+    },
+    {
+      "path": "c3_fixtures/test_phase_event_outage_preserves_primary/immediate_observer.json",
+      "observation": {
+        "absent_before_teardown": true,
+        "primary_exception": "RuntimeError('primary dispatch error')",
+        "failed": "audit event write failed",
+        "audit_errors": [
+          {
+            "path": "events/000009.json",
+            "error": "OSError('injected journal outage')",
+            "durable": false
+          }
+        ],
+        "cleanup_errors": [],
+        "cleanup_results": [
+          {
+            "owned_absent": true,
+            "signals": [
+              {
+                "signal": "TERM",
+                "actor": "c3-fixture",
+                "time": 1790495828.598169
+              }
+            ],
+            "returncode": -15
+          },
+          {
+            "owned_absent": true,
+            "signals": [
+              {
+                "signal": "TERM",
+                "actor": "c3-fixture",
+                "time": 1790495828.598169
+              }
+            ],
+            "returncode": -15
+          },
+          {
+            "owned_absent": true,
+            "signals": [
+              {
+                "signal": "TERM",
+                "actor": "c3-fixture",
+                "time": 1790495828.598169
+              }
+            ],
+            "returncode": -15
+          }
+        ],
+        "cancel_errors": []
+      }
+    },
+    {
+      "path": "c3_fixtures/test_partial_provisional_load_failure/immediate_observer.json",
+      "observation": {
+        "absent_before_teardown": true,
+        "primary_exception": "RuntimeError('partial provisional load failure')",
+        "failed": "RuntimeError('partial provisional load failure')",
+        "audit_errors": [],
+        "cleanup_errors": [],
+        "cleanup_results": [
+          {
+            "owned_absent": true,
+            "signals": [
+              {
+                "signal": "TERM",
+                "actor": "c3-fixture",
+                "time": 1790495828.567916
+              }
+            ],
+            "returncode": -15
+          }
+        ],
+        "cancel_errors": []
+      }
+    },
+    {
+      "path": "c3_fixtures/test_cleanup_success_event_write_outage/immediate_observer.json",
+      "observation": {
+        "absent_before_teardown": true,
+        "primary_exception": null,
+        "failed": "cleanup audit failed",
+        "audit_errors": [
+          {
+            "path": "cleanup_1.json",
+            "error": "OSError('injected journal outage')",
+            "durable": false
+          }
+        ],
+        "cleanup_errors": [],
+        "cleanup_results": [
+          {
+            "owned_absent": true,
+            "signals": [
+              {
+                "signal": "TERM",
+                "actor": "c3-fixture",
+                "time": 1790495814.784448
+              }
+            ],
+            "returncode": -15
+          }
+        ],
+        "cancel_errors": []
+      }
+    },
+    {
+      "path": "c3_fixtures/test_primary_poll_error_with_cancel_and_audit_failure/immediate_observer.json",
+      "observation": {
+        "absent_before_teardown": true,
+        "primary_exception": "RuntimeError('primary poll error')",
+        "failed": "audit event write failed",
+        "audit_errors": [
+          {
+            "path": "operation_cancel_error_1.json",
+            "error": "OSError('injected journal outage')",
+            "durable": false
+          },
+          {
+            "path": "events/000009.json",
+            "error": "OSError('injected journal outage')",
+            "durable": false
+          },
+          {
+            "path": "failure.json",
+            "error": "OSError('injected journal outage')",
+            "durable": false
+          },
+          {
+            "path": "cleanup_1.json",
+            "error": "OSError('injected journal outage')",
+            "durable": false
+          },
+          {
+            "path": "1.indeterminate.json",
+            "error": "OSError('injected journal outage')",
+            "durable": false
+          },
+          {
+            "path": "failure.json",
+            "error": "OSError('injected journal outage')",
+            "durable": false
+          },
+          {
+            "path": "cleanup_2.json",
+            "error": "OSError('injected journal outage')",
+            "durable": false
+          },
+          {
+            "path": "failure.json",
+            "error": "OSError('injected journal outage')",
+            "durable": false
+          },
+          {
+            "path": "cleanup_3.json",
+            "error": "OSError('injected journal outage')",
+            "durable": false
+          }
+        ],
+        "cleanup_errors": [],
+        "cleanup_results": [
+          {
+            "owned_absent": true,
+            "signals": [
+              {
+                "signal": "TERM",
+                "actor": "c3-fixture",
+                "time": 1790495828.633278
+              }
+            ],
+            "returncode": -15
+          },
+          {
+            "owned_absent": true,
+            "signals": [
+              {
+                "signal": "TERM",
+                "actor": "c3-fixture",
+                "time": 1790495828.633278
+              }
+            ],
+            "returncode": -15
+          },
+          {
+            "owned_absent": true,
+            "signals": [
+              {
+                "signal": "TERM",
+                "actor": "c3-fixture",
+                "time": 1790495828.633278
+              }
+            ],
+            "returncode": -15
+          }
+        ],
+        "cancel_errors": [
+          "RuntimeError('secondary cancel error')"
+        ]
+      }
+    },
+    {
+      "path": "c3_fixtures/test_failed_cancel_and_failed_all_audit_cleanup/immediate_observer.json",
+      "observation": {
+        "absent_before_teardown": true,
+        "primary_exception": null,
+        "failed": "primary failure",
+        "audit_errors": [
+          {
+            "path": "failure.json",
+            "error": "OSError('injected journal outage')",
+            "durable": false
+          },
+          {
+            "path": "events/000012.json",
+            "error": "OSError('injected journal outage')",
+            "durable": false
+          },
+          {
+            "path": "cleanup_1.json",
+            "error": "OSError('injected journal outage')",
+            "durable": false
+          }
+        ],
+        "cleanup_errors": [],
+        "cleanup_results": [
+          {
+            "owned_absent": true,
+            "signals": [
+              {
+                "signal": "TERM",
+                "actor": "c3-fixture",
+                "time": 1790495814.923392
+              }
+            ],
+            "returncode": -15
+          }
+        ],
+        "cancel_errors": [
+          "RuntimeError('cancel failed')"
+        ]
+      }
+    },
+    {
+      "path": "c3_fixtures/test_total_wall_event_outage_cleanup_first/immediate_observer.json",
+      "observation": {
+        "absent_before_teardown": true,
+        "primary_exception": null,
+        "failed": "audit event write failed",
+        "audit_errors": [
+          {
+            "path": "events/000012.json",
+            "error": "OSError('injected journal outage')",
+            "durable": false
+          }
+        ],
+        "cleanup_errors": [],
+        "cleanup_results": [
+          {
+            "owned_absent": true,
+            "signals": [
+              {
+                "signal": "TERM",
+                "actor": "c3-fixture",
+                "time": 1790495828.729973
+              }
+            ],
+            "returncode": -15
+          },
+          {
+            "owned_absent": true,
+            "signals": [
+              {
+                "signal": "TERM",
+                "actor": "c3-fixture",
+                "time": 1790495828.729973
+              }
+            ],
+            "returncode": -15
+          }
+        ],
+        "cancel_errors": []
+      }
+    },
+    {
+      "path": "c3_fixtures/test_failure_json_outage_immediate_cleanup/immediate_observer.json",
+      "observation": {
+        "absent_before_teardown": true,
+        "primary_exception": null,
+        "failed": "primary failure",
+        "audit_errors": [
+          {
+            "path": "failure.json",
+            "error": "OSError('injected journal outage')",
+            "durable": false
+          }
+        ],
+        "cleanup_errors": [],
+        "cleanup_results": [
+          {
+            "owned_absent": true,
+            "signals": [
+              {
+                "signal": "TERM",
+                "actor": "c3-fixture",
+                "time": 1790495814.959838
+              }
+            ],
+            "returncode": -15
+          }
+        ],
+        "cancel_errors": []
+      }
+    }
+  ],
+  "final_supervisor_cleanup_receipts": 26,
+  "final_c3_cleanup_receipts": 32,
+  "source_matches_final_snapshot": true
+}
