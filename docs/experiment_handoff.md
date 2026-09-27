@@ -6884,3 +6884,19 @@ No retry/restart,24k request,transport/VM,benchmark or CONFIRM. Lead reviews
 measured allocation/timing before the next competence decision.
 Readiness55%, change0points, range45–65%; competent comparison/valid inference,
 final synthesis, independent reproducibility/approved package remain.
+
+
+## 27 September 2026, 05:15 UTC: B2 template check diagnosed; B2R release
+
+B2a995749 loaded Klear but made zero generation calls: raw GGUF template and
+/props differ by exactly one final LF. Lead independently verified18 hashes,
+byte relation,43tests,and pinned lexer/header source showing this normalization.
+This is a validation defect; no model-format or competence result. Owned cleanup
+confirmed in receipts, all three PIDs reported absent.
+
+[B2R](req028_b2r_template_binding_20260927.md) binds both exact raw/served hashes
+and the one-LF relation, rejecting every other difference. Same three unattempted
+requests/model/binary/configuration and all gates; new immutable run, no template
+edit or broad whitespace stripping. No retry/restart/benchmark/CONFIRM.
+Readiness55%, change0points, range45–65%; competent comparison/valid inference,
+final synthesis, independent reproducibility/approved package remain.
