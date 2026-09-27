@@ -7095,3 +7095,7 @@ Read docs/req029c_reference_control_20260927.md. Lead extracted exact963byte ref
 ## 2026-09-27 — REQ-029D prospective interface decision, no execution
 
 Lead selected a common pinned upstream text-action extraction candidate for a future untouched DEVELOPMENT comparator screen; see docs/req029d_interface_design_20260927.md. Five deterministic source-only tests passed, no generated command executed. C0 remains failed under its frozen closed-thinking gate; new candidate changes that interface explicitly, equally for both models. No model/task screen, primary routing or CONFIRM release. REQ-029C remains the only remote assignment, source-only evaluator positive-control preparation. Readiness55%,change0points,range45–65%;comparison/inference,synthesis,reproducibility/package remain.
+
+## 2026-09-27 — REQ-029C exact local release
+
+Source143e94f independently reviewed:34/34 inert tests,2250member hashes,157pins. Lead releases one local known-good reference control under docs/req029c_execution_20260927.md and exact source approval. No remote model/evaluator job; no C7 negative/candidate rerun. Review actual176status output,patch identity and cleanup before interpretation. Readiness55%,change0points,range45–65%; comparison/inference,synthesis,reproducibility/package remain.
