@@ -7267,3 +7267,5 @@ REQ029W exactMatplotlibevaluatorbundle frozen3add0498a93b3f171e453f5802fdc3fa03f
 
 
 REQ029W: concrete evaluator source b82b3b67585d63c690483688097c600cd8ce32ce passed final 23 inert tests; exact single unchanged/reference control pair released in docs/req029w_controls_execution_20260927.md. No control outcome yet and no model release. 674 checks represent ONE task. Readiness 55%, Δ0, range 45–65%; competent comparison/inference, synthesis, reproducibility and author package remain. Two-hour review cadence.
+
+REQ029W launch receipt: local PID79235 alive at44seconds; independent baseline guardian79406 armed before create. Pair outcome pending. Runtime results/local_req029/matplotlib_eval_runtime/mpe029w-matplotlib20826-a; source immutable, no duplicate. Two-hour monitor updated with exact approval and handles. Readiness55%,Δ0,range45–65%; comparison/inference,synthesis,reproducibility/authorpackage remain.
