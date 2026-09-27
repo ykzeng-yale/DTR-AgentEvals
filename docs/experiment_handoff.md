@@ -6787,3 +6787,11 @@ The [lead review](req026b_setup_review_20260927.md) accepts the corrected inject
 The mini's bounded admission supervisor PID39648 launched03:18:21UTC and expires03:48:21UTC if no qualification. Source554f34d and launch2496ef9 are published. Lead independently passed its7admission tests. It is waiting, not performing inference; it may automatically dispatch the previously authorized configurations under unchanged gates. Existing15-minute monitor remains the only coordination schedule.
 
 Readiness **55%, change0points, range45–65%**. Largest milestones remain competent fixed-target comparison with valid inference, final synthesis, independent reproducibility and approved package.
+
+## 27 September 2026 03:30 UTC — two real-model responses on the mini
+
+Worker `05bfd08` publishes the completed A2R job. Lead verified47artifact hashes and independently reconciled both raw responses/usage with receipts: exact literal/fence responses,33/4 and49/15prompt/completiontokens,0.318/0.578s wall time. One32k/f16server loaded and released; restart admission rejected at68%<75%, so calls3–4unattempted andA3Rskipped. All old supervisor/driver/model/watchdog PIDs are reported absent. Returncode0ofdispatcher is not full mechanics success. Allocator records4608MiBKV and150.63MiBMetalcompute; host-state differences preclude attributing the A1/A2R difference solely to batching.
+
+[New A4 release](req028_a4_context_qualification_20260927.md), `1b043f5`, tests bounded restart recovery plus8192/24576rendered-token synthetic controls after the original four prompts, with unchangedmodel/context/KV/resourcegates. Exactlysixcalls,no retries; newinitial15minadmissionwindow, fixed900sexecution including<=180srestartrecovery. Old window cannot overlap or renew. This tests usablecontext serving, not coding competence; benchmark/CONFIRM remains held. Remote receipt needed before claiming the next job started.
+
+Readiness **55%, change0points, range45–65%**. Remaining: competent fixed-target comparison/valid inference, final synthesis, independent reproducibility and approvedpackage.
