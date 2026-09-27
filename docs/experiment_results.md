@@ -1794,3 +1794,10 @@ C3R d22688d: lead verified2993 archived member hashes and ran unittest c3_tests 
 C4 c0312b4 docs/req028_c4_production_hooks_20260927.md dispatched for real-hook completion/read-only asset attestation, gated startup supervision, correct pinned API methods, two-request Git publication advancement and noncircular response validation. Inert/strictloopback/tempGit tests only; no model/container/benchmark/livepoller. Exact future model request remains lead-held.
 
 Readiness55%,change0points,range45–65%; competent fixed-target comparison with valid inference, final empirical/manuscript synthesis, independent reproducibility and author-approved package remain.
+
+
+## 2026-09-27 08:00 UTC — C4 review and exact C5 preparation
+
+Lead verified5437 C4 archive hashes; local63tests:62pass/one telemetry error due unavailable local Ollama API, not independent63pass. Remote63pass remains worker-reported. No guard weakening or local service startup. C5 docs/req028_c5_activation_20260927.md freezes exactlyone unchanged C0 Qwen DEVELOPMENT request for future transport qualification and authorizes activation implementation/inerttests only. Manifest and expected native hashes are frozen; exact published source approval still required before model load.
+
+Readiness55%,change0points,range45–65%; competent fixed-target comparison/valid inference, final synthesis, independent reproducibility and approved package remain.
