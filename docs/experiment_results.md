@@ -2040,3 +2040,6 @@ Vfailedpreflight because retainedMatplotlibwarning polluted mergedJSON;cleanupco
 ### REQ029W evaluator preparation only
 
 Frozen Matplotlib20826 evaluatorbundle/actualupstreamcommand/parser pinned separatelyfrommodelinputs. ONEtask1F2P+673P2P; exactpytestfilecommand. Two data-onlytests pass,3370statusmutations reject falsepasses; no actualcontrol/modeloutcomes. Strictunchanged/referencecriteria and offlinepipinstallomission declaredbeforeexecution. See docs/req029w_matplotlib_evaluator_20260927.md. Readiness55%,Δ0,range45–65%; competentcomparison/inference,synthesis,independentreproducibility/authorpackage remain.
+
+
+REQ029W: concrete evaluator source b82b3b67585d63c690483688097c600cd8ce32ce passed final 23 inert tests; exact single unchanged/reference control pair released in docs/req029w_controls_execution_20260927.md. No control outcome yet and no model release. 674 checks represent ONE task. Readiness 55%, Δ0, range 45–65%; competent comparison/inference, synthesis, reproducibility and author package remain. Two-hour review cadence.
