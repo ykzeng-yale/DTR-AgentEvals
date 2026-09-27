@@ -1559,3 +1559,11 @@ A separate agent mathematical review and locally replayed exact checks support t
 REQ-026B's initial local residency controller failed four lead adversarial checks. The worker is correcting pressure/deadline enforcement, immutable retry histories and persistent logical routing state in its two owned files. No mechanics/model probe is released by this update. The lead remains the sole integration owner; worker files stay uncommitted until review. No Lean jobs or infrastructure were touched.
 
 Readiness **55%, change 0 percentage points, range 45–65%**. Remaining milestones: competent fixed-target comparison with valid inference; final empirical/manuscript synthesis; independent reproducibility and author-approved metadata/package.
+
+## 27 September 2026 — REQ-028A serving interruption and next release
+
+Worker `bc1824b` completed pinned runner/model setup and loaded one healthy Qwen3-4B 32k server on the Mac mini. The first request started but returned no response: memory pressure triggered the watchdog after 0.645 seconds. Calls2–4 were not attempted; owned cleanup is recorded. Lead verified18artifact and7source hashes and independently passed the two pure guard tests. Setup had a disclosed watchdog identity/supervision gap, repaired before inference. Neither task competence nor a blanket inability to use the mini follows.
+
+[Lead diagnosis and next release](req028_followup_memory_20260927.md), `adc75d3`: the provisional compute allowance did not predict measured memory. REQ028A2 keeps32k/f16 but explicitly bounds batch128/ubatch32 and records detailed allocations. Conditional A3 changes only KV toq8_0 if A2 has the same pressure abort and confirmed cleanup. No repeated run on the original settings, weakened guard, Klear download, benchmark or CONFIRM. The separate driver must preserve original source/run pins and pass conditional-dispatch tests. Remote assignment has been dispatched; execution/completion requires its next receipt. The remote goal had marked itself blocked after three lead-wait turns; this message releases work but does not by itself verify a product goal-state change.
+
+Readiness **55%, change0points, range45–65%**. Largest milestones: competent fixed-target comparison with valid inference, final empirical/manuscript synthesis, independent reproducibility and approved submission package.
