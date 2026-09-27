@@ -1,3 +1,7 @@
+## REQ-029E integration and task exposure audit — 27 September 2026
+
+Concrete task/arm-bound worker/controller implementation is released as source/inert work only in [REQ-029E](req029e_comparator_integration_20260927.md). Neither model nor task/image is released. The [incremental ID-only audit](req029_exposure_delta_20260927.md) preserves89exclusions and found no23remaining-queue ID mentions in231MB of newer tracked text/tar-member records; untracked/other-host and binary limitations remain explicit. Three scanner tests passed. Readiness55%,change0points,range45–65%;comparison/inference,synthesis,reproducibility/package remain.
+
 ## REQ-029C positive control complete — 27 September 2026
 
 [Decision](req029c_decision_20260927.md): reference-b176PASSED/exit0,94runtime hashes/raw parser and patch bindings checked,owned cleanup confirmed. Together with C7 no-change175/1 and submitted174/2, this supports this task/environment's evaluator discrimination; these are within-task test counts, not model baselines or a routing comparison. Reference-a setup failure remains preserved. No additional same-task model or evaluation attempt is released. Readiness55%,change0points,range45–65%;comparison/inference,synthesis,reproducibility/package remain.
@@ -26,6 +30,7 @@ See [lead audit](scientific_audit_20260927.md). C6B is one exposed single-model 
 
 | Stream | Verified status | Next boundary |
 |---|---|---|
+| REQ-029E comparator integration | Source/inert implementation dispatched;029Afeedback and029Dparser must be wired through real entrypoints. | No model/task/image release; lead exposure and image qualification remain. |
 | REQ-029C reference control | Attempt-a setup failure preserved; corrected attempt-b176PASSED/exit0 with cleanup and raw replay verified. | Exposed task evaluator control complete; no further same-task run. Untouched comparator design remains. |
 | REQ-028C5 Mac mini Qwen relay | One real request completed; 129 runtime hashes, 102 source pins and exact consumer/native/parser replay independently checked; owned cleanup recorded. | Transport qualification only; no executed action or competence claim. No C5 job remains. |
 | REQ-028C6 development trajectory | Run-a: infrastructure termination after two calls/actions. Run-b: four calls/actions, submitted patch; C7 unmodified-repository control: 175 pass/1 fail; candidate: 174 pass/2 fail, target failure plus one regression. | C7 complete; exposed task probe closed, no further run released. |
