@@ -1,0 +1,26 @@
+test_clean_reset_and_physical_cap (recovery_tests.Tests.test_clean_reset_and_physical_cap) ... FAIL
+test_crash_after_claim_no_dispatch (recovery_tests.Tests.test_crash_after_claim_no_dispatch) ... ok
+test_expiry_after_feedback_no_renewal (recovery_tests.Tests.test_expiry_after_feedback_no_renewal) ... ok
+test_feedback_mutations_no_second_dispatch (recovery_tests.Tests.test_feedback_mutations_no_second_dispatch) ... ok
+test_feedback_publication_conflict_no_retry (recovery_tests.Tests.test_feedback_publication_conflict_no_retry) ... ok
+test_invalid_usage_and_finish_terminal (recovery_tests.Tests.test_invalid_usage_and_finish_terminal) ... ok
+test_three_errors_no_actions (recovery_tests.Tests.test_three_errors_no_actions) ... ok
+
+======================================================================
+FAIL: test_clean_reset_and_physical_cap (recovery_tests.Tests.test_clean_reset_and_physical_cap)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/yukangzengcmac/DTR-AgentEvals/experiments/remote_req029/recovery_tests.py", line 57, in test_clean_reset_and_physical_cap
+    self.assertEqual(w.chain.messages,c.chain.messages)
+AssertionError: Lists differ: [{'co[3063 chars]ns.'}] != [{'co[3063 chars]ns.'}, {'role': 'assistant', 'content': '```ms[118 chars]t>'}]
+
+Second list contains 2 additional elements.
+First extra element 32:
+{'role': 'assistant', 'content': '```mswea_bash_command\nfixture_only\n```'}
+
+Diff is 3727 characters long. Set self.maxDiff to None to see it.
+
+----------------------------------------------------------------------
+Ran 7 tests in 1.987s
+
+FAILED (failures=1)

@@ -1,5 +1,5 @@
 """Actual two-role engine, in-memory transport and inert model/sandbox only."""
-import json,tempfile,threading,time,unittest
+import copy,json,tempfile,threading,time,unittest
 from pathlib import Path
 from recovery_contract import *
 from recovery_engine import Worker,Controller
@@ -27,13 +27,20 @@ class Sandbox:
     def diff(self,*a):return ''
     def close(self):self.closed=True;return {'owned_absent':True}
 class Tests(unittest.TestCase):
-    def pair(self,seq):
+    def pair(self,seq,configure=None):
         r,_=release(seconds=30);r.update(protocol=PROTOCOL,run_id='cmp029o-fixture',root='results/remote_req029/comparator_runs/cmp029o-fixture',source_hashes=inventory());pin=sha(encode(r))
         with tempfile.TemporaryDirectory() as tmp:
             store={};w=Worker(Path(tmp)/'w',r,pin,Wire(store,r['root']));c=Controller(Path(tmp)/'c',r,pin,Wire(store,r['root']))
-            m=Model(seq,r);s=Sandbox();t=threading.Thread(target=w.run,args=(m,));t.start();c.run(s);t.join(12)
+            m=Model(seq,r);s=Sandbox()
+            if configure:configure(w,c,m,s,store)
+            failures=[]
+            def run_worker():
+                try:w.run(m)
+                except BaseException as e:failures.append(repr(e))
+            t=threading.Thread(target=run_worker);t.start();c.run(s);t.join(12)
+            self.assertEqual(failures,[])
             self.assertFalse(t.is_alive());self.assertTrue(m.stopped and s.closed)
-            self.assertEqual(len(m.sent),w.claims);self.assertEqual(len(s.actions),c.claims)
+            self.assertLessEqual(len(m.sent),w.claims);self.assertEqual(len(s.actions),c.claims)
             return w,c,m,s,store
     def test_three_errors_no_actions(self):
         w,c,m,s,store=self.pair([BAD]*3)
@@ -48,4 +55,62 @@ class Tests(unittest.TestCase):
         self.assertEqual(c.terminal['status'],'action_cap')
         self.assertEqual(c.chain.format_errors,0)
         self.assertEqual(w.chain.messages,c.chain.messages)
+    def test_feedback_mutations_no_second_dispatch(self):
+        for field in ('content','sequence','response_sha256','response_object','release_sha256','feedback_semantics'):
+            with self.subTest(field=field):
+                def configure(w,c,m,s,store):
+                    original=c.t.publish
+                    def publish(kind,value,seq=None):
+                        value=copy.deepcopy(value)
+                        if kind=='observation':
+                            if field=='content':value['observation']['content']='choose either command'
+                            elif field=='sequence':value[field]+=1
+                            elif field=='response_object':value[field]['sha256']='0'*64
+                            else:value[field]='tampered'
+                        return original(kind,value,seq)
+                    c.t.publish=publish
+                w,c,m,s,store=self.pair([BAD,GOOD],configure)
+                self.assertEqual(len(m.sent),1);self.assertEqual(s.actions,[])
+                self.assertIsNotNone(w.terminal['error'])
+    def test_invalid_usage_and_finish_terminal(self):
+        for field in ('total_tokens','prompt_tokens','finish_reason'):
+            with self.subTest(field=field):
+                def configure(w,c,m,s,store):
+                    original=m.generate
+                    def generate(messages,deadline):
+                        v=json.loads(original(messages,deadline))
+                        if field=='finish_reason':v['choices'][0][field]='length'
+                        else:v['usage'][field]+=1
+                        return json.dumps(v)
+                    m.generate=generate
+                w,c,m,s,store=self.pair([BAD],configure)
+                self.assertEqual(len(m.sent),1);self.assertEqual(s.actions,[])
+                self.assertNotIn(('response',1),store)
+    def test_crash_after_claim_no_dispatch(self):
+        def configure(w,c,m,s,store):
+            def crash(stage):
+                if stage=='after_model_claim':raise RuntimeError('fixture interruption after durable claim')
+            w.crash=crash
+        w,c,m,s,store=self.pair([GOOD],configure)
+        self.assertEqual(w.claims,1);self.assertEqual(m.sent,[]);self.assertEqual(s.actions,[])
+    def test_expiry_after_feedback_no_renewal(self):
+        def configure(w,c,m,s,store):
+            original=c.t.publish
+            def publish(kind,value,seq=None):
+                if kind=='observation':w.deadline=time.time()-1
+                return original(kind,value,seq)
+            c.t.publish=publish
+        w,c,m,s,store=self.pair([BAD,GOOD],configure)
+        self.assertEqual(len(m.sent),1);self.assertEqual(s.actions,[])
+        self.assertIn('deadline',w.terminal['error'])
+    def test_feedback_publication_conflict_no_retry(self):
+        def configure(w,c,m,s,store):
+            original=c.t.publish
+            def publish(kind,value,seq=None):
+                if kind=='observation':raise RuntimeError('fixture immutable conflict')
+                return original(kind,value,seq)
+            c.t.publish=publish
+        w,c,m,s,store=self.pair([BAD,GOOD],configure)
+        self.assertEqual(len(m.sent),1);self.assertEqual(s.actions,[])
+        self.assertIn('immutable conflict',c.terminal['error'])
 if __name__=='__main__':unittest.main()
