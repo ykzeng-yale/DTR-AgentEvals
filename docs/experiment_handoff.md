@@ -7218,3 +7218,7 @@ Readiness55%,change0points,range45–65%; competent fixed-targetcomparison/valid
 Read docs/req029m_terminal_delivery_20260927.md. Future comparator source gives terminal-only publication15seconds aftercleanup cappedbyabsoluteexpiry; executiondeadline unchanged,no repeatfinish/poisonedtransport retry. Combined28inerttests passed63.850seconds,including6newboundarycases; archived results/local_req029/terminal_fix_20260927. No actualmodel/Docker run; oldsourceapprovalrejectschangedinventory. Auxiliaryread-onlysnapshot32GiB/free48%/swap9456.12MiB/disk18,527,952KiB/AC; no inferenceprocessfound,notdeploymentqualification. Next bind directSSHtransport/auxruntime without weakening archived gates or restarting completedcells.
 
 Readiness55%,change0points,range45–65%; competentcomparison/validinference,synthesis,independentreproducibility/authorapprovedpackage remain.
+
+### REQ029N — lead diagnosis, source-only next step
+
+Pinned upstream control-flow audit found omitted format-error recovery in the lead's comparator design. Four inert source-bound cases pass; see `docs/req029n_format_flow_diagnosis_20260927.md`. Next: exact prospective adapter/error-state contract and actual adapter regression tests, then fresh-task design review before any release. Do not rescore/retry frozen Django or Astropy tasks. No model job active; direct SSH only, two-hour review. Readiness55%,Δ0,45–65%; remaining competent comparisons/valid inference, synthesis, reproducibility/author package.

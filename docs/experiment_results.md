@@ -2002,3 +2002,7 @@ Readiness55%,change0points,range45–65%; competent comparison/inference,synthes
 cmp029e-django16560-klear-a:0loads/0calls/0actions;15admission samples70–73%free,normalpressure,nopeer,never75%. Original900secondwindowexpired. Lead113workerhashesverified,6101controllerfilesarchived,ownedcleanupconfirmed. Separate executedfixture reproduces pre-model expiredsetupdeadline suppressing peerterminalpublication; controller subsequently cleaned up at its own preflightlease. Resourcefailure is not modeltaskfailure. Pairedscreen has one Qwenformatfailure and one unattemptedKleararm,no eligiblecandidate/evaluation. docs/req029l_klear_decision_20260927.md supplies diagnosis/nextsource-onlyrequirements. No retry or thresholdweakening.
 
 Readiness55%,change0points,range45–65%; competent comparison/inference,synthesis,reproducibility/package remain.
+
+### REQ029N: retrospective agent control-flow audit (27 September 2026)
+
+Four deterministic pinned-source cases passed: upstream format recovery spends call budget, stops at three consecutive errors, resets after a clean step, and executes no ambiguous commands. The released comparator stopped at the first error; regex fidelity was not full scaffold fidelity. Qwen's frozen failure remains unchanged and recovery benefit is unmeasured. Klear's admission failure remains zero inference. See `docs/req029n_format_flow_diagnosis_20260927.md`; no new model run authorized. Readiness55%,Δ0,range45–65%; competent comparisons/inference, synthesis, reproducibility and author package remain.
