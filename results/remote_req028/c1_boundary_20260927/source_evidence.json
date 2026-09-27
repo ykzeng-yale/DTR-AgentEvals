@@ -1,0 +1,108 @@
+[
+  {
+    "path": "common/common.h",
+    "sha256": "7cfcc6a57122702ea35d04ed20861aef162bd94f55cfbbf9fd23ee3127fe6cb4",
+    "archive_equal": true,
+    "excerpts": [
+      {
+        "start": 417,
+        "end": 424,
+        "text": "417: // reasoning API response format (not to be confused as chat template's reasoning format)\n418: // only used by server\n419: enum common_reasoning_format {\n420:     COMMON_REASONING_FORMAT_NONE,\n421:     COMMON_REASONING_FORMAT_AUTO,            // Same as deepseek, using `message.reasoning_content`\n422:     COMMON_REASONING_FORMAT_DEEPSEEK_LEGACY, // Extract thinking tag contents and return as `message.reasoning_content`, or leave inline in <think> tags in stream mode\n423:     COMMON_REASONING_FORMAT_DEEPSEEK,        // Extract thinking tag contents and return as `message.reasoning_content`, including in streaming deltas.\n424:     // do not extend this enum unless you absolutely have to"
+      },
+      {
+        "start": 648,
+        "end": 651,
+        "text": "648:     bool force_pure_content_parser = false;\n649:     common_reasoning_format reasoning_format = COMMON_REASONING_FORMAT_DEEPSEEK;\n650:     int enable_reasoning = -1; // -1 = auto, 0 = disable, 1 = enable\n651:     bool prefill_assistant = true; // if true, any trailing assistant message will be prefilled into the response"
+      }
+    ]
+  },
+  {
+    "path": "common/arg.cpp",
+    "sha256": "6e71ad4f63c79fee81fe218ab6755ed97813ba84d179e38ae02924be1556d46e",
+    "archive_equal": true,
+    "excerpts": [
+      {
+        "start": 3665,
+        "end": 3690,
+        "text": "3665:     add_opt(common_arg(\n3666:         {\"--reasoning-format\"}, \"FORMAT\",\n3667:         \"controls whether thought tags are allowed and/or extracted from the response, and in which format they're returned; one of:\\n\"\n3668:         \"- none: leaves thoughts unparsed in `message.content`\\n\"\n3669:         \"- deepseek: puts thoughts in `message.reasoning_content`\\n\"\n3670:         \"- deepseek-legacy: keeps `<think>` tags in `message.content` while also populating `message.reasoning_content`\\n\"\n3671:         \"(default: auto)\",\n3672:         [](common_params & params, const std::string & value) {\n3673:             params.reasoning_format = common_reasoning_format_from_name(value);\n3674:         }\n3675:     ).set_examples({LLAMA_EXAMPLE_SERVER, LLAMA_EXAMPLE_COMPLETION, LLAMA_EXAMPLE_CLI}).set_env(\"LLAMA_ARG_THINK\"));\n3676:     add_opt(common_arg(\n3677:         {\"-rea\", \"--reasoning\"}, \"[on|off|auto]\",\n3678:         \"Use reasoning/thinking in the chat ('on', 'off', or 'auto', default: 'auto' (detect from template))\",\n3679:         [](common_params & params, const std::string & value) {\n3680:             if (is_truthy(value)) {\n3681:                 params.enable_reasoning = 1;\n3682:                 params.default_template_kwargs[\"enable_thinking\"] = \"true\";\n3683:             } else if (is_falsey(value)) {\n3684:                 params.enable_reasoning = 0;\n3685:                 params.default_template_kwargs[\"enable_thinking\"] = \"false\";\n3686:             } else if (is_autoy(value)) {\n3687:                 params.enable_reasoning = -1;\n3688:             } else {\n3689:                 throw std::invalid_argument(\n3690:                     string_format(\"error: unknown value for --reasoning: '%s'\\n\", value.c_str()));"
+      }
+    ]
+  },
+  {
+    "path": "common/chat.cpp",
+    "sha256": "a226aa0cbf844490cd480bb805c458df16af8771b1ecb53a8fe608e3b2e60d3c",
+    "archive_equal": true,
+    "excerpts": [
+      {
+        "start": 1325,
+        "end": 1346,
+        "text": "1325:     try {\n1326:         LOG_DBG(\"%s: using differential autoparser\\n\", __func__);\n1327:         struct autoparser::autoparser autoparser;\n1328:         autoparser.analyze_template(tmpl);\n1329:         auto auto_params = autoparser::peg_generator::generate_parser(tmpl, params, autoparser);\n1330: \n1331:         common_chat_msg_delimiters delimiters;\n1332:         if (!autoparser.assistant_start.empty()) {\n1333:             delimiters.add(COMMON_CHAT_ROLE_ASSISTANT, autoparser.assistant_start);\n1334:         }\n1335:         if (!autoparser.user_start.empty()) {\n1336:             delimiters.add(COMMON_CHAT_ROLE_USER, autoparser.user_start);\n1337:         }\n1338: \n1339:         auto_params.message_delimiters = std::move(delimiters);\n1340: \n1341:         auto_params.supports_thinking = autoparser.reasoning.mode != autoparser::reasoning_mode::NONE;\n1342:         if (auto_params.supports_thinking) {\n1343:             auto_params.thinking_start_tag = trim_whitespace(autoparser.reasoning.start);\n1344:             auto end_tag = trim_whitespace(autoparser.reasoning.end);\n1345:             if (!end_tag.empty()) {\n1346:                 auto_params.thinking_end_tags = {std::move(end_tag)};"
+      }
+    ]
+  },
+  {
+    "path": "common/chat-diff-analyzer.cpp",
+    "sha256": "5acb9907c78a66685e4f43327e9f700db3325fefb8991c1212d713a412469297",
+    "archive_equal": true,
+    "excerpts": [
+      {
+        "start": 461,
+        "end": 503,
+        "text": "461: analyze_reasoning::analyze_reasoning(const common_chat_template & tmpl, bool supports_tools)\n462:     : analyze_base(tmpl) {\n463:     LOG_DBG(ANSI_PURPLE \"=== Starting differential analysis ===\\n\" ANSI_RESET);\n464:     LOG_DBG(ANSI_ORANGE \"Phase 1: Reasoning analysis\\n\" ANSI_RESET);\n465: \n466:     compare_reasoning_presence();\n467:     compare_thinking_enabled();\n468:     if (supports_tools) {\n469:         compare_reasoning_scope();\n470:     }\n471: }\n472: \n473: void analyze_reasoning::compare_reasoning_presence() {\n474:     json user_msg = json{\n475:         { \"role\",    \"user\"  },\n476:         { \"content\", USER_MSG }\n477:     };\n478: \n479:     json assistant_no_reasoning = json{\n480:         { \"role\",    \"assistant\"   },\n481:         { \"content\", ASSISTANT_MSG }\n482:     };\n483: \n484:     json assistant_with_reasoning = json{\n485:         { \"role\",              \"assistant\"                },\n486:         { \"content\",           ASSISTANT_MSG              },\n487:         { \"reasoning_content\", THINKING_CONTENT           }\n488:     };\n489: \n490:     template_params params;\n491:     params.messages              = json::array({ user_msg, assistant_no_reasoning });\n492:     params.add_generation_prompt = false;\n493:     params.enable_thinking       = true;\n494: \n495:     auto comparison = compare_variants(\n496:         *tmpl, params, [&](template_params & p) { p.messages = json::array({ user_msg, assistant_with_reasoning }); });\n497: \n498:     if (!comparison) {\n499:         LOG_DBG(ANSI_ORANGE \"%s: Template application failed, skipping reasoning detection\\n\" ANSI_RESET, __func__);\n500:         return;\n501:     }\n502: \n503:     const auto & diff = comparison->diff;"
+      }
+    ]
+  },
+  {
+    "path": "common/chat-auto-parser-generator.cpp",
+    "sha256": "9f76ec58eb8e7aa8d2c40df1be0a75ba2e90a0486fc347f6a00e73b4457d1df4",
+    "archive_equal": true,
+    "excerpts": [
+      {
+        "start": 100,
+        "end": 169,
+        "text": "100:     if (!analysis_complete) {\n101:         throw std::invalid_argument(\"Cannot call build_parser on autoparser without performing analysis first, call analyze_template(...)\");\n102:     }\n103:     return build_chat_peg_parser([&](common_chat_peg_builder & p) {\n104:         parser_build_context ctx(p, inputs);\n105:         bool                 extract_reasoning = inputs.reasoning_format != COMMON_REASONING_FORMAT_NONE;\n106: \n107:         ctx.extracting_reasoning = extract_reasoning && reasoning.mode != reasoning_mode::NONE;\n108:         ctx.content              = &content;\n109:         ctx.reasoning            = &reasoning;\n110: \n111:         // Build reasoning parser\n112:         ctx.reasoning_parser = reasoning.build_parser(ctx);\n113: \n114:         auto parser = p.eps();\n115: \n116:         bool has_tools           = inputs.tools.is_array() && !inputs.tools.empty();\n117:         bool has_response_format = inputs.json_schema.is_object() && !inputs.json_schema.empty();\n118:         bool pure_content        = reasoning.mode == reasoning_mode::NONE;\n119: \n120:         if (has_response_format) {\n121:             auto response_format = p.rule(\"response-format\", p.content(p.schema(p.json(), \"response-format-schema\", inputs.json_schema)));\n122:             parser = ctx.reasoning_parser + p.space() + p.choice({\n123:                 p.literal(\"```json\") + p.space() + response_format + p.space() + p.literal(\"```\"),\n124:                 p.space() + response_format  + p.space()\n125:             }) + p.end();\n126:             pure_content = false;\n127:         } else if (has_tools && inputs.tool_choice != COMMON_CHAT_TOOL_CHOICE_NONE && jinja_caps.supports_tool_calls) {\n128:             parser = tools.build_parser(ctx);\n129:             pure_content = false;\n130:         } else {\n131:             parser = content.build_parser(ctx);\n132:         }\n133:         const std::string reasoning_start = trim_whitespace(reasoning.start);\n134:         return pure_content ? p.prefix(generation_prompt, reasoning_start) + parser : p.prefix(generation_prompt, reasoning_start) << parser;\n135:     });\n136: }\n137: \n138: common_peg_parser analyze_reasoning::build_parser(parser_build_context & ctx) const {\n139:     auto & p = ctx.p;\n140: \n141:     if (!ctx.extracting_reasoning) {\n142:         return p.eps();\n143:     }\n144: \n145:     if (mode == reasoning_mode::TAG_BASED || mode == reasoning_mode::TOOLS_ONLY) {\n146:         if (!end.empty()) {\n147:             if (!start.empty()) {\n148:                 // Standard tag-based: optional(<think>reasoning</think>)\n149:                 return p.optional(p.optspace(start) + p.reasoning(p.until(trim_whitespace(end))) + p.optspace(end));\n150:             }\n151:             // Delimiter-style (empty start)\n152:             return p.optional(p.reasoning(p.until(trim_whitespace(end))) + p.optspace(end));\n153:         }\n154:     }\n155: \n156:     return p.eps();\n157: }\n158: \n159: common_peg_parser analyze_content::build_parser(parser_build_context & ctx) const {\n160:     auto & p = ctx.p;\n161: \n162:     if (is_always_wrapped()) {\n163:         if (ctx.extracting_reasoning) {\n164:             return ctx.reasoning_parser + start + p.content(p.until(end)) + end + p.end();\n165:         }\n166:         return p.content(p.until(start)) + start + p.content(p.until(end)) + end + p.end();\n167:     }\n168:     return ctx.reasoning_parser + p.content(p.rest()) + p.end();\n169: }"
+      }
+    ]
+  },
+  {
+    "path": "tools/server/server-common.cpp",
+    "sha256": "de3a89422f67b97eb385041fae17e553dc677aac6b67f2e98e9f0beff672b4e0",
+    "archive_equal": true,
+    "excerpts": [
+      {
+        "start": 1317,
+        "end": 1363,
+        "text": "1317:     inputs.reasoning_format = opt.reasoning_format;\n1318:     if (body.contains(\"reasoning_format\")) {\n1319:         inputs.reasoning_format = common_reasoning_format_from_name(body.at(\"reasoning_format\").get<std::string>());\n1320:     }\n1321:     inputs.enable_thinking = opt.enable_thinking;\n1322:     if (!inputs.tools.empty() && inputs.tool_choice != COMMON_CHAT_TOOL_CHOICE_NONE) {\n1323:         if (body.contains(\"grammar\")) {\n1324:             throw std::invalid_argument(\"Cannot use custom grammar constraints with tools.\");\n1325:         }\n1326:         llama_params[\"parse_tool_calls\"] = true;\n1327:     }\n1328: \n1329:     // merge the template args provided from command line with the args provided in the user request\n1330:     auto chat_template_kwargs_object = json_value(body, \"chat_template_kwargs\", json::object());\n1331:     inputs.chat_template_kwargs = opt.chat_template_kwargs;\n1332:     for (const auto & item : chat_template_kwargs_object.items()) {\n1333:         inputs.chat_template_kwargs[item.key()] = item.value().dump();\n1334:     }\n1335: \n1336:     // parse the \"enable_thinking\" kwarg to override the default value\n1337:     auto enable_thinking_kwarg = json_value(inputs.chat_template_kwargs, \"enable_thinking\", std::string(\"\"));\n1338:     if (enable_thinking_kwarg == \"true\") {\n1339:         inputs.enable_thinking = true;\n1340:     } else if (enable_thinking_kwarg == \"false\") {\n1341:         inputs.enable_thinking = false;\n1342:     } else if (!enable_thinking_kwarg.empty() && enable_thinking_kwarg[0] == '\"') {\n1343:         throw std::invalid_argument(\"invalid type for \\\"enable_thinking\\\" (expected boolean, got string)\");\n1344:     }\n1345: \n1346:     // Parse the OAI \"reasoning_effort\" field; \"none\" disables reasoning.\n1347:     if (body.contains(\"reasoning_effort\")) {\n1348:         auto reasoning_effort = json_value(body, \"reasoning_effort\", std::string(\"\"));\n1349:         if (reasoning_effort == \"none\") {\n1350:             inputs.enable_thinking = false;\n1351:             inputs.chat_template_kwargs.erase(\"reasoning_effort\");\n1352:         } else if (!reasoning_effort.empty()) {\n1353:             inputs.chat_template_kwargs[\"reasoning_effort\"] = json(reasoning_effort).dump();\n1354:         }\n1355:     }\n1356: \n1357:     inputs.force_pure_content = opt.force_pure_content;\n1358: \n1359:     // Apply chat template to the list of messages\n1360:     auto chat_params = common_chat_templates_apply(opt.tmpls.get(), inputs);\n1361: \n1362:     llama_params[\"chat_format\"] = static_cast<int>(chat_params.format);\n1363:     llama_params[\"prompt\"]      = chat_params.prompt;"
+      }
+    ]
+  },
+  {
+    "path": "tools/server/server-context.cpp",
+    "sha256": "2f5d65ce6ef0504b5c8cf55a74c68d3959c49784ba380ef836566b7a7d5fa12b",
+    "archive_equal": true,
+    "excerpts": [
+      {
+        "start": 1450,
+        "end": 1472,
+        "text": "1450:         {\n1451:             common_chat_templates_ptr chat_templates;\n1452:             bool enable_thinking = false;\n1453: \n1454:             try {\n1455:                 chat_templates = common_chat_templates_init(model_tgt, params_base.chat_template);\n1456: \n1457:                 SRV_TRC(\"%s: chat template, example_format: '%s'\\n\", __func__,\n1458:                     common_chat_format_example(chat_templates.get(), params_base.use_jinja, params_base.default_template_kwargs).c_str());\n1459: \n1460:                 // thinking is enabled if:\n1461:                 // 1. It's not explicitly disabled via --reasoning off\n1462:                 // 2. The chat template supports it\n1463:                 const bool template_supports_thinking = params_base.use_jinja && common_chat_templates_support_enable_thinking(chat_templates.get());\n1464:                 enable_thinking = params_base.enable_reasoning != 0 && template_supports_thinking;\n1465:                 SRV_TRC(\"%s: chat template, thinking = %d\\n\", __func__, enable_thinking);\n1466:             } catch (const std::exception & e) {\n1467:                 SRV_ERR(\"%s: chat template parsing error: %s\\n\", __func__, e.what());\n1468:                 SRV_ERR(\"%s: please consider disabling jinja via --no-jinja, or use a custom chat template via --chat-template\\n\", __func__);\n1469:                 SRV_ERR(\"%s: for example: --no-jinja --chat-template chatml\\n\", __func__);\n1470:                 return false;\n1471:             }\n1472: "
+      },
+      {
+        "start": 1952,
+        "end": 1961,
+        "text": "1952:         if (llama_vocab_is_eog(vocab, result.tok)) {\n1953:             slot.stop           = STOP_TYPE_EOS;\n1954:             slot.has_next_token = false;\n1955: \n1956:             SLT_DBG(slot, \"%s\", \"stopped by EOS\\n\");\n1957:         }\n1958: \n1959:         SLT_DBG(slot, \"n_gen = %d, n_remaining = %d, next token: %5d '%s'\\n\", (int) slot.stats.n_gen, slot.n_remaining(), result.tok, token_str.c_str());\n1960: \n1961:         return slot.has_next_token; // continue"
+      }
+    ]
+  },
+  {
+    "path": "tools/server/server-task.cpp",
+    "sha256": "0fd5c8df2525e61214986e8abe3fc4edbb92f5dd652c9c2bfd1bc2712218a585",
+    "archive_equal": true,
+    "excerpts": [
+      {
+        "start": 412,
+        "end": 427,
+        "text": "412: }\n413: \n414: json server_task_result_cmpl_final::to_json_oaicompat_chat() {\n415:     std::string finish_reason = \"length\";\n416:     common_chat_msg msg;\n417:     if (!oaicompat_msg.empty()) {\n418:         msg = oaicompat_msg;\n419:     } else {\n420:         msg.role = \"assistant\";\n421:         msg.content = content;\n422:     }\n423:     if (stop == STOP_TYPE_WORD || stop == STOP_TYPE_EOS) {\n424:         finish_reason = msg.tool_calls.empty() ? \"stop\" : \"tool_calls\";\n425:     }\n426: \n427:     json choice {"
+      }
+    ]
+  }
+]
