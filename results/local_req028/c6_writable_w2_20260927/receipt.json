@@ -1,0 +1,54 @@
+{
+  "started": 1790499917.7755232,
+  "image": "sha256:ff1716c2ea207eeb3b717cd5deb3213f923f4d445234edd9a53d035dce834997",
+  "scope": "fixed W2 only",
+  "source_sha256": "220ffebcf348d286d421243000dd1d1ac6742de83c6ab805640282bb3df0a0d3",
+  "host_free_percent": 56,
+  "archive": {
+    "path": "work/local_req028/c6_writable_w2_20260927/testbed.tar",
+    "bytes": 99788288,
+    "sha256": "792ffe4a936f4e0561011f13405c134bcda00ece6cdc9a0a57a130040e98de6e"
+  },
+  "settings": {
+    "ReadonlyRootfs": true,
+    "Memory": 1073741824,
+    "MemorySwap": 1073741824,
+    "NanoCpus": 1000000000,
+    "PidsLimit": 128,
+    "NetworkMode": "none",
+    "CapDrop": [
+      "ALL"
+    ],
+    "SecurityOpt": [
+      "no-new-privileges"
+    ],
+    "Tmpfs": {
+      "/testbed": "rw,nosuid,nodev,size=512m",
+      "/tmp": "rw,nosuid,nodev,size=64m"
+    },
+    "Binds": null
+  },
+  "probe_sha256": "eb8165a9b397ed37bc16aa02efb1ac500a68969ad3c7ed2fa5ec959691aa9b96",
+  "returncode": 1,
+  "stdout": "",
+  "stderr": "Traceback (most recent call last):\n  File \"<stdin>\", line 6, in <module>\n  File \"/testbed/astropy/__init__.py\", line 176, in <module>\n    _initialize_astropy()\n  File \"/testbed/astropy/__init__.py\", line 150, in _initialize_astropy\n    raise ImportError(\nImportError: You appear to be trying to import astropy from within a source checkout or from an editable installation without building the extension modules first. Either run:\n\n  pip install -e .\n\nor\n\n  python setup.py build_ext --inplace\n\nto make sure the extension modules are built \n",
+  "status": "FAILED",
+  "error": "AssertionError('fixed probe failed')",
+  "cleanup": [
+    {
+      "id": "086fdacf8af7e65225ba803d7f1be9e0f18c6d5475f2cb70dd6a57b1e6c98cd7",
+      "rm_returncode": 0,
+      "inspect_returncode": 1,
+      "inspect_stderr": "error: no such object: 086fdacf8af7e65225ba803d7f1be9e0f18c6d5475f2cb70dd6a57b1e6c98cd7\n",
+      "owned_absent": true
+    },
+    {
+      "id": "b5fd9ea9e45ba9e6b74a1a060dbe1c73ae74a3550689c7007c2aaefc21d427bb",
+      "rm_returncode": 0,
+      "inspect_returncode": 1,
+      "inspect_stderr": "error: no such object: b5fd9ea9e45ba9e6b74a1a060dbe1c73ae74a3550689c7007c2aaefc21d427bb\n",
+      "owned_absent": true
+    }
+  ],
+  "finished": 1790499919.662109
+}

@@ -1,0 +1,20 @@
+"""Fixed authored W2 script, no generated commands or benchmark tests."""
+import json,os,subprocess,sys
+from pathlib import Path
+os.chdir('/testbed')
+assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()=='a4ae7a3808de3c53b0788875b6c97b20d5a12ee0'
+print(json.dumps({'mounts':[x for x in Path('/proc/mounts').read_text().splitlines() if ' /testbed ' in x]}),flush=True)
+import ctypes
+ctypes.CDLL('/testbed/astropy/utils/_compiler.cpython-39-x86_64-linux-gnu.so')
+import astropy
+assert str(Path(astropy.__file__).resolve()).startswith('/testbed/')
+p=Path('/testbed/.dtr_writable_probe');p.write_text('DTR_WRITABLE_SENTINEL\n')
+status=subprocess.check_output(['git','status','--porcelain','--untracked-files=all'],text=True)
+assert '.dtr_writable_probe' in status
+readonly=False
+try:Path('/dtr_forbidden_root').write_text('must fail')
+except OSError as e:readonly=e.errno==30
+assert readonly
+v=os.statvfs('/testbed');assert v.f_blocks*v.f_frsize==512*1024**2
+assert os.listdir('/sys/class/net')==['lo']
+print(json.dumps({'python':sys.executable,'astropy_file':astropy.__file__,'workspace_total_bytes':v.f_blocks*v.f_frsize,'workspace_free_bytes':v.f_bavail*v.f_frsize,'sentinel_visible':True,'root_readonly':readonly,'interfaces':os.listdir('/sys/class/net'),'status':'PASS'}))

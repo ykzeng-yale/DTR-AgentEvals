@@ -1,9 +1,10 @@
-## Current execution status — 27 September 2026, 08:45 UTC
+## Current execution status — 27 September 2026, 09:00 UTC
 
 | Stream | Verified status | Next boundary |
 |---|---|---|
 | REQ-028C5 Mac mini Qwen relay | One real request completed; 129 runtime hashes, 102 source pins and exact consumer/native/parser replay independently checked; owned cleanup recorded. | Transport qualification only; no executed action or competence claim. No C5 job remains. |
 | REQ-028C6 development trajectory | Exact one-task, at-most-24-call design frozen; implementation and inert tests released. | Real trajectory held for exact-source approval and writable local sandbox qualification. |
+| C6 local writable sandbox | W2R original-path imports and bounded tmpfs settings pass; W1/R1/W2 failures retained. | Exact controller/output/timeout/death-cleanup integration remains unqualified; no generated action. |
 | Prior model/synthetic studies | Archived failures and accepted REQ-027 simulation remain unchanged. | Competent fixed-target comparison and valid inference remain open. |
 
 Readiness 55%, change 0 points, range 45–65%; final empirical/manuscript synthesis, independent reproducibility and author-approved package also remain. The historical evidence map below retains the dates and scope of earlier host inventories; Mac mini access and subsequent serving evidence supersede any inference that no second host is currently configured.
@@ -1835,3 +1836,12 @@ This accepts one activation/transport replay only. No command executed, no codin
 Next exact design docs/req028_c6_development_trajectory_20260927.md specifies ONE future exposed DEVELOPMENT Astropy trajectory on Qwen,<=24calls/actions,one resident model,1800second phase including relay/tool delay,unchanged model guards/no retries. NOW releases executable mini-worker/lead-controller implementation and inert/localGit tests only; exact source approval and qualified writable local sandbox remain necessary before actual trajectory. This replaces further synthetic probes with a concrete path to task execution. No live poller/model/container/benchmark/CONFIRM release now. Lead must qualify the distinct writable sandbox and pin strict evaluation before interpreting task success.
 
 Readiness55%,change0points,range45–65%; remaining competent fixed-target comparison with valid inference, final empirical/manuscript synthesis, independent reproducibility and author-approved package.
+
+
+## 2026-09-27 09:00 UTC — C6 sandbox filesystem qualification
+
+Remote C6 worker/controller implementation remains active; no new model job. Lead tested distinct bounded writable sandbox candidates and retained W1(base-Python import),R1(editable-path mismatch),W2(extension-load) failures. W2R passes original /testbed import, compiled extension loading, writable Git-visible sentinel, root rejection and loopback-only checks with512MiB exec tmpfs at/testbed,64MiB/tmp,read-only root,1CPU/1GiB/no swap/128PIDs/nohostmount/capdropALL/no-new-privileges. All W2R owned containers were removed and absence verified. W1 cleanup receipt had a case-sensitive diagnostic bug; separate retained OS check confirms absence. No generated command/model/benchmark test ran. Full design/failure boundaries: docs/req028_c6_writable_sandbox_20260927.md; results/local_req028/c6_writable_w2r_20260927.
+
+Strict evaluator candidate file/dataset/test-manifest hashes frozen separately (1FAIL_TO_PASS,175PASS_TO_PASS); no test contents forwarded to model. ImageHEAD is an existing SWE-bench setup commit immediately after taskbase with one pyproject.toml-line change. Exact production controller/sandbox timeout/output/death-cleanup tests and evaluator runtime qualification remain open. Remote must consume W2R candidate details; no writable-overlay substitution. No trajectory release yet.
+
+Readiness55%,change0points,range45–65%; competent fixed-target comparison/valid inference, final empirical/manuscript synthesis, independent reproducibility and author-approved package remain.
