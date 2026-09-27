@@ -6812,3 +6812,22 @@ from restart admission; it does not establish coding competence or routing benef
 Remote owns implementation/results; lead owns acceptance. No benchmark or CONFIRM.
 Readiness55%, change0points, range45–65%; remaining competent fixed-target comparison
 and valid inference, final synthesis, independent reproducibility/approved package.
+
+
+## 27 September 2026, 04:15 UTC: A5 reviewed; A6 released
+
+A5 ab1c26c completed the8192-token call (DTR_READY,30.001seconds) and pressure-aborted
+the24576-token request after111.872seconds with no completed response. Pressure2,
+free21%,unchanged swap and no foreign inference were observed. Lead verified59
+artifact hashes, both prompt bindings and the raw completed response; see
+[audit](audits/req028_a5_lead_20260927.json). Remote reports all four owned PIDs
+absent. This is bounded8k serving, not competence or a routing null.
+
+[REQ-028A6](req028_a6_q8_context_20260927.md) releases the same two exact prompts
+on one load, with only K/V cache changed to q8_0 and all guards preserved. This
+changed execution kernel is a development feasibility discriminator. Source/tests
+then one15-minute admission window and600-second execution, no retry or renewal.
+Remote worker owns implementation/results; lead retains acceptance and subsequent
+transport/competence decisions. No benchmark/Klear/CONFIRM release.
+Readiness55%, change0points, range45–65%; competent fixed-target comparison/valid
+inference, final synthesis, independent reproducibility/approved package remain.
