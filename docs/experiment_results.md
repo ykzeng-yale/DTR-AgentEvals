@@ -1589,3 +1589,20 @@ Worker `05bfd08` publishes the completed A2R job. Lead verified47artifact hashes
 [New A4 release](req028_a4_context_qualification_20260927.md), `1b043f5`, tests bounded restart recovery plus8192/24576rendered-token synthetic controls after the original four prompts, with unchangedmodel/context/KV/resourcegates. Exactlysixcalls,no retries; newinitial15minadmissionwindow, fixed900sexecution including<=180srestartrecovery. Old window cannot overlap or renew. This tests usablecontext serving, not coding competence; benchmark/CONFIRM remains held. Remote receipt needed before claiming the next job started.
 
 Readiness **55%, change0points, range45–65%**. Remaining: competent fixed-target comparison/valid inference, final synthesis, independent reproducibility and approvedpackage.
+
+
+## 27 September 2026, 03:45 UTC: A4 partial review and A5 release
+
+Worker d2da330 records two completed short responses, then180-second restart
+recovery expiry at69–74% free. No long-input inference occurred. Lead verified
+60 artifact hashes, six token/render bindings and two raw responses;21 focused
+tests passed locally. Exact long prompts8192/24576 tokens were frozen before
+generation. All four owned PIDs were reported absent. A4 remains partial.
+
+[REQ-028A5](req028_a5_single_load_20260927.md) releases exactly the two already-bound
+long prompts on one guarded load, with unchanged settings/admission, a single
+15-minute admission window and600-second execution cap. This isolates serving
+from restart admission; it does not establish coding competence or routing benefit.
+Remote owns implementation/results; lead owns acceptance. No benchmark or CONFIRM.
+Readiness55%, change0points, range45–65%; remaining competent fixed-target comparison
+and valid inference, final synthesis, independent reproducibility/approved package.
