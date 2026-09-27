@@ -7275,3 +7275,8 @@ REQ029X public initial messages frozen: 5606 bytes SHA913dd9989766af3d148fce5491
 REQ029W terminal review: no owned job remains. Read docs/req029w_control_decision_20260927.md. Baseline declared673PASS1FAIL/reference674PASS; identical six extra failures cause referenceexit1 and frozen gateFAIL. 194memberhashes/163pins/rawparser/preparedpatch replay verified;79235/79406/82246absent,Dockerempty. No rerun/modelrelease/dependencyrepair. Next deterministic source/design reconciliation of whole-fileexit gate versus fixed declared endpoint, with failure-preserving prospective tests. Goalpaused; monitor2hours. Readiness55%,Δ0,range45–65%;comparison/inference,synthesis,reproducibility/authorpackage remain.
 
 Author-requested active two-hour workcycle: docs/current_blockers_and_workcycle_20260927.md. Immediateblocker lead evaluatoradmissiondesign; scientificgaps competentpair and usefulfixedtargetinference; computeconditional(mini75%normal,aux44%pressure2). Eachwake implement/test/decide/publish or dispatch anexacteligiblecell; no status-onlydefault or continuouswaiting. Goalremains paused; scheduleunchanged. Readiness55%,Δ0,range45–65%;comparison/inference,synthesis,reproducibility/package remain.
+
+
+## REQ029Y mailbox launch correction
+
+See [exact diagnosis and fresh release](req029y_launch_correction_20260927.md). First Matplotlib Qwen attempt had zero model loads/calls; owned cleanup verified. New immutable b release keeps source, task, guards and original expiry unchanged, with actual SSH mailbox preflight passed. Readiness55%, Δ0, range45–65%; competent comparison/valid inference, synthesis and reproducibility remain.

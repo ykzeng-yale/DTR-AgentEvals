@@ -2059,3 +2059,8 @@ REQ029W launch receipt: local PID79235 alive at44seconds; independent baseline g
 REQ029X public initial messages frozen: 5606 bytes SHA913dd9989766af3d148fce54912b38a0591f9ad55e681d9f56aaf0df44cfc040, identical prospective arms, five boundary tests passed. No model/native-tokenization outcome; evaluator/reference inputs excluded. docs/req029x_matplotlib_prompt_boundary_20260927.md. Existing REQ029W job not repolled/restarted. Readiness55%,Δ0,range45–65%; competent comparison/inference,synthesis,reproducibility/authorpackage remain.
 
 Author-requested active two-hour workcycle: docs/current_blockers_and_workcycle_20260927.md. Immediateblocker lead evaluatoradmissiondesign; scientificgaps competentpair and usefulfixedtargetinference; computeconditional(mini75%normal,aux44%pressure2). Eachwake implement/test/decide/publish or dispatch anexacteligiblecell; no status-onlydefault or continuouswaiting. Goalremains paused; scheduleunchanged. Readiness55%,Δ0,range45–65%;comparison/inference,synthesis,reproducibility/package remain.
+
+
+## REQ029Y mailbox launch correction
+
+See [exact diagnosis and fresh release](req029y_launch_correction_20260927.md). First Matplotlib Qwen attempt had zero model loads/calls; owned cleanup verified. New immutable b release keeps source, task, guards and original expiry unchanged, with actual SSH mailbox preflight passed. Readiness55%, Δ0, range45–65%; competent comparison/valid inference, synthesis and reproducibility remain.
