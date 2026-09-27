@@ -1,0 +1,50 @@
+{
+  "scope": "Retrospective TRAIN only; no CONFIRM outcome parsing; no new inference",
+  "inputs": {
+    "results/code_routing/log/episodes.jsonl": "e643ee44c7ef658fff65efb5e17763ee78c990d21184d060f5823025a100414e",
+    "design.json": "230638a757c581138d1a3611a9c5788ed79b80a655313d316cac63cbba4ff43d"
+  },
+  "excluded_before_parse": 2640,
+  "train": {
+    "episodes": 1848,
+    "tasks": 231,
+    "decision_counts": {
+      "0": 1848,
+      "1": 317,
+      "2": 236
+    },
+    "first_only": 1531,
+    "first_only_hidden_failures": 299,
+    "first_only_zero_checks": 237,
+    "selected_backend_counts": {
+      "qwen2.5-3b-instruct": 1193,
+      "qwen2.5-7b-instruct": 1208
+    },
+    "all_logged_propensities_half": true
+  },
+  "initial_small": {
+    "episodes": 924,
+    "tasks": 231,
+    "decision_counts": {
+      "0": 924,
+      "1": 183,
+      "2": 126
+    },
+    "first_only": 741,
+    "first_only_hidden_failures": 165,
+    "first_only_zero_checks": 119,
+    "selected_backend_counts": {
+      "qwen2.5-3b-instruct": 1076,
+      "qwen2.5-7b-instruct": 157
+    },
+    "all_logged_propensities_half": true
+  },
+  "req029a": {
+    "archive_members_matched": 1860,
+    "current_source_pins_matched": 154,
+    "lead_tests": 14,
+    "lead_seconds": 4.303549707867205,
+    "live_qualification": false
+  },
+  "limitation": "Counts describe logger occupancy, not H/P disagreement or causal benefit. Archived v2 exact replay failed under system Python on pilot RNG-availability metadata and floating comparisons; not accepted as exact reproduction. This script independently recounts integer raw TRAIN counts only."
+}

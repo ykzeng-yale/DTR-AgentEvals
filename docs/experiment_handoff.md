@@ -7077,3 +7077,7 @@ Read docs/req028_c7_decision_20260927.md. Candidate unresolved,targetfailure plu
 ## 2026-09-27 — author-requested scientific correction
 
 Read docs/scientific_audit_20260927.md and REQ-029A docs/req029a_feedback_correction_20260927.md. Remote owns only new req029 candidate source/results; lead owns scientific audit and acceptance. Preserve req028 approvals and artifacts. Implement bounded ordinary-error feedback fixtures, publish and stop; no live experiment. Lead next audits consequential decision opportunities and freezes development qualification before any routing collection. Readiness 55%, change 0 points, range 45–65%; comparison/inference, synthesis and independent reproducibility/approved package remain.
+
+## 2026-09-27 — REQ-029A accepted as candidate; REQ-029B deterministic fit
+
+Lead independently verified 14 tests/1,860 members/154 pins; see docs/req029_lead_decision_20260927.md. Raw TRAIN recount confirms only183/924 initially-small episodes reach decision2. Remote next implements and executes exact docs/req029b_development_router_diagnostic_20260927.md within300 cumulative CPU seconds and2GiB; matched archived TRAIN-only finite-class fit, no model/CONFIRM/new data. Preserve all historical sources/outcomes. Readiness55%,change0points,range45–65%; comparison/inference,synthesis,reproducibility/approved package remain.

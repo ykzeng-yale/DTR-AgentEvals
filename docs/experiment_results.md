@@ -1,3 +1,7 @@
+## REQ-029 independent review — 27 September 2026
+
+[Lead review](req029_lead_decision_20260927.md): ordinary nonzero-feedback candidate passes14 local tests;1,860 archived hashes and154 pins matched. Independent raw TRAIN recount:183/924 initial-small episodes reach decision2; this describes opportunity, not routing value. The archived full-script replay failed environment-dependent exact checks and is not claimed reproduced. REQ-029B releases only the specified bounded TRAIN-only router diagnostic, not model collection. Readiness55%,change0points,range45–65%; adequate comparison/inference,synthesis,reproducibility/package remain.
+
 ## Scientific scope correction — 27 September 2026
 
 See [lead audit](scientific_audit_20260927.md). C6B is one exposed single-model task attempt, not a DTR comparison. C7 test counts are within-task evaluator counts, not model baselines. The known-good reference-patch control remains missing. Ordinary nonzero feedback and second-stage opportunity gaps must be resolved prospectively. REQ-029A is source-only; no new model run is released.
