@@ -1767,3 +1767,14 @@ Lead reviewed 2cebde3, independently passed17 tests and verified8 hashes/four fi
 Remote now has an explicit release for ONE bounded accept_response return-leg read with these exact pins, persistent journal and unchanged08:30UTCexpiry, followed by immutable acceptance publication. No callback/generation, polling loop or renewal. Acceptance remains pending at this entry. No benchmark/transport service/CONFIRM release. Helper validation is not caller authorization: future callers must allowlist exact request/config/commit/path and enforce real dispatch timeout/cancellation; first-request configuration is explicitly pinned by this lead.
 
 Readiness55%,change0points,range45–65%; competent fixed-target comparison with valid inference, final synthesis, independent reproducibility and author-approved package remain.
+
+
+## 2026-09-27 07:15 UTC — C2 final receipt / C3 setup and local probe
+
+C2 final0b76365: eight final-integrity hashes independently verified. Return publication took1.508seconds, following43.865seconds local preparation; no false end-to-end latency claim. Synthetic nonce roundtrip is complete. No model worker/poller remains from C2.
+
+C3 design2f8538b docs/req028_c3_adapter_setup_20260927.md dispatched: remote implements exact Qwen adapter with fake-only allowlist/lifecycle/HTTP/deadline/claim/publication failure tests. No model, benchmark or live polling release. Future24call/1800second limits are implementation requirements only, not execution permission.
+
+Lead local probe results/local_req028/c3_sandbox_20260927 passed on pinned Astropy image:1CPU,1GiB/no swap,128PIDs,networknone,no host mounts,capdropALL,no-new-privileges,read-only root and16MiB tmpfs. Fixed authored script read GitHEAD a4ae7a3808de3c53b0788875b6c97b20d5a12ee0/Python3.11.5/loopback-only interfaces and wrote a tmpfs sentinel. Exit0; owned container removed and absence verified. No generated command or benchmark test executed. Read-only setup does NOT qualify future writable benchmark execution; distinct specification remains required.
+
+Readiness55%,change0points,range45–65%; competent fixed-target comparison with valid inference, final empirical/manuscript synthesis, independent reproducibility and author-approved package remain.
