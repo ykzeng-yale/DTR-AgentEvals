@@ -6932,3 +6932,18 @@ without stripping thinking; never execute output. New immutable run,unchanged
 resourcegates/no retry or budget escalation. No benchmark/CONFIRM release.
 Readiness55%,change0points,range45–65%; competent comparison/valid inference,final
 synthesis,independent reproducibility/approved package remain.
+
+
+## 27 September 2026, 06:15 UTC: B4 rejected; frozen C0 scaffold diagnostic
+
+B4 9d8aa48 completed one49/1536-token call,finishlength; strictformat0/1,parser0/1:
+four matching fences inside unclosed thinking. Lead32hashes/rawbinding/response
+and parser replay verified. No further output-budget increase or synthetic retry.
+
+[C0](req028_c0_scaffold_probe_20260927.md) releases one frozen already-exposed
+REQ011 astropy firstprompt per model (Klearq4 thenQwenq8),max1536,no tools executed.
+Same source-bound parser and outside-thinking endpoint for both. This tests actual
+scaffold interface compatibility,not taskcompetence or a causal model comparison.
+Exact messages frozen in req028_c0_prompt_20260927.json;no prompttuning/CONFIRM.
+Readiness55%,change0points,range45–65%; competent comparison/valid inference,final
+synthesis,independent reproducibility/approved package remain.
