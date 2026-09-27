@@ -7254,3 +7254,5 @@ REQ029S SSH addendum: mini107 loose input records/5,394,606bytes, zero exact sel
 ### REQ029T — offline Matplotlib image import
 
 REQ029R terminal independently verified; no acquisition remains. Exact one offline import release/source and command in docs/req029t_matplotlib_import_20260927.md. Inspect its launch/terminal receipt before any further imageoperation; never duplicate or retry. No container/model/evaluator released. Publicinput audits complete within declared scope; environment/control/resource/source gates remain. Readiness55%,Δ0,range45–65%; scientificobjectiveunfinished.
+
+REQ029T launch receipt: source647a14604386f899b3d209f2df361bd30963e7a0 published before localPID60461 launched2026-09-27T21:34:16Z (epoch1790544856.27778); actualOSidentity observed immediately. Log/receipt work/local_req029/matplotlib_import_launch_20260927; terminal work/local_req029/matplotlib_image_import_20260927/terminal.json. TWO-HOUR monitor updated, no duplicate/importretry. Launch is not import acceptance. No container/model release.
