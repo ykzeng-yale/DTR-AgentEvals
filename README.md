@@ -16,7 +16,7 @@ The proposed contribution is a sequentially randomized evaluation design with ve
 independently reviewed, evidence-backed preprint package. The existing Claude Code worker implements
 bounded experiment specifications under lead review. Read the
 [current scientific assessment and roadmap](docs/scientific_lead_resumption_20260926.md).
-The 40-page manuscript contains scoped theory, synthetic development evidence and a critical coding-agent
+The 41-page manuscript contains scoped theory, synthetic development evidence and a critical coding-agent
 case study. The learned archived router is a fixed schedule; adaptive benefit and useful primary joint
 inference remain unestablished. The local coding/browser competence paths are closed, and REQ-020/021
 record the configured-worker-host capacity block for the proposed replacement pair.

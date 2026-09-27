@@ -208,10 +208,14 @@ previously passing empty-string regression. These are within-task test counts, n
 or an agent baseline. The candidate did not resolve its one issue. A model completion claim and a high
 fraction of passing regression tests do not satisfy the terminal-resolution endpoint.
 The offline evaluator reused the existing image environment and omitted the stock package-installation
-step. All declared test statuses and the prepared patch identity were checked, but this particular
-configuration lacked the protocol's known-good reference-patch positive control. We therefore retain
-the observed failures without claiming complete evaluator qualification or untouched stock-harness
-equivalence. The already exposed issue is closed to further model tuning or retries.
+step. A subsequent known-good reference-patch control passed all 176 declared tests with exit zero
+under the same image, test selection, parser and strict grading rule. Its first attempt stopped before
+testing because a validator treated a Git-generated hunk annotation as changed source; that setup
+failure was preserved, and a separately approved corrected attempt supplied the positive control.
+Raw test output, original and prepared patch identities, and owned cleanup were independently checked.
+The three controls support evaluator discrimination for this task and offline environment, not untouched
+stock-harness equivalence or qualification of other task images. The already exposed issue is closed
+to further model tuning or retries.
 
 The trajectory also illustrates a design mismatch: it submitted at call four, before the proposed
 second routing decision at call nine. It offered no realized second-stage treatment opportunity.
@@ -222,7 +226,7 @@ cause this particular failure, since all four commands exited zero. A separately
 passed inert controller/worker/guardian tests, which establish neither real-model competence nor routing
 benefit. Long tool output also followed the pinned scaffold's declared first/last-segment elision;
 raw and delivered observations are retained separately. No measured contribution of that elision to
-the failed patch is identified. These records are archived as REQ-028C6/C7 and REQ-029A. They qualify
+the failed patch is identified. These records are archived as REQ-028C6/C7 and REQ-029A/C. They qualify
 parts of the execution path, not a competent model pair or the primary history-aware comparison.
 
 \subsection{Prospective open-weight agent experiment}

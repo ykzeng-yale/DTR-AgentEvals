@@ -7111,3 +7111,7 @@ Read docs/req029c_decision_20260927.md. Corrected reference-b176PASSED/exit0,94r
 ## 2026-09-27 — REQ-029E executable comparator integration
 
 Read docs/req029e_comparator_integration_20260927.md. Remote implements actual task/arm-bound worker/controller plus corrected guardian feedback/common parser, existing exact Qwen/Klear artifacts and unchanged limits. Source/inert integration only; no model/Docker/task acquisition/real evaluator. Lead owns exposure/task/image qualification and subsequent exact release. No more exposedAstropy attempts. Task outcomes,call9reachability and costs remain distinct; deterministic-arm screen is not a DTR study. Readiness55%,change0points,range45–65%;comparison/inference,synthesis,reproducibility/package remain.
+
+## 2026-09-27 — reference control integrated into manuscript
+
+41-page PDF rebuilt with REQ029C known-good176PASS and failed setup preserved; no-change175/1 and submitted174/2 remain distinct within-task counts. Changed pages35–41 visually checked, first34textunchanged. No theorem/primarytarget change. REQ029E remote sourceintegration active; no actualjob or task release. Readiness55%,change0points,range45–65%; comparison/inference,synthesis,reproducibility/package remain.
