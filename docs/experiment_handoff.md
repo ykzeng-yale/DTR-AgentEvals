@@ -6991,3 +6991,12 @@ Readiness55%,change0points,range45–65%; competent fixed-target comparison with
 Lead verified483 C3 hashes and25 tests. Additional executed inert-process regression: failure.json write OSError bypasses cleanup in Adapter.fail, leaving child alive until fixture teardown. Setup remains provisional; no real model release. New docs/req028_c3r_integration_20260927.md requires audit-I/O-independent cleanup and concrete external watchdog/HTTP/Git/envelope integration with inert and loopback fixtures only. Preserve C3 evidence and all prior holds.
 
 Readiness55%,change0points,range45–65%; competent fixed-target comparison/valid inference, final synthesis, independent reproducibility and approved package remain.
+
+
+## 2026-09-27 07:45 UTC — C3R setup accepted; C4 concrete hooks
+
+C3R d22688d: lead verified2993 archived member hashes and ran unittest c3_tests c3r_tests,69 executed cases in30.719s allpass (includes imported repeat cases; not69 distinct new tests). Cleanup correction accepted for setup, including audit-I/O failures and inert driver-death evidence. Real model startup remains locked. C3R intentionally uses fixture telemetry, endpoint and localGit constraints; these do not qualify production inference.
+
+C4 c0312b4 docs/req028_c4_production_hooks_20260927.md dispatched for real-hook completion/read-only asset attestation, gated startup supervision, correct pinned API methods, two-request Git publication advancement and noncircular response validation. Inert/strictloopback/tempGit tests only; no model/container/benchmark/livepoller. Exact future model request remains lead-held.
+
+Readiness55%,change0points,range45–65%; competent fixed-target comparison with valid inference, final empirical/manuscript synthesis, independent reproducibility and author-approved package remain.
