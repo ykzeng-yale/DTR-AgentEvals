@@ -1,0 +1,11 @@
+# REQ029R — exact bounded Matplotlib image-data acquisition
+
+Author's bounded development scope; lead releases ONLY one acquisition of the already-selected matplotlib__matplotlib-20826 OCI layers. The local selectedimage is absent; oldMatplotlib13989 is exposed and is not a substitute. No Dockercontainer currently running; localdisk60370428KiBfree at preflight. No modeljob or generatedcommand is released.
+
+Exact frozen manifestsha256:7ae350b0a6b3fe3cc4165ac10b81dbdcace7a65b8a608988043611a05473e3ef,10compressed layers,total2258509781bytes; registry swebench/sweb.eval.x86_64.matplotlib_1776_matplotlib-20826. Configsha256:1e941854c2a74b04f1e9ecbbccdf8ac8273dddb0fb666a1e86d2fd5dee3dcaf0. Acquisition source `experiments/lead_req029/matplotlib_acquire.py` wraps unchanged bounded streaming `image_acquire.py`, replacing only exactmanifest/task/repo/3GiBtransfercap. Seven acquisition/redirect/hash/deadline tests pass. Every full layer must match exact compressedlength/SHA before renaming; failedpartials retained, no retry/resume/renewal.
+
+Command after this source/release publication: `.venv/bin/python experiments/lead_req029/matplotlib_acquire.py work/local_req029/matplotlib_layers_20260927`. Exclusive outputdirectory. Oneconnection,10MiB/s maximum,3GiBresponsebodycap includingauth,900secondsabsolute,300CPUseconds/nice10,streamed64KiBchunks(no hardRSSclaim),normalpressure and≥40%hostfree observations,12GiBdiskreserve. Inherited diagnostic text still names original1.5GiBcap on capfailure; enforcement reads overriddenLIMIT3GiB. This textual limitation does not change the numeric cap. No imageextraction/import/container/build/model/VMchange or peer/cachedeletion. Anonymouscredential never saved; redirect dropsAuthorization. Keep archives and source pins. At terminal independently verify layerhashes before any separateimportrelease.
+
+Fresh taskinput/exposure/environment/strictunchanged-referencecontrols and modelhostadmission remain unreleased gates. Downloadsuccess is not environmentqualification or codingcompetence. Run at mostonce; acquisitionfailure does not permit moving to aneasiertask. Nextscheduledcheck for long-runninghandle; no constantgoalpolling.
+
+Readiness55%,Δ0,range45–65%; competentfixed-targetcomparisons/validinference,synthesis,independentreproducibility/authorpackage remain.
