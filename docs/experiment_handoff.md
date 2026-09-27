@@ -6900,3 +6900,19 @@ requests/model/binary/configuration and all gates; new immutable run, no templat
 edit or broad whitespace stripping. No retry/restart/benchmark/CONFIRM.
 Readiness55%, change0points, range45–65%; competent comparison/valid inference,
 final synthesis, independent reproducibility/approved package remain.
+
+
+## 27 September 2026, 05:30 UTC: B2R pressure finding; conditional B3
+
+B2R85a962e passed native-template validation then pressure-aborted loaded setup:
+0generation calls,3unattempted. Lead25artifact+5tracehashes and48tests verified.
+Pressure2/free20%,swapunchanged,nopeer; owned processes absent. Secondary Metal
+teardown assertion/-6 retained; overlapping driver/watchdog signals are plausible,
+not instrumentally established. No Klear response/competence evidence.
+
+[B3](req028_b3_klear_q4_20260927.md) first requires coordinated cleanup with executed
+process-race/ownership tests. Only then,one final q4_0K/V candidate with the same
+three prompts,32k and all guards may run. No broad configuration search,guard
+weakening,model retry,benchmark or CONFIRM. New immutable source/results only.
+Readiness55%,change0points,range45–65%; competent comparison/valid inference,final
+synthesis,independent reproducibility/approved package remain.
