@@ -1751,3 +1751,10 @@ Decision: close the current Klear configuration's qualification path under the f
 
 
 Next: docs/req028_c1_boundary_diagnosis_20260927.md releases deterministic archived-output/source diagnosis only; no new inference or benchmark. Readiness55%, change0points, range45–65%; competent fixed-target comparison/valid inference, final synthesis, independent reproducibility and author-approved package remain.
+
+
+## 2026-09-27 06:45 UTC — C1 accepted; C2 setup
+
+C1 c844cc0: lead verified eight hashes and three deterministic fixtures plus source/log excerpts. Generated unclosed thinking and template-detected NONE explain Klear raw-content behavior; unchanged C0 gate fails. No general incapacity claim. Local read-only Docker inspection finds no running containers and pinned Astropy image available; no container launched. C2 docs/req028_c2_artifact_relay_20260927.md releases synthetic filesystem/Git-envelope setup and tests only, not model/benchmark execution. This provides a concrete split-host route using existing authenticated GitHub access. Remote publishes a frozen nonce request then stops for lead review.
+
+Readiness55%,change0points,range45–65%; competent fixed-target comparison/valid inference, final synthesis, independent reproducibility and approved package remain.
