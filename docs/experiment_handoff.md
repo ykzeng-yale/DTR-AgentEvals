@@ -7187,3 +7187,10 @@ Readiness55%,change0points,range45–65%; competent fixed-target comparison/vali
 Lead scanned the same115local trajectory/request records (7,325,541bytes) for exact Django public issue and first/middle/last128-byte excerpts, rawUTF8 and bothJSONescaping forms. Zero matching records. All selected windows are completeUTF8; no silent byte repair. Three fixtures passed, including escapedUnicode/cross-chunk and ID-less input matches. Source experiments/lead_req029/exposure_issue_markers.py and exact record/marker hashes docs/audits/req029_local_issue_exposure_20260927.json. No outcomes deserialized. This supports scoped local project-input reconciliation, not paraphrase/normalization/compressed-input coverage or a universal/pretraining-clean claim. RemoteREQ029K remains active; no model cell yet released.
 
 Readiness55%,change0points,range45–65%;competent fixed-target comparison/valid inference,synthesis,independent reproducibility/author-approved package remain.
+
+
+## 2026-09-27 — Exact first comparator task design frozen, no launch yet
+
+REQ029L docs/req029l_django_comparison_20260927.md freezes Django16560,Qwen-first/Klear-second,identical3855byte messages,unchanged24call/1800second/resource contracts,one residency percell,serial cleanup,strict later task evaluation and actualcall9 occupancy. Lead rechecked all166comparator pins against source7aded9d and sharedpromptSHA. One paired development task is not74tasks,a competent-pair estimate or routing-effect experiment. Existingcontrols need no repeat. RemoteREQ029K input reconciliation remains pending; source/task/expiry-specific model approval has not been issued. No additional generic implementation stage is requested.
+
+Readiness55%,change0points,range45–65%;competent fixed-target comparison/valid inference,synthesis,independent reproducibility/author-approved package remain.
