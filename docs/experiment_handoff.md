@@ -7069,3 +7069,7 @@ C6S reviewed and64lead tests pass. Start new c6-dev-20260927-b once under docs/r
 ## 2026-09-27 10:30 UTC — C6B submission; C7 evaluator setup
 
 C6B finished four calls/actions with explicit submission, not success. Preserve all raw and792byte diff; do not rerun model. Read docs/req028_c7_evaluation_20260927.md: scoped source/fake tests only, prospective separate baseline/candidate strict evaluation; no actual Docker/evaluation until lead exactsource review. Lead owns interpretation and evaluator release. Readiness55%,change0points,range45–65%;comparison/inference,synthesis,reproducibility/approved package remain.
+
+## 2026-09-27 — C7 terminal review and hold
+
+Read docs/req028_c7_decision_20260927.md. Candidate unresolved,targetfailure plus regression; fullresults independentlychecked,allcleanupconfirmed. No model/evaluatorjob remains, no pendingworkerassignment. Preserve bothattempts and offlineevaluation distinction; no hiddenfeedback/prompttuning/same-taskretry. Future competent-comparator study needs separatelyfrozen developmentdesign, not automaticrunpermission. Return same fallbackmonitor3hours. Readiness55%,change0points,range45–65%;comparison/inference,synthesis,reproducibility/package remain.
