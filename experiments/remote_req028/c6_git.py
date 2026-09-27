@@ -52,11 +52,15 @@ class Transport:
 
     def fetch(self):
         require(not self.failed and self.fetches<360, 'fetch cap')
-        while time.time()<self.last_fetch+self.interval:
+        while True:
             self.runner.check()
-            require(time.time()<self.deadline, 'queue deadline')
-            time.sleep(min(.05,self.last_fetch+self.interval-time.time()))
-        started=time.time()
+            now=time.time()
+            require(now<self.deadline, 'queue deadline')
+            remaining=self.last_fetch+self.interval-now
+            if remaining<=0:
+                break
+            time.sleep(min(.05,remaining))
+        started=now
         self.fetches+=1
         self.last_fetch=started
         self.git('fetch','--quiet','--no-tags','--no-write-fetch-head',self.origin,
