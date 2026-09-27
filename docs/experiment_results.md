@@ -1996,3 +1996,9 @@ Readiness55%,change0points,range45–65%;competent fixed-target comparison/valid
 cmp029e-django16560-qwen-a completed3realmodel calls and2read-onlysandbox actions. Thirdterminalstop response contains2commandfences; exactunchangedparser rejects it. No submission/call9/taskresolution. Lead2126memberhashes,166sourcepins,full3message/native/usagebindings andparserreplay verified;HTTP25.997191seconds,phase138.757264seconds,3145prompt551completiontokens. Cleanupverified;worker OSabsence is worker-observed. This is operational interfacefailure,not memoryfailure,estimatorfailure or a benchmarktest score. Rawarchive results/remote_req029/qwen_terminal_archive_20260927; audits docs/audits/req029_qwen_terminal_lead_20260927.json. Frozensecond Kleararm release is separate; no Qwenretry.
 
 Readiness55%,change0points,range45–65%; competent comparison/inference,synthesis,reproducibility/package remain.
+
+## 2026-09-27 — REQ029L Klear unattempted at resource gate
+
+cmp029e-django16560-klear-a:0loads/0calls/0actions;15admission samples70–73%free,normalpressure,nopeer,never75%. Original900secondwindowexpired. Lead113workerhashesverified,6101controllerfilesarchived,ownedcleanupconfirmed. Separate executedfixture reproduces pre-model expiredsetupdeadline suppressing peerterminalpublication; controller subsequently cleaned up at its own preflightlease. Resourcefailure is not modeltaskfailure. Pairedscreen has one Qwenformatfailure and one unattemptedKleararm,no eligiblecandidate/evaluation. docs/req029l_klear_decision_20260927.md supplies diagnosis/nextsource-onlyrequirements. No retry or thresholdweakening.
+
+Readiness55%,change0points,range45–65%; competent comparison/inference,synthesis,reproducibility/package remain.

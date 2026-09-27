@@ -1,0 +1,29 @@
+import pathlib,json,tarfile,hashlib,sys,tempfile,time,types
+sys.path.insert(0,'experiments/remote_req029')
+from comparator_engine import Base
+P=pathlib.Path('results/local_req029/klear_terminal_20260927');sha=lambda b:hashlib.sha256(b).hexdigest()
+rows=json.loads((P/'worker-members.json').read_text());expected={x['path']:x for x in rows}
+with tarfile.open(P/'worker-runtime.tar.gz') as t:data={m.name:t.extractfile(m).read() for m in t if m.isfile()}
+assert set(expected)==set(data)
+for n,b in data.items():assert sha(b)==expected[n]['sha256'] and len(b)==expected[n]['bytes']
+prefix='results/remote_req029/comparator_runtime/cmp029e-django16560-klear-a/worker/role/'
+terminal=json.loads(data[prefix+'terminal.local.json']);samples=[json.loads(b) for n,b in data.items() if n.startswith(prefix+'admission/')]
+assert terminal['claims']==0 and terminal['cleanup']['not_loaded'] and terminal['dispatches']==[] and prefix+'model_window.json' not in data
+assert all(x['sample']['pressure_level']==1 and x['sample']['foreign_inference']==[] for x in samples)
+source=pathlib.Path('results/remote_req029/comparator_runtime/cmp029e-django16560-klear-a/controller');files=sorted(p for p in source.rglob('*') if p.is_file());members=[]
+with tarfile.open(P/'controller-runtime.tar.gz','w:gz') as t:
+ for p in files:
+  assert not p.is_symlink();b=p.read_bytes();assert b'BEGIN OPENSSH PRIVATE KEY' not in b and b'github_pat_' not in b
+  members.append(dict(path=str(p),bytes=len(b),sha256=sha(b)));t.add(p,arcname=str(p),recursive=False)
+(P/'controller-members.json').write_text(json.dumps(members,indent=2)+'\n')
+r=json.load(open('docs/req029e_django_klear_approval_20260927.json'))
+class Transport:
+ failed=False;fetches=0;events=[];runner=types.SimpleNamespace(events=[])
+ def __init__(self):self.calls=[]
+ def publish(self,*a):self.calls.append(a)
+with tempfile.TemporaryDirectory() as tmp:
+ transport=Transport();obj=Base(pathlib.Path(tmp)/'role',r,sha(pathlib.Path('docs/req029e_django_klear_approval_20260927.json').read_bytes()),transport);obj.deadline=time.time()-1
+ obj.finish('worker','terminal_or_failure','fixture admission expiry',{'not_loaded':True,'owned_absent':True})
+ assert not transport.calls and (obj.root/'terminal.local.json').exists()
+ result=dict(run_id=r['run_id'],worker_member_hashes_verified=len(data),controller_files_archived=len(members),model_loads=0,model_calls=0,actions=0,admission_samples=len(samples),free_min=min(x['sample']['free_percent'] for x in samples),free_max=max(x['sample']['free_percent'] for x in samples),pressure_all_normal=True,foreign_inference_none=True,worker_terminal=terminal['error'],worker_finished=terminal['finished'],worker_reported_deadline=terminal['deadline'],local_sandbox_terminal=json.loads((source/'sandbox/state/terminal.json').read_text()),terminal_publication_fixture='PASS: expired Base.deadline retains local terminal and skips peer publication',interpretation='Resource admission failure, no Klear task performance observation. Publication deadline gap delays peer cleanup but does not cause admission rejection. No retry.',scope='Direct SSH retrieval plus independent local hash verification; no model or sandbox execution by this audit.')
+(P/'audit.json').write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result,indent=2))

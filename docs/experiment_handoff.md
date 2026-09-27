@@ -7206,3 +7206,9 @@ Readiness55%,change0points,range45–65%; competent fixed-target comparison/vali
 Direct verified SSH/SFTP is now the compute dispatch/inspection/artifact path; do not message or poll the Mac mini Codex chat. See docs/direct_ssh_coordination_20260927.md and current AGENTS.md. Existing Klear experiment kernel/source/limits remain frozen, with no duplicate or mid-run transport rewrite. Same monitor remains TWO HOURS. Full preprint goal explicitly retains scientific scope and now specifies direct owned-host allocation. Historical chat/worker records are retained; no unrelated service is removed.
 
 Readiness55%,change0points,range45–65%; competent comparisons/valid inference,synthesis,independent reproducibility/author-approved package remain.
+
+## 2026-09-27 — Direct SSH Klear terminal audit
+
+Read docs/req029l_klear_decision_20260927.md. Klear0loads/calls/actions,15admission readings70–73%<75%,900secondexpiry. Lead113workerhashesverified/6101controllerfilesarchived; OSworker51624/controller76999absent,Dockerempty. No activepairjob or candidateevaluator. Independent Base.finish fixture confirms expiredsetupdeadline skipspeerterminalpublication; originaladmissioncause remainsresources. Next source-only terminaldelivery/directSSHprotocol qualification before any newimmutabledevelopmentrelease; no relaunch/renewal/modeltransfer. Aux32GiBhost is candidateonly. Same TWO-HOURmonitor uses directSSH,neverminiChat.
+
+Readiness55%,change0points,range45–65%; competent fixed-targetcomparison/validinference,synthesis,independentreproducibility/authorapprovedpackage remain.

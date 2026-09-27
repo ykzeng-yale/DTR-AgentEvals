@@ -1,0 +1,30 @@
+{
+  "run_id": "cmp029e-django16560-klear-a",
+  "worker_member_hashes_verified": 113,
+  "controller_files_archived": 6101,
+  "model_loads": 0,
+  "model_calls": 0,
+  "actions": 0,
+  "admission_samples": 15,
+  "free_min": 70,
+  "free_max": 73,
+  "pressure_all_normal": true,
+  "foreign_inference_none": true,
+  "worker_terminal": "TimeoutError('ADMISSION_WINDOW_EXPIRED')",
+  "worker_finished": 1790539275.619201,
+  "worker_reported_deadline": 1790538664.135084,
+  "local_sandbox_terminal": {
+    "cleanup": {
+      "create_ambiguous": false,
+      "owned_absent": true
+    },
+    "diagnostic_only": true,
+    "failure": "Rejected('sandbox action/preflight lease expired')",
+    "finished": 1790539534.543515,
+    "phase": null,
+    "submitted_by_guardian": false
+  },
+  "terminal_publication_fixture": "PASS: expired Base.deadline retains local terminal and skips peer publication",
+  "interpretation": "Resource admission failure, no Klear task performance observation. Publication deadline gap delays peer cleanup but does not cause admission rejection. No retry.",
+  "scope": "Direct SSH retrieval plus independent local hash verification; no model or sandbox execution by this audit."
+}
