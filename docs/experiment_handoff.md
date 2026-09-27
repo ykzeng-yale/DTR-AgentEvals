@@ -7161,3 +7161,9 @@ Remote may implement new django_eval_* plus inert/fakeDocker tests1CPU2GiB300sec
 ## 2026-09-27 — REQ-029J prospective prompt boundary
 
 Pinned public Django issue projection and unchanged mini-swe default system/instance templates; strict builder rejects evaluator fields, task/template changes and invalid environment schema. Four local tests passed0.002s. Final messages remain unfrozen until actual container uname metadata is available from REQ029I preflight; no fake/host/oldAstropy metadata substitution. No model call or competence evidence. See docs/req029j_prompt_boundary_20260927.md. Worker REQ029I is active with a bounded metadata-only addition to its existing preflight. Do not duplicate its implementation. Exposure/evaluator/source review still precedes inference. Readiness55%,change0points,range45–65%;comparison/inference,synthesis,reproducibility/package remain.
+
+## 2026-09-27 — Local development exposure reconciliation
+
+Lead scanned115local trajectory/request records including untracked C6 role requests,7,325,541bytes. Only already-excluded Astropy14598 appeared; no23remainingqueue ID mentions. Four scanner/selection tests pass. Exact scoped evidence docs/audits/req029_local_run_exposure_20260927.json; limitations docs/req029_exposure_delta_20260927.md. Remote-host inventory and ID-less records remain limitations; do not upgrade this to universal untouchedness. REQ029I worker is still finishing source/inert evidence; no actual evaluator/model release. Next review published exact source, then task-specific unchanged/reference controls and remote exposure reconciliation before comparator inference. Full project goal remains active and unfinished.
+
+Readiness55%,change0points,range45–65%; competent fixed-target comparison/valid inference,empirical/manuscript synthesis,independent reproducibility/author-approved package remain.

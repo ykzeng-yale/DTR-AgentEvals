@@ -7,3 +7,9 @@ This is scoped additional evidence, not a universal untouched claim: untracked w
 The preserved queue begins django16560,matplotlib20826,seaborn3187,requests2931,xarray3151,pylint8898. Any next cell selection must retain this pre-outcome order unless an explicit infrastructure eligibility rule is frozen before model outcomes. The lead still owes complete project/host exposure reconciliation and exact image/source/task release; REQ-029E now implements the task/arm binding needed for that release, without model or container execution.
 
 Readiness55%,change0points,range45–65%; competent fixed-target comparison/valid inference,empirical/manuscript synthesis,independent reproducibility and author-approved package remain.
+
+## Additional local model-run records
+
+The bounded ID-only audit `experiments/lead_req029/exposure_local_runs.py` checks local v2_agent trajectory/request records and untracked C6 controller role requests, independent of Git tracking. It scanned115records/7,325,541bytes and found only already-excluded astropy__astropy-14598. None of the23remaining queue IDs appeared. Exact record hashes are in docs/audits/req029_local_run_exposure_20260927.json. Four combined scanner/selection tests passed in0.005seconds, including chunk boundaries, expiry, untracked selection and exclusion of confirmation/evaluator/Git-cache paths.
+
+This closes a specified local-record gap, not the full exposure gate. Records without canonical task IDs, other encodings and remote-host inventories remain outside this evidence. No hidden outcomes were deserialized, no task was selected, and no model/evaluator was executed. Remote reconciliation remains required before model release.
