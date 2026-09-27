@@ -7212,3 +7212,9 @@ Readiness55%,change0points,range45–65%; competent comparisons/valid inference,
 Read docs/req029l_klear_decision_20260927.md. Klear0loads/calls/actions,15admission readings70–73%<75%,900secondexpiry. Lead113workerhashesverified/6101controllerfilesarchived; OSworker51624/controller76999absent,Dockerempty. No activepairjob or candidateevaluator. Independent Base.finish fixture confirms expiredsetupdeadline skipspeerterminalpublication; originaladmissioncause remainsresources. Next source-only terminaldelivery/directSSHprotocol qualification before any newimmutabledevelopmentrelease; no relaunch/renewal/modeltransfer. Aux32GiBhost is candidateonly. Same TWO-HOURmonitor uses directSSH,neverminiChat.
 
 Readiness55%,change0points,range45–65%; competent fixed-targetcomparison/validinference,synthesis,independentreproducibility/authorapprovedpackage remain.
+
+## 2026-09-27 — REQ029M source-only terminal delivery corrected
+
+Read docs/req029m_terminal_delivery_20260927.md. Future comparator source gives terminal-only publication15seconds aftercleanup cappedbyabsoluteexpiry; executiondeadline unchanged,no repeatfinish/poisonedtransport retry. Combined28inerttests passed63.850seconds,including6newboundarycases; archived results/local_req029/terminal_fix_20260927. No actualmodel/Docker run; oldsourceapprovalrejectschangedinventory. Auxiliaryread-onlysnapshot32GiB/free48%/swap9456.12MiB/disk18,527,952KiB/AC; no inferenceprocessfound,notdeploymentqualification. Next bind directSSHtransport/auxruntime without weakening archived gates or restarting completedcells.
+
+Readiness55%,change0points,range45–65%; competentcomparison/validinference,synthesis,independentreproducibility/authorapprovedpackage remain.

@@ -19,7 +19,7 @@ from c6_protocol import check_observation as old_check,observation_envelope as o
 
 class Wire:
     def __init__(self,store,root):
-        self.store=store;self.root=root;self.failed=False;self.fetches=0;self.events=[]
+        self.store=store;self.root=root;self.failed=False;self.fetches=0;self.events=[];self.deadline=time.time()+60
         self.runner=SimpleNamespace(check=lambda:None,events=[])
     def read(self,kind,seq=None):
         self.runner.check();self.fetches+=1;time.sleep(.001);return self.store.get((kind,seq))

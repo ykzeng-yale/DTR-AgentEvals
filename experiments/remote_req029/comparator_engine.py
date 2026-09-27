@@ -72,11 +72,24 @@ class Base:
         self.terminal=value
         # Local terminal evidence survives expired/failed network publication.
         put(self.root,'terminal.local.json',value)
-        if time.time()<self.deadline and not self.t.failed:
+        # Cleanup has already run. Reporting gets a distinct bounded reserve;
+        # an expired setup/admission/model deadline must not hide local failure.
+        # This never extends self.deadline or permits another action/model claim.
+        publication_started = time.time()
+        publication_deadline = min(self.r['expires_at'],
+                                   publication_started + self.r['caps']['cleanup_seconds'])
+        put(self.root, 'terminal.publication.window.json', {
+            'started': publication_started, 'deadline': publication_deadline,
+            'execution_deadline': self.deadline, 'terminal_only': True})
+        if publication_started < publication_deadline and not self.t.failed:
+            previous_deadline = self.t.deadline
             try:
+                self.t.deadline = publication_deadline
                 self.t.publish(role+'_terminal',value)
             except BaseException as e:
                 put(self.root,'terminal.publication.failure.json',{'error':repr(e),'indeterminate':True})
+            finally:
+                self.t.deadline = previous_deadline
         put(self.root,'transport.json',{'fetches':self.t.fetches,'events':self.t.events,
                                       'process_events':self.t.runner.events})
         return value
