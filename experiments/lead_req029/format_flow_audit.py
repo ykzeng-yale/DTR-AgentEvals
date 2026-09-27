@@ -1,5 +1,6 @@
 """Deterministic execution of pinned upstream control-flow AST; no inference/tools."""
 import ast, hashlib, json, logging, re, time
+from contextlib import nullcontext
 from pathlib import Path
 from types import SimpleNamespace
 from jinja2 import Template, StrictUndefined
@@ -21,18 +22,37 @@ exec(compile(ast.Module(body=[cls],type_ignores=[]),'pinned-default-agent','exec
 Agent=ns['DefaultAgent']
 BAD='```mswea_bash_command\none\n```\n```mswea_bash_command\ntwo\n```'
 GOOD='```mswea_bash_command\nfixture_only\n```'
+def methods_from(file, class_name, names):
+    tree=ast.parse((SRC/file).read_text())
+    cls=next(n for n in tree.body if isinstance(n,ast.ClassDef) and n.name==class_name)
+    functions=[n for n in cls.body if isinstance(n,ast.FunctionDef) and n.name in names]
+    assert {n.name for n in functions}==set(names)
+    exec(compile(ast.Module(body=functions,type_ignores=[]),str(SRC/file),'exec'),ns)
+ns.update(logger=logging.getLogger('fixture'), retry=lambda **kw:[nullcontext()],
+          GLOBAL_MODEL_STATS=SimpleNamespace(add=lambda cost:None),
+          _reorder_anthropic_thinking_blocks=lambda messages:messages,
+          set_cache_control=lambda messages,mode:messages)
+methods_from('src__minisweagent__models__litellm_model.py.txt','LitellmModel',['query','_prepare_messages_for_api'])
+provider_query=ns['query']; prepare=ns['_prepare_messages_for_api']
+methods_from('src__minisweagent__models__litellm_textbased_model.py.txt','LitellmTextbasedModel',['_parse_actions'])
+class Response:
+    def __init__(self,content):
+        self.content=content
+        self.choices=[SimpleNamespace(finish_reason='stop',message=SimpleNamespace(content=content,model_dump=lambda:{'role':'assistant','content':content}))]
+    def model_dump(self,**kw): return {'choices':[{'message':{'role':'assistant','content':self.content},'finish_reason':'stop'}]}
 class Model:
-    def __init__(self, seq): self.seq=iter(seq)
+    query=provider_query
+    _prepare_messages_for_api=prepare
+    _parse_actions=ns['_parse_actions']
+    abort_exceptions=()
+    def __init__(self, seq):
+        self.seq=iter(seq); self.sent=[]
+        self.config=SimpleNamespace(set_cache_control=None,action_regex=r'```mswea_bash_command\s*\n(.*?)\n```',format_error_template='Please always provide EXACTLY ONE action in triple backticks, found {{actions|length}} actions.')
     def format_message(self,**kw): return kw
-    def query(self,messages):
-        content=next(self.seq)
-        try:
-            actions=ns['parse_regex_actions'](content,action_regex=r'```mswea_bash_command\s*\n(.*?)\n```',format_error_template='Please always provide EXACTLY ONE action in triple backticks, found {{actions|length}} actions.')
-        except ns['FormatError'] as e:
-            # Adapter mirrors pinned LitellmModel.query cost/raw response attachment.
-            e.messages[0]['extra'].update(cost=1.,response={'content':content})
-            raise
-        return {'role':'assistant','content':content,'extra':{'actions':actions,'cost':1.}}
+    def _query(self,messages,**kw):
+        self.sent.append(messages)
+        return Response(next(self.seq))
+    def _calculate_cost(self,response): return {'cost':1.}
     def format_observation_messages(self,message,outputs,vars): return [{'role':'user','content':'inert observation'}]
 def case(seq,limit,expected_calls,expected_actions,status):
     a=Agent(); a.model=Model(seq); actions=[]
@@ -47,10 +67,13 @@ def case(seq,limit,expected_calls,expected_actions,status):
         assert m['role']=='user' and m['extra']['model_response']==BAD
         assert m['content']=='Please always provide EXACTLY ONE action in triple backticks, found 2 actions.'
     assert all(x['command']=='fixture_only' for x in actions)
+    assert all('extra' not in m for sent in a.model.sent for m in sent)
+    assert all(m.get('content')!=BAD for sent in a.model.sent for m in sent)
+    assert all(m['extra']['response']['choices'][0]['message']['content']==BAD for m in errors)
     return {'calls':a.n_calls,'inert_actions':len(actions),'cost_fixture_units':a.cost,'exit':out,'format_feedback':len(errors)}
 def main():
     manifest=json.loads((SRC/'manifest.json').read_text())
     for f,h in manifest['sha256'].items(): assert hashlib.sha256((SRC/f).read_bytes()).hexdigest()==h
     cases=[case([BAD,GOOD],2,2,1,'LimitsExceeded'),case([BAD]*3,8,3,0,'RepeatedFormatError'),case([BAD,BAD,GOOD,BAD,BAD,GOOD],6,6,2,'LimitsExceeded'),case([BAD],1,1,0,'LimitsExceeded')]
-    print(json.dumps({'source_verified':len(manifest['sha256']),'scope':'actual upstream agent and parser AST, inert model/env; model cost attachment mirrored, not full provider execution','cases':cases},indent=2))
+    print(json.dumps({'source_verified':len(manifest['sha256']),'scope':'actual upstream agent, model query/preparation, text parser AST; inert provider, cost calculator, retry context and environment','cases':cases},indent=2))
 if __name__=='__main__': main()

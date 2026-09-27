@@ -7222,3 +7222,5 @@ Readiness55%,change0points,range45–65%; competentcomparison/validinference,syn
 ### REQ029N — lead diagnosis, source-only next step
 
 Pinned upstream control-flow audit found omitted format-error recovery in the lead's comparator design. Four inert source-bound cases pass; see `docs/req029n_format_flow_diagnosis_20260927.md`. Next: exact prospective adapter/error-state contract and actual adapter regression tests, then fresh-task design review before any release. Do not rescore/retry frozen Django or Astropy tasks. No model job active; direct SSH only, two-hour review. Readiness55%,Δ0,45–65%; remaining competent comparisons/valid inference, synthesis, reproducibility/author package.
+
+REQ029N follow-up executes actual upstream model query/preparation/parser methods with inert provider:4cases pass, raw/cost persistence and metadata-only history verified. REQ029O `docs/req029o_recovery_protocol_20260927.md` freezes source-only distributed recovery requirements; implement actual two-role fixtures before any fresh-task execution release. No new compute released.
