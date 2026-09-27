@@ -28,7 +28,7 @@ class Sandbox:
     def close(self):self.closed=True;return {'owned_absent':True}
 class Tests(unittest.TestCase):
     def pair(self,seq,configure=None):
-        r,_=release(seconds=30);r.update(protocol=PROTOCOL,run_id='cmp029o-fixture',root='results/remote_req029/comparator_runs/cmp029o-fixture',source_hashes=inventory());pin=sha(encode(r))
+        r,_=release(seconds=30);r.update(transport_config_sha256='a'*64,protocol=PROTOCOL,run_id='cmp029o-fixture',root='results/remote_req029/comparator_runs/cmp029o-fixture',source_hashes=inventory());pin=sha(encode(r))
         with tempfile.TemporaryDirectory() as tmp:
             store={}
             factory=getattr(self,'wire_factory',lambda role:Wire(store,r['root']))

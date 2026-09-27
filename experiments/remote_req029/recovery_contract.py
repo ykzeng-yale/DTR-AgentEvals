@@ -67,6 +67,7 @@ def validate(r,now=None):
     require(s['python']=='/opt/miniconda3/envs/testbed/bin/python' and s['docker_executable']==DOCKER and
             s['context']=='colima-dtr' and s['limits']==LIMITS and s['qualified'] is True and s['cleanup_reserve_seconds']==15,'qualified W2R boundary')
     require(r['evaluation_execution_authorized'] is False,'evaluation held')
+    digest(r['transport_config_sha256'])
     for k in ('worker_commit','controller_commit'):commit(r[k])
     require(r['worker_commit']==r['controller_commit'],'one exact source')
     require(r['submission']==dict(revision=MINI,yaml_sha256=YAML_SHA),'submission source')
@@ -109,4 +110,4 @@ def disabled():
         arm=None,model=None,config_sha256=None,task=None,sandbox=None,
         initial_messages_utf8=None,initial_messages_sha256=None,
         action_contract_sha256=PARSER_SHA,caps=CAPS,roles=ROLES,worker_commit=None,controller_commit=None,
-        source_hashes=None,submission=dict(revision=MINI,yaml_sha256=YAML_SHA),evaluation_execution_authorized=False)
+        source_hashes=None,submission=dict(revision=MINI,yaml_sha256=YAML_SHA),evaluation_execution_authorized=False,transport_config_sha256=None)
