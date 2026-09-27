@@ -7007,3 +7007,14 @@ Readiness55%,change0points,range45–65%; competent fixed-target comparison with
 Lead verified5437 C4 archive hashes; local63tests:62pass/one telemetry error due unavailable local Ollama API, not independent63pass. Remote63pass remains worker-reported. No guard weakening or local service startup. C5 docs/req028_c5_activation_20260927.md freezes exactlyone unchanged C0 Qwen DEVELOPMENT request for future transport qualification and authorizes activation implementation/inerttests only. Manifest and expected native hashes are frozen; exact published source approval still required before model load.
 
 Readiness55%,change0points,range45–65%; competent fixed-target comparison/valid inference, final synthesis, independent reproducibility and approved package remain.
+
+
+## 2026-09-27 08:30 UTC — C5 exact-source execution approval
+
+Lead reviewed candidate9f8073e activation/contract/gate/supervisor/lifecycle/HTTP/envelope/transport and verified12845 archived member hashes plus102 current source hashes. Local c5_tests.Tests:17pass/one host-dependent missing remote asset error,4.154seconds; remote81/81 remains worker evidence. This lead host has no copy of the mini GGUF; no asset download or test bypass occurred.
+
+Exact permission docs/req028_c5_source_approval_20260927.json releases ONE load/ONE physical request using the frozen C5 request, unchanged independent C0 native1530-token hashes, Qwenq8/32k and all existing guards. Read docs/req028_c5_activation_20260927.md. Fresh once-only900second/31read admission,75%normal/nopeer/12GiBdisk, two passes60seconds apart plus finalcheck; setup300/model600/loadrequest180; fixed11UTCexpiry. No retry/restart/fallback/renewal. Source/approval pins mandatory. No generated commands, benchmark, CONFIRM or peer changes. Approval is not evidence that model loading or inference started.
+
+Expected main is the exact approval commit: lead and remote must NOT publish another main commit until C5 response publication or terminal failure. Launch receipt can be local and issue4 while running; after terminal collect/publish complete evidence. Do not duplicate or poll live job repeatedly. Preserve sealed raw response on any publication conflict; never regenerate.
+
+Readiness55%,change0points,range45–65%; competent fixed-target comparison/valid inference, final synthesis, independent reproducibility and approved package remain.
