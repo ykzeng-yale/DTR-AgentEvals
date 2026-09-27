@@ -55,6 +55,8 @@ The new [extension proofs](docs/theory_extensions.md) cover prospective routing 
 | [External data audit](docs/external_data_audit.md) | Direct inspection of 896 released Replay Gap records spanning 56 distinct tasks |
 | [Bibliography](references/references.bib) | Verified reference metadata |
 
+**27 September 2026:** the Mac mini completed [4,000 synthetic primary-logger studies](docs/theory_feedback_20260927_req027_decision.md), independently recounted by the lead. Results support the stipulated variance mechanism, with limited Wald coverage and a disclosed macOS memory-limit deviation. A separate agent mathematical review supplies explicit assumption/support corrections. The real-agent comparison and CONFIRM remain held.
+
 ## Archived evidence
 
 The following is the original 18 September 2026 baseline, retained as development history. Later experiment records are listed in [executed results](docs/experiment_results.md); this theory-paper update does not rerun or independently validate those newer experimental results. Current manuscript validation is recorded in [the paper status](manuscript/STATUS.md).

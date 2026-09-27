@@ -1,0 +1,225 @@
+{
+  "schema_version": 1,
+  "task": {
+    "thread_id": "01a0e05b-a10e-7d42-9101-aa656ef5be5d",
+    "host_id": "local",
+    "started_at_utc": "2026-09-27T01:15:24Z",
+    "completed_at_utc": "2026-09-27T01:20:46Z",
+    "elapsed_wall_seconds": 322,
+    "repository": "https://github.com/ykzeng-yale/DTR-AgentEvals",
+    "commit": "3fd6f33f4b33a2450468940f4e731bfd2c68b246",
+    "review_type": "independent_adversarial_mathematical_review"
+  },
+  "scope": {
+    "source_count": 7,
+    "source_total_bytes": 134823,
+    "source_cap_bytes": 8388608,
+    "within_source_cap": true,
+    "python_standard_library_only": true,
+    "project_fixtures_used": false,
+    "monte_carlo_used": false,
+    "model_calls": 0,
+    "gpu_calls": 0,
+    "vm_calls": 0,
+    "container_calls": 0,
+    "paid_services_used": false,
+    "upstream_files_modified": false,
+    "git_commit_or_push": false,
+    "subagents_spawned": 0
+  },
+  "sources": [
+    {
+      "path": "docs/theory_primary_logger_candidate_20260926.md",
+      "url": "https://raw.githubusercontent.com/ykzeng-yale/DTR-AgentEvals/3fd6f33f4b33a2450468940f4e731bfd2c68b246/docs/theory_primary_logger_candidate_20260926.md",
+      "bytes": 8674,
+      "sha256": "a432fd51ee082ba48b51b40808d93e4a927243ee1a0b1c0d25075587c9eeb031",
+      "role": "primary"
+    },
+    {
+      "path": "docs/theory_precision_design_20260926.md",
+      "url": "https://raw.githubusercontent.com/ykzeng-yale/DTR-AgentEvals/3fd6f33f4b33a2450468940f4e731bfd2c68b246/docs/theory_precision_design_20260926.md",
+      "bytes": 11519,
+      "sha256": "6303403a35b4046e423cf7a5255799b495bd5ea104868d3c6bae91d5fefb2897",
+      "role": "primary"
+    },
+    {
+      "path": "docs/theory_replicated_block_inference.md",
+      "url": "https://raw.githubusercontent.com/ykzeng-yale/DTR-AgentEvals/3fd6f33f4b33a2450468940f4e731bfd2c68b246/docs/theory_replicated_block_inference.md",
+      "bytes": 23317,
+      "sha256": "473be9a9a7bebeb3a7c6d2df31bf07a6230b5160d34f10979b7f1a64a7695255",
+      "role": "context"
+    },
+    {
+      "path": "docs/theory_extensions.md",
+      "url": "https://raw.githubusercontent.com/ykzeng-yale/DTR-AgentEvals/3fd6f33f4b33a2450468940f4e731bfd2c68b246/docs/theory_extensions.md",
+      "bytes": 16531,
+      "sha256": "4af3d709c318cf76227875b6b531dc037059f4de1b1ba043fb302f139da7eb44",
+      "role": "context"
+    },
+    {
+      "path": "docs/theory.md",
+      "url": "https://raw.githubusercontent.com/ykzeng-yale/DTR-AgentEvals/3fd6f33f4b33a2450468940f4e731bfd2c68b246/docs/theory.md",
+      "bytes": 42626,
+      "sha256": "471080a6dffe3e7e22b80629e91f1fece09096e39b84a0cac4dd2b6ef496e690",
+      "role": "context"
+    },
+    {
+      "path": "docs/experiment_protocol_v2.md",
+      "url": "https://raw.githubusercontent.com/ykzeng-yale/DTR-AgentEvals/3fd6f33f4b33a2450468940f4e731bfd2c68b246/docs/experiment_protocol_v2.md",
+      "bytes": 26987,
+      "sha256": "90630ea9f8b0f6a79d32acb8e8279dab51ae7e360b2a60901f128c223cc698ca",
+      "role": "context"
+    },
+    {
+      "path": "docs/submission_requirements_20260926.md",
+      "url": "https://raw.githubusercontent.com/ykzeng-yale/DTR-AgentEvals/3fd6f33f4b33a2450468940f4e731bfd2c68b246/docs/submission_requirements_20260926.md",
+      "bytes": 5169,
+      "sha256": "c3a3c49c8153e822718b9ea25ba050d51be677543340784b24896184b15e06cf",
+      "role": "context"
+    }
+  ],
+  "reproducible_commands": {
+    "retrieval_template": "curl --fail --silent --show-error --location https://raw.githubusercontent.com/ykzeng-yale/DTR-AgentEvals/3fd6f33f4b33a2450468940f4e731bfd2c68b246/docs/<FILE> -o work/sources/<FILE>",
+    "retrieved_files": [
+      "theory_primary_logger_candidate_20260926.md",
+      "theory_precision_design_20260926.md",
+      "theory_replicated_block_inference.md",
+      "theory_extensions.md",
+      "theory.md",
+      "experiment_protocol_v2.md",
+      "submission_requirements_20260926.md"
+    ],
+    "source_hashes": "LC_ALL=C LANG=C shasum -a 256 work/sources/*.md",
+    "source_sizes": "wc -c work/sources/*.md",
+    "independent_finite_checks": "python3 outputs/independent_checks.py",
+    "artifact_hashes": "LC_ALL=C LANG=C shasum -a 256 outputs/review.md outputs/independent_checks.py outputs/check_receipt.json"
+  },
+  "independent_check_results": {
+    "conditional_mean_grid_failures": 0,
+    "first_stage_cancellation_failures": 0,
+    "primary_shared_q_score_extrema": ["-1", "2"],
+    "primary_shared_q_contrast_extrema": ["-2", "2"],
+    "primary_shared_q_agreement_contrast_extrema": ["0", "0"],
+    "primary_max_D_squared_on_disagreement": "4",
+    "full_logger_separate_nuisance_score_extrema": ["-3", "4"],
+    "full_logger_separate_nuisance_contrast_extrema": ["-5", "5"],
+    "full_logger_shared_q1_and_terminal_q_contrast_extrema": ["-4", "4"],
+    "absorbed_primary_contrast": "0",
+    "initial_L_supported_by_deterministic_S_logger": false,
+    "separate_prediction_agreement_counterexample": {
+      "q_H": 0,
+      "q_P": 1,
+      "same_target_action": 0,
+      "logged_action": 0,
+      "Y": 0,
+      "D": "1",
+      "D_squared": "1",
+      "disagreement_probability": "0"
+    },
+    "hoeffding_counts_alpha_0.05_half_width_0.05_three_contrasts": {
+      "width_2": 3830,
+      "width_4": 15320,
+      "width_6": 34470,
+      "width_10": 95750,
+      "width_12": 137880
+    },
+    "weighted_replication_fraction_example": {
+      "lambdas": ["1/3", "2/3"],
+      "replicates": [2, 3],
+      "sum_lambda_squared_over_R": "11/54",
+      "expanded_summand_width_factor": "11/54"
+    },
+    "check_output_sha256": "c87f6f85b4083a63a7faea99e7dfd55461791e59bfba3613a4f5ff48cf137d00"
+  },
+  "findings": [
+    {
+      "id": "F1",
+      "classification": "no_theorem_defect",
+      "status": "accepted_conditionally",
+      "summary": "Primary score identification, first-action cancellation, absorption, and fixed-task interpretation are correct under the declared marginal and kernel laws."
+    },
+    {
+      "id": "F2",
+      "classification": "missing_assumption_clarification",
+      "status": "correction_required",
+      "summary": "The disagreement-only second-moment bound requires the shared-q convention; separate predictions permit D squared greater than zero when disagreement probability is zero."
+    },
+    {
+      "id": "F3",
+      "classification": "design_limit_and_harmless_conservatism",
+      "status": "wording_correction_recommended",
+      "summary": "Initial-L policies are unsupported, but a frozen SS or SL fixed schedule is supported by the primary stratum."
+    },
+    {
+      "id": "F4",
+      "classification": "missing_definition",
+      "status": "correction_required",
+      "summary": "Group weights and within-group task weights must be explicitly derived from the original fixed-task masses to preserve the target."
+    },
+    {
+      "id": "F5",
+      "classification": "missing_assumption_and_design_limit",
+      "status": "implementation_gate_required",
+      "summary": "Cache, server, evaluator, period, timeout, and concurrent-work state must be reset, recorded, or blocked at a coarser independent unit; labels and RNG namespaces cannot establish independence."
+    },
+    {
+      "id": "F6",
+      "classification": "no_theorem_defect",
+      "status": "verified",
+      "summary": "Sharp supports and Hoeffding counts are correct for the stated contracts."
+    },
+    {
+      "id": "F7",
+      "classification": "harmless_looseness",
+      "status": "optional_design_note",
+      "summary": "REQ-025's width-10 full-logger contrast is sharp for separate nuisances but can be reduced to width 8 under prospectively shared q1 and terminal action predictions."
+    },
+    {
+      "id": "F8",
+      "classification": "design_limit",
+      "status": "retained",
+      "summary": "The results target fixed tasks and frozen policies, not new-task population or policy-retraining inference."
+    }
+  ],
+  "unresolved_issues": [
+    "Competent fixed-target executor pair and consequential supported disagreement",
+    "Physical independent execution unit and enforceable cache/period isolation",
+    "Exact group-to-original-task mass mapping",
+    "Comparator-specific logging and fresh-evaluation allocation",
+    "Prospectively frozen shared-versus-separate nuisance convention",
+    "Scientifically meaningful margin and attainable precision",
+    "Empirical interval calibration under the matching execution law",
+    "Final empirical synthesis and independent reproducibility/submission package"
+  ],
+  "scientific_claims_not_made": {
+    "empirical_feasibility": false,
+    "coverage_validated": false,
+    "competence_established": false,
+    "useful_effect_established": false,
+    "net_resource_savings_established": false
+  },
+  "resource_observation": {
+    "observed_at_utc": "2026-09-27T01:20:46Z",
+    "system_memory_free_percent": 82,
+    "cpu_idle_percent": 86.48,
+    "load_average": [1.96, 2.18, 2.11],
+    "contention_stop_triggered": false
+  },
+  "artifacts": [
+    {
+      "path": "outputs/review.md",
+      "bytes": 15063,
+      "sha256": "2ad4b17fb85e492d97a05770a1f515aa0674613814444dd0c6b44c5913301977"
+    },
+    {
+      "path": "outputs/independent_checks.py",
+      "bytes": 7115,
+      "sha256": "0943797cd0ec3b9e63cfbc56c00485df4e51830c6ed7eb88a7c88110f4da50de"
+    }
+  ],
+  "readiness": {
+    "percent": 55,
+    "change_percentage_points": 0,
+    "judgment_range_percent": [45, 65]
+  }
+}
