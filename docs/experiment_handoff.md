@@ -7081,3 +7081,9 @@ Read docs/scientific_audit_20260927.md and REQ-029A docs/req029a_feedback_correc
 ## 2026-09-27 — REQ-029A accepted as candidate; REQ-029B deterministic fit
 
 Lead independently verified 14 tests/1,860 members/154 pins; see docs/req029_lead_decision_20260927.md. Raw TRAIN recount confirms only183/924 initially-small episodes reach decision2. Remote next implements and executes exact docs/req029b_development_router_diagnostic_20260927.md within300 cumulative CPU seconds and2GiB; matched archived TRAIN-only finite-class fit, no model/CONFIRM/new data. Preserve all historical sources/outcomes. Readiness55%,change0points,range45–65%; comparison/inference,synthesis,reproducibility/approved package remain.
+
+## 2026-09-27 — STOP duplicate REQ-029B
+
+REQ-007 already completed the matched-class fit; see its 24 September integration decision. REQ-029B is withdrawn, including its changed tolerance convention. Remote must retain any preparation and report whether execution started; no rerun or replacement job. Lead owns this stale-evidence error. REQ-029A remains accepted as an inert candidate. Prioritize current manuscript synthesis and adequate prospective design, preserving the selected-policy collapse and all failed evidence. Readiness55%,change0points,range45–65%; comparison/inference,synthesis,reproducibility/package remain.
+
+Remote confirmed REQ-029B stopped before any source, split, test or fit artifact/execution; no duplicate analysis took place. Manuscript C6/C7 synthesis built to41pages, affected pages inspected and first33page text unchanged. Next scientific design must start from completed REQ007 collapse and current comparator/opportunity limitations, not stale REQ006 status.

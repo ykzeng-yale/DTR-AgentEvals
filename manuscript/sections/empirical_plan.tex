@@ -189,6 +189,42 @@ on the inspected worker host. This is a host-specific feasibility finding, not a
 adequate hardware is unavailable and not a model-performance result. Qualifying a competent executor
 pair remains necessary before a new routing study.
 
+\paragraph{Split-host single-model execution and evaluator controls.}
+A later split-host configuration ran model inference on a Mac mini and executed generated commands
+only in an isolated local repository sandbox. These were development execution probes on the already
+exposed Astropy issue, not randomized routing comparisons. An initial Qwen3-4B trajectory ended after
+two model calls and two actions because of a relay timer implementation defect. A separately recorded
+trajectory after that defect was corrected completed four calls and four actions: two source inspections,
+an edit, and an explicit submission. No reproduction or verification command preceded submission.
+The four calls consumed 14,090 prompt tokens and 895 completion tokens; summed model-request time
+was 76.86 seconds, while the model phase including relay, tool waits and cleanup was 268.83 seconds.
+Both attempts remain in the acquisition record; these quantities do not include the full earlier setup
+program and are neither prices nor estimates of production deployment savings.
+
+A separate offline evaluation compared the submitted patch with the unmodified repository on the
+same 176 declared tests. The no-change \emph{evaluator negative control} passed 175 regression tests
+and failed the target test. The submitted patch passed 174 tests and failed both the target and one
+previously passing empty-string regression. These are within-task test counts, not 176 benchmark tasks
+or an agent baseline. The candidate did not resolve its one issue. A model completion claim and a high
+fraction of passing regression tests do not satisfy the terminal-resolution endpoint.
+The offline evaluator reused the existing image environment and omitted the stock package-installation
+step. All declared test statuses and the prepared patch identity were checked, but this particular
+configuration lacked the protocol's known-good reference-patch positive control. We therefore retain
+the observed failures without claiming complete evaluator qualification or untouched stock-harness
+equivalence. The already exposed issue is closed to further model tuning or retries.
+
+The trajectory also illustrates a design mismatch: it submitted at call four, before the proposed
+second routing decision at call nine. It offered no realized second-stage treatment opportunity.
+Moreover, source review found that the new execution harness terminated on any nonzero command
+exit rather than delivering ordinary completed-command feedback. That behavior is unsuitable for
+studying error-responsive repair; a nonzero shell status is not itself a unit-test outcome. It did not
+cause this particular failure, since all four commands exited zero. A separately versioned correction
+passed inert controller/worker/guardian tests, which establish neither real-model competence nor routing
+benefit. Long tool output also followed the pinned scaffold's declared first/last-segment elision;
+raw and delivered observations are retained separately. No measured contribution of that elision to
+the failed patch is identified. These records are archived as REQ-028C6/C7 and REQ-029A. They qualify
+parts of the execution path, not a competent model pair or the primary history-aware comparison.
+
 \subsection{Prospective open-weight agent experiment}
 The subsequent routing study will fix a model pool, prompts, decoding settings, tool interface, execution environment, stopping rules, and objective verifier. Development tasks will establish a feasible configuration and a nondegenerate outcome distribution. Before collection, the protocol will also set adequacy thresholds for visible-feedback informativeness, consequential routing opportunities and per-action support, with checks on development tasks. Handling of tasks with zero usable visible checks will be specified prospectively; the archived evaluation cohort will not be filtered retrospectively. After that choice, all evaluation tasks will be newly drawn or held out at the task-family level. Model weights and framework software will have separately documented licenses and immutable version identifiers.
 

@@ -1,5 +1,11 @@
 # REQ-029 lead review: feedback correction and scientific adequacy
 
+## Correction: REQ-007 supersedes the old untrained status
+
+The lead's 27 September reliance on REQ-006 was stale. REQ-007 already fitted the specified matched classes and was reviewed on 24 September in docs/theory_feedback_20260924_req007_integration.md. Both selected depth zero; all-TRAIN refits are the identical S–L–L schedule, with zero disagreement at the 183 second-stage and126 third-stage logged histories (50 third-stage histories reachable by both). This is policy collapse under the declared selection rule, not evidence that history has no value. No duplicate fit or changed tie rule is warranted. REQ-029B is withdrawn; the remote stop instruction was sent immediately on discovery, and execution status must be preserved in its receipt. Existing REQ-029A validation and the raw integer recount are unaffected.
+
+The original entry below is retained as superseded provenance where it calls the matched pair untrained or releases a repeat fit.
+
 REQ-029A source 8e6e9a599dfeafbe04a93acfdd8c1c8a3cb59759 is accepted as an inert candidate, not live qualification. Lead ran all 14 tests locally (4.304 seconds), matched all 1,860 archive member hashes and 154 current source/input pins, and reviewed the controller, worker and guardian changes. Completed ordinary nonzero exits now reach bound feedback; exceptional execution remains terminal and nonzero sentinel output cannot submit. Existing REQ-028 files are unchanged. Fake resource/timeout fixtures do not establish new real backend qualification. The old output-elision behavior remains explicit.
 
 The archived REQ-006 development script's strict full replay failed under system Python because of pilot RNG-availability metadata and exact floating comparisons. This is retained as a reproducibility limitation, not reported as a passing replay. A separate raw TRAIN-only integer recount excludes 2,640 CONFIRM lines before parsing and verifies: 1,848 episodes across 231 tasks, 317 second and 236 third decisions. Initial-small: 924 episodes, only 183 second decisions (19.8%); 741 terminate after the first, including 165 hidden failures. All inspected logged action probabilities are 1/2 with both backends available. See the executable recount and JSON under docs/audits/req029_lead_recount_20260927.*.

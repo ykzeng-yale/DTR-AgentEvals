@@ -1,5 +1,11 @@
 # REQ-029B — execute the already specified archived-development router diagnostic
 
+## Correction: REQ-007 supersedes the old untrained status
+
+The lead's 27 September reliance on REQ-006 was stale. REQ-007 already fitted the specified matched classes and was reviewed on 24 September in docs/theory_feedback_20260924_req007_integration.md. Both selected depth zero; all-TRAIN refits are the identical S–L–L schedule, with zero disagreement at the 183 second-stage and126 third-stage logged histories (50 third-stage histories reachable by both). This is policy collapse under the declared selection rule, not evidence that history has no value. No duplicate fit or changed tie rule is warranted. REQ-029B is withdrawn; the remote stop instruction was sent immediately on discovery, and execution status must be preserved in its receipt. Existing REQ-029A validation and the raw integer recount are unaffected.
+
+The original entry below is retained as superseded provenance where it calls the matched pair untrained or releases a repeat fit.
+
 The lead authorizes a bounded deterministic analysis, not model inference or primary-target replacement. Read section 5(c), REQ006-E2DEV-TREE-v0, in results/code_routing/analysis/req006/REQ006_SUMMARY_v2.md and its machine-readable frozen_training_specification. Implement that matched initial-S prompt-only/history-aware pair and actually fit it to the specified archived TRAIN data. This closes the recorded untrained-comparator gap; it does not make this old three-decision harness into the prospective two-decision SWE-bench design.
 
 Use exactly the specified binary features, utility, task split seed/order, depths 0/1/2, joint finite-class self-normalized IPW search, tie-breaks and one-SE complexity heuristic. Persist exact FIT/VALIDATION task IDs before fitting. Exclude CONFIRM raw lines before JSON parsing using task IDs; do not open live/ or branch/. No pilot fitting, new features, endpoint changes or search beyond that finite class. Preserve every original archived artifact.

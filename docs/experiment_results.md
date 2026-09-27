@@ -1,3 +1,7 @@
+## Correction — REQ-007 was already complete
+
+The latest REQ-029B release was based on stale REQ-006 status and is withdrawn. [REQ-007 lead review](theory_feedback_20260924_req007_integration.md) already records identical selected S–L–L policies, zero supported-history disagreement, and the prohibition on rechoosing depth/split/endpoint. No repeat fit is needed. The 27 September feedback repair and raw TRAIN recount remain valid. The next work is to reconcile recent single-model/evaluator evidence into the manuscript and design a genuinely new adequate comparison, not rerun this diagnostic. Readiness55%,change0points,range45–65%; comparison/inference,synthesis,reproducibility/package remain.
+
 ## REQ-029 independent review — 27 September 2026
 
 [Lead review](req029_lead_decision_20260927.md): ordinary nonzero-feedback candidate passes14 local tests;1,860 archived hashes and154 pins matched. Independent raw TRAIN recount:183/924 initial-small episodes reach decision2; this describes opportunity, not routing value. The archived full-script replay failed environment-dependent exact checks and is not claimed reproduced. REQ-029B releases only the specified bounded TRAIN-only router diagnostic, not model collection. Readiness55%,change0points,range45–65%; adequate comparison/inference,synthesis,reproducibility/package remain.
