@@ -76,4 +76,7 @@ def main(path):
         except BaseException as e:outcome={'owned_absent':False,'error':repr(e)}
         try:save('supervisor_exit.json',{'failure':failure,'cleanup':outcome,'audit_errors':errors})
         except BaseException:pass
+        if s.get('inert_test') and s.get('exit_barrier'):
+            while Path(s['exit_barrier']).exists() and time.time()<s['phase_deadline']:
+                time.sleep(.01)
 if __name__=='__main__':main(sys.argv[1])

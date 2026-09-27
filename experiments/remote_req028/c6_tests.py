@@ -12,6 +12,8 @@ from c6_model import Lifecycle,Model
 from c6_process import Runner
 from c6_git import Transport
 from c6_engine import Worker,Controller
+from c6_submission_checker import DOCKER_SHA
+from c6_sandbox_backend import DOCKER,ARCHIVE_SHA,ARCHIVE_BYTES,RESERVE
 
 GOOD=dict(pressure_level=1,free_percent=75,swap_used_mib=0,owned_rss_bytes=0,
           foreign_inference=[],disk_free_bytes=20*1024**3)
@@ -25,8 +27,9 @@ def fake_release(seconds=40):
         roles={'request':'controller','observation':'controller','response':'worker','preflight':'controller',
             'ready':'worker','controller_terminal':'controller','worker_terminal':'worker'},
         sandbox={'image':IMAGE,'head':HEAD,'context':'colima-dtr','qualified':True,'storage_enforced':True,
-            'controller_death_cleanup_qualified':True,'qualification_sha256':'b'*64,'adapter_sha256':'b'*64},
-        submission={'revision':MINI,'yaml_sha256':YAML_SHA,'docker_source_sha256':'b'*64,'checker_sha256':'b'*64},
+            'controller_death_cleanup_qualified':True,'qualification_sha256':'b'*64,'adapter_sha256':'b'*64,
+            'docker_executable':DOCKER,'docker_sha256':'b'*64,'archive_sha256':ARCHIVE_SHA,'archive_bytes':ARCHIVE_BYTES,'cleanup_reserve_seconds':RESERVE},
+        submission={'revision':MINI,'yaml_sha256':YAML_SHA,'docker_source_sha256':DOCKER_SHA,'checker_sha256':'b'*64},
         evaluation={'strict_source_sha256':'b'*64,'config_sha256':'b'*64,'task_manifest_sha256':'b'*64,'execution_authorized':False},
         initial_messages_sha256=sha(encode(initial())))
     return r,sha(encode(r))
@@ -65,6 +68,8 @@ class InertSandbox:
     def __init__(self,fail=False,cap=False):
         self.commands=[];self.fail=fail;self.cap=cap;self.closed=False
     def preflight(self,r,d):pass
+    def bind_phase(self,ready,obj,deadline):pass
+    def check(self,deadline):pass
     def execute(self,command,deadline):
         # Record data, return fixed output; do not eval/exec/shell it.
         self.commands.append(command)
@@ -288,7 +293,7 @@ class Tests(unittest.TestCase):
             with self.assertRaises(Rejected):release(encode(bad),sha(encode(bad)))
     def test_missing_qualified_adapter_holds_production(self):
         from c6_sandbox import QualifiedSandbox
-        with self.assertRaisesRegex(Rejected,'not installed'):QualifiedSandbox(self.root/'sandbox',fake_release()[0])
+        with self.assertRaisesRegex(Rejected,'adapter source'):QualifiedSandbox(self.root/'sandbox',fake_release()[0])
     def test_no_role_resume(self):
         r,p=fake_release();Worker(self.root/'worker',r,p,Memory({}))
         with self.assertRaises(FileExistsError):Worker(self.root/'worker',r,p,Memory({}))

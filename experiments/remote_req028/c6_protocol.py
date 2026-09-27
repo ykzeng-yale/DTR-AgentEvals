@@ -88,9 +88,15 @@ def release(raw, pin, now=None):
     require(s['qualified'] is True and s['storage_enforced'] is True and
             s['controller_death_cleanup_qualified'] is True, 'unqualified sandbox')
     digest(s['qualification_sha256']); digest(s['adapter_sha256'])
+    from c6_sandbox_backend import DOCKER,ARCHIVE_SHA,ARCHIVE_BYTES,RESERVE
+    require(s['docker_executable']==DOCKER and s['archive_sha256']==ARCHIVE_SHA and
+            s['archive_bytes']==ARCHIVE_BYTES and s['cleanup_reserve_seconds']==RESERVE,'W2R frozen sandbox contract')
+    digest(s['docker_sha256'])
     sub = r['submission']
     require(sub['revision'] == MINI and sub['yaml_sha256'] == YAML_SHA, 'mini source')
     digest(sub['docker_source_sha256']); digest(sub['checker_sha256'])
+    from c6_submission_checker import DOCKER_SHA,verify_source
+    require(sub['docker_source_sha256']==DOCKER_SHA,'exact submission source');verify_source()
     for k in ('strict_source_sha256','config_sha256','task_manifest_sha256'):
         digest(r['evaluation'][k])
     require(r['evaluation']['execution_authorized'] is False, 'evaluation held')

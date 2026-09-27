@@ -47,13 +47,13 @@ def main():
     p.add_argument('--relay-repo',required=True)
     a=p.parse_args()
     args={k:getattr(a,k) for k in ('release_commit','release_path','release_sha')}
-    setup_deadline=time.time()+300
+    started=time.time();setup_deadline=started+300
     r,pin=authorize(**args,deadline=setup_deadline)
     # A caller cannot change --output to replay the same approved run.
     root=runtime_root(r,a.role)
     require(not root.exists(),'no restart/resume')
     # The finite pre-Popen phase is setup+admission, never indefinite residency.
-    deadline=min(r['expires_at'],time.time()+1200)
+    deadline=min(r['expires_at'],started+1200)
     from c6_git import Transport
     from c6_engine import Worker,Controller
     from c6_model import Model
@@ -66,7 +66,7 @@ def main():
         role.deadline=min(setup_deadline,r['expires_at'])
         result=role.run(Model(args,setup_deadline))
     else:
-        result=role.run(QualifiedSandbox(root/'sandbox',r))
+        result=role.run(QualifiedSandbox(root/'sandbox',r,args,started))
     print(json.dumps({'status':result['status'],'claims':result['claims'],'scientific_success_assessed':False}))
 
 if __name__=='__main__':main()

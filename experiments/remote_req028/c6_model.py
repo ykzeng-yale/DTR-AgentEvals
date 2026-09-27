@@ -15,6 +15,21 @@ from a6r_gate import admit
 HERE=Path(__file__).parent
 
 class Lifecycle(Previous):
+    def check(self):
+        if getattr(self,'latched_failure',None):
+            raise RuntimeError(self.latched_failure)
+        for name in ('supervisor_exit.json','stop.request','telemetry_latest.json'):
+            path=self.root/name
+            if not path.exists():continue
+            try:
+                terminal=name!='telemetry_latest.json' or json.loads(path.read_text()).get('violation') is not None
+            except BaseException:
+                terminal=True
+            if terminal:
+                self.latched_failure='latched supervisor terminal/guard: '+name
+                raise RuntimeError(self.latched_failure)
+        return super().check()
+
     def launch(self):
         require(self.proc is None,'one residency only')
         put(self.root,'supervisor.json',self.spec)
@@ -32,12 +47,13 @@ class Model:
 
     def start(self,r,pin,root):
         root=Path(root)
-        setup_deadline=min(r['expires_at'],self.setup_deadline or time.time()+300)
+        outer=getattr(self,'admission_outer_deadline',r['expires_at'])
+        setup_deadline=min(r['expires_at'],outer,self.setup_deadline or time.time()+300)
         stats={}
         for p in (MODEL,SERVER):
             s=p.stat();stats[str(p)]=[s.st_dev,s.st_ino,s.st_size,s.st_mtime_ns,s.st_ctime_ns]
         Runner(root/'attestation-process').run([sys.executable,str(HERE/'c4_attest.py'),str(root/'attestation.json')],setup_deadline)
-        window=min(r['expires_at'],time.time()+900)
+        window=min(r['expires_at'],outer,time.time()+900)
         sampler=ProductionLifecycle(root/'admission_samples',window)
         def observe(reading,reason,count,kind):
             put(root,'admission/%02d.json'%count,dict(sample=reading,reason=reason,count=count,kind=kind))
@@ -45,7 +61,8 @@ class Model:
             started=time.time();deadline=min(r['expires_at'],started+1800)
             spec=dict(inert_test=False,approval_args=self.approval_args,release=r,release_sha256=pin,
                 asset_stats=stats,phase_started=started,phase_deadline=deadline,
-                load_deadline=min(deadline,started+180),token='c4-c6-owned-'+str(os.getpid())+'-'+str(time.time_ns()),port=free_port())
+                load_deadline=min(deadline,started+180,outer),admission_outer_deadline=outer,
+                token='c4-c6-owned-'+str(os.getpid())+'-'+str(time.time_ns()),port=free_port())
             put(root,'model_window.json',spec)
             self.life=Lifecycle(root/'supervision',spec)
             self.life.launch()

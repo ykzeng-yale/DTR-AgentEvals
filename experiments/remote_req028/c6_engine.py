@@ -15,6 +15,7 @@ class Base:
         self.deadline=release['expires_at']
         self.claims=0
         self.trace=[]
+        self.created_at=time.time()
         self.terminal=None
         self.check=lambda:None
         self.crash=lambda stage:None
@@ -52,6 +53,7 @@ class Base:
 
     def claim(self, kind, seq, identity):
         # fsync completed BEFORE physical dispatch. No retries after any exception.
+        self.left(1) # latch terminal/guard evidence immediately before the claim
         put(self.root,'claims/'+kind+'-%02d.json'%seq,identity)
         self.claims+=1
         self.crash('after_'+kind+'_claim')
@@ -80,7 +82,10 @@ class Worker(Base):
         try:
             preflight,pobj=self.wait('preflight',peer='controller')
             require(preflight==dict(protocol=6,run_id=self.r['run_id'],release_sha256=self.pin,
-                sandbox=self.r['sandbox'],controller_commit=self.r['controller_commit'],ready=True), 'preflight binding')
+                sandbox=self.r['sandbox'],controller_commit=self.r['controller_commit'],ready=True,
+                created_at=preflight['created_at'],preflight_deadline=min(self.r['expires_at'],preflight['created_at']+1200)), 'preflight binding')
+            require(preflight['created_at']<=time.time()<preflight['preflight_deadline']-15,'preflight lease no longer ready')
+            model.admission_outer_deadline=preflight['preflight_deadline']-15
             # Production start performs once-only setup/admission before launch.
             started=model.start(self.r,self.pin,self.root)
             self.deadline=min(started+1800,self.r['expires_at'])
@@ -130,16 +135,21 @@ class Controller(Base):
         status='indeterminate';error=None;cleanup=None;diff=None
         try:
             sandbox.preflight(self.r,self.left(60))
+            created_at=getattr(sandbox,'created_at',self.created_at)
+            self.check=getattr(sandbox,'liveness',lambda:None)
             pobj=self.publish('preflight',dict(protocol=6,run_id=self.r['run_id'],release_sha256=self.pin,
-                sandbox=self.r['sandbox'],controller_commit=self.r['controller_commit'],ready=True))
+                sandbox=self.r['sandbox'],controller_commit=self.r['controller_commit'],ready=True,
+                created_at=created_at,preflight_deadline=min(self.r['expires_at'],created_at+1200)))
             ready,readyobj=self.wait('ready',peer='worker')
             require(ready==dict(protocol=6,run_id=self.r['run_id'],release_sha256=self.pin,
                 worker_commit=self.r['worker_commit'],phase_started=ready['phase_started'],
                 deadline=min(ready['phase_started']+1800,self.r['expires_at']),preflight_object=pobj),'ready binding')
             require(ready['phase_started']<=time.time()<ready['deadline'],'phase time')
             self.deadline=ready['deadline'];self.t.deadline=self.deadline
+            sandbox.bind_phase(ready,readyobj,self.left(30))
             for seq in range(1,25):
                 require(self.t.read('worker_terminal') is None,'worker already terminal')
+                sandbox.check(self.left(5))
                 q=self.chain.request(self.deadline)
                 qobj=self.publish('request',q,seq)
                 response,robj=self.wait('response',seq,'worker')
@@ -170,6 +180,7 @@ class Controller(Base):
                 cleanup=sandbox.close()
             except BaseException as e:
                 cleanup={'owned_absent':False,'error':repr(e)}
+            self.check=lambda:None
             # Audit I/O cannot prevent exact-owned sandbox cleanup.
             if diff is not None:put(self.root,'final.diff',diff.encode())
             else:put(self.root,'diff.unavailable.json',{'error':capture_error,'non_primary':True})
