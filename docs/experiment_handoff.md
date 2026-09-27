@@ -6849,3 +6849,21 @@ design; bounded300-second static setup and600-second model phase recorded separa
 Source must publish successfully before supervisor launch. No benchmark/CONFIRM.
 Readiness55%, change0points, range45–65%; remaining competent fixed-target comparison
 and valid inference, final synthesis, independent reproducibility/approved package.
+
+
+## 27 September 2026, 04:45 UTC: q8 long-input serving accepted; B1 acquisition
+
+A6R3482ed1 completed both8192/24576-token synthetic calls (32.699/158.882sec),
+exact DTR_READY, no recorded guard violation, owned cleanup. Lead verified29
+mechanics hashes, both prompt bindings/raw responses,184 normal-pressure samples
+and37 focused tests. ActualKV2448MiB. This is candidate serving feasibility, not
+f16/restart validation, coding competence or a causal quantization comparison.
+
+[REQ-028B1](req028_b1_klear_artifact_20260927.md) releases one pinned community
+Klear Q4_K_M download and bounded metadata audit, not inference or benchmark
+adoption. Exact canonical/converter provenance remains unresolved and must be
+disclosed; no canonical score transfers. One20-minute,6GiB-network/5GiB-disk
+acquisition with12GiB reserve and owned guards; source/tests published before
+launch. No Qwen repeats, Klear inference, transport, VM or CONFIRM.
+Readiness55%, change0points, range45–65%; competent fixed-target comparison/valid
+inference, final synthesis, independent reproducibility/approved package remain.
