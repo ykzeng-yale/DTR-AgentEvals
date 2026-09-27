@@ -6,7 +6,7 @@ from recovery_model import Model,Lifecycle,free_port
 from comparator_http import HTTP
 from recovery_sandbox import QualifiedSandbox
 from recovery_sandbox_host import exchange
-from comparator_backend import Docker
+from recovery_backend import Docker
 from c3r_arbiter import identity
 GOOD=dict(pressure_level=1,free_percent=80,swap_used_mib=0,owned_rss_bytes=0,foreign_inference=[],disk_free_bytes=20*1024**3)
 
@@ -18,7 +18,7 @@ def release(arm='qwen',seconds=55):
         sandbox=dict(image='sha256:'+'c'*64,head='d'*40,archive_path='work/local_req029/INERT/archive.tar',
             archive_sha256=sha(b'inert archive'),archive_bytes=13,import_module='fixture',python='/opt/miniconda3/envs/testbed/bin/python',
             docker_executable=DOCKER,docker_sha256='e'*64,context='colima-dtr',qualified=True,qualification_sha256='f'*64,
-            limits=LIMITS,cleanup_reserve_seconds=15),
+            limits=LIMITS,cleanup_reserve_seconds=15,archive_ownership='extracting-user'),
         initial_messages_utf8=encode([dict(role='system',content='INERT shared system, no test/reference content.'),
                                    dict(role='user',content='INERT generic issue, never a task release.')]).decode())
     r['initial_messages_sha256']=sha(r['initial_messages_utf8'].encode());r['config_sha256']=sha(encode(r['model']))

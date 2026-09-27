@@ -3,7 +3,7 @@ import json,re,sys,time
 from pathlib import Path
 from recovery_contract import *
 from feedback import Guardian as FeedbackGuardian
-from comparator_backend import Docker
+from recovery_backend import Docker
 from c6_sandbox_backend import RESERVE
 from c3r_arbiter import identity
 class Guardian(FeedbackGuardian):

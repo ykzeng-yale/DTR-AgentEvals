@@ -59,8 +59,9 @@ def validate(r,now=None):
     messages(r)
     s=r['sandbox']
     require(set(s)=={'image','head','archive_path','archive_sha256','archive_bytes','import_module','python',
-        'docker_executable','docker_sha256','context','qualified','qualification_sha256','limits','cleanup_reserve_seconds'},'sandbox schema')
+        'docker_executable','docker_sha256','context','qualified','qualification_sha256','limits','cleanup_reserve_seconds','archive_ownership'},'sandbox schema')
     require(re.fullmatch('sha256:[0-9a-f]{64}',s['image']) and re.fullmatch('[A-Za-z_][A-Za-z0-9_.]*',s['import_module']),'task image/import')
+    require(s['archive_ownership']=='extracting-user','explicit archive ownership policy')
     commit(s['head']);digest(s['archive_sha256']);digest(s['qualification_sha256']);digest(s['docker_sha256'])
     require(s['archive_path'].startswith('work/local_req029/') and '..' not in Path(s['archive_path']).parts and
             type(s['archive_bytes']) is int and s['archive_bytes']>0,'qualified task archive')
