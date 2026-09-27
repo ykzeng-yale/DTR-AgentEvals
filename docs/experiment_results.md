@@ -1710,3 +1710,19 @@ three prompts,32k and all guards may run. No broad configuration search,guard
 weakening,model retry,benchmark or CONFIRM. New immutable source/results only.
 Readiness55%,change0points,range45–65%; competent comparison/valid inference,final
 synthesis,independent reproducibility/approved package remain.
+
+
+## 27 September 2026, 05:45 UTC: B3 serving accepted, format failure; B4
+
+B3 70b39a6 completed3requests under guards but exactformat0/3; inline thinking
+and two128-token length truncations. Lead39hashes/all3rawbindings/responses/58tests
+verified. Cleanup oneTERM/noKILL/exit0; owned processes reported absent. No further
+cache search. These are serving results,not competence.
+
+[B4](req028_b4_output_budget_20260927.md) releases ONE originalfence request with
+max_tokens1536,the existing pilot allowance. No other model/template/prompt/cache
+change. Preserve strictformat endpoint and separately source-bound parser extraction,
+without stripping thinking; never execute output. New immutable run,unchanged
+resourcegates/no retry or budget escalation. No benchmark/CONFIRM release.
+Readiness55%,change0points,range45–65%; competent comparison/valid inference,final
+synthesis,independent reproducibility/approved package remain.
