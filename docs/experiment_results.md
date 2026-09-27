@@ -3,8 +3,8 @@
 | Stream | Verified status | Next boundary |
 |---|---|---|
 | REQ-028C5 Mac mini Qwen relay | One real request completed; 129 runtime hashes, 102 source pins and exact consumer/native/parser replay independently checked; owned cleanup recorded. | Transport qualification only; no executed action or competence claim. No C5 job remains. |
-| REQ-028C6 development trajectory | c6-dev-20260927-a terminal: two real responses and two successful read-only actions; timer ValueError before third model claim; no submission, empty diff. | C6B candidate strictly unresolved: baseline175pass/1fail;candidate174pass/2fail, target still failing plus one regression. | C7 complete; exposed task probe closed, no further run released. |
-| C6 local writable sandbox | W2R plus four actual production-hook cases pass: action/diff, timeout, overflow and controller death; owned absence verified. | Two generated read-only actions completed inside sandbox; owned removal and local process absence verified. Earlier failures retained. |
+| REQ-028C6 development trajectory | Run-a: infrastructure termination after two calls/actions. Run-b: four calls/actions, submitted patch; C7 baseline175pass/1fail, candidate174pass/2fail, target failure plus one regression. | C7 complete; exposed task probe closed, no further run released. |
+| C6 local writable sandbox | Four actual qualification cases passed; generated source reads, edits and submission confined to sandbox. | All task/evaluation sandboxes removed and local process absence verified. Earlier failures retained. |
 | Prior model/synthetic studies | Archived failures and accepted REQ-027 simulation remain unchanged. | Competent fixed-target comparison and valid inference remain open. |
 
 Readiness 55%, change 0 points, range 45–65%; final empirical/manuscript synthesis, independent reproducibility and author-approved package also remain. The historical evidence map below retains the dates and scope of earlier host inventories; Mac mini access and subsequent serving evidence supersede any inference that no second host is currently configured.
