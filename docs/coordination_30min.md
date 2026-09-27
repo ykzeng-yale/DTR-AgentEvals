@@ -1,3 +1,7 @@
+# Current coordination override — 27 September 2026
+
+Direct SSH/SFTP replaces Mac mini Codex-chat coordination. Review cadence is TWO HOURS. Read [the current contract](direct_ssh_coordination_20260927.md). Historical entries below remain provenance and do not override this instruction. Separately authorized worker schedules and running experiment kernels are preserved.
+
 # Experiment and theory coordination
 
 **Current author instruction, 26 September 2026 UTC:** the theory lead's former three-hour recurring check has been **deleted** for the laptop handoff. The experiment agent's separately authorized half-hour publication cadence was not changed. Its minute-13/43 slots were reported in `1c9025d`, not independently verified on the worker host; verify freshness and current process state when work resumes. Publish material scientific corrections when found.

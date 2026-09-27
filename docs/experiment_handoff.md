@@ -7200,3 +7200,9 @@ Readiness55%,change0points,range45–65%;competent fixed-target comparison/valid
 QwenDjango terminal independentlyaudited:2126hashes/166pins/3nativehistories; twofences atcall3 correctlyrejected,no submission. Read docs/req029l_klear_execution_20260927.md for exactsecondarmrelease,unchangedsource/sandbox/caps,22UTCexpiry. No Qwenretry/evaluator. SSHworks tobothownedMacs; auxiliary32GiBhost not inserted into frozenpair. Two-hourreview cadence unchanged. Exactlaunchreceipts follow onlyafterpublishedapproval/authorize.
 
 Readiness55%,change0points,range45–65%; competent fixed-target comparison/valid inference,synthesis,independent reproducibility/author-approved package remain.
+
+## 2026-09-27 — Author retires mini chat coordination
+
+Direct verified SSH/SFTP is now the compute dispatch/inspection/artifact path; do not message or poll the Mac mini Codex chat. See docs/direct_ssh_coordination_20260927.md and current AGENTS.md. Existing Klear experiment kernel/source/limits remain frozen, with no duplicate or mid-run transport rewrite. Same monitor remains TWO HOURS. Full preprint goal explicitly retains scientific scope and now specifies direct owned-host allocation. Historical chat/worker records are retained; no unrelated service is removed.
+
+Readiness55%,change0points,range45–65%; competent comparisons/valid inference,synthesis,independent reproducibility/author-approved package remain.

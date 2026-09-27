@@ -2,6 +2,24 @@
 
 This repository studies causal evaluation of dynamic model routing. Read README.md, docs/research_proposal.md, docs/theory.md and docs/experiment_protocol.md before changing scientific claims.
 
+## Direct compute coordination — author update, 27 September 2026
+
+Use verified SSH/SFTP through the private `mac-ssh-compute` skill to allocate,
+dispatch, inspect and retrieve authorized work on the owned Mac mini and auxiliary
+MacBook. The Mac mini Codex-chat messaging/polling/dispatch path is retired. Do
+not send work through that chat or depend on its status. The lead directly owns
+implementation and scientific review; historical worker assignments remain archives.
+This does not stop separately authorized jobs or change their frozen execution
+kernels. Qualify a future replacement for an experiment's internal Git relay before
+release; SSH dispatch alone is not such a change. Keep private keys and network
+inventory outside this repository. Preserve bounded resource checks, source pins,
+immutable run IDs, independent cleanup and no duplicate execution.
+
+The active experiment monitor cadence is TWO HOURS, not the historical 30-minute
+or 15-minute cadences. Shortening requires tremendous positive scientific evidence
+and an explained decision. No continuous goal-token polling. See
+`docs/direct_ssh_coordination_20260927.md` for the current operating contract.
+
 ## Publication workflow: direct updates to main
 
 The author explicitly requested direct integration into `main`, without pull requests. All project agents and the recurring monitor must validate their changes, synchronize with the latest remote `main`, preserve concurrent work, and commit/push directly to `main`. Do not create a PR, draft PR, or PR-based handoff unless the author later changes this instruction. If an isolated branch is needed for local work, integrate its reviewed changes locally and publish to `main` directly. Never force-push or overwrite another agent's work. Continue mathematical/code review and appropriate checks before publishing; direct publication does not remove validation requirements. Use issues and committed handoff files for coordination.
