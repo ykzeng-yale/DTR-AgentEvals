@@ -7131,3 +7131,12 @@ Lead independently verified all13,791regular archive members and166current sourc
 REQ-029F releaseeb0fec3 publishes exact data-only acquisition source/design in docs/req029f_image_acquisition_20260927.md. One first-queue Django16560 pinned-layer download launched as PID38870; ps verified it alive at00:56. Receipt results/local_req029/image_acquisition_20260927/launch.json. One900second window,1.5GiB response-body cap,10MiB/s,12GiB reserve,normal/free40%guards,no retries. No image load/extraction/container/model/evaluator. Next inspect this actual handle/terminal and independently hash retained layers; do not relaunch. Image/environment/exposure qualification remains before any model cell.
 
 Readiness55%,change0points,range45–65%; competent fixed-target comparison/valid inference, empirical/manuscript synthesis, independent reproducibility and author-approved package remain.
+
+
+## 2026-09-27 — REQ-029F acquisition complete, artifact integrity verified
+
+PID38870 is absent per local OS inspection. One acquisition completed without retry in119.371seconds: ten layers totaling1,240,896,221compressedbytes; received response bodies1,240,901,806bytes including authentication. All24resource samples report64%free with the disk reserve preserved. Terminal receipt and independent verification are in results/local_req029/image_acquisition_20260927. Lead separately rehashed every compressed layer and every decompressed stream against the pinned manifest/config rootfs.diff_ids: all match. Total uncompressed tar-stream bytes3,130,309,632; verification3.556seconds, without extracting a member or invoking Docker. This is data integrity, not task/environment qualification.
+
+The image is absent from Docker. Read-only VM df reports85,128,988KiBavailable in /var/lib/docker; Docker reports zero containers. Next lead stage must freeze a bounded offline import of this exact acquired image and task-specific source/import/storage qualification, preserving the peer inventory. The current data-only release does not authorize that import. No redownload, model, evaluator, oldAstropy retry or queue substitution. Runtime task qualification, exposure reconciliation and no-change/reference controls still precede actual comparator cells.
+
+Readiness55%,change0points,range45–65%; competent fixed-target comparison/valid inference, empirical/manuscript synthesis, independent reproducibility and author-approved package remain.
