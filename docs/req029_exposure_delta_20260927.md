@@ -13,3 +13,10 @@ Readiness55%,change0points,range45–65%; competent fixed-target comparison/vali
 The bounded ID-only audit `experiments/lead_req029/exposure_local_runs.py` checks local v2_agent trajectory/request records and untracked C6 controller role requests, independent of Git tracking. It scanned115records/7,325,541bytes and found only already-excluded astropy__astropy-14598. None of the23remaining queue IDs appeared. Exact record hashes are in docs/audits/req029_local_run_exposure_20260927.json. Four combined scanner/selection tests passed in0.005seconds, including chunk boundaries, expiry, untracked selection and exclusion of confirmation/evaluator/Git-cache paths.
 
 This closes a specified local-record gap, not the full exposure gate. Records without canonical task IDs, other encodings and remote-host inventories remain outside this evidence. No hidden outcomes were deserialized, no task was selected, and no model/evaluator was executed. Remote reconciliation remains required before model release.
+
+
+## 2026-09-27 — Local ID-less issue-input supplement
+
+Lead scanned the same115local trajectory/request records (7,325,541bytes) for exact Django public issue and first/middle/last128-byte excerpts, rawUTF8 and bothJSONescaping forms. Zero matching records. All selected windows are completeUTF8; no silent byte repair. Three fixtures passed, including escapedUnicode/cross-chunk and ID-less input matches. Source experiments/lead_req029/exposure_issue_markers.py and exact record/marker hashes docs/audits/req029_local_issue_exposure_20260927.json. No outcomes deserialized. This supports scoped local project-input reconciliation, not paraphrase/normalization/compressed-input coverage or a universal/pretraining-clean claim. RemoteREQ029K remains active; no model cell yet released.
+
+Readiness55%,change0points,range45–65%;competent fixed-target comparison/valid inference,synthesis,independent reproducibility/author-approved package remain.

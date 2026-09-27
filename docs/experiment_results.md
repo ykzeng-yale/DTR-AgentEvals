@@ -1976,3 +1976,10 @@ Lead reviewed source9de9aeac873da95f6e7c5e23a43323c08cf26280/publication35df100:
 Local driver46232 launched18:39:40UTC and verified alive6seconds later,baseline guardian armed and preflight receipt present. Runtime results/local_req029/django_eval_runtime/dje029i-20260927-a; launch/stdout work/local_req029/django_eval_launch_20260927. No outcome claimed at launch. Next inspect actual terminal/raw statuses/cleanup, not chat status; no duplicate or source edit. Baseline expectation66P2Ppasses8F2Pfailures/errors gates reference74declaredpasses; extra selected PostgreSQL outcomes remain separately reported and require interpretation. No model/DTR/competence release. Goal remains active.
 
 Readiness55%,change0points,range45–65%; competent fixed-target comparison/valid inference,empirical/manuscript synthesis,independent reproducibility/author-approved package remain.
+
+
+## 2026-09-27 — Local ID-less issue-input supplement
+
+Lead scanned the same115local trajectory/request records (7,325,541bytes) for exact Django public issue and first/middle/last128-byte excerpts, rawUTF8 and bothJSONescaping forms. Zero matching records. All selected windows are completeUTF8; no silent byte repair. Three fixtures passed, including escapedUnicode/cross-chunk and ID-less input matches. Source experiments/lead_req029/exposure_issue_markers.py and exact record/marker hashes docs/audits/req029_local_issue_exposure_20260927.json. No outcomes deserialized. This supports scoped local project-input reconciliation, not paraphrase/normalization/compressed-input coverage or a universal/pretraining-clean claim. RemoteREQ029K remains active; no model cell yet released.
+
+Readiness55%,change0points,range45–65%;competent fixed-target comparison/valid inference,synthesis,independent reproducibility/author-approved package remain.
