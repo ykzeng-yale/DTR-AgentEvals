@@ -1,10 +1,10 @@
-## Current execution status — 27 September 2026, 09:55 UTC
+## Current execution status — 27 September 2026, 10:00 UTC
 
 | Stream | Verified status | Next boundary |
 |---|---|---|
 | REQ-028C5 Mac mini Qwen relay | One real request completed; 129 runtime hashes, 102 source pins and exact consumer/native/parser replay independently checked; owned cleanup recorded. | Transport qualification only; no executed action or competence claim. No C5 job remains. |
-| REQ-028C6 development trajectory | C6R lead56/56 tests and all current/historical inventories verified; exact source20aa347 approved for one development trajectory. | c6-dev-20260927-a released, not yet claimed running or complete; strict evaluation held. |
-| C6 local writable sandbox | W2R plus four actual production-hook cases pass: action/diff, timeout, overflow and controller death; owned absence verified. | Qualified only for frozen C6 release; no generated action yet. Earlier failures retained. |
+| REQ-028C6 development trajectory | c6-dev-20260927-a terminal: two real responses and two successful read-only actions; timer ValueError before third model claim; no submission, empty diff. | C6S timer correction/source tests only; no retry or evaluator release. |
+| C6 local writable sandbox | W2R plus four actual production-hook cases pass: action/diff, timeout, overflow and controller death; owned absence verified. | Two generated read-only actions completed inside sandbox; owned removal and local process absence verified. Earlier failures retained. |
 | Prior model/synthetic studies | Archived failures and accepted REQ-027 simulation remain unchanged. | Competent fixed-target comparison and valid inference remain open. |
 
 Readiness 55%, change 0 points, range 45–65%; final empirical/manuscript synthesis, independent reproducibility and author-approved package also remain. The historical evidence map below retains the dates and scope of earlier host inventories; Mac mini access and subsequent serving evidence supersede any inference that no second host is currently configured.
@@ -1858,3 +1858,7 @@ Readiness55%,change0points,range45–65%; competent fixed-target comparison/vali
 ## 2026-09-27 C6R acceptance and exact development release
 
 See [execution release](req028_c6_execution_20260927.md). Lead independently passed56 tests and verified14,427 current/14,560 historical artifact hashes plus129 source pins. Four actual fixed-command sandbox hook fixtures passed with owned removal. One exposed-development trajectory is now source-approved, no outcome claimed. Strict evaluation remains held. Readiness55%,change0points,range45–65%; remaining competent fixed-target comparison/valid inference, final synthesis, independent reproducibility and author-approved package.
+
+## 2026-09-27 10:00 UTC — C6 infrastructure termination
+
+Two calls/actions independently replayed through exact native/parser/history/observation checks. Request3 chain is valid; worker terminal records two claims and timer ValueError. Local finaldiff empty, no submission; cleanup and process/container absence verified. Full local runtime2770file archive retained; remote full evidence pending. Deterministic clock-boundary regression reproduces negative sleep. C6S source-only correction released; no retry or competence conclusion. Readiness55%,change0points,range45–65%; comparison/inference, synthesis, reproducibility/package remain.

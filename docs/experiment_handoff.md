@@ -7053,3 +7053,7 @@ Readiness55%,change0points,range45–65%; competent fixed-target comparison/vali
 ## 2026-09-27 C6 exact execution release
 
 C6R20aa347 source/inert and real local sandbox hooks accepted; docs/req028_c6_execution_20260927.md and exact approval JSON release one c6-dev-20260927-a trajectory. Start controller/worker once with exact approved commit/SHA; no retries, no evaluator, no peer changes. Record handles and end coordination after launch; inspect terminal evidence next schedule. Readiness55%,change0points,range45–65%; competent comparison/valid inference, final synthesis and independent reproducibility/approved package remain.
+
+## 2026-09-27 10:00 UTC — C6 terminal; C6S timer correction
+
+No C6 job should be assumed active. Two calls/actions, then negative-sleep ValueError; no submission. Local cleanup verified, remote full evidence requested. Read docs/req028_c6s_timer_20260927.md: exact interval-boundary fix and fakeclock tests only, then publish and stop. No model retry/resume. Lead reviews full terminal evidence and corrected source before any new run. Readiness55%,change0points,range45–65%; comparison/inference,synthesis,reproducibility/approved package remain.
