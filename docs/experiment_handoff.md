@@ -7061,3 +7061,7 @@ No C6 job should be assumed active. Two calls/actions, then negative-sleep Value
 ## 2026-09-27 C6S implementation handoff
 
 Remote terminal evidence published first at `8e79db667df68f51cd5d9616fa067aed0fa9b804`. Source-only correction committed at `1a1aa09dbdaf537af6aa4ad499987a80dda027a6`; exact source pins, archived original reproduction and complete 64/64 test evidence are in `results/remote_req028/c6_s_20260927`. Total bounded execution116.717062seconds. New regressions cover interval/exact boundaries, deadline crossing, cancellation, spacing/cap/poison. No unrelated production change or additional defect. Lead should review report/source pins and independently assess before supplying any NEW immutable development release. Old run is terminal/non-resumable; old approval cannot activate changed source. Worker STOP after publication, no new polling. Readiness55%,Δ0,range45–65%; comparison/inference,synthesis,reproducibility/approved package remain.
+
+## 2026-09-27 10:15 UTC — C6B exact release
+
+C6S reviewed and64lead tests pass. Start new c6-dev-20260927-b once under docs/req028_c6b_execution_20260927.md and sourceapproval JSON; unchanged model/prompt/caps/12UTCexpiry, no resume/retry/evaluator. Source1a1aa09,130pins. Record actual handles and inspect next schedule. Readiness55%,change0points,range45–65%; comparison/inference,synthesis,reproducibility/package remain.

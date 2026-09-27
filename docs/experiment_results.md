@@ -1,9 +1,9 @@
-## Current execution status — 27 September 2026, 10:00 UTC
+## Current execution status — 27 September 2026, 10:15 UTC
 
 | Stream | Verified status | Next boundary |
 |---|---|---|
 | REQ-028C5 Mac mini Qwen relay | One real request completed; 129 runtime hashes, 102 source pins and exact consumer/native/parser replay independently checked; owned cleanup recorded. | Transport qualification only; no executed action or competence claim. No C5 job remains. |
-| REQ-028C6 development trajectory | c6-dev-20260927-a terminal: two real responses and two successful read-only actions; timer ValueError before third model claim; no submission, empty diff. | C6S timer correction/source tests only; no retry or evaluator release. |
+| REQ-028C6 development trajectory | c6-dev-20260927-a terminal: two real responses and two successful read-only actions; timer ValueError before third model claim; no submission, empty diff. | C6S source1a1aa09 and64lead tests accepted; new independent-path run-b approved, not yet claimed running. Evaluator held. |
 | C6 local writable sandbox | W2R plus four actual production-hook cases pass: action/diff, timeout, overflow and controller death; owned absence verified. | Two generated read-only actions completed inside sandbox; owned removal and local process absence verified. Earlier failures retained. |
 | Prior model/synthetic studies | Archived failures and accepted REQ-027 simulation remain unchanged. | Competent fixed-target comparison and valid inference remain open. |
 
@@ -1868,3 +1868,7 @@ Two calls/actions independently replayed through exact native/parser/history/obs
 Terminal package `8e79db6` preserves all 1,793 runtime/launch/wire files, per-member hashes and exact accepted request/native/raw bindings. Two physical calls/actions versus three published requests; no submission/evaluation. All 117 guard samples had no violation. One remote OS inspection confirmed worker/supervisor/model absent, consistent with raw owned cleanup. Original live instruction pointer remains inferred because no traceback was recorded.
 
 C6S source `1a1aa09dbdaf537af6aa4ad499987a80dda027a6` fixes only interval waiting with a single sampled time and positive waits. Original fake-clock reproduction confirmed negative sleep before editing. One combined run passed 64/64 tests (8 new, 56 prior), 116.717062 seconds including reproduction, peak sampled RSS 152,436,736 bytes. Single serial driver; macOS affinity not enforced. Full 6,328-member evidence, 130 source pins and limitations: `results/remote_req028/c6_s_20260927/REPORT.md`. No model/Docker/live poller/new run/resume/evaluator. Await independent lead source review; previous approval does not cover changed source. Readiness55%,Δ0,range45–65%; comparison/inference,synthesis,reproducibility/approved package remain.
+
+## 2026-09-27 10:15 UTC — C6S accepted, C6B release
+
+Lead verified1793 terminal and6328 correction artifact hashes,130sources,117clear guard samples and64/64tests. Timer-only correction accepted; docs/req028_c6b_execution_20260927.md releases exactly one new run-b with unchanged scientific/interface/resource contract. Run-a remains infrastructure termination, no submission. Readiness55%,change0points,range45–65%; comparison/inference,synthesis,reproducibility/package remain.
