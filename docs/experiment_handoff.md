@@ -7049,3 +7049,7 @@ C6 b50843a/source3173e87: lead matched archiveSHA/filecount14560,117sources,eigh
 New docs/req028_c6r_integration_20260927.md releases exact corrections plus concrete sandbox adapter/guardian, deadline binding and submission checker with inert/fakeDocker tests only. Exact upstream docker.py/license snapshot independently matched GitHub pinned source; no source is unavailable now. W2R filesystem remains qualified; production output/timeout/deathcleanup still held for actual lead tests. No model/Docker/benchmark run on mini, no real trajectory yet.
 
 Readiness55%,change0points,range45–65%; competent fixed-target comparison/valid inference, final empirical/manuscript synthesis, independent reproducibility and author-approved package remain.
+
+## 2026-09-27 C6 exact execution release
+
+C6R20aa347 source/inert and real local sandbox hooks accepted; docs/req028_c6_execution_20260927.md and exact approval JSON release one c6-dev-20260927-a trajectory. Start controller/worker once with exact approved commit/SHA; no retries, no evaluator, no peer changes. Record handles and end coordination after launch; inspect terminal evidence next schedule. Readiness55%,change0points,range45–65%; competent comparison/valid inference, final synthesis and independent reproducibility/approved package remain.

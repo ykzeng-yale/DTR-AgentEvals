@@ -1,0 +1,131 @@
+{
+  "fixtures": [
+    {
+      "case": "happy",
+      "driver_rc": 0,
+      "terminal": {
+        "cleanup": {
+          "create_ambiguous": false,
+          "owned_absent": true
+        },
+        "diagnostic_only": true,
+        "failure": null,
+        "finished": 1790502500.7258172,
+        "phase": {
+          "object": {
+            "blob": "fc2e9d02899cde71e280c420a3956fe9ccc4c0fd",
+            "commit": "20aa347ff02c1df4eac994cf8ff960cb1a12458d",
+            "path": "results/local_req028/c6r_hooks_20260927/happy/ready.json",
+            "sha256": "daaa5c41d3815e3fb2d9f329d4610ba57ef0374b90a25e53aa8373d3b5cb3dbf"
+          },
+          "ready": {
+            "deadline": 1790502616.332522,
+            "phase_started": 1790502499.031944,
+            "protocol": 6,
+            "release_sha256": "a1a49a13db94419ed0506d32e0e8a0a76673727540fbeff77abff0c13651f20f",
+            "run_id": "c6-local-happy",
+            "worker_commit": "20aa347ff02c1df4eac994cf8ff960cb1a12458d"
+          }
+        },
+        "submitted_by_guardian": false
+      }
+    },
+    {
+      "case": "timeout",
+      "driver_rc": 0,
+      "terminal": {
+        "cleanup": {
+          "create_ambiguous": false,
+          "owned_absent": true
+        },
+        "diagnostic_only": true,
+        "failure": "Rejected('sandbox action/preflight lease expired')",
+        "finished": 1790502507.4149718,
+        "phase": {
+          "object": {
+            "blob": "071cc6ca318f6ff8cadadcd9f220f95e2043d009",
+            "commit": "20aa347ff02c1df4eac994cf8ff960cb1a12458d",
+            "path": "results/local_req028/c6r_hooks_20260927/timeout/ready.json",
+            "sha256": "8129f2f0424aca24590bbb842788f081fa5d0289049fbff717ad3d98dfe50582"
+          },
+          "ready": {
+            "deadline": 1790502621.794863,
+            "phase_started": 1790502504.6198819,
+            "protocol": 6,
+            "release_sha256": "35783b34510fdfda5eadf9d573646636d807ed49823b70f7bed3f8a306e8d358",
+            "run_id": "c6-local-timeout",
+            "worker_commit": "20aa347ff02c1df4eac994cf8ff960cb1a12458d"
+          }
+        },
+        "submitted_by_guardian": false
+      }
+    },
+    {
+      "case": "overflow",
+      "driver_rc": 0,
+      "terminal": {
+        "cleanup": {
+          "create_ambiguous": false,
+          "owned_absent": true
+        },
+        "diagnostic_only": true,
+        "failure": "Rejected(\"Rejected('streamed output cap')\")",
+        "finished": 1790502512.757416,
+        "phase": {
+          "object": {
+            "blob": "159a6b7de01b33e55d54591db21d8e85be9805f7",
+            "commit": "20aa347ff02c1df4eac994cf8ff960cb1a12458d",
+            "path": "results/local_req028/c6r_hooks_20260927/overflow/ready.json",
+            "sha256": "ee35a3d92e0fd0a89e19d97387f7033c3a07086154c4d2a128f25a4070f71ec3"
+          },
+          "ready": {
+            "deadline": 1790502628.516115,
+            "phase_started": 1790502511.338343,
+            "protocol": 6,
+            "release_sha256": "6b2c96ab86e82012d5c149c3742b06bfd7dd7e921fe4797584441de96fd60ebf",
+            "run_id": "c6-local-overflow",
+            "worker_commit": "20aa347ff02c1df4eac994cf8ff960cb1a12458d"
+          }
+        },
+        "submitted_by_guardian": false
+      }
+    },
+    {
+      "case": "death",
+      "driver_rc": -9,
+      "terminal": {
+        "cleanup": {
+          "create_ambiguous": false,
+          "owned_absent": true
+        },
+        "diagnostic_only": true,
+        "failure": "Rejected('actual controller identity/liveness lost')",
+        "finished": 1790502517.340389,
+        "phase": {
+          "object": {
+            "blob": "fce703a5866c226ae86c913362334792dc70c58c",
+            "commit": "20aa347ff02c1df4eac994cf8ff960cb1a12458d",
+            "path": "results/local_req028/c6r_hooks_20260927/death/ready.json",
+            "sha256": "0309491663456012052924bd08c878d26ed63121d2a7c0844c43e369d1733c7b"
+          },
+          "ready": {
+            "deadline": 1790502633.733663,
+            "phase_started": 1790502516.542057,
+            "protocol": 6,
+            "release_sha256": "3fc29f5616cb72ab9f5ae6398f179d22622de38d380ad61e6839627335b7eba0",
+            "run_id": "c6-local-death",
+            "worker_commit": "20aa347ff02c1df4eac994cf8ff960cb1a12458d"
+          }
+        },
+        "submitted_by_guardian": false
+      }
+    }
+  ],
+  "source": "20aa347ff02c1df4eac994cf8ff960cb1a12458d",
+  "source_files_checked": 129,
+  "scope": "Real production sandbox hook qualification using fixed authored commands, no model/benchmark",
+  "archive_sha256": "c53abc985f90e6b500a3e056bf7fab2afbbb6bd2dfc8c69d7490818deb459443",
+  "members": 355,
+  "docker_sha256": "0323488e03a7e945585ed325e7879d4a71d58eb08be38dd49b72278a3aa1cf6a",
+  "limitations": "Actual controller death tested after readiness; startup boundary failures covered by inert/fake tests. No claim of trajectory success or strict evaluator qualification."
+}

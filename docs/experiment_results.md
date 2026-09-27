@@ -1,10 +1,10 @@
-## Current execution status — 27 September 2026, 09:15 UTC
+## Current execution status — 27 September 2026, 09:55 UTC
 
 | Stream | Verified status | Next boundary |
 |---|---|---|
 | REQ-028C5 Mac mini Qwen relay | One real request completed; 129 runtime hashes, 102 source pins and exact consumer/native/parser replay independently checked; owned cleanup recorded. | Transport qualification only; no executed action or competence claim. No C5 job remains. |
-| REQ-028C6 development trajectory | C6 source reviewed; lead32/33 tests pass and two additional guard/process regressions reproduced. C6R corrections and concrete sandbox integration released. | Real trajectory held for exact-source approval and writable local sandbox qualification. |
-| C6 local writable sandbox | W2R original-path imports and bounded tmpfs settings pass; W1/R1/W2 failures retained. | Exact controller/output/timeout/death-cleanup integration remains unqualified; no generated action. |
+| REQ-028C6 development trajectory | C6R lead56/56 tests and all current/historical inventories verified; exact source20aa347 approved for one development trajectory. | c6-dev-20260927-a released, not yet claimed running or complete; strict evaluation held. |
+| C6 local writable sandbox | W2R plus four actual production-hook cases pass: action/diff, timeout, overflow and controller death; owned absence verified. | Qualified only for frozen C6 release; no generated action yet. Earlier failures retained. |
 | Prior model/synthetic studies | Archived failures and accepted REQ-027 simulation remain unchanged. | Competent fixed-target comparison and valid inference remain open. |
 
 Readiness 55%, change 0 points, range 45–65%; final empirical/manuscript synthesis, independent reproducibility and author-approved package also remain. The historical evidence map below retains the dates and scope of earlier host inventories; Mac mini access and subsequent serving evidence supersede any inference that no second host is currently configured.
@@ -1854,3 +1854,7 @@ C6 b50843a/source3173e87: lead matched archiveSHA/filecount14560,117sources,eigh
 New docs/req028_c6r_integration_20260927.md releases exact corrections plus concrete sandbox adapter/guardian, deadline binding and submission checker with inert/fakeDocker tests only. Exact upstream docker.py/license snapshot independently matched GitHub pinned source; no source is unavailable now. W2R filesystem remains qualified; production output/timeout/deathcleanup still held for actual lead tests. No model/Docker/benchmark run on mini, no real trajectory yet.
 
 Readiness55%,change0points,range45–65%; competent fixed-target comparison/valid inference, final empirical/manuscript synthesis, independent reproducibility and author-approved package remain.
+
+## 2026-09-27 C6R acceptance and exact development release
+
+See [execution release](req028_c6_execution_20260927.md). Lead independently passed56 tests and verified14,427 current/14,560 historical artifact hashes plus129 source pins. Four actual fixed-command sandbox hook fixtures passed with owned removal. One exposed-development trajectory is now source-approved, no outcome claimed. Strict evaluation remains held. Readiness55%,change0points,range45–65%; remaining competent fixed-target comparison/valid inference, final synthesis, independent reproducibility and author-approved package.
