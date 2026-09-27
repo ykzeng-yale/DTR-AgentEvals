@@ -7099,3 +7099,7 @@ Lead selected a common pinned upstream text-action extraction candidate for a fu
 ## 2026-09-27 — REQ-029C exact local release
 
 Source143e94f independently reviewed:34/34 inert tests,2250member hashes,157pins. Lead releases one local known-good reference control under docs/req029c_execution_20260927.md and exact source approval. No remote model/evaluator job; no C7 negative/candidate rerun. Review actual176status output,patch identity and cleanup before interpretation. Readiness55%,change0points,range45–65%; comparison/inference,synthesis,reproducibility/package remain.
+
+## 2026-09-27 — REQ-029C terminal / C1 source correction
+
+Referencecontrol-a stopped before tests at prepared-diff metadata check; not a patch or test failure. Exact index/hunk-heading-only discrepancy independently demonstrated;80runtime hashes and original/prepared digests retained, both PIDs absent/Docker empty. Read docs/req029c1_diff_binding_20260927.md. Remote source/inert correction only; no current evaluator/model job or renewed approval. Lead reviews exact correction before any new immutable control. Readiness55%,change0points,range45–65%; comparison/inference,synthesis,reproducibility/package remain.
