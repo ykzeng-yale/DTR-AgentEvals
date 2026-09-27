@@ -49,7 +49,8 @@ class Adapter:
 
     Handles poll nonblocking and cancel boundedly. Lifecycle sample/identity/stop
     must be bounded; stop uses the B3 identity-checked arbiter in executed fixtures.
-    No concrete real-model/HTTP/Git hooks are provided or authorized here.
+    c3r_hooks provides bounded fixture-only subprocess/HTTP/local-Git hooks.
+    Real-model startup remains locked and unauthorized.
     """
     def __init__(self,release_raw,release_pin,contract,clock,journal,lifecycle,http,transport,watch_interval=1):
         require(contract==CONTRACT and sha(encode(contract))==CONFIG_SHA,'unapproved candidate')
@@ -61,13 +62,20 @@ class Adapter:
         self.abort=threading.Event();self.watch_end=threading.Event();self.watcher=None;self.watch_interval=watch_interval
         self.initiated=clock.now();self.queue_started=self.initiated;self.events=0;self.physical=0;self.baseline=0
         self.history=[]
+        self.audit_errors=[];self.cleanup_errors=[];self.cleanup_results=[];self.cancel_errors=[];self.primary_exception=None
         if self.store.read(self.run+'/lifecycle.claim') is not None:self.failed='existing lifecycle claim: no reload/resume'
     def put(self,name,data):
         raw=data if type(data) is bytes else encode(data)
         if not self.store.write_exclusive(self.run+'/'+name,raw):require(self.store.read(self.run+'/'+name)==raw,'immutable conflict')
     def event(self,kind,**data):
         with self.lock:
-            self.events+=1;self.put('events/'+str(self.events).zfill(6)+'.json',dict(kind=kind,time=self.clock.now(),**data))
+            self.events+=1
+            ok=self.best_put('events/'+str(self.events).zfill(6)+'.json',dict(kind=kind,time=self.clock.now(),**data))
+        if not ok:self.fail('audit event write failed')
+    def best_put(self,name,data):
+        try:self.put(name,data);return True
+        except BaseException as e:
+            self.audit_errors.append({'path':name,'error':repr(e),'durable':False});return False
     def bound(self,seconds=None,expiry=None):
         end=self.release['deadline']
         if self.model_deadline is not None:end=min(end,self.model_deadline)
@@ -75,23 +83,34 @@ class Adapter:
         if expiry is not None:end=min(end,expiry)
         return end
     def fail(self,reason):
-        with self.op_lock:
-            with self.lock:
-                if not self.failed:
-                    self.failed=reason;self.abort.set()
-                    self.put('failure.json',{'reason':reason,'time':self.clock.now(),'physical_attempts':self.physical})
-            if self.active is not None:
-                try:self.active.cancel()
-                except BaseException as e:self.event('cancellation_error',error=repr(e))
-        self.cleanup(reason)
+        try:
+            with self.op_lock:
+                with self.lock:
+                    if not self.failed:self.failed=reason
+                    self.abort.set()
+                    self.best_put('failure.json',{'reason':self.failed,'physical_attempts':self.physical})
+                if self.active is not None:
+                    try:self.active.cancel()
+                    except BaseException as e:
+                        self.cancel_errors.append(repr(e))
+                        self.events+=1
+                        self.best_put('events/'+str(self.events).zfill(6)+'.json',{'kind':'cancellation_error','error':repr(e)})
+        finally:self.cleanup(reason)
     def cleanup(self,reason):
         with self.lock:
-            if self.resident:
-                try:outcome=self.life.stop(reason)
+            if self.resident or self.life.has_owner():
+                try:
+                    outcome=self.life.stop(reason)
+                    require(outcome['owned_absent'],'cleanup unconfirmed')
+                    self.resident=False;self.cleanup_results.append(outcome)
+                    if not self.best_put('cleanup_'+str(len(self.cleanup_results))+'.json',outcome):
+                        self.failed=self.failed or 'cleanup audit failed';self.abort.set()
+                    return True
                 except BaseException as e:
-                    self.event('cleanup_failed',error=repr(e));raise
-                self.event('cleanup',outcome=outcome)
-                require(outcome['owned_absent'],'cleanup unconfirmed');self.resident=False
+                    self.cleanup_errors.append(repr(e));self.failed=self.failed or 'cleanup failed';self.abort.set()
+                    self.best_put('cleanup_error_'+str(len(self.cleanup_errors))+'.json',{'error':repr(e)})
+                    return False
+            return True
     def check(self):
         if self.failed:raise Rejected(self.failed)
         require(not self.closed,'adapter closed')
@@ -108,14 +127,19 @@ class Adapter:
                 self.check()
                 require(self.clock.now()<deadline,label+' in-flight deadline')
                 value=handle.poll()
-                if value is not PENDING:return value
+                if value is not PENDING:break
                 self.clock.sleep(min(.01,deadline-self.clock.now()))
         except BaseException:
-            if handle is not None:handle.cancel()
+            if handle is not None:
+                try:handle.cancel()
+                except BaseException as e:
+                    self.cancel_errors.append(repr(e))
+                    self.best_put('operation_cancel_error_'+str(len(self.cancel_errors))+'.json',{'error':repr(e),'phase':label})
             raise
         finally:
             with self.op_lock:self.active=None
             self.event('phase',phase=label,started=began,finished=self.clock.now())
+        self.check();return value
     def watch(self):
         while not self.watch_end.wait(self.watch_interval):
             try:
@@ -176,21 +200,26 @@ class Adapter:
             self.put(base+'.physical_attempt.json',{'started':self.clock.now(),'number':sequence,'no_retry':True})
             self.physical+=1
             body={'messages':q['messages'],'temperature':0,'seed':20260927028,'max_tokens':1536,'stream':False,'cache_prompt':False}
+            request_started=self.clock.now()
             result=self.operation('request',lambda timeout:self.http.begin_generate(body,timeout),self.bound(180,q['expires_at']))
             require(type(result) is bytes,'raw HTTP response bytes')
             self.put(base+'.raw_response.json',result)
             parsed=json.loads(result);require(parsed['usage']['prompt_tokens']==len(ids),'usage binding mismatch')
             require(type(parsed['usage']['completion_tokens']) is int and 0<=parsed['usage']['completion_tokens']<=1536,'output usage')
             self.event('server_subtimings',prefill=parsed.get('timings',{}).get('prompt_ms'),generation=parsed.get('timings',{}).get('predicted_ms'),units='milliseconds',included_in_request_span=True)
+            from c3r_envelope import build
+            result=build(q,e,CONFIG_SHA,binding,result,{'request_wall_seconds':self.clock.now()-request_started,'prefill_ms':parsed.get('timings',{}).get('prompt_ms'),'generation_ms':parsed.get('timings',{}).get('predicted_ms')})
+            self.put(base+'.response.json',result)
             self.put(base+'.seal',sha(result).encode());sealed=True
             self.operation('publication',lambda timeout:self.git.begin_publish(sequence,result,timeout),self.bound(30,q['expires_at']))
             self.next_sequence+=1;self.history.append(sha(result));self.queue_started=self.clock.now()
             return result
         except BaseException as ex:
-            if claimed and not sealed:self.put(str(sequence)+'.indeterminate.json',{'error':repr(ex),'physical_attempts':self.physical,'time':self.clock.now()})
+            self.primary_exception=repr(ex)
+            if claimed and not sealed:self.best_put(str(sequence)+'.indeterminate.json',{'error':repr(ex),'physical_attempts':self.physical})
             self.fail(repr(ex));raise
     def read_sealed(self,sequence):
-        raw=self.store.read(self.run+'/'+str(sequence)+'.raw_response.json')
+        raw=self.store.read(self.run+'/'+str(sequence)+'.response.json')
         seal=self.store.read(self.run+'/'+str(sequence)+'.seal')
         if raw is None or seal is None:raise Indeterminate('no sealed generation; never regenerate')
         require(sha(raw).encode()==seal,'modified raw response');return raw
@@ -212,9 +241,15 @@ class Adapter:
         finally:
             self.event('phase',phase='toolwait_idle',started=began,finished=self.clock.now());self.queue_started=self.clock.now()
     def close(self):
-        self.watch_end.set()
-        if self.watcher:self.watcher.join(timeout=10);require(not self.watcher.is_alive(),'watchdog join timeout')
-        self.cleanup('close')
-        if not self.closed:
-            self.event('total_wall',started=self.initiated,finished=self.clock.now(),physical_attempts=self.physical,note='do not add nested server subtimings to phase spans')
-            self.closed=True
+        primary=None;cleanup_ok=False
+        try:
+            self.watch_end.set()
+            if self.watcher:self.watcher.join(timeout=10);require(not self.watcher.is_alive(),'watchdog join timeout')
+        except BaseException as e:primary=e
+        finally:
+            cleanup_ok=self.cleanup('close')
+            if not self.closed:
+                self.event('total_wall',started=self.initiated,finished=self.clock.now(),physical_attempts=self.physical,note='do not add nested server subtimings to phase spans')
+                self.closed=True
+        if primary:raise primary
+        require(cleanup_ok,'owned cleanup failed; inspect cleanup_errors')

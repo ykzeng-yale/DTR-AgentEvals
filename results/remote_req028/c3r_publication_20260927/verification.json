@@ -1,0 +1,694 @@
+{
+  "runs": [
+    {
+      "run": "c3r_setup_20260927",
+      "verified_hashes": 965,
+      "archive_sha256": "e86e824382d414700dd3dd8b61f16a743c7ade35500a048108c35b619b910187",
+      "archive_bytes": 214932,
+      "execution": {
+        "returncode": 1,
+        "elapsed_seconds": 21.011175875,
+        "peak_sampled_tree_rss_bytes": 105431040,
+        "samples": 321,
+        "wall_cap_seconds": 150.0,
+        "rss_cap_bytes": 2147483648,
+        "single_compute_worker": true,
+        "fixture_only": true
+      }
+    },
+    {
+      "run": "c3r_setup_second_20260927",
+      "verified_hashes": 1014,
+      "archive_sha256": "75b5a829596ace3410533a5a4ba7360480e92bd1655d9522edf5a330781af5d1",
+      "archive_bytes": 224893,
+      "execution": {
+        "returncode": 0,
+        "elapsed_seconds": 16.883237334,
+        "peak_sampled_tree_rss_bytes": 97599488,
+        "samples": 263,
+        "wall_cap_seconds": 100.0,
+        "rss_cap_bytes": 2147483648,
+        "single_compute_worker": true,
+        "fixture_only": true
+      }
+    },
+    {
+      "run": "c3r_setup_final_20260927",
+      "verified_hashes": 1014,
+      "archive_sha256": "e74240c59461bc60648e4eb67284250114c4671a4310f2a905ae2ccdd0631ce0",
+      "archive_bytes": 226241,
+      "execution": {
+        "returncode": 0,
+        "elapsed_seconds": 17.472627208,
+        "peak_sampled_tree_rss_bytes": 100335616,
+        "samples": 268,
+        "wall_cap_seconds": 100.0,
+        "rss_cap_bytes": 2147483648,
+        "single_compute_worker": true,
+        "fixture_only": true
+      }
+    }
+  ],
+  "cumulative_suite_wall_seconds": 55.367040417,
+  "new_run_and_archive_bytes": 2444249,
+  "final_observers": [
+    {
+      "path": "adapter_fixtures/test_phase_event_outage_preserves_primary/immediate_observer.json",
+      "observation": {
+        "absent_before_teardown": true,
+        "primary_exception": "RuntimeError('primary dispatch error')",
+        "failed": "audit event write failed",
+        "audit_errors": [
+          {
+            "path": "events/000009.json",
+            "error": "OSError('injected journal outage')",
+            "durable": false
+          }
+        ],
+        "cleanup_errors": [],
+        "cleanup_results": [
+          {
+            "owned_absent": true,
+            "signals": [
+              {
+                "signal": "TERM",
+                "actor": "c3-fixture",
+                "time": 1790494955.471329
+              }
+            ],
+            "returncode": -15
+          },
+          {
+            "owned_absent": true,
+            "signals": [
+              {
+                "signal": "TERM",
+                "actor": "c3-fixture",
+                "time": 1790494955.471329
+              }
+            ],
+            "returncode": -15
+          },
+          {
+            "owned_absent": true,
+            "signals": [
+              {
+                "signal": "TERM",
+                "actor": "c3-fixture",
+                "time": 1790494955.471329
+              }
+            ],
+            "returncode": -15
+          }
+        ],
+        "cancel_errors": []
+      }
+    },
+    {
+      "path": "adapter_fixtures/test_partial_provisional_load_failure/immediate_observer.json",
+      "observation": {
+        "absent_before_teardown": true,
+        "primary_exception": "RuntimeError('partial provisional load failure')",
+        "failed": "RuntimeError('partial provisional load failure')",
+        "audit_errors": [],
+        "cleanup_errors": [],
+        "cleanup_results": [
+          {
+            "owned_absent": true,
+            "signals": [
+              {
+                "signal": "TERM",
+                "actor": "c3-fixture",
+                "time": 1790494955.4321039
+              }
+            ],
+            "returncode": -15
+          }
+        ],
+        "cancel_errors": []
+      }
+    },
+    {
+      "path": "adapter_fixtures/test_cleanup_success_event_write_outage/immediate_observer.json",
+      "observation": {
+        "absent_before_teardown": true,
+        "primary_exception": null,
+        "failed": "cleanup audit failed",
+        "audit_errors": [
+          {
+            "path": "cleanup_1.json",
+            "error": "OSError('injected journal outage')",
+            "durable": false
+          }
+        ],
+        "cleanup_errors": [],
+        "cleanup_results": [
+          {
+            "owned_absent": true,
+            "signals": [
+              {
+                "signal": "TERM",
+                "actor": "c3-fixture",
+                "time": 1790494941.3916612
+              }
+            ],
+            "returncode": -15
+          }
+        ],
+        "cancel_errors": []
+      }
+    },
+    {
+      "path": "adapter_fixtures/test_primary_poll_error_with_cancel_and_audit_failure/immediate_observer.json",
+      "observation": {
+        "absent_before_teardown": true,
+        "primary_exception": "RuntimeError('primary poll error')",
+        "failed": "audit event write failed",
+        "audit_errors": [
+          {
+            "path": "operation_cancel_error_1.json",
+            "error": "OSError('injected journal outage')",
+            "durable": false
+          },
+          {
+            "path": "events/000009.json",
+            "error": "OSError('injected journal outage')",
+            "durable": false
+          },
+          {
+            "path": "failure.json",
+            "error": "OSError('injected journal outage')",
+            "durable": false
+          },
+          {
+            "path": "cleanup_1.json",
+            "error": "OSError('injected journal outage')",
+            "durable": false
+          },
+          {
+            "path": "1.indeterminate.json",
+            "error": "OSError('injected journal outage')",
+            "durable": false
+          },
+          {
+            "path": "failure.json",
+            "error": "OSError('injected journal outage')",
+            "durable": false
+          },
+          {
+            "path": "cleanup_2.json",
+            "error": "OSError('injected journal outage')",
+            "durable": false
+          },
+          {
+            "path": "failure.json",
+            "error": "OSError('injected journal outage')",
+            "durable": false
+          },
+          {
+            "path": "cleanup_3.json",
+            "error": "OSError('injected journal outage')",
+            "durable": false
+          }
+        ],
+        "cleanup_errors": [],
+        "cleanup_results": [
+          {
+            "owned_absent": true,
+            "signals": [
+              {
+                "signal": "TERM",
+                "actor": "c3-fixture",
+                "time": 1790494955.519261
+              }
+            ],
+            "returncode": -15
+          },
+          {
+            "owned_absent": true,
+            "signals": [
+              {
+                "signal": "TERM",
+                "actor": "c3-fixture",
+                "time": 1790494955.519261
+              }
+            ],
+            "returncode": -15
+          },
+          {
+            "owned_absent": true,
+            "signals": [
+              {
+                "signal": "TERM",
+                "actor": "c3-fixture",
+                "time": 1790494955.519261
+              }
+            ],
+            "returncode": -15
+          }
+        ],
+        "cancel_errors": [
+          "RuntimeError('secondary cancel error')"
+        ]
+      }
+    },
+    {
+      "path": "adapter_fixtures/test_failed_cancel_and_failed_all_audit_cleanup/immediate_observer.json",
+      "observation": {
+        "absent_before_teardown": true,
+        "primary_exception": null,
+        "failed": "primary failure",
+        "audit_errors": [
+          {
+            "path": "failure.json",
+            "error": "OSError('injected journal outage')",
+            "durable": false
+          },
+          {
+            "path": "events/000012.json",
+            "error": "OSError('injected journal outage')",
+            "durable": false
+          },
+          {
+            "path": "cleanup_1.json",
+            "error": "OSError('injected journal outage')",
+            "durable": false
+          }
+        ],
+        "cleanup_errors": [],
+        "cleanup_results": [
+          {
+            "owned_absent": true,
+            "signals": [
+              {
+                "signal": "TERM",
+                "actor": "c3-fixture",
+                "time": 1790494941.530507
+              }
+            ],
+            "returncode": -15
+          }
+        ],
+        "cancel_errors": [
+          "RuntimeError('cancel failed')"
+        ]
+      }
+    },
+    {
+      "path": "adapter_fixtures/test_total_wall_event_outage_cleanup_first/immediate_observer.json",
+      "observation": {
+        "absent_before_teardown": true,
+        "primary_exception": null,
+        "failed": "audit event write failed",
+        "audit_errors": [
+          {
+            "path": "events/000012.json",
+            "error": "OSError('injected journal outage')",
+            "durable": false
+          }
+        ],
+        "cleanup_errors": [],
+        "cleanup_results": [
+          {
+            "owned_absent": true,
+            "signals": [
+              {
+                "signal": "TERM",
+                "actor": "c3-fixture",
+                "time": 1790494955.6449869
+              }
+            ],
+            "returncode": -15
+          },
+          {
+            "owned_absent": true,
+            "signals": [
+              {
+                "signal": "TERM",
+                "actor": "c3-fixture",
+                "time": 1790494955.6449869
+              }
+            ],
+            "returncode": -15
+          }
+        ],
+        "cancel_errors": []
+      }
+    },
+    {
+      "path": "adapter_fixtures/test_failure_json_outage_immediate_cleanup/immediate_observer.json",
+      "observation": {
+        "absent_before_teardown": true,
+        "primary_exception": null,
+        "failed": "primary failure",
+        "audit_errors": [
+          {
+            "path": "failure.json",
+            "error": "OSError('injected journal outage')",
+            "durable": false
+          }
+        ],
+        "cleanup_errors": [],
+        "cleanup_results": [
+          {
+            "owned_absent": true,
+            "signals": [
+              {
+                "signal": "TERM",
+                "actor": "c3-fixture",
+                "time": 1790494941.568943
+              }
+            ],
+            "returncode": -15
+          }
+        ],
+        "cancel_errors": []
+      }
+    },
+    {
+      "path": "integration_fixtures/test_concrete_git_concurrent_advancement/external_observer.json",
+      "observation": {
+        "race_rejected": true,
+        "publication_attempts": 1
+      }
+    },
+    {
+      "path": "integration_fixtures/test_b3_journal_failure_safety_fallback/external_observer.json",
+      "observation": {
+        "owned_absent": true,
+        "audit_error": "OSError('arbiter audit failure')"
+      }
+    },
+    {
+      "path": "integration_fixtures/test_protocol3_envelope_exact_bindings/external_observer.json",
+      "observation": {
+        "valid_accepted": true,
+        "mismatch_cases": 8
+      }
+    },
+    {
+      "path": "integration_fixtures/test_real_socket_and_native_binding/external_observer.json",
+      "observation": {
+        "absent_before_teardown": true
+      }
+    },
+    {
+      "path": "integration_fixtures/test_external_parent_death_idle/external_observer.json",
+      "observation": {
+        "driver_killed_without_finally": true,
+        "child_absent_before_teardown": true,
+        "peer_untouched": true,
+        "external_watchdog": {
+          "reason": "owner_parent_exited",
+          "cleanup": {
+            "identity_key": "3d8277589cc9df8fb374dff0ee7523775262f3213d4cd88e58ee829f82aec12c",
+            "pid": 7012,
+            "requests": [
+              {
+                "actor": "c3r",
+                "reason": "owner_parent_exited",
+                "pid": 7015,
+                "time": 1790494957.537313
+              }
+            ],
+            "signals": [
+              {
+                "signal": "TERM",
+                "actor": "c3r",
+                "time": 1790494957.5419478
+              }
+            ],
+            "term_claim": {
+              "actor": "c3r",
+              "reason": "owner_parent_exited",
+              "owner_pid": 7015,
+              "time": 1790494957.5393019
+            },
+            "owned_absent": true,
+            "confirmed_at": 1790494957.547513,
+            "audit_error": null
+          },
+          "pid": 7015
+        },
+        "handles": {
+          "model": {
+            "pid": 7012,
+            "identity": "Sun Sep 27 03:42:37 2026     /Applications/Xcode.app/Contents/Developer/usr/bin/python3 /Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3r_fixture.py server /var/folders/mp/vwyknmv57mdcg8v5grwv6d7m0000gn/T/c3r-fixture-7ygv03z6/driver/server/ready.json fixed c3r-owned-7010-1790494957424727000",
+            "ownership_token": "c3r-owned-7010-1790494957424727000",
+            "parent": 7010,
+            "parent_identity": "Sun Sep 27 03:42:37 2026     /Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/Resources/Python.app/Contents/MacOS/Python /Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3r_driver_fixture.py /var/folders/mp/vwyknmv57mdcg8v5grwv6d7m0000gn/T/c3r-fixture-7ygv03z6/driver idle c3r-owned-driver",
+            "deadline": 1790494987.430059,
+            "fixture_only": true,
+            "sample_path": "/var/folders/mp/vwyknmv57mdcg8v5grwv6d7m0000gn/T/c3r-fixture-7ygv03z6/driver/server/sample.json"
+          },
+          "watchdog_pid": 7015
+        }
+      }
+    },
+    {
+      "path": "integration_fixtures/test_external_parent_death_idle/driver/observer.json",
+      "observation": {
+        "model": {
+          "pid": 7012,
+          "identity": "Sun Sep 27 03:42:37 2026     /Applications/Xcode.app/Contents/Developer/usr/bin/python3 /Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3r_fixture.py server /var/folders/mp/vwyknmv57mdcg8v5grwv6d7m0000gn/T/c3r-fixture-7ygv03z6/driver/server/ready.json fixed c3r-owned-7010-1790494957424727000",
+          "ownership_token": "c3r-owned-7010-1790494957424727000",
+          "parent": 7010,
+          "parent_identity": "Sun Sep 27 03:42:37 2026     /Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/Resources/Python.app/Contents/MacOS/Python /Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3r_driver_fixture.py /var/folders/mp/vwyknmv57mdcg8v5grwv6d7m0000gn/T/c3r-fixture-7ygv03z6/driver idle c3r-owned-driver",
+          "deadline": 1790494987.430059,
+          "fixture_only": true,
+          "sample_path": "/var/folders/mp/vwyknmv57mdcg8v5grwv6d7m0000gn/T/c3r-fixture-7ygv03z6/driver/server/sample.json"
+        },
+        "watchdog_pid": 7015
+      }
+    },
+    {
+      "path": "integration_fixtures/test_adapter_with_concrete_http_and_git/external_observer.json",
+      "observation": {
+        "physical_calls": 1,
+        "absent_before_teardown": true,
+        "response_envelope": {
+          "config_sha256": "218cf178c46e96a88bf1757f565ad64f57be0efea05adfd2ba5f13fb9353b898",
+          "messages_sha256": "dda9632abe46ba5e004f5fcdbed44f7fd135f8690bf5473290a123159e0da142",
+          "native_binding": {
+            "native_exact": true,
+            "rendered": "FIXED_JSON_FIXTURE",
+            "template_sha256": "c979e0e71a3e21b8f208e6ab120d5cb29327885f29d2a8b18fda67a723798e18",
+            "token_ids": [
+              1,
+              2,
+              3
+            ]
+          },
+          "native_binding_sha256": "d30efa2c2572937c8418f1c0bc739d8e771c6d30437a0a2efc1689b8d614c21d",
+          "protocol": 3,
+          "raw_response": "{\"choices\": [{\"finish_reason\": \"stop\", \"message\": {\"content\": \"fixture text only\"}}], \"timings\": {\"predicted_ms\": 0, \"prompt_ms\": 0}, \"usage\": {\"completion_tokens\": 3, \"prompt_tokens\": 3}}",
+          "raw_response_sha256": "fbbb97ecbc638fec6a8e049de36baa69c9181972fb2c4e89a8b64bcf7bbe4ce8",
+          "request_commit": "1c4ca8b1f8da0e281d1f64d3136891fef08fa0f0",
+          "request_id": "c3r-e2e-1",
+          "request_path": "results/remote_req028/c3_fixture/request.json",
+          "request_sha256": "1652c8b48ec0f6a389ed12168bb599ba9de258114fffe26fb8db49bf7b892972",
+          "run_id": "c3r-e2e",
+          "sequence": 1,
+          "status": "terminal",
+          "timings": {
+            "generation_ms": 0,
+            "prefill_ms": 0,
+            "request_wall_seconds": 1.2099988460540771
+          }
+        }
+      }
+    },
+    {
+      "path": "integration_fixtures/test_locked_production_and_argv/external_observer.json",
+      "observation": {
+        "real_start_locked": true,
+        "argv": [
+          "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/assets/llama.cpp-4fea119de30f6a923992780f6fd5ccb0bee5d47d/build/bin/llama-server",
+          "-m",
+          "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/assets/Qwen3-4B-Instruct-2507-Q4_K_M.gguf",
+          "--alias",
+          "fixture",
+          "--host",
+          "127.0.0.1",
+          "--port",
+          "12345",
+          "--ctx-size",
+          "32768",
+          "--parallel",
+          "1",
+          "--cache-type-k",
+          "q8_0",
+          "--cache-type-v",
+          "q8_0",
+          "--cache-ram",
+          "0",
+          "--no-cache-prompt",
+          "--no-cache-idle-slots",
+          "--no-context-shift",
+          "--jinja",
+          "--seed",
+          "20260927028",
+          "--temp",
+          "0",
+          "--n-predict",
+          "128",
+          "--threads",
+          "2",
+          "--threads-batch",
+          "2",
+          "--threads-http",
+          "2",
+          "--n-gpu-layers",
+          "99",
+          "--flash-attn",
+          "on",
+          "--no-warmup",
+          "--batch-size",
+          "128",
+          "--ubatch-size",
+          "32",
+          "--verbose"
+        ]
+      }
+    },
+    {
+      "path": "integration_fixtures/test_external_parent_death_inflight/external_observer.json",
+      "observation": {
+        "driver_killed_without_finally": true,
+        "child_absent_before_teardown": true,
+        "peer_untouched": true,
+        "external_watchdog": {
+          "reason": "owner_parent_exited",
+          "cleanup": {
+            "identity_key": "99b9cdfbda649ce791026140e360e43be3d154a770a86b01e2a23a9950656aeb",
+            "pid": 7070,
+            "requests": [
+              {
+                "actor": "c3r",
+                "reason": "owner_parent_exited",
+                "pid": 7075,
+                "time": 1790494957.720465
+              }
+            ],
+            "signals": [
+              {
+                "signal": "TERM",
+                "actor": "c3r",
+                "time": 1790494957.7254531
+              }
+            ],
+            "term_claim": {
+              "actor": "c3r",
+              "reason": "owner_parent_exited",
+              "owner_pid": 7075,
+              "time": 1790494957.723056
+            },
+            "owned_absent": true,
+            "confirmed_at": 1790494957.731874,
+            "audit_error": null
+          },
+          "pid": 7075
+        },
+        "handles": {
+          "model": {
+            "pid": 7070,
+            "identity": "Sun Sep 27 03:42:37 2026     /Applications/Xcode.app/Contents/Developer/usr/bin/python3 /Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3r_fixture.py server /var/folders/mp/vwyknmv57mdcg8v5grwv6d7m0000gn/T/c3r-fixture-2l72bxwt/driver/server/ready.json hang c3r-owned-7067-1790494957607665000",
+            "ownership_token": "c3r-owned-7067-1790494957607665000",
+            "parent": 7067,
+            "parent_identity": "Sun Sep 27 03:42:37 2026     /Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/Resources/Python.app/Contents/MacOS/Python /Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3r_driver_fixture.py /var/folders/mp/vwyknmv57mdcg8v5grwv6d7m0000gn/T/c3r-fixture-2l72bxwt/driver inflight c3r-owned-driver",
+            "deadline": 1790494987.612693,
+            "fixture_only": true,
+            "sample_path": "/var/folders/mp/vwyknmv57mdcg8v5grwv6d7m0000gn/T/c3r-fixture-2l72bxwt/driver/server/sample.json"
+          },
+          "watchdog_pid": 7075,
+          "http_worker": {
+            "pid": 7088,
+            "identity": "Sun Sep 27 03:42:37 2026     /Applications/Xcode.app/Contents/Developer/usr/bin/python3 /Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3r_worker.py /var/folders/mp/vwyknmv57mdcg8v5grwv6d7m0000gn/T/c3r-fixture-2l72bxwt/driver/http/1.input.json /var/folders/mp/vwyknmv57mdcg8v5grwv6d7m0000gn/T/c3r-fixture-2l72bxwt/driver/http/1.output.json",
+            "command": [
+              "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
+              "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3r_worker.py",
+              "/var/folders/mp/vwyknmv57mdcg8v5grwv6d7m0000gn/T/c3r-fixture-2l72bxwt/driver/http/1.input.json",
+              "/var/folders/mp/vwyknmv57mdcg8v5grwv6d7m0000gn/T/c3r-fixture-2l72bxwt/driver/http/1.output.json"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "path": "integration_fixtures/test_external_parent_death_inflight/driver/observer.json",
+      "observation": {
+        "model": {
+          "pid": 7070,
+          "identity": "Sun Sep 27 03:42:37 2026     /Applications/Xcode.app/Contents/Developer/usr/bin/python3 /Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3r_fixture.py server /var/folders/mp/vwyknmv57mdcg8v5grwv6d7m0000gn/T/c3r-fixture-2l72bxwt/driver/server/ready.json hang c3r-owned-7067-1790494957607665000",
+          "ownership_token": "c3r-owned-7067-1790494957607665000",
+          "parent": 7067,
+          "parent_identity": "Sun Sep 27 03:42:37 2026     /Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/Resources/Python.app/Contents/MacOS/Python /Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3r_driver_fixture.py /var/folders/mp/vwyknmv57mdcg8v5grwv6d7m0000gn/T/c3r-fixture-2l72bxwt/driver inflight c3r-owned-driver",
+          "deadline": 1790494987.612693,
+          "fixture_only": true,
+          "sample_path": "/var/folders/mp/vwyknmv57mdcg8v5grwv6d7m0000gn/T/c3r-fixture-2l72bxwt/driver/server/sample.json"
+        },
+        "watchdog_pid": 7075,
+        "http_worker": {
+          "pid": 7088,
+          "identity": "Sun Sep 27 03:42:37 2026     /Applications/Xcode.app/Contents/Developer/usr/bin/python3 /Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3r_worker.py /var/folders/mp/vwyknmv57mdcg8v5grwv6d7m0000gn/T/c3r-fixture-2l72bxwt/driver/http/1.input.json /var/folders/mp/vwyknmv57mdcg8v5grwv6d7m0000gn/T/c3r-fixture-2l72bxwt/driver/http/1.output.json",
+          "command": [
+            "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
+            "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c3r_worker.py",
+            "/var/folders/mp/vwyknmv57mdcg8v5grwv6d7m0000gn/T/c3r-fixture-2l72bxwt/driver/http/1.input.json",
+            "/var/folders/mp/vwyknmv57mdcg8v5grwv6d7m0000gn/T/c3r-fixture-2l72bxwt/driver/http/1.output.json"
+          ]
+        }
+      }
+    },
+    {
+      "path": "integration_fixtures/test_hanging_subprocess_cancel/external_observer.json",
+      "observation": {
+        "absent_before_teardown": true
+      }
+    },
+    {
+      "path": "integration_fixtures/test_provisional_identity_probe_failure/external_observer.json",
+      "observation": {
+        "direct_child_absent_before_teardown": true
+      }
+    },
+    {
+      "path": "integration_fixtures/test_hanging_socket_cancel/external_observer.json",
+      "observation": {
+        "socket_worker_absent_before_teardown": true
+      }
+    },
+    {
+      "path": "integration_fixtures/test_concrete_git_read_publish_and_dirty_no_retry/external_observer.json",
+      "observation": {
+        "publication": {
+          "commit": "8ac4ad2808e09287bd11bbf52315293dd7ec5b3a",
+          "events": [
+            {
+              "phase": "network_fetch",
+              "started": 1790494957.122004,
+              "finished": 1790494957.143666,
+              "status": "complete"
+            },
+            {
+              "phase": "network_check_main",
+              "started": 1790494957.2146418,
+              "finished": 1790494957.2293591,
+              "status": "complete"
+            },
+            {
+              "phase": "network_publication",
+              "started": 1790494957.2293708,
+              "finished": 1790494957.272887,
+              "status": "complete"
+            }
+          ]
+        },
+        "physical_publications": 1,
+        "dirty_rejected": true
+      }
+    }
+  ],
+  "final_cleanup_receipts": 32,
+  "source_matches_final_snapshot": true
+}
