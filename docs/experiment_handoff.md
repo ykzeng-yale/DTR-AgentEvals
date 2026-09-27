@@ -7115,3 +7115,10 @@ Read docs/req029e_comparator_integration_20260927.md. Remote implements actual t
 ## 2026-09-27 — reference control integrated into manuscript
 
 41-page PDF rebuilt with REQ029C known-good176PASS and failed setup preserved; no-change175/1 and submitted174/2 remain distinct within-task counts. Changed pages35–41 visually checked, first34textunchanged. No theorem/primarytarget change. REQ029E remote sourceintegration active; no actualjob or task release. Readiness55%,change0points,range45–65%; comparison/inference,synthesis,reproducibility/package remain.
+
+
+## 2026-09-27 — REQ-029E source candidate, preliminary independent checks
+
+Source `7aded9d` is published. Lead executed all22 comparator inert tests locally:22passed in57.633seconds. These include both fixed-arm fake trajectories, ordinary exit1 feedback in complete history, actual fixture call9/24 accounting, immutable claims, driver-death cleanup, and task/arm/source substitution rejection. The fixture tokenizer, HTTP, Docker and local Git do not establish real model/task validity. This local invocation retained the console result, not each temporary fixture directory; no archive-member verification is claimed. Exact source hashes and limits are in `docs/audits/req029e_preliminary_lead_20260927.json`.
+
+The dedicated mini chat endpoint was unavailable during the snapshot; source was retrieved through GitHub. Worker receipt/member archive and complete production review remain pending. No live comparator, image acquisition, Docker/evaluator or model release was issued. The two uncommitted lead image-acquisition source files are preparation only and must be reviewed before any release. Keep the existing goal active; next work is candidate receipt/source review and task-image/exposure qualification. Readiness55%,change0points,range45–65%; competent fixed-target comparison/valid inference, empirical/manuscript synthesis, independent reproducibility and author-approved package remain.
