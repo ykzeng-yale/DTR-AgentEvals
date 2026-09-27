@@ -7103,3 +7103,7 @@ Source143e94f independently reviewed:34/34 inert tests,2250member hashes,157pins
 ## 2026-09-27 — REQ-029C terminal / C1 source correction
 
 Referencecontrol-a stopped before tests at prepared-diff metadata check; not a patch or test failure. Exact index/hunk-heading-only discrepancy independently demonstrated;80runtime hashes and original/prepared digests retained, both PIDs absent/Docker empty. Read docs/req029c1_diff_binding_20260927.md. Remote source/inert correction only; no current evaluator/model job or renewed approval. Lead reviews exact correction before any new immutable control. Readiness55%,change0points,range45–65%; comparison/inference,synthesis,reproducibility/package remain.
+
+## 2026-09-27 — REQ-029C complete / scientific comparator remains
+
+Read docs/req029c_decision_20260927.md. Corrected reference-b176PASSED/exit0,94runtime member hashes/raw parser/reference bindings independently checked; driver24115/guardian24280absent,Dockerempty. Preserve reference-a failed setup and prelaunch filename rejection. No model invocation or same-task retry remains. Remote has no pending assignment. Next lead freezes an untouched DEVELOPMENT comparison from existing exposure/component ledger, integrates029Afeedback+029Dcommonparser and exact task/image validation; no automatic model release. Readiness55%,change0points,range45–65%; comparison/inference,synthesis,reproducibility/package remain.

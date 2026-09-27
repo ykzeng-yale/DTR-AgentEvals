@@ -1,3 +1,7 @@
+## REQ-029C positive control complete — 27 September 2026
+
+[Decision](req029c_decision_20260927.md): reference-b176PASSED/exit0,94runtime hashes/raw parser and patch bindings checked,owned cleanup confirmed. Together with C7 no-change175/1 and submitted174/2, this supports this task/environment's evaluator discrimination; these are within-task test counts, not model baselines or a routing comparison. Reference-a setup failure remains preserved. No additional same-task model or evaluation attempt is released. Readiness55%,change0points,range45–65%;comparison/inference,synthesis,reproducibility/package remain.
+
 ## REQ-029C reference control — setup failure, 27 September 2026
 
 The one released reference control stopped before testing: the prepared-diff validator treated a Git hunk-heading annotation as changed source. Lead retrospective byte comparison isolates only index and function-heading metadata; no test result is available and no rescore is made. Driver/guardian absent, Docker empty,80runtime hashes archived in results/local_req029/reference_control_20260927. [REQ-029C1](req029c1_diff_binding_20260927.md) is a source-only correction; no retry/resume is authorized. Readiness55%,change0points,range45–65%; comparison/inference,synthesis,reproducibility/package remain.
@@ -18,11 +22,11 @@ The latest REQ-029B release was based on stale REQ-006 status and is withdrawn. 
 
 See [lead audit](scientific_audit_20260927.md). C6B is one exposed single-model task attempt, not a DTR comparison. C7 test counts are within-task evaluator counts, not model baselines. The known-good reference-patch control remains missing. Ordinary nonzero feedback and second-stage opportunity gaps must be resolved prospectively. REQ-029A is source-only; no new model run is released.
 
-## Current execution status — 27 September 2026, 17:40 UTC
+## Current execution status — 27 September 2026, 17:47 UTC
 
 | Stream | Verified status | Next boundary |
 |---|---|---|
-| REQ-029C reference control | Setup failure before tests; exact metadata mismatch diagnosed; owned cleanup verified. | REQ-029C1 source-only correction, no actual run authorized. |
+| REQ-029C reference control | Attempt-a setup failure preserved; corrected attempt-b176PASSED/exit0 with cleanup and raw replay verified. | Exposed task evaluator control complete; no further same-task run. Untouched comparator design remains. |
 | REQ-028C5 Mac mini Qwen relay | One real request completed; 129 runtime hashes, 102 source pins and exact consumer/native/parser replay independently checked; owned cleanup recorded. | Transport qualification only; no executed action or competence claim. No C5 job remains. |
 | REQ-028C6 development trajectory | Run-a: infrastructure termination after two calls/actions. Run-b: four calls/actions, submitted patch; C7 unmodified-repository control: 175 pass/1 fail; candidate: 174 pass/2 fail, target failure plus one regression. | C7 complete; exposed task probe closed, no further run released. |
 | C6 local writable sandbox | Four actual qualification cases passed; generated source reads, edits and submission confined to sandbox. | All task/evaluation sandboxes removed and local process absence verified. Earlier failures retained. |
