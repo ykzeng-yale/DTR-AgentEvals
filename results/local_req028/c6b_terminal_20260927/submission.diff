@@ -1,0 +1,22 @@
+diff --git a/astropy/io/fits/card.py b/astropy/io/fits/card.py
+index 1b3285ddc..c69bd4a28 100644
+--- a/astropy/io/fits/card.py
++++ b/astropy/io/fits/card.py
+@@ -349,7 +349,7 @@ class Card(_Verify):
+                 f"Floating point {value!r} values are not allowed in FITS headers."
+             )
+ 
+-        elif isinstance(value, str):
++        elif isinstance(value, str) and value != "":
+             m = self._ascii_text_re.match(value)
+             if not m:
+                 raise ValueError(
+@@ -1269,7 +1269,7 @@ def _format_value(value):
+     """
+     # string value should occupies at least 8 columns, unless it is
+     # a null string
+-    if isinstance(value, str):
++    if isinstance(value, str) and value != "":
+         if value == "":
+             return "''"
+         else:

@@ -1,9 +1,9 @@
-## Current execution status — 27 September 2026, 10:15 UTC
+## Current execution status — 27 September 2026, 10:30 UTC
 
 | Stream | Verified status | Next boundary |
 |---|---|---|
 | REQ-028C5 Mac mini Qwen relay | One real request completed; 129 runtime hashes, 102 source pins and exact consumer/native/parser replay independently checked; owned cleanup recorded. | Transport qualification only; no executed action or competence claim. No C5 job remains. |
-| REQ-028C6 development trajectory | c6-dev-20260927-a terminal: two real responses and two successful read-only actions; timer ValueError before third model claim; no submission, empty diff. | C6S source1a1aa09 and64lead tests accepted; new independent-path run-b approved, not yet claimed running. Evaluator held. |
+| REQ-028C6 development trajectory | c6-dev-20260927-a terminal: two real responses and two successful read-only actions; timer ValueError before third model claim; no submission, empty diff. | C6B submitted after four calls/actions;792byte patch preserved, exact history/parser replay verified. C7 bounded evaluation preparation released; no score yet. |
 | C6 local writable sandbox | W2R plus four actual production-hook cases pass: action/diff, timeout, overflow and controller death; owned absence verified. | Two generated read-only actions completed inside sandbox; owned removal and local process absence verified. Earlier failures retained. |
 | Prior model/synthetic studies | Archived failures and accepted REQ-027 simulation remain unchanged. | Competent fixed-target comparison and valid inference remain open. |
 
@@ -1872,3 +1872,7 @@ C6S source `1a1aa09dbdaf537af6aa4ad499987a80dda027a6` fixes only interval waitin
 ## 2026-09-27 10:15 UTC — C6S accepted, C6B release
 
 Lead verified1793 terminal and6328 correction artifact hashes,130sources,117clear guard samples and64/64tests. Timer-only correction accepted; docs/req028_c6b_execution_20260927.md releases exactly one new run-b with unchanged scientific/interface/resource contract. Run-a remains infrastructure termination, no submission. Readiness55%,change0points,range45–65%; comparison/inference,synthesis,reproducibility/package remain.
+
+## 2026-09-27 10:30 UTC — C6B submitted, ungraded
+
+Four real calls and four isolated actions ended in explicit submission; final792byte diff SHA c75f2db234217e402628445c66a0e2dfdfb20965bb34b9b6903d9c71462cf171. Lead replayed all messages/native/parser/observations and submission; local controller/guardian/container absent,5720local runtime member archive preserved. Static diff suggests incorrect empty-string handling; no score assigned. C7 source-only evaluation implementation release pins baseline/candidate, public dataset test patch, strict176-test rule, source/parser and unchanged sandbox limits. Remote4506member hashes and262clear guard samples independently verified; saved remote OS snapshot records worker/supervisor/model absent. Readiness55%,change0points,range45–65%;comparison/inference,synthesis,reproducibility/package remain.

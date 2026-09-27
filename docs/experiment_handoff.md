@@ -7065,3 +7065,7 @@ Remote terminal evidence published first at `8e79db667df68f51cd5d9616fa067aed0fa
 ## 2026-09-27 10:15 UTC — C6B exact release
 
 C6S reviewed and64lead tests pass. Start new c6-dev-20260927-b once under docs/req028_c6b_execution_20260927.md and sourceapproval JSON; unchanged model/prompt/caps/12UTCexpiry, no resume/retry/evaluator. Source1a1aa09,130pins. Record actual handles and inspect next schedule. Readiness55%,change0points,range45–65%; comparison/inference,synthesis,reproducibility/package remain.
+
+## 2026-09-27 10:30 UTC — C6B submission; C7 evaluator setup
+
+C6B finished four calls/actions with explicit submission, not success. Preserve all raw and792byte diff; do not rerun model. Read docs/req028_c7_evaluation_20260927.md: scoped source/fake tests only, prospective separate baseline/candidate strict evaluation; no actual Docker/evaluation until lead exactsource review. Lead owns interpretation and evaluator release. Readiness55%,change0points,range45–65%;comparison/inference,synthesis,reproducibility/approved package remain.
