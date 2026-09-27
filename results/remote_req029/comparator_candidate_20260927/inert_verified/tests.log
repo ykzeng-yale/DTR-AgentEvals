@@ -1,0 +1,39 @@
+test_actual_call9_and_24_no_padding_or_switch (comparator_tests.Tests) ... ok
+test_actual_claim_boundary_no_action (comparator_tests.Tests) ... ok
+test_actual_driver_death_both_owners_cleanup (comparator_tests.Tests) ... ok
+test_actual_durable_claim_death_no_redispatch (comparator_tests.Tests) ... ok
+test_actual_http_timeout_cleanup (comparator_tests.Tests) ... ok
+test_admission_two_pass_gap_and_no_retry (comparator_tests.Tests) ... ok
+test_both_arms_full_lifecycle_exit1_history (comparator_tests.Tests) ... ok
+test_common_parser_and_original_gate_regression (comparator_tests.Tests) ... ok
+test_context_overflow_terminal_cleanup (comparator_tests.Tests) ... ok
+test_disabled_and_old_approval_reject_before_side_effect (comparator_tests.Tests) ... ok
+test_exact_arm_argv_no_cache_fallback (comparator_tests.Tests) ... ok
+test_exact_source_approval_roundtrip_and_hash_tamper (comparator_tests.Tests) ... ok
+test_local_git_namespace_and_immutable_objects (comparator_tests.Tests) ... ok
+test_native_and_feedback_substitution (comparator_tests.Tests) ... ok
+test_nonzero_sentinel_not_submission (comparator_tests.Tests) ... ok
+test_output_overflow_terminal_cleanup (comparator_tests.Tests) ... ok
+test_pretty_approval_bytes_survive_sandbox_adapter (comparator_tests.Tests) ... ok
+test_production_adapter_entrypoint_binding (comparator_tests.Tests) ... ERROR
+test_production_guardian_entrypoint_binding (comparator_tests.Tests) ... ok
+test_real_pipeline_parse_length_and_template_failures (comparator_tests.Tests) ... ok
+test_substitution_before_claim (comparator_tests.Tests) ... ok
+test_terminal_guard_latch (comparator_tests.Tests) ... ok
+
+======================================================================
+ERROR: test_production_adapter_entrypoint_binding (comparator_tests.Tests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req029/comparator_tests.py", line 250, in test_production_adapter_entrypoint_binding
+    h.main(path)
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req029/comparator_sandbox_host.py", line 55, in main
+    require(Path(path).resolve().parent==base and Path(s['output_path']).resolve().parent==base,'fixed adapter paths')
+  File "/Users/yukangzeng/Documents/Codex/2026-09-26/dtr-mac-mini-resource-qualification/work/req028/DTR-AgentEvals/experiments/remote_req028/c2_relay.py", line 10, in require
+    if not ok:raise Rejected(why)
+c2_relay.Rejected: fixed adapter paths
+
+----------------------------------------------------------------------
+Ran 22 tests in 66.126s
+
+FAILED (errors=1)
