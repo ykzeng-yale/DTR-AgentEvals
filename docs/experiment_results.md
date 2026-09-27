@@ -2020,3 +2020,5 @@ REQ029Q resource/selection decision: next pre-outcomequeue candidate matplotlib2
 ### REQ029S — next-task public-input audit (2026-09-27)
 
 For frozen matplotlib__matplotlib-20826, the three-column public projection is pinned and a local byte-only reconciliation found zero exact task-ID/issue-marker matches in 118 development records (7,342,521 bytes). This includes intervening REQ029 requests, but not remote/unlisted/paraphrased inputs; no universal untouchedness claim. No inference or environment run. See `docs/req029s_public_input_audit_20260927.md`. Readiness 55%, Δ0, range45–65%; competent comparisons/inference, synthesis and independent reproducibility/author package remain.
+
+REQ029S direct-SSH addendum: 107 mini loose input records (5,394,606bytes), zero exact Matplotlib ID/issue markers, no missing declared roots. No archives rescanned, no output/evaluator analysis or model run. The receipt pins selector/executed source and per-input hashes; coverage limitations remain explicit. Readiness55%,Δ0,range45–65%; competent comparisons/inference, synthesis and independent reproducibility/author package remain.
