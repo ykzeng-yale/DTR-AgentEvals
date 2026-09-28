@@ -1,0 +1,29 @@
+{
+  "bindings": [
+    {
+      "call": 1,
+      "input_tokens": 37,
+      "output_tokens": 35,
+      "exact_replay": true
+    },
+    {
+      "call": 2,
+      "input_tokens": 8844,
+      "output_tokens": 4,
+      "exact_replay": true
+    }
+  ],
+  "transformers": "4.51.3",
+  "source_sha256": "1760c628019995d3564c8572be6c5149f488b6c3aa95ceda16099c2516e146ff",
+  "use_sliding_window": false,
+  "excerpts": [
+    {
+      "line": 178,
+      "text": "\n        sliding_window = None\n        if (\n            self.config.use_sliding_window\n            and getattr(self.config, \"sliding_window\", None) is not None\n            and self.layer_idx >= self.config.max_window_layers\n        ):\n            sliding_window = self.config.sliding_window"
+    },
+    {
+      "line": 241,
+      "text": "        self.post_attention_layernorm = Qwen2RMSNorm(config.hidden_size, eps=config.rms_norm_eps)\n        if config.sliding_window and config._attn_implementation != \"flash_attention_2\":\n            logger.warning_once(\n                f\"Sliding Window Attention is enabled but not implemented for `{config._attn_implementation}`; \"\n                \"unexpected results may be encountered.\"\n            )\n\n    def forward("
+    }
+  ]
+}
