@@ -1,0 +1,7 @@
+# REQ030H: inspect the interrupted image artifact
+
+REQ030G job27727919 failed137:0 after916seconds, matching the900second pull deadline and15second kill fallback. The log reached SIF creation. A1,250,975,744byte task.sif remains. MaxRSS8387640K was near the8GiB allocation; this is not sufficient to classify the failure as OOM. Compression, NFS I/O and cleanup are unresolved explanations. No import/task/model ran. Original evidence is preserved in results/local_req030/seaborn_image_failure_20260928/evidence.tar.
+
+Release one distinct retrospective inspection, req030-seaborn-inspect-20260928-a: day/pi_gt353,2CPU8GiB5minutes. Read the existing artifact without rebuilding or downloading. Bound SHA hashing60seconds, SIF structure30seconds, metadata30seconds, and the unchanged isolated fixed import60seconds, each with15second kill fallback. Source experiments/lead_req030/seaborn_inspect.sbatch. Record structure, metadata, exact SIF identity and import output. Structural or import failure remains failure; do not relax isolation. No tests, reference patches, model or generated commands. No retry.
+
+This distinguishes usable completed output from an incomplete image; it cannot retrospectively turn the original timeout into success or establish full production sandbox qualification. Next gates remain writable workspace/guardian qualification, independent evaluator controls and public input boundary before task inference. Readiness55%, change0points, range45–65%; competent comparisons/valid inference, synthesis, reproducibility and author package remain.
