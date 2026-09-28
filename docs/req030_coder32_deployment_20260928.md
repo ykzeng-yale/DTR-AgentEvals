@@ -23,3 +23,7 @@ Five downloader identity/size/deadline regression tests passed, Python compile a
 On terminal review verify all model/wheel receipts against pins, native input binding, exactly two physical generations, memory/latency, raw EOS/length and content; deployment success is not task competence. Then freeze the next pre-outcome development task(s), qualified sandbox/evaluator and model comparison kernel before task inference. Do not replay Astropy/Django/Matplotlib failures or forward evaluator feedback to this model. If acquisition/runtime fails, diagnose retained evidence, not an unlimited retry or new model search.
 
 Readiness55%,Δ0,range45–65%; remaining competent comparisons/valid inference, manuscript synthesis and independent reproducibility/author-approved package. This release resolves a capacity/runtime gate only.
+
+## Submission receipt
+
+Both exact staged scripts passed Slurm test-only and seven source checksum checks. Actual CPU job27715133 and dependent GPU job27715134 submitted once at2026-09-27 21:41:09ET. First actualsnapshot21:41:28ET bothPENDING, GPUreasonDependency, no reliable actualstart prediction available. The separate test-only estimates were04:32:09ET for preparation and01:34:09ET for a standaloneGPU; the latter ignores the dependency and is not a pipeline start estimate. No model load/generation yet. Source commitdcf05646. Follow up exact job IDs; preserve other user jobs.

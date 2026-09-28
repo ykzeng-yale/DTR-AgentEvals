@@ -2090,3 +2090,7 @@ Compiler restored from checksum-verified officialTectonic0.17.0. Matplotlib evid
 Actual standard-tier one-B200 Slurm job **27713899** submitted once; first scheduler inspection PENDING. Four CPUs, 32 GiB RAM, ten-minute cap; pinned PyTorch 2.9.1/CUDA 12.8 numerical runtime probe only. No LLM or task outcome yet. See [release and acceptance](req030_bouchet_runtime_20260928.md). Readiness55%, Δ0, range45–65%; competent comparisons/inference, synthesis and reproducibility/author package remain.
 
 REQ030 terminal: actual oneB200 job27713899 COMPLETED/0:0 after three-minute queue and35-second allocation. Numerical BF16 check passed(relativeerror0.00165967); raw archive and exact source matches verified. This is GPU infrastructure evidence, not LLM competence. See req030_bouchet_runtime_20260928.md. Readiness55%,Δ0,range45–65%; scientific comparison/inference,synthesis,reproducibility/author package remain.
+
+## REQ030B canonical 32B deployment dispatched
+
+Source/release dcf05646: CPU acquisition job27715133 and dependent B200 inference job27715134 submitted Sept27 21:41:09ET. At21:41:28ET both PENDING, inference reasonDependency; no inference yet. Canonical Qwen2.5-Coder-32B-Instruct BF16, exact model/wheel hashes, two authored deployment-only requests. See req030_coder32_deployment_20260928.md. Five downloader regressions and shell/Python checks passed, remote seven-file source hashes matched. No benchmark or competence result. Readiness55%,Δ0,range45–65%; comparisons/inference,synthesis,reproducibility/author package remain.
