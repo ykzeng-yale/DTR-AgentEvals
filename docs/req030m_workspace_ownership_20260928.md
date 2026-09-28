@@ -1,0 +1,7 @@
+# REQ030M: ext3 root ownership correction
+
+REQ030L27761840 failed128:0 after100seconds. Raw logs show mkfs and ext3 mount succeeded; fixed script passed differing network namespace, absent host paths and root write rejection, then Git stopped on dubious /testbed ownership before sentinel/import. No model/task outcome. Evidence results/local_req030/seaborn_bound_failure_20260928. mkfs creates filesystem root ownership separately from files copied by -d; this explains the Git rejection, but effective corrected ownership must still be measured.
+
+Release one new fixed qualification req030-seaborn-bound-workspace-20260928-b, exact seaborn_bound_workspace_b.sbatch with unchanged seaborn_bound_workspace.sh. Same image/archive hashes,512MiB workspace,day/pi_gt3532CPU8GiB5min and original execution limits. After mkfs, bounded debugfs sets only image root uid/gid to caller's id and records root inode. No global safe.directory bypass, isolation relaxation, model/tests/download/generated commands. Original failed image stays immutable; new run uses its own image. bash-n passes; actual debugfs/effective mounted ownership and downstream sentinel/import remain to verify. No automatic retry.
+
+Next after measured workspace acceptance: production guardian/output/timeouts/driver-death and evaluator/public input qualification. Monitor every TWO HOURS. Readiness55%, Δ0, range45–65%; competent comparison/valid inference, synthesis, reproducibility and author package remain.
