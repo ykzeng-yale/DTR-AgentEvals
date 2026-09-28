@@ -2074,3 +2074,8 @@ Matplotlib Qwen b:7calls/6actions, no submission; supervisor descriptor exhausti
 ## REQ029Z Klear launched; actual admission wait
 
 Exact release7dabf1ee/source3e534051 launched controller65525 and miniworker5087 at00:14:48/50UTC28September. Both OS alive65–67seconds later; guardian65919 armed. Fixed admissiondeadline1790555410.496989; latest inspected73%free normalpressure/nopeer is below75%gate, modelRSS0. No inference confirmed. Leave the single window alone, no renewal; nexttwo-hourreview inspects terminal. [Execution](req029z_klear_execution_20260928.md). Readiness55%,Δ0,range45–65%; competent comparison/validinference,synthesis,reproducibility remain.
+
+
+## Klear terminal: no running experiment
+
+[Admission decision](req029z_klear_admission_decision_20260928.md): zero model loads/calls; frozen900secwindow expired below75%. Cleanup/OSabsence verified,1315memberhashes archived. Auxiliaryhost remains pressure2. No restart/renewal. Continue manuscript/inference work, not a runtime wait. Readiness55%,Δ0,range45–65%; competent comparison/valid inference,synthesis,reproducibility/author package remain.
