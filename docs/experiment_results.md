@@ -2141,3 +2141,8 @@ REQ030L27761840 failed128:0/100sec at Git dubious ownership after mount/network/
 ## REQ030N lifecycle fixtures dispatched
 
 REQ030M27770940 completed0:0/34sec: corrected ownership and fixed workspace checks pass,406364160bytes available. Raw archive results/local_req030/seaborn_bound_b_20260928. Newsourcef399f82b bounded supervisor passes four local inert cases. Actualjob27777694 dispatches fixed container normal/timeout/overflow/owner EOF fixtures,pi_gt353/day2CPU8GiB5min. See docs/req030n_lifecycle_20260928.md. Production remains held: actual controller SIGKILL/startup/escaped descendants still require tests; EOF fixture is not driverkill. No model/generated actions. Readiness55%, Δ0, range45–65%; competent comparison/valid inference, synthesis, reproducibility and author package remain. Two-hour monitor.
+
+
+## REQ030O combined driver-death qualification dispatched
+
+REQ030N27777694 completed0:0/15sec, four actual container fault receipts accepted within their limited scope. Rawarchive results/local_req030/seaborn_lifecycle_20260928. Source9ddfed1b adds actual owner SIGKILL and setsid child disappearance fixture; actualjob27780038 dispatchedpi_gt353/day2CPU8GiB5min. See docs/req030o_actual_driver_death_20260928.md. No production model release; startup and full harness/evaluator/public-input gates remain. Monitor TWO HOURS, mixed Chinese-English reports. Readiness55%, Δ0, range45–65%; competent comparisons/valid inference, synthesis, reproducibility and author package remain.
