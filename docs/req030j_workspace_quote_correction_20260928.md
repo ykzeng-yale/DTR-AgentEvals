@@ -1,0 +1,7 @@
+# REQ030J: correct shell boundary before workspace measurement
+
+REQ030I27729566 failed1:0 after8seconds before Apptainer exec: outer shell expanded awk $2 inside a prematurely closed single-quoted command under nounset. No container workspace result exists. This is a lead implementation defect, not capacity or isolation failure. Preserve original source/log/exit archive results/local_req030/seaborn_workspace_20260928/evidence.tar; environment.txt was absent (retrieval tar reported that absence).
+
+Correction separates fixed authored commands into seaborn_workspace_fixed.sh, fed through stdin to /bin/bash -s. Both files pass bash -n; an executed regression evaluates the exact invocation under nounset with fake timeout and confirms argv/stdin setup without a container. Unlike syntax checking alone this catches the original class of expansion defect.
+
+Release one new run req030-seaborn-workspace-20260928-b with seaborn_workspace_b.sbatch and fixed script. Same pinned existing SIF,2CPU8GiB5min,day/pi_gt353, bounded60second invocation+15kill fallback. No download/model/generated commands/tests/reference. No repeat after failure without diagnosis. Read full REQ030I scope: this measures writable-tmpfs capacity and sentinel behavior, not production qualification. Root policy, bounded workspace and guardian still need acceptance. Readiness55%, Δ0, range45–65%; competent comparisons/valid inference, synthesis, reproducibility and author package remain.
