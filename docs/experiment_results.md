@@ -2131,3 +2131,8 @@ REQ030J27731395 completed0:0/10sec; raw sentinel/import/diff evidence and source
 ## REQ030L dispatched — September28,14:10ET
 
 REQ030K27756408 completed0:0/13sec; source export50,268,160bytes/400members, no symlinks. Receipt/source/log archived results/local_req030/seaborn_export_20260928; full archive retained remote. Release79209ee2 creates a512MiB dedicated ext3 workspace mounted only at/testbed with read-only image root. Actualjob27761840 submitted14:10:43ET, last observedPENDING/StartUnknown,pi_gt353/day2CPU8GiB5min. See docs/req030l_bound_workspace_20260928.md. No model/tests/generated commands. Next qualify actual wrapper lifecycle/output/timeout/controller-death, then controls/public input before model release. TWO-HOUR monitor maintained. Readiness55%, Δ0, range45–65%; competent comparisons/valid inference, synthesis, reproducibility and author package remain.
+
+
+## REQ030M ownership correction — September28,16:12ET
+
+REQ030L27761840 failed128:0/100sec at Git dubious ownership after mount/network/root-readonly checks. Sentinel/import unexecuted; no task outcome. Evidence results/local_req030/seaborn_bound_failure_20260928. Source6332dca6 creates a fresh owned image and sets only root inode uid/gid to caller, without global Git trust bypass. Actualjob27770940 submitted16:12:17ET, last observedPENDING/StartUnknown,pi_gt353/day2CPU8GiB5min. Exact scope docs/req030m_workspace_ownership_20260928.md. Next verify effective ownership and workspace, then production lifecycle/control gates. Two-hour cadence. Readiness55%, Δ0, range45–65%; competent comparison/valid inference, synthesis, reproducibility and author package remain.
