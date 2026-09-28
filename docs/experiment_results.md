@@ -2102,3 +2102,5 @@ REQ030C actualCoder32B deployment completed0:0,127secB200allocation. Short37inpu
 REQ030D sandboxpreflight27724883 failed1:0/14sec; imagebuildsucceeded, preciseisolationassertioncausependingdiagnosis. Rawarchive retained. REQ030E27726526 CPUdiagnosis/native-tokenreplay nowqueued; no newmodelcall orcompetenceclaim. Readiness55%,Δ0,45–65%; comparison/inference,synthesis,reproducibility/authorpackage remain.
 
 REQ030E native32Btokenizer/template/outputreplayPASS bothcalls; pinnedsource explainsSWAwarningwithoutactivewindow. Sandboxhostpathsabsent butsysfsnetworkvisibilityambiguous. REQ030F27727851 queued for actualnamespace/network/rootmeasurement, no modelcall. Readiness55%,Δ0,45–65%; competentcomparison/inference,synthesis,reproducibility/authorpackage remain.
+
+REQ030F actualnamespace isolation PASS,1secCPUjob; earlier sysfsproxyfailure retained. NewREQ030G27727919 pinnedSeaborn3187imagepreflight queued; no taskcompetence measured. Readiness55%,Δ0,45–65%; comparison/inference,synthesis,reproducibility/authorpackage remain.
