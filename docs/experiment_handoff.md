@@ -7314,3 +7314,7 @@ Read docs/req030_coder32_deployment_20260928.md. Exact owned Slurm jobs27715133(
 ## REQ030C supersedes B — 28 September02:11UTC
 
 B acquisition27715133 completed;42receipts/sevensources match. Rawlog exposedNumPy2.2.6 ABI mismatch despiteimportexit0. OwnedGPU27715134 canceled after10second racedallocation, noapplicationclaim/load/responses; artifactsretained. Newsourcefacdaea3 correctsNumPy1.26.4, actualbridgecheck, freshpackages/reusedweights. Read docs/req030c_numpy_correction_20260928.md. Actualnewjobs27718445(CPU10min) ->27718446(B20030min), runreq030-coder32-deploy-20260928-c,pi_gt353;22:11:45ETbothPENDING/GPUDependency. No duplicate/retry/polling. Nextscheduledcheck exactIDs/nativeartifacts; samecycleprogressafterterminal. Readiness55%,Δ0,range45–65%; comparisons/inference,synthesis,reproducibility/authorpackage remain.
+
+## REQ030D — manual work cycle28September03:33UTC
+
+REQ030C bothjobscompleted,127secGPUallocation,2EOSresponses37/35and8844/4tokens,load11.032sec,peak69.69GB. Source/rendered/message/count checks pass; raw21filearchive results/local_req030/coder32_terminal_20260928. Native retokenization and warning sourceaudit remain beforetaskrelease; config use_sliding_window=false. NEW exactCPUpreflight27724883 sourcef410358f, runreq030-sandbox-preflight-20260928-a,pi_gt353,2CPU8GiB10min, pending23:33ET. Read req030d_sandbox_preflight_20260928.md. Nextfrozenqueuetaskseaborn3187; no taskreleased. Monitor30min. Readiness55%,Δ0,range45–65%; competentcomparison/inference,synthesis,reproducibility/authorpackage remain.
