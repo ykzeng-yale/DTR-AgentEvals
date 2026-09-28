@@ -7341,3 +7341,8 @@ REQ030H27729059 completed0:0/7sec; existing SIF structure/metadata/isolated impo
 ## REQ030J correction and dispatch — 28 September02:02ET
 
 REQ030I27729566 failed1:0/8sec before container execution due outer shell expansion of awk $2 under nounset. Lead implementation defect; no workspace measurement. Original evidence archived results/local_req030/seaborn_workspace_20260928. Sourceec2a9172 separates stdin script and passes syntax plus executed exact-command expansion regression. See docs/req030j_workspace_quote_correction_20260928.md. New actualjob27731395 submitted02:02:24ET, last observedPENDING/StartUnknown; req030-seaborn-workspace-20260928-b,pi_gt353/day2CPU8GiB5min. No model/tests/download. Next inspect real workspace result then implement remaining bounded production sandbox/control gates. Readiness55%, Δ0, range45–65%; competent comparisons/valid inference, synthesis, reproducibility and author package remain.
+
+
+## REQ030K source export dispatched — September28,12:34ET
+
+REQ030J27731395 completed0:0/10sec; raw sentinel/import/diff evidence and source matches verified in results/local_req030/seaborn_workspace_b_20260928. Overlay and/tmp share64MiB; writable root not production-qualified. Releasefe8935ed authorizes bounded read-only source export (docs/req030k_seaborn_source_export_20260928.md). Actualjob27756408 submitted12:34:39ET, last observedPENDING/StartUnknown; pi_gt353/day2CPU8GiB5min. Test-only27756407 is not an actual allocation. Next retrieve archive identity/size and implement bounded workspace plus independent guardian, then evaluator/public input gates. No model release. Monitor TWO HOURS. Readiness55%, Δ0, range45–65%; competent comparisons/valid inference, synthesis, reproducibility and author package remain.
