@@ -2088,3 +2088,5 @@ Compiler restored from checksum-verified officialTectonic0.17.0. Matplotlib evid
 ## REQ030 Bouchet allocation — 28 September 2026
 
 Actual standard-tier one-B200 Slurm job **27713899** submitted once; first scheduler inspection PENDING. Four CPUs, 32 GiB RAM, ten-minute cap; pinned PyTorch 2.9.1/CUDA 12.8 numerical runtime probe only. No LLM or task outcome yet. See [release and acceptance](req030_bouchet_runtime_20260928.md). Readiness55%, Δ0, range45–65%; competent comparisons/inference, synthesis and reproducibility/author package remain.
+
+REQ030 terminal: actual oneB200 job27713899 COMPLETED/0:0 after three-minute queue and35-second allocation. Numerical BF16 check passed(relativeerror0.00165967); raw archive and exact source matches verified. This is GPU infrastructure evidence, not LLM competence. See req030_bouchet_runtime_20260928.md. Readiness55%,Δ0,range45–65%; scientific comparison/inference,synthesis,reproducibility/author package remain.

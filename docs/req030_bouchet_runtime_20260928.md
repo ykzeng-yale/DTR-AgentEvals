@@ -19,3 +19,7 @@ Next freeze an exact canonical model revision/license, compatible Transformers d
 Check job 27713899 at the existing two-hour review; pending is not failure and must not cause resubmission. If terminal, inspect evidence and continue the next concrete qualification in that cycle. Both prior local admission failures and task failures remain immutable.
 
 Readiness **55%, change 0 points, range 45–65%**. Remaining: competent fixed-target comparisons and valid inference, manuscript synthesis, independent reproducibility and author-approved package. HPC access addresses capacity; it does not establish scientific success.
+
+## Terminal verification
+
+Slurm27713899 COMPLETED/0:0. Submitted27September21:22:01ET, started21:25:01ET, ended21:25:36ET: three-minute queue,35-second allocation (0.00972 GPU-hours). Actual NVIDIA B200 sm100,191502876672 visible bytes, driver580.178.04, pinned Torch2.9.1/CUDA12.8. BF16 relative error0.00165966665 passed0.02 threshold. Eight raw archive member hashes recorded; both remote source files independently matched local committed bytes. Evidence: `results/local_req030/bouchet_gpu_probe_20260928`. No model deployment/inference yet. This job is terminal; do not resubmit. Readiness55%,Δ0,range45–65%; remaining scientific milestones unchanged.
