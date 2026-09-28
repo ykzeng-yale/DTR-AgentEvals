@@ -2104,3 +2104,10 @@ REQ030D sandboxpreflight27724883 failed1:0/14sec; imagebuildsucceeded, preciseis
 REQ030E native32Btokenizer/template/outputreplayPASS bothcalls; pinnedsource explainsSWAwarningwithoutactivewindow. Sandboxhostpathsabsent butsysfsnetworkvisibilityambiguous. REQ030F27727851 queued for actualnamespace/network/rootmeasurement, no modelcall. Readiness55%,Δ0,45–65%; competentcomparison/inference,synthesis,reproducibility/authorpackage remain.
 
 REQ030F actualnamespace isolation PASS,1secCPUjob; earlier sysfsproxyfailure retained. NewREQ030G27727919 pinnedSeaborn3187imagepreflight queued; no taskcompetence measured. Readiness55%,Δ0,45–65%; comparison/inference,synthesis,reproducibility/authorpackage remain.
+
+
+## REQ030G timeout and REQ030H artifact inspection — 28 September 01:05 ET
+
+REQ030G27727919 failed137:0 after916seconds; the900second pull deadline expired during/after SIF creation. Existing1,250,975,744byte output is unvalidated. PeakRSS8387640K is near allocation but does not establish OOM. No fixed import or task execution occurred. Original raw source/log/exit archive: results/local_req030/seaborn_image_failure_20260928/evidence.tar (SHA256 f169e2c444841aa3f9b9be38db887818d660b3ac377cefbd5b292b0a2f42c4dc).
+
+Release c48b1aea authorizes read-only artifact inspection, not a repeat acquisition. Actual job27729059 submitted01:04:49ET, last observed PENDING with StartUnknown. Run req030-seaborn-inspect-20260928-a, pi_gt353/day2CPU8GiB5min; exact source experiments/lead_req030/seaborn_inspect.sbatch. Test-only27729058 is not an actual job/reservation. Next check retrieve structure/hash/metadata/import and accounting; if incomplete diagnose before any distinct rebuild. Production workspace, guardian, evaluation controls and public input boundary remain required before task inference. Monitor remains30minutes. Readiness55%, Δ0, range45–65%; competent comparison/valid inference, synthesis, independent reproducibility and author package remain.
