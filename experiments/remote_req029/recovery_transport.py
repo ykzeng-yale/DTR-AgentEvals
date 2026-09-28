@@ -15,10 +15,17 @@ class Transport:
         self.root=Path(root);self.root.mkdir(parents=True,exist_ok=False)
         self.mailbox,self.helper,self.helper_sha,self.role=mailbox,helper,helper_sha,role
         self.alias,self.python,self.interval=alias,python,interval
-        self.deadline=deadline;self.failed=False;self.fetches=0;self.calls=0;self.last_read=0;self.events=[];self.seen={}
+        self.deadline=deadline;self.failed=False;self.terminal_attempted=False;self.fetches=0;self.calls=0;self.last_read=0;self.events=[];self.seen={}
         self.runner=Runner(self.root/'process')
     def exchange(self,operation,kind,payload=None,seq=None):
-        require(not self.failed,'transport poisoned')
+        require(not self.terminal_attempted,'terminal already attempted')
+        terminal = operation=='publish' and kind==self.role+'_terminal'
+        require(not self.failed or terminal,'transport poisoned')
+        if terminal:
+            require(not self.terminal_attempted,'terminal already attempted')
+            self.terminal_attempted=True
+        # A distinct terminal object may report a failed exchange after cleanup;
+        # no ordinary operation or ambiguous terminal publication is retried.
         try:
             require(kind in KINDS and (operation!='publish' or KINDS[kind]==self.role),'artifact owner')
             require(self.calls<512 and time.time()<self.deadline,'transport cap/deadline')

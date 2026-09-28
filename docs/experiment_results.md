@@ -2064,3 +2064,8 @@ Author-requested active two-hour workcycle: docs/current_blockers_and_workcycle_
 ## REQ029Y mailbox launch correction
 
 See [exact diagnosis and fresh release](req029y_launch_correction_20260927.md). First Matplotlib Qwen attempt had zero model loads/calls; owned cleanup verified. New immutable b release keeps source, task, guards and original expiry unchanged, with actual SSH mailbox preflight passed. Readiness55%, Δ0, range45–65%; competent comparison/valid inference, synthesis and reproducibility remain.
+
+
+## REQ029Z telemetry lifetime correction
+
+Matplotlib Qwen b:7calls/6actions, no submission; supervisor descriptor exhaustion and suppressed terminal message caused infrastructure abort. Raw/native/history replay and cleanup verified. See [diagnosis and corrective tests](req029z_descriptor_diagnosis_20260928.md). No Qwen retry; proceed only with separately approved prospective Klear arm after corrected source acceptance. Readiness55%,Δ0,range45–65%; competent comparison/valid inference,synthesis,reproducibility/author package remain.

@@ -89,7 +89,7 @@ class Base:
         put(self.root, 'terminal.publication.window.json', {
             'started': publication_started, 'deadline': publication_deadline,
             'execution_deadline': self.deadline, 'terminal_only': True})
-        if publication_started < publication_deadline and not self.t.failed:
+        if publication_started < publication_deadline:
             previous_deadline = self.t.deadline
             try:
                 self.t.deadline = publication_deadline

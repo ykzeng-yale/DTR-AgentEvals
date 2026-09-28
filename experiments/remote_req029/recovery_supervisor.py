@@ -9,8 +9,21 @@ from c3r_arbiter import identity
 from c3r_hooks import ProcessHandle,alive,safe_stop,terminate_direct
 from admission_window import reason as admission_reason
 from recovery_gate import command
+def completed_sample(handle, handles):
+    """Retire each completed telemetry descriptor before starting another sample."""
+    try:
+        value = handle.poll()
+    except BaseException:
+        handle.close()
+        handles.remove(handle)
+        raise
+    if value is not PENDING:
+        handle.close()
+        handles.remove(handle)
+    return value
+
 def main(path):
-    s=json.loads(Path(path).read_text());root=Path(s['root']);child=None;record=None;write_gate=None;ack=None;active=None;handles=[];outcome=None;failure=None;errors=[]
+    s=json.loads(Path(path).read_text());root=Path(s['root']);child=None;record=None;write_gate=None;ack=None;active=None;handles=[];sample_count=0;outcome=None;failure=None;errors=[]
     def save(name,data):b3_stop.save(root/name,data)
     def check():
         require(not (select.select([sys.stdin],[],[],0)[0] and os.read(sys.stdin.fileno(),1)==b''),'owner_parent_exited')
@@ -24,10 +37,11 @@ def main(path):
         check()
     def begin_sample():
         if s.get('inert_test'):return None
-        n=len(handles);spec=root/('telemetry_'+str(n)+'.in.json');out=root/('telemetry_'+str(n)+'.out.json');left=min(5,s['phase_deadline']-time.time())
+        nonlocal sample_count
+        n=sample_count;sample_count+=1;spec=root/('telemetry_'+str(n)+'.in.json');out=root/('telemetry_'+str(n)+'.out.json');left=min(5,s['phase_deadline']-time.time())
         spec.write_bytes(encode({'operation':'telemetry','owned_group':None if record is None else record['pid'],'deadline':time.time()+left}))
         h=ProcessHandle([sys.executable,str(OLD/'c4_worker.py'),str(spec),str(out)],left,out);handles.append(h);return h
-    def read_sample(h):return json.loads((root/'fake_sample.json').read_text()) if s.get('inert_test') else h.poll()
+    def read_sample(h):return json.loads((root/'fake_sample.json').read_text()) if s.get('inert_test') else completed_sample(h,handles)
     try:
         command(s) # Validate exact source approval/argv before any child exists.
         checkpoint('before_spawn');gate_read,write_gate=os.pipe();ack,ack_write=os.pipe()
