@@ -7356,3 +7356,8 @@ REQ030K27756408 completed0:0/13sec; source export50,268,160bytes/400members, no 
 ## REQ030M ownership correction — September28,16:12ET
 
 REQ030L27761840 failed128:0/100sec at Git dubious ownership after mount/network/root-readonly checks. Sentinel/import unexecuted; no task outcome. Evidence results/local_req030/seaborn_bound_failure_20260928. Source6332dca6 creates a fresh owned image and sets only root inode uid/gid to caller, without global Git trust bypass. Actualjob27770940 submitted16:12:17ET, last observedPENDING/StartUnknown,pi_gt353/day2CPU8GiB5min. Exact scope docs/req030m_workspace_ownership_20260928.md. Next verify effective ownership and workspace, then production lifecycle/control gates. Two-hour cadence. Readiness55%, Δ0, range45–65%; competent comparison/valid inference, synthesis, reproducibility and author package remain.
+
+
+## REQ030N lifecycle fixtures dispatched
+
+REQ030M27770940 completed0:0/34sec: corrected ownership and fixed workspace checks pass,406364160bytes available. Raw archive results/local_req030/seaborn_bound_b_20260928. Newsourcef399f82b bounded supervisor passes four local inert cases. Actualjob27777694 dispatches fixed container normal/timeout/overflow/owner EOF fixtures,pi_gt353/day2CPU8GiB5min. See docs/req030n_lifecycle_20260928.md. Production remains held: actual controller SIGKILL/startup/escaped descendants still require tests; EOF fixture is not driverkill. No model/generated actions. Readiness55%, Δ0, range45–65%; competent comparison/valid inference, synthesis, reproducibility and author package remain. Two-hour monitor.
