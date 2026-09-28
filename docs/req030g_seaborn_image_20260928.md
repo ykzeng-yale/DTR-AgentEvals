@@ -1,0 +1,9 @@
+# REQ030G: next frozen task image, no model/task execution
+
+REQ030F27727851 completed0:0 in1sec; actualsubmit00:32:32ET/start00:32:54ET (previoushandoffminute33wasmistyped). Hostnetinode4026531840 versuscontainer4026533653, onlylo inactualiplink, emptyroutes,checkedhostpathsabsent,rootwrite rejectedreadonly. OriginalREQ030Dfailedsysfsinterfacecheck retained; actualnetworknamespace isolation passes. Archive results/local_req030/network_check_20260928. This fixedAlpinecheck is notproductiontaskwrapperqualification.
+
+Nextqueue task mwaskom__seaborn-3187 (REQ009rank4), selected beforeoutcome. Freeze Dockerrepository swebench/sweb.eval.x86_64.mwaskom_1776_seaborn-3187 AMD64manifestsha256:6c0cd3296b90a84889796531ab87a0ed8779015b2bbd2e8d99adbdef95397b03; compressedlayers1,295,121,476bytes, metadata experiments/lead_req030/seaborn_oci_manifest.json. Notextractedsize/SIFidentity. No selectionbasedonevaluator/modeloutcome.
+
+Release ONE CPUimageacquisition/importpreflight runreq030-seaborn-image-20260928-a,day/pi_gt3532CPU8GiB20min,900secpull+15kill,60secfixedinspection+15kill,15GiBnewdisk envelope. Exactsource seaborn_image.sbatch. Ownprivatecache/temp, pinnedOCI digest, recordbuiltSIFSHA separately. Samequalifiedisolationflags/networknone/rootreadonly; fixed authoredscript printsGitHEAD andtestbedPython/seabornversion/importpath. No tests, referencepatch, generatedcommands, model, hostservices or benchmarkgrade. Slurmboundsallprocesses. No sourcearchivecopiedtomodel. Syntaxpassed; sourcepublishbeforelaunch; test-onlybeforeonesubmission. Originalmodelcached unchanged.
+
+Onterminal verify identities/environment then implement/taskqualify boundedwritableworkspace/cleanup/output/timeout guardian and evaluatorcontrols pluspublicinputexposureledger beforemodelcell. Do not call imageimport a competence result orrepeatpriorfailedtasks. Readiness55%,Δ0,range45–65%; competentcomparison/validinference,synthesis,reproducibility/authorpackage remain.
