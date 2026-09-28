@@ -2069,3 +2069,8 @@ See [exact diagnosis and fresh release](req029y_launch_correction_20260927.md). 
 ## REQ029Z telemetry lifetime correction
 
 Matplotlib Qwen b:7calls/6actions, no submission; supervisor descriptor exhaustion and suppressed terminal message caused infrastructure abort. Raw/native/history replay and cleanup verified. See [diagnosis and corrective tests](req029z_descriptor_diagnosis_20260928.md). No Qwen retry; proceed only with separately approved prospective Klear arm after corrected source acceptance. Readiness55%,Δ0,range45–65%; competent comparison/valid inference,synthesis,reproducibility/author package remain.
+
+
+## REQ029Z Klear launched; actual admission wait
+
+Exact release7dabf1ee/source3e534051 launched controller65525 and miniworker5087 at00:14:48/50UTC28September. Both OS alive65–67seconds later; guardian65919 armed. Fixed admissiondeadline1790555410.496989; latest inspected73%free normalpressure/nopeer is below75%gate, modelRSS0. No inference confirmed. Leave the single window alone, no renewal; nexttwo-hourreview inspects terminal. [Execution](req029z_klear_execution_20260928.md). Readiness55%,Δ0,range45–65%; competent comparison/validinference,synthesis,reproducibility remain.
