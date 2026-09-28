@@ -7346,3 +7346,8 @@ REQ030I27729566 failed1:0/8sec before container execution due outer shell expans
 ## REQ030K source export dispatched — September28,12:34ET
 
 REQ030J27731395 completed0:0/10sec; raw sentinel/import/diff evidence and source matches verified in results/local_req030/seaborn_workspace_b_20260928. Overlay and/tmp share64MiB; writable root not production-qualified. Releasefe8935ed authorizes bounded read-only source export (docs/req030k_seaborn_source_export_20260928.md). Actualjob27756408 submitted12:34:39ET, last observedPENDING/StartUnknown; pi_gt353/day2CPU8GiB5min. Test-only27756407 is not an actual allocation. Next retrieve archive identity/size and implement bounded workspace plus independent guardian, then evaluator/public input gates. No model release. Monitor TWO HOURS. Readiness55%, Δ0, range45–65%; competent comparisons/valid inference, synthesis, reproducibility and author package remain.
+
+
+## REQ030L dispatched — September28,14:10ET
+
+REQ030K27756408 completed0:0/13sec; source export50,268,160bytes/400members, no symlinks. Receipt/source/log archived results/local_req030/seaborn_export_20260928; full archive retained remote. Release79209ee2 creates a512MiB dedicated ext3 workspace mounted only at/testbed with read-only image root. Actualjob27761840 submitted14:10:43ET, last observedPENDING/StartUnknown,pi_gt353/day2CPU8GiB5min. See docs/req030l_bound_workspace_20260928.md. No model/tests/generated commands. Next qualify actual wrapper lifecycle/output/timeout/controller-death, then controls/public input before model release. TWO-HOUR monitor maintained. Readiness55%, Δ0, range45–65%; competent comparisons/valid inference, synthesis, reproducibility and author package remain.
