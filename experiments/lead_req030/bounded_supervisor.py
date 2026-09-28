@@ -22,7 +22,7 @@ def run(fd,command,out,receipt,seconds,cap):
                         b=os.read(p.stdout.fileno(),65536)
                         if not b:sel.unregister(p.stdout)
                         if b:
-                            remain=cap-count;f.write(b[:remain]);count+=min(len(b),remain)
+                            remain=cap-count;f.write(b[:remain]);f.flush();count+=min(len(b),remain)
                             if len(b)>remain:reason='output_limit';break
                 if reason in ('owner_eof','output_limit'):break
     finally:
