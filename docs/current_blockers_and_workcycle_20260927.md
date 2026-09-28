@@ -35,3 +35,8 @@ C. With sourceapproval, qualifyingfreshresources and noownedjob, dispatch the ex
 D. If capacity or eligibility genuinely prevents C, do not idle: finish originalfixedtarget inference design/covariance/precision or integrate verified adverse results into themanuscript. Choose a deliverable with an explicit acceptancecheck. Do not substitute easier tasks or repeat MonteCarlo to manufacture progress. If a modelpair fails, diagnose the declared scientific question before choosing a prospectively justified alternative. No generalmodelincapacity inference fromone task.
 
 Readiness55%,change0points,range45–65%. Remaining: competentfixedtargetcomparisons/validinference, empirical/manuscriptsynthesis, independentreproducibility and authorapprovedpackage. The automation change improves work selection; it is not itself scientific evidence.
+
+
+## Superseding 28 September active decision
+
+REQ029Y reconciled the fixed declared endpoint without overwriting REQ029W oldgateFAIL. Qwen Matplotlib b ran7calls/6actions then watchdog descriptor exhaustion; no submission, no Qwen retry. REQ029Z repairs descriptor lifetime and one-shot failure reporting, with actual low-FD subprocess tests on bothhosts. Next exact prospective Klear arm release is docs/req029z_klear_execution_20260928.md. Pair remains incomplete and cannot identify routing/model advantage. Use terminal evidence to select next scientific step, not repeated source/setup cycles.
