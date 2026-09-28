@@ -7295,3 +7295,8 @@ Exact release7dabf1ee/source3e534051 launched controller65525 and miniworker5087
 ## Klear terminal: no running experiment
 
 [Admission decision](req029z_klear_admission_decision_20260928.md): zero model loads/calls; frozen900secwindow expired below75%. Cleanup/OSabsence verified,1315memberhashes archived. Auxiliaryhost remains pressure2. No restart/renewal. Continue manuscript/inference work, not a runtime wait. Readiness55%,Δ0,range45–65%; competent comparison/valid inference,synthesis,reproducibility/author package remain.
+
+
+### Same-turn paper integration completed
+
+Compiler restored from checksum-verified officialTectonic0.17.0. Matplotlib evidence is now integrated into the42-pagePDF; changedpages36–42 visually checked, first35 text-identical. See manuscript/validation_20260928_matplotlib.json. No active experiment; modelpath capacityblocked, nextscientificwork is enforceableexecution-unit/inference design and finalclaim synthesis. Readiness55%,Δ0,45–65%; competent comparisons/validinference,reproducibility/author package remain.
