@@ -2084,3 +2084,7 @@ Exact release7dabf1ee/source3e534051 launched controller65525 and miniworker5087
 ### Same-turn paper integration completed
 
 Compiler restored from checksum-verified officialTectonic0.17.0. Matplotlib evidence is now integrated into the42-pagePDF; changedpages36–42 visually checked, first35 text-identical. See manuscript/validation_20260928_matplotlib.json. No active experiment; modelpath capacityblocked, nextscientificwork is enforceableexecution-unit/inference design and finalclaim synthesis. Readiness55%,Δ0,45–65%; competent comparisons/validinference,reproducibility/author package remain.
+
+## REQ030 Bouchet allocation — 28 September 2026
+
+Actual standard-tier one-B200 Slurm job **27713899** submitted once; first scheduler inspection PENDING. Four CPUs, 32 GiB RAM, ten-minute cap; pinned PyTorch 2.9.1/CUDA 12.8 numerical runtime probe only. No LLM or task outcome yet. See [release and acceptance](req030_bouchet_runtime_20260928.md). Readiness55%, Δ0, range45–65%; competent comparisons/inference, synthesis and reproducibility/author package remain.

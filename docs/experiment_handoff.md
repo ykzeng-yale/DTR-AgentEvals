@@ -7300,3 +7300,7 @@ Exact release7dabf1ee/source3e534051 launched controller65525 and miniworker5087
 ### Same-turn paper integration completed
 
 Compiler restored from checksum-verified officialTectonic0.17.0. Matplotlib evidence is now integrated into the42-pagePDF; changedpages36–42 visually checked, first35 text-identical. See manuscript/validation_20260928_matplotlib.json. No active experiment; modelpath capacityblocked, nextscientificwork is enforceableexecution-unit/inference design and finalclaim synthesis. Readiness55%,Δ0,45–65%; competent comparisons/validinference,reproducibility/author package remain.
+
+## REQ030 Bouchet — 28 September 2026
+
+Use the private yale-bouchet-research/mac-ssh-compute skills and working auxiliary SSH route. Inspect exact Slurm **27713899**, run `req030-gpu-probe-20260928-a`, under pi_gt353 user project DTR-AgentEvals directory. Submitted once; first inspection PENDING. Retrieve raw result/log/accounting on terminal state, never duplicate. Sources and next GPU-native LLM qualification gate: docs/req030_bouchet_runtime_20260928.md. No model download/inference or old-task retry authorized by this infrastructure probe. Author confirmed both accounts usable for this research. Preserve two-hour cadence. Readiness55%, Δ0, range45–65%; empirical comparison/inference, synthesis, reproducibility/author package remain.
