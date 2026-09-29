@@ -37,9 +37,11 @@ revalidates their digest/schema/task/base, allows only four non-task metadata
 keys (`system`, `release`, `version`, `machine`), and returns the pinned
 system/instance templates with finite agent step, wall-time, and format-error
 limits. It also supplies the pinned observation/format-error templates to the
-native HF adapter and the fixed lead-declared action regex. It restricts
-metadata key shape but does not attest where a future runner obtains those
-values. The returned values
+native HF adapter and the fixed lead-declared action regex. The metadata keys
+mirror the pinned upstream Docker environment's `platform.uname()` values on
+the agent host; this helper restricts their shape but does not attest their
+provenance. A production receipt must bind those values to the actual Slurm
+host process (not claim they came from inside Apptainer). The returned values
 are designed for the pinned upstream call shape
 `DefaultAgent(model, env, **agent_config).run(task=problem_statement)`.
 An independent helper reproduces the two initial messages using the same
@@ -61,9 +63,9 @@ available to the fixture.
 
 This resolves the narrow prompt-fixture gap: the earlier test-authored
 templates are no longer the only evidence for the initial task messages. It
-does **not** qualify the production runner. In particular, the actual
-Apptainer environment's system metadata and prompt must still be bound in a
-single run receipt; no durable event writer, production guardian integration,
+does **not** qualify the production runner. In particular, the runner-host
+`platform.uname()` values used by the pinned upstream Docker environment and
+the exact prompt must still be bound in a single run receipt; no durable event writer, production guardian integration,
 or real controller-to-container run has been exercised here. The test's fake
 environment cannot prove production provenance or isolation.
 
