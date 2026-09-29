@@ -1,0 +1,7 @@
+# REQ030R: control Python environment correction
+
+REQ030Q27783854 failed1:0 after33seconds before any pytest execution. Baseline preparation applied frozen test patch, then shell reported pytest: command not found (return127); raw markers enclosed this error, no declared statuses. Reference arm absent. Archive results/local_req030/seaborn_controls_failure_20260928. This is evaluator setup failure, not Seaborn model or target outcome.
+
+The fixed image import used /opt/miniconda3/envs/testbed/bin/python. The control script omitted stock conda activation and invoked bare pytest. REQ030R changes only invocation to /opt/miniconda3/envs/testbed/bin/python -m pytest, retaining same pytest flags, test files, patch bytes, image, baseline/reference order, 250 declarations, workspace, resource/output/deadline limits and offline omitted pip install. New source seaborn_controls_b.py/.sbatch; py_compile, bash-n and four supervisor fault regressions pass. No source/endpoint tuning.
+
+Release ONE fresh diagnostic control pair req030-seaborn-controls-20260928-b,pi_gt353/day2CPU8GiB25min. Do not resume Q or reuse its workspace. If interpreter lacks pytest too, classify infrastructure failure and stop rather than invent statuses. Full raw/parser/reproducibility acceptance remains lead-owned. No model released. Two-hour monitor; readiness55%, change0points, range45–65%; competent comparison/inference, synthesis, reproducibility and author package remain.
