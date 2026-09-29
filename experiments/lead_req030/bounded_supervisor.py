@@ -41,5 +41,5 @@ def run(fd,command,out,receipt,seconds,cap):
 if __name__=='__main__':
     a=argparse.ArgumentParser();a.add_argument('--owner-fd',type=int,required=True);a.add_argument('--out',required=True);a.add_argument('--receipt',required=True);a.add_argument('--seconds',type=float,required=True);a.add_argument('--cap',type=int,default=1048576);a.add_argument('command',nargs=argparse.REMAINDER);n=a.parse_args()
     cmd=n.command[1:] if n.command[:1]==['--'] else n.command
-    assert 0<n.seconds<=120 and 0<n.cap<=1048576 and cmd
+    assert 0<n.seconds<=600 and 0<n.cap<=4*1048576 and cmd
     run(n.owner_fd,cmd,n.out,n.receipt,n.seconds,n.cap)
