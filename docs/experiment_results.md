@@ -2146,3 +2146,8 @@ REQ030M27770940 completed0:0/34sec: corrected ownership and fixed workspace chec
 ## REQ030O combined driver-death qualification dispatched
 
 REQ030N27777694 completed0:0/15sec, four actual container fault receipts accepted within their limited scope. Rawarchive results/local_req030/seaborn_lifecycle_20260928. Source9ddfed1b adds actual owner SIGKILL and setsid child disappearance fixture; actualjob27780038 dispatchedpi_gt353/day2CPU8GiB5min. See docs/req030o_actual_driver_death_20260928.md. No production model release; startup and full harness/evaluator/public-input gates remain. Monitor TWO HOURS, mixed Chinese-English reports. Readiness55%, Δ0, range45–65%; competent comparisons/valid inference, synthesis, reproducibility and author package remain.
+
+
+## REQ030Q controls dispatched — September28
+
+REQ030O27780038 completed0:0; actualcontrollerSIGKILL and marked detached child disappearance observed (3before/0after). Public Seaborn task projection SHA b3fb8c08d74d92279a7caf77bf714c77ac3eee2dbafc996596b786c5484954e9; base22cdf directparentofsetupHEAD38ac, equal trees. Frozen evaluator-only bundle manifest03c8d3a4837ebdd065693d09153555af305144f2857651c8e2aabc8707cf9c54 declares2F2P+248P2P=one task. Source3922b1f4 released one serial unchanged/reference diagnostic control pair; actual Slurm27783854 dispatched pi_gt353/day2CPU8GiB25min. Full scope docs/req030q_seaborn_controls_20260928.md. No model released. Next independently replay complete raw statuses and then bind agent/tool kernel. TWO-HOUR monitor. Readiness55%, Δ0, range45–65%; competent comparison/valid inference, synthesis, reproducibility and author package remain.
