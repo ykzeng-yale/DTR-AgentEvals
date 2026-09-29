@@ -206,7 +206,7 @@ def main() -> None:
         workspace_sha256=os.environ["DTR_WORKSPACE_SHA256"],
         supervisor=Path(__file__).with_name("bounded_supervisor.py"),
         supervisor_sha256=os.environ["DTR_SUPERVISOR_SHA256"],
-        release_id="req030-seaborn-runner-qualification-20260929-b",
+        release_id=manifest["release_id"],
         release_sha256=os.environ["DTR_RELEASE_SHA256"],
         step_limit=3,
         wall_time_limit_seconds=180,
@@ -219,24 +219,31 @@ def main() -> None:
 
     assert len(models) == 1 and models[0].n_calls == 2
     assert outcome["result"]["exit_status"] == "Submitted"
-    assert outcome["result"]["submission"] == "inert-fixture-submission\n"
+    # The exact frozen terminal command prints only the submission marker;
+    # the agent's valid submission body is therefore the empty string.
+    assert outcome["result"]["submission"] == ""
     run_dir = Path(outcome["run_directory"])
     events = [json.loads(line) for line in (run_dir / "events.jsonl").read_text().splitlines()]
     requests = [event for event in events if event.get("event") == "request"]
     responses = [event for event in events if event.get("event") == "response"]
     actions = [event for event in events if event.get("event") == "action_finish"]
+    run_identity = next(event for event in events if event.get("event") == "agent_run_start")
     assert len(requests) == len(responses) == len(actions) == 2
+    assert run_identity["release_id"] == manifest["release_id"]
+    assert run_identity["release_sha256"] == digest(manifest_bytes)
     assert requests[0]["messages_sha256"] == prompt_binding["messages_sha256"]
     assert requests[0]["rendered_sha256"] == prompt_binding["rendered_sha256"]
     assert requests[0]["input_ids"] == prompt_binding["input_ids"]
     assert [event["reason"] for event in actions] == ["exited", "exited"]
     assert events[-1]["event"] == "agent_run_finish"
+    assert events[-1]["trajectory_sha256"] == outcome["trajectory_sha256"]
+    assert events[-1]["submission_sha256"] == digest(b"")
 
     receipt = {
         "status": "passed_narrow_inert_runtime_qualification",
         "interpretation": "real_qwen_tokenizer_and_apptainer; authored fake model output; no weights, generated outcome, tests, or evaluator input",
         "slurm_job_id": os.environ.get("SLURM_JOB_ID"),
-        "release_id": "req030-seaborn-runner-qualification-20260929-b",
+        "release_id": manifest["release_id"],
         "public_projection_sha256": public_sha,
         "model_repo": manifest["repo"],
         "model_revision": manifest["revision"],
