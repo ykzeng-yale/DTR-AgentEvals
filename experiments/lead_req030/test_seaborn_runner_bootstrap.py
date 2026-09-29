@@ -18,11 +18,11 @@ class RunnerBootstrapTests(unittest.TestCase):
     def test_release_manifest_binds_payload_workspace_and_batch(self) -> None:
         manifest_path = Path(os.environ.get(
             "DTR_RELEASE_MANIFEST",
-            ROOT / "experiments/lead_req030/seaborn_runner_qualification_d_release.json",
+            ROOT / "experiments/lead_req030/seaborn_runner_qualification_e_release.json",
         ))
         batch_path = Path(os.environ.get(
             "DTR_BATCH_SCRIPT",
-            ROOT / "experiments/lead_req030/seaborn_runner_qualification_d.sbatch",
+            ROOT / "experiments/lead_req030/seaborn_runner_qualification_e.sbatch",
         ))
         manifest_bytes = manifest_path.read_bytes()
         manifest = json.loads(manifest_bytes)
@@ -30,7 +30,7 @@ class RunnerBootstrapTests(unittest.TestCase):
         self.assertIn(hashlib.sha256(manifest_bytes).hexdigest(), batch)
         workspace_sha = manifest["task"]["workspace_seed_sha256"]
         self.assertIn(f"export DTR_WORKSPACE_SHA256={workspace_sha}", batch)
-        self.assertEqual(manifest["release_id"], "req030-seaborn-runner-qualification-20260929-d")
+        self.assertEqual(manifest["release_id"], "req030-seaborn-runner-qualification-20260929-e")
         self.assertIn('release_id=manifest["release_id"]', (ROOT / "experiments/lead_req030/seaborn_runner_qualification.py").read_text())
         for entry in manifest["source_files"]:
             relative = Path(entry["path"]).relative_to("payload")

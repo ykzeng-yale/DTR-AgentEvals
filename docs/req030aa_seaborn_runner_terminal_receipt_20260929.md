@@ -31,3 +31,8 @@ Immutable pins:
 Acceptance requires actual terminal job accounting, exact source/SIF/tokenizer/workspace pins, isolated preflight, both fixed action receipts, native prompt/token binding, consistent release ID/SHA, terminal marker and empty submission receipt, workspace seal/trajectory hash, and cleanup. A pass clears only this narrow inert runtime receipt gate. It does not authorize or imply model-task inference, a full benchmark, CONFIRM, or competence. Before any model-task run, the lead still must freeze a competent executor pair, target estimand, task/family sampling, routing opportunities, resource limits, independent evaluation and valid task-level precision plan.
 
 Readiness remains **55% (change 0 points; judgment range 45–65%)**. The major remaining milestones are a competent fixed-target comparison with valid task/family inference, empirical/manuscript synthesis, independent reproducibility, and author-approved submission packaging.
+
+
+## Routing update
+
+The day-partition test-only estimate for release D projected a next-day start, so D was retained but not submitted. A same-shape `devel` test-only estimate for the identical account predicted immediate eligibility. REQ030AB/E is the new immutable release for that partition; see [REQ030AB](req030ab_seaborn_runner_devel_20260929.md). This is a scheduling choice only and does not alter the qualification's scientific scope.

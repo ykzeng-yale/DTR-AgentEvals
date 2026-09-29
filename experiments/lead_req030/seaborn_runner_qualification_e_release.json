@@ -1,0 +1,134 @@
+{
+  "actions": [
+    "printf 'REQ030X_TOOL_OK\\n'",
+    "echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT"
+  ],
+  "caps": {
+    "action_bytes": 8192,
+    "agent_steps": 3,
+    "agent_wall_seconds": 180,
+    "context_tokens": 32768,
+    "event_bytes": 33554432,
+    "minimum_testbed_free_bytes": 67108864,
+    "new_tokens_per_fake_call": 256,
+    "tool_output_bytes": 4096,
+    "tool_seconds": 60,
+    "trajectory_bytes": 33554432
+  },
+  "forbidden_inputs": [
+    "model weights",
+    "benchmark tests",
+    "reference patch",
+    "evaluator manifest",
+    "generated actions"
+  ],
+  "purpose": "one corrective inert CPU-only joined-runtime qualification; validates empty terminal submission and exact release/trajectory bindings; not a model/task result",
+  "release_id": "req030-seaborn-runner-qualification-20260929-e",
+  "runtime": {
+    "account": "pi_gt353",
+    "cpus": 2,
+    "generation_model": "authored deterministic fake; no learned parameters",
+    "memory": "8G",
+    "offline": true,
+    "partition": "devel",
+    "python_module": "PyTorch/2.9.1-foss-2024a-CUDA-12.8.0",
+    "qos": "normal",
+    "torch": "2.9.1",
+    "transformers": "4.51.3",
+    "wall_minutes": 15,
+    "weights_loaded": false
+  },
+  "source_files": [
+    {
+      "bytes": 1639,
+      "path": "payload/docs/source_snapshots/req030p_seaborn_public/public_task.json",
+      "sha256": "b3fb8c08d74d92279a7caf77bf714c77ac3eee2dbafc996596b786c5484954e9"
+    },
+    {
+      "bytes": 1094,
+      "path": "payload/docs/source_snapshots/req030t_miniswe_agent/LICENSE.md",
+      "sha256": "0f796e58f91d1c07bb2c1b1d0f8bf3a83017c3a5dec1bdc6fae733b2cd2e875b"
+    },
+    {
+      "bytes": 5829,
+      "path": "payload/docs/source_snapshots/req030t_miniswe_agent/default.yaml",
+      "sha256": "112aa58328f478a41cc2630702a4b89ef459e912870e05065157ed221f56701f"
+    },
+    {
+      "bytes": 2686,
+      "path": "payload/experiments/lead_req030/bounded_supervisor.py",
+      "sha256": "d39647136d7bb1c8d59d85389ff70f0e980cc6277760455ec773433daface974"
+    },
+    {
+      "bytes": 7675,
+      "path": "payload/experiments/lead_req030/native_hf_text_adapter.py",
+      "sha256": "41d21de7526525fa4b07f53e08bb6d6cb86729db1eb77a76d4bf44cc624c0760"
+    },
+    {
+      "bytes": 25330,
+      "path": "payload/experiments/lead_req030/seaborn_apptainer_runner.py",
+      "sha256": "b92f5e7d3b71f7a1416fed053613c406421dda1a682e7584b911147589d1bdb3"
+    },
+    {
+      "bytes": 9648,
+      "path": "payload/experiments/lead_req030/seaborn_public_input.py",
+      "sha256": "0a31a2479543c8a68e0b9d4b6f7bbd23127760163e7509a1d122a0d5a504578a"
+    },
+    {
+      "bytes": 11986,
+      "path": "payload/experiments/lead_req030/seaborn_runner_qualification.py",
+      "sha256": "241ca4ac7043b45149c54ee9fe431412e04ab7837584acf56e1769ae1704dd57"
+    },
+    {
+      "bytes": 6557,
+      "path": "payload/experiments/lead_req030/test_seaborn_runner_bootstrap.py",
+      "sha256": "ed830c42b9c46a4809ecdf2329e801d003893f6caee59cdfa7d9304537e3dfc5"
+    },
+    {
+      "bytes": 8043,
+      "path": "payload/work/upstream/mini-swe-agent-04d809ceab9df28f9adaed044884180159172930/src/minisweagent/agents/default.py",
+      "sha256": "e8ef8aa365942d739c2ec5cb0879f60f377d2dc2de8ec670aaedf3bafb45a4c2"
+    },
+    {
+      "bytes": 729,
+      "path": "payload/work/upstream/mini-swe-agent-04d809ceab9df28f9adaed044884180159172930/src/minisweagent/exceptions.py",
+      "sha256": "0590393c56bee873c79a691dcb4f15cb39c85f1658598b84bfb295bfde56921d"
+    },
+    {
+      "bytes": 2629,
+      "path": "payload/work/upstream/mini-swe-agent-04d809ceab9df28f9adaed044884180159172930/src/minisweagent/models/utils/actions_text.py",
+      "sha256": "e5997bba3ae3d541ff418317cc8dd9e9e17657de806679ef38ab1ad74e294047"
+    },
+    {
+      "bytes": 1865,
+      "path": "payload/work/upstream/mini-swe-agent-04d809ceab9df28f9adaed044884180159172930/src/minisweagent/models/utils/openai_multimodal.py",
+      "sha256": "c498ec2e97c0bf45c212a10de9f5d1b2d24d4de46a05fd0eaea975c1abe3f81f"
+    },
+    {
+      "bytes": 938,
+      "path": "payload/work/upstream/mini-swe-agent-04d809ceab9df28f9adaed044884180159172930/src/minisweagent/utils/serialize.py",
+      "sha256": "3035b27cfeffdf91117c72bc8131340bd9c5f67a3010baeb4ecd6b0c7406f462"
+    }
+  ],
+  "task": {
+    "id": "mwaskom__seaborn-3187",
+    "public_projection_sha256": "b3fb8c08d74d92279a7caf77bf714c77ac3eee2dbafc996596b786c5484954e9",
+    "task_image_sha256": "9da1f51cb8c01a6ad9e0db4d1969742fbec995021e78150a9623d4f4719a8a47",
+    "workspace_policy": "private copy; root readonly; only exact /testbed workspace bind; no home/hostfs/implicit binds; network none",
+    "workspace_seed_sha256": "3cc8a60a720e00816e2853bce4e47d58705443cf6f4e8a4531ca69ae458b8100"
+  },
+  "tokenizer": {
+    "files": [
+      "config.json",
+      "merges.txt",
+      "tokenizer.json",
+      "tokenizer_config.json",
+      "vocab.json"
+    ],
+    "license": "Apache-2.0",
+    "model_manifest_sha256": "27d054c155e7767ca2048d66c900d75131bf9a6c263fdce5180e06ed5fe6bad6",
+    "repo": "Qwen/Qwen2.5-Coder-32B-Instruct",
+    "revision": "381fc969f78efac66bc87ff7ddeadb7e73c218a7",
+    "weights": "not loaded or hashed in this qualification"
+  }
+}
