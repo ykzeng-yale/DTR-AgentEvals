@@ -25,14 +25,21 @@ MIT license and source URLs are recorded beside it. The extracted literal
 `system_template` and `instance_template` SHA-256 values are respectively
 `5c9bba45e018c7fbf379c8c1a91cce06deecc26670764ce86810e37523c59d2d` and
 `cdf5e8dc1972686b90e3e84a0a4b200874ad5aaf1e3d26c26ed1872c1ba2e9b0`.
+The pinned observation/format-error template hashes are
+`4cd54626f03be2dd572eeffbe31d9421d73c167d4feb79dc3c1b4336d0568e31` and
+`04fce5694c2695cc0cc4672cd6d7678f398402a99b0b3379fb397f06c00baca8`.
+The text-action regex is a lead-declared fixed parser candidate, not an
+upstream YAML field; its exact pattern and hash are recorded in the manifest.
 
 `experiments/lead_req030/seaborn_public_input.py` now fails closed on any
 change to either pinned byte source. It accepts raw public-projection bytes,
 revalidates their digest/schema/task/base, allows only four non-task metadata
 keys (`system`, `release`, `version`, `machine`), and returns the pinned
 system/instance templates with finite agent step, wall-time, and format-error
-limits. It restricts their shape but does not attest where a future runner
-obtains those values. The returned values
+limits. It also supplies the pinned observation/format-error templates to the
+native HF adapter and the fixed lead-declared action regex. It restricts
+metadata key shape but does not attest where a future runner obtains those
+values. The returned values
 are designed for the pinned upstream call shape
 `DefaultAgent(model, env, **agent_config).run(task=problem_statement)`.
 An independent helper reproduces the two initial messages using the same
@@ -45,9 +52,10 @@ The source-only suite now has 17 passing tests (the prior focused set had
 source with the candidate config prepared from the frozen projection, a fake
 model, and an inert fake environment. It verifies the initial messages match
 the independently rendered expected messages byte-for-byte, checks fixed
-message hashes for the test environment, and observes one fake action ending
-in the expected `Submitted` sentinel. Tampered projection/config bytes,
-extra environment keys, and an unbounded step limit are rejected. No weights
+message hashes for the test environment, exercises the pinned observation and
+format-error templates through the native adapter, and observes one fake
+action ending in the expected `Submitted` sentinel. Tampered projection/config
+bytes, extra environment keys, and an unbounded step limit are rejected. No weights
 were loaded, no real tool command ran, and no evaluator/reference input was
 available to the fixture.
 
@@ -55,15 +63,13 @@ This resolves the narrow prompt-fixture gap: the earlier test-authored
 templates are no longer the only evidence for the initial task messages. It
 does **not** qualify the production runner. In particular, the actual
 Apptainer environment's system metadata and prompt must still be bound in a
-single run receipt; the native HF adapter still receives its observation and
-format-error templates/action regex separately; no durable event writer,
-production guardian integration, or real controller-to-container run has
-been exercised here. The test's fake environment cannot prove production
-provenance or isolation.
+single run receipt; no durable event writer, production guardian integration,
+or real controller-to-container run has been exercised here. The test's fake
+environment cannot prove production provenance or isolation.
 
 ## Decision and next gate
 
-Accept REQ030U as source/test evidence for exact public-input parsing and
+Accept REQ030V as source/test evidence for exact public-input parsing and
 initial-prompt construction against the pinned `DefaultAgent`. Do not call it
 agent/environment qualification, model competence, or a model release. Next,
 consolidate the native HF adapter, all pinned model-facing templates/parser,

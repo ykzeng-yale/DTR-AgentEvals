@@ -17,6 +17,10 @@ BASE_COMMIT = "22cdfb0c93f8ec78492d87edb810f10cb7f57a31"
 MINISWE_CONFIG_SHA256 = "112aa58328f478a41cc2630702a4b89ef459e912870e05065157ed221f56701f"
 SYSTEM_TEMPLATE_SHA256 = "5c9bba45e018c7fbf379c8c1a91cce06deecc26670764ce86810e37523c59d2d"
 INSTANCE_TEMPLATE_SHA256 = "cdf5e8dc1972686b90e3e84a0a4b200874ad5aaf1e3d26c26ed1872c1ba2e9b0"
+OBSERVATION_TEMPLATE_SHA256 = "4cd54626f03be2dd572eeffbe31d9421d73c167d4feb79dc3c1b4336d0568e31"
+FORMAT_ERROR_TEMPLATE_SHA256 = "04fce5694c2695cc0cc4672cd6d7678f398402a99b0b3379fb397f06c00baca8"
+SEABORN_ACTION_REGEX = r"```mswea_bash_command\s*\n(.*?)\n```"
+SEABORN_ACTION_REGEX_SHA256 = "06993f7306d270033d8e041df07ab287e7dd75ec9be2882db9becb5a8ee1ec34"
 MINISWE_CONFIG = Path(__file__).resolve().parents[2] / "docs/source_snapshots/req030t_miniswe_agent/default.yaml"
 
 
@@ -24,6 +28,8 @@ MINISWE_CONFIG = Path(__file__).resolve().parents[2] / "docs/source_snapshots/re
 class PinnedAgentTemplates:
     system_template: str
     instance_template: str
+    observation_template: str
+    format_error_template: str
     source_sha256: str
 
 
@@ -31,6 +37,7 @@ class PinnedAgentTemplates:
 class PreparedSeabornAgentRun:
     task: PublicTaskInput
     agent_config: Mapping[str, object]
+    model_config: Mapping[str, object]
     template_source_sha256: str
 
 
@@ -60,7 +67,7 @@ def _extract_literal_agent_scalar(lines: list[str], key: str) -> str:
 
 
 def load_pinned_agent_templates(config_bytes: bytes | None = None) -> PinnedAgentTemplates:
-    """Load exact system/instance templates from the source-pinned mini-swe YAML."""
+    """Load exact agent/model templates from the source-pinned mini-swe YAML."""
     data = MINISWE_CONFIG.read_bytes() if config_bytes is None else config_bytes
     digest = hashlib.sha256(data).hexdigest()
     if digest != MINISWE_CONFIG_SHA256:
@@ -73,13 +80,34 @@ def load_pinned_agent_templates(config_bytes: bytes | None = None) -> PinnedAgen
     # Fail closed if the expected agent section is moved or duplicated.
     if lines.count("agent:") != 1:
         raise ValueError("pinned config agent section mismatch")
-    system_template = _extract_literal_agent_scalar(lines, "system_template")
-    instance_template = _extract_literal_agent_scalar(lines, "instance_template")
-    if hashlib.sha256(system_template.encode("utf-8")).hexdigest() != SYSTEM_TEMPLATE_SHA256:
-        raise ValueError("mini-swe system template hash mismatch")
-    if hashlib.sha256(instance_template.encode("utf-8")).hexdigest() != INSTANCE_TEMPLATE_SHA256:
-        raise ValueError("mini-swe instance template hash mismatch")
-    return PinnedAgentTemplates(system_template, instance_template, digest)
+    templates = {
+        "system_template": (
+            _extract_literal_agent_scalar(lines, "system_template"),
+            SYSTEM_TEMPLATE_SHA256,
+        ),
+        "instance_template": (
+            _extract_literal_agent_scalar(lines, "instance_template"),
+            INSTANCE_TEMPLATE_SHA256,
+        ),
+        "observation_template": (
+            _extract_literal_agent_scalar(lines, "observation_template"),
+            OBSERVATION_TEMPLATE_SHA256,
+        ),
+        "format_error_template": (
+            _extract_literal_agent_scalar(lines, "format_error_template"),
+            FORMAT_ERROR_TEMPLATE_SHA256,
+        ),
+    }
+    for name, (template, expected_hash) in templates.items():
+        if hashlib.sha256(template.encode("utf-8")).hexdigest() != expected_hash:
+            raise ValueError(f"mini-swe {name} hash mismatch")
+    return PinnedAgentTemplates(
+        templates["system_template"][0],
+        templates["instance_template"][0],
+        templates["observation_template"][0],
+        templates["format_error_template"][0],
+        digest,
+    )
 
 
 def build_seaborn_initial_messages(
@@ -165,6 +193,11 @@ def prepare_seaborn_default_agent(
             "wall_time_limit_seconds": wall_time_limit_seconds,
             "cost_limit": cost_limit,
             "max_consecutive_format_errors": max_consecutive_format_errors,
+        },
+        model_config={
+            "action_regex": SEABORN_ACTION_REGEX,
+            "observation_template": templates.observation_template,
+            "format_error_template": templates.format_error_template,
         },
         template_source_sha256=templates.source_sha256,
     )

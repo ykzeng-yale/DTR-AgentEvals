@@ -15,6 +15,10 @@ from experiments.lead_req030.seaborn_public_input import (
     MINISWE_CONFIG_SHA256,
     SYSTEM_TEMPLATE_SHA256,
     INSTANCE_TEMPLATE_SHA256,
+    OBSERVATION_TEMPLATE_SHA256,
+    FORMAT_ERROR_TEMPLATE_SHA256,
+    SEABORN_ACTION_REGEX,
+    SEABORN_ACTION_REGEX_SHA256,
     build_seaborn_initial_messages,
     load_pinned_agent_templates,
     load_public_projection,
@@ -59,6 +63,9 @@ class PublicTaskBoundaryTests(unittest.TestCase):
         self.assertEqual(hashlib.sha256(MINISWE_CONFIG.read_bytes()).hexdigest(), MINISWE_CONFIG_SHA256)
         self.assertEqual(hashlib.sha256(templates.system_template.encode()).hexdigest(), SYSTEM_TEMPLATE_SHA256)
         self.assertEqual(hashlib.sha256(templates.instance_template.encode()).hexdigest(), INSTANCE_TEMPLATE_SHA256)
+        self.assertEqual(hashlib.sha256(templates.observation_template.encode()).hexdigest(), OBSERVATION_TEMPLATE_SHA256)
+        self.assertEqual(hashlib.sha256(templates.format_error_template.encode()).hexdigest(), FORMAT_ERROR_TEMPLATE_SHA256)
+        self.assertEqual(hashlib.sha256(SEABORN_ACTION_REGEX.encode()).hexdigest(), SEABORN_ACTION_REGEX_SHA256)
         self.assertEqual([m["role"] for m in messages], ["system", "user"])
         self.assertIn("You are a helpful assistant", messages[0]["content"])
         self.assertIn(task.problem_statement, messages[1]["content"])

@@ -77,6 +77,10 @@ def load_pinned_parser_without_global_startup() -> None:
 load_pinned_parser_without_global_startup()
 from experiments.lead_req030.native_hf_text_adapter import NativeHFTextAdapter  # noqa: E402
 from experiments.lead_req030.seaborn_public_input import (  # noqa: E402
+    FORMAT_ERROR_TEMPLATE_SHA256,
+    OBSERVATION_TEMPLATE_SHA256,
+    SEABORN_ACTION_REGEX,
+    SEABORN_ACTION_REGEX_SHA256,
     build_seaborn_initial_messages,
     prepare_seaborn_default_agent,
 )
@@ -146,7 +150,15 @@ class FakeModel:
         return FakeTensor([input_ids.rows[0] + self.output_ids])
 
 
-def make_adapter(response: str, *, context_limit: int = 64, input_ids: list[int] | None = None):
+def make_adapter(
+    response: str,
+    *,
+    context_limit: int = 64,
+    input_ids: list[int] | None = None,
+    format_error_template: str = "Expected exactly one action; found {{actions|length}}.",
+    observation_template: str = "<returncode>{{ output.returncode }}</returncode>\n{{ output.output }}",
+    action_regex: str = r"```mswea_bash_command\s*\n(.*?)\n```",
+):
     tokenizer = FakeTokenizer(response, input_ids)
     model = FakeModel()
     events = []
@@ -157,9 +169,9 @@ def make_adapter(response: str, *, context_limit: int = 64, input_ids: list[int]
         revision="fixture-revision",
         context_limit=context_limit,
         max_new_tokens=8,
-        action_regex=r"```mswea_bash_command\s*\n(.*?)\n```",
-        format_error_template="Expected exactly one action; found {{actions|length}}.",
-        observation_template="<returncode>{{ output.returncode }}</returncode>\n{{ output.output }}",
+        action_regex=action_regex,
+        format_error_template=format_error_template,
+        observation_template=observation_template,
         record_event=events.append,
     )
     return adapter, tokenizer, model, events
@@ -260,7 +272,6 @@ class NativeHFTextAdapterTests(unittest.TestCase):
 
     def test_pinned_default_agent_loop_runs_one_tool_action_to_submission(self):
         raw = "THOUGHT: finish\n\n```mswea_bash_command\necho COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT\n```"
-        adapter, tokenizer, model, events = make_adapter(raw)
         public_bytes = (ROOT / "docs/source_snapshots/req030p_seaborn_public/public_task.json").read_bytes()
 
         class FakeEnvironment:
@@ -292,6 +303,22 @@ class NativeHFTextAdapterTests(unittest.TestCase):
             max_consecutive_format_errors=3,
             cost_limit=0.0,
         )
+        self.assertEqual(
+            hashlib.sha256(prepared.model_config["observation_template"].encode()).hexdigest(),
+            OBSERVATION_TEMPLATE_SHA256,
+        )
+        self.assertEqual(
+            hashlib.sha256(prepared.model_config["format_error_template"].encode()).hexdigest(),
+            FORMAT_ERROR_TEMPLATE_SHA256,
+        )
+        self.assertEqual(prepared.model_config["action_regex"], SEABORN_ACTION_REGEX)
+        self.assertEqual(hashlib.sha256(SEABORN_ACTION_REGEX.encode()).hexdigest(), SEABORN_ACTION_REGEX_SHA256)
+        adapter, tokenizer, model, events = make_adapter(
+            raw,
+            observation_template=prepared.model_config["observation_template"],
+            format_error_template=prepared.model_config["format_error_template"],
+            action_regex=prepared.model_config["action_regex"],
+        )
         agent = DefaultAgent(adapter, env, **prepared.agent_config)
         result = agent.run(task=prepared.task.problem_statement)
         self.assertEqual(result["exit_status"], "Submitted")
@@ -307,6 +334,20 @@ class NativeHFTextAdapterTests(unittest.TestCase):
         self.assertEqual(prepared.template_source_sha256, "112aa58328f478a41cc2630702a4b89ef459e912870e05065157ed221f56701f")
         self.assertEqual(agent.config.step_limit, 1)
         self.assertEqual(agent.config.wall_time_limit_seconds, 30)
+        observation = adapter.format_observation_messages(
+            {},
+            [{"output": "fixture output", "returncode": 0, "exception_info": None, "extra": {}}],
+        )
+        self.assertEqual(observation[0]["content"], "<returncode>0</returncode>\n<output>\nfixture output</output>")
+        malformed_adapter, _, _, _ = make_adapter(
+            "no action",
+            action_regex=prepared.model_config["action_regex"],
+            observation_template=prepared.model_config["observation_template"],
+            format_error_template=prepared.model_config["format_error_template"],
+        )
+        with self.assertRaises(FormatError) as caught:
+            malformed_adapter.query(tokenizer.seen_messages)
+        self.assertIn("Expected exactly 1 action", caught.exception.messages[0]["content"])
 
 
 if __name__ == "__main__":
