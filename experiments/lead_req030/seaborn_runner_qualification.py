@@ -74,7 +74,9 @@ def load_pinned_default_agent():
             fields.update(kwargs)
             self.__dict__.update(fields)
 
-        def model_dump(self):
+        def model_dump(self, *, mode="python"):
+            if mode not in {"python", "json"}:
+                raise ValueError(f"unsupported model_dump mode: {mode}")
             return dict(self.__dict__)
 
     pydantic_stub = types.ModuleType("pydantic")

@@ -18,11 +18,11 @@ class RunnerBootstrapTests(unittest.TestCase):
     def test_release_manifest_binds_payload_workspace_and_batch(self) -> None:
         manifest_path = Path(os.environ.get(
             "DTR_RELEASE_MANIFEST",
-            ROOT / "experiments/lead_req030/seaborn_runner_qualification_b_release.json",
+            ROOT / "experiments/lead_req030/seaborn_runner_qualification_c_release.json",
         ))
         batch_path = Path(os.environ.get(
             "DTR_BATCH_SCRIPT",
-            ROOT / "experiments/lead_req030/seaborn_runner_qualification_b.sbatch",
+            ROOT / "experiments/lead_req030/seaborn_runner_qualification_c.sbatch",
         ))
         manifest_bytes = manifest_path.read_bytes()
         manifest = json.loads(manifest_bytes)
@@ -61,6 +61,44 @@ print('runner-bootstrap-ok')
         )
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertIn("runner-bootstrap-ok", result.stdout)
+
+    def test_pinned_agent_trajectory_serialization_accepts_json_mode(self) -> None:
+        script = """
+import json
+import sys
+import tempfile
+import types
+from pathlib import Path
+from experiments.lead_req030.seaborn_runner_qualification import load_runner_components
+agent_class, _, _, _ = load_runner_components()
+model = types.SimpleNamespace(serialize=lambda: {}, get_template_vars=lambda: {})
+environment = types.SimpleNamespace(serialize=lambda: {}, get_template_vars=lambda: {})
+agent = agent_class(
+    model, environment,
+    system_template="system", instance_template="instance",
+)
+with tempfile.TemporaryDirectory() as directory:
+    output = Path(directory) / 'trajectory.json'
+    serialized = agent.save(output)
+    saved = json.loads(output.read_text())
+assert serialized['info']['config']['agent']['system_template'] == 'system'
+assert serialized['info']['config']['agent']['output_path'] is None
+assert saved['info']['config']['agent']['system_template'] == 'system'
+print('runner-trajectory-serialization-ok')
+"""
+        env = os.environ.copy()
+        env["PYTHONPATH"] = str(ROOT) + os.pathsep + env.get("PYTHONPATH", "")
+        result = subprocess.run(
+            [sys.executable, "-c", script],
+            cwd=ROOT,
+            env=env,
+            capture_output=True,
+            text=True,
+            timeout=30,
+            check=False,
+        )
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn("runner-trajectory-serialization-ok", result.stdout)
 
 
 if __name__ == "__main__":
