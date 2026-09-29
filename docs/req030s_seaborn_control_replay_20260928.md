@@ -1,0 +1,9 @@
+# REQ030S: independent Seaborn control replay
+
+REQ030Q27783854 FAILED1:0/33sec before pytest. Baseline raw log: pytest: command not found, supervisor exit127; zero declared statuses. Reference was never started. The control is evaluator-unknown, not baseline success/failure or model outcome. Raw source/log/receipt preserved results/local_req030/seaborn_controls_failure_20260928. The cause was omission of the image's testbed Python environment from a bare pytest invocation.
+
+REQ030R sourceb3d76bba corrects only interpreter selection to /opt/miniconda3/envs/testbed/bin/python -m pytest; exact archived patches, test paths, parser and 250 declared identities unchanged. Actual new job27792215 submitted as req030-seaborn-controls-20260928-b; no duplicate or continuation of Q. See docs/req030r_seaborn_control_environment_20260928.md.
+
+The new data-only experiments/lead_req030/seaborn_control_replay.py loads the pinned Seaborn parser function from frozen source and refuses changed bundle hashes. It binds each raw log to its receipt, requires one ordered pair of markers and a supervised completed return, records every 2 F2P/248 P2P identity and extra statuses separately, and accepts baseline only if both F2P FAILED and all248 P2P PASSED; reference requires all250 PASSED. One executed test constructs full250-status controls and removes each declared status in both arms,500 omission mutations, all rejected. This is parser-contract testing, not task outcome evidence. Actual raw logs must be replayed only after R terminal; incomplete output remains unknown. No test/reference data enters model input. No model release here.
+
+Two-hour monitor, mixed Chinese-English reporting. Readiness55%, Δ0, range45–65%; competent comparison/valid inference, synthesis, reproducibility and author package remain.
