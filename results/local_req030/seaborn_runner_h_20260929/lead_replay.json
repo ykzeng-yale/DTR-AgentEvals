@@ -1,0 +1,82 @@
+{
+  "request_id": "REQ030AE/H terminal review",
+  "slurm_job_id": "27862017",
+  "slurm": {
+    "account": "pi_gt353",
+    "partition": "devel",
+    "qos": "normal",
+    "state": "COMPLETED",
+    "exit_code": "0:0",
+    "elapsed_seconds": 40,
+    "start": "2026-09-29T12:44:49",
+    "end": "2026-09-29T12:45:29",
+    "allocated_cpus": 2,
+    "requested_memory": "8G",
+    "batch_max_rss_kib": 2807592
+  },
+  "release": {
+    "id": "req030-seaborn-runner-qualification-20260929-h",
+    "manifest_sha256": "8745506aa297a539a10518b411ba1fb45d0b6bd5430f8dd7d71b9d49decd9f05",
+    "batch_sha256": "16791e915757957f9b31300def9ade90802309dede89c9226e72538b4fbf992a",
+    "task_image_sha256": "9da1f51cb8c01a6ad9e0db4d1969742fbec995021e78150a9623d4f4719a8a47",
+    "workspace_seed_sha256": "3cc8a60a720e00816e2853bce4e47d58705443cf6f4e8a4531ca69ae458b8100",
+    "tokenizer_revision": "381fc969f78efac66bc87ff7ddeadb7e73c218a7",
+    "torch": "2.9.1",
+    "transformers": "4.51.3",
+    "python": "3.12.3"
+  },
+  "evidence_archive": {
+    "path": "results/local_req030/seaborn_runner_h_20260929/evidence.tar",
+    "sha256": "a1df63ee8cc2ccda0d8ae2f3a3811aed0ecabfa8cadfac83ea6c5e4dbae03e00",
+    "validated_members": 30,
+    "source_manifest_entries": 14
+  },
+  "qualification": {
+    "status": "passed_narrow_inert_runtime_qualification",
+    "scope": "real pinned tokenizer and Apptainer; scripted fake model; no weights, benchmark/evaluator tests, evaluator input or GPU",
+    "events": 16,
+    "bootstrap_code_regressions": 6,
+    "physical_fake_calls": 2,
+    "harmless_actions": [
+      {
+        "returncode": 0,
+        "output_bytes": 16,
+        "output_sha256": "51b62c033bc3b0bb93ebb596734b1d41242372ceafdbbb518380f05732eb5d4b"
+      },
+      {
+        "returncode": 0,
+        "output_bytes": 38,
+        "output_sha256": "8f813c4d9a9e264263fd5f8fbe2eb712a5b5106da7b690131aab74bc0bbeb29b"
+      }
+    ],
+    "initial_prompt_binding": {
+      "messages_hash_match": true,
+      "rendered_hash_match": true,
+      "complete_input_ids_match": true,
+      "input_tokens": 1129,
+      "input_ids_sha256": "69ccce54939da20eb1255aa9da11c32c103c7de2bbd10501f7dea217937ce7f6"
+    },
+    "isolated_preflight": {
+      "supervised_exit": 0,
+      "namespace_separation_check_passed": true,
+      "host_path_absence_and_root_readonly_checks_passed": true,
+      "clean_git_tree_and_exact_workspace_tree": true,
+      "git_head_tree_matches_frozen_base_tree": true,
+      "testbed_free_bytes": 405618688,
+      "tmp_free_bytes": 67096576,
+      "network": "none",
+      "workspace_mount": "/testbed only"
+    },
+    "terminal_submission_bytes": 0,
+    "trajectory_sha256": "694e3e8981c9bf3733c17ce06646aa67fcc6faa956e59d2405f2f162b0e8ba3b",
+    "slurm_batch_exit": "0:0"
+  },
+  "receipt_wording_caveat": "The qualification JSON says no tests, but the batch ran six bootstrap code regressions. No Seaborn benchmark/evaluator tests or evaluator status inputs ran; this distinction is resolved from the batch, job log and release scope, without rewriting the immutable receipt.",
+  "independent_review": [
+    "All14 H source-file hashes/bytes match the immutable payload manifest; qualification source/output matches the H release.",
+    "The five tokenizer file receipts match the pinned Qwen coder_model.json manifest; no model weights were loaded.",
+    "Receipt stdout and saved qualification JSON are identical; sequence numbers, both fake request/response pairs, token binding, action receipts/output files, empty terminal submission and trajectory digest are internally consistent.",
+    "Actual preflight command returned success after checking namespace separation, absent host paths, read-only root, exact clean /testbed tree and free-space floor; no generated commands or evaluator tests were run."
+  ],
+  "interpretation": "Narrow inert joined-runtime gate PASSED. This is infrastructure/prompt-binding evidence only; no model/task competence, policy contrast, causal estimate, or Seaborn task outcome."
+}
