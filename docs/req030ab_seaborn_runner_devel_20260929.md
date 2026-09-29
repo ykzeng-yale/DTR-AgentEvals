@@ -25,3 +25,10 @@ The run retains the existing safe public projection, workspace seed, isolated no
 The immutable release is committed on `main` as the REQ030AB follow-up. Before submission, the exact staged payload and test-only estimate must be verified. This report must be amended with the actual Slurm ID, submission/start/terminal times, raw evidence path/hash, independently checked receipt, and accounting. A pending state is not a started experiment and must not be reported as one.
 
 Readiness remains55%,change0points,range45–65%; competent fixed-target comparison and valid task/family inference, empirical/manuscript synthesis, independent reproduction and author-approved packaging remain.
+
+
+## Terminal review — actual job 27858023
+
+The job started11:41:54 and ended11:42:54 ET, `FAILED 1:0`, 2 CPUs/8 GiB, batch MaxRSS2,780,200 KiB. All 15 source/manifest entries and the SIF, workspace seed and coder tokenizer manifest hashes passed; the four in-job bootstrap tests passed. The driver then raised `KeyError: release_id`: it loaded the coder tokenizer manifest into `manifest` and incorrectly attempted to read the qualification release ID from it. The failure occurred before the runner call, so there was no Apptainer preflight, tool action, fake-model call, qualification receipt or task score. This is a lead-owned implementation defect, not an outcome or a capacity failure. Raw logs and accounting remain in the local-only archive identified in the experiment handoff.
+
+REQ030AC/F fixes this by loading `DTR_RELEASE_MANIFEST` separately, verifying `DTR_RELEASE_SHA256`, and retaining the model manifest solely for tokenizer/model metadata. The additional focused regression verifies that a model manifest without `release_id` is not used as the run release. See [REQ030AC](req030ac_seaborn_runner_manifest_binding_20260929.md).

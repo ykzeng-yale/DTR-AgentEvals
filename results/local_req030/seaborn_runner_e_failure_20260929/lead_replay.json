@@ -1,0 +1,33 @@
+{
+  "run_id": "req030-seaborn-runner-qualification-20260929-e",
+  "slurm_job_id": "27858023",
+  "state": "FAILED",
+  "exit_code": "1:0",
+  "started_et": "2026-09-29T11:41:54-04:00",
+  "ended_et": "2026-09-29T11:42:54-04:00",
+  "elapsed_seconds": 60,
+  "allocation": {"account": "pi_gt353", "partition": "devel", "cpus": 2, "memory": "8G", "batch_maxrss_kib": 2780200},
+  "evidence_archive_sha256": "30e6f0a206a054c7ca2830798c612284b0ed3be6f20cdae8b17a630d64d97e59",
+  "verified": {
+    "source_manifest_entries": 15,
+    "source_hash_checks": "all_passed",
+    "task_sif_sha256": "9da1f51cb8c01a6ad9e0db4d1969742fbec995021e78150a9623d4f4719a8a47",
+    "workspace_seed_sha256": "3cc8a60a720e00816e2853bce4e47d58705443cf6f4e8a4531ca69ae458b8100",
+    "model_tokenizer_manifest_sha256": "27d054c155e7767ca2048d66c900d75131bf9a6c263fdce5180e06ed5fe6bad6",
+    "bootstrap_tests": "4_passed",
+    "tokenizer_local_hash_validation": "passed",
+    "qualification_stdout_bytes": 0,
+    "exit_record": {"exit_code": 1}
+  },
+  "failure": {
+    "phase": "driver_setup_after_tokenizer_before_runner_invocation",
+    "exception": "KeyError: release_id",
+    "cause": "driver treated coder_model.json as the qualification release manifest; the tokenizer/model manifest has no release_id",
+    "container_preflight": "not_called",
+    "tool_actions": 0,
+    "fake_model_calls": 0,
+    "evaluator_or_task_score": "none",
+    "qualification_receipt": "absent"
+  },
+  "interpretation": "lead-owned manifest-binding implementation defect; not a runner, evaluator, model, task, or memory-capacity outcome"
+}

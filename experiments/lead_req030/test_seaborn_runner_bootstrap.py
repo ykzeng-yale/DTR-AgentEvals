@@ -7,6 +7,7 @@ import hashlib
 import json
 import subprocess
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -18,11 +19,11 @@ class RunnerBootstrapTests(unittest.TestCase):
     def test_release_manifest_binds_payload_workspace_and_batch(self) -> None:
         manifest_path = Path(os.environ.get(
             "DTR_RELEASE_MANIFEST",
-            ROOT / "experiments/lead_req030/seaborn_runner_qualification_e_release.json",
+            ROOT / "experiments/lead_req030/seaborn_runner_qualification_f_release.json",
         ))
         batch_path = Path(os.environ.get(
             "DTR_BATCH_SCRIPT",
-            ROOT / "experiments/lead_req030/seaborn_runner_qualification_e.sbatch",
+            ROOT / "experiments/lead_req030/seaborn_runner_qualification_f.sbatch",
         ))
         manifest_bytes = manifest_path.read_bytes()
         manifest = json.loads(manifest_bytes)
@@ -30,13 +31,35 @@ class RunnerBootstrapTests(unittest.TestCase):
         self.assertIn(hashlib.sha256(manifest_bytes).hexdigest(), batch)
         workspace_sha = manifest["task"]["workspace_seed_sha256"]
         self.assertIn(f"export DTR_WORKSPACE_SHA256={workspace_sha}", batch)
-        self.assertEqual(manifest["release_id"], "req030-seaborn-runner-qualification-20260929-e")
-        self.assertIn('release_id=manifest["release_id"]', (ROOT / "experiments/lead_req030/seaborn_runner_qualification.py").read_text())
+        self.assertEqual(manifest["release_id"], "req030-seaborn-runner-qualification-20260929-f")
+        runner_source = (ROOT / "experiments/lead_req030/seaborn_runner_qualification.py").read_text()
+        self.assertIn('release_id=release_manifest["release_id"]', runner_source)
+        self.assertNotIn('release_id=manifest["release_id"]', runner_source)
         for entry in manifest["source_files"]:
             relative = Path(entry["path"]).relative_to("payload")
             data = (ROOT / relative).read_bytes()
             self.assertEqual(len(data), entry["bytes"], entry["path"])
             self.assertEqual(hashlib.sha256(data).hexdigest(), entry["sha256"], entry["path"])
+
+    def test_qualification_and_model_manifests_are_loaded_separately(self) -> None:
+        from experiments.lead_req030.seaborn_runner_qualification import (
+            load_qualification_release,
+        )
+
+        release_path = ROOT / "experiments/lead_req030/seaborn_runner_qualification_f_release.json"
+        release_bytes = release_path.read_bytes()
+        release, bound_bytes = load_qualification_release(
+            release_path, hashlib.sha256(release_bytes).hexdigest()
+        )
+        self.assertEqual(release["release_id"], "req030-seaborn-runner-qualification-20260929-f")
+        self.assertEqual(bound_bytes, release_bytes)
+
+        model_manifest = json.dumps({"repo": "Qwen/test", "revision": "fixed"}).encode()
+        with tempfile.TemporaryDirectory() as directory:
+            model_path = Path(directory) / "coder_model.json"
+            model_path.write_bytes(model_manifest)
+            with self.assertRaisesRegex(ValueError, "no release_id"):
+                load_qualification_release(model_path, hashlib.sha256(model_manifest).hexdigest())
 
     def test_clean_process_bootstraps_action_parser_before_native_adapter(self) -> None:
         script = """

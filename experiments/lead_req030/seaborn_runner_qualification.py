@@ -31,6 +31,17 @@ def digest(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
 
 
+def load_qualification_release(path: Path, expected_sha256: str) -> tuple[dict, bytes]:
+    """Load the run release separately from the Qwen model/tokenizer manifest."""
+    release_bytes = path.resolve(strict=True).read_bytes()
+    if digest(release_bytes) != expected_sha256:
+        raise ValueError("qualification release manifest SHA-256 mismatch")
+    release = json.loads(release_bytes)
+    if not isinstance(release, dict) or not isinstance(release.get("release_id"), str):
+        raise ValueError("qualification release manifest has no release_id")
+    return release, release_bytes
+
+
 def load_pinned_default_agent():
     """Load the audited upstream DefaultAgent without CLI or evaluator imports."""
     packages = {
@@ -99,15 +110,18 @@ def main() -> None:
     import torch
     from transformers import AutoTokenizer
 
+    release_manifest, release_manifest_bytes = load_qualification_release(
+        Path(os.environ["DTR_RELEASE_MANIFEST"]), os.environ["DTR_RELEASE_SHA256"]
+    )
     model_dir = Path(os.environ["DTR_MODEL_DIR"]).resolve(strict=True)
     model_manifest = Path(os.environ["DTR_MODEL_MANIFEST"]).resolve(strict=True)
     started = time.monotonic()
-    manifest_bytes = model_manifest.read_bytes()
-    assert digest(manifest_bytes) == MODEL_MANIFEST_SHA256
-    manifest = json.loads(manifest_bytes)
-    assert manifest["repo"] == "Qwen/Qwen2.5-Coder-32B-Instruct"
-    assert manifest["revision"] == "381fc969f78efac66bc87ff7ddeadb7e73c218a7"
-    manifest_entries = {entry["filename"]: entry for entry in manifest["files"]}
+    model_manifest_bytes = model_manifest.read_bytes()
+    assert digest(model_manifest_bytes) == MODEL_MANIFEST_SHA256
+    model_manifest_data = json.loads(model_manifest_bytes)
+    assert model_manifest_data["repo"] == "Qwen/Qwen2.5-Coder-32B-Instruct"
+    assert model_manifest_data["revision"] == "381fc969f78efac66bc87ff7ddeadb7e73c218a7"
+    manifest_entries = {entry["filename"]: entry for entry in model_manifest_data["files"]}
     assert REQUIRED_TOKENIZER_FILES <= set(manifest_entries)
     tokenizer_receipts = {}
     for name in sorted(REQUIRED_TOKENIZER_FILES):
@@ -206,7 +220,7 @@ def main() -> None:
         workspace_sha256=os.environ["DTR_WORKSPACE_SHA256"],
         supervisor=Path(__file__).with_name("bounded_supervisor.py"),
         supervisor_sha256=os.environ["DTR_SUPERVISOR_SHA256"],
-        release_id=manifest["release_id"],
+        release_id=release_manifest["release_id"],
         release_sha256=os.environ["DTR_RELEASE_SHA256"],
         step_limit=3,
         wall_time_limit_seconds=180,
@@ -229,8 +243,8 @@ def main() -> None:
     actions = [event for event in events if event.get("event") == "action_finish"]
     run_identity = next(event for event in events if event.get("event") == "agent_run_start")
     assert len(requests) == len(responses) == len(actions) == 2
-    assert run_identity["release_id"] == manifest["release_id"]
-    assert run_identity["release_sha256"] == digest(manifest_bytes)
+    assert run_identity["release_id"] == release_manifest["release_id"]
+    assert run_identity["release_sha256"] == digest(release_manifest_bytes)
     assert requests[0]["messages_sha256"] == prompt_binding["messages_sha256"]
     assert requests[0]["rendered_sha256"] == prompt_binding["rendered_sha256"]
     assert requests[0]["input_ids"] == prompt_binding["input_ids"]
@@ -243,11 +257,11 @@ def main() -> None:
         "status": "passed_narrow_inert_runtime_qualification",
         "interpretation": "real_qwen_tokenizer_and_apptainer; authored fake model output; no weights, generated outcome, tests, or evaluator input",
         "slurm_job_id": os.environ.get("SLURM_JOB_ID"),
-        "release_id": manifest["release_id"],
+        "release_id": release_manifest["release_id"],
         "public_projection_sha256": public_sha,
-        "model_repo": manifest["repo"],
-        "model_revision": manifest["revision"],
-        "model_license": manifest["license"],
+        "model_repo": model_manifest_data["repo"],
+        "model_revision": model_manifest_data["revision"],
+        "model_license": model_manifest_data["license"],
         "tokenizer_files": tokenizer_receipts,
         "tokenizer_class": type(tokenizer).__name__,
         "tokenizer_eos_token_id": tokenizer.eos_token_id,
