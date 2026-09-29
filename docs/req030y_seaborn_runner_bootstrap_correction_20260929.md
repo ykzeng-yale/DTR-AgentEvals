@@ -28,6 +28,14 @@ The one justified follow-up is a new immutable CPU-only attempt, `req030-seaborn
 
 Acceptance still requires retrieved raw logs and job accounting, all source/image/tokenizer/workspace hashes, a nonempty strict qualification receipt, actual container namespace/root/workspace preflight, both fixed inert actions with supervisor receipts, prompt/token bindings, terminal-submission trajectory, and final workspace hash. Failure or missing evidence is not scored as a model result. A pass clears only runtime integration; it does not release a model task.
 
+## Dispatch — 29 September 2026
+
+Correction and immutable release were published directly to `main` in commit `a9251fdf2a0addc1abd9210d78f8c944ada05fbd`, with owner identity verified as both author and committer. Direct-SSH remote staging verified every payload line in `release.SHA256SUMS`, `bash -n`, and the exact batch SHA; a separate regression checked the source manifest, workspace pin, and batch release SHA.
+
+Before submitting, `squeue -u yz2324` showed no owned jobs. The `day` partition was up; project storage showed 3.9 TiB free and home quota use 11,644 KiB / 126 GiB. Both eligible account associations passed identical 2-CPU/8-GiB/15-minute `--test-only` shapes on the same node: test-only IDs `27846927` (`pi_fl426`) and `27846928` (`pi_gt353`) estimated 23:24:15 UTC and 23:22:15 UTC on 29 September, respectively. These IDs are scheduler estimates, not submitted jobs or reservations. `pi_gt353` was selected for the slightly earlier estimate and better live fair-share (`0.138460` vs `0.105746`); there is one shared physical system and no quota multiplication.
+
+Exactly one real job, Slurm **27846930**, was submitted at approximately 12:38 UTC as `pi_gt353/day/normal`, 2 CPUs, 8 GiB, 15 minutes. Direct inspection at 12:38:46 UTC found `PENDING`, reason `(None)`, with start unknown. The workdir is the unique `req030-seaborn-runner-qualification-20260929-b`; this job has no GPU, no model weights, no tests/reference/evaluator, and only runs the two fixed authored inert actions after the new bootstrap and release consistency regressions. Do not duplicate or race accounts. On a later scheduled check, reconcile this exact ID through `squeue`/`sacct`; if terminal, retrieve and independently validate raw logs, receipts, trajectory, hashes, resource accounting and cleanup before assigning the narrow runtime gate.
+
 ## Scientific interpretation and remaining gate
 
 Design/theory is not the diagnosed blocker: the failure occurred before experimental treatment or outcomes existed. Implementation ordering is the direct cause. Measurement of isolation, bounded actions, and durable terminal evidence remains incomplete. The observed allocation and low resource use argue against capacity as the cause of this attempt, though they do not establish full-run capacity. The accepted REQ030R controls remain one Seaborn issue with nested checks, not a task-population sample.
