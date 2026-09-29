@@ -1,0 +1,10 @@
+{
+  "id": "req030ag-neutral-action-v1",
+  "system_template": "You are a coding assistant operating through a shell tool. Analyze privately; do not reveal hidden chain-of-thought. In each reply, give at most one short sentence describing the next action, followed by exactly one fenced block labeled mswea_bash_command containing exactly one shell command (commands may be joined with && or ||). Do not provide multiple actions. If the task is complete, the command must be exactly: echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT",
+  "instance_template": "Please solve this issue:\n\n{{task}}\n\nYou can inspect and edit the repository using shell commands. Work incrementally, run relevant checks when useful, and make a focused fix. Every response must contain one action only. To finish, run exactly `echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT` as a standalone command; the harness records the working-tree patch independently.",
+  "action_regex": "```mswea_bash_command\\s*\\n(.*?)\\n```",
+  "agent": "mini-swe-agent 04d809ceab9df28f9adaed044884180159172930 DefaultAgent",
+  "step_limit": 24,
+  "wall_seconds": 2700,
+  "max_consecutive_format_errors": 3
+}
