@@ -1,0 +1,35 @@
+# REQ030Y — corrected inert Seaborn runner bootstrap
+
+## Question and decision
+
+The highest-impact gate remains whether the exact pinned Seaborn agent can complete a bounded, isolated, **inert** run with its real tokenizer/parser path. REQ030X job `27841116` failed before the Apptainer tool environment or agent loop was constructed. The failure was an implementation ordering defect: the qualification driver imported `NativeHFTextAdapter`, which imports `minisweagent.models.utils.actions_text`, before installing the source-pinned `minisweagent` package modules. The traceback ended with `ModuleNotFoundError: No module named 'minisweagent'`.
+
+This is neither a model outcome nor evidence against the DTR estimand. The remote log verifies the 13 frozen payload hashes, SIF, model manifest and copied workspace seed before Python started. The pinned tokenizer was loaded; failure occurred while importing the adapter, before `run_pinned_agent`, `ApptainerToolEnvironment`, preflight, any tool action, or the terminal submission path. `qualification.json` is absent and `qualification.stdout.json` is empty. Slurm reports `FAILED 1:0`, elapsed `00:01:26`, two CPUs, and batch `MaxRSS=3097372K`; the observed traceback is direct evidence for import ordering, while the resource record gives no indication that an 8 GiB memory cap caused this failure. Namespace/workspace and action behavior remain unmeasured.
+
+The old run and its failure artifacts are retained unchanged at [the raw evidence directory](../results/local_req030/seaborn_runner_x_failure_20260929/). The local copy is source/log/accounting evidence, not an Apptainer receipt. It records Slurm job `27841116`, account `pi_gt353/day`, start `2026-09-29T07:14:32`, end `07:15:58` UTC, exit `1:0`, and no output receipt. The exact remote log hash is `c06bf06408388a37b4e434a327fe8239fdb084840d73a16ee19219a8f9453bc3`; exit-file hash is `1b2f5a083325c33035cb246dcb6ceb08b00a036dfd9bf30e39aa76843a88af4f`; empty stdout has SHA-256 `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`.
+
+## Concrete correction and verification
+
+The driver now bootstraps the exact pinned `DefaultAgent`/action-parser modules before importing `NativeHFTextAdapter`, and defers model-path environment lookup to `main()` so the dependency bootstrap can be tested in a clean process. New `test_seaborn_runner_bootstrap.py` launches a fresh Python interpreter with no `minisweagent` modules preloaded, calls the production bootstrap helper, and asserts that the real pinned parser module and adapter import successfully. A second regression checks every payload file hash, workspace-seed equality, and the release-manifest-to-batch binding. Both pass. The focused adapter/supervisor/public-input suites pass 20 tests; the two release/bootstrap regressions pass separately (22 total across the two invocations). `py_compile`, batch `bash -n`, and `git diff --check` pass. A full directory pytest collection was not used as an acceptance result: default collection hits an existing package-relative-import issue in `test_seaborn_control_replay.py`, while importlib collection hits the unrelated `test_coder_prepare.py` path assumption.
+
+Independent source-to-artifact review found and corrected a second latent release mismatch before retry: the old batch declared the seed and copied image as SHA `3cc8a60a...`, but passed a different workspace SHA `70a00069...` to the runner. Remote read-only hashing confirmed that this exact bound-workspace seed is `3cc8a60a...`; the new batch now binds that same digest, and a local release-consistency assertion checks manifest seed SHA = batch runtime SHA and manifest SHA = batch release pin. This mismatch was not reached in job27841116 because adapter import failed first.
+
+The one justified follow-up is a new immutable CPU-only attempt, `req030-seaborn-runner-qualification-20260929-b`, preserving every scientific input, SIF, model/tokenizer revision, workspace policy, action, cap, account, and resource limit. The only new runtime action is the deterministic bootstrap regression test before the original inert qualification. No model weights, test suite, reference patch, evaluator manifest, benchmark scoring, generated output, or new download is introduced. It will use a fresh run directory; the failed `a` directory remains immutable.
+
+## Frozen REQ030Y source and bounds
+
+- Driver `experiments/lead_req030/seaborn_runner_qualification.py`, SHA-256 `138aa5881002e0835af2069d790efb4f1c73e42851b05fbe290b8a6789d3ecf5`.
+- Clean-process/release-consistency regression `experiments/lead_req030/test_seaborn_runner_bootstrap.py`, SHA-256 `009aef539e64162bb618d82d138809b15b5430534b1c5ee012772bf08fe185aa`.
+- Release manifest SHA-256 `f831a412ce91a1a2ce86951fe447d5d080c22c93726c913bf9a6804c805b7f17`.
+- Batch script SHA-256 `ae31d762eeb58675f966cb1785041c545129b52d9d16723b6cc429a17bee1b3d`.
+- Payload sums SHA-256 `5ea5d7131ac431535d94dba6b985cef36cae402ae647d39d8102b6a747b29a8f`.
+- Reused Seaborn SIF SHA-256 `9da1f51cb8c01a6ad9e0db4d1969742fbec995021e78150a9623d4f4719a8a47`; tokenizer revision `381fc969f78efac66bc87ff7ddeadb7e73c218a7`.
+- Account `pi_gt353`, standard `day/normal`, 2 CPUs, 8 GiB, 15 minutes; no GPU request. One submission only, fresh workdir `req030-seaborn-runner-qualification-20260929-b`.
+
+Acceptance still requires retrieved raw logs and job accounting, all source/image/tokenizer/workspace hashes, a nonempty strict qualification receipt, actual container namespace/root/workspace preflight, both fixed inert actions with supervisor receipts, prompt/token bindings, terminal-submission trajectory, and final workspace hash. Failure or missing evidence is not scored as a model result. A pass clears only runtime integration; it does not release a model task.
+
+## Scientific interpretation and remaining gate
+
+Design/theory is not the diagnosed blocker: the failure occurred before experimental treatment or outcomes existed. Implementation ordering is the direct cause. Measurement of isolation, bounded actions, and durable terminal evidence remains incomplete. The observed allocation and low resource use argue against capacity as the cause of this attempt, though they do not establish full-run capacity. The accepted REQ030R controls remain one Seaborn issue with nested checks, not a task-population sample.
+
+After this runtime gate, the lead still must freeze the competent executor pair, development-task/family sampling, fixed target and estimand, opportunity/randomization contract, budgets, independent evaluation and valid task/family inference before a separately reviewed model-task release. No same-task outcome tuning, CONFIRM, or full benchmark is authorized by REQ030Y. Readiness remains **55%, change 0 points, range 45–65%**; competent fixed-target comparison/inference, empirical manuscript synthesis, independent reproduction and author-approved package remain.

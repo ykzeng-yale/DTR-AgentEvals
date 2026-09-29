@@ -12,14 +12,8 @@ import time
 import types
 from pathlib import Path
 
-import torch
-from transformers import AutoTokenizer
-
-
 ROOT = Path(__file__).resolve().parents[2]
 UPSTREAM = ROOT / "work/upstream/mini-swe-agent-04d809ceab9df28f9adaed044884180159172930/src"
-MODEL_DIR = Path(os.environ["DTR_MODEL_DIR"]).resolve(strict=True)
-MODEL_MANIFEST = Path(os.environ["DTR_MODEL_MANIFEST"]).resolve(strict=True)
 MODEL_MANIFEST_SHA256 = "27d054c155e7767ca2048d66c900d75131bf9a6c263fdce5180e06ed5fe6bad6"
 PUBLIC_SHA256 = "b3fb8c08d74d92279a7caf77bf714c77ac3eee2dbafc996596b786c5484954e9"
 DEFAULT_AGENT_SHA256 = "e8ef8aa365942d739c2ec5cb0879f60f377d2dc2de8ec670aaedf3bafb45a4c2"
@@ -90,9 +84,23 @@ def load_pinned_default_agent():
     return importlib.import_module("minisweagent.agents.default").DefaultAgent
 
 
+def load_runner_components():
+    """Bootstrap the pinned parser package before importing its adapter consumer."""
+    agent_class = load_pinned_default_agent()
+    from experiments.lead_req030.native_hf_text_adapter import NativeHFTextAdapter
+    from experiments.lead_req030.seaborn_apptainer_runner import run_pinned_agent, sha256_file
+
+    return agent_class, NativeHFTextAdapter, run_pinned_agent, sha256_file
+
+
 def main() -> None:
+    import torch
+    from transformers import AutoTokenizer
+
+    model_dir = Path(os.environ["DTR_MODEL_DIR"]).resolve(strict=True)
+    model_manifest = Path(os.environ["DTR_MODEL_MANIFEST"]).resolve(strict=True)
     started = time.monotonic()
-    manifest_bytes = MODEL_MANIFEST.read_bytes()
+    manifest_bytes = model_manifest.read_bytes()
     assert digest(manifest_bytes) == MODEL_MANIFEST_SHA256
     manifest = json.loads(manifest_bytes)
     assert manifest["repo"] == "Qwen/Qwen2.5-Coder-32B-Instruct"
@@ -102,7 +110,7 @@ def main() -> None:
     tokenizer_receipts = {}
     for name in sorted(REQUIRED_TOKENIZER_FILES):
         entry = manifest_entries[name]
-        path = MODEL_DIR / name
+        path = model_dir / name
         data = path.read_bytes()
         assert len(data) == entry["size"], name
         assert digest(data) == entry["sha256"], name
@@ -111,16 +119,12 @@ def main() -> None:
     os.environ["HF_HUB_OFFLINE"] = "1"
     os.environ["TRANSFORMERS_OFFLINE"] = "1"
     tokenizer = AutoTokenizer.from_pretrained(
-        str(MODEL_DIR), local_files_only=True, trust_remote_code=False
+        str(model_dir), local_files_only=True, trust_remote_code=False
     )
     import transformers
     assert transformers.__version__ == "4.51.3"
     assert not torch.cuda.is_initialized()
-    from experiments.lead_req030.native_hf_text_adapter import NativeHFTextAdapter
-    from experiments.lead_req030.seaborn_apptainer_runner import (
-        run_pinned_agent,
-        sha256_file,
-    )
+    DefaultAgent, NativeHFTextAdapter, run_pinned_agent, sha256_file = load_runner_components()
     from experiments.lead_req030.seaborn_public_input import build_seaborn_initial_messages
 
     public_path = ROOT / "docs/source_snapshots/req030p_seaborn_public/public_task.json"
@@ -189,7 +193,7 @@ def main() -> None:
 
     run_dir = Path(os.environ["DTR_RUN_OUTPUT"]).resolve(strict=True) / "runner"
     outcome = run_pinned_agent(
-        agent_class=load_pinned_default_agent(),
+        agent_class=DefaultAgent,
         model_factory=model_factory,
         public_projection=public_bytes,
         run_directory=run_dir,
@@ -200,7 +204,7 @@ def main() -> None:
         workspace_sha256=os.environ["DTR_WORKSPACE_SHA256"],
         supervisor=Path(__file__).with_name("bounded_supervisor.py"),
         supervisor_sha256=os.environ["DTR_SUPERVISOR_SHA256"],
-        release_id="req030-seaborn-runner-qualification-20260929-a",
+        release_id="req030-seaborn-runner-qualification-20260929-b",
         release_sha256=os.environ["DTR_RELEASE_SHA256"],
         step_limit=3,
         wall_time_limit_seconds=180,
@@ -230,7 +234,7 @@ def main() -> None:
         "status": "passed_narrow_inert_runtime_qualification",
         "interpretation": "real_qwen_tokenizer_and_apptainer; authored fake model output; no weights, generated outcome, tests, or evaluator input",
         "slurm_job_id": os.environ.get("SLURM_JOB_ID"),
-        "release_id": "req030-seaborn-runner-qualification-20260929-a",
+        "release_id": "req030-seaborn-runner-qualification-20260929-b",
         "public_projection_sha256": public_sha,
         "model_repo": manifest["repo"],
         "model_revision": manifest["revision"],
