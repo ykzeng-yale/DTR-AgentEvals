@@ -30,3 +30,10 @@ Release ID: `req030-seaborn-runner-qualification-20260929-f`.
 Only the qualification correction changes. The run remains inert: authored fake output, two harmless fixed commands, the public task projection, pinned tokenizer and the established no-home/no-hostfs/no-network Apptainer contract. No benchmark tests, reference/evaluator manifest, model weights, downloads, GPU, or model-generated action are included. A pass would clear only the narrow runtime receipt gate.
 
 Readiness remains55%,change0points,range45–65%. Competent fixed-target comparison/valid task-family inference, empirical and manuscript synthesis, independent reproducibility and author-approved packaging remain.
+
+
+## Terminal review of immutable release F
+
+Job `27858685` ran11:51:17–11:51:55 ET on `pi_gt353/devel` (2 CPU/8 GiB) and ended `FAILED 1:0`, batch MaxRSS2,668,196 KiB. Four earlier in-job tests and all artifact hashes passed; the fifth test attempted to read a hardcoded `payload/experiments/.../release_f_release.json` path. The actual frozen release is correctly staged as run-root `release.json`, while `payload/` intentionally contains only source files. The test therefore raised `FileNotFoundError` before Apptainer invocation. No actions, fake-model calls, qualification receipt, evaluator or score. The failure is a test/bundle layout integration defect, not evidence of insufficient memory. Raw logs/accounting are retained privately and excluded from Git.
+
+The consolidated follow-up is [REQ030AD](req030ad_seaborn_runner_bootstrap_path_20260929.md). Its regression reads the same release-manifest and batch-script paths that the production sbatch exports, so local and staged execution share the exact path contract.

@@ -1,0 +1,30 @@
+{
+  "run_id": "req030-seaborn-runner-qualification-20260929-f",
+  "slurm_job_id": "27858685",
+  "state": "FAILED",
+  "exit_code": "1:0",
+  "started_et": "2026-09-29T11:51:17-04:00",
+  "ended_et": "2026-09-29T11:51:55-04:00",
+  "elapsed_seconds": 38,
+  "allocation": {"account": "pi_gt353", "partition": "devel", "cpus": 2, "memory": "8G", "batch_maxrss_kib": 2668196},
+  "evidence_archive_sha256": "d709df54fbaf05fc59e7b5430ed6d8101f43da2b6cdbad87da2a841abc5e6718",
+  "verified": {
+    "payload_and_manifest_hashes": "all_passed",
+    "sif_workspace_and_tokenizer_manifest_hashes": "all_passed",
+    "first_four_bootstrap_tests": "passed",
+    "fifth_bootstrap_test": "failed",
+    "qualification_stdout_bytes": 0,
+    "exit_record": {"exit_code": 1}
+  },
+  "failure": {
+    "phase": "bootstrap_regression_before_runner_invocation",
+    "exception": "FileNotFoundError",
+    "cause": "test hardcoded release JSON under payload/, while the actual batch stages it at the run root and exports DTR_RELEASE_MANIFEST",
+    "container_preflight": "not_called",
+    "tool_actions": 0,
+    "fake_model_calls": 0,
+    "qualification_receipt": "absent",
+    "task_score": "none"
+  },
+  "interpretation": "lead-owned staged-test path mismatch; not a runner, evaluator, model, task, or memory-capacity outcome"
+}
