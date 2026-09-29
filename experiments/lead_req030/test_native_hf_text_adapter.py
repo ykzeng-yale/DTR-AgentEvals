@@ -76,7 +76,10 @@ def load_pinned_parser_without_global_startup() -> None:
 
 load_pinned_parser_without_global_startup()
 from experiments.lead_req030.native_hf_text_adapter import NativeHFTextAdapter  # noqa: E402
-from experiments.lead_req030.seaborn_public_input import load_public_projection  # noqa: E402
+from experiments.lead_req030.seaborn_public_input import (  # noqa: E402
+    build_seaborn_initial_messages,
+    prepare_seaborn_default_agent,
+)
 from minisweagent.exceptions import FormatError  # noqa: E402
 from minisweagent.exceptions import Submitted  # noqa: E402
 from minisweagent.agents.default import DefaultAgent  # noqa: E402
@@ -258,7 +261,7 @@ class NativeHFTextAdapterTests(unittest.TestCase):
     def test_pinned_default_agent_loop_runs_one_tool_action_to_submission(self):
         raw = "THOUGHT: finish\n\n```mswea_bash_command\necho COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT\n```"
         adapter, tokenizer, model, events = make_adapter(raw)
-        task = load_public_projection(ROOT / "docs/source_snapshots/req030p_seaborn_public/public_task.json")
+        public_bytes = (ROOT / "docs/source_snapshots/req030p_seaborn_public/public_task.json").read_bytes()
 
         class FakeEnvironment:
             def __init__(self):
@@ -281,24 +284,29 @@ class NativeHFTextAdapterTests(unittest.TestCase):
                 return {"info": {"config": {"environment_type": "inert fixture"}}}
 
         env = FakeEnvironment()
-        agent = DefaultAgent(
-            adapter,
-            env,
-            system_template="Use exactly one action.",
-            instance_template="Please solve: {{ task }}",
+        prepared = prepare_seaborn_default_agent(
+            public_bytes,
+            environment=env.get_template_vars(),
             step_limit=1,
             wall_time_limit_seconds=30,
             max_consecutive_format_errors=3,
             cost_limit=0.0,
         )
-        result = agent.run(task=task.problem_statement)
+        agent = DefaultAgent(adapter, env, **prepared.agent_config)
+        result = agent.run(task=prepared.task.problem_statement)
         self.assertEqual(result["exit_status"], "Submitted")
         self.assertEqual(result["submission"], "patch diff")
         self.assertEqual(env.commands, ["echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT"])
         self.assertEqual(model.calls, 1)
         self.assertEqual([event["event"] for event in events], ["request", "response"])
         self.assertEqual(agent.n_calls, 1)
-        self.assertEqual(tokenizer.seen_messages[1]["content"], f"Please solve: {task.problem_statement}")
+        self.assertEqual(
+            tokenizer.seen_messages,
+            build_seaborn_initial_messages(public_bytes, environment=env.get_template_vars()),
+        )
+        self.assertEqual(prepared.template_source_sha256, "112aa58328f478a41cc2630702a4b89ef459e912870e05065157ed221f56701f")
+        self.assertEqual(agent.config.step_limit, 1)
+        self.assertEqual(agent.config.wall_time_limit_seconds, 30)
 
 
 if __name__ == "__main__":

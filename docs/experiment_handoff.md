@@ -1,4 +1,12 @@
-## Current lead state — 27 September 2026, REQ-029I controls complete
+## Current lead state — 29 September 2026, REQ030V prompt-boundary implementation
+
+REQ030R evaluator controls are accepted only for one Seaborn issue in the modified offline image: baseline2/2 declared F2P fail plus248/248 P2P pass; reference250/250 pass. This is not a model baseline or a 250-task sample. REQ030V now freezes the exact mini-swe-agent `default.yaml`/MIT license and constructs the initial system/user messages from the pinned public task projection, with finite `DefaultAgent` step/wall limits. The pinned upstream `DefaultAgent` source runs in an inert fake-model/fake-environment test and sees byte-matched initial messages; focused tests pass17/17. No model, real command, production Apptainer environment, or evaluator input was used. [REQ030V record](req030v_seaborn_prompt_binding_20260929.md).
+
+**Next:** integrate the native HF adapter, full model-facing formatting/parser config, durable receipts, bounded supervisor/guardian, and the exact Apptainer workspace into one inert end-to-end harness. Cover startup failure, normal terminal submission, timeout/output cap, actual owner death, escaped descendants, and cleanup before considering any separate model release. Then freeze a competent comparator and task/family-level estimand; the single Seaborn task cannot identify a routing effect. No model task is released here; CONFIRM/full benchmark remain held. Readiness55%,Δ0,range45–65%; competent fixed-target comparison/valid task-family inference, empirical/manuscript synthesis, independent reproducibility and author-approved package remain.
+
+# Historical handoff
+
+## Prior state — 27 September 2026, REQ-029I controls complete
 
 Django16560 unchanged-code control:66PASSED/7ERROR/1FAILED; reference:74PASSED, all74declared IDs observed. Runner128includes54extra skips (50PostgreSQL+4otherfeature tests); not128benchmark tasks. Lead rawparser/preparedpatch/source replay and194runtime hashes verified,driver/guardiansabsent,Dockerempty. [Decision](req029i_decision_20260927.md). Offline install omission disclosed. Actual container metadata now binds identical3855byte initial messages for both prospective artifacts, SHA668d7c50950f6856b05193d6e85c8747472a77624ad150987494f677266a5b34. No model release. [REQ029K](req029k_remote_exposure_20260927.md) requests bounded remote input/exposure reconciliation only; local record audit and remote inputs must cover ID-less issue markers before task release. Readiness55%,change0points,range45–65%;competent comparison/valid inference,synthesis,independent reproducibility/author-approved package remain.
 
