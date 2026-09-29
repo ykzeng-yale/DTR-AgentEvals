@@ -1,4 +1,4 @@
-# REQ030U lead prompt-binding review — 29 September 2026
+# REQ030V lead prompt-binding review — 29 September 2026
 
 ## Scientific question
 

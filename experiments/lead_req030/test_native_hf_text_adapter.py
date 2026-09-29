@@ -13,6 +13,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 UPSTREAM = ROOT / "work/upstream/mini-swe-agent-04d809ceab9df28f9adaed044884180159172930/src"
+SUPERVISOR = Path(__file__).with_name("bounded_supervisor.py").resolve()
 
 
 def load_pinned_parser_without_global_startup() -> None:
@@ -76,6 +77,7 @@ def load_pinned_parser_without_global_startup() -> None:
 
 load_pinned_parser_without_global_startup()
 from experiments.lead_req030.native_hf_text_adapter import NativeHFTextAdapter  # noqa: E402
+from experiments.lead_req030.seaborn_apptainer_runner import run_pinned_agent, sha256_file  # noqa: E402
 from experiments.lead_req030.seaborn_public_input import (  # noqa: E402
     FORMAT_ERROR_TEMPLATE_SHA256,
     OBSERVATION_TEMPLATE_SHA256,
@@ -348,6 +350,243 @@ class NativeHFTextAdapterTests(unittest.TestCase):
         with self.assertRaises(FormatError) as caught:
             malformed_adapter.query(tokenizer.seen_messages)
         self.assertIn("Expected exactly 1 action", caught.exception.messages[0]["content"])
+
+
+class SeabornEndToEndRunnerTests(unittest.TestCase):
+    """The fake Apptainer records argv and emits canned bytes; it runs no command."""
+
+    def test_pinned_agent_receipts_preflight_and_terminal_submission(self):
+        import json
+        import os
+        import tempfile
+        from unittest.mock import patch
+
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            image, workspace, capture = root / "task.sif", root / "workspace.img", root / "argv.jsonl"
+            image.write_bytes(b"pinned fake image")
+            workspace.write_bytes(b"pinned fake workspace")
+            fake_apptainer = root / "apptainer"
+            fake_apptainer.write_text(
+                "#!/usr/bin/env python3\n"
+                "import json,os,sys\n"
+                "args=sys.argv[1:]\n"
+                "with open(os.environ['FAKE_APPTAINER_ARGV'],'a') as f: f.write(json.dumps(args)+'\\n')\n"
+                "if args == ['--version']:\n"
+                " print('Apptainer fixture 1.0')\n"
+                " raise SystemExit(0)\n"
+                "command=args[-1]\n"
+                "if 'DTR_PREFLIGHT' in command:\n"
+                " print('DTR_PREFLIGHT\\t38ac1837e18294d23d95a8e89f26f003c66d4fd5\\t22cdfb0c93f8ec78492d87edb810f10cb7f57a31\\t8b530ce017437324b9e3a39af220965bf0e71558\\t8b530ce017437324b9e3a39af220965bf0e71558\\t100000000\\t128000000')\n"
+                "else:\n"
+                " print('COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT\\ninert-fixture-submission')\n"
+            )
+            fake_apptainer.chmod(0o700)
+            response = "THOUGHT: submit inert fixture\n\n```mswea_bash_command\necho FIXED_INERT_ACTION\n```"
+
+            def model_factory(record_event, config):
+                return NativeHFTextAdapter(
+                    tokenizer=FakeTokenizer(response), model=FakeModel(),
+                    model_id="fixture/Qwen", revision="fixture-revision",
+                    context_limit=64, max_new_tokens=8, record_event=record_event, **config,
+                )
+
+            args = dict(
+                agent_class=DefaultAgent, model_factory=model_factory,
+                public_projection=(ROOT / "docs/source_snapshots/req030p_seaborn_public/public_task.json").read_bytes(),
+                run_directory=root / "run-a", apptainer=str(fake_apptainer),
+                image=image, image_sha256=sha256_file(image),
+                workspace_image=workspace, workspace_sha256=sha256_file(workspace),
+                supervisor=SUPERVISOR, supervisor_sha256=sha256_file(SUPERVISOR),
+                release_id="req030-inert-runner-test-a", release_sha256="a" * 64,
+                step_limit=2, wall_time_limit_seconds=30, model_context_limit=64,
+                model_max_new_tokens=8, tool_timeout_seconds=5,
+                output_cap_bytes=4096, action_cap_bytes=8192,
+            )
+            with patch.dict(os.environ, {"FAKE_APPTAINER_ARGV": str(capture)}):
+                import experiments.lead_req030.seaborn_apptainer_runner as runner_module
+                real_readlink = os.readlink
+                def fixture_readlink(path, *readlink_args, **readlink_kwargs):
+                    if os.fspath(path) == "/proc/self/ns/net":
+                        return "net:[inert-host-fixture]"
+                    return real_readlink(path, *readlink_args, **readlink_kwargs)
+                with patch.object(runner_module.os, "readlink", side_effect=fixture_readlink):
+                    outcome = run_pinned_agent(**args)
+            self.assertEqual(outcome["result"]["exit_status"], "Submitted")
+            self.assertEqual(outcome["result"]["submission"], "inert-fixture-submission\n")
+            run_dir = Path(outcome["run_directory"])
+            self.assertEqual(run_dir.stat().st_mode & 0o777, 0o700)
+            self.assertEqual((run_dir / "events.jsonl").stat().st_mode & 0o777, 0o600)
+            trajectory = json.loads((run_dir / "trajectory.json").read_text())
+            self.assertEqual(trajectory["info"]["model_stats"]["api_calls"], 1)
+            self.assertEqual(trajectory["messages"][-1]["extra"]["exit_status"], "Submitted")
+            events = [json.loads(line) for line in (run_dir / "events.jsonl").read_text().splitlines()]
+            names = [event["event"] for event in events]
+            self.assertLess(names.index("workspace_preflight_accepted"), names.index("agent_run_start"))
+            self.assertLess(names.index("agent_run_start"), names.index("request"))
+            self.assertLess(names.index("request"), names.index("action_start"))
+            self.assertLess(names.index("action_finish"), names.index("terminal_submission"))
+            self.assertEqual(events[-1]["event"], "agent_run_finish")
+            self.assertEqual(events[-1]["physical_model_calls"], 1)
+            self.assertEqual(events[-1]["trajectory_sha256"], outcome["trajectory_sha256"])
+            invocations = [json.loads(line) for line in capture.read_text().splitlines()]
+            self.assertEqual(len(invocations), 3)
+            self.assertEqual(invocations[0], ["--version"])
+            preflight_script = invocations[1][-1]
+            self.assertIn("/proc/self/ns/net", preflight_script)
+            self.assertIn("git status --porcelain --untracked-files=all", preflight_script)
+            self.assertIn("DTR_ROOT_WRITE_TEST", preflight_script)
+            self.assertIn('git rev-parse "${expected_base}^{tree}"', preflight_script)
+            import subprocess
+            syntax = subprocess.run(["bash", "-n"], input=preflight_script, text=True, capture_output=True)
+            self.assertEqual(syntax.returncode, 0, syntax.stderr)
+            action_argv = invocations[-1]
+            for required in ("--containall", "--cleanenv", "--no-home", "--net", "none", "--pwd", "/testbed"):
+                self.assertIn(required, action_argv)
+            self.assertIn("hostfs,bind-paths", action_argv)
+            self.assertTrue(any(value.endswith(":/testbed:image-src=/") for value in action_argv))
+            self.assertEqual(action_argv[-3:], ["/bin/bash", "-lc", "echo FIXED_INERT_ACTION"])
+            self.assertEqual(events[2]["apptainer_version"], "Apptainer fixture 1.0")
+            self.assertNotIn("reference", repr(invocations).lower())
+
+    def test_failed_preflight_prevents_model_factory(self):
+        import json
+        import os
+        import tempfile
+        from unittest.mock import patch
+
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            image, workspace = root / "task.sif", root / "workspace.img"
+            image.write_bytes(b"pinned fake image")
+            workspace.write_bytes(b"pinned fake workspace")
+            fake_apptainer = root / "apptainer-fail"
+            fake_apptainer.write_text(
+                "#!/usr/bin/env python3\n"
+                "import sys\n"
+                "print('Apptainer fixture 1.0' if sys.argv[1:] == ['--version'] else 'preflight rejected')\n"
+                "raise SystemExit(0 if sys.argv[1:] == ['--version'] else 1)\n"
+            )
+            fake_apptainer.chmod(0o700)
+            called = []
+
+            def model_factory(*_args):
+                called.append(True)
+                raise AssertionError("model factory must not run before preflight acceptance")
+
+            args = dict(
+                agent_class=DefaultAgent, model_factory=model_factory,
+                public_projection=(ROOT / "docs/source_snapshots/req030p_seaborn_public/public_task.json").read_bytes(),
+                run_directory=root / "run-fail", apptainer=str(fake_apptainer),
+                image=image, image_sha256=sha256_file(image),
+                workspace_image=workspace, workspace_sha256=sha256_file(workspace),
+                supervisor=SUPERVISOR, supervisor_sha256=sha256_file(SUPERVISOR),
+                release_id="req030-inert-preflight-failure-a", release_sha256="b" * 64,
+                step_limit=2, wall_time_limit_seconds=30, model_context_limit=64,
+                model_max_new_tokens=8, tool_timeout_seconds=5,
+                output_cap_bytes=4096, action_cap_bytes=8192,
+            )
+            import experiments.lead_req030.seaborn_apptainer_runner as runner_module
+            real_readlink = os.readlink
+            def fixture_readlink(path, *readlink_args, **readlink_kwargs):
+                if os.fspath(path) == "/proc/self/ns/net":
+                    return "net:[inert-host-fixture]"
+                return real_readlink(path, *readlink_args, **readlink_kwargs)
+            with patch.object(runner_module.os, "readlink", side_effect=fixture_readlink):
+                with self.assertRaisesRegex(RuntimeError, "workspace preflight failed"):
+                    run_pinned_agent(**args)
+            self.assertEqual(called, [])
+            events = [json.loads(line) for line in (root / "run-fail" / "events.jsonl").read_text().splitlines()]
+            self.assertNotIn("agent_run_start", [event["event"] for event in events])
+
+    def test_no_tool_command_before_workspace_preflight(self):
+        import os
+        import tempfile
+        from unittest.mock import patch
+        from experiments.lead_req030.seaborn_apptainer_runner import ApptainerToolEnvironment, DurableEventLog
+
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            image, workspace = root / "task.sif", root / "workspace.img"
+            image.write_bytes(b"image")
+            workspace.write_bytes(b"workspace")
+            run_dir = root / "run"
+            run_dir.mkdir(mode=0o700)
+            journal = DurableEventLog(run_dir)
+            try:
+                import experiments.lead_req030.seaborn_apptainer_runner as runner_module
+                real_readlink = os.readlink
+                def fixture_readlink(path, *readlink_args, **readlink_kwargs):
+                    if os.fspath(path) == "/proc/self/ns/net":
+                        return "net:[inert-host-fixture]"
+                    return real_readlink(path, *readlink_args, **readlink_kwargs)
+                with patch.object(runner_module.os, "readlink", side_effect=fixture_readlink):
+                    env = ApptainerToolEnvironment(
+                        apptainer=os.sys.executable, image=image, image_sha256=sha256_file(image),
+                        workspace_image=workspace, workspace_sha256=sha256_file(workspace),
+                        supervisor=SUPERVISOR, supervisor_sha256=sha256_file(SUPERVISOR), run_dir=run_dir,
+                        event_log=journal, tool_timeout_seconds=5, output_cap_bytes=1024, action_cap_bytes=1024,
+                        expected_base_commit="22cdfb0c93f8ec78492d87edb810f10cb7f57a31",
+                    )
+                    with self.assertRaisesRegex(RuntimeError, "before isolated workspace preflight"):
+                        env.execute({"command": "echo inert"})
+            finally:
+                journal.close()
+
+    def test_runner_supervisor_receipts_timeout_and_output_cap(self):
+        import os
+        import tempfile
+        from unittest.mock import patch
+        from experiments.lead_req030.seaborn_apptainer_runner import ApptainerToolEnvironment, DurableEventLog
+
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            image, workspace = root / "task.sif", root / "workspace.img"
+            image.write_bytes(b"pinned fake image")
+            workspace.write_bytes(b"pinned fake workspace")
+            fake_apptainer = root / "apptainer-faults"
+            fake_apptainer.write_text(
+                "#!/usr/bin/env python3\n"
+                "import os,sys,time\n"
+                "args=sys.argv[1:]\n"
+                "if args == ['--version']:\n print('Apptainer fixture 1.0'); raise SystemExit(0)\n"
+                "command=args[-1]\n"
+                "if 'DTR_PREFLIGHT' in command:\n"
+                " print('DTR_PREFLIGHT\\t38ac1837e18294d23d95a8e89f26f003c66d4fd5\\t22cdfb0c93f8ec78492d87edb810f10cb7f57a31\\t8b530ce017437324b9e3a39af220965bf0e71558\\t8b530ce017437324b9e3a39af220965bf0e71558\\t100000000\\t128000000')\n"
+                "elif command == 'TIMEOUT_FIXTURE':\n time.sleep(10)\n"
+                "elif command == 'OVERFLOW_FIXTURE':\n os.write(1,b'x'*8192); time.sleep(10)\n"
+            )
+            fake_apptainer.chmod(0o700)
+            run_dir = root / "run-faults"
+            run_dir.mkdir(mode=0o700)
+            journal = DurableEventLog(run_dir)
+            import experiments.lead_req030.seaborn_apptainer_runner as runner_module
+            real_readlink = os.readlink
+            def fixture_readlink(path, *readlink_args, **readlink_kwargs):
+                if os.fspath(path) == "/proc/self/ns/net":
+                    return "net:[inert-host-fixture]"
+                return real_readlink(path, *readlink_args, **readlink_kwargs)
+            with patch.object(runner_module.os, "readlink", side_effect=fixture_readlink):
+                env = ApptainerToolEnvironment(
+                    apptainer=str(fake_apptainer), image=image, image_sha256=sha256_file(image),
+                    workspace_image=workspace, workspace_sha256=sha256_file(workspace),
+                    supervisor=SUPERVISOR, supervisor_sha256=sha256_file(SUPERVISOR), run_dir=run_dir,
+                    event_log=journal, tool_timeout_seconds=2, output_cap_bytes=1024, action_cap_bytes=1024,
+                    expected_base_commit="22cdfb0c93f8ec78492d87edb810f10cb7f57a31",
+                )
+                try:
+                    env.preflight()
+                    timed = env.execute({"command": "TIMEOUT_FIXTURE"})
+                    self.assertEqual(timed["exception_info"], "deadline")
+                    self.assertEqual(timed["extra"]["supervisor"]["reason"], "deadline")
+                    overflow = env.execute({"command": "OVERFLOW_FIXTURE"})
+                    self.assertEqual(overflow["exception_info"], "output_limit")
+                    self.assertEqual(overflow["extra"]["supervisor"]["retained_bytes"], 1024)
+                    self.assertEqual((run_dir / "action-0002.out").stat().st_size, 1024)
+                    env.seal_workspace()
+                finally:
+                    env.close()
+                    journal.close()
 
 
 if __name__ == "__main__":

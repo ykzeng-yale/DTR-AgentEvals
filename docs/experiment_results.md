@@ -1,12 +1,18 @@
-## Current lead state — 29 September 2026, REQ030V source-bound prompt review
+## Current lead state — 29 September 2026, REQ030W/X runner qualification
 
 | Stream | Verified result | Next boundary |
 |---|---|---|
 | Seaborn evaluator controls | REQ030R job27792215 independently replayed twice, including a fresh direct-SSH retrieval matched byte-for-byte on nine selected evidence members: baseline2F2P failures+248P2P passes; reference250/250 declared checks pass. This is one task in a modified offline image environment; no model/action ran. | [Decision](req030r_control_decision_20260929.md): accept only this evaluator-control gate; do not repeat controls or treat test IDs as task samples. |
-| Pinned agent execution path | REQ030V freezes upstream default.yaml and MIT license; all four prompt/observation template hashes and the fixed lead action-regex hash pass. A finite config built from the frozen public projection drives the pinned DefaultAgent/native adapter in an inert fixture; initial-message hashes and native formatting tests pass17/17. | [REQ030V](req030v_seaborn_prompt_binding_20260929.md): prompt/parser inputs are prepared; real Apptainer runner, metadata provenance, durable receipts, guardian/fault integration and separate competent-comparator design remain. |
+| Pinned agent execution path | REQ030W integrates the source-bound public projection, pinned mini-swe prompt/parser, native HF adapter, durable runner and bounded supervisor. The local focused suite passes21 tests; those Apptainer tests are mocked. REQ030X now freezes one CPU-only live-path qualification using the real pinned Qwen tokenizer with an authored fake model and exactly two harmless fixed actions; it loads no model weights and exposes no tests/reference/evaluator inputs. | [REQ030W](req030w_seaborn_runner_join_20260929.md) is local source/control-flow evidence. [REQ030X](req030x_seaborn_inert_runner_qualification_20260929.md) must be published, resource-checked, run once, and independently reviewed. Pass is runtime-only, not model competence. |
 | Scientific comparison | No qualified competent executor pair, task-level routing contrast, or original-target precision estimate is available. B200 single-model deployment probes are not competence evidence. | Freeze a common-harness candidate pair and independent task/family unit, then collect only under a separate exact release. CONFIRM/full benchmark remain held. |
 
 Readiness55%,Δ0,range45–65%; competent fixed-target comparison/valid inference, empirical/manuscript synthesis, independent reproducibility/author package remain. Later entries preserve historical checkpoints.
+
+## REQ030W/X joined runner gate — 29 September 2026
+
+The unresolved question is whether the exact prompt/agent/adapter/supervisor path runs against the actual Bouchet Apptainer namespace and image-backed Seaborn workspace while retaining native Qwen token IDs and a strict public-only input boundary. REQ030W supplies the unified inert-capable runner and tests; the 21-test suite, Python compilation, batch syntax and whitespace checks pass. The local end-to-end fixture uses fake Apptainer, so it cannot establish actual mounts, namespace separation, SIF startup, or cleanup. REQ030X freezes a single bounded CPU-only integration check: real local Qwen tokenizer files and prompt rendering, but a no-weights scripted fake model whose two fixed actions only print a sentinel and submit. It does not run benchmark tests or score a task. Exact release hashes and limits are in [REQ030X](req030x_seaborn_inert_runner_qualification_20260929.md); no job has yet been dispatched at this documentation checkpoint.
+
+The evidence weighs against theory failure and basic GPU-memory capacity as the immediate blocker. The main remaining milestones are a competent fixed-target executor comparison with valid task/family inference, manuscript synthesis, independent reproducibility, and the author-approved submission package. Readiness55%,Δ0,range45–65%.
 
 ## REQ030V source-bound initial prompt — 29 September 2026
 
