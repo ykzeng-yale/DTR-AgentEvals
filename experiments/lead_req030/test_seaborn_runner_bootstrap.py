@@ -19,11 +19,11 @@ class RunnerBootstrapTests(unittest.TestCase):
     def test_release_manifest_binds_payload_workspace_and_batch(self) -> None:
         manifest_path = Path(os.environ.get(
             "DTR_RELEASE_MANIFEST",
-            ROOT / "experiments/lead_req030/seaborn_runner_qualification_g_release.json",
+            ROOT / "experiments/lead_req030/seaborn_runner_qualification_h_release.json",
         ))
         batch_path = Path(os.environ.get(
             "DTR_BATCH_SCRIPT",
-            ROOT / "experiments/lead_req030/seaborn_runner_qualification_g.sbatch",
+            ROOT / "experiments/lead_req030/seaborn_runner_qualification_h.sbatch",
         ))
         manifest_bytes = manifest_path.read_bytes()
         manifest = json.loads(manifest_bytes)
@@ -31,7 +31,7 @@ class RunnerBootstrapTests(unittest.TestCase):
         self.assertIn(hashlib.sha256(manifest_bytes).hexdigest(), batch)
         workspace_sha = manifest["task"]["workspace_seed_sha256"]
         self.assertIn(f"export DTR_WORKSPACE_SHA256={workspace_sha}", batch)
-        self.assertEqual(manifest["release_id"], "req030-seaborn-runner-qualification-20260929-g")
+        self.assertEqual(manifest["release_id"], "req030-seaborn-runner-qualification-20260929-h")
         runner_source = (ROOT / "experiments/lead_req030/seaborn_runner_qualification.py").read_text()
         self.assertIn('release_id=release_manifest["release_id"]', runner_source)
         self.assertNotIn('release_id=manifest["release_id"]', runner_source)
@@ -48,13 +48,13 @@ class RunnerBootstrapTests(unittest.TestCase):
 
         release_path = Path(os.environ.get(
             "DTR_RELEASE_MANIFEST",
-            ROOT / "experiments/lead_req030/seaborn_runner_qualification_g_release.json",
+            ROOT / "experiments/lead_req030/seaborn_runner_qualification_h_release.json",
         ))
         release_bytes = release_path.read_bytes()
         release, bound_bytes = load_qualification_release(
             release_path, hashlib.sha256(release_bytes).hexdigest()
         )
-        self.assertEqual(release["release_id"], "req030-seaborn-runner-qualification-20260929-g")
+        self.assertEqual(release["release_id"], "req030-seaborn-runner-qualification-20260929-h")
         self.assertEqual(bound_bytes, release_bytes)
 
         model_manifest = json.dumps({"repo": "Qwen/test", "revision": "fixed"}).encode()
@@ -174,6 +174,39 @@ print("terminal-empty-submission-ok")
         )
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertIn("terminal-empty-submission-ok", result.stdout)
+
+    def test_single_sequence_token_ids_preserves_list_and_tensor_shapes(self) -> None:
+        script = """
+from experiments.lead_req030.seaborn_runner_qualification import load_runner_components
+load_runner_components()
+from experiments.lead_req030.native_hf_text_adapter import single_sequence_token_ids
+
+expected = [151644, 8948, 198, 2610, 525]
+assert single_sequence_token_ids({"input_ids": expected}) == expected
+assert single_sequence_token_ids({"input_ids": [expected]}) == expected
+
+class TensorLike:
+    def tolist(self):
+        return [expected]
+
+assert single_sequence_token_ids({"input_ids": TensorLike()}) == expected
+for invalid in ([], [[1], [2]], [1, "2"]):
+    try:
+        single_sequence_token_ids({"input_ids": invalid})
+    except (TypeError, ValueError):
+        pass
+    else:
+        raise AssertionError("invalid or ambiguous tokenizer shape was accepted")
+print("tokenizer-single-sequence-binding-ok")
+"""
+        env = os.environ.copy()
+        env["PYTHONPATH"] = str(ROOT) + os.pathsep + env.get("PYTHONPATH", "")
+        result = subprocess.run(
+            [sys.executable, "-c", script], cwd=ROOT, env=env,
+            capture_output=True, text=True, timeout=30, check=False,
+        )
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn("tokenizer-single-sequence-binding-ok", result.stdout)
 
 
 if __name__ == "__main__":

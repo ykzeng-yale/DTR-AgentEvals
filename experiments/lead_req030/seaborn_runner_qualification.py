@@ -159,12 +159,18 @@ def main() -> None:
     expected_render = tokenizer.apply_chat_template(
         expected_messages, tokenize=False, add_generation_prompt=True
     )
+    from experiments.lead_req030.native_hf_text_adapter import single_sequence_token_ids
+
     prompt_binding = {
         "messages_sha256": digest(json.dumps(
             expected_messages, ensure_ascii=False, separators=(",", ":")
         ).encode("utf-8")),
         "rendered_sha256": digest(expected_render.encode("utf-8")),
-        "input_ids": tokenizer(expected_render, add_special_tokens=False)["input_ids"][0],
+        # Without return_tensors, Hugging Face returns a flat list for one
+        # input. Indexing [0] here silently binds only the first token.
+        "input_ids": single_sequence_token_ids(
+            tokenizer(expected_render, add_special_tokens=False)
+        ),
     }
     assert prompt_binding["input_ids"]
 

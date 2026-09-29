@@ -1,0 +1,50 @@
+{
+  "request_id": "REQ030AD/G terminal review",
+  "slurm_job_id": "27860645",
+  "slurm": {
+    "account": "pi_gt353",
+    "partition": "devel",
+    "state": "FAILED",
+    "exit_code": "1:0",
+    "elapsed_seconds": 43,
+    "max_rss_kib": 2808140
+  },
+  "release_id": "req030-seaborn-runner-qualification-20260929-g",
+  "release_manifest_sha256": "46ca01639078f16f24504ef46f702d758165750ac79b05da2c2288362d42621a",
+  "raw_archive": {
+    "path": "results/local_req030/seaborn_runner_g_failure_20260929/evidence.tar",
+    "bytes": 122880,
+    "sha256": "c789f439f62c6f5566093fc9117f7f789884d6cc138b81924b918315f225eeea"
+  },
+  "independent_checks": {
+    "events": 16,
+    "physical_fake_model_calls": 2,
+    "requests": 2,
+    "responses": 2,
+    "isolated_actions": 2,
+    "action_reasons": [
+      "exited",
+      "exited"
+    ],
+    "terminal_submissions": 1,
+    "empty_submission_bytes": 0,
+    "trajectory_sha256_matches": true,
+    "source_manifest_entries_rechecked_against_pinned_G_snapshot": 14,
+    "run_archive_files_rechecked_excluding_self_manifest": 15
+  },
+  "prompt_binding": {
+    "first_request_message_sha256_matches_frozen_prompt": true,
+    "first_request_render_sha256_matches_frozen_prompt": true,
+    "actual_input_token_count": 1129,
+    "actual_binding_type": "list[int]",
+    "driver_expected_expression": "tokenizer(render, add_special_tokens=False)[\"input_ids\"][0]",
+    "driver_expected_type": "int (first token only for non-tensor, unbatched HF tokenizer output)",
+    "classification": "lead-owned shape/indexing bug; complete rendered prompt token IDs were not compared because expected side was scalar"
+  },
+  "qualification_receipt": "absent; driver assertion failed before qualification.json was written",
+  "scientific_limits": [
+    "No Seaborn tests, reference patch, evaluator statuses, model weights, learned generation, GPU inference, or task outcome were used.",
+    "The two fixed outputs and two harmless actions establish only how far this inert runtime path executed; this failed attempt does not qualify the runner.",
+    "The transfer SHA256SUMS contains an invalid empty-file self-entry; its archive SHA256 and individual available members were checked independently. Source payload copies are absent from result tar and source hashes were instead verified against the pinned G snapshot."
+  ]
+}

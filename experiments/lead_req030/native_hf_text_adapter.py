@@ -20,6 +20,28 @@ from minisweagent.models.utils.actions_text import (
 )
 
 
+def single_sequence_token_ids(encoded: Mapping[str, Any]) -> list[int]:
+    """Normalize HF tokenizer list/tensor output to one complete token sequence."""
+    if "input_ids" not in encoded:
+        raise TypeError("tokenizer output has no input_ids")
+    ids = encoded["input_ids"]
+    if hasattr(ids, "tolist"):
+        ids = ids.tolist()
+    elif hasattr(ids, "shape") and len(ids.shape) == 2:
+        if ids.shape[0] != 1:
+            raise ValueError("only a single tokenizer sequence is supported")
+        ids = ids[0].tolist()
+    if not isinstance(ids, (list, tuple)) or not ids:
+        raise TypeError("input_ids must be a non-empty list or tensor")
+    if isinstance(ids[0], (list, tuple)):
+        if len(ids) != 1:
+            raise ValueError("only a single tokenizer sequence is supported")
+        ids = ids[0]
+    if not ids or any(type(token_id) is not int for token_id in ids):
+        raise TypeError("input_ids must contain integer token IDs")
+    return list(ids)
+
+
 class NativeHFTextAdapter:
     """Implement the mini-swe-agent Model protocol with one native HF call/query."""
 
@@ -108,7 +130,7 @@ class NativeHFTextAdapter:
             ).hexdigest(),
             "rendered_sha256": hashlib.sha256(rendered.encode("utf-8")).hexdigest(),
             "rendered": rendered,
-            "input_ids": input_ids[0].tolist(),
+            "input_ids": single_sequence_token_ids(encoded),
             "input_tokens": input_count,
             "physical_calls": self.n_calls + 1,
         }
