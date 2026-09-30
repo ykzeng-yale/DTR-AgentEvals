@@ -11,14 +11,14 @@
 set -euo pipefail
 
 P=/home/yz2324/project_pi_gt353/yz2324/DTR-AgentEvals
-STAGE="$P/staging/req030ag-development-20260930-v4"
-CLAIM="$P/claims/req030ag-development-20260930-v4"
+STAGE="$P/staging/req030ag-development-20260930-v5"
+CLAIM="$P/claims/req030ag-development-20260930-v5"
 RUN=""
 RESULT=""
 finish() {
   rc=$?
   trap - EXIT
-  if [[ -n "$RESULT" && "$RESULT" == "$P/runs/req030ag-development-20260930-v4-"* ]]; then
+  if [[ -n "$RESULT" && "$RESULT" == "$P/runs/req030ag-development-20260930-v5-"* ]]; then
     rm -rf -- "$RESULT/models" "$RESULT/hf-cache"
   fi
   if [[ -n "$RUN" && -d "$RUN" ]]; then
@@ -38,7 +38,7 @@ if ! mkdir -m 700 "$CLAIM"; then
 fi
 printf '{"job_id":"%s","host":"%s","started_epoch":%s}\n' \
   "$SLURM_JOB_ID" "$(hostname)" "$(date +%s)" > "$CLAIM/owner.json"
-RUN="$P/runs/req030ag-development-20260930-v4-$SLURM_JOB_ID"
+RUN="$P/runs/req030ag-development-20260930-v5-$SLURM_JOB_ID"
 mkdir -m 700 "$RUN"
 RESULT="$RUN/results/job-$SLURM_JOB_ID"
 mkdir -m 700 "$RUN/results"
@@ -65,7 +65,7 @@ test -x "$APPTAINER"
 ulimit -f 167772160
 nvidia-smi --query-gpu=name,memory.total,driver_version --format=csv > "$RUN/gpu_inventory.csv"
 
-BUNDLE="$RUN/payload/work/req030ag_screen_20260930_v4"
+BUNDLE="$RUN/payload/work/req030ag_screen_20260930_v5"
 RELEASE="$BUNDLE/manifest.json"
 timeout --signal=TERM --kill-after=60s 35h python -m experiments.lead_req030.req030ag_screen \
   --bundle "$BUNDLE" --release "$RELEASE" --release-sha256 "$RELEASE_SHA" \

@@ -42,7 +42,7 @@ OCI_LEAF = {
     "astropy__astropy-14365": "52047c9299800168ed38a1b98b518a62c32f407f8269362c9f381d93c4e69dfe",
 }
 EVALUATOR_COMMIT = "f7bbbb2ccdf479001d6467c9e34af59e44a840f9"
-OUTPUT = ROOT / "work/req030ag_screen_20260930_v4"
+OUTPUT = ROOT / "work/req030ag_screen_20260930_v5"
 OUTPUT = Path(os.environ.get("DTR_REQ030AG_BUNDLE_OUT", str(OUTPUT))).resolve()
 PARSER_SOURCE = ROOT / "work/upstream/SWE-bench-f7bbbb2ccdf479001d6467c9e34af59e44a840f9/swebench/harness/log_parsers/python.py"
 PARSER_SHA256 = "42f564edfee3c21751739bbf09d60cf3a3ecdc58ac5cf45717dc6b47a85d7459"
@@ -193,7 +193,7 @@ def build() -> dict[str, Any]:
         raise ValueError("development tasks are not one-per-repository family")
     manifest = {
         "request": "DTR-REQ-030AG",
-        "release_id": "req030ag-development-20260930-v4",
+        "release_id": "req030ag-development-20260930-v5",
         "kind": "pre-outcome multi-issue DEVELOPMENT model-pair competence screen",
         "selection_source": "docs/req009_component_queue.md ranks 5-12; M01 source-bound eligible cohort",
         "selection_rule": "exact queue ranks 5-12, one issue per repo family; no substitution or same-task rerun",

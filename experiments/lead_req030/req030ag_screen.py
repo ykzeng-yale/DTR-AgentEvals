@@ -101,7 +101,7 @@ def load_release(bundle: Path, release_path: Path, expected_sha: str) -> tuple[d
         raise ValueError("REQ030AG release SHA-256 mismatch")
     release = json.loads(raw)
     if (release.get("request") != "DTR-REQ-030AG"
-            or release.get("release_id") != "req030ag-development-20260930-v4"
+            or release.get("release_id") != "req030ag-development-20260930-v5"
             or len(release.get("tasks", [])) != 8):
         raise ValueError("REQ030AG release identity/schema mismatch")
     if len({t["family"] for t in release["tasks"]}) != 8:
@@ -277,13 +277,21 @@ def pull_images(release: dict, image_root: Path) -> dict[str, dict]:
         raise RuntimeError("Apptainer unavailable inside compute allocation")
     for task in release["tasks"]:
         image = image_root / f"{task['instance_id']}.sif"
-        _run([apptainer, "pull", str(image), task["image_ref"]], timeout=1800)
+        _run([apptainer, "pull", str(image), apptainer_docker_uri(task["image_ref"])], timeout=1800)
         if image.stat().st_size > 80 * (1 << 30):
             raise RuntimeError("pinned task SIF exceeds frozen 80 GiB file cap")
         receipts[task["instance_id"]] = {"path": str(image), "sif_sha256": sha_file(image),
                                           "bytes": image.stat().st_size,
                                           "oci_leaf_digest": task["oci_amd64_leaf_digest"]}
     return receipts
+
+
+def apptainer_docker_uri(image_ref: str) -> str:
+    """Bind the manifest's digest-pinned Docker Hub name to Apptainer's transport syntax."""
+    if not isinstance(image_ref, str) or not re.fullmatch(
+            r"docker\.io/[a-z0-9._/-]+@sha256:[0-9a-f]{64}", image_ref):
+        raise ValueError("task image reference must be a digest-pinned docker.io name")
+    return "docker://" + image_ref
 
 
 def _safe_extract_source_tar(archive: Path, destination: Path) -> dict:

@@ -127,6 +127,29 @@ def test_disk_floor_records_capacity(tmp_path):
         screen.require_disk_floor(tmp_path, report["total_bytes"] + 1)
 
 
+def test_pull_images_uses_digest_pinned_apptainer_docker_transport(tmp_path, monkeypatch):
+    image_ref = "docker.io/swebench/example@sha256:" + "a" * 64
+    calls = []
+
+    def fake_run(argv, *, timeout):
+        calls.append((argv, timeout))
+        Path(argv[2]).write_bytes(b"fake-sif")
+
+    monkeypatch.setattr(screen.shutil, "which", lambda _name: "/usr/bin/apptainer")
+    monkeypatch.setattr(screen, "_run", fake_run)
+    receipts = screen.pull_images({"tasks": [{
+        "instance_id": "swebench__example-1", "image_ref": image_ref,
+        "oci_amd64_leaf_digest": "sha256:" + "a" * 64,
+    }]}, tmp_path / "images")
+
+    assert calls == [(["/usr/bin/apptainer", "pull",
+                       str(tmp_path / "images" / "swebench__example-1.sif"),
+                       "docker://" + image_ref], 1800)]
+    assert receipts["swebench__example-1"]["bytes"] == len(b"fake-sif")
+    with pytest.raises(ValueError, match="digest-pinned docker.io"):
+        screen.apptainer_docker_uri("docker.io/swebench/example:latest")
+
+
 def test_feasibility_decision_requires_full_frozen_cohort_and_uses_declared_band():
     tasks = [f"repo__issue-{i}" for i in range(8)]
     models = ("7B", "14B")
@@ -209,7 +232,7 @@ def test_batch_launcher_leaves_exclusive_private_run_root_to_python():
     assert result_mkdirs == []
     assert 'mkdir -m 700 "$RUN/results"' in batch
     assert '--run-root "$RESULT"' in batch
-    assert 'BUNDLE="$RUN/payload/work/req030ag_screen_20260930_v4"' in batch
+    assert 'BUNDLE="$RUN/payload/work/req030ag_screen_20260930_v5"' in batch
     assert "run_root.mkdir(mode=0o700, parents=True, exist_ok=False)" in python_source
 
 
