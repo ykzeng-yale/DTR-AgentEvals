@@ -1,5 +1,7 @@
 # Scientific evidence and further-investment review — 30 September 2026
 
+**Second independent audit:** [theory/design/evidence re-audit](investment_reaudit_20260930.md) incorporates the complete AK result, total-call cost nuance, distinction between intrinsic gates and chosen environment contracts, and prospective precision feasibility. The findings below remain preserved; this addendum does not release compute or change frozen outcomes.
+
 The author asked whether the compute investment has produced positive signals, whether design and evaluation were correct, and whether further investment is justified. This is a retrospective evidence review and lead recommendation, not an experimental release, new outcome analysis, confirmation reuse, or scheduler change. Three parallel read-only agent reviews supported the lead review; they are not external peer review.
 
 ## Judgment
