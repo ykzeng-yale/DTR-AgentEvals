@@ -62,10 +62,11 @@ def test_controls_require_all_markers_and_all_declared_statuses():
 ])
 def test_control_wrapper_is_fail_closed_and_bash_valid(tmp_path, mode, required_marker):
     path = tmp_path / "wrapper.sh"
-    screen.evaluation_wrapper(path, mode=mode, base_commit="a" * 40)
+    screen.evaluation_wrapper(path, mode=mode, expected_image_head="b" * 40)
     text = path.read_text()
     assert required_marker in text
     assert "DTR_ISOLATION_FAILURE" in text
+    assert "'" + "b" * 40 + "'" in text
     subprocess.run(["bash", "-n", str(path)], check=True)
 
 
@@ -179,6 +180,7 @@ def test_runtime_preflight_binds_python_wheels_cuda_and_numpy_bridge(tmp_path, m
         "sha256": hashlib.sha256(wheel_bytes).hexdigest()}]))
     manifest_sha = screen.sha_file(wheel_manifest)
     release = {"source_pins": {"experiments/lead_req030/coder_c_wheels.json": manifest_sha},
+        "resource_cap": {"gpu_model": "NVIDIA RTX PRO 6000 Blackwell"},
         "runtime": {"python_minor": [3, 12], "python_version": "3.12.3", "cuda": "12.8", "versions": {
             "numpy": "1.26.4", "torch": "2.9.1", "transformers": "4.51.3",
             "huggingface_hub": "0.30.2", "tokenizers": "0.21.1", "safetensors": "0.5.3",
@@ -186,7 +188,8 @@ def test_runtime_preflight_binds_python_wheels_cuda_and_numpy_bridge(tmp_path, m
     fake_numpy = types.SimpleNamespace(__version__="1.26.4", float32=object(), asarray=lambda x, dtype=None: x)
     fake_torch = types.SimpleNamespace(__version__="2.9.1+cu128", version=types.SimpleNamespace(cuda="12.8"),
         cuda=types.SimpleNamespace(is_available=lambda: True, device_count=lambda: 1,
-            get_device_name=lambda _: "B200", get_device_properties=lambda _: types.SimpleNamespace(total_memory=192)),
+            get_device_name=lambda _: "NVIDIA RTX PRO 6000 Blackwell",
+            get_device_properties=lambda _: types.SimpleNamespace(total_memory=96)),
         from_numpy=lambda x: types.SimpleNamespace(tolist=lambda: x))
     fake_transformers = types.SimpleNamespace(__version__="4.51.3")
     for name, module in (("numpy", fake_numpy), ("torch", fake_torch), ("transformers", fake_transformers)):
@@ -198,7 +201,11 @@ def test_runtime_preflight_binds_python_wheels_cuda_and_numpy_bridge(tmp_path, m
     monkeypatch.setattr(screen.platform, "python_version", lambda: "3.12.3")
     receipt = screen.validate_runtime_environment(release, wheel_manifest, wheel_root)
     assert receipt["numpy_torch_bridge"] == "passed"
-    assert receipt["device"] == "B200"
+    assert receipt["device"] == "NVIDIA RTX PRO 6000 Blackwell"
+    fake_torch.cuda.get_device_name = lambda _: "NVIDIA B200"
+    with pytest.raises(RuntimeError, match="GPU model mismatch"):
+        screen.validate_runtime_environment(release, wheel_manifest, wheel_root)
+    fake_torch.cuda.get_device_name = lambda _: "NVIDIA RTX PRO 6000 Blackwell"
     (wheel_root / "one.whl").write_bytes(b"changed")
     with pytest.raises(ValueError, match="wheel artifact mismatch"):
         screen.validate_runtime_environment(release, wheel_manifest, wheel_root)
@@ -232,7 +239,10 @@ def test_batch_launcher_leaves_exclusive_private_run_root_to_python():
     assert result_mkdirs == []
     assert 'mkdir -m 700 "$RUN/results"' in batch
     assert '--run-root "$RESULT"' in batch
-    assert 'BUNDLE="$RUN/payload/work/req030ag_screen_20260930_v5"' in batch
+    assert '#SBATCH --partition=gpu_rtx6000' in batch
+    assert '#SBATCH --gres=gpu:rtx_pro_6000_blackwell:1' in batch
+    assert 'BUNDLE="$RUN/payload/work/req030ag_screen_20260930_v7_final"' in batch
+    assert '--reuse-image-root "$V5_IMAGES"' in batch
     assert "run_root.mkdir(mode=0o700, parents=True, exist_ok=False)" in python_source
 
 
@@ -244,7 +254,99 @@ def test_agent_patch_rejection_is_terminal_failure_not_infrastructure_unknown(tm
         "repo": "psf/requests"}, evaluation={"stock_eval_script": "true\n", "reference_patch": ""},
         image=tmp_path / "task.sif", workspace_image=tmp_path / "workspace.img",
         eval_dir=tmp_path / "eval", output_dir=tmp_path, apptainer="/usr/bin/apptainer",
-        patch_bytes=b"invalid unified diff\n")
+        expected_image_head="b" * 40, patch_bytes=b"invalid unified diff\n")
     assert result["graded"] is True
     assert result["resolved"] is False
     assert result["reason"] == "candidate_patch_did_not_apply"
+
+
+def test_task_image_accepts_only_exact_base_or_stock_swebench_setup_child():
+    base = "a" * 40
+    head = "b" * 40
+    stdout = (f"HEAD={head}\nTREE={'c' * 40}\nBASE_TREE={'d' * 40}\n"
+              f"PARENT_LINE={head} {base}\nSUBJECT=SWE-bench\nCLEAN=1\n")
+    accepted = screen.parse_task_image_git_state(stdout, "", 0, base)
+    assert accepted["accepted"] is True
+    assert accepted["head_relation"] == "stock_swebench_setup_child"
+    assert accepted["expected_base_tree"] == "d" * 40
+
+    direct = (f"HEAD={base}\nTREE={'d' * 40}\nBASE_TREE={'d' * 40}\n"
+              f"PARENT_LINE={base} {'e' * 40}\nSUBJECT=base\nCLEAN=1\n")
+    assert screen.parse_task_image_git_state(direct, "", 0, base)["accepted"] is True
+    wrong_parent = stdout.replace(f"{head} {base}", f"{head} {'e' * 40}")
+    assert screen.parse_task_image_git_state(wrong_parent, "", 0, base)["accepted"] is False
+    wrong_subject = stdout.replace("SUBJECT=SWE-bench", "SUBJECT=untrusted")
+    assert screen.parse_task_image_git_state(wrong_subject, "", 0, base)["accepted"] is False
+    dirty = stdout.replace("CLEAN=1", "CLEAN=0")
+    assert screen.parse_task_image_git_state(dirty, "", 0, base)["accepted"] is False
+    failed = screen.parse_task_image_git_state("", "dubious ownership", 128, base)
+    assert failed["accepted"] is False and failed["stderr"] == "dubious ownership"
+
+
+def test_retained_sif_reuse_is_hash_and_size_bound(tmp_path, monkeypatch):
+    import hashlib
+
+    monkeypatch.setattr(screen.shutil, "which", lambda _name: "/usr/bin/apptainer")
+    image_root = tmp_path / "retained"
+    image_root.mkdir()
+    image = image_root / "repo__task.sif"
+    image.write_bytes(b"already acquired image")
+    digest = hashlib.sha256(image.read_bytes()).hexdigest()
+    release = {"tasks": [{"instance_id": "repo__task", "image_ref": "docker.io/x@y",
+                           "oci_amd64_leaf_digest": "sha256:" + "a" * 64,
+                           "sif_sha256": digest, "sif_bytes": image.stat().st_size}]}
+    receipts = screen.pull_images(release, tmp_path / "new", reuse_image_root=image_root)
+    assert receipts["repo__task"]["reused"] is True
+    assert receipts["repo__task"]["sif_sha256"] == digest
+    release["tasks"][0]["sif_bytes"] += 1
+    with pytest.raises(ValueError, match="SIF identity differs"):
+        screen.pull_images(release, tmp_path / "new2", reuse_image_root=image_root)
+
+
+def test_image_git_diagnostic_replay_binds_all_eight_scoped_receipts(tmp_path):
+    from experiments.lead_req030.req030ag_image_git_diagnostic_replay import replay
+
+    ids = ["psf__requests-2931", "pydata__xarray-3151", "pylint-dev__pylint-8898",
+           "pytest-dev__pytest-6202", "scikit-learn__scikit-learn-13328",
+           "sphinx-doc__sphinx-8269", "sympy__sympy-19954", "astropy__astropy-14365"]
+    manifest = {"tasks": []}
+    image_manifest = {"tasks": []}
+    diagnostic = {"request": "DTR-REQ-030AG-IMAGE-GIT-DIAGNOSTIC", "release_sha256": "",
+                  "slurm_job_id": "27930700", "task_count": 8, "model_calls": 0,
+                  "benchmark_tests": 0, "task_actions": 0,
+                  "network": "none inside each task container", "tasks": []}
+    for idx, task_id in enumerate(ids):
+        base, head, tree = f"{idx + 1:040x}", f"{idx + 101:040x}", f"{idx + 201:040x}"
+        image_hash = f"{idx + 301:064x}"
+        size = 1000 + idx
+        manifest["tasks"].append({"instance_id": task_id, "base_commit": base,
+                                  "sif_sha256": image_hash, "sif_bytes": size})
+        image_manifest["tasks"].append({"instance_id": task_id, "base_commit": base,
+                                        "sif_sha256": image_hash, "sif_bytes": size})
+        diagnostic["tasks"].append({"task_id": task_id, "expected_base_commit": base,
+            "image_exists": True, "image_sha256": image_hash, "image_bytes": size,
+            "production_check": {"returncode": 0, "stderr": "", "timed_out": False,
+                "stdout": f"HEAD={head}\nTREE={tree}\nCLEAN=1\n"},
+            "scoped_safe_directory_check": {"returncode": 0, "stderr": "", "timed_out": False,
+                "stdout": f"{head}\n{tree}\n"}})
+    manifest_raw = json.dumps(manifest, sort_keys=True).encode()
+    manifest_path = tmp_path / "manifest.json"
+    manifest_path.write_bytes(manifest_raw)
+    image_manifest_path = tmp_path / "image-manifest.json"
+    image_manifest_path.write_text(json.dumps(image_manifest, sort_keys=True))
+    diagnostic["release_sha256"] = hashlib.sha256(manifest_raw).hexdigest()
+    diagnostic_path = tmp_path / "diagnostic.json"
+    diagnostic_path.write_text(json.dumps(diagnostic, sort_keys=True))
+    diagnostic_sha = hashlib.sha256(diagnostic_path.read_bytes()).hexdigest()
+    log_path = tmp_path / "job.log"
+    log_path.write_text(f'"report_sha256": "{diagnostic_sha}"\n')
+    result = replay(diagnostic_path, manifest_path, image_manifest_path, log_path)
+    assert len(result["tasks"]) == 8
+    assert all(row["clean"] and not row["safe_directory_changed_result"] for row in result["tasks"])
+
+    diagnostic["model_calls"] = 1
+    diagnostic_path.write_text(json.dumps(diagnostic, sort_keys=True))
+    bad_sha = hashlib.sha256(diagnostic_path.read_bytes()).hexdigest()
+    log_path.write_text(f'"report_sha256": "{bad_sha}"\n')
+    with pytest.raises(ValueError, match="scope/counters"):
+        replay(diagnostic_path, manifest_path, image_manifest_path, log_path)

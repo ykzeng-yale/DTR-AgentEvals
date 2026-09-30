@@ -41,8 +41,18 @@ OCI_LEAF = {
     "sympy__sympy-19954": "fd13cef829daf5da790c170634159f461382d51b71dea0cb304d7f55efafd5fe",
     "astropy__astropy-14365": "52047c9299800168ed38a1b98b518a62c32f407f8269362c9f381d93c4e69dfe",
 }
+SIF_PIN = {
+    "psf__requests-2931": ("1aa1561909caee4e83dbbfa9983230f8c760d206e20ec1a0bd68edee1bc3e3dc", 972804096),
+    "pydata__xarray-3151": ("588f52cea44e11a89bf7ec83ade23b40a66c38096102848d2bc71e3c831a25db", 2000973824),
+    "pylint-dev__pylint-8898": ("2165e40baa3a09ddd95de3c8cb52508a7e78ce583d22db820b1d22e65d539ebd", 1001254912),
+    "pytest-dev__pytest-6202": ("f0e8453ee3a035584fbff6b391c38bf255824f39141afe2bdc95e5d60f6480ef", 983150592),
+    "scikit-learn__scikit-learn-13328": ("da7190637fff6c3e42103ff8318e28e6641bf3ccaec3712b1759c74aaf372022", 1436348416),
+    "sphinx-doc__sphinx-8269": ("56f7c342ae52de726ca10fa8371414886af04b7281c120b164366188cf115e60", 1055059968),
+    "sympy__sympy-19954": ("fe21628f25b0c356dce6b5e6a096f74088bedd69df3ef8db4322920f7409409f", 1045823488),
+    "astropy__astropy-14365": ("7808291ee0cbd72913000090402624791c7094521f1d149220504f2dec536e03", 1096536064),
+}
 EVALUATOR_COMMIT = "f7bbbb2ccdf479001d6467c9e34af59e44a840f9"
-OUTPUT = ROOT / "work/req030ag_screen_20260930_v5"
+OUTPUT = ROOT / "work/req030ag_screen_20260930_v7"
 OUTPUT = Path(os.environ.get("DTR_REQ030AG_BUNDLE_OUT", str(OUTPUT))).resolve()
 PARSER_SOURCE = ROOT / "work/upstream/SWE-bench-f7bbbb2ccdf479001d6467c9e34af59e44a840f9/swebench/harness/log_parsers/python.py"
 PARSER_SHA256 = "42f564edfee3c21751739bbf09d60cf3a3ecdc58ac5cf45717dc6b47a85d7459"
@@ -188,12 +198,13 @@ def build() -> dict[str, Any]:
             "pass_to_pass_count": len(p2p), "image_key": expected_image_key,
             "oci_amd64_leaf_digest": "sha256:" + leaf, "image_ref": image_ref + "@sha256:" + leaf,
             "architecture": "amd64",
+            "sif_sha256": SIF_PIN[instance_id][0], "sif_bytes": SIF_PIN[instance_id][1],
         })
     if len({t["family"] for t in manifest_tasks}) != len(SELECTION):
         raise ValueError("development tasks are not one-per-repository family")
     manifest = {
         "request": "DTR-REQ-030AG",
-        "release_id": "req030ag-development-20260930-v5",
+        "release_id": "req030ag-development-20260930-v7",
         "kind": "pre-outcome multi-issue DEVELOPMENT model-pair competence screen",
         "selection_source": "docs/req009_component_queue.md ranks 5-12; M01 source-bound eligible cohort",
         "selection_rule": "exact queue ranks 5-12, one issue per repo family; no substitution or same-task rerun",
@@ -204,11 +215,11 @@ def build() -> dict[str, Any]:
         "m01": {"path": "results/v2_adapter/m01_c104f840_f7bbbb2/instances.jsonl", "sha256": M01_SHA256},
         "evaluator": {"commit": EVALUATOR_COMMIT, "rule": "all declared F2P and P2P statuses must be exactly PASSED"},
         "models": json.loads((ROOT / "configs/req030ag_model_assets_20260929.json").read_text()),
-        "runtime": json.loads((ROOT / "configs/req030ag_development_screen_20260929.json").read_text())["runtime"],
+        "runtime": json.loads((ROOT / "configs/req030ag_development_screen_20260930_v7.json").read_text())["runtime"],
         "source_pins": {},
         "tasks": manifest_tasks,
         "treatment": {
-            "runtime": "PyTorch 2.9.1 + Transformers 4.51.3 + CUDA 12.8 on B200",
+            "runtime": "PyTorch 2.9.1 + Transformers 4.51.3 + CUDA 12.8 on NVIDIA RTX PRO 6000 Blackwell",
             "dtype": "bfloat16", "decoding": {"do_sample": False, "temperature": 0,
                 "context_tokens": 16384, "max_new_tokens": 1536},
             "agent": "SWE-agent mini-swe-agent 04d809ceab9df28f9adaed044884180159172930 DefaultAgent",
@@ -225,17 +236,22 @@ def build() -> dict[str, Any]:
                      "operational_outcomes": "all assigned episodes retained; setup/capacity/infrastructure failures are unknown, not model zeros",
                      "candidate_feasibility_gate": "provisional 15-85% terminal resolution in at least one model arm; design feasibility gate only, not task exclusion or confirmatory inference",
                      "interpretation": "DEV screening only; eight tasks are one per family, not a representative population sample or H/P causal contrast"},
-        "resource_cap": {"slurm_account": "pi_gt353", "partition": "gpu_b200", "gpu": "b200:1",
+        "resource_cap": {"slurm_account": "pi_gt353", "partition": "gpu_rtx6000",
+                         "gpu": "rtx_pro_6000_blackwell:1", "gpu_model": "NVIDIA RTX PRO 6000 Blackwell",
                          "cpus": 8, "memory_gib": 128, "wall_hours": 36,
                          "asset_storage_gib_cap": 200, "individual_file_cap_gib": 80},
         "security": {"network": "none in task container", "host_mounts": "none except one explicit ext3 /testbed workspace",
                      "reference_and_test_inputs": "evaluator-only; never accepted by model API",
                      "task_code": "executes only within pinned Apptainer task image"},
+        "image_reuse": {"source_release": "req030ag-development-20260930-v5 job 27928205",
+                        "policy": "reuse exact SIF bytes acquired from each digest-pinned OCI reference; verify size and SHA-256 before inspection",
+                        "task_images_are_read_only": True},
         "scope_hold": ["not CONFIRM", "not full benchmark", "not router comparison", "no prompt/budget tuning", "no task substitution"],
     }
     source_paths = [
         "experiments/lead_req030/req030ag_bundle.py", "experiments/lead_req030/req030ag_screen.py",
         "experiments/lead_req030/req030ag_development_screen.sbatch",
+        "experiments/lead_req030/req030ag_image_git_diagnostic_replay.py",
         "experiments/lead_req030/test_req030ag_screen.py",
         "experiments/lead_req030/req030ag_bounded_supervisor.py",
         "experiments/lead_req030/req030ag_seaborn_apptainer_runner.py",
@@ -246,12 +262,15 @@ def build() -> dict[str, Any]:
         "docs/source_snapshots/req030p_seaborn_public/public_task.json",
         "docs/source_snapshots/req030t_miniswe_agent/default.yaml",
         "docs/source_snapshots/req030t_miniswe_agent/LICENSE.md",
-        "configs/req030ag_development_screen_20260929.json", "configs/req030ag_model_assets_20260929.json",
+        "configs/req030ag_development_screen_20260930_v7.json", "configs/req030ag_model_assets_20260929.json",
         "configs/req030ag_prompt_20260929.json",
-        "configs/req030ag_development_screen_20260929.json",
+        "configs/req030ag_development_screen_20260930_v7.json",
         "configs/req030ag_model_assets_20260929.json",
         "docs/req030ag_development_screen_20260929.md",
         "docs/req030ag_runroot_bootstrap_correction_20260930.md",
+        "docs/req030ag_v5_terminal_diagnosis_20260930.md",
+        "docs/req030ag_v6_image_gate_correction_20260930.md",
+        "docs/req030ag_v7_rtx6000_route_20260930.md",
         "work/upstream/SWE-bench-f7bbbb2ccdf479001d6467c9e34af59e44a840f9/swebench/harness/log_parsers/python.py",
         "work/upstream/mini-swe-agent-04d809ceab9df28f9adaed044884180159172930/src/minisweagent/agents/default.py",
         "work/upstream/mini-swe-agent-04d809ceab9df28f9adaed044884180159172930/src/minisweagent/models/utils/actions_text.py",

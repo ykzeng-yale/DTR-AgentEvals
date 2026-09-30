@@ -101,7 +101,7 @@ def load_release(bundle: Path, release_path: Path, expected_sha: str) -> tuple[d
         raise ValueError("REQ030AG release SHA-256 mismatch")
     release = json.loads(raw)
     if (release.get("request") != "DTR-REQ-030AG"
-            or release.get("release_id") != "req030ag-development-20260930-v5"
+            or release.get("release_id") != "req030ag-development-20260930-v7"
             or len(release.get("tasks", [])) != 8):
         raise ValueError("REQ030AG release identity/schema mismatch")
     if len({t["family"] for t in release["tasks"]}) != 8:
@@ -222,13 +222,17 @@ def validate_runtime_environment(release: dict, wheel_manifest_path: Path, wheel
         raise RuntimeError(f"CUDA runtime mismatch: expected {runtime['cuda']}, got {torch.version.cuda}")
     if not torch.cuda.is_available() or torch.cuda.device_count() != 1:
         raise RuntimeError("expected exactly one allocated CUDA device")
+    expected_device = release["resource_cap"]["gpu_model"]
+    observed_device = torch.cuda.get_device_name(0)
+    if observed_device != expected_device:
+        raise RuntimeError(f"GPU model mismatch: expected {expected_device}, got {observed_device}")
     # Exercise the compiled NumPy/PyTorch bridge before any benchmark containers run.
     bridge = torch.from_numpy(numpy.asarray([1.0], dtype=numpy.float32))
     if bridge.tolist() != [1.0]:
         raise RuntimeError("NumPy/PyTorch ABI bridge preflight failed")
     return {"python": platform.python_version(), "python_executable": sys.executable,
             "versions": versions, "cuda": torch.version.cuda,
-            "device_count": torch.cuda.device_count(), "device": torch.cuda.get_device_name(0),
+            "device_count": torch.cuda.device_count(), "device": observed_device,
             "device_total_bytes": torch.cuda.get_device_properties(0).total_memory,
             "numpy_torch_bridge": "passed", "wheel_manifest_sha256": manifest_pin,
             "wheels": wheel_receipts}
@@ -269,20 +273,31 @@ def _run(argv: list[str], *, timeout: int, stdout=None, stderr=None, check=True)
                           "TRANSFORMERS_OFFLINE": "1", "NO_PROXY": "*", "no_proxy": "*"})
 
 
-def pull_images(release: dict, image_root: Path) -> dict[str, dict]:
+def pull_images(release: dict, image_root: Path, *, reuse_image_root: Path | None = None,
+                on_image=None) -> dict[str, dict]:
     image_root.mkdir(mode=0o700, parents=True, exist_ok=True)
     receipts = {}
     apptainer = shutil.which("apptainer")
     if not apptainer:
         raise RuntimeError("Apptainer unavailable inside compute allocation")
     for task in release["tasks"]:
-        image = image_root / f"{task['instance_id']}.sif"
-        _run([apptainer, "pull", str(image), apptainer_docker_uri(task["image_ref"])], timeout=1800)
+        filename = f"{task['instance_id']}.sif"
+        image = (reuse_image_root / filename) if reuse_image_root else (image_root / filename)
+        if reuse_image_root is None:
+            _run([apptainer, "pull", str(image), apptainer_docker_uri(task["image_ref"])], timeout=1800)
+        elif not image.is_file():
+            raise FileNotFoundError(f"pinned retained task SIF is absent: {task['instance_id']}")
         if image.stat().st_size > 80 * (1 << 30):
             raise RuntimeError("pinned task SIF exceeds frozen 80 GiB file cap")
-        receipts[task["instance_id"]] = {"path": str(image), "sif_sha256": sha_file(image),
-                                          "bytes": image.stat().st_size,
-                                          "oci_leaf_digest": task["oci_amd64_leaf_digest"]}
+        digest, size = sha_file(image), image.stat().st_size
+        if task.get("sif_sha256") and (digest != task["sif_sha256"] or size != task["sif_bytes"]):
+            raise ValueError(f"SIF identity differs from frozen pin: {task['instance_id']}")
+        receipt = {"path": str(image), "sif_sha256": digest, "bytes": size,
+                   "oci_leaf_digest": task["oci_amd64_leaf_digest"],
+                   "reused": reuse_image_root is not None}
+        receipts[task["instance_id"]] = receipt
+        if on_image is not None:
+            on_image(task["instance_id"], receipt)
     return receipts
 
 
@@ -348,17 +363,70 @@ def _safe_extract_source_tar(archive: Path, destination: Path) -> dict:
     return {"members": len(members), "regular_bytes": unpacked, "symlinks": len(symlinks)}
 
 
-def _tree_for_task(image: Path, expected_head: str, apptainer: str) -> dict:
+def parse_task_image_git_state(stdout: str, stderr: str, returncode: int,
+                               expected_base: str) -> dict:
+    """Validate the source state produced by the pinned SWE-bench image builder."""
+    if not re.fullmatch(r"[0-9a-f]{40}", expected_base):
+        raise ValueError("task base commit is not a canonical Git SHA")
+    record = {"returncode": returncode, "stdout": stdout, "stderr": stderr,
+              "expected_base_commit": expected_base, "accepted": False}
+    if returncode != 0:
+        return record
+    fields: dict[str, str] = {}
+    for line in stdout.splitlines():
+        if "=" in line:
+            key, value = line.split("=", 1)
+            if key in fields:
+                return record
+            fields[key] = value
+    if set(fields) != {"HEAD", "TREE", "BASE_TREE", "PARENT_LINE", "SUBJECT", "CLEAN"}:
+        return record
+    if any(not re.fullmatch(r"[0-9a-f]{40}", fields[key])
+           for key in ("HEAD", "TREE", "BASE_TREE")):
+        return record
+    parent_fields = fields["PARENT_LINE"].split()
+    if not parent_fields or parent_fields[0] != fields["HEAD"]:
+        return record
+    parents = parent_fields[1:]
+    direct_base = fields["HEAD"] == expected_base
+    stock_setup_child = (len(parents) == 1 and parents[0] == expected_base
+                         and fields["SUBJECT"] == "SWE-bench")
+    record.update({"head": fields["HEAD"], "tree": fields["TREE"],
+                   "expected_base_tree": fields["BASE_TREE"], "parents": parents,
+                   "subject": fields["SUBJECT"], "clean": fields["CLEAN"] == "1",
+                   "head_relation": "base_commit" if direct_base else
+                                   "stock_swebench_setup_child" if stock_setup_child else "mismatch"})
+    record["accepted"] = fields["CLEAN"] == "1" and (direct_base or stock_setup_child)
+    return record
+
+
+class TaskImageGateError(RuntimeError):
+    def __init__(self, evidence: dict):
+        self.evidence = evidence
+        super().__init__("task image is not a clean base or pinned SWE-bench setup child")
+
+
+def _tree_for_task(image: Path, expected_base: str, apptainer: str) -> dict:
+    if not re.fullmatch(r"[0-9a-f]{40}", expected_base):
+        raise ValueError("task base commit is not a canonical Git SHA")
+    shell = ("set -euo pipefail; cd /testbed; "
+             "printf 'HEAD='; git rev-parse HEAD; "
+             "printf 'TREE='; git rev-parse 'HEAD^{tree}'; "
+             f"printf 'BASE_TREE='; git rev-parse '{expected_base}^{{tree}}'; "
+             "printf 'PARENT_LINE='; git rev-list --parents -n 1 HEAD; "
+             "printf 'SUBJECT='; git show -s --format=%s HEAD; "
+             "status=\"$(git status --porcelain --untracked-files=all)\"; "
+             "if [[ -z \"$status\" ]]; then echo CLEAN=1; else echo CLEAN=0; fi")
     cmd = [apptainer, "exec", "--containall", "--cleanenv", "--no-home", "--no-mount", "hostfs,bind-paths",
            "--net", "--network", "none", "--pwd", "/", str(image), "/bin/bash", "-lc",
-           "cd /testbed && printf 'HEAD=' && git rev-parse HEAD && printf 'TREE=' && git rev-parse 'HEAD^{tree}' && "
-           "test -z \"$(git status --porcelain --untracked-files=all)\" && echo CLEAN=1"]
-    result = _run(cmd, timeout=30, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    text = result.stdout.decode("utf-8", "strict")
-    fields = dict(line.split("=", 1) for line in text.splitlines() if "=" in line)
-    if fields.get("HEAD") != expected_head or fields.get("CLEAN") != "1":
-        raise ValueError("task image base HEAD/clean-tree gate failed")
-    return {"head": fields["HEAD"], "tree": fields["TREE"], "clean": True}
+           shell]
+    result = _run(cmd, timeout=45, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False)
+    check = parse_task_image_git_state(result.stdout.decode("utf-8", "replace"),
+                                       result.stderr.decode("utf-8", "replace"),
+                                       result.returncode, expected_base)
+    if not check["accepted"]:
+        raise TaskImageGateError(check)
+    return check
 
 
 def require_disk_floor(path: Path, required_bytes: int) -> dict:
@@ -553,14 +621,16 @@ def control_result(raw: bytes, supervisor: dict, evaluation: dict, mode: str, pa
             "supervisor": supervisor}
 
 
-def evaluation_wrapper(path: Path, *, mode: str, base_commit: str) -> None:
+def evaluation_wrapper(path: Path, *, mode: str, expected_image_head: str) -> None:
+    if not re.fullmatch(r"[0-9a-f]{40}", expected_image_head):
+        raise ValueError("expected initial image HEAD is not a canonical Git SHA")
     lines = ["#!/bin/bash", "set -uo pipefail",
              'if [[ "$(readlink /proc/self/ns/net)" == "$DTR_HOST_NET_ID" ]]; then echo DTR_ISOLATION_FAILURE; exit 80; fi',
              "test ! -e /home/yz2324 || { echo DTR_ISOLATION_FAILURE; exit 81; }",
              "test ! -e /nfs/roberts || { echo DTR_ISOLATION_FAILURE; exit 82; }",
              "if touch /DTR_ROOT_WRITE_TEST 2>/dev/null; then rm -f /DTR_ROOT_WRITE_TEST; echo DTR_ISOLATION_FAILURE; exit 83; fi",
              "cd /testbed", "test -d .git || { echo DTR_SETUP_FAILURE; exit 84; }",
-             f"if [[ \"$(git rev-parse HEAD)\" != '{base_commit}' ]]; then echo DTR_SETUP_FAILURE; exit 90; fi"]
+             f"if [[ \"$(git rev-parse HEAD)\" != '{expected_image_head}' ]]; then echo DTR_SETUP_FAILURE; exit 90; fi"]
     if mode == "reference":
         lines += ["if ! git apply --check /eval/reference.diff; then echo DTR_SETUP_FAILURE; exit 91; fi",
                   "if ! git apply /eval/reference.diff; then echo DTR_SETUP_FAILURE; exit 92; fi"]
@@ -584,7 +654,8 @@ def patch_harvest_script(base_commit: str) -> str:
 
 def run_control_or_grade(*, mode: str, task: dict, evaluation: dict, image: Path,
                          workspace_image: Path, eval_dir: Path, output_dir: Path,
-                         apptainer: str, patch_bytes: bytes | None = None) -> dict:
+                         apptainer: str, expected_image_head: str,
+                         patch_bytes: bytes | None = None) -> dict:
     eval_dir.mkdir(mode=0o700, parents=True, exist_ok=False)
     (eval_dir / "stock_eval.sh").write_text(evaluation["stock_eval_script"])
     (eval_dir / "stock_eval.sh").chmod(0o400)
@@ -597,7 +668,7 @@ def run_control_or_grade(*, mode: str, task: dict, evaluation: dict, image: Path
         (eval_dir / "agent.diff").write_bytes(patch_bytes)
         (eval_dir / "agent.diff").chmod(0o400)
     wrapper = eval_dir / "run.sh"
-    evaluation_wrapper(wrapper, mode=mode, base_commit=task["base_commit"])
+    evaluation_wrapper(wrapper, mode=mode, expected_image_head=expected_image_head)
     extra = ["--bind", f"{eval_dir.resolve()}:/eval:ro"]
     raw, sup = run_supervised(apptainer, image, workspace_image, ["/bin/bash", "/eval/run.sh"],
         output_path=output_dir / f"{mode}.out", receipt_path=output_dir / f"{mode}.supervisor.json",
@@ -624,7 +695,7 @@ def run_control_or_grade(*, mode: str, task: dict, evaluation: dict, image: Path
 def launch_agent_episode(*, model_id: str, model_info: dict, model: Any, tokenizer: Any,
                          task: dict, release: dict, bundle: Path, model_run_dir: Path,
                          image: Path, workspace_image: Path, apptainer: str, release_sha256: str,
-                         event_parent: Path) -> dict:
+                         event_parent: Path, expected_image_head: str) -> dict:
     from experiments.lead_req030.seaborn_runner_qualification import load_pinned_default_agent
     import torch
     from experiments.lead_req030.native_hf_text_adapter import NativeHFTextAdapter
@@ -662,7 +733,7 @@ def launch_agent_episode(*, model_id: str, model_info: dict, model: Any, tokeniz
             public_projection=public, run_directory=model_run_dir, apptainer=apptainer,
             image=image, image_sha256=sha_file(image), workspace_image=task_work,
             workspace_sha256=sha_file(task_work), supervisor=SUPERVISOR,
-            supervisor_sha256=sha_file(SUPERVISOR), release_id="req030ag-development-screen-20260929",
+            supervisor_sha256=sha_file(SUPERVISOR), release_id="req030ag-development-20260930-v7",
             release_sha256=release_sha256,
             step_limit=24, wall_time_limit_seconds=2700, model_context_limit=16384,
             model_max_new_tokens=1536, tool_timeout_seconds=60, output_cap_bytes=4*1024*1024,
@@ -720,6 +791,8 @@ def _load_models(release: dict, model_root: Path, run_dir: Path) -> tuple[dict[s
         raise RuntimeError("unfrozen PyTorch/Transformers/CUDA runtime")
     if not torch.cuda.is_available() or torch.cuda.device_count() != 1:
         raise RuntimeError("expected exactly one allocated CUDA device")
+    if torch.cuda.get_device_name(0) != release["resource_cap"]["gpu_model"]:
+        raise RuntimeError("GPU model changed after runtime preflight")
     os.environ["HF_HUB_OFFLINE"] = "1"; os.environ["TRANSFORMERS_OFFLINE"] = "1"
     assets = validate_model_assets(release, model_root)
     infos = {m["repo"]: m for m in release["models"]["models"]}
@@ -776,12 +849,27 @@ def execute_batch(args) -> dict:
         raise RuntimeError("Apptainer not found")
     image_root = run_root / "images"; image_root.mkdir(mode=0o700)
     source_root = run_root / "sources"; source_root.mkdir(mode=0o700)
-    images = pull_images(release, image_root)
+    batch["images"] = {}
+    batch["task_image_heads"] = {}
+    def save_image_receipt(task_id, receipt):
+        batch["images"][task_id] = receipt
+        _atomic_json(run_root / "batch_summary.json", batch)
+    images = pull_images(release, image_root,
+                         reuse_image_root=Path(args.reuse_image_root).resolve() if args.reuse_image_root else None,
+                         on_image=save_image_receipt)
     batch["storage_after_images"] = require_disk_floor(run_root, 100 * (1 << 30))
     _atomic_json(run_root / "batch_summary.json", batch)
     for task in release["tasks"]:
         image = Path(images[task["instance_id"]]["path"])
-        source_check = _tree_for_task(image, task["base_commit"], apptainer)
+        try:
+            source_check = _tree_for_task(image, task["base_commit"], apptainer)
+        except TaskImageGateError as exc:
+            batch["tasks"].append({**task, "image": images[task["instance_id"]],
+                                   "source_check": exc.evidence, "status": "image_gate_failed"})
+            _atomic_json(run_root / "batch_summary.json", batch)
+            raise
+        batch["task_image_heads"][task["instance_id"]] = source_check["head"]
+        _atomic_json(run_root / "batch_summary.json", batch)
         tar_path = source_root / f"{task['instance_id']}.tar"
         export_receipt = export_task_tree(image, tar_path, apptainer)
         batch["tasks"].append({**task, "image": images[task["instance_id"]],
@@ -808,7 +896,8 @@ def execute_batch(args) -> dict:
             make_workspace(source_root / f"{tid}.tar", ctl_dir / "seed_temp", ws, uid=os.getuid(), gid=os.getgid())
             eval_dir = ctl_dir / "evaluator"
             result = run_control_or_grade(mode=mode, task=public_task, evaluation=evaluation, image=image,
-                workspace_image=ws, eval_dir=eval_dir, output_dir=ctl_dir, apptainer=apptainer)
+                workspace_image=ws, eval_dir=eval_dir, output_dir=ctl_dir, apptainer=apptainer,
+                expected_image_head=batch["task_image_heads"][tid])
             result["task_id"] = tid
             batch["controls"].append(result)
             ws.unlink()
@@ -858,7 +947,8 @@ def execute_batch(args) -> dict:
                     task={"instance_id": tid, "base_commit": task["base_commit"]}, release=release,
                     bundle=bundle, model_run_dir=ep_dir / "agent", image=image,
                     workspace_image=ep_dir / "workspace.img", apptainer=apptainer,
-                    release_sha256=batch["release_sha256"], event_parent=ep_dir)
+                    release_sha256=batch["release_sha256"], event_parent=ep_dir,
+                    expected_image_head=batch["task_image_heads"][tid])
                 evaluation = json.loads((bundle / "evaluator" / f"{tid}.json").read_bytes())
                 public_task = json.loads((bundle / "public" / f"{tid}.json").read_bytes())
                 patch_data = (ep_dir / "patch.diff").read_bytes()
@@ -868,7 +958,8 @@ def execute_batch(args) -> dict:
                                uid=os.getuid(), gid=os.getgid())
                 grade = run_control_or_grade(mode="agent", task=public_task, evaluation=evaluation,
                     image=image, workspace_image=ws, eval_dir=grade_dir / "evaluator", output_dir=grade_dir,
-                    apptainer=apptainer, patch_bytes=patch_data)
+                    apptainer=apptainer, expected_image_head=batch["task_image_heads"][tid],
+                    patch_bytes=patch_data)
                 ws.unlink()
                 episode["grade"] = grade
                 episode["episode_wall_seconds"] = time.monotonic() - episode_started
@@ -938,6 +1029,7 @@ def main() -> int:
     parser.add_argument("--run-root", required=True)
     parser.add_argument("--wheel-manifest", required=True)
     parser.add_argument("--wheel-root", required=True)
+    parser.add_argument("--reuse-image-root")
     args = parser.parse_args()
     try:
         result = execute_batch(args)
@@ -947,7 +1039,8 @@ def main() -> int:
         if run_root.exists():
             path = run_root / "batch_summary.json"
             current = json.loads(path.read_bytes()) if path.exists() else {"request": "DTR-REQ-030AG"}
-            current.update(status="FAILED", error_type=type(exc).__name__, error=str(exc)[:2000], finished_epoch=time.time())
+            current.update(status="FAILED", error_type=type(exc).__name__, error=str(exc)[:2000],
+                           failure_evidence=getattr(exc, "evidence", None), finished_epoch=time.time())
             try:
                 model_root = run_root / "models"
                 if model_root.exists():
