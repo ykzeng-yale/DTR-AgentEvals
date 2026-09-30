@@ -66,3 +66,12 @@ remaining milestones are competent fixed-target comparisons with valid task/fami
 inference; empirical/manuscript synthesis; and independent reproduction plus the
 author-approved package. Passing these corrections is infrastructure evidence,
 not history-adaptive efficacy or a positive investment result.
+
+At 21:42 UTC admission became eligible. The gpu_devel forecast listed automatic
+preemption. The same shape on gpu_rtx6000 forecast 18:29:05 ET under pi_gt353,
+versus 21:03:05 ET under pi_fl426, without a preemption list. Select pi_gt353
+with an explicit `sbatch --partition=gpu_rtx6000` submission override. The
+immutable staged batch/payload, exact RTX model/shape, all scientific pins and
+absolute deadline stay unchanged. The actual receipt records this scheduling
+override. Test-only 27978383/27978384/27978398/27978399 are not actual jobs or
+reservations; forecasts do not establish start. No other job was modified.
