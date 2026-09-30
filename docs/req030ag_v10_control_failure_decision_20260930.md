@@ -1,5 +1,7 @@
 # REQ030AG v10 control failure and lead decision — 30 September 2026
 
+**Later 30 September target correction:** the [investment review](investment_evidence_review_20260930.md#correction-of-the-leads-target-interpretation) retracts the “Next gate” requirement that the next prospective study must return to MBPP/HumanEval. The v2 prospective SWE-bench H/P target is distinct from archived MBPP/HumanEval branch/log inference. V10's verified control failure, zero model calls and cohort closure stand; no new release or endpoint change follows.
+
 ## Decision
 
 Close the frozen REQ030AG v10 SWE-bench development screen as **control-blocked; no model inference**. Do not retry this cohort, replace `psf__requests-2931` after observing its control, relax the network sandbox, or reinterpret the failed control as a model outcome. The screen supplies no evidence about executor competence, model differences, the paper's fixed MBPP/HumanEval target, or an H/P routing effect.

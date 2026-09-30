@@ -1,4 +1,8 @@
-## Current lead state — 30 September 2026, REQ030AG v10 terminal control failure
+## Current interpretation — 30 September 2026, investment and target audit
+
+The [evidence review](investment_evidence_review_20260930.md) independently reconciles the principal real-policy counts, separates synthetic gains from real adaptive-benefit claims, and corrects the lead's conflation of prospective SWE-bench H/P with archived MBPP/HumanEval branch/log inference. SWE-bench is a declared prospective v2 target; it cannot resolve the archived target by transport. The earlier instruction to require a return to MBPP/HumanEval does not follow and is retracted. V10's control failure and all raw outcomes remain unchanged; no new run or endpoint is released. Readiness **55%, change 0 points, range 45–65%**; competent comparisons/valid inference, synthesis, and independent reproducibility/package remain.
+
+## Prior checkpoint — 30 September 2026, REQ030AG v10 terminal control failure
 
 | Stage | Verified evidence | Decision |
 |---|---|---|

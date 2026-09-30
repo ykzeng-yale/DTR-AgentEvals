@@ -1,5 +1,7 @@
 # REQ030AG downstream target-alignment amendment
 
+**30 September correction:** the [investment review](investment_evidence_review_20260930.md#correction-of-the-leads-target-interpretation) retracts this note's conflation of the archived MBPP/HumanEval estimand with the sole prospective H/P target. The governing v2 protocol separately specifies SWE-bench H/P. No-transport boundaries remain correct; SWE-bench development is not inherently off-target for that prospective question. Historical release/status records below remain unchanged.
+
 **Lead design clarification — 29 September 2026.** This is an outcome-independent interpretation constraint for the already frozen REQ030AG v3 queue submission. It changes neither that release nor its tasks, models, endpoint, resource request, or run authorization. No new experiment is released here.
 
 ## Question and evidence
