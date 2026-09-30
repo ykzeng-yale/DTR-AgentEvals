@@ -1,3 +1,11 @@
+## REQ030AL iteration2 actual GPU submission — 30 September2026,17:46:08ET
+
+Actual **27978847 submitted/PENDING**, StartUnknown, pi_gt353/gpu_rtx6000/normal,2RTX PRO6000Blackwell GPUs/12CPU/256GiB. [Immutable receipt](../results/local_req030/req030al_b_submission_20260930/receipt.json) records the explicit standard-partition override, source a586df2227ec6c4f89391538c8faf80d60e17555, release9222911ad36c38f9b35c0c170a253f23f90456e1f7a45d6daf57de40ecf4296f, payload eb9e4f73af8f9d01af77944f231730e43919715c1588fe5baf7bbb010e59a3f4 and48remote file hash matches. Source-level correction is1bcf980c; test-only27978383/27978384/27978398/27978399 are not actual jobs/reservations. Standard forecast18:29ET is not verifiedstart. First attempt27974562is terminal/no model exposure; no duplicate remains. Other-project jobs are unchanged.
+
+This one complete allocation retainsall8issues/32SS-SL-LS-LLslots and common pinned7B/14B HF/BF16 pair; all16unchanged/reference controls and exact compute executable/version must passbefore model loading. Native/evaluator/raw/cleanup replay is prepared and every unstarted slot remains unknown.304focused tests pass, with corrected runtime receipts; no model call or competence is claimed at submission. Keep exactjobthroughqueue, then independently verify source/assets/environment/controls/nativecalls/patchgrades/accounting/cleanup and continuewithin samegoal.
+
+Monitor deleted; newgoal remainsACTIVE. Original harddeadline02:31:31UTC1October/22:31:31ET30September includes queue andengineering, with atmost3coherentiterations. No newreleasepastdeadline, no exposed retry or passing subset, no heldCONFIRM/fullbenchmark. Queue/allocation is now the concrete execution dependency. Readiness **55%, change0points, range45–65%**; competent fixed-target comparisons/valid task-family inference, empirical/manuscript synthesis, independent reproduction/author package remain.
+
 ## REQ030AL iteration2 exact correction — 30 September2026
 
 Actual27974562 FAILED1:0/25sec before controls/acquisition/model: strict executable hash rejected the login-node Apptainer pin. All48 payload hashes/29 source pins independently matched; all8tasks/32unstarted unknown cells retained. [Terminal receipt](../results/local_req030/req030al_failure_20260930/terminal_receipt.json). Original model outcome is absent, not negative.
