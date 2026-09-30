@@ -880,6 +880,9 @@ def _load_models(release: dict, model_root: Path, run_dir: Path) -> tuple[dict[s
         _atomic_json(run_dir / "model_loads.json", receipts)
     free, total = torch.cuda.mem_get_info()
     receipts["after_both_models"] = {"free_bytes": free, "total_bytes": total}
+    # The worker hashes this complete returned receipt at model_ready. Retain
+    # those same fields even when the fixed free-memory gate rejects admission.
+    _atomic_json(run_dir / "model_loads.json", receipts)
     if free < 20 * (1 << 30):
         raise RuntimeError("less than 20 GiB free after loading both frozen models")
     return models, tokenizer, receipts

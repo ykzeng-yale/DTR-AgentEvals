@@ -42,6 +42,7 @@ REQUIRED_SOURCES = tuple(dict.fromkeys((*aj.REQUIRED_SOURCES,
 GOAL_SECONDS = 21600
 MAX_GPU = 32
 SOURCE_NORMALIZATION = "restore every tracked source path and Git HEAD to exact public base; preserve read-only installed SIF dependencies"
+APPTAINER_VERSION = "1.5.3-1.el9"
 
 
 def retain_error(path: Path) -> None:
@@ -50,6 +51,64 @@ def retain_error(path: Path) -> None:
     fd = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_EXCL | getattr(os, "O_NOFOLLOW", 0), 0o600)
     with os.fdopen(fd, "wb") as out:
         out.write(data); out.flush(); os.fsync(out.fileno())
+
+
+def observe_apptainer(pin: dict) -> dict:
+    """Bounded fixed binary metadata on compute; never called by load_release."""
+    path = Path(pin["path"])
+    if not path.is_absolute() or path.is_symlink() or not path.is_file():
+        raise ValueError("ordinary absolute Apptainer binary required")
+    observed = {"path": str(path), "expected_sha256": pin["sha256"],
+        "observed_sha256": worker.digest_file(path), "version": None}
+    try:
+        completed = subprocess.run([str(path), "--version"], stdin=subprocess.DEVNULL,
+            stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=10, check=False)
+        if len(completed.stdout) > 4096: raise ValueError("Apptainer version output exceeds diagnostic cap")
+        observed.update(returncode=completed.returncode, version=completed.stdout.decode("utf-8", "replace").strip())
+    except (OSError, ValueError, subprocess.SubprocessError) as exc:
+        observed.update(returncode=None, version_diagnostic_error=type(exc).__name__)
+    return observed
+
+
+def startup_preflight(release_path: Path, expected_sha: str, output: Path) -> tuple[dict, dict]:
+    """Persist admission failure before cohort output exists; no inference starts."""
+    output = output.absolute()
+    phase = "release_validation"; observed = None
+    try:
+        if "torch" in sys.modules: raise RuntimeError("parent must not import CUDA")
+        release, admission = load_release(release_path, expected_sha)
+        phase = "apptainer_identity"
+        observed = observe_apptainer(release["apptainer"])
+        if (observed["observed_sha256"] != release["apptainer"]["sha256"]
+                or observed["returncode"] != 0 or observed["version"] != "apptainer version " + APPTAINER_VERSION):
+            raise ValueError("exact compute Apptainer identity/version required")
+        phase = "author_deadline"
+        remaining = min(release["limits"]["batch_seconds"], release["goal"]["deadline_epoch"] - time.time())
+        if remaining <= 45: raise RuntimeError("original author deadline exhausted before allocation admission")
+        phase = "disk_floor"
+        sandbox.require_disk_floor(output.parent, release["limits"]["min_free_bytes"])
+        return release, admission
+    except BaseException as exc:
+        error_type = type(exc).__name__
+        diagnostic = {"schema": "dtr.req030al.startup_failure.v1", "status": "PRE_ADMISSION_FAILED",
+            "phase": phase, "error_type": error_type, "release_sha256": expected_sha,
+            "actual_job_id": os.environ.get("SLURM_JOB_ID"), "model_calls": 0, "controls_started": 0,
+            "cohort_seeded": False, "assigned_slots": 32, "task_families": 8,
+            "apptainer": observed, "expected_apptainer_version": APPTAINER_VERSION}
+        # Only inspect an exact hash-bound authored release. Failed input hashes
+        # cannot supply an executable path, even for private diagnostics.
+        if observed is None:
+            try:
+                _, raw = aj.read_pin({"path": str(release_path.absolute()), "sha256": expected_sha}, aj.MAX_JSON)
+                exact = worker.parse_json(raw)
+                diagnostic["apptainer"] = observe_apptainer(exact["apptainer"])
+            except (ValueError, OSError, KeyError, subprocess.SubprocessError) as secondary:
+                diagnostic["apptainer_diagnostic_error"] = type(secondary).__name__
+        # Preserve the original traceback in a separate private bounded file.
+        # No exception contents, public issue or evaluator bytes are in JSON.
+        retain_error(output.parent / (output.name + ".startup_error.txt"))
+        worker.write_new(output.parent / (output.name + ".startup_failure.json"), diagnostic)
+        raise
 
 
 def load_release(path: Path, expected_sha: str) -> tuple[dict, dict]:
@@ -722,12 +781,10 @@ def execute(release: dict, admission: dict, output: Path, *, qualifier=None, dis
 
 
 def run(release_path: Path, expected_sha: str, output: Path) -> dict:
-    if "torch" in sys.modules: raise RuntimeError("parent must not import CUDA")
-    release, admission = load_release(release_path, expected_sha)
+    release, admission = startup_preflight(release_path, expected_sha, output)
     remaining = min(release["limits"]["batch_seconds"], release["goal"]["deadline_epoch"] - time.time())
     if remaining <= 45: raise RuntimeError("original author deadline exhausted before allocation admission")
     output = output.absolute()
-    sandbox.require_disk_floor(output.parent, release["limits"]["min_free_bytes"])
     seed(release, admission, output)
     rfd, wfd = os.pipe(); guard = None
     try:

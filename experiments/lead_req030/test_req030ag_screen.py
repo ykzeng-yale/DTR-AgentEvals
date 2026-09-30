@@ -236,6 +236,89 @@ def test_gpu_model_aliases_are_exact_and_frozen():
         )
 
 
+@pytest.mark.parametrize("free_gib", [24, 19])
+def test_real_model_loader_retains_complete_model_ready_hash_and_low_memory_receipt(tmp_path, monkeypatch, free_gib):
+    """Actual loader/worker receipt join, with authored inert CUDA and models."""
+    from experiments.lead_req030 import req030ai_episode_worker as worker
+
+    model_root = tmp_path / "models"
+    model_root.mkdir()
+    model_names = ("Qwen/Qwen2.5-Coder-7B-Instruct", "Qwen/Qwen2.5-Coder-14B-Instruct")
+    infos = []
+    for index, name in enumerate(model_names, 1):
+        revision = str(index) * 40
+        directory = model_root / revision
+        directory.mkdir()
+        data = b"authored inert weight identity " + bytes([index])
+        (directory / "inert.safetensors").write_bytes(data)
+        infos.append({"repo": name, "revision": revision, "files": [{
+            "path": "inert.safetensors", "bytes": len(data), "sha256": hashlib.sha256(data).hexdigest()}]})
+    loaded = []
+
+    def from_pretrained(path, **kwargs):
+        loaded.append((path, kwargs))
+        return types.SimpleNamespace(eval=lambda: None)
+
+    fake_torch = types.SimpleNamespace(__version__="2.9.1+cu128", bfloat16="authored BF16",
+        version=types.SimpleNamespace(cuda="12.8"), cuda=types.SimpleNamespace(
+            is_available=lambda: True, device_count=lambda: 1,
+            get_device_name=lambda _: "NVIDIA RTX PRO 6000 Blackwell Server Edition",
+            get_device_properties=lambda _: types.SimpleNamespace(total_memory=96 << 30),
+            reset_peak_memory_stats=lambda: None, synchronize=lambda: None,
+            memory_allocated=lambda: len(loaded) * (20 << 30),
+            memory_reserved=lambda: len(loaded) * (21 << 30),
+            max_memory_allocated=lambda: len(loaded) * (20 << 30),
+            max_memory_reserved=lambda: len(loaded) * (21 << 30),
+            mem_get_info=lambda: (free_gib << 30, 96 << 30)))
+    fake_transformers = types.SimpleNamespace(__version__="4.51.3",
+        AutoModelForCausalLM=types.SimpleNamespace(from_pretrained=from_pretrained),
+        AutoTokenizer=types.SimpleNamespace(from_pretrained=lambda *args, **kwargs: "authored inert tokenizer"))
+    monkeypatch.setitem(sys.modules, "torch", fake_torch)
+    monkeypatch.setitem(sys.modules, "transformers", fake_transformers)
+    # Avoid leaking the real helper's offline environment into other tests.
+    monkeypatch.setenv("HF_HUB_OFFLINE", "0")
+    monkeypatch.setenv("TRANSFORMERS_OFFLINE", "0")
+    public = tmp_path / "public.json"
+    public.write_bytes(b'{"authored": "inert public fixture"}')
+    release = {"models": {"models": infos},
+        "resource_cap": {"gpu_model": "NVIDIA RTX PRO 6000 Blackwell"},
+        "runtime": {"gpu_model_aliases": ["NVIDIA RTX PRO 6000 Blackwell Server Edition"]},
+        "tasks": [{"instance_id": "authored__inert-1", "public_projection_sha256": worker.digest_file(public)}]}
+    spec = {"model_release": release, "model_id": model_names[0], "schedule": None,
+        "release_sha256": "a" * 64, "expected_image_head": "b" * 40}
+    paths = {"model_root": model_root, "public": public, "image": tmp_path / "inert.sif",
+        "source": tmp_path / "inert.tar", "apptainer": tmp_path / "inert.apptainer"}
+    monkeypatch.setattr(worker, "validate_spec", lambda _: paths)
+    run = tmp_path / "worker"
+    run.mkdir()
+    launched = []
+
+    def inert_launch(**kwargs):
+        launched.append(kwargs)
+        return {"status": "episode_complete", "agent_exit_status": "Submitted", "physical_calls": 0}
+
+    if free_gib < 20:
+        with pytest.raises(RuntimeError, match="less than 20 GiB free"):
+            worker.execute_worker(spec, run, components=(screen._load_models, inert_launch))
+    else:
+        worker.execute_worker(spec, run, components=(screen._load_models, inert_launch))
+    retained = json.loads((run / "model_loads.json").read_bytes())
+    assert retained["after_both_models"] == {"free_bytes": free_gib << 30, "total_bytes": 96 << 30}
+    assert [entry["repo"] for entry in retained["loads"]] == list(model_names)
+    assert len(loaded) == 2
+    for _, kwargs in loaded:
+        assert kwargs == {"local_files_only": True, "trust_remote_code": False, "use_safetensors": True,
+            "torch_dtype": "authored BF16", "device_map": {"": 0}, "attn_implementation": "sdpa", "low_cpu_mem_usage": True}
+    lifecycle = [json.loads(line) for line in (run / "lifecycle.jsonl").read_bytes().splitlines()]
+    ready = [event for event in lifecycle if event["event"] == "model_ready"]
+    if free_gib < 20:
+        assert not ready and not launched and lifecycle[-1]["event"] == "worker_error"
+    else:
+        assert len(ready) == len(launched) == 1
+        assert ready[0]["load_receipt_sha256"] == hashlib.sha256(worker.canonical(retained)).hexdigest()
+        assert lifecycle[-1]["event"] == "episode_finish"
+
+
 def test_cuda_oom_is_classified_as_capacity_failure():
     assert screen.is_cuda_oom(RuntimeError("CUDA out of memory while allocating"))
     assert not screen.is_cuda_oom(RuntimeError("ordinary evaluator error"))

@@ -5,6 +5,7 @@ import copy
 import json
 import os
 from pathlib import Path
+import subprocess
 import time
 
 import pytest
@@ -308,3 +309,48 @@ def test_qualification_cleanup_requires_nonmodel_terminal_receipts(tmp_path, kin
         (directory / "gpu_runtime_00.out").write_bytes(b"")
         if terminal: save(directory / "gpu_runtime_00.supervisor.json", {"reaped": True, "returncode": 0})
     assert cohort.qualification_cleanup(output) is terminal
+
+
+def inert_apptainer_version(command, **kwargs):
+    assert command[-1] == "--version" and kwargs["timeout"] == 10
+    return subprocess.CompletedProcess(command, 0, stdout=b"apptainer version 1.5.3-1.el9\n")
+
+
+def test_wrong_compute_binary_pin_leaves_private_failure_before_any_seed(al_admitted, tmp_path, monkeypatch):
+    release, _, path, _ = al_admitted
+    changed = copy.deepcopy(release); changed["apptainer"]["sha256"] = "0" * 64
+    pin = save(path.with_name("wrong_binary_release.json"), changed)
+    monkeypatch.setattr(cohort.subprocess, "run", inert_apptainer_version)
+    monkeypatch.setenv("SLURM_JOB_ID", "authored-inert-fixture")
+    monkeypatch.setattr(cohort, "seed", lambda *args: pytest.fail("bad binary started the cohort"))
+    output = tmp_path / "results"
+    with pytest.raises(ValueError, match="pinned file hash mismatch"):
+        cohort.run(Path(pin["path"]), pin["sha256"], output)
+    receipt = cohort.aj.read_json(tmp_path / "results.startup_failure.json")
+    assert receipt["phase"] == "release_validation" and receipt["status"] == "PRE_ADMISSION_FAILED"
+    assert receipt["apptainer"]["observed_sha256"] == cohort.worker.digest_file(Path(release["apptainer"]["path"]))
+    assert receipt["apptainer"]["expected_sha256"] == "0" * 64
+    assert receipt["apptainer"]["version"] == "apptainer version 1.5.3-1.el9"
+    assert receipt["model_calls"] == receipt["controls_started"] == 0
+    assert receipt["assigned_slots"] == 32 and receipt["cohort_seeded"] is False
+    assert not output.exists() and (tmp_path / "results.startup_error.txt").stat().st_size <= cohort.worker.MAX_STDOUT
+    assert (tmp_path / "results.startup_failure.json").stat().st_mode & 0o777 == 0o600
+
+
+def test_correct_compute_identity_passes_startup_without_launching_models(al_admitted, tmp_path, monkeypatch):
+    release, admission, path, _ = al_admitted
+    monkeypatch.setattr(cohort.subprocess, "run", inert_apptainer_version)
+    monkeypatch.setattr(cohort.sandbox, "require_disk_floor", lambda *args: None)
+    actual, checked = cohort.startup_preflight(path, admission["release_sha256"], tmp_path / "results")
+    assert actual == release and checked["apptainer"] == admission["apptainer"]
+    assert not (tmp_path / "results").exists() and not (tmp_path / "results.startup_failure.json").exists()
+
+
+def test_wrong_release_hash_never_supplies_a_diagnostic_executable(al_admitted, tmp_path, monkeypatch):
+    _, _, path, _ = al_admitted
+    def forbidden(*args): pytest.fail("unverified release supplied diagnostic command")
+    monkeypatch.setattr(cohort, "observe_apptainer", forbidden)
+    with pytest.raises(ValueError): cohort.startup_preflight(path, "0" * 64, tmp_path / "results")
+    receipt = cohort.aj.read_json(tmp_path / "results.startup_failure.json")
+    assert receipt["apptainer"] is None and receipt["apptainer_diagnostic_error"] == "ValueError"
+    assert receipt["model_calls"] == receipt["controls_started"] == 0

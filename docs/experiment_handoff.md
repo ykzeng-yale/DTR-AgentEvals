@@ -1,3 +1,13 @@
+## REQ030AL iteration2 exact correction — 30 September2026
+
+Actual27974562 FAILED1:0/25sec before controls/acquisition/model: strict executable hash rejected the login-node Apptainer pin. All48 payload hashes/29 source pins independently matched; all8tasks/32unstarted unknown cells retained. [Terminal receipt](../results/local_req030/req030al_failure_20260930/terminal_receipt.json). Original model outcome is absent, not negative.
+
+[Iteration2 complete correction](req030al_iteration2_correction_20260930.md) binds prior qualified compute Apptainer f87a7538…/1.5.3-1.el9, durable startup diagnostics and complete model-ready/load memory receipts.304focused tests pass; independent static/source review found no blocker. Exact new release9222911ad36c38f9b35c0c170a253f23f90456e1f7a45d6daf57de40ecf4296f, runreq030al-sixhour-20260930-b, all8tasks/32schedules/all16controls/pair/public/evaluator/budgets unchanged, goaliteration2 and original02:31:31UTCdeadline. This is validated source, not a submitted or started second job. Both accounts currently return QOSMaxSubmitJobPerUserLimit for the same2GPU standard shape. Stage complete preparation, then submit exactly once when admitted; preserve other-project jobs and no quota workaround.
+
+[Parallel archived-inference review](req030al_archived_inference_review_20260930.md) independently passes142JSON paths/35,846CSV cells and the original point, but does not validate recovery/covariance assumptions or the original-target joint interval. Retain conditional-frame calculations as secondary only; this limitation cannot block the primary executor opportunity screen.
+
+Readiness **55%, change0points, range45–65%**; competent fixed-target comparisons/valid task-family inference, empirical/manuscript synthesis, independent reproduction/author package remain. Monitor deleted; bounded six-hour goal active.
+
 ## REQ030AL actual GPU submission — 30 September2026,17:12:09ET
 
 Actual **27974562 submitted/PENDING**, StartUnknown, pi_gt353/gpu_devel/normal,2RTX PRO6000Blackwell GPUs/12CPU/256GiB/5h15m scheduler cap. [Immutable receipt](../results/local_req030/req030al_submission_20260930/receipt.json) binds source e04ab29603c1f1f433668fe0b0baa4a7bf98de11, release5a733f63c704114fa46218ee1b1dc12b7c9eaf16f0acb27dff7704d3931fc23b and independently staged payload3f8bcd5b7011083fb6b8d921256989b88ad31074e2f0a6a62318d849d6e9e861 (48file hashes matched). Test-only27970492–27970495 are not actual jobs/reservations. Prior DTR jobs are terminal; unrelated jobs remain untouched.
