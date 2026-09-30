@@ -101,7 +101,7 @@ def load_release(bundle: Path, release_path: Path, expected_sha: str) -> tuple[d
         raise ValueError("REQ030AG release SHA-256 mismatch")
     release = json.loads(raw)
     if (release.get("request") != "DTR-REQ-030AG"
-            or release.get("release_id") != "req030ag-development-20260930-v9"
+            or release.get("release_id") != "req030ag-development-20260930-v10"
             or len(release.get("tasks", [])) != 8):
         raise ValueError("REQ030AG release identity/schema mismatch")
     if len({t["family"] for t in release["tasks"]}) != 8:
@@ -520,16 +520,25 @@ def make_workspace(source_tar: Path, workdir: Path, workspace_image: Path, *, ui
 
 
 def run_supervised(apptainer: str, image: Path, workspace_image: Path, command: list[str],
-                   *, output_path: Path, receipt_path: Path, seconds: int, extra_binds: list[str] = ()) -> tuple[bytes, dict]:
+                   *, output_path: Path, receipt_path: Path, seconds: int,
+                   extra_binds: list[str] | tuple[str, ...] = ()) -> tuple[bytes, dict]:
     if not 0 < seconds <= 3600:
         raise ValueError("supervised command timeout exceeds one hour")
-    for path in (output_path, receipt_path):
-        fd = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_EXCL | getattr(os, "O_NOFOLLOW", 0), 0o600)
-        os.close(fd)
+    parent_stat = output_path.parent.stat()
+    if (not stat.S_ISDIR(parent_stat.st_mode) or parent_stat.st_uid != os.getuid()
+            or stat.S_IMODE(parent_stat.st_mode) != 0o700):
+        raise PermissionError("supervisor output directory must be private and owned")
+    if receipt_path.parent != output_path.parent:
+        raise ValueError("supervisor output and receipt must share one private directory")
+    if output_path.exists() or output_path.is_symlink():
+        raise FileExistsError(output_path)
+    fd = os.open(receipt_path, os.O_WRONLY | os.O_CREAT | os.O_EXCL
+                 | getattr(os, "O_NOFOLLOW", 0), 0o600)
+    os.close(fd)
     host_net = os.readlink("/proc/self/ns/net")
     argv = [apptainer, "exec", "--containall", "--cleanenv", "--no-home", "--no-mount", "hostfs,bind-paths",
             "--net", "--network", "none", "--pwd", "/testbed", "--env", f"DTR_HOST_NET_ID={host_net}",
-            "--bind", f"{workspace_image}:/testbed:image-src=/"] + extra_binds + [str(image), *command]
+            "--bind", f"{workspace_image}:/testbed:image-src=/"] + list(extra_binds) + [str(image), *command]
     rfd, wfd = os.pipe()
     proc_cmd = [sys.executable, str(SUPERVISOR), "--owner-fd", str(rfd), "--out", str(output_path),
                 "--receipt", str(receipt_path), "--seconds", str(seconds), "--cap", str(MAX_EPISODE_OUTPUT),
@@ -549,8 +558,15 @@ def run_supervised(apptainer: str, image: Path, workspace_image: Path, command: 
     else:
         os.close(wfd)
     if rc != 0:
-        raise RuntimeError(f"bounded supervisor exit {rc}")
+        receipt = json.loads(receipt_path.read_text()) if receipt_path.is_file() else None
+        raise RuntimeError(f"bounded supervisor exit {rc}; receipt={receipt}")
     receipt = json.loads(receipt_path.read_text())
+    if not output_path.exists():
+        raise RuntimeError(f"bounded supervisor output missing; receipt={receipt}")
+    output_stat = output_path.lstat()
+    if (not stat.S_ISREG(output_stat.st_mode) or output_stat.st_uid != os.getuid()
+            or stat.S_IMODE(output_stat.st_mode) != 0o600):
+        raise PermissionError("supervisor output must be a private owned regular file")
     output = output_path.read_bytes()
     if receipt["reason"] != "exited" or receipt["retained_bytes"] != len(output) or len(output) > MAX_EPISODE_OUTPUT:
         raise RuntimeError(f"bounded command did not complete cleanly: {receipt}")
@@ -749,7 +765,7 @@ def launch_agent_episode(*, model_id: str, model_info: dict, model: Any, tokeniz
             public_projection=public, run_directory=model_run_dir, apptainer=apptainer,
             image=image, image_sha256=sha_file(image), workspace_image=task_work,
             workspace_sha256=sha_file(task_work), supervisor=SUPERVISOR,
-            supervisor_sha256=sha_file(SUPERVISOR), release_id="req030ag-development-20260930-v9",
+            supervisor_sha256=sha_file(SUPERVISOR), release_id="req030ag-development-20260930-v10",
             release_sha256=release_sha256,
             step_limit=24, wall_time_limit_seconds=2700, model_context_limit=16384,
             model_max_new_tokens=1536, tool_timeout_seconds=60, output_cap_bytes=4*1024*1024,

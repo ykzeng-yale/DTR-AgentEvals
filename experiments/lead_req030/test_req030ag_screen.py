@@ -266,10 +266,10 @@ def test_batch_launcher_leaves_exclusive_private_run_root_to_python():
     assert '--run-root "$RESULT"' in batch
     assert '#SBATCH --partition=gpu_rtx6000' in batch
     assert '#SBATCH --gres=gpu:rtx_pro_6000_blackwell:1' in batch
-    assert 'BUNDLE="$RUN/payload/work/req030ag_screen_20260930_v9_final"' in batch
+    assert 'BUNDLE="$RUN/payload/work/req030ag_screen_20260930_v10_final2"' in batch
     assert '--reuse-image-root "$V5_IMAGES"' in batch
     assert "payload/experiments/lead_req030/req030ag_screen.py" in batch
-    assert "payload/work/req030ag_screen_20260930_v9_final/manifest.json" in batch
+    assert "payload/work/req030ag_screen_20260930_v10_final2/manifest.json" in batch
     assert 'tar -xzf payload.tar.gz -C "$RUN"' in batch
     assert 'tar -xzf payload.tar.gz -C "$RUN/payload"' not in batch
     assert "run_root.mkdir(mode=0o700, parents=True, exist_ok=False)" in python_source

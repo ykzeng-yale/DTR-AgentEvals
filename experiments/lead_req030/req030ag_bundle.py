@@ -52,7 +52,7 @@ SIF_PIN = {
     "astropy__astropy-14365": ("7808291ee0cbd72913000090402624791c7094521f1d149220504f2dec536e03", 1096536064),
 }
 EVALUATOR_COMMIT = "f7bbbb2ccdf479001d6467c9e34af59e44a840f9"
-OUTPUT = ROOT / "work/req030ag_screen_20260930_v9_final"
+OUTPUT = ROOT / "work/req030ag_screen_20260930_v10_final2"
 OUTPUT = Path(os.environ.get("DTR_REQ030AG_BUNDLE_OUT", str(OUTPUT))).resolve()
 PARSER_SOURCE = ROOT / "work/upstream/SWE-bench-f7bbbb2ccdf479001d6467c9e34af59e44a840f9/swebench/harness/log_parsers/python.py"
 PARSER_SHA256 = "42f564edfee3c21751739bbf09d60cf3a3ecdc58ac5cf45717dc6b47a85d7459"
@@ -204,7 +204,7 @@ def build() -> dict[str, Any]:
         raise ValueError("development tasks are not one-per-repository family")
     manifest = {
         "request": "DTR-REQ-030AG",
-        "release_id": "req030ag-development-20260930-v9",
+        "release_id": "req030ag-development-20260930-v10",
         "kind": "pre-outcome multi-issue DEVELOPMENT model-pair competence screen",
         "selection_source": "docs/req009_component_queue.md ranks 5-12; M01 source-bound eligible cohort",
         "selection_rule": "exact queue ranks 5-12, one issue per repo family; no substitution or same-task rerun",
@@ -215,7 +215,7 @@ def build() -> dict[str, Any]:
         "m01": {"path": "results/v2_adapter/m01_c104f840_f7bbbb2/instances.jsonl", "sha256": M01_SHA256},
         "evaluator": {"commit": EVALUATOR_COMMIT, "rule": "all declared F2P and P2P statuses must be exactly PASSED"},
         "models": json.loads((ROOT / "configs/req030ag_model_assets_20260929.json").read_text()),
-        "runtime": json.loads((ROOT / "configs/req030ag_development_screen_20260930_v9.json").read_text())["runtime"],
+        "runtime": json.loads((ROOT / "configs/req030ag_development_screen_20260930_v10.json").read_text())["runtime"],
         "source_pins": {},
         "tasks": manifest_tasks,
         "treatment": {
@@ -253,6 +253,7 @@ def build() -> dict[str, Any]:
         "experiments/lead_req030/req030ag_development_screen.sbatch",
         "experiments/lead_req030/req030ag_image_git_diagnostic_replay.py",
         "experiments/lead_req030/test_req030ag_screen.py",
+        "experiments/lead_req030/test_req030ag_bounded_supervisor.py",
         "experiments/lead_req030/req030ag_bounded_supervisor.py",
         "experiments/lead_req030/req030ag_seaborn_apptainer_runner.py",
         "experiments/lead_req030/bounded_supervisor.py", "experiments/lead_req030/seaborn_apptainer_runner.py",
@@ -262,7 +263,7 @@ def build() -> dict[str, Any]:
         "docs/source_snapshots/req030p_seaborn_public/public_task.json",
         "docs/source_snapshots/req030t_miniswe_agent/default.yaml",
         "docs/source_snapshots/req030t_miniswe_agent/LICENSE.md",
-        "configs/req030ag_development_screen_20260930_v9.json",
+        "configs/req030ag_development_screen_20260930_v10.json",
         "configs/req030ag_model_assets_20260929.json",
         "configs/req030ag_prompt_20260929.json",
         "docs/req030ag_development_screen_20260929.md",
@@ -272,6 +273,8 @@ def build() -> dict[str, Any]:
         "docs/req030ag_v7_rtx6000_route_20260930.md",
         "docs/req030ag_v8_payload_root_correction_20260930.md",
         "docs/req030ag_v9_gpu_name_alias_20260930.md",
+        "docs/req030ag_v9_terminal_diagnosis_20260930.md",
+        "docs/req030ag_v10_supervisor_output_correction_20260930.md",
         "work/upstream/SWE-bench-f7bbbb2ccdf479001d6467c9e34af59e44a840f9/swebench/harness/log_parsers/python.py",
         "work/upstream/mini-swe-agent-04d809ceab9df28f9adaed044884180159172930/src/minisweagent/agents/default.py",
         "work/upstream/mini-swe-agent-04d809ceab9df28f9adaed044884180159172930/src/minisweagent/models/utils/actions_text.py",
