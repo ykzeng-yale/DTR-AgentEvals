@@ -21,6 +21,58 @@ def save(path, value):
     return cohort.file_pin(path)
 
 
+def test_guard_storage_scope_can_include_owned_model_cache(admitted, tmp_path, monkeypatch):
+    release, admission, _ = admitted
+    output = tmp_path / "run" / "results"
+    output.parent.mkdir()
+    cohort.seed_cohort(release, admission, output)
+    (output.parent / "models").mkdir()
+    (output.parent / "models" / "inert.asset").write_bytes(b"x" * 4096)
+    scopes = []
+    original = cohort.controls.scoped_bytes
+    def measured(path):
+        scopes.append(path)
+        return original(path)
+    monkeypatch.setattr(cohort.controls, "scoped_bytes", measured)
+    rfd, wfd = os.pipe()
+    try:
+        receipt = cohort.guard_batch(command=[sys.executable, "-c", "import time; time.sleep(60)"],
+            owner_fd=rfd, output=output, batch_seconds=5, storage_bytes=4095, storage_scope=output.parent)
+    finally:
+        os.close(wfd)
+    assert receipt["reason"] == "storage_limit"
+    assert receipt["cleanup_verified"] is True
+    assert scopes and all(scope == output.parent for scope in scopes)
+    assert receipt["all_assigned_slots_retained"] is True
+
+
+def test_guard_refuses_storage_scope_outside_owned_run(tmp_path):
+    with pytest.raises(ValueError, match="owned output or run"):
+        cohort.guard_batch(command=[sys.executable, "-c", "pass"], owner_fd=-1,
+            output=tmp_path / "run" / "results", batch_seconds=5, storage_bytes=1,
+            storage_scope=tmp_path)
+
+
+def test_guard_waits_for_qualification_cleanup_even_when_no_model_slot_started(admitted, tmp_path):
+    release, admission, _ = admitted
+    output = tmp_path / "run" / "results"
+    cohort.seed_cohort(release, admission, output)
+    checks = []
+    def qualified_cleanup(path):
+        checks.append(path)
+        return len(checks) >= 2
+    rfd, wfd = os.pipe()
+    try:
+        receipt = cohort.guard_batch(command=[sys.executable, "-c", "pass"], owner_fd=rfd,
+            output=output, batch_seconds=5, storage_bytes=1 << 20,
+            cleanup_validator=qualified_cleanup)
+    finally:
+        os.close(wfd)
+    assert checks == [output, output]
+    assert receipt["cleanup_verified"] is True
+    assert receipt["all_assigned_slots_retained"] is True
+
+
 def framed(repo, required, statuses):
     lines = []
     for node, status in zip(required, statuses, strict=True):

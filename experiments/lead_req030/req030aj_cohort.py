@@ -22,7 +22,7 @@ import stat
 import subprocess
 import sys
 import time
-from typing import Any
+from typing import Any, Callable
 
 from experiments.lead_req030 import req030ag_screen as sandbox
 from experiments.lead_req030 import req030ah_controls as controls
@@ -698,10 +698,14 @@ def finalize_interrupted(output: Path, reason: str) -> tuple[dict | None, bool]:
 
 
 def guard_batch(*, command: list[str], owner_fd: int, output: Path,
-                batch_seconds: float, storage_bytes: int) -> dict:
+                batch_seconds: float, storage_bytes: int, storage_scope: Path | None = None,
+                cleanup_validator: Callable[[Path], bool] | None = None) -> dict:
     """Independent CPU guardian; owner death still closes nested owner pipes."""
     if not _finite_positive(batch_seconds) or type(storage_bytes) is not int or storage_bytes <= 0:
         raise ValueError("invalid independent batch limits")
+    storage_scope = output if storage_scope is None else storage_scope
+    if storage_scope.absolute() not in {output.absolute(), output.parent.absolute()}:
+        raise ValueError("storage supervision must cover only the owned output or run directory")
     started = time.monotonic()
     proc = None
     reason = "guardian_error"
@@ -723,7 +727,7 @@ def guard_batch(*, command: list[str], owner_fd: int, output: Path,
                     reason = "exited"; break
                 if now - started >= batch_seconds:
                     reason = "batch_deadline"; break
-                used = controls.scoped_bytes(output)
+                used = controls.scoped_bytes(storage_scope)
                 peak = max(peak, used)
                 if used > storage_bytes:
                     reason = "storage_limit"; break
@@ -768,6 +772,11 @@ def guard_batch(*, command: list[str], owner_fd: int, output: Path,
                     summary, clean = finalize_interrupted(output, reason)
             except (ValueError, OSError):
                 clean = False
+            if clean and cleanup_validator is not None:
+                try:
+                    clean = cleanup_validator(output) is True
+                except (ValueError, OSError):
+                    clean = False
             if clean or time.monotonic() >= until:
                 break
             time.sleep(.05)

@@ -1,0 +1,66 @@
+{
+  "actual_job_submitted": false,
+  "assigned_cells": 32,
+  "assigned_tasks": 8,
+  "files": 48,
+  "git_history_boundary": "Fresh base-reachable Git object closure; future/dangling/replacement ref/hook regression PASS",
+  "goal": {
+    "deadline_epoch": 1790821891,
+    "iteration": 1,
+    "max_iterations": 3,
+    "started_epoch": 1790800291
+  },
+  "goal_deadline": 1790821891,
+  "local_structural_validation": "PASS; all8 tasks/32 slots/16 exact public-private file bindings; inert local paths, not runtime",
+  "payload_bytes": 808960,
+  "payload_sha256": "3f8bcd5b7011083fb6b8d921256989b88ad31074e2f0a6a62318d849d6e9e861",
+  "prior_model_exposure": 0,
+  "privacy_review": "Scoped new code/config/docs/sanitized receipt only; no evaluator/reference text, raw model context, credential or private host inventory staged",
+  "readiness": {
+    "change": 0,
+    "estimate": 55,
+    "range": [
+      45,
+      65
+    ]
+  },
+  "release_sha256": "5a733f63c704114fa46218ee1b1dc12b7c9eaf16f0acb27dff7704d3931fc23b",
+  "request": "DTR-REQ-030AL",
+  "resource": {
+    "account": "pi_gt353",
+    "batch_seconds": 18840,
+    "cpus": 12,
+    "gpu_model": "rtx_pro_6000_blackwell",
+    "gpus": 2,
+    "memory_gib": 256,
+    "owned_run_storage_bytes": 214748364800,
+    "partition": "gpu_devel",
+    "qos": "normal",
+    "scheduler_seconds": 18900
+  },
+  "schema": "dtr.req030al.release_validation.v1",
+  "shell_syntax": "PASS",
+  "source_diff_whitespace": "PASS",
+  "source_pins_count": 29,
+  "tests": [
+    {
+      "command": "uv run python -m pytest -q",
+      "passed": 812,
+      "scope": "documented root suite before scoped AL changes",
+      "seconds": 186.68
+    },
+    {
+      "command": "uv run python -m pytest -q experiments/lead_req030/test_req030al_cohort.py experiments/lead_req030/test_req030al_replay.py experiments/lead_req030/test_req030al_environment.py experiments/lead_req030/test_req030aj_cohort.py",
+      "passed": 224,
+      "scope": "final AL source, inert full cohort/qualification/fault/independent replay",
+      "seconds": 6.29
+    },
+    {
+      "passed": 298,
+      "scope": "final shared model/control environment runner and worker focused regressions",
+      "seconds": 22.19
+    }
+  ],
+  "validated_utc": "2026-09-30T21:10:55Z",
+  "whole_control_gate_required": true
+}

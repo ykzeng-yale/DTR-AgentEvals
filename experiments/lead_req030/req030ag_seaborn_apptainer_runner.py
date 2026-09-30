@@ -28,15 +28,26 @@ MAX_REQUEST_EVENT_BYTES = 8 * 1024 * 1024
 MAX_RESPONSE_EVENT_BYTES = 1024 * 1024
 MIN_WORKSPACE_FREE_BYTES = 64 * 1024 * 1024
 MAX_SUPERVISOR_RECEIPT_BYTES = 16 * 1024
+# Prospectively fixed loopback names; never copy the caller's private hosts file.
+LOCALHOST_HOSTS_BYTES = b"127.0.0.1 localhost\n::1 localhost ip6-localhost ip6-loopback\n"
+LOCALHOST_HOSTS_SHA256 = hashlib.sha256(LOCALHOST_HOSTS_BYTES).hexdigest()
+FIXED_TOOL_ENVIRONMENT = {
+    "PATH": "/opt/miniconda3/envs/testbed/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+    "LANG": "C.UTF-8", "LANGUAGE": "C", "LC_ALL": "C.UTF-8",
+    "PIP_NO_INDEX": "1", "PIP_DISABLE_PIP_VERSION_CHECK": "1",
+    "PYTHONDONTWRITEBYTECODE": "1", "BASH_ENV": "/dev/null", "ENV": "/dev/null",
+}
+FIXED_TOOL_ENVIRONMENT_SHA256 = hashlib.sha256((json.dumps(FIXED_TOOL_ENVIRONMENT,
+    sort_keys=True, separators=(",", ":")) + "\n").encode()).hexdigest()
 
 
-def _read_private_artifact(path: Path, cap: int) -> bytes:
+def _read_private_artifact(path: Path, cap: int, *, mode: int = 0o600) -> bytes:
     """Read a bounded owned regular receipt/output without following a symlink."""
     fd = os.open(path, os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0))
     try:
         info = os.fstat(fd)
         if (not stat.S_ISREG(info.st_mode) or info.st_uid != os.getuid()
-                or stat.S_IMODE(info.st_mode) != 0o600 or info.st_size > cap):
+                or stat.S_IMODE(info.st_mode) != mode or info.st_size > cap):
             raise ValueError(f"{path.name} is not a bounded private regular artifact")
         with os.fdopen(fd, "rb", closefd=False) as stream:
             data = stream.read(cap + 1)
@@ -213,6 +224,9 @@ class ApptainerToolEnvironment:
         self.supervisor_sha256 = supervisor_sha256
         self.image_identity = self.image.stat()
         self.run_dir, self.event_log = run_dir, event_log
+        self.localhost_hosts = run_dir / "localhost.hosts"
+        _exclusive_write(self.localhost_hosts, LOCALHOST_HOSTS_BYTES, 1024)
+        self.localhost_hosts.chmod(0o400)
         if len(expected_base_commit) != 40 or any(c not in "0123456789abcdef" for c in expected_base_commit):
             raise ValueError("expected task base must be a canonical Git commit")
         self.expected_base_commit = expected_base_commit
@@ -245,16 +259,28 @@ class ApptainerToolEnvironment:
             "action_cap_bytes": self.action_cap_bytes,
             "network": "none", "workspace": "/testbed", "host_platform": self.platform,
             "apptainer_sha256": self.apptainer_sha256, "apptainer_version": self.apptainer_version,
+            "localhost_hosts_sha256": LOCALHOST_HOSTS_SHA256,
+            "tool_environment": dict(FIXED_TOOL_ENVIRONMENT),
+            "tool_environment_sha256": FIXED_TOOL_ENVIRONMENT_SHA256,
+            "shell": "/bin/bash -c; no login profile",
         }}}
 
     def _container_argv(self, command: str, cwd: str) -> list[str]:
         if cwd not in ("", "/testbed"):
             raise ValueError("only the bound /testbed working directory is available")
+        try:
+            if _read_private_artifact(self.localhost_hosts, 1024, mode=0o400) != LOCALHOST_HOSTS_BYTES:
+                raise ValueError("hosts bytes differ")
+        except (OSError, ValueError) as exc:
+            raise RuntimeError("authored localhost hosts file changed") from exc
+        fixed_env = [part for key, value in sorted(FIXED_TOOL_ENVIRONMENT.items())
+                     for part in ("--env", f"{key}={value}")]
         return [self.apptainer, "exec", "--containall", "--cleanenv", "--no-home",
                 "--no-mount", "hostfs,bind-paths", "--net", "--network", "none",
-                "--pwd", "/testbed", "--env", f"DTR_HOST_NET_ID={self.host_net_id}",
+                "--pwd", "/testbed", "--env", f"DTR_HOST_NET_ID={self.host_net_id}", *fixed_env,
                 "--bind", f"{self.workspace_image}:/testbed:image-src=/",
-                str(self.image), "/bin/bash", "-lc", command]
+                "--bind", f"{self.localhost_hosts}:/etc/hosts:ro",
+                str(self.image), "/bin/bash", "-c", command]
 
     def _assert_task_image_unchanged(self) -> None:
         current = self.image.stat()
@@ -337,6 +363,17 @@ class ApptainerToolEnvironment:
             "test ! -e /home/yz2324",
             "test ! -e /nfs/roberts",
             "if touch /DTR_ROOT_WRITE_TEST 2>/dev/null; then rm -f /DTR_ROOT_WRITE_TEST; exit 90; fi",
+            f"test \"$(sha256sum /etc/hosts | cut -d' ' -f1)\" = '{LOCALHOST_HOSTS_SHA256}'",
+            "test \"$(command -v python)\" = /opt/miniconda3/envs/testbed/bin/python",
+            "python - <<'DTR_TOOL_RUNTIME_PY'",
+            "import pathlib, socket, sys",
+            "assert sys.executable == '/opt/miniconda3/envs/testbed/bin/python'",
+            "addresses = {v[4][0] for v in socket.getaddrinfo('localhost', 0)}",
+            "assert addresses and addresses <= {'127.0.0.1', '::1'}",
+            "sock = socket.socket(); sock.bind(('localhost', 0)); sock.close()",
+            "assert [line.split(':', 1)[0].strip() for line in pathlib.Path('/proc/net/dev').read_text().splitlines()[2:]] == ['lo']",
+            "assert pathlib.Path('/proc/net/route').read_text().splitlines()[1:] == []",
+            "DTR_TOOL_RUNTIME_PY",
             "cd /testbed",
             "test -d .git",
             'test -z \"$(git status --porcelain --untracked-files=all)\"',

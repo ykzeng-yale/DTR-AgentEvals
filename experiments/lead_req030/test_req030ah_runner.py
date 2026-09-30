@@ -38,7 +38,7 @@ if args == ["--version"]:
     print("apptainer INERT_AUTHOR_FIXTURE"); raise SystemExit(0)
 assert args[:5] == ["exec", "--containall", "--cleanenv", "--no-home", "--no-mount"]
 assert args[5:10] == ["hostfs,bind-paths", "--net", "--network", "none", "--pwd"]
-assert args[10] == "/testbed" and args[-3:-1] == ["/bin/bash", "-lc"]
+assert args[10] == "/testbed" and args[-3:-1] == ["/bin/bash", "-c"]
 command = args[-1]
 if command == {NORMAL!r}:
     print("INERT_TOOL_OK")
