@@ -8,13 +8,18 @@ import pytest
 
 ROOT = Path(__file__).resolve().parents[2]
 FIXTURE = r'''
-import copy,json,sys
+import copy,hashlib,json,sys,time,types
 from experiments.lead_req030.seaborn_runner_qualification import load_pinned_default_agent
 DefaultAgent = load_pinned_default_agent()
 from minisweagent.exceptions import Submitted
 from experiments.lead_req030.seaborn_public_input import load_pinned_agent_templates
 from experiments.lead_req030.req030ai_schedule_adapter import FixedScheduleHFAdapter, MODEL_PINS, ACTION_REGEX
-case=json.loads(sys.argv[1]); state={'generations':0}; events=[]
+from experiments.lead_req030 import req030ai_schedule_adapter as schedule_module
+case=json.loads(sys.argv[1]); state={'generations':0,'measurements':0}; events=[]
+episode_deadline=time.monotonic()+2700
+decision_clock={'now':None}
+if case.get('expired_measurement'):
+ schedule_module.time=types.SimpleNamespace(monotonic=lambda:time.monotonic() if decision_clock['now'] is None else decision_clock['now'])
 class Slice:
  def __init__(self, values): self.values=values
  def tolist(self): return self.values
@@ -61,9 +66,26 @@ templates=load_pinned_agent_templates()
 def record(event):
  if event['event']==case.get('reject_event'): raise OSError('inert journal failure')
  events.append(copy.deepcopy(event))
+def measure_state():
+ state['measurements']+=1
+ if state['measurements']==case.get('measurement_error'):raise OSError('inert state receipt failure')
+ measured=time.monotonic()
+ deadline=episode_deadline
+ if state['measurements']==case.get('deadline_change'):deadline-=1
+ if state['measurements']==case.get('expired_measurement'):
+  measured=episode_deadline+1;decision_clock['now']=measured
+ # Authored inert state only. Production worker hashes its actual owned raw image.
+ image=('inert raw workspace '+str(state['generations'])).encode()
+ receipt={'remaining_episode_wall_seconds':deadline-measured,'episode_deadline_monotonic':deadline,
+  'measured_at_monotonic':measured,'workspace_fingerprint':{'method':'sha256_raw_workspace_image',
+  'sha256':hashlib.sha256(image).hexdigest(),'bytes':len(image),'hash_elapsed_seconds':0,
+  'semantic_content_identity':False}}
+ receipt.update(case.get('measurement_mutation',{}))
+ receipt['workspace_fingerprint'].update(case.get('fingerprint_mutation',{}))
+ return receipt
 try:
  adapter=FixedScheduleHFAdapter(schedule=case.get('schedule','SL'),tokenizer=tokenizer,models=models,
-  model_info=info,record_event=record,action_regex=ACTION_REGEX,
+  model_info=info,record_event=record,measure_decision_state=None if case.get('missing_measurement') else measure_state,action_regex=ACTION_REGEX,
   format_error_template=templates.format_error_template,observation_template=templates.observation_template,device='inert')
 except Exception as exc:
  print(json.dumps({'construction_error':type(exc).__name__,'calls':sum(m.calls for m in models.values())}));raise SystemExit(0)
@@ -75,6 +97,7 @@ except Exception as exc:
  result={'raised':type(exc).__name__,'message':str(exc)}
 print(json.dumps({'result':result,'events':events,'logical':adapter.logical_calls,'agent_logical':agent.n_calls,
  'physical':adapter.n_calls,'per_model':adapter.model_call_counts,'generations':state['generations'],
+ 'measurements':state['measurements'],
  'actions':len(env.actions),'renders':tokenizer.renders,'messages':agent.messages,'serialized':adapter.serialize()}))
 '''
 
@@ -103,12 +126,19 @@ def test_real_agent_uses_exact_fixed_schedule_and_global_calls(schedule, expecte
     assert [e["model_action"] for e in requests] == [schedule[0]] * 8 + [schedule[1]] * 16
     assert [e["logical_call"] for e in decisions] == [1, 9]
     assert [e["remaining_logical_calls_including_current"] for e in decisions] == [24, 16]
+    assert result['measurements']==2
+    assert decisions[0]['episode_deadline_monotonic']==decisions[1]['episode_deadline_monotonic']
+    assert 0<decisions[1]['remaining_episode_wall_seconds']<decisions[0]['remaining_episode_wall_seconds']<=2700
+    assert decisions[0]['workspace_fingerprint']['sha256']!=decisions[1]['workspace_fingerprint']['sha256']
     for decision in decisions:
         assert decision["probability"] == 1.0 and decision["randomized_logger"] is False
         assert sum(decision["probability_vector"].values()) == 1.0
         assert decision["both_action_reservations"]["S"] == decision["both_action_reservations"]["L"]
         assert decision["both_action_reservations"]["S"]["remaining_input_token_capacity"] == 16384 - 1536 - 3
         assert decision["elapsed_time_eligibility"] == "shared episode deadline enforced by the worker"
+        assert decision['workspace_fingerprint']['semantic_content_identity'] is False
+        assert decision['workspace_fingerprint']['method']=='sha256_raw_workspace_image'
+        assert decision['remaining_episode_wall_seconds']==decision['episode_deadline_monotonic']-decision['measured_at_monotonic']
         request = requests[decision["logical_call"] - 1]
         assert result["events"].index(decision) < result["events"].index(request)
         assert decision["both_action_reservations"]["S"]["messages_sha256"] == request["messages_sha256"]
@@ -130,6 +160,7 @@ def test_early_submission_has_no_second_decision():
     assert result["physical"] == result["logical"] == 3
     assert result["per_model"] == {"S": 3, "L": 0}
     assert [e["logical_call"] for e in result["events"] if e["event"] == "routing_decision"] == [1]
+    assert result['measurements']==1
 
 
 @pytest.mark.parametrize("denial,expected_logical,expected_physical", [("deny_initial", 1, 0), ("deny9", 9, 8)])
@@ -177,7 +208,48 @@ def test_common_tokenizer_binding_drift_rejected_before_call():
     assert result["physical"] == 0 and result["events"] == []
 
 
-@pytest.mark.parametrize("case", [{"schedule": "adaptive"}, {"bad_pin": True}])
+@pytest.mark.parametrize("case", [{"schedule": "adaptive"}, {"bad_pin": True}, {'missing_measurement':True}])
 def test_nonfrozen_schedule_or_model_pin_rejected(case):
     result = run_fixture(**case)
     assert result == {"construction_error": "ValueError", "calls": 0}
+
+
+@pytest.mark.parametrize('at,physical',[(1,0),(2,8)])
+def test_decision_measurement_failure_blocks_dispatch_at_both_decisions(at,physical):
+    result=run_fixture(measurement_error=at)
+    assert result['result']['raised']=='OSError'
+    assert result['physical']==result['generations']==physical
+    assert result['logical']==[1,9][at-1]
+
+
+@pytest.mark.parametrize('at,physical',[(1,0),(2,8)])
+def test_expired_measured_common_deadline_is_time_exceeded_empty_submission(at,physical):
+    result=run_fixture(expired_measurement=at)
+    assert result['result']['exit_status']=='TimeExceeded'
+    assert result['result']['submission']==''
+    assert result['physical']==result['generations']==physical
+
+
+def test_second_decision_cannot_reset_common_episode_deadline():
+    result=run_fixture(deadline_change=2)
+    assert result['result']['raised']=='ValueError'
+    assert result['physical']==result['generations']==8
+
+
+@pytest.mark.parametrize('mutation',[
+    {'measurement_mutation':{'remaining_episode_wall_seconds':True}},
+    {'measurement_mutation':{'remaining_episode_wall_seconds':float('nan')}},
+    {'measurement_mutation':{'remaining_episode_wall_seconds':100}},
+    {'measurement_mutation':{'extra':'unfrozen metadata'}},
+    {'fingerprint_mutation':{'semantic_content_identity':True}},
+    {'fingerprint_mutation':{'bytes':True}},
+    {'fingerprint_mutation':{'bytes':8*1024**3+1}},
+    {'fingerprint_mutation':{'sha256':'private-path'}},
+    {'fingerprint_mutation':{'hash_elapsed_seconds':float('inf')}},
+    {'fingerprint_mutation':{'hash_elapsed_seconds':3000}},
+    {'fingerprint_mutation':{'extra':'unfrozen metadata'}},
+])
+def test_malformed_decision_measurements_cannot_reach_generation(mutation):
+    result=run_fixture(**mutation)
+    assert result['result']['raised']=='ValueError'
+    assert result['physical']==result['generations']==0

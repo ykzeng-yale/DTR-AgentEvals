@@ -9,6 +9,8 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
+import time
 from collections.abc import Callable, Mapping
 from pathlib import Path
 from typing import Any
@@ -25,10 +27,51 @@ NATIVE_ADAPTER_SHA256 = "28472dfd9bc40f101bdfc80d1911e183787daad4786d9002398443f
 ACTION_REGEX = r"```mswea_bash_command\s*\n(.*?)\n```"
 FORMAT_ERROR_SHA256 = "04fce5694c2695cc0cc4672cd6d7678f398402a99b0b3379fb397f06c00baca8"
 OBSERVATION_SHA256 = "4cd54626f03be2dd572eeffbe31d9421d73c167d4feb79dc3c1b4336d0568e31"
+MAX_WORKSPACE_IMAGE_BYTES = 8 * 1024 ** 3
+EPISODE_SECONDS = 2700
 
 
 def sha(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
+
+
+def validate_decision_state(state: dict) -> None:
+    """Strict measured-state schema; the raw image hash is not a content hash."""
+    fields = {"remaining_episode_wall_seconds", "episode_deadline_monotonic",
+              "measured_at_monotonic", "workspace_fingerprint"}
+    if not isinstance(state, dict) or set(state) != fields:
+        raise ValueError("decision measurement schema mismatch")
+    for key in fields - {"workspace_fingerprint"}:
+        value = state[key]
+        if type(value) not in (int, float) or not math.isfinite(value):
+            raise ValueError("decision measurement time must be finite numeric")
+    remaining, deadline, measured = (state[key] for key in (
+        "remaining_episode_wall_seconds", "episode_deadline_monotonic", "measured_at_monotonic"))
+    if (measured <= 0 or deadline <= 0 or remaining > EPISODE_SECONDS
+            or not math.isclose(remaining, deadline - measured, abs_tol=1e-6, rel_tol=0)):
+        raise ValueError("decision remaining time differs from the common deadline")
+    fingerprint = state["workspace_fingerprint"]
+    if not isinstance(fingerprint, dict) or set(fingerprint) != {
+            "method", "sha256", "bytes", "hash_elapsed_seconds", "semantic_content_identity"}:
+        raise ValueError("workspace fingerprint schema mismatch")
+    digest = fingerprint["sha256"]
+    if (fingerprint["method"] != "sha256_raw_workspace_image"
+            or fingerprint["semantic_content_identity"] is not False
+            or not isinstance(digest, str) or len(digest) != 64
+            or any(c not in "0123456789abcdef" for c in digest)
+            or type(fingerprint["bytes"]) is not int
+            or not 0 < fingerprint["bytes"] <= MAX_WORKSPACE_IMAGE_BYTES
+            or type(fingerprint["hash_elapsed_seconds"]) not in (int, float)
+            or not math.isfinite(fingerprint["hash_elapsed_seconds"])
+            or fingerprint["hash_elapsed_seconds"] < 0
+            or fingerprint["hash_elapsed_seconds"] > EPISODE_SECONDS - remaining + 1e-6):
+        raise ValueError("workspace fingerprint is not a bounded raw-image measurement")
+
+
+def _time_exceeded() -> None:
+    from minisweagent.exceptions import TimeExceeded
+    raise TimeExceeded({"role": "exit", "content": "TimeExceeded",
+                        "extra": {"exit_status": "TimeExceeded", "submission": ""}})
 
 
 class FixedScheduleHFAdapter:
@@ -36,10 +79,13 @@ class FixedScheduleHFAdapter:
 
     def __init__(self, *, schedule: str, tokenizer: Any, models: Mapping[str, Any],
                  model_info: Mapping[str, Mapping[str, Any]], record_event: Callable[[dict], None],
+                 measure_decision_state: Callable[[], dict],
                  action_regex: str, format_error_template: str, observation_template: str,
                  device: str = "cuda:0") -> None:
         if schedule not in {"SS", "SL", "LS", "LL"}:
             raise ValueError("only frozen schedules SS/SL/LS/LL are permitted")
+        if not callable(measure_decision_state):
+            raise ValueError("a measured decision-state callback is required")
         if set(models) != {"S", "L"} or set(model_info) != {"S", "L"}:
             raise ValueError("exactly the S and L model slots must be injected")
         if models["S"] is models["L"]:
@@ -56,9 +102,11 @@ class FixedScheduleHFAdapter:
         self.schedule = schedule
         self.tokenizer = tokenizer
         self.record_event = record_event
+        self.measure_decision_state = measure_decision_state
         self.logical_calls = 0
         self._pending: dict[str, Any] | None = None
         self._reservation: dict[str, Any] | None = None
+        self._episode_deadline: float | None = None
         self._native = native
         self.adapters = {
             action: native.NativeHFTextAdapter(tokenizer=tokenizer, model=models[action],
@@ -73,6 +121,7 @@ class FixedScheduleHFAdapter:
             "context_limit": CONTEXT_LIMIT, "max_new_tokens": MAX_NEW_TOKENS,
             "decision_logical_calls": list(DECISION_CALLS), "logical_call_limit": LOGICAL_CALL_LIMIT,
             "elapsed_time_eligibility": "shared episode deadline enforced by the worker",
+            "decision_state_measurement": "raw workspace image SHA256; overhead charged to common episode deadline",
             "assignment": "deterministic fixed regime; not randomized/OPE logging",
             "action_regex": action_regex, "native_adapter_sha256": NATIVE_ADAPTER_SHA256}
 
@@ -107,6 +156,16 @@ class FixedScheduleHFAdapter:
         bindings = {action: self._binding(messages, action) for action in ("S", "L")}
         if bindings["S"] != bindings["L"]:
             raise RuntimeError("both-action native token bindings differ")
+        state = self.measure_decision_state()
+        validate_decision_state(state)
+        if state["measured_at_monotonic"] > time.monotonic() + 1:
+            raise ValueError("decision measurement cannot be in the future")
+        deadline = state["episode_deadline_monotonic"]
+        if self._episode_deadline is not None and deadline != self._episode_deadline:
+            raise ValueError("episode deadline changed at a routing decision")
+        self._episode_deadline = deadline
+        if state["remaining_episode_wall_seconds"] <= 0 or time.monotonic() >= deadline:
+            _time_exceeded()
         action = self._selected_action()
         event = {"event": "routing_decision", "schedule": self.schedule,
             "logical_call": self.logical_calls, "decision_index": DECISION_CALLS.index(self.logical_calls) + 1,
@@ -117,7 +176,7 @@ class FixedScheduleHFAdapter:
             "per_model_physical_calls_before": self.model_call_counts,
             "assignment": "deterministic_fixed_schedule", "probability": 1.0,
             "probability_vector": {"S": float(action == "S"), "L": float(action == "L")},
-            "randomized_logger": False, "both_action_reservations": bindings}
+            "randomized_logger": False, "both_action_reservations": bindings, **state}
         if not all(binding["admitted"] for binding in bindings.values()):
             event["event"] = "routing_reservation_denied"
             # No action was assigned when the joint eligibility check failed.
@@ -128,6 +187,8 @@ class FixedScheduleHFAdapter:
                 max_new_tokens=MAX_NEW_TOKENS, context_limit=CONTEXT_LIMIT)
         # Durable decision acceptance is a prerequisite to the native request.
         self.record_event(event)
+        if time.monotonic() >= deadline:
+            _time_exceeded()
         self._reservation = bindings[action]
 
     def _native_event(self, action: str, event: dict[str, Any]) -> None:
@@ -172,6 +233,8 @@ class FixedScheduleHFAdapter:
         self._reservation = None
         if self.logical_calls in DECISION_CALLS:
             self._reserve_both(messages)
+        if self._episode_deadline is None or time.monotonic() >= self._episode_deadline:
+            _time_exceeded()
         # Native adapter preserves full role/content history and records parser
         # failures after generation. Unexpected generation errors remain errors.
         return self.adapters[self._selected_action()].query(messages)

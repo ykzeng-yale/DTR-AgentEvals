@@ -110,10 +110,12 @@ class Lifecycle:
 
     def emit(self, event: str, **extra):
         self.sequence += 1
-        data = canonical({"sequence": self.sequence, "event": event, "monotonic": time.monotonic(), **extra})
+        measured = time.monotonic()
+        data = canonical({"sequence": self.sequence, "event": event, "monotonic": measured, **extra})
         if os.write(self.fd, data) != len(data):
             raise OSError("partial lifecycle receipt write")
         os.fsync(self.fd)
+        return measured
 
     def close(self):
         os.close(self.fd)
@@ -211,6 +213,79 @@ def validate_spec(spec: dict) -> dict:
     return {"public": public, "image": image, "source": source, "apptainer": apptainer, "model_root": model_root}
 
 
+def measure_workspace_decision_state(path: Path, *, episode_deadline: float) -> dict:
+    """Read owned raw sandbox image only; no task text or command is executed.
+
+    The independent guardian bounds stalled I/O. Hash time is part of the common
+    episode deadline. Ext3 metadata/allocation are included, so this fingerprint
+    does not establish semantic content equality or coupled decision prefixes.
+    """
+    from experiments.lead_req030.req030ai_schedule_adapter import MAX_WORKSPACE_IMAGE_BYTES, _time_exceeded
+    if type(episode_deadline) not in (int, float) or not math.isfinite(episode_deadline):
+        raise ValueError("invalid common episode deadline")
+    started = time.monotonic()
+    if started >= episode_deadline:
+        _time_exceeded()
+    fd = os.open(path, os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0) | getattr(os, "O_NONBLOCK", 0))
+    digest, count = hashlib.sha256(), 0
+    try:
+        before = os.fstat(fd)
+        if (not stat.S_ISREG(before.st_mode) or before.st_uid != os.getuid()
+                or not 0 < before.st_size <= MAX_WORKSPACE_IMAGE_BYTES):
+            raise ValueError("workspace measurement requires a bounded owned regular image")
+        while True:
+            if time.monotonic() >= episode_deadline:
+                _time_exceeded()
+            chunk = os.read(fd, 8 * 1024 * 1024)
+            if not chunk:
+                break
+            count += len(chunk)
+            if count > before.st_size or count > MAX_WORKSPACE_IMAGE_BYTES:
+                raise ValueError("workspace image changed or exceeded measurement cap")
+            digest.update(chunk)
+        after = os.fstat(fd)
+        path_after = os.stat(path, follow_symlinks=False)
+        fields = ("st_dev", "st_ino", "st_size", "st_mtime_ns", "st_ctime_ns")
+        if count != before.st_size or any(getattr(before, key) != getattr(after, key)
+                or getattr(before, key) != getattr(path_after, key) for key in fields):
+            raise ValueError("workspace image changed during decision measurement")
+    finally:
+        os.close(fd)
+    measured = time.monotonic()
+    if measured >= episode_deadline:
+        _time_exceeded()
+    return {"remaining_episode_wall_seconds": episode_deadline - measured,
+            "episode_deadline_monotonic": episode_deadline, "measured_at_monotonic": measured,
+            "workspace_fingerprint": {"method": "sha256_raw_workspace_image", "sha256": digest.hexdigest(),
+                "bytes": count, "hash_elapsed_seconds": measured - started, "semantic_content_identity": False}}
+
+
+RUNTIME_PACKAGES = {"numpy", "torch", "transformers", "huggingface_hub", "tokenizers",
+                    "safetensors", "accelerate", "requests", "jinja2"}
+
+def verify_declared_worker_runtime(runtime: dict) -> dict:
+    """Worker-side full package/Python binding; parent never imports CUDA."""
+    import importlib.metadata
+    import platform
+    if (not isinstance(runtime, dict) or not isinstance(runtime.get("versions"), dict)
+            or set(runtime["versions"]) != RUNTIME_PACKAGES
+            or not isinstance(runtime.get("python"), str)
+            or runtime["python"] != platform.python_version()):
+        raise ValueError("complete exact Python/package runtime contract required")
+    versions = {}
+    for name, expected in runtime["versions"].items():
+        if not isinstance(expected, str) or not expected:
+            raise ValueError("invalid runtime version pin")
+        observed = importlib.metadata.version(name.replace("_", "-"))
+        if name == "torch":
+            observed = observed.split("+", 1)[0]
+        if observed != expected:
+            raise ValueError(f"worker package version mismatch: {name}")
+        versions[name] = observed
+    return {"python": platform.python_version(), "versions": versions,
+            "scope": "fresh worker package/Python check before model loading; CUDA/device checked by pinned loader"}
+
+
 def execute_worker(spec: dict, directory: Path, *, components=None):
     """Worker-only API. The optional components seam is for inert authored tests."""
     os.umask(0o077)
@@ -220,11 +295,13 @@ def execute_worker(spec: dict, directory: Path, *, components=None):
         paths = validate_spec(spec)
         release = spec["model_release"]
         if components is None:
+            write_new(directory / "runtime_preflight.json", verify_declared_worker_runtime(release["runtime"]))
             from experiments.lead_req030.req030ag_screen import _load_models, launch_agent_episode
             components = (_load_models, launch_agent_episode)
         load, launch = components
         models, tokenizer, receipt = load(release, paths["model_root"], directory)
-        journal.emit("model_ready", load_receipt_sha256=hashlib.sha256(canonical(receipt)).hexdigest())
+        model_ready = journal.emit("model_ready", load_receipt_sha256=hashlib.sha256(canonical(receipt)).hexdigest())
+        episode_deadline = model_ready + Deadlines().episode
         def builder(record_event, config):
             from experiments.lead_req030.seaborn_runner_qualification import load_pinned_default_agent
             load_pinned_default_agent()
@@ -242,7 +319,9 @@ def execute_worker(spec: dict, directory: Path, *, components=None):
                 return FixedScheduleHFAdapter(schedule=spec["schedule"], tokenizer=tokenizer,
                     models={action: models[pin["repo"]] for action, pin in MODEL_PINS.items()},
                     model_info={action: next(m for m in release["models"]["models"] if m["repo"] == pin["repo"])
-                                for action, pin in MODEL_PINS.items()}, record_event=observed_event, **config)
+                                for action, pin in MODEL_PINS.items()}, record_event=observed_event,
+                    measure_decision_state=lambda: measure_workspace_decision_state(
+                        directory / "episode" / "workspace.img", episode_deadline=episode_deadline), **config)
             from experiments.lead_req030.native_hf_text_adapter import NativeHFTextAdapter
             info = next(m for m in release["models"]["models"] if m["repo"] == spec["model_id"])
             return NativeHFTextAdapter(tokenizer=tokenizer, model=models[spec["model_id"]],

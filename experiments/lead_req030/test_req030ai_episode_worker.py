@@ -331,7 +331,12 @@ if args==['--version']:print('Apptainer inert fixture');raise SystemExit(0)
 assert '--containall' in args and '--no-home' in args and args[args.index('--network')+1]=='none'
 command=args[-1]
 if 'DTR_PREFLIGHT' in command:print({preflight!r},end='')
-elif command=='fixture_observation':print('authored observation')
+elif command=='fixture_observation':
+    # Authored inert workspace mutation; the fake never executes model text.
+    workspace=__import__('pathlib').Path(args[args.index('--bind')+1].split(':/testbed:')[0])
+    with workspace.open('ab') as image:image.write(b'|inert observation')
+    if {behavior!r}=='state_unavailable9' and workspace.read_bytes().count(b'|inert observation')==8:workspace.unlink()
+    print('authored observation')
 elif command=='echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT':print('COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT')
 elif command=='/tmp/harvest.sh':
     if {behavior!r}=='harvest_stall':print(os.getpid(),flush=True);time.sleep(30)
@@ -358,6 +363,13 @@ def test_real_launch_default_agent_schedule_and_durable_decisions_1_9(tmp_path,m
     decisions=[e for e in events if e['event']=='routing_decision']
     assert [e['logical_call'] for e in decisions]==[1,9]
     assert [e['model_action'] for e in decisions]==list(schedule)
+    ready=next(json.loads(line) for line in (run/'lifecycle.jsonl').read_text().splitlines()
+               if json.loads(line)['event']=='model_ready')['monotonic']
+    assert decisions[0]['episode_deadline_monotonic']==decisions[1]['episode_deadline_monotonic']==ready+2700
+    assert 0<decisions[1]['remaining_episode_wall_seconds']<decisions[0]['remaining_episode_wall_seconds']<=2700
+    assert decisions[0]['workspace_fingerprint']['sha256']!=decisions[1]['workspace_fingerprint']['sha256']
+    assert [e['workspace_fingerprint']['bytes'] for e in decisions]==[
+        len(b'inert workspace seed'),len(b'inert workspace seed')+8*len(b'|inert observation')]
     for decision in decisions:
         assert decision['randomized_logger'] is False
         assert sum(decision['probability_vector'].values())==1.0
@@ -365,6 +377,10 @@ def test_real_launch_default_agent_schedule_and_durable_decisions_1_9(tmp_path,m
         assert decision['both_action_reservations']['S']==decision['both_action_reservations']['L']
         assert decision['both_action_reservations']['S']['input_ids']==[11,12,13]
         assert decision['remaining_logical_calls_including_current']==25-decision['logical_call']
+        assert decision['workspace_fingerprint']['method']=='sha256_raw_workspace_image'
+        assert decision['workspace_fingerprint']['semantic_content_identity'] is False
+        assert decision['workspace_fingerprint']['hash_elapsed_seconds']>=0
+        assert decision['remaining_episode_wall_seconds']==decision['episode_deadline_monotonic']-decision['measured_at_monotonic']
     requests=[e for e in events if e['event']=='request']
     responses=[e for e in events if e['event']=='response']
     assert [e['physical_calls'] for e in requests]==list(range(1,11))
@@ -377,6 +393,97 @@ def test_real_launch_default_agent_schedule_and_durable_decisions_1_9(tmp_path,m
     assert (run/'episode'/'patch.supervisor.json').is_file()
     assert receipt['cleanup_verified'] and receipt['submission_eligible']
     assert (run/'episode'/'patch.diff').read_text()=='authored inert patch\n'
+
+
+def test_real_launch_workspace_receipt_failure_at_decision9_prevents_ninth_generation(tmp_path,monkeypatch):
+    monkeypatch.setenv('PYTHONPATH',str(worker.ROOT))
+    run,command=full_launch_fixture(tmp_path,'SL','state_unavailable9')
+    receipt=guard(run,command,deadlines(load=2,call=1,episode=5,outer=8,cleanup_grace=3))
+    assert receipt['status']=='infrastructure_unknown' and not receipt['submission_eligible']
+    assert receipt['worker_reaped'] and receipt['cleanup_verified']
+    assert receipt['assigned_slot_retained'] and receipt['operational_resolution']==0
+    events=[json.loads(line) for line in (run/'episode'/'agent'/'events.jsonl').read_text().splitlines()]
+    assert [e['physical_calls'] for e in events if e['event']=='request']==list(range(1,9))
+    assert [e['physical_calls'] for e in events if e['event']=='response']==list(range(1,9))
+    assert [e['logical_call'] for e in events if e['event']=='routing_decision']==[1]
+    assert not (run/'episode'/'patch.diff').exists()
+
+
+def test_owned_raw_workspace_hash_is_exact_and_overhead_is_measured(tmp_path):
+    path=tmp_path/'workspace.img';data=b'authored image bytes'*1200;path.write_bytes(data)
+    deadline=time.monotonic()+2700
+    state=worker.measure_workspace_decision_state(path,episode_deadline=deadline)
+    assert state['workspace_fingerprint']['sha256']==worker.digest_file(path)
+    assert state['workspace_fingerprint']['bytes']==len(data)
+    assert state['workspace_fingerprint']['hash_elapsed_seconds']>=0
+    assert 0<state['remaining_episode_wall_seconds']<2700
+    assert state['remaining_episode_wall_seconds']==deadline-state['measured_at_monotonic']
+    assert state['workspace_fingerprint']['semantic_content_identity'] is False
+
+
+@pytest.mark.parametrize('kind',['symlink','fifo','empty','over_cap'])
+def test_workspace_hash_rejects_unbounded_or_nonregular_input(tmp_path,kind):
+    path=tmp_path/'workspace.img'
+    if kind=='symlink':
+        target=tmp_path/'target';target.write_bytes(b'owned');path.symlink_to(target)
+    elif kind=='fifo':os.mkfifo(path)
+    elif kind=='empty':path.write_bytes(b'')
+    else:
+        with path.open('wb') as file:file.truncate(8*1024**3+1)
+    with pytest.raises((OSError,ValueError)):
+        worker.measure_workspace_decision_state(path,episode_deadline=time.monotonic()+2700)
+
+
+def test_workspace_mutation_during_hash_is_rejected(tmp_path,monkeypatch):
+    path=tmp_path/'workspace.img';path.write_bytes(b'authored bytes')
+    read=worker.os.read;mutated=False
+    def mutate(fd,size):
+        nonlocal mutated
+        data=read(fd,size)
+        if data and not mutated:
+            mutated=True
+            with path.open('ab') as image:image.write(b'changed')
+        return data
+    monkeypatch.setattr(worker.os,'read',mutate)
+    with pytest.raises(ValueError,match='changed'):
+        worker.measure_workspace_decision_state(path,episode_deadline=time.monotonic()+2700)
+
+
+def test_workspace_path_replacement_during_hash_is_rejected(tmp_path,monkeypatch):
+    path=tmp_path/'workspace.img';path.write_bytes(b'authored bytes')
+    replacement=tmp_path/'replacement.img';replacement.write_bytes(b'authored bytes')
+    read=worker.os.read;replaced=False
+    def replace(fd,size):
+        nonlocal replaced
+        data=read(fd,size)
+        if data and not replaced:
+            replaced=True
+            replacement.replace(path)
+        return data
+    monkeypatch.setattr(worker.os,'read',replace)
+    with pytest.raises(ValueError,match='changed'):
+        worker.measure_workspace_decision_state(path,episode_deadline=time.monotonic()+2700)
+
+
+def test_deadline_consumed_by_workspace_hash_produces_time_exceeded_without_submission(tmp_path):
+    path=tmp_path/'workspace.img';path.write_bytes(b'authored bytes')
+    code='''
+import json,sys,types
+from pathlib import Path
+from experiments.lead_req030.seaborn_runner_qualification import load_pinned_default_agent
+load_pinned_default_agent()
+from experiments.lead_req030 import req030ai_episode_worker as w
+from minisweagent.exceptions import TimeExceeded
+clock=iter([1.0,1.1,2.1])
+w.time=types.SimpleNamespace(monotonic=lambda:next(clock))
+try:w.measure_workspace_decision_state(Path(sys.argv[1]),episode_deadline=2.0)
+except TimeExceeded as exc:print(json.dumps(exc.messages[-1]))
+else:raise AssertionError('expired hash was accepted')
+'''
+    proc=subprocess.run([sys.executable,'-c',code,str(path)],cwd=worker.ROOT,capture_output=True,text=True,timeout=10)
+    assert proc.returncode==0,proc.stderr
+    result=json.loads(proc.stdout)
+    assert result['extra']=={'exit_status':'TimeExceeded','submission':''}
 
 
 def test_harvest_deadline_waits_for_real_supervisor_owner_eof_cleanup(tmp_path,monkeypatch):

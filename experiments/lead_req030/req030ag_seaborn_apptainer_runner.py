@@ -466,11 +466,19 @@ def run_pinned_agent(*, agent_class: type,
             if kind in {"routing_decision", "routing_reservation_denied"}:
                 required = {"event", "schedule", "logical_call", "decision_index", "physical_calls_before",
                     "per_model_physical_calls_before", "assignment", "randomized_logger", "both_action_reservations",
-                    "remaining_logical_calls_including_current", "elapsed_time_eligibility"}
+                    "remaining_logical_calls_including_current", "elapsed_time_eligibility",
+                    "remaining_episode_wall_seconds", "episode_deadline_monotonic", "measured_at_monotonic",
+                    "workspace_fingerprint"}
                 if kind == "routing_decision":
                     required |= {"model_action", "model_id", "revision", "probability", "probability_vector"}
                 if set(event) != required:
                     raise ValueError("routing receipt differs from the explicit public ledger schema")
+                from experiments.lead_req030.req030ai_schedule_adapter import validate_decision_state
+                validate_decision_state({key: event[key] for key in (
+                    "remaining_episode_wall_seconds", "episode_deadline_monotonic", "measured_at_monotonic",
+                    "workspace_fingerprint")})
+                if event["remaining_episode_wall_seconds"] <= 0:
+                    raise ValueError("routing acceptance cannot occur after the common episode deadline")
                 if (event["schedule"] not in {"SS", "SL", "LS", "LL"}
                         or event["logical_call"] not in {1, 9}
                         or event["decision_index"] != (1 if event["logical_call"] == 1 else 2)

@@ -1,3 +1,7 @@
+## 30 September2026 — experiment validity and complete conditional implementation
+
+AH27950747 is terminal acquisition-only failure: all8 images timed out,16 controls unattempted, zero model calls. [AJ scientific review](../docs/req030aj_systematic_review_20260930.md) completes the conditional32-cell coordinator/native accounting/independent strict and upstream grading with812 default and343 focused tests, all inert. [AK](../docs/req030ak_local_build_controls_20260930.md) freezes one same-cohort local build-temp correction. No empirical competence or H/P benefit is added; manuscript source/PDF unchanged, no unchanged rebuild. Readiness55%,Δ0,range45–65%; competent fixed-target comparison/inference, empirical synthesis and independent reproduction/author package remain.
+
 ## 27 September 2026 — scaffold/evidence synthesis
 
 42-pagePDF rebuilt and changedpages35–42 visually reviewed. Django task controls and incomplete paired screen integrated; omitted upstream recovery identified as lead-design limitation, not retroactive success or general model incapacity. Theory and fixed primary target unchanged. Validation: `validation_20260927_scaffold.json`. Readiness55%,Δ0,range45–65%; competent comparison/inference, final synthesis and independent reproducibility/author package remain.
