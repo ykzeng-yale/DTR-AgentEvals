@@ -1,3 +1,11 @@
+## REQ030AH design/integration audit — 30 September 2026
+
+No new empirical model outcome. All DTR jobs are terminal; `27941865` retains its verified control-blocked/zero-model classification. A coherent [CPU-only whole-cohort release](req030ah_whole_cohort_controls_20260930.md) now assigns REQ009 ranks 13–20, eight tasks and 16 control arms, with exact public/evaluator/image/source pins and no passing-subset promotion. The eight tasks contain 12 F2P and 1,386 P2P checks; these are nested checks, not independent tasks. Two offline input builds matched byte-for-byte across 18 files. Resource access is available; same-shape CPU estimates, not actual jobs, are documented.
+
+Systematic integration review found source handoff, model-directory collision, Python scope, dataclass and harvest defects, plus a production supervisor schema mismatch and incomplete cancellation paths. Consolidated deterministic regressions exercise their full inert execution paths; passing fixtures make no claims about real-model success or H/P benefit. Exact-source tests and source/design publication are required before dispatch; the eventual CPU receipt and raw terminal replay will establish outcomes. Model inference is not authorized by a CPU pass.
+
+Readiness **55%, change 0 points, range 45–65%**; competent fixed-target comparison/inference, synthesis and independent reproduction/package remain.
+
 ## Current interpretation — 30 September 2026, investment and target audit
 
 The [evidence review](investment_evidence_review_20260930.md) independently reconciles the principal real-policy counts, separates synthetic gains from real adaptive-benefit claims, and corrects the lead's conflation of prospective SWE-bench H/P with archived MBPP/HumanEval branch/log inference. SWE-bench is a declared prospective v2 target; it cannot resolve the archived target by transport. The earlier instruction to require a return to MBPP/HumanEval does not follow and is retracted. V10's control failure and all raw outcomes remain unchanged; no new run or endpoint is released. Readiness **55%, change 0 points, range 45–65%**; competent comparisons/valid inference, synthesis, and independent reproducibility/package remain.

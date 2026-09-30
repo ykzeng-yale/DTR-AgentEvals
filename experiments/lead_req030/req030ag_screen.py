@@ -543,20 +543,29 @@ def run_supervised(apptainer: str, image: Path, workspace_image: Path, command: 
     proc_cmd = [sys.executable, str(SUPERVISOR), "--owner-fd", str(rfd), "--out", str(output_path),
                 "--receipt", str(receipt_path), "--seconds", str(seconds), "--cap", str(MAX_EPISODE_OUTPUT),
                 "--", *argv]
-    proc = subprocess.Popen(proc_cmd, stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL,
-                             stderr=subprocess.DEVNULL, close_fds=True, pass_fds=(rfd,), start_new_session=True)
+    try:
+        proc = subprocess.Popen(proc_cmd, stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL,
+                                 stderr=subprocess.DEVNULL, close_fds=True, pass_fds=(rfd,), start_new_session=True)
+    except BaseException:
+        os.close(rfd); os.close(wfd)
+        raise
     os.close(rfd)
     try:
         rc = proc.wait(timeout=seconds + 20)
     except subprocess.TimeoutExpired:
+        raise RuntimeError("bounded supervisor exceeded outer deadline")
+    finally:
+        # The owner pipe is the production cancellation mechanism. Give the
+        # supervisor time to kill its container group before stopping it.
         os.close(wfd)
         try:
-            proc.terminate(); proc.wait(timeout=3)
+            proc.wait(timeout=7)
         except subprocess.TimeoutExpired:
-            proc.kill(); proc.wait(timeout=3)
-        raise RuntimeError("bounded supervisor exceeded outer deadline")
-    else:
-        os.close(wfd)
+            proc.terminate()
+            try:
+                proc.wait(timeout=3)
+            except subprocess.TimeoutExpired:
+                proc.kill(); proc.wait(timeout=3)
     if rc != 0:
         receipt = json.loads(receipt_path.read_text()) if receipt_path.is_file() else None
         raise RuntimeError(f"bounded supervisor exit {rc}; receipt={receipt}")
@@ -726,9 +735,10 @@ def run_control_or_grade(*, mode: str, task: dict, evaluation: dict, image: Path
 
 def launch_agent_episode(*, model_id: str, model_info: dict, model: Any, tokenizer: Any,
                          task: dict, release: dict, bundle: Path, model_run_dir: Path,
-                         image: Path, workspace_image: Path, apptainer: str, release_sha256: str,
+                         image: Path, source_tar: Path, workspace_image: Path, apptainer: str, release_sha256: str,
                          event_parent: Path, expected_image_head: str) -> dict:
     from experiments.lead_req030.seaborn_runner_qualification import load_pinned_default_agent
+    DefaultAgent = load_pinned_default_agent()
     import torch
     from experiments.lead_req030.native_hf_text_adapter import NativeHFTextAdapter
     from experiments.lead_req030.req030ag_seaborn_apptainer_runner import run_pinned_agent
@@ -740,12 +750,8 @@ def launch_agent_episode(*, model_id: str, model_info: dict, model: Any, tokeniz
     if prompt["id"] != SYSTEM_PROMPT_ID or prompt["system_template"] != SYSTEM_TEMPLATE or prompt["instance_template"] != INSTANCE_TEMPLATE:
         raise ValueError("public prompt differs from source-pinned REQ030AG prompt")
     task = parse_public_task(public, allowed)
-    task_work = event_parent / "workspace.img"
-    if task_work.exists():
-        task_work.unlink()
-    seed_tar = event_parent / "testbed.tar"
-    make_workspace(seed_tar, event_parent / "temporary_seed", task_work, uid=os.getuid(), gid=os.getgid())
-    DefaultAgent = load_pinned_default_agent()
+    task_work = workspace_image
+    make_workspace(source_tar, event_parent / "temporary_seed", task_work, uid=os.getuid(), gid=os.getgid())
 
     def parser(raw: bytes):
         return parse_public_task(raw, allowed)
@@ -765,26 +771,13 @@ def launch_agent_episode(*, model_id: str, model_info: dict, model: Any, tokeniz
             public_projection=public, run_directory=model_run_dir, apptainer=apptainer,
             image=image, image_sha256=sha_file(image), workspace_image=task_work,
             workspace_sha256=sha_file(task_work), supervisor=SUPERVISOR,
-            supervisor_sha256=sha_file(SUPERVISOR), release_id="req030ag-development-20260930-v10",
+            supervisor_sha256=sha_file(SUPERVISOR), release_id=release["release_id"],
             release_sha256=release_sha256,
             step_limit=24, wall_time_limit_seconds=2700, model_context_limit=16384,
             model_max_new_tokens=1536, tool_timeout_seconds=60, output_cap_bytes=4*1024*1024,
             action_cap_bytes=1024*1024, max_consecutive_format_errors=3,
             public_task_parser=parser, agent_preparer=preparer)
         agent_result = outcome["result"]
-        # Include added/changed tracked files and untracked non-ignored files in
-        # the patch artifact, but never execute the model's text on the host.
-        harvest = event_parent / "harvest"
-        harvest.mkdir(mode=0o700)
-        harvest.write_text(patch_harvest_script(task["base_commit"]))
-        harvest.chmod(0o500)
-        extra = ["--bind", f"{harvest.resolve()}:/tmp/harvest.sh:ro"]
-        patch, sup = run_supervised(apptainer, image, task_work, ["/bin/bash", "/tmp/harvest.sh"],
-            output_path=event_parent / "patch.out", receipt_path=event_parent / "patch.supervisor.json",
-            seconds=30, extra_binds=extra)
-        if len(patch) > MAX_AGENT_PATCH:
-            raise RuntimeError("agent submission patch exceeds the frozen 4 MiB cap")
-        (event_parent / "patch.diff").write_bytes(patch)
         events_path = Path(outcome["run_directory"]) / "events.jsonl"
         events = [json.loads(line) for line in events_path.read_text().splitlines() if line]
         response_events = [event for event in events if event.get("event") == "response"]
@@ -793,9 +786,12 @@ def launch_agent_episode(*, model_id: str, model_info: dict, model: Any, tokeniz
         physical_calls = finish_events[-1].get("physical_model_calls") if finish_events else None
         if physical_calls != len(response_events) or request_count != len(response_events):
             raise RuntimeError("physical call count differs from durable request/response events")
+        exit_status = agent_result.get("exit_status", "")
+        if exit_status not in {"Submitted", "LimitsExceeded", "TimeExceeded", "RepeatedFormatError"}:
+            raise RuntimeError(f"unclassified agent exit: {exit_status!r}")
         torch.cuda.synchronize()
-        return {"task_id": task.instance_id, "model_id": model_info["repo"], "revision": model_info["revision"],
-                "agent_exit_status": agent_result.get("exit_status", ""),
+        episode = {"task_id": task.instance_id, "model_id": model_info["repo"], "revision": model_info["revision"],
+                "agent_exit_status": exit_status,
                 "agent_submission_bytes": len(str(agent_result.get("submission", "")).encode()),
                 "physical_calls": physical_calls, "trajectory_sha256": outcome["trajectory_sha256"],
                 "event_log_sha256": sha_file(events_path),
@@ -807,9 +803,34 @@ def launch_agent_episode(*, model_id: str, model_info: dict, model: Any, tokeniz
                 "tool_output_bytes": sum(event.get("retained_bytes", 0) for event in events if event.get("event") == "action_finish"),
                 "peak_allocated_bytes": torch.cuda.max_memory_allocated(),
                 "peak_reserved_bytes": torch.cuda.max_memory_reserved(),
-                "patch_sha256": sha_bytes(patch), "patch_bytes": len(patch),
-                "patch_harvest_supervisor": sup, "workspace_sha256_after_harvest": sha_file(task_work),
+                "submission_eligible": exit_status == "Submitted",
                 "status": "episode_complete"}
+        if exit_status != "Submitted":
+            # The frozen endpoint requires explicit submission. Never salvage
+            # an intermediate workspace after a normal budget/format stop.
+            episode.update({"patch_bytes": 0, "patch_sha256": sha_bytes(b""),
+                "patch_harvest_supervisor": None, "workspace_sha256_at_exit": sha_file(task_work),
+                "grade": {"mode": "agent", "graded": True, "resolved": False,
+                          "reason": "no_eligible_submission", "agent_exit_status": exit_status},
+                "outcome_source": "operational_limit"})
+            return episode
+        # Include added/changed tracked files and untracked non-ignored files in
+        # an explicitly submitted patch; never execute model text on the host.
+        harvest = event_parent / "harvest.sh"
+        with harvest.open("x") as stream:
+            stream.write(patch_harvest_script(task.base_commit))
+        harvest.chmod(0o500)
+        extra = ["--bind", f"{harvest.resolve()}:/tmp/harvest.sh:ro"]
+        patch, sup = run_supervised(apptainer, image, task_work, ["/bin/bash", "/tmp/harvest.sh"],
+            output_path=event_parent / "patch.out", receipt_path=event_parent / "patch.supervisor.json",
+            seconds=30, extra_binds=extra)
+        if len(patch) > MAX_AGENT_PATCH:
+            raise RuntimeError("agent submission patch exceeds the frozen 4 MiB cap")
+        (event_parent / "patch.diff").write_bytes(patch)
+        episode.update({"patch_sha256": sha_bytes(patch), "patch_bytes": len(patch),
+                        "patch_harvest_supervisor": sup,
+                        "workspace_sha256_after_harvest": sha_file(task_work)})
+        return episode
     finally:
         if task_work.exists():
             task_work.unlink()
@@ -954,6 +975,7 @@ def execute_batch(args) -> dict:
     batch["model_memory_after_both"] = load_receipt["after_both_models"]
     _atomic_json(run_root / "batch_summary.json", batch)
 
+    import torch
     run_root_episodes = run_root / "episodes"; run_root_episodes.mkdir(mode=0o700)
     first_models = ["Qwen/Qwen2.5-Coder-7B-Instruct"] * 4 + ["Qwen/Qwen2.5-Coder-14B-Instruct"] * 4
     ordered = sorted(release["tasks"], key=lambda t: (hashlib.sha256(
@@ -971,7 +993,7 @@ def execute_batch(args) -> dict:
         second = "Qwen/Qwen2.5-Coder-14B-Instruct" if first.endswith("7B-Instruct") else "Qwen/Qwen2.5-Coder-7B-Instruct"
         for model_id in (first, second):
             model_info = next(m for m in release["models"]["models"] if m["repo"] == model_id)
-            ep_dir = run_root_episodes / tid / model_id.rsplit("-",1)[-1]
+            ep_dir = run_root_episodes / tid / model_id.rsplit("/", 1)[-1]
             ep_dir.mkdir(mode=0o700, parents=True, exist_ok=False)
             batch["model_episode_started"] = True
             _atomic_json(run_root / "batch_summary.json", batch)
@@ -981,22 +1003,26 @@ def execute_batch(args) -> dict:
                     model=models[model_id], tokenizer=tokenizer,
                     task={"instance_id": tid, "base_commit": task["base_commit"]}, release=release,
                     bundle=bundle, model_run_dir=ep_dir / "agent", image=image,
-                    workspace_image=ep_dir / "workspace.img", apptainer=apptainer,
+                    source_tar=source_root / f"{tid}.tar", workspace_image=ep_dir / "workspace.img", apptainer=apptainer,
                     release_sha256=batch["release_sha256"], event_parent=ep_dir,
                     expected_image_head=batch["task_image_heads"][tid])
-                evaluation = json.loads((bundle / "evaluator" / f"{tid}.json").read_bytes())
-                public_task = json.loads((bundle / "public" / f"{tid}.json").read_bytes())
-                patch_data = (ep_dir / "patch.diff").read_bytes()
-                grade_dir = ep_dir / "grade"; grade_dir.mkdir(mode=0o700)
-                ws = grade_dir / "workspace.img"
-                make_workspace(source_root / f"{tid}.tar", grade_dir / "seed_temp", ws,
-                               uid=os.getuid(), gid=os.getgid())
-                grade = run_control_or_grade(mode="agent", task=public_task, evaluation=evaluation,
-                    image=image, workspace_image=ws, eval_dir=grade_dir / "evaluator", output_dir=grade_dir,
-                    apptainer=apptainer, expected_image_head=batch["task_image_heads"][tid],
-                    patch_bytes=patch_data)
-                ws.unlink()
-                episode["grade"] = grade
+                if episode["submission_eligible"]:
+                    evaluation = json.loads((bundle / "evaluator" / f"{tid}.json").read_bytes())
+                    public_task = json.loads((bundle / "public" / f"{tid}.json").read_bytes())
+                    patch_data = (ep_dir / "patch.diff").read_bytes()
+                    grade_dir = ep_dir / "grade"; grade_dir.mkdir(mode=0o700)
+                    ws = grade_dir / "workspace.img"
+                    try:
+                        make_workspace(source_root / f"{tid}.tar", grade_dir / "seed_temp", ws,
+                                       uid=os.getuid(), gid=os.getgid())
+                        grade = run_control_or_grade(mode="agent", task=public_task, evaluation=evaluation,
+                            image=image, workspace_image=ws, eval_dir=grade_dir / "evaluator", output_dir=grade_dir,
+                            apptainer=apptainer, expected_image_head=batch["task_image_heads"][tid],
+                            patch_bytes=patch_data)
+                    finally:
+                        if ws.exists():
+                            ws.unlink()
+                    episode["grade"] = grade
                 episode["episode_wall_seconds"] = time.monotonic() - episode_started
                 torch.cuda.synchronize()
                 episode["peak_allocated_bytes"] = torch.cuda.max_memory_allocated()
@@ -1014,7 +1040,6 @@ def execute_batch(args) -> dict:
                            "output_tokens": sum(e.get("output_tokens", 0) for e in responses),
                            "event_log_sha256": sha_file(events_path) if events_path.is_file() else None}
                 try:
-                    import torch
                     torch.cuda.synchronize()
                     episode["peak_allocated_bytes"] = torch.cuda.max_memory_allocated()
                     episode["peak_reserved_bytes"] = torch.cuda.max_memory_reserved()

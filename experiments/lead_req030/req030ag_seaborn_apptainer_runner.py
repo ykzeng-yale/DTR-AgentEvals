@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 import os
 import platform
 import stat
@@ -26,6 +27,72 @@ MAX_ACTION_BYTES = 1024 * 1024
 MAX_REQUEST_EVENT_BYTES = 8 * 1024 * 1024
 MAX_RESPONSE_EVENT_BYTES = 1024 * 1024
 MIN_WORKSPACE_FREE_BYTES = 64 * 1024 * 1024
+MAX_SUPERVISOR_RECEIPT_BYTES = 16 * 1024
+
+
+def _read_private_artifact(path: Path, cap: int) -> bytes:
+    """Read a bounded owned regular receipt/output without following a symlink."""
+    fd = os.open(path, os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0))
+    try:
+        info = os.fstat(fd)
+        if (not stat.S_ISREG(info.st_mode) or info.st_uid != os.getuid()
+                or stat.S_IMODE(info.st_mode) != 0o600 or info.st_size > cap):
+            raise ValueError(f"{path.name} is not a bounded private regular artifact")
+        with os.fdopen(fd, "rb", closefd=False) as stream:
+            data = stream.read(cap + 1)
+        if len(data) != info.st_size or len(data) > cap:
+            raise ValueError(f"{path.name} changed or exceeded its byte cap")
+        return data
+    finally:
+        os.close(fd)
+
+
+def _unique_json_object(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
+    result: dict[str, Any] = {}
+    for key, value in pairs:
+        if key in result:
+            raise ValueError("duplicate key in supervisor receipt")
+        result[key] = value
+    return result
+
+
+def _supervisor_record(data: bytes, *, cap: int) -> dict[str, Any]:
+    """Accept the production AG supervisor contract, including explicit no-error."""
+    record = json.loads(data, object_pairs_hook=_unique_json_object)
+    fields = {"reason", "pid", "returncode", "retained_bytes", "elapsed", "error"}
+    if not isinstance(record, dict) or set(record) != fields:
+        raise ValueError("supervisor receipt schema mismatch")
+    if record["error"] is not None:
+        raise ValueError("supervisor reported an internal error")
+    # Owner loss and startup/internal failures cannot be ordinary tool feedback.
+    if record["reason"] not in {"exited", "deadline", "output_limit"}:
+        raise ValueError("supervisor did not finish a supervised command")
+    if type(record["pid"]) is not int or record["pid"] <= 0:
+        raise ValueError("supervisor command PID is malformed")
+    if type(record["returncode"]) is not int:
+        raise ValueError("supervisor command return code is malformed")
+    count = record["retained_bytes"]
+    if type(count) is not int or not 0 <= count <= cap:
+        raise ValueError("supervisor retained byte count is malformed")
+    elapsed = record["elapsed"]
+    if type(elapsed) not in (int, float) or not math.isfinite(elapsed) or elapsed < 0:
+        raise ValueError("supervisor elapsed time is malformed")
+    if record["reason"] == "output_limit" and count != cap:
+        raise ValueError("supervisor output limit receipt is inconsistent")
+    return record
+
+
+def _reap_after_owner_close(proc: subprocess.Popen) -> None:
+    """Give the pinned supervisor its cleanup window before stopping it."""
+    try:
+        proc.wait(timeout=7)
+    except subprocess.TimeoutExpired:
+        proc.terminate()
+        try:
+            proc.wait(timeout=3)
+        except subprocess.TimeoutExpired:
+            proc.kill()
+            proc.wait(timeout=3)
 
 
 def sha256_file(path: Path) -> str:
@@ -156,6 +223,7 @@ class ApptainerToolEnvironment:
         self.template_vars = {k: self.platform[k] for k in ("system", "release", "version", "machine")}
         self.host_net_id = os.readlink("/proc/self/ns/net")
         self.action_count = 0
+        self.preflight_attempted = False
         self.preflight_result = None
         self.closed = False
 
@@ -226,29 +294,24 @@ class ApptainerToolEnvironment:
             os.close(read_fd); os.close(owner_fd)
             self.event_log.write({"event": f"{label}_spawn_error", "error_type": type(exc).__name__,
                                   "error": str(exc)[:2048]})
-            return {"output": "", "returncode": -1, "exception_info": "supervisor spawn failed"}, b""
+            raise RuntimeError("bounded supervisor spawn failed") from exc
         os.close(read_fd)
         try:
             rc = proc.wait(timeout=seconds + 20)
-        except subprocess.TimeoutExpired:
+        except BaseException:
+            # Closing this pipe also covers KeyboardInterrupt/caller cancellation.
+            # The supervisor owns the command's separate process group.
             os.close(owner_fd)
-            try:
-                proc.terminate(); proc.wait(timeout=3)
-            except subprocess.TimeoutExpired:
-                proc.kill(); proc.wait(timeout=3)
-            rc = proc.returncode
+            _reap_after_owner_close(proc)
+            raise
         else:
             os.close(owner_fd)
         elapsed = time.monotonic() - started
-        if rc != 0 or not receipt.stat().st_size:
+        if rc != 0:
             raise RuntimeError(f"bounded supervisor failed: exit={rc}")
-        receipt_data = receipt.read_bytes()
-        if len(receipt_data) > 16 * 1024:
-            raise ValueError("supervisor receipt exceeds parser cap")
-        r = json.loads(receipt_data)
-        if set(r) != {"reason", "pid", "returncode", "retained_bytes", "elapsed"}:
-            raise ValueError("supervisor receipt schema mismatch")
-        output = out.read_bytes() if out.exists() else b""
+        receipt_data = _read_private_artifact(receipt, MAX_SUPERVISOR_RECEIPT_BYTES)
+        r = _supervisor_record(receipt_data, cap=self.output_cap_bytes)
+        output = _read_private_artifact(out, self.output_cap_bytes)
         if len(output) != r["retained_bytes"] or len(output) > self.output_cap_bytes:
             raise ValueError("supervisor output receipt mismatch")
         if label == "action":
@@ -265,8 +328,9 @@ class ApptainerToolEnvironment:
                  "extra": {"supervisor": finish}}, output)
 
     def preflight(self) -> dict[str, Any]:
-        if self.preflight_result is not None:
+        if self.preflight_attempted:
             raise RuntimeError("workspace preflight is single-use")
+        self.preflight_attempted = True
         script = "\n".join([
             "set -euo pipefail",
             'test \"$(readlink /proc/self/ns/net)\" != \"$DTR_HOST_NET_ID\"',
@@ -295,18 +359,20 @@ class ApptainerToolEnvironment:
             raise ValueError("workspace preflight marker missing/duplicated")
         fields = markers[0].split("\t")
         if (len(fields) != 7 or fields[2] != self.expected_base_commit
-                or any(len(value) != 40 for value in fields[1:5])
+                or any(len(value) != 40 or any(c not in "0123456789abcdef" for c in value)
+                       for value in fields[1:5])
                 or fields[3] != fields[4] or not fields[5].isdigit() or not fields[6].isdigit()):
             raise ValueError("workspace preflight fields malformed")
-        self.preflight_result = {"git_head": fields[1], "expected_base_commit": fields[2],
-                                 "source_tree": fields[3], "base_tree": fields[4],
-                                 "testbed_free_bytes": int(fields[5]), "tmp_free_bytes": int(fields[6])}
-        if self.preflight_result["testbed_free_bytes"] < MIN_WORKSPACE_FREE_BYTES:
+        accepted = {"git_head": fields[1], "expected_base_commit": fields[2],
+                    "source_tree": fields[3], "base_tree": fields[4],
+                    "testbed_free_bytes": int(fields[5]), "tmp_free_bytes": int(fields[6])}
+        if accepted["testbed_free_bytes"] < MIN_WORKSPACE_FREE_BYTES:
             raise ValueError("workspace free bytes below minimum")
-        self.event_log.write({"event": "workspace_preflight_accepted", **self.preflight_result,
+        self.event_log.write({"event": "workspace_preflight_accepted", **accepted,
             "host_platform": self.platform, "host_net_id": self.host_net_id,
             "image_sha256": self.image_sha256, "workspace_initial_sha256": self.workspace_initial_sha256,
             "apptainer_sha256": self.apptainer_sha256, "apptainer_version": self.apptainer_version})
+        self.preflight_result = accepted
         return dict(self.preflight_result)
 
     def execute(self, action: dict[str, Any], cwd: str = "", *, timeout: int | None = None) -> dict[str, Any]:

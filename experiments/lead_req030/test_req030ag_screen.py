@@ -379,3 +379,201 @@ def test_image_git_diagnostic_replay_binds_all_eight_scoped_receipts(tmp_path):
     log_path.write_text(f'"report_sha256": "{bad_sha}"\n')
     with pytest.raises(ValueError, match="scope/counters"):
         replay(diagnostic_path, manifest_path, image_manifest_path, log_path)
+
+
+@pytest.mark.parametrize("scenario,operational_exit", [
+    ("all_success", None), ("mixed_failures", "LimitsExceeded"),
+    ("mixed_failures", "TimeExceeded"), ("mixed_failures", "RepeatedFormatError"),
+    ("blocked_control", None),
+])
+def test_full_batch_inert_handoff_controls_both_model_arms_and_harvest(tmp_path, monkeypatch, scenario, operational_exit):
+    """Exercise production orchestration/parser/harvest with no process or model.
+
+    External acquisition, filesystem-image tools, GPU and agent are inert fakes.
+    This covers the joins that independent parser/adapter unit tests cannot cover.
+    The fixtures are authored here; no benchmark reference or generated code runs.
+    """
+    bundle = tmp_path / "bundle"
+    (bundle / "public").mkdir(parents=True)
+    (bundle / "evaluator").mkdir()
+    task_ids = [f"fixture{i}__issue-1" for i in range(8)]
+    models = ["Qwen/Qwen2.5-Coder-7B-Instruct", "Qwen/Qwen2.5-Coder-14B-Instruct"]
+    tasks = []
+    for i, tid in enumerate(task_ids):
+        public = {"instance_id": tid, "repo": "psf/requests", "base_commit": f"{i + 1:040x}",
+                  "problem_statement": "Public inert fixture; do not execute anything."}
+        raw = screen.canonical(public)
+        (bundle / "public" / f"{tid}.json").write_bytes(raw)
+        evaluation = {"instance_id": tid, "base_commit": public["base_commit"],
+                      "fail_to_pass": ["tests/a.py::test_fix"],
+                      "pass_to_pass": ["tests/a.py::test_keep"],
+                      "stock_eval_script": "EVALUATOR_ONLY_SENTINEL",
+                      "reference_patch": "REFERENCE_ONLY_SENTINEL"}
+        (bundle / "evaluator" / f"{tid}.json").write_text(json.dumps(evaluation))
+        tasks.append({**public, "public_projection_sha256": screen.sha_bytes(raw), "family": f"fixture{i}"})
+    release = {"release_id": "inert-full-batch-fixture", "tasks": tasks,
+               "models": {"models": [{"repo": name, "revision": f"{i + 1:040x}"}
+                                     for i, name in enumerate(models)]}}
+    manifest = tmp_path / "manifest.json"
+    manifest.write_bytes(screen.canonical(release))
+    wheels = tmp_path / "wheels"
+    wheels.mkdir()
+    wheel_manifest = tmp_path / "wheels.json"
+    wheel_manifest.write_text("[]")
+    args = types.SimpleNamespace(bundle=str(bundle), release=str(manifest),
+        release_sha256=screen.sha_file(manifest), run_root=str(tmp_path / "run"),
+        wheel_manifest=str(wheel_manifest), wheel_root=str(wheels), reuse_image_root=None)
+    controls, attempted, harvested, grades, model_loads, workspaces = [], [], [], [], [], []
+
+    def no_external_execution(*_args, **_kwargs):
+        pytest.fail("the inert batch fixture must not start any external process")
+
+    monkeypatch.setattr(screen.subprocess, "run", no_external_execution)
+    monkeypatch.setattr(screen.subprocess, "Popen", no_external_execution)
+    monkeypatch.setattr(screen.platform, "uname", lambda: types.SimpleNamespace(_asdict=lambda: {"system": "inert"}))
+    monkeypatch.setattr(screen, "load_release", lambda *_args: (release, manifest.read_bytes()))
+    monkeypatch.setattr(screen, "require_disk_floor", lambda _path, n: {"required_bytes": n, "free_bytes": n})
+    monkeypatch.setattr(screen, "validate_runtime_environment", lambda *_args: {"inert": True})
+    monkeypatch.setattr(screen.shutil, "which", lambda _name: "/inert/apptainer")
+    fake_torch = types.SimpleNamespace(cuda=types.SimpleNamespace(
+        synchronize=lambda: None, reset_peak_memory_stats=lambda: None,
+        max_memory_allocated=lambda: 0, max_memory_reserved=lambda: 0))
+    monkeypatch.setitem(sys.modules, "torch", fake_torch)
+
+    def fake_images(_release, image_root, *, reuse_image_root, on_image):
+        images = {}
+        for tid in task_ids:
+            path = image_root / f"{tid}.sif"
+            path.write_bytes(b"inert pinned image")
+            images[tid] = {"path": str(path), "sif_sha256": screen.sha_file(path)}
+            on_image(tid, images[tid])
+        return images
+
+    def fake_export(image, archive, _apptainer):
+        archive.write_bytes(("source:" + image.stem).encode())
+        return {"archive_sha256": screen.sha_file(archive), "archive_bytes": archive.stat().st_size}
+
+    def fake_workspace(source, _workdir, workspace, *, uid, gid):
+        # Using an invented per-episode testbed.tar rather than the exported
+        # source must fail here, before the fake runner is reached.
+        assert source.is_file() and source.parent.name == "sources"
+        assert source.read_bytes() == ("source:" + source.stem).encode()
+        with workspace.open("xb") as stream:
+            stream.write(b"inert workspace")
+        workspaces.append(workspace)
+        return {"image_sha256": screen.sha_file(workspace), "image_bytes": workspace.stat().st_size}
+
+    monkeypatch.setattr(screen, "pull_images", fake_images)
+    monkeypatch.setattr(screen, "_tree_for_task", lambda _image, base, _app: {"head": base, "accepted": True})
+    monkeypatch.setattr(screen, "export_task_tree", fake_export)
+    monkeypatch.setattr(screen, "make_workspace", fake_workspace)
+
+    def fake_download(_release, _model_root, _receipt):
+        assert len(controls) == 16 and all(row[2] for row in controls)
+
+    def fake_load(_release, _model_root, _run_root):
+        model_loads.append(True)
+        return {name: object() for name in models}, object(), {"loads": [], "after_both_models": {"free_bytes": 1}}
+
+    monkeypatch.setattr(screen, "download_model_assets", fake_download)
+    monkeypatch.setattr(screen, "_load_models", fake_load)
+    monkeypatch.setitem(sys.modules, "experiments.lead_req030.seaborn_runner_qualification",
+                        types.SimpleNamespace(load_pinned_default_agent=lambda: object))
+
+    class InertAdapter:
+        def __init__(self, **kwargs):
+            self.model_id = kwargs["model_id"]
+
+    monkeypatch.setitem(sys.modules, "experiments.lead_req030.native_hf_text_adapter",
+                        types.SimpleNamespace(NativeHFTextAdapter=InertAdapter))
+
+    def fake_run_agent(**kwargs):
+        public_bytes = kwargs["public_projection"]
+        assert b"REFERENCE_ONLY_SENTINEL" not in public_bytes
+        assert b"EVALUATOR_ONLY_SENTINEL" not in public_bytes
+        public = json.loads(public_bytes)
+        assert set(public) == {"instance_id", "repo", "base_commit", "problem_statement"}
+        assert kwargs["release_id"] == release["release_id"]
+        adapter = kwargs["model_factory"](lambda _event: None, {})
+        tid, mid = public["instance_id"], adapter.model_id
+        attempted.append((tid, mid, kwargs["run_directory"].parent))
+        run_dir = kwargs["run_directory"]
+        run_dir.mkdir(mode=0o700, exist_ok=False)
+        if scenario == "mixed_failures" and (tid, mid) == (task_ids[1], models[1]):
+            raise RuntimeError("inert infrastructure failure")
+        exit_status = (operational_exit if scenario == "mixed_failures"
+                       and (tid, mid) == (task_ids[0], models[0]) else "Submitted")
+        events = [{"event": "request", "input_tokens": 4},
+                  {"event": "response", "output_tokens": 2, "elapsed_seconds": 0,
+                   "finish_reason": "eos"},
+                  {"event": "agent_run_finish", "physical_model_calls": 1}]
+        (run_dir / "events.jsonl").write_text("".join(json.dumps(event) + "\n" for event in events))
+        return {"result": {"exit_status": exit_status, "submission": ""},
+                "run_directory": str(run_dir), "trajectory_sha256": "a" * 64}
+
+    monkeypatch.setitem(sys.modules, "experiments.lead_req030.req030ag_seaborn_apptainer_runner",
+                        types.SimpleNamespace(run_pinned_agent=fake_run_agent))
+
+    def fake_supervised(_app, _image, workspace, command, *, output_path, receipt_path, seconds, extra_binds):
+        assert workspace.is_file()
+        mode = output_path.stem
+        if mode == "patch":
+            tid, mid = output_path.parent.parent.name, output_path.parent.name
+            harvest = output_path.parent / "harvest.sh"
+            assert harvest.is_file() and not harvest.is_dir()
+            assert harvest.stat().st_mode & 0o777 == 0o500
+            base = next(task["base_commit"] for task in tasks if task["instance_id"] == tid)
+            assert harvest.read_text() == screen.patch_harvest_script(base)
+            assert command == ["/bin/bash", "/tmp/harvest.sh"]
+            harvested.append((tid, mid))
+            raw = b"inert submitted patch bytes\n"
+        else:
+            assert command == ["/bin/bash", "/eval/run.sh"]
+            if mode in {"baseline", "reference"}:
+                tid = output_path.parent.parent.name
+                valid = not (scenario == "blocked_control" and tid == task_ids[0] and mode == "baseline")
+                controls.append((tid, mode, valid))
+            else:
+                assert mode == "agent"
+                tid, mid = output_path.parent.parent.parent.name, output_path.parent.parent.name
+                valid = not (scenario == "mixed_failures" and tid == task_ids[2] and mid == models[0].split("/")[1])
+                grades.append((tid, mid, valid))
+            fixed = "FAILED" if mode == "baseline" or not valid else "PASSED"
+            kept = "FAILED" if mode == "baseline" and not valid else "PASSED"
+            raw = ("DTR_TEST_START\n>>>>> Start Test Output\n"
+                   f"{fixed} tests/a.py::test_fix\n{kept} tests/a.py::test_keep\n"
+                   ">>>>> End Test Output\nDTR_TEST_END\n").encode()
+        receipt = {"reason": "exited", "returncode": 0, "retained_bytes": len(raw), "elapsed": 0}
+        output_path.write_bytes(raw)
+        receipt_path.write_text(json.dumps(receipt))
+        return raw, receipt
+
+    monkeypatch.setattr(screen, "run_supervised", fake_supervised)
+    result = screen.execute_batch(args)
+    assert json.loads((Path(args.run_root) / "batch_summary.json").read_text()) == result
+    assert not any(path.exists() for path in workspaces)
+    if scenario == "blocked_control":
+        assert result["status"] == "BLOCKED_CONTROLS"
+        assert controls == [(task_ids[0], "baseline", False)]
+        assert not attempted and not harvested and not model_loads
+        assert result["models_loaded"] is False
+        return
+    assert len(controls) == 16 and len(attempted) == 16
+    assert {(tid, mid) for tid, mid, _path in attempted} == {(tid, mid) for tid in task_ids for mid in models}
+    assert len({path for _tid, _mid, path in attempted}) == 16
+    assert result["model_assets_cleanup"]["model_root_removed"] is True
+    if scenario == "all_success":
+        assert result["status"] == "COMPLETED"
+        assert len(harvested) == len(grades) == 16
+        assert result["outcome_counts"] == {"resolved": 16, "unresolved": 0, "unknown_or_ungraded": 0}
+    else:
+        assert result["status"] == "COMPLETED_WITH_UNKNOWN"
+        assert len(harvested) == len(grades) == 14
+        assert (task_ids[0], models[0].split("/")[1]) not in harvested
+        assert result["outcome_counts"] == {"resolved": 13, "unresolved": 2, "unknown_or_ungraded": 1}
+        failed = next(row for row in result["episodes"]
+                      if row["task_id"] == task_ids[0] and row["model_id"] == models[0])
+        assert failed["grade"]["reason"] == "no_eligible_submission"
+        assert failed["agent_exit_status"] == operational_exit
+        assert failed["submission_eligible"] is False
+        assert not (Path(args.run_root) / "episodes" / task_ids[0] / models[0].split("/")[1] / "patch.diff").exists()
