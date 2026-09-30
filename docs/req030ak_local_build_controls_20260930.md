@@ -1,6 +1,6 @@
 # DTR-REQ-030AK: one complete-cohort acquisition correction
 
-30 September2026. Exact release `req030ak-controls-20260930-a`, manifest [configs/req030ak_controls_20260930.json](../configs/req030ak_controls_20260930.json), SHA-256 `7dea2cec3e0ef2a141ef91cb1f799a2a31820ba96b8b37e133625fb8832d7a9c`. This releases **one CPU-only same-cohort qualification attempt**, not models, generated actions, H/P, CONFIRM or full benchmark. Actual job27960658 was submitted14:36:05ET; first Slurm receipt PENDING, StartUnknown. [Dispatch](../results/local_req030/req030ak_submission_20260930/receipt.json) binds the previously published source972cbf7b065af175be81679a1469386d6b2e23e0. Submission is not start.
+30 September2026. Exact release `req030ak-controls-20260930-a`, manifest [configs/req030ak_controls_20260930.json](../configs/req030ak_controls_20260930.json), SHA-256 `7dea2cec3e0ef2a141ef91cb1f799a2a31820ba96b8b37e133625fb8832d7a9c`. This releases **one CPU-only same-cohort qualification attempt**, not models, generated actions, H/P, CONFIRM or full benchmark. Actual job27960658 was submitted14:36:05ET; first Slurm receipt PENDING, StartUnknown. [Dispatch](../results/local_req030/req030ak_submission_20260930/receipt.json) binds the previously published source972cbf7b065af175be81679a1469386d6b2e23e0. Actual start14:42:18ET is subsequently verified in the [running receipt](../results/local_req030/req030ak_submission_20260930/running_receipt.json); controls remain pending at its capture.
 
 ## Terminal basis and precise correction
 
