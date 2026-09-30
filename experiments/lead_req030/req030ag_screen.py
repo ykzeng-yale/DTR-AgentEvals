@@ -736,7 +736,8 @@ def run_control_or_grade(*, mode: str, task: dict, evaluation: dict, image: Path
 def launch_agent_episode(*, model_id: str, model_info: dict, model: Any, tokenizer: Any,
                          task: dict, release: dict, bundle: Path, model_run_dir: Path,
                          image: Path, source_tar: Path, workspace_image: Path, apptainer: str, release_sha256: str,
-                         event_parent: Path, expected_image_head: str) -> dict:
+                         event_parent: Path, expected_image_head: str,
+                         model_factory_builder: Any = None) -> dict:
     from experiments.lead_req030.seaborn_runner_qualification import load_pinned_default_agent
     DefaultAgent = load_pinned_default_agent()
     import torch
@@ -760,6 +761,8 @@ def launch_agent_episode(*, model_id: str, model_info: dict, model: Any, tokeniz
         return prepare_screen_agent(raw, environment=environment, task_pins=allowed)
 
     def factory(record_event, config):
+        if model_factory_builder is not None:
+            return model_factory_builder(record_event, config)
         return NativeHFTextAdapter(tokenizer=tokenizer, model=model, model_id=model_info["repo"],
             revision=model_info["revision"], context_limit=16384, max_new_tokens=1536,
             record_event=record_event, device="cuda:0", **config)

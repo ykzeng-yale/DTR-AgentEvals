@@ -1,3 +1,15 @@
+## Joined execution and design review — 30 September 2026, REQ030AI
+
+While actual CPU cohort **27950747** runs, the [joined execution implementation](req030ai_execution_integration_20260930.md) adds an independently owned native worker and all four fixed-schedule paths through the existing pinned agent/sandbox runner. Actual driver-SIGKILL, stuck generation/decode, timeout and harvest-cleanup fixtures pass. This is unreleased implementation, not a model run. The [scientific design review](req030ai_opportunity_design_review_20260930.md) separates the 32 proposed schedule cells from the 16 primary-relevant S-start trajectories, preserves algorithmic unknowns, and corrects the 37h20 component ceiling before extra setup/cleanup. No competence or H/P effect is established; the old any-one-arm band is not evidence of a competent pair.
+
+Next terminal review must independently replay **all 16 AH controls**, inspect all source-tree contracts and retain failures/unknowns. Current AH source remains `594cf2c6`, unchanged by AI. Do not feed reference/control outputs into any model, promote a passing subset, revive a closed task, or treat an infrastructure pass as a model release. Complete future cohort aggregation/CPU grading, exposure reconciliation and the exact order/resource/source contract together before any actual model dispatch; use the new worker instead of the old uninterruptible in-process CUDA loop. No separate generic GPU probe is inherently required. Readiness **55%, change 0 points, range 45–65%**; competent comparison/inference, synthesis and independent reproduction/package remain.
+
+## Actual running state — 30 September 2026, REQ030AH
+
+Job **27950747 RUNNING**, actual start **11:45:41 ET**, 36 seconds after submission. At elapsed 10:04 the CPU cohort was in image acquisition/setup, with all 8 task/16 control slots present and no completed control outcome. [Running receipt](../results/local_req030/req030ah_submission_20260930/running_receipt.json). The source/payload and no-model scope below are unchanged. Keep this run; do not duplicate or poll continuously. Retrieve all raw controls/accounting at the next terminal review.
+
+Readiness **55%, change 0 points, range 45–65%**; competent comparison/inference, synthesis and independent reproduction/package remain.
+
 ## Actual dispatch — 30 September 2026, REQ030AH
 
 CPU job **27950747** was submitted at **11:45:05 ET**, `pi_gt353/day/normal`, 4 CPU/32 GiB/eight hours/no GPU. The actual `scontrol` receipt is **PENDING**, reason `None`, start `Unknown`; submission is not execution. [Receipt](../results/local_req030/req030ah_submission_20260930/receipt.json). Exact source commit `594cf2c6bb236bd810243fde1b586a34cce76ccf`; remote payload hash verified. Inspect this owned ID once at the next wake; no duplicate or queue racing. Read the [complete release](req030ah_whole_cohort_controls_20260930.md) before terminal review. All eight assigned tasks/16 baseline-reference slots remain in scope, including failures. No model run is authorized by this CPU release. Advance the independent native-worker deadline/inference work while it queues/runs.

@@ -462,7 +462,36 @@ def run_pinned_agent(*, agent_class: type,
             "tool_action_cap_bytes": action_cap_bytes, "evaluator_input": "not accepted by runner API"})
         def record_model_event(event: dict) -> None:
             kind = event.get("event")
-            if kind == "request":
+            routing_fields = ("schedule", "logical_call", "model_action", "per_model_physical_calls")
+            if kind in {"routing_decision", "routing_reservation_denied"}:
+                required = {"event", "schedule", "logical_call", "decision_index", "physical_calls_before",
+                    "per_model_physical_calls_before", "assignment", "randomized_logger", "both_action_reservations",
+                    "remaining_logical_calls_including_current", "elapsed_time_eligibility"}
+                if kind == "routing_decision":
+                    required |= {"model_action", "model_id", "revision", "probability", "probability_vector"}
+                if set(event) != required:
+                    raise ValueError("routing receipt differs from the explicit public ledger schema")
+                if (event["schedule"] not in {"SS", "SL", "LS", "LL"}
+                        or event["logical_call"] not in {1, 9}
+                        or event["decision_index"] != (1 if event["logical_call"] == 1 else 2)
+                        or event["assignment"] != "deterministic_fixed_schedule" or event["randomized_logger"] is not False):
+                    raise ValueError("invalid fixed-schedule decision receipt")
+                reservations = event["both_action_reservations"]
+                binding_fields = {"messages_sha256", "rendered_sha256", "input_ids", "input_tokens",
+                    "max_new_tokens", "context_limit", "reserved_total_tokens", "admitted", "remaining_input_token_capacity"}
+                if set(reservations) != {"S", "L"} or any(set(r) != binding_fields for r in reservations.values()):
+                    raise ValueError("both native token reservations are required")
+                if kind == "routing_decision":
+                    selected = event["schedule"][event["decision_index"] - 1]
+                    if (event["model_action"] != selected or event["probability"] != 1.0
+                            or event["probability_vector"] != {"S": float(selected == "S"), "L": float(selected == "L")}):
+                        raise ValueError("routing receipt is not the assigned deterministic regime")
+                encoded = (json.dumps(event, sort_keys=True, separators=(",", ":")) + "\n").encode()
+                if len(encoded) > MAX_REQUEST_EVENT_BYTES:
+                    raise RuntimeError("routing decision receipt exceeds its 8 MiB cap")
+                journal.require_remaining(len(encoded) + MAX_RESPONSE_EVENT_BYTES)
+                journal.write(event)
+            elif kind == "request":
                 encoded = (json.dumps({"sequence": journal.sequence + 1, **event}, sort_keys=True,
                                       separators=(",", ":"), ensure_ascii=False) + "\n").encode()
                 if len(encoded) > MAX_REQUEST_EVENT_BYTES:
@@ -473,14 +502,14 @@ def run_pinned_agent(*, agent_class: type,
                 compact = {key: event[key] for key in (
                     "event", "model_id", "revision", "messages_sha256", "rendered_sha256",
                     "input_tokens", "physical_calls", "output_ids", "output_tokens",
-                    "finish_reason", "elapsed_seconds") if key in event}
+                    "finish_reason", "elapsed_seconds", *routing_fields) if key in event}
                 encoded = (json.dumps(compact, sort_keys=True, separators=(",", ":")) + "\n").encode()
                 if len(encoded) > MAX_RESPONSE_EVENT_BYTES:
                     raise RuntimeError("model response receipt exceeds its 1 MiB cap")
                 journal.write(compact)
             else:
                 compact = {key: event[key] for key in ("event", "physical_calls", "error_type", "error",
-                                                         "elapsed_seconds") if key in event}
+                                                         "elapsed_seconds", *routing_fields) if key in event}
                 journal.write(compact)
 
         model = model_factory(record_model_event, prepared.model_config)
