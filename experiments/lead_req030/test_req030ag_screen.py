@@ -198,6 +198,21 @@ def test_cohort_status_does_not_report_unknown_outcomes_as_complete():
     assert screen.completion_status(episodes, tasks, models, "CUDA_OUT_OF_MEMORY")[0] == "INCOMPLETE_CAPACITY"
 
 
+def test_batch_launcher_leaves_exclusive_private_run_root_to_python():
+    batch = (ROOT / "experiments/lead_req030/req030ag_development_screen.sbatch").read_text()
+    python_source = (ROOT / "experiments/lead_req030/req030ag_screen.py").read_text()
+
+    # The scheduler wrapper may own the parent, but only execute_batch may
+    # create RESULT itself; pre-creation breaks its fail-closed exclusivity.
+    result_mkdirs = [line for line in batch.splitlines()
+                     if "mkdir" in line and "$RESULT" in line]
+    assert result_mkdirs == []
+    assert 'mkdir -m 700 "$RUN/results"' in batch
+    assert '--run-root "$RESULT"' in batch
+    assert 'BUNDLE="$RUN/payload/work/req030ag_screen_20260930_v4"' in batch
+    assert "run_root.mkdir(mode=0o700, parents=True, exist_ok=False)" in python_source
+
+
 def test_agent_patch_rejection_is_terminal_failure_not_infrastructure_unknown(tmp_path, monkeypatch):
     def fake_supervised(*args, **kwargs):
         return b"DTR_AGENT_PATCH_REJECTED\n", {"reason": "exited", "returncode": 93}
