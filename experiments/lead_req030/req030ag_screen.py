@@ -101,7 +101,7 @@ def load_release(bundle: Path, release_path: Path, expected_sha: str) -> tuple[d
         raise ValueError("REQ030AG release SHA-256 mismatch")
     release = json.loads(raw)
     if (release.get("request") != "DTR-REQ-030AG"
-            or release.get("release_id") != "req030ag-development-20260930-v7"
+            or release.get("release_id") != "req030ag-development-20260930-v8"
             or len(release.get("tasks", [])) != 8):
         raise ValueError("REQ030AG release identity/schema mismatch")
     if len({t["family"] for t in release["tasks"]}) != 8:
@@ -733,7 +733,7 @@ def launch_agent_episode(*, model_id: str, model_info: dict, model: Any, tokeniz
             public_projection=public, run_directory=model_run_dir, apptainer=apptainer,
             image=image, image_sha256=sha_file(image), workspace_image=task_work,
             workspace_sha256=sha_file(task_work), supervisor=SUPERVISOR,
-            supervisor_sha256=sha_file(SUPERVISOR), release_id="req030ag-development-20260930-v7",
+            supervisor_sha256=sha_file(SUPERVISOR), release_id="req030ag-development-20260930-v8",
             release_sha256=release_sha256,
             step_limit=24, wall_time_limit_seconds=2700, model_context_limit=16384,
             model_max_new_tokens=1536, tool_timeout_seconds=60, output_cap_bytes=4*1024*1024,

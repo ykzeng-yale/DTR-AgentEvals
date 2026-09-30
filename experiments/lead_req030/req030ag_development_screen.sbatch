@@ -11,15 +11,15 @@
 set -euo pipefail
 
 P=/home/yz2324/project_pi_gt353/yz2324/DTR-AgentEvals
-STAGE="$P/staging/req030ag-development-20260930-v7"
-CLAIM="$P/claims/req030ag-development-20260930-v7"
+STAGE="$P/staging/req030ag-development-20260930-v8"
+CLAIM="$P/claims/req030ag-development-20260930-v8"
 V5_IMAGES="$P/runs/req030ag-development-20260930-v5-27928205/results/job-27928205/images"
 RUN=""
 RESULT=""
 finish() {
   rc=$?
   trap - EXIT
-  if [[ -n "$RESULT" && "$RESULT" == "$P/runs/req030ag-development-20260930-v7-"* ]]; then
+  if [[ -n "$RESULT" && "$RESULT" == "$P/runs/req030ag-development-20260930-v8-"* ]]; then
     rm -rf -- "$RESULT/models" "$RESULT/hf-cache"
   fi
   if [[ -n "$RUN" && -d "$RUN" ]]; then
@@ -39,7 +39,7 @@ if ! mkdir -m 700 "$CLAIM"; then
 fi
 printf '{"job_id":"%s","host":"%s","started_epoch":%s}\n' \
   "$SLURM_JOB_ID" "$(hostname)" "$(date +%s)" > "$CLAIM/owner.json"
-RUN="$P/runs/req030ag-development-20260930-v7-$SLURM_JOB_ID"
+RUN="$P/runs/req030ag-development-20260930-v8-$SLURM_JOB_ID"
 mkdir -m 700 "$RUN"
 RESULT="$RUN/results/job-$SLURM_JOB_ID"
 mkdir -m 700 "$RUN/results"
@@ -48,8 +48,14 @@ cd "$STAGE"
 sha256sum -c payload.sha256
 RELEASE_SHA=$(cat release.sha256)
 [[ "$RELEASE_SHA" =~ ^[0-9a-f]{64}$ ]]
-mkdir -m 700 "$RUN/payload"
-tar -xzf payload.tar.gz -C "$RUN/payload"
+# The frozen outer archive has a top-level `payload/` directory. Verify its
+# members before extracting at RUN so paths resolve to RUN/payload/... once.
+tar -tzf payload.tar.gz > "$RUN/payload_members.txt"
+grep -Fxq 'payload/experiments/lead_req030/req030ag_screen.py' "$RUN/payload_members.txt"
+grep -Fxq 'payload/work/req030ag_screen_20260930_v8_final/manifest.json' "$RUN/payload_members.txt"
+tar -xzf payload.tar.gz -C "$RUN"
+test -f "$RUN/payload/experiments/lead_req030/req030ag_screen.py"
+test -f "$RUN/payload/work/req030ag_screen_20260930_v8_final/manifest.json"
 
 module load PyTorch/2.9.1-foss-2024a-CUDA-12.8.0
 export OMP_NUM_THREADS=8
@@ -66,7 +72,7 @@ test -x "$APPTAINER"
 ulimit -f 167772160
 nvidia-smi --query-gpu=name,memory.total,driver_version --format=csv > "$RUN/gpu_inventory.csv"
 
-BUNDLE="$RUN/payload/work/req030ag_screen_20260930_v7_final"
+BUNDLE="$RUN/payload/work/req030ag_screen_20260930_v8_final"
 RELEASE="$BUNDLE/manifest.json"
 test -d "$V5_IMAGES"
 timeout --signal=TERM --kill-after=60s 35h python -m experiments.lead_req030.req030ag_screen \

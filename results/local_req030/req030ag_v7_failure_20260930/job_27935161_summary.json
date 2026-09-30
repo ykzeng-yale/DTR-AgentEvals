@@ -1,0 +1,42 @@
+{
+  "request": "DTR-REQ-030AG",
+  "release_id": "req030ag-development-20260930-v7",
+  "slurm_job_id": "27935161",
+  "account": "pi_gt353",
+  "partition": "gpu_rtx6000",
+  "requested": {
+    "gpu": "NVIDIA RTX PRO 6000 Blackwell x1",
+    "cpus": 8,
+    "memory_gib": 128,
+    "wall_hours": 36,
+    "qos": "normal"
+  },
+  "submitted_et": "2026-09-30T04:09:33-04:00",
+  "started_et": "2026-09-30T04:13:45-04:00",
+  "ended_et": "2026-09-30T04:15:22-04:00",
+  "state": "FAILED",
+  "exit_code": "1:0",
+  "elapsed_seconds": 97,
+  "batch_max_rss_kib": 178928,
+  "gpu_inventory": {
+    "name": "NVIDIA RTX PRO 6000 Blackwell Server Edition",
+    "memory_mib": 97887,
+    "driver": "580.178.04"
+  },
+  "outer_payload_sha256": "494d1e2a9b64d07a8a70a9b6b703b5b45dca08a4fa7c011aadb188dffe954eb9",
+  "failure": {
+    "category": "launcher archive-root mismatch",
+    "stdout": "ModuleNotFoundError: No module named 'experiments'",
+    "outer_archive_top_level": "payload/",
+    "extraction_destination": "$RUN/payload",
+    "resolved_source_path": "$RUN/payload/payload/experiments",
+    "configured_pythonpath": "$RUN/payload",
+    "application_imported": false
+  },
+  "controls_started": false,
+  "model_assets_loaded": false,
+  "model_calls": 0,
+  "task_episodes": 0,
+  "task_scores": null,
+  "interpretation": "infrastructure failure before application import; not an empirical zero or capacity failure"
+}
