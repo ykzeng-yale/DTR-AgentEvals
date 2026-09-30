@@ -1,0 +1,61 @@
+{
+  "request": "DTR-REQ-030AG",
+  "release_id": "req030ag-development-20260930-v10",
+  "source_commit": "d3e2e4d8a81e7158fa7d8535602b898f6555d1f8",
+  "actual_job_id": "27941865",
+  "submitted_at_local": "2026-09-30T08:14:36-04:00",
+  "started_at_local": "2026-09-30T08:25:39-04:00",
+  "ended_at_local": "2026-09-30T08:28:35-04:00",
+  "terminal_state": "FAILED",
+  "exit_code": "2:0",
+  "elapsed": "00:02:56",
+  "account": "pi_gt353",
+  "partition": "gpu_rtx6000",
+  "qos": "normal",
+  "allocated_gres": "rtx_pro_6000_blackwell:1",
+  "allocated_cpus": 8,
+  "allocated_memory_gib": 128,
+  "max_rss_kib": 12543308,
+  "runtime_preflight": {
+    "device": "NVIDIA RTX PRO 6000 Blackwell Server Edition",
+    "cuda": "12.8",
+    "python": "3.12.3",
+    "torch": "2.9.1",
+    "transformers": "4.51.3",
+    "numpy_torch_bridge": "passed"
+  },
+  "manifest_sha256": "8eefbe57ca30f87839586cf83f507a0962400f077a2e4ef1d7327ee64b4a32f0",
+  "control_gate": {
+    "status": "BLOCKED_CONTROLS",
+    "task_id": "psf__requests-2931",
+    "attempted": ["baseline"],
+    "reference_attempted": false,
+    "baseline_supervisor": {
+      "reason": "exited",
+      "returncode": 0,
+      "retained_bytes": 135626,
+      "elapsed_seconds": 4.346653301035985,
+      "error": null
+    },
+    "raw_output_sha256": "1e639d90462f9d1d3858e65ae97e4ed95675070a4a16b03b4667fc22c950ac1f",
+    "raw_output_bytes": 135626,
+    "pinned_parser_replay": {
+      "markers_valid": true,
+      "valid_process": true,
+      "declared_f2p": {"total": 1, "failed_as_expected": 1},
+      "declared_p2p": {"total": 84, "passed": 82, "failed": 2},
+      "failed_p2p_count": 2,
+      "failure_cause": "network unreachable for declared timeout checks under frozen network-none sandbox",
+      "undeclared_status_counts": {"ERROR": 81, "PASSED": 1, "XFAIL": 1},
+      "interpretation": "control rejected; undeclared errors retained as diagnostics"
+    }
+  },
+  "planned_model_episodes": 16,
+  "episodes_started": 0,
+  "models_loaded": false,
+  "model_episode_started": false,
+  "model_calls": 0,
+  "decision": "close frozen cohort; no retry, substitution, or network relaxation",
+  "raw_evidence_archive_sha256_private": "84f4f9d4957205c1cabf214d0b8a5e0fb83959874336b787c14f0a79a2ca3e89",
+  "scientific_scope": "No model outcome; this SWE-bench feasibility screen does not identify the fixed-target MBPP/HumanEval H/P estimand."
+}

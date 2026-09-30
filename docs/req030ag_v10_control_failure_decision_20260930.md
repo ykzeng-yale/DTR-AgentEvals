@@ -1,0 +1,34 @@
+# REQ030AG v10 control failure and lead decision — 30 September 2026
+
+## Decision
+
+Close the frozen REQ030AG v10 SWE-bench development screen as **control-blocked; no model inference**. Do not retry this cohort, replace `psf__requests-2931` after observing its control, relax the network sandbox, or reinterpret the failed control as a model outcome. The screen supplies no evidence about executor competence, model differences, the paper's fixed MBPP/HumanEval target, or an H/P routing effect.
+
+The immediate scientific question was whether the exact frozen cohort could pass its baseline gate under the required isolated execution contract before any model asset was loaded. It could not. The evidence identifies a task/control-environment incompatibility, not the v9 supervisor defect and not a compute-capacity failure.
+
+## Independently checked run evidence
+
+Slurm job `27941865` actually started on 30 September at 08:25:39 ET and ended at 08:28:35 ET with `FAILED 2:0`, elapsed 2:56. It requested one RTX PRO 6000 Blackwell, 8 CPUs, and 128 GiB; `sacct` reports batch MaxRSS 12,543,308 KiB. The runtime receipt identifies the expected GPU alias, CUDA 12.8, Python 3.12.3, PyTorch 2.9.1, Transformers 4.51.3 and a passed NumPy/PyTorch bridge. All eight image/base and source-export checks passed. These measurements argue against an OOM or resource shortage as the cause; MaxRSS alone is not an OOM diagnosis.
+
+The first baseline control for `psf__requests-2931` ran through the corrected production wrapper and supervisor. Its receipt is `reason=exited`, `returncode=0`, no supervisor error, 135,626 retained bytes, elapsed 4.347 s, and valid framing markers. The remote and independently retrieved `baseline.out` SHA-256 both equal `1e639d90462f9d1d3858e65ae97e4ed95675070a4a16b03b4667fc22c950ac1f`; the remote/local summary SHA-256 both equal `a1dd987632a61558786600fb3da48466d6fa11615e5a392c95803b11ae670dee`. Independent replay against the frozen evaluator bundle and pinned Requests parser gives 85 declared statuses: the one F2P correctly `FAILED`, 82 declared P2P `PASSED`, and two declared P2P timeout checks `FAILED`. The captured traces show a network-unreachable error for the task's configured timeout target; the frozen Apptainer contract deliberately uses `--net none`. Thus the strict frozen baseline predicate is unsatisfied under the required isolation. Changing the network boundary or dropping those declared checks would change the treatment/evaluator contract and is not permitted as a repair.
+
+The same raw stock test log reports 83 passes, 3 failures, 1 xfail and 81 errors. The errors include recursive resolution of the `httpbin` fixture (`def httpbin(httpbin)`), showing additional image/test-environment incompatibility. The 81 errors are outside the frozen declared F2P/P2P set and are retained as diagnostic evidence, not counted as 81 benchmark tasks. The stock evaluator script also ends with `git checkout` after `pytest -rA`, so its shell return code is zero despite pytest's failing/error summary. The lead's control parser correctly rejects this run based on the two declared P2P mismatches; a zero shell exit is not sufficient evidence of a valid control.
+
+`batch_summary.json` records `status=BLOCKED_CONTROLS`, one attempted baseline, no reference control, `models_loaded=false`, `model_episode_started=false`, and an empty episode list against 16 planned model episodes. No model asset was loaded; no model call, generated action, or task attempt occurred. `job.log` contains only the successful payload checksum line. The independent accounting snapshot shows job `27940522` (v9) and `27941865` terminal, with no active `req030ag-dev-screen` job.
+
+The private raw evidence is preserved at `results/local_req030/req030ag_v10_failure_20260930_private/evidence.tar.gz`, SHA-256 `84f4f9d4957205c1cabf214d0b8a5e0fb83959874336b787c14f0a79a2ca3e89`. The archive includes the raw baseline log, supervisor receipt, exact generated evaluator scripts, batch summary, Slurm output and application exit receipt. It is deliberately untracked and must remain private because it contains task/test output and host-bearing paths. This public diagnosis publishes hashes and bounded findings only.
+
+## Cause classification and scientific boundary
+
+- **Design / task eligibility:** the frozen `psf__requests-2931` P2P contract includes two tests that require a network path prohibited by the declared no-network sandbox. This makes the baseline gate unsatisfiable without changing either task/evaluator semantics or the isolation contract.
+- **Implementation / measurement:** v10's supervisor/output handshake worked and captured the full baseline. The stock evaluator's final shell status masks pytest's nonzero status, but the independent declared-status parser exposes the relevant failures. This masking is a reporting weakness, not the reason the strict control passed or failed.
+- **Task environment:** the 81 undeclared fixture errors show the pinned image did not provide a usable `httpbin` fixture for the stock full-file invocation. This further weakens this task's environment qualification; it does not alter the two declared-status result.
+- **Capacity:** no observed evidence supports OOM or GPU exhaustion. The runtime and image/source gates passed; only about 12.0 GiB of the requested 128 GiB was reported as peak RSS.
+- **Inference:** reference control was not attempted and all 16 model episodes remained unstarted. There is no empirical model result and no denominator to score.
+- **Target validity:** even a control-valid result from this purposive SWE-bench patch-repair screen could only inform a separate design review. It is not the repeated-execution MBPP/HumanEval target and cannot identify the paper's H/P contrast.
+
+## Next gate
+
+The next empirical release must be frozen prospectively for the paper's actual target: public development-only MBPP/HumanEval tasks, with all held CONFIRM identities excluded, a common pinned real-model pair and runtime, the fixed code-generation/feedback contract, isolated execution, independent strict scoring, family/task-level inference, and predeclared denominator and uncertainty rules. Before that model cohort, validate the exact sandbox/evaluator on the selected development tasks and demonstrate that each required control is executable without external networking. The old 7B/14B GGUF path remains closed; any HF/BF16 pair is a distinct prospective treatment. No model job is released by this decision.
+
+Overall preprint readiness remains **55%, change 0 points, range 45–65%**. Remaining milestones: (1) target-matched competent executor qualification and valid fixed-target/task-family H/P inference; (2) empirical and manuscript synthesis that retains null/adverse findings; (3) independent reproduction and author-approved submission packaging.
