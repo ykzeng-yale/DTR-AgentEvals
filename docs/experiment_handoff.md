@@ -1,3 +1,9 @@
+## Actual dispatch — 30 September 2026, REQ030AH
+
+CPU job **27950747** was submitted at **11:45:05 ET**, `pi_gt353/day/normal`, 4 CPU/32 GiB/eight hours/no GPU. The actual `scontrol` receipt is **PENDING**, reason `None`, start `Unknown`; submission is not execution. [Receipt](../results/local_req030/req030ah_submission_20260930/receipt.json). Exact source commit `594cf2c6bb236bd810243fde1b586a34cce76ccf`; remote payload hash verified. Inspect this owned ID once at the next wake; no duplicate or queue racing. Read the [complete release](req030ah_whole_cohort_controls_20260930.md) before terminal review. All eight assigned tasks/16 baseline-reference slots remain in scope, including failures. No model run is authorized by this CPU release. Advance the independent native-worker deadline/inference work while it queues/runs.
+
+Readiness **55%, change 0 points, range 45–65%**; competent fixed-target comparison/inference, synthesis, independent reproduction/package remain.
+
 ## Current lead release — 30 September 2026, whole-cohort CPU qualification
 
 [REQ030AH](req030ah_whole_cohort_controls_20260930.md) freezes exact REQ009 ranks 13–20 (eight tasks/eight repositories) for one CPU-only, all-16-arm unchanged/reference qualification. No model job is active; all prior DTR jobs including v10 `27941865` are terminal. V10 ranks 5–12 remain closed. The new entrypoint has no model branch, continues bounded independent controls after early rejection, preallocates every arm, and rejects whole-cohort model admission on any invalid/unknown arm. Exact release SHA `77d7b1b33f221e829aa67f9ce59f928cbbdf0b1453d6661399142827de6e1384`. Source/design publication precedes actual submission; test-only IDs `27950474`/`27950475` are not experiment jobs. The actual dispatch receipt will supersede this source-only state.

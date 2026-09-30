@@ -1,3 +1,7 @@
+## REQ030AH submitted — 30 September 2026, 11:45:05 ET
+
+Actual CPU job **27950747** is submitted/PENDING at dispatch, with start Unknown; no new control or model outcome is claimed. [Immutable dispatch receipt](../results/local_req030/req030ah_submission_20260930/receipt.json) binds source `594cf2c6`, release `77d7b1b3…`, verified payload `6e8bf9bc…` and 8 tasks/16 controls. The consolidated pre-release suite passed **88 tests and 7 subtests**. Native model inference stays separately gated. Readiness **55%, change 0 points, range 45–65%**; competent comparison/inference, synthesis and independent reproduction/package remain.
+
 ## REQ030AH design/integration audit — 30 September 2026
 
 No new empirical model outcome. All DTR jobs are terminal; `27941865` retains its verified control-blocked/zero-model classification. A coherent [CPU-only whole-cohort release](req030ah_whole_cohort_controls_20260930.md) now assigns REQ009 ranks 13–20, eight tasks and 16 control arms, with exact public/evaluator/image/source pins and no passing-subset promotion. The eight tasks contain 12 F2P and 1,386 P2P checks; these are nested checks, not independent tasks. Two offline input builds matched byte-for-byte across 18 files. Resource access is available; same-shape CPU estimates, not actual jobs, are documented.

@@ -18,6 +18,7 @@ MODEL_MANIFEST_SHA256 = "27d054c155e7767ca2048d66c900d75131bf9a6c263fdce5180e06e
 PUBLIC_SHA256 = "b3fb8c08d74d92279a7caf77bf714c77ac3eee2dbafc996596b786c5484954e9"
 DEFAULT_AGENT_SHA256 = "e8ef8aa365942d739c2ec5cb0879f60f377d2dc2de8ec670aaedf3bafb45a4c2"
 ACTION_PARSER_SHA256 = "e5997bba3ae3d541ff418317cc8dd9e9e17657de806679ef38ab1ad74e294047"
+EXCEPTIONS_SHA256 = "0590393c56bee873c79a691dcb4f15cb39c85f1658598b84bfb295bfde56921d"
 REQUIRED_TOKENIZER_FILES = {
     "config.json",
     "merges.txt",
@@ -43,7 +44,9 @@ def load_qualification_release(path: Path, expected_sha256: str) -> tuple[dict, 
 
 
 def load_pinned_default_agent():
-    """Load the audited upstream DefaultAgent without CLI or evaluator imports."""
+    """Load once without CLI imports, preserving exception identity across episodes."""
+    import sys
+
     packages = {
         "minisweagent": UPSTREAM / "minisweagent",
         "minisweagent.models": UPSTREAM / "minisweagent/models",
@@ -53,14 +56,41 @@ def load_pinned_default_agent():
     }
     agent_path = UPSTREAM / "minisweagent/agents/default.py"
     parser_path = UPSTREAM / "minisweagent/models/utils/actions_text.py"
-    assert digest(agent_path.read_bytes()) == DEFAULT_AGENT_SHA256
-    assert digest(parser_path.read_bytes()) == ACTION_PARSER_SHA256
+    exceptions_path = UPSTREAM / "minisweagent/exceptions.py"
+    pinned_modules = {
+        "minisweagent.agents.default": (agent_path, DEFAULT_AGENT_SHA256),
+        "minisweagent.models.utils.actions_text": (parser_path, ACTION_PARSER_SHA256),
+        "minisweagent.exceptions": (exceptions_path, EXCEPTIONS_SHA256),
+    }
+    for name, (path, expected) in pinned_modules.items():
+        if digest(path.read_bytes()) != expected:
+            raise ValueError(f"pinned source mismatch: {name}")
+
+    if any(name in sys.modules for name in pinned_modules):
+        # Replacing exceptions while reusing the parser/agent splits class
+        # identity: normal Submitted/FormatError/limit exits then become errors.
+        for name, (path, _) in pinned_modules.items():
+            module = sys.modules.get(name)
+            if module is None or Path(getattr(module, "__file__", "")).resolve() != path.resolve():
+                raise RuntimeError(f"partial or foreign pinned-agent bootstrap: {name}")
+        agent = sys.modules["minisweagent.agents.default"]
+        parser = sys.modules["minisweagent.models.utils.actions_text"]
+        exceptions = sys.modules["minisweagent.exceptions"]
+        if (agent.InterruptAgentFlow is not exceptions.InterruptAgentFlow
+                or agent.FormatError is not exceptions.FormatError
+                or agent.LimitsExceeded is not exceptions.LimitsExceeded
+                or agent.TimeExceeded is not exceptions.TimeExceeded
+                or parser.FormatError is not exceptions.FormatError):
+            raise RuntimeError("pinned-agent exception class identity mismatch")
+        return agent.DefaultAgent
+
+    if any(name == "minisweagent" or name.startswith("minisweagent.") for name in sys.modules):
+        raise RuntimeError("foreign or partial minisweagent package already loaded")
     root_package = types.ModuleType("minisweagent")
     root_package.__path__ = [str(packages["minisweagent"])]
     root_package.__version__ = "2.4.6"
     root_package.Model = object
     root_package.Environment = object
-    import sys
     sys.modules["minisweagent"] = root_package
     for name, path in packages.items():
         if name == "minisweagent":
@@ -69,7 +99,7 @@ def load_pinned_default_agent():
         module.__path__ = [str(path)]
         sys.modules[name] = module
     exceptions_name = "minisweagent.exceptions"
-    spec = importlib.util.spec_from_file_location(exceptions_name, UPSTREAM / "minisweagent/exceptions.py")
+    spec = importlib.util.spec_from_file_location(exceptions_name, exceptions_path)
     assert spec and spec.loader
     exceptions = importlib.util.module_from_spec(spec)
     sys.modules[exceptions_name] = exceptions
@@ -88,13 +118,23 @@ def load_pinned_default_agent():
         def model_dump(self, *, mode="python"):
             if mode not in {"python", "json"}:
                 raise ValueError(f"unsupported model_dump mode: {mode}")
-            return dict(self.__dict__)
+            return {key: str(value) if mode == "json" and isinstance(value, Path) else value
+                    for key, value in self.__dict__.items()}
 
     pydantic_stub = types.ModuleType("pydantic")
     pydantic_stub.BaseModel = MinimalBaseModel
+    previous_pydantic = sys.modules.get("pydantic")
     sys.modules["pydantic"] = pydantic_stub
-    importlib.import_module("minisweagent.models.utils.actions_text")
-    return importlib.import_module("minisweagent.agents.default").DefaultAgent
+    try:
+        importlib.import_module("minisweagent.models.utils.actions_text")
+        return importlib.import_module("minisweagent.agents.default").DefaultAgent
+    finally:
+        # DefaultAgent retains its scoped BaseModel class. Do not replace the
+        # process-wide pydantic API used by other runtime dependencies.
+        if previous_pydantic is None:
+            sys.modules.pop("pydantic", None)
+        else:
+            sys.modules["pydantic"] = previous_pydantic
 
 
 def load_runner_components():

@@ -1,0 +1,13 @@
+# Native integration corrections — 30 September 2026
+
+This deterministic integration work accompanies CPU control job **27950747**; it is not part of that job's frozen executable payload and releases no model inference. The CPU source remains commit `594cf2c6`.
+
+A clean process previously imported the native adapter before bootstrapping the pinned mini-swe package. Repeated bootstrap replaced exception classes while cached parser/agent modules retained old classes, turning normal submissions/limits into infrastructure failures. The entrypoint now bootstraps first. The loader verifies the exact agent/parser/exception source bytes, is idempotent, rejects mixed module identities, and scopes its minimal configuration shim to the pinned agent import. It preserves an existing process-wide Pydantic module and serializes configured output paths.
+
+The native adapter now raises a specifically typed context-token `LimitsExceeded` before device transfer or generation when input plus the response reservation exceeds the shared bound. Other tokenizer/model ValueErrors remain infrastructure failures. Upstream attempted-query counts and actual physical calls remain separate: an over-budget attempted query is not a physical model invocation. Full trajectory evidence retains the limit kind, counts and empty submission.
+
+Ten new clean-process deterministic tests exercise the real pinned DefaultAgent with inert tokenizer/model fixtures: exact boundary, initial and accumulated overflow, unrelated native failures, sixteen repeated bootstraps, split/partial-module rejection and Pydantic preservation. Together with applicable existing adapter/bootstrap tests, **26 tests passed**. The historical H release's source-identity test is deliberately excluded from current-source validation: H binds archived bytes, while this change creates new bytes. H's manifest/archive is not repinned; the new source identities must be frozen by any future model release. No GPU, model assets, generated commands or benchmark tests ran in these fixtures.
+
+A robust hard generation/episode deadline requires a separate CPU coordinator and independently owned CUDA worker, with an owner guardian surviving coordinator death. A thread timeout cannot terminate native generation. This remains an explicit unreleased integration requirement, alongside actual container/source-state compatibility, public-only model input verification and independent strict grading. The CPU controls' task/source tree receipts will decide source compatibility; no inferred pass is substituted for those measurements.
+
+Readiness **55%, change 0 points, range 45–65%**; competent fixed-target comparisons/inference, synthesis and independent reproduction/package remain.

@@ -14,10 +14,36 @@ import time
 from collections.abc import Mapping
 from typing import Any, Callable
 
+from minisweagent.exceptions import LimitsExceeded
 from minisweagent.models.utils.actions_text import (
     format_observation_messages,
     parse_regex_actions,
 )
+
+
+class ContextBudgetExceeded(LimitsExceeded, ValueError):
+    """A known token-budget exit, handled by the pinned agent as an operational limit.
+
+    ValueError compatibility preserves the adapter's prior direct-call API; the
+    distinct LimitsExceeded ancestry is what makes the agent terminate normally.
+    Other tokenizer/model ValueErrors remain uncaught infrastructure failures.
+    """
+
+    def __init__(self, *, input_tokens: int, max_new_tokens: int, context_limit: int) -> None:
+        content = f"context budget exceeded: {input_tokens}+{max_new_tokens}>{context_limit}"
+        super().__init__({
+            "role": "exit",
+            "content": content,
+            "extra": {
+                "exit_status": "LimitsExceeded",
+                "submission": "",
+                "limit_kind": "context_tokens",
+                "input_tokens": input_tokens,
+                "max_new_tokens": max_new_tokens,
+                "context_limit": context_limit,
+            },
+        })
+        self.args = (content,)
 
 
 def single_sequence_token_ids(encoded: Mapping[str, Any]) -> list[int]:
@@ -117,8 +143,10 @@ class NativeHFTextAdapter:
         input_ids = encoded["input_ids"]
         input_count = int(input_ids.shape[-1])
         if input_count + self.max_new_tokens > self.context_limit:
-            raise ValueError(
-                f"context budget exceeded: {input_count}+{self.max_new_tokens}>{self.context_limit}"
+            raise ContextBudgetExceeded(
+                input_tokens=input_count,
+                max_new_tokens=self.max_new_tokens,
+                context_limit=self.context_limit,
             )
         encoded = {key: value.to(self.device) for key, value in encoded.items()}
         request_binding = {
