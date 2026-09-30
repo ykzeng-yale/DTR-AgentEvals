@@ -20,13 +20,49 @@
   "immediate_start_time": "Unknown",
   "immediate_elapsed": "00:00:00",
   "immediate_reason": "None",
-  "claim_created": false,
-  "stdout_log_created": false,
-  "application_started": false,
+  "claim_created": true,
+  "stdout_log_created": true,
+  "application_started": true,
   "controls_started": false,
   "model_assets_loaded": false,
   "model_calls": 0,
   "task_episodes": 0,
   "task_scores": null,
-  "interpretation": "Submitted once; scheduler has not allocated compute, so no application, control, model, or task result exists."
+  "interpretation": "Infrastructure preflight defect before controls/model load; not an empirical zero or capacity failure.",
+  "terminal_state": "FAILED",
+  "terminal_exit_code": "1:0",
+  "elapsed_seconds": 108,
+  "batch_max_rss_kib": 391512,
+  "allocation": {
+    "gpu_gres": "rtx_pro_6000_blackwell:1",
+    "cpus": 8,
+    "memory_gib": 128
+  },
+  "gpu_inventory": {
+    "name": "NVIDIA RTX PRO 6000 Blackwell Server Edition",
+    "memory_mib": 97887,
+    "driver": "580.178.04"
+  },
+  "failure": {
+    "category": "strict GPU display-name alias mismatch",
+    "expected": "NVIDIA RTX PRO 6000 Blackwell",
+    "observed": "NVIDIA RTX PRO 6000 Blackwell Server Edition",
+    "gres_allocated": "rtx_pro_6000_blackwell:1",
+    "raw_archive_sha256": "076daaaa90d15ae68b020d771f937b76de353caf88c0b14e56a969252f292fbd"
+  },
+  "cleanup": {
+    "model_root_removed": true,
+    "hf_cache_removed": true
+  },
+  "state": "FAILED",
+  "submission_state": "Submitted once; subsequently allocated and failed before controls/model load.",
+  "diagnostic_hashes": {
+    "stdout_sha256": "3c29699ef2c6c96865956d2988dde0b8139846b7050a4316230d740a92c4edb6",
+    "gpu_inventory_sha256": "b9add9c6f7450de076ea4e2720e921ae1726451b58d92dbe9aa5df43491d76a8",
+    "job_exit_sha256": "194723ad69420c23a1b66be48e9022e0924bbf074392a242d76543ec7941fb41",
+    "failure_and_batch_summary_sha256": "8a09841c7097cb71c140d210caec567ed07837299eaf63a977eaffd71d65c9bf"
+  },
+  "application_started_epoch": 1790761220.491624,
+  "application_failed_epoch": 1790761260.535271,
+  "slurm_elapsed_seconds": 108
 }

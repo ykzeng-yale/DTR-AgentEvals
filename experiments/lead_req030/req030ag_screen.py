@@ -101,7 +101,7 @@ def load_release(bundle: Path, release_path: Path, expected_sha: str) -> tuple[d
         raise ValueError("REQ030AG release SHA-256 mismatch")
     release = json.loads(raw)
     if (release.get("request") != "DTR-REQ-030AG"
-            or release.get("release_id") != "req030ag-development-20260930-v8"
+            or release.get("release_id") != "req030ag-development-20260930-v9"
             or len(release.get("tasks", [])) != 8):
         raise ValueError("REQ030AG release identity/schema mismatch")
     if len({t["family"] for t in release["tasks"]}) != 8:
@@ -224,8 +224,8 @@ def validate_runtime_environment(release: dict, wheel_manifest_path: Path, wheel
         raise RuntimeError("expected exactly one allocated CUDA device")
     expected_device = release["resource_cap"]["gpu_model"]
     observed_device = torch.cuda.get_device_name(0)
-    if observed_device != expected_device:
-        raise RuntimeError(f"GPU model mismatch: expected {expected_device}, got {observed_device}")
+    device_identity = validate_gpu_device_name(
+        observed_device, expected_device, runtime.get("gpu_model_aliases", []))
     # Exercise the compiled NumPy/PyTorch bridge before any benchmark containers run.
     bridge = torch.from_numpy(numpy.asarray([1.0], dtype=numpy.float32))
     if bridge.tolist() != [1.0]:
@@ -233,9 +233,25 @@ def validate_runtime_environment(release: dict, wheel_manifest_path: Path, wheel
     return {"python": platform.python_version(), "python_executable": sys.executable,
             "versions": versions, "cuda": torch.version.cuda,
             "device_count": torch.cuda.device_count(), "device": observed_device,
+            "gpu_device_identity": device_identity,
             "device_total_bytes": torch.cuda.get_device_properties(0).total_memory,
             "numpy_torch_bridge": "passed", "wheel_manifest_sha256": manifest_pin,
             "wheels": wheel_receipts}
+
+
+def validate_gpu_device_name(observed: str, expected: str, aliases: list[str]) -> dict[str, Any]:
+    """Accept only the canonical GPU name or an explicitly frozen exact alias."""
+    if (not isinstance(expected, str) or not expected
+            or not isinstance(aliases, list)
+            or any(not isinstance(alias, str) or not alias for alias in aliases)
+            or len(set(aliases)) != len(aliases)
+            or expected in aliases):
+        raise ValueError("invalid frozen GPU model identity/alias declaration")
+    accepted = [expected, *aliases]
+    if observed not in accepted:
+        raise RuntimeError(f"GPU model mismatch: expected one of {accepted}, got {observed}")
+    return {"expected": expected, "observed": observed,
+            "accepted_alias": observed != expected}
 
 
 def is_cuda_oom(exc: BaseException) -> bool:
@@ -733,7 +749,7 @@ def launch_agent_episode(*, model_id: str, model_info: dict, model: Any, tokeniz
             public_projection=public, run_directory=model_run_dir, apptainer=apptainer,
             image=image, image_sha256=sha_file(image), workspace_image=task_work,
             workspace_sha256=sha_file(task_work), supervisor=SUPERVISOR,
-            supervisor_sha256=sha_file(SUPERVISOR), release_id="req030ag-development-20260930-v8",
+            supervisor_sha256=sha_file(SUPERVISOR), release_id="req030ag-development-20260930-v9",
             release_sha256=release_sha256,
             step_limit=24, wall_time_limit_seconds=2700, model_context_limit=16384,
             model_max_new_tokens=1536, tool_timeout_seconds=60, output_cap_bytes=4*1024*1024,
@@ -791,8 +807,10 @@ def _load_models(release: dict, model_root: Path, run_dir: Path) -> tuple[dict[s
         raise RuntimeError("unfrozen PyTorch/Transformers/CUDA runtime")
     if not torch.cuda.is_available() or torch.cuda.device_count() != 1:
         raise RuntimeError("expected exactly one allocated CUDA device")
-    if torch.cuda.get_device_name(0) != release["resource_cap"]["gpu_model"]:
-        raise RuntimeError("GPU model changed after runtime preflight")
+    device_name = torch.cuda.get_device_name(0)
+    device_identity = validate_gpu_device_name(
+        device_name, release["resource_cap"]["gpu_model"],
+        release["runtime"].get("gpu_model_aliases", []))
     os.environ["HF_HUB_OFFLINE"] = "1"; os.environ["TRANSFORMERS_OFFLINE"] = "1"
     assets = validate_model_assets(release, model_root)
     infos = {m["repo"]: m for m in release["models"]["models"]}
@@ -801,7 +819,8 @@ def _load_models(release: dict, model_root: Path, run_dir: Path) -> tuple[dict[s
     tokenizer = AutoTokenizer.from_pretrained(str(tokenizer_dir), local_files_only=True, trust_remote_code=False)
     models = {}
     receipts = {"runtime": {"torch": torch.__version__, "transformers": transformers.__version__,
-                "cuda": torch.version.cuda, "device": torch.cuda.get_device_name(0),
+                "cuda": torch.version.cuda, "device": device_name,
+                "gpu_device_identity": device_identity,
                 "device_total_bytes": torch.cuda.get_device_properties(0).total_memory}, "loads": []}
     for name in ("Qwen/Qwen2.5-Coder-7B-Instruct", "Qwen/Qwen2.5-Coder-14B-Instruct"):
         info = infos[name]

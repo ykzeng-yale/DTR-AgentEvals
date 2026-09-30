@@ -181,14 +181,15 @@ def test_runtime_preflight_binds_python_wheels_cuda_and_numpy_bridge(tmp_path, m
     manifest_sha = screen.sha_file(wheel_manifest)
     release = {"source_pins": {"experiments/lead_req030/coder_c_wheels.json": manifest_sha},
         "resource_cap": {"gpu_model": "NVIDIA RTX PRO 6000 Blackwell"},
-        "runtime": {"python_minor": [3, 12], "python_version": "3.12.3", "cuda": "12.8", "versions": {
+        "runtime": {"python_minor": [3, 12], "python_version": "3.12.3", "cuda": "12.8",
+            "gpu_model_aliases": ["NVIDIA RTX PRO 6000 Blackwell Server Edition"], "versions": {
             "numpy": "1.26.4", "torch": "2.9.1", "transformers": "4.51.3",
             "huggingface_hub": "0.30.2", "tokenizers": "0.21.1", "safetensors": "0.5.3",
             "accelerate": "1.6.0", "requests": "2.32.3", "jinja2": "3.1.4"}}}
     fake_numpy = types.SimpleNamespace(__version__="1.26.4", float32=object(), asarray=lambda x, dtype=None: x)
     fake_torch = types.SimpleNamespace(__version__="2.9.1+cu128", version=types.SimpleNamespace(cuda="12.8"),
         cuda=types.SimpleNamespace(is_available=lambda: True, device_count=lambda: 1,
-            get_device_name=lambda _: "NVIDIA RTX PRO 6000 Blackwell",
+            get_device_name=lambda _: "NVIDIA RTX PRO 6000 Blackwell Server Edition",
             get_device_properties=lambda _: types.SimpleNamespace(total_memory=96)),
         from_numpy=lambda x: types.SimpleNamespace(tolist=lambda: x))
     fake_transformers = types.SimpleNamespace(__version__="4.51.3")
@@ -201,14 +202,38 @@ def test_runtime_preflight_binds_python_wheels_cuda_and_numpy_bridge(tmp_path, m
     monkeypatch.setattr(screen.platform, "python_version", lambda: "3.12.3")
     receipt = screen.validate_runtime_environment(release, wheel_manifest, wheel_root)
     assert receipt["numpy_torch_bridge"] == "passed"
-    assert receipt["device"] == "NVIDIA RTX PRO 6000 Blackwell"
+    assert receipt["device"] == "NVIDIA RTX PRO 6000 Blackwell Server Edition"
+    assert receipt["gpu_device_identity"] == {"expected": "NVIDIA RTX PRO 6000 Blackwell",
+        "observed": "NVIDIA RTX PRO 6000 Blackwell Server Edition", "accepted_alias": True}
+    fake_torch.cuda.get_device_name = lambda _: "NVIDIA RTX PRO 6000 Blackwell"
+    canonical_receipt = screen.validate_runtime_environment(release, wheel_manifest, wheel_root)
+    assert canonical_receipt["gpu_device_identity"]["accepted_alias"] is False
     fake_torch.cuda.get_device_name = lambda _: "NVIDIA B200"
     with pytest.raises(RuntimeError, match="GPU model mismatch"):
         screen.validate_runtime_environment(release, wheel_manifest, wheel_root)
-    fake_torch.cuda.get_device_name = lambda _: "NVIDIA RTX PRO 6000 Blackwell"
+    fake_torch.cuda.get_device_name = lambda _: "NVIDIA RTX PRO 6000 Blackwell Server Edition"
     (wheel_root / "one.whl").write_bytes(b"changed")
     with pytest.raises(ValueError, match="wheel artifact mismatch"):
         screen.validate_runtime_environment(release, wheel_manifest, wheel_root)
+
+
+def test_gpu_model_aliases_are_exact_and_frozen():
+    assert screen.validate_gpu_device_name(
+        "NVIDIA RTX PRO 6000 Blackwell Server Edition",
+        "NVIDIA RTX PRO 6000 Blackwell",
+        ["NVIDIA RTX PRO 6000 Blackwell Server Edition"],
+    )["accepted_alias"]
+    with pytest.raises(RuntimeError, match="GPU model mismatch"):
+        screen.validate_gpu_device_name(
+            "NVIDIA RTX PRO 6000 Blackwell Server Edition (other SKU)",
+            "NVIDIA RTX PRO 6000 Blackwell",
+            ["NVIDIA RTX PRO 6000 Blackwell Server Edition"],
+        )
+    with pytest.raises(ValueError, match="invalid frozen GPU model"):
+        screen.validate_gpu_device_name(
+            "NVIDIA RTX PRO 6000 Blackwell", "NVIDIA RTX PRO 6000 Blackwell",
+            ["NVIDIA RTX PRO 6000 Blackwell"],
+        )
 
 
 def test_cuda_oom_is_classified_as_capacity_failure():
@@ -241,10 +266,10 @@ def test_batch_launcher_leaves_exclusive_private_run_root_to_python():
     assert '--run-root "$RESULT"' in batch
     assert '#SBATCH --partition=gpu_rtx6000' in batch
     assert '#SBATCH --gres=gpu:rtx_pro_6000_blackwell:1' in batch
-    assert 'BUNDLE="$RUN/payload/work/req030ag_screen_20260930_v8_final"' in batch
+    assert 'BUNDLE="$RUN/payload/work/req030ag_screen_20260930_v9_final"' in batch
     assert '--reuse-image-root "$V5_IMAGES"' in batch
     assert "payload/experiments/lead_req030/req030ag_screen.py" in batch
-    assert "payload/work/req030ag_screen_20260930_v8_final/manifest.json" in batch
+    assert "payload/work/req030ag_screen_20260930_v9_final/manifest.json" in batch
     assert 'tar -xzf payload.tar.gz -C "$RUN"' in batch
     assert 'tar -xzf payload.tar.gz -C "$RUN/payload"' not in batch
     assert "run_root.mkdir(mode=0o700, parents=True, exist_ok=False)" in python_source
