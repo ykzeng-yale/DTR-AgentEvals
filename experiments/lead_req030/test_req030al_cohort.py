@@ -10,6 +10,19 @@ import time
 
 import pytest
 
+
+def test_private_subprocess_failure_retains_causal_stderr_without_overwrite(tmp_path):
+    path = tmp_path / "failure.txt"
+    try:
+        subprocess.run(["sh", "-c", "printf 'badTimezone: historical commit metadata' >&2; exit 4"],
+                       check=True, capture_output=True)
+    except subprocess.CalledProcessError:
+        cohort.retain_error(path)
+        with pytest.raises(FileExistsError):
+            cohort.retain_error(path)
+    assert b"badTimezone: historical commit metadata" in path.read_bytes()
+    assert path.stat().st_mode & 0o777 == 0o600
+
 from experiments.lead_req030 import req030al_cohort as cohort
 from experiments.lead_req030.test_req030aj_cohort import admitted, authored_episode, save
 from experiments.lead_req030.test_req030aj_cohort import framed, supervisor

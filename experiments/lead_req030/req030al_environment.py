@@ -29,6 +29,9 @@ HOSTS_BYTES = b"127.0.0.1 localhost\n::1 localhost ip6-localhost ip6-loopback\n"
 HOSTS_SHA256 = hashlib.sha256(HOSTS_BYTES).hexdigest()
 SPHINX_TASK = "sphinx-doc__sphinx-8593"
 SPHINX_DELTA_SHA256 = "71dbabe891e7add5c0a2dad354e65b233ac74aef3fd5888532515acee48872d9"
+REQUESTS_LEGACY_BASE = "0192aac24123735b3eaf9b08df46429bb770c283"
+REQUESTS_LEGACY_FSCK = (b"error in commit 5e6ecdad9f69b1ff789a17733b8edc6fd7091bd8: "
+    b"badTimezone: invalid author/committer line - bad time zone")
 MODULES = {
     "django__django-12039": ("django",),
     "matplotlib__matplotlib-26208": ("matplotlib", "matplotlib._path"),
@@ -122,10 +125,24 @@ def _retain_base_git_only(tree: Path, base: str) -> dict:
         shutil.rmtree(fresh / "hooks", ignore_errors=True)
         (tree / ".git").rename(old)
         fresh.rename(tree / ".git")
-        _git(tree, "reset", "--hard", base)
+        # Files were already restored and checked against base before exporting
+        # metadata. Populate the fresh index without checking out every file a
+        # second time; the caller's final clean-tree check remains mandatory.
+        _git(tree, "read-tree", base)
         if _git(tree, "rev-list", "--all", "--not", base):
             raise ValueError("non-base future Git history retained")
-        fsck = _git(tree, "fsck", "--full", "--no-reflogs", "--unreachable")
+        legacy_diagnostic = None
+        try:
+            fsck = _git(tree, "fsck", "--full", "--no-reflogs", "--unreachable")
+        except subprocess.CalledProcessError as error:
+            # Prospective handling of one independently reproduced, immutable
+            # upstream metadata defect; never suppress corruption, missing
+            # objects, another malformed commit or any unreachable output.
+            if (base != REQUESTS_LEGACY_BASE or error.returncode != 4
+                    or error.output or (error.stderr or b"").strip() != REQUESTS_LEGACY_FSCK):
+                raise
+            legacy_diagnostic = REQUESTS_LEGACY_FSCK.decode()
+            fsck = _git(tree, "-c", "fsck.badTimezone=ignore", "fsck", "--full", "--no-reflogs", "--unreachable")
         if fsck.strip():
             raise ValueError("unreachable or dangling Git objects retained")
         forbidden = [tree / ".git" / x for x in ("logs", "hooks", "objects/info/alternates", "refs/remotes", "refs/replace")]
@@ -137,7 +154,8 @@ def _retain_base_git_only(tree: Path, base: str) -> dict:
         return {"policy": "only public base-reachable object closure; detached HEAD; no future/unreachable objects",
             "all_refs_removed": True, "future_history_empty": True, "fsck_unreachable_empty": True,
             "git_replace_disabled": True, "exported_pack_sha256": shared.sha_file(pack),
-            "exported_pack_bytes": pack.stat().st_size}
+            "exported_pack_bytes": pack.stat().st_size,
+            "reviewed_legacy_metadata_diagnostic": legacy_diagnostic}
     finally:
         if pack.exists(): pack.unlink()
         for directory in (fresh, old):

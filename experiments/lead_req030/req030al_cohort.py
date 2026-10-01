@@ -48,6 +48,13 @@ APPTAINER_VERSION = "1.5.3-1.el9"
 def retain_error(path: Path) -> None:
     """Private bounded diagnostic; never publish exception task/source contents."""
     data = traceback.format_exc().encode("utf-8", "replace")[:worker.MAX_STDOUT]
+    # CalledProcessError's traceback omits captured stderr; retaining that
+    # diagnostic distinguishes corrupt objects from historical Git formatting.
+    error = sys.exc_info()[1]
+    captured = getattr(error, "stderr", None)
+    if captured:
+        detail = captured if isinstance(captured, bytes) else str(captured).encode("utf-8", "replace")
+        data = (data + b"\nCAPTURED_STDERR\n" + detail)[:worker.MAX_STDOUT]
     fd = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_EXCL | getattr(os, "O_NOFOLLOW", 0), 0o600)
     with os.fdopen(fd, "wb") as out:
         out.write(data); out.flush(); os.fsync(out.fileno())

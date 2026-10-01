@@ -233,3 +233,30 @@ def test_future_branch_dangling_solution_replace_refs_and_hooks_are_absent(tmp_p
     assert not (extracted / "SHOULDNTRUN").exists()
     assert not (extracted / ".git" / "hooks").exists()
     assert not (extracted / ".git" / "refs" / "replace").exists()
+
+
+@pytest.mark.parametrize('fault', ('known', 'other_commit', 'corruption', 'unreachable', 'wrong_exit'))
+def test_legacy_metadata_exception_is_exact_and_never_hides_object_failure(tmp_path, monkeypatch, fault):
+    tree, archive, tid, base = toy_source(tmp_path, monkeypatch)
+    monkeypatch.setattr(env, 'REQUESTS_LEGACY_BASE', base)
+    original = env._git
+    ignored = []
+    def git(path, *args):
+        if args == ('fsck', '--full', '--no-reflogs', '--unreachable'):
+            stderr = env.REQUESTS_LEGACY_FSCK
+            if fault == 'other_commit': stderr += b'\nerror in commit OTHER: badTimezone'
+            if fault == 'corruption': stderr = b'error: hash mismatch in object'
+            raise subprocess.CalledProcessError(1 if fault == 'wrong_exit' else 4,
+                ['git', 'fsck'], output=b'dangling blob BAD' if fault == 'unreachable' else b'', stderr=stderr)
+        if args[:2] == ('-c', 'fsck.badTimezone=ignore'): ignored.append(True)
+        return original(path, *args)
+    monkeypatch.setattr(env, '_git', git)
+    if fault == 'known':
+        r = env.prepare_source_archive(archive, tmp_path / 'normalized.tar', base_commit=base, task_id=tid)
+        assert r['git_history_boundary']['reviewed_legacy_metadata_diagnostic'] == env.REQUESTS_LEGACY_FSCK.decode()
+        assert ignored == [True]
+    else:
+        with pytest.raises(subprocess.CalledProcessError):
+            env.prepare_source_archive(archive, tmp_path / 'normalized.tar', base_commit=base, task_id=tid)
+        assert not ignored
+        assert not (tmp_path / 'normalized.tar').exists()
