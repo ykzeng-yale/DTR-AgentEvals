@@ -1,3 +1,7 @@
+## Complete ongoing DEVELOPMENT release — 1 October2026
+
+[Prospective release](req030al_ongoing_release_20261001.md) integrates the independent source proof before controls, retains all8 tasks/16 controls/32 slots, reuses44.8GB verified-retained assets and freezes a separate48h queue-inclusive window with unchanged5h15m allocation cap.221 tests pass;51 staged file hashes verified. Source release is not submission/start/model success. Original AL deadline and B rejection remain unchanged. Readiness55%, change0points, range45–65%; competent comparisons/valid inference, synthesis and independent reproduction remain.
+
 ## Prospective all-eight independent source proofs — 1 October2026
 
 All8 local original/normalized public-source pairs pass the new independent source-only contract, including bounded original links, exact tracked blobs/native products and base-only Git closure. Reviewer33tests PASS; hashes and scope in [source contract](req030al_source_contract_20261001.md). This does not change rejected27978847,32unknown slots,zero native calls or missing allocation-side controls. No new GPU submission or positive scientific finding. Next integrate the hash-bound reviewer into one complete prospective allocation-side release, reuse verified weights, qualify all16 controls before model inference. Readiness55%, change0points, range45–65%; competent comparisons/valid inference, synthesis and independent reproduction/author package remain.

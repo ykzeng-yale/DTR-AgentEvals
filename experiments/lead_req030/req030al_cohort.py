@@ -38,7 +38,7 @@ ENVIRONMENT_REL = "experiments/lead_req030/req030al_environment.py"
 MODEL_ASSETS_REL = "configs/req030ag_model_assets_20260929.json"
 REQUIRED_SOURCES = tuple(dict.fromkeys((*aj.REQUIRED_SOURCES,
     "experiments/lead_req030/req030al_cohort.py", ENVIRONMENT_REL,
-    "experiments/lead_req030/req030al_replay.py", "configs/req030ak_controls_20260930.json", MODEL_ASSETS_REL)))
+    "experiments/lead_req030/req030al_replay.py", "configs/req030ak_controls_20260930.json", MODEL_ASSETS_REL, "experiments/lead_req030/source_history_audit.py")))
 GOAL_SECONDS = 21600
 MAX_GPU = 32
 SOURCE_NORMALIZATION = "restore every tracked source path and Git HEAD to exact public base; preserve read-only installed SIF dependencies"
@@ -132,11 +132,12 @@ def load_release(path: Path, expected_sha: str) -> tuple[dict, dict]:
             or release["token_contract"] != aj.TOKEN_CONTRACT):
         raise ValueError("complete exact prospective AL model release required")
     goal = release["goal"]
+    window = 172800 if release["release_id"] == "req030al-ongoing-20261001-d" else GOAL_SECONDS
     if (not isinstance(goal, dict) or set(goal) != {"started_epoch", "deadline_epoch", "max_iterations", "iteration"}
             or any(type(goal[k]) not in (int, float) or not math.isfinite(goal[k]) for k in ("started_epoch", "deadline_epoch"))
-            or goal["deadline_epoch"] - goal["started_epoch"] != GOAL_SECONDS
+            or goal["deadline_epoch"] - goal["started_epoch"] != window
             or goal["max_iterations"] != 3 or type(goal["iteration"]) is not int or not 1 <= goal["iteration"] <= 3):
-        raise ValueError("author's exact three-iteration six-hour envelope required")
+        raise ValueError("exact prospective queue-inclusive window required")
     limits = release["limits"]
     if (not isinstance(limits, dict) or set(limits) != {"batch_seconds", "storage_bytes", "min_free_bytes", "grade_seconds", "slot_reservation_seconds"}
             or limits["grade_seconds"] != 900 or limits["slot_reservation_seconds"] != aj.SLOT_RESERVATION_SECONDS
@@ -327,6 +328,15 @@ def qualify(release: dict, admission: dict, output: Path, *, task_qualifier=None
                 "head": source_receipt["head"], "tree": source_receipt["tree"], "base_tree": source_receipt["base_tree"],
                 "accepted": True, "model_tree_contract": "equal_tree"}
             worker.write_new(taskdir / "source_acceptance.json", review)
+            from experiments.lead_req030 import source_history_audit
+            proof = source_history_audit.audit_task(task_id=tid, base_commit=item["task"]["base_commit"],
+                normalized_archive=source, original_archive=original,
+                normalization_receipt=taskdir / "source_normalization.json",
+                acceptance_receipt=taskdir / "source_acceptance.json",
+                expected_original_sha256=item["assets"]["source_tar"]["sha256"])
+            worker.write_new(taskdir / "independent_source_history.json", proof)
+            if proof.get("accepted") is not True:
+                raise ValueError("independent full source proof refused")
             answer.update(source_accepted=True, image=item["assets"]["image"], source_tar=aj.file_pin(source),
                 source_acceptance=aj.file_pin(taskdir / "source_acceptance.json"))
             for mode in ("baseline", "reference"):

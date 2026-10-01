@@ -272,7 +272,8 @@ def test_control_reference_file_and_actual_environment_stage_gate(al_admitted, t
     assert result["runtime"]["modules"][0]["module"] == "django"
 
 
-def test_qualification_checks_installed_runtime_identity_between_all16_arms(al_admitted, tmp_path, monkeypatch):
+@pytest.mark.parametrize("proof_accepted", [True, False])
+def test_qualification_checks_installed_runtime_identity_between_all16_arms(al_admitted, tmp_path, monkeypatch, proof_accepted):
     release, admission, _, _ = al_admitted
     output = tmp_path / "runtime_identity"; output.mkdir()
     def normalize(source, destination, *, base_commit, task_id):
@@ -284,8 +285,14 @@ def test_qualification_checks_installed_runtime_identity_between_all16_arms(al_a
         return {"accepted": True, "cleanup_verified": True, "runtime_sha256": ("a" if mode == "baseline" else "b") * 64}
     monkeypatch.setattr(environment, "prepare_source_archive", normalize)
     monkeypatch.setattr(cohort, "execute_control", control)
+    from experiments.lead_req030 import source_history_audit
+    monkeypatch.setattr(source_history_audit, "audit_task", lambda **kw: {"accepted": proof_accepted})
     result = cohort.qualify(release, admission, output, runtime_verifier=lambda r: {"authored_inert": True},
         asset_verifier=lambda *args: {"authored_inert": True})
+    if not proof_accepted:
+        assert not seen and result["source_review_accepted"] is False
+        assert result["all_controls_accepted"] is False
+        return
     assert len(seen) == 16 and len(set(seen)) == 16
     assert result["source_review_accepted"] is True and result["runtime_accepted"] is True
     assert result["all_controls_accepted"] is False
