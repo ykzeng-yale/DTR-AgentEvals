@@ -1,3 +1,7 @@
+## Independent paired-score review prepared; access still unverified — 2 October2026
+
+28047167 current state remains unknown after authenticated SSH denial; no raw D outcomes or execution failures claimed. [Prospective paired review](req030al_paired_score_review_20261002.md) freezes all six complete-family descriptive schedule contrasts and sharp missing-score/gain/loss bounds.85 exhaustive deterministic checks pass; no compute experiment or frozen gate changed. This distinguishes realized executor opportunity from policy-value/population/H/P inference and retains all8 families/32 slots. Restore authenticated review access before terminal decisions. Readiness55%, change0points, range45–65%; competent comparison/valid inference, synthesis and independent reproduction remain.
+
 ## D cohort state unknown after authenticated-session expiry — 1 October2026
 
 Direct and auxiliary verified SSH routes now reject keyboard-interactive authentication. Actual28047167 current state is **unknown**, not assumed pending or failed; last verified receipt is submission/PENDING. No scheduler/source mutation, duplicate dispatch or result claim. Terminal review is blocked on an owner-authenticated Bouchet session; login refusal neither stops nor diagnoses the queued/running job. No unattended MFA bypass.
