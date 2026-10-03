@@ -1,3 +1,11 @@
+## Author removed stalled recurrent monitor — 3 October2026
+
+The author authorized removing the recurring monitor if work was not advancing. App deletion of `dtr-research-six-hour-evidence-review` is verified; no replacement schedule was created. The automatic SSH checks were repeatedly blocked on keyboard-interactive authentication and should not be described as continuing GPU queue wait. Actual28047167 was not cancelled or modified; its current state/outcomes remain unknown until authenticated SSH and raw terminal review. The original blocked goal remains unfinished.
+
+Fresh owned-host inspection: mini M4/16GiB with about14.6GiB disk free; aux M2Max/32GiB with about24GiB disk free and3.8GiB swap used; lead32GiB. The44.8GB BF16 pair exceeds a single32GiB host before inference overhead; current CUDA/Linux runtime is not a native Mac equivalent. Local CPU diagnostics remain possible. A smaller/quantized Metal treatment requires a separate prospective design and qualified task sandbox, not an exposed duplicate or revival of the closed old GGUF path. No model experiment was launched locally by this inspection.
+
+Next concrete dependency is owner-completed `ssh bouchet`/Duo authentication, followed by direct actual28047167 accounting and independent raw source/control/native/outcome review. No positive scientific finding established. Readiness55%, change0points, range45–65%; competent comparisons/valid fixed-target inference, empirical/manuscript synthesis, independent reproduction/author package remain.
+
 ## Independent paired-score review prepared; access still unverified — 2 October2026
 
 28047167 current state remains unknown after authenticated SSH denial; no raw D outcomes or execution failures claimed. [Prospective paired review](req030al_paired_score_review_20261002.md) freezes all six complete-family descriptive schedule contrasts and sharp missing-score/gain/loss bounds.85 exhaustive deterministic checks pass; no compute experiment or frozen gate changed. This distinguishes realized executor opportunity from policy-value/population/H/P inference and retains all8 families/32 slots. Restore authenticated review access before terminal decisions. Readiness55%, change0points, range45–65%; competent comparison/valid inference, synthesis and independent reproduction remain.

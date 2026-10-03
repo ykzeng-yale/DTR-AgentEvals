@@ -15,9 +15,9 @@ release; SSH dispatch alone is not such a change. Keep private keys and network
 inventory outside this repository. Preserve bounded resource checks, source pins,
 immutable run IDs, independent cleanup and no duplicate execution.
 
-The active experiment monitor cadence is SIX HOURS by the author's update on
-30 September 2026, superseding the historical two-hour, 30-minute and 15-minute
-cadences. Keep one monitor and no continuous goal-token polling. Notify only for
+The author removed the stalled recurring experiment monitor on 3 October 2026.
+No scheduled research monitor is active; do not recreate one without a new request.
+The historical six-hour cadence does not imply an active schedule. Keep no continuous goal-token polling. Notify only for
 independently validated positive, scientifically interesting and important findings;
 archive adverse evidence honestly. Email requires the exact author-supplied recipient
 and a verified sending connection. See `docs/six_hour_research_monitor_20260930.md`
